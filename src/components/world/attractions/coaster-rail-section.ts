@@ -3,6 +3,7 @@ import { thrillFrame } from './coaster-thrill-frame.ts';
 import { THRILL_CREST, THRILL_ELEMENTS, THRILL_LENGTH } from './coaster-thrill-layout.ts';
 import type { CoasterBatch } from './coaster-geometry.ts';
 import type { ThrillSupport } from './coaster-thrill-supports.ts';
+import { addCoasterCraftPart, addCoasterCraftSupportNode, addCoasterCraftTie, inCoasterCraftBay, type CoasterStructureCraft, type CoasterStructureSurface } from './coaster-structure-craft.ts';
 
 const giant = THRILL_ELEMENTS[0];
 export const COASTER_STRUCTURE_SAMPLE = { start: THRILL_CREST - 12 / THRILL_LENGTH, end: giant.end + 12 / THRILL_LENGTH };
@@ -47,7 +48,7 @@ export function coasterRailSpans(detailed: boolean) {
   return boundaries.slice(0, -1).map((start, i) => coasterRailRings(detailed, start, boundaries[i + 1]));
 }
 
-export function sweepCoasterSection(rings: Ring[], profile: Profile) {
+export function sweepCoasterSection(rings: Ring[], profile: Profile, caps: readonly [boolean, boolean] = [true, true]) {
   const positions: number[] = [], indices: number[] = [], sides = profile(rings[0]).length;
   // Duplicate each section edge to retain a crisp box section but smooth longitudinal normals.
   for (const r of rings) {
@@ -59,7 +60,8 @@ export function sweepCoasterSection(rings: Ring[], profile: Profile) {
     const a = i * stride + j * 2, b = a + 1, c = a + stride, d = c + 1;
     indices.push(a, c, b, b, c, d);
   }
-  for (const end of [0, rings.length - 1]) for (let j = 1; j < sides - 1; j++) {
+  const ends = [0, rings.length - 1].filter((_, i) => caps[i]);
+  for (const end of ends) for (let j = 1; j < sides - 1; j++) {
     const a = end * stride, b = a + j * 2, c = a + (j + 1) * 2;
     indices.push(...(end ? [a, c, b] : [a, b, c]));
   }
@@ -68,22 +70,48 @@ export function sweepCoasterSection(rings: Ring[], profile: Profile) {
 }
 
 /** The sample's visible faces are also its physical faces, in one bounded static trimesh. */
-export function addCoasterRailSections(steel: CoasterBatch, detailed: boolean, spans = coasterRailSpans(detailed)) {
+export function addCoasterRailSections(steel: CoasterBatch, detailed: boolean, spans = coasterRailSpans(detailed), craft?: CoasterStructureCraft) {
   const vertices: number[] = [], indices: number[] = [];
-  const add = (g: BufferGeometry, colour: string, solid: boolean) => {
+  const add = (g: BufferGeometry, colour: string, solid: boolean, visible = true) => {
     if (solid) {
       const offset = vertices.length / 3;
       vertices.push(...g.attributes.position.array);
       if (g.index) for (const i of g.index.array) indices.push(i + offset);
       else for (let i = 0; i < g.attributes.position.count; i++) indices.push(i + offset);
     }
-    steel.add(g, colour);
+    if (visible) steel.add(g, colour);
+    else g.dispose();
   };
   for (let section = 0; section < 3; section++) {
     const rings = spans[section], solid = section === 1;
-    for (const side of [-.78, .78]) add(sweepCoasterSection(rings, () => Array.from({ length: 6 }, (_, j) =>
-      [side + .11 * Math.cos(j * Math.PI / 3), .11 * Math.sin(j * Math.PI / 3)])), '#c2ccd1', solid);
-    add(sweepCoasterSection(rings, coasterSpineProfile), '#273e4e', solid);
+    const sweep = (profile: Profile, colour: string, surface: CoasterStructureSurface) => {
+      if (!craft || !solid) {
+        add(sweepCoasterSection(rings, profile), colour, solid);
+        return;
+      }
+      const first = rings.findIndex(r => inCoasterCraftBay(r.u));
+      const last = rings.findLastIndex(r => inCoasterCraftBay(r.u));
+      if (first <= 0 || last <= first || last >= rings.length - 1) {
+        add(sweepCoasterSection(rings, profile), colour, solid);
+        return;
+      }
+      // Keep one original, byte-identical physical sweep. Visual sections share end rings without internal caps.
+      const complete = sweepCoasterSection(rings, profile);
+      const normals = complete.getAttribute('normal').array;
+      const ringSize = complete.getAttribute('normal').count / rings.length * 3;
+      const visible = (from: number, to: number, caps: readonly [boolean, boolean]) => {
+        const part = sweepCoasterSection(rings.slice(from, to), profile, caps);
+        part.getAttribute('normal').array.set(normals.slice(from * ringSize, to * ringSize));
+        return part;
+      };
+      steel.add(visible(0, first + 1, [true, false]), colour);
+      addCoasterCraftPart(steel, visible(first, last + 1, [false, false]), colour, surface, craft);
+      steel.add(visible(last, rings.length, [false, true]), colour);
+      add(complete, colour, solid, false);
+    };
+    for (const side of [-.78, .78]) sweep(() => Array.from({ length: 6 }, (_, j) =>
+      [side + .11 * Math.cos(j * Math.PI / 3), .11 * Math.sin(j * Math.PI / 3)]), '#c2ccd1', 'runningSteel');
+    sweep(coasterSpineProfile, '#273e4e', 'spineCoat');
   }
   const count = Math.ceil((COASTER_STRUCTURE_SAMPLE.end - COASTER_STRUCTURE_SAMPLE.start) * THRILL_LENGTH / 2.1);
   for (let i = 1; i < count; i++) {
@@ -93,23 +121,30 @@ export function addCoasterRailSections(steel: CoasterBatch, detailed: boolean, s
       const d = b.clone().sub(a), rotation = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), d.clone().normalize());
       add(new BoxGeometry(width, d.length(), width).applyMatrix4(new Matrix4().compose(a.clone().add(b).multiplyScalar(.5), rotation, new Vector3(1, 1, 1))), colour, true);
     };
-    add(new BoxGeometry(.24, .2, 1.9).applyMatrix4(new Matrix4().compose(at(frame, 0, -.21), frame.rotation, new Vector3(1, 1, 1))), '#aa9173', true);
+    const candidate = craft && inCoasterCraftBay(u);
+    add(new BoxGeometry(.24, .2, 1.9).applyMatrix4(new Matrix4().compose(at(frame, 0, -.21), frame.rotation, new Vector3(1, 1, 1))), '#aa9173', true, !candidate);
+    if (candidate) addCoasterCraftTie(steel, frame, craft);
     for (const side of [-1, 1]) box(at(frame, side * .78, -.21), at(frame, side * profile[0][0] * .8, profile[2][1] + .14), .18, '#526b79');
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) } satisfies TrackContact;
 }
 
-export function addCoasterSampleNodes(steel: CoasterBatch, supports: ThrillSupport[], contact: TrackContact) {
+export function addCoasterSampleNodes(steel: CoasterBatch, supports: ThrillSupport[], contact: TrackContact, craft?: CoasterStructureCraft) {
   const vertices = Array.from(contact.vertices), indices = Array.from(contact.indices);
-  const add = (g: BufferGeometry, colour: string) => {
+  const add = (g: BufferGeometry, colour: string, visible: boolean) => {
     const offset = vertices.length / 3;
     vertices.push(...g.attributes.position.array);
     for (const i of g.index!.array) indices.push(i + offset);
-    steel.add(g, colour);
+    if (visible) steel.add(g, colour);
+    else g.dispose();
   };
-  for (const support of supports) if (inCoasterStructureSample(support.u)) for (const [i, p] of [support.a, support.b].entries()) {
-    add(new CylinderGeometry(.82, .82, .7, 8).translate(p.x, p.y - .35, p.z), '#98a7aa');
-    add(new BoxGeometry(1.6, .15, 1.6).translate(p.x, support.beams[i].a.y + 1.05, p.z), '#273e4e');
+  for (const support of supports) if (inCoasterStructureSample(support.u)) {
+    const candidate = craft && inCoasterCraftBay(support.u);
+    for (const [i, p] of [support.a, support.b].entries()) {
+      add(new CylinderGeometry(.82, .82, .7, 8).translate(p.x, p.y - .35, p.z), '#98a7aa', !candidate);
+      add(new BoxGeometry(1.6, .15, 1.6).translate(p.x, support.beams[i].a.y + 1.05, p.z), '#273e4e', !candidate);
+    }
+    if (candidate) addCoasterCraftSupportNode(steel, support, craft);
   }
   contact.vertices = new Float32Array(vertices); contact.indices = new Uint32Array(indices);
 }
