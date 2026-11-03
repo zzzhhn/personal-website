@@ -1,0 +1,114 @@
+{
+  "source": "7789327",
+  "screenshotDimensions": [
+    1710,
+    875
+  ],
+  "pairs": {
+    "day": {
+      "shot": "craft-intake-day",
+      "quality": "balanced",
+      "time": 720,
+      "weather": "clear",
+      "position": [
+        31.1,
+        3.55,
+        -115.6
+      ],
+      "direction": [
+        0.4058425636220487,
+        -0.1819294250719529,
+        -0.8956525542003841
+      ],
+      "fov": 50,
+      "exposure": 1,
+      "blend": 1,
+      "night": 0,
+      "pixelRatio": 1,
+      "canvas": [
+        1710,
+        875
+      ]
+    },
+    "night": {
+      "shot": "craft-intake-night",
+      "quality": "balanced",
+      "time": 0,
+      "weather": "clear",
+      "position": [
+        31.1,
+        3.55,
+        -115.6
+      ],
+      "direction": [
+        0.4058425636220487,
+        -0.1819294250719529,
+        -0.8956525542003841
+      ],
+      "fov": 50,
+      "exposure": 1,
+      "blend": 1,
+      "night": 1,
+      "pixelRatio": 1,
+      "canvas": [
+        1710,
+        875
+      ]
+    }
+  },
+  "captureSha256": {
+    "intake-day-after.jpg": "bc46d2f461204660b32f1a5af62d7dba32501e2dc719dad5f7fb50637456bdb7",
+    "intake-day-after.json": "bc5898c95cf9468c0913bed7e041bdf97630916b9153b53caa75d80d41a4845a",
+    "intake-day-before.jpg": "2f4741814fdd184755a2bf6212c4a3293223132997333aff703c73dea4dc66a0",
+    "intake-day-before.json": "267071e0e509116d67982136d0de3a14610ec7e4d4251050cd0ca5d4929897fb",
+    "intake-night-after.jpg": "42d4db6a951cf255f7e7ab0b1acfc83597eb597129e23ca5fe3603adf3808f98",
+    "intake-night-after.json": "b37d9ab201bec8c662ab8cc4a0d9ddbeb00a96eaa5ea5498cb2bbee72327dfab",
+    "intake-night-before.jpg": "05175900dbbadbc6b7f9641dc06f48376eb9f076683634e29ff9bebbf612a3f3",
+    "intake-night-before.json": "3ea11b0b702ac236db45bd7983266d4e28534a06318a7d4f4692e799dee03c36"
+  },
+  "buildSha256": {
+    "_astro/AwardsGrid.BOuP0LTB.js": "a429dd35cf701d607fb0ae56519e74cd8c98c4de51cb57d329bafaba16dbf617",
+    "_astro/BaseLayout.astro_astro_type_script_index_0_lang.CmrUZ3VW.js": "a7024d267e29a00ea139960a9b0d30827e81862f2f85bcf97260db8e1830d8c6",
+    "_astro/BioParagraph.BdysohDM.js": "f0c3c89eb6050a4bbc5f829b6ec95266bdc1a02e61072761e16f4141723fdba1",
+    "_astro/ExperienceTimeline.BzMuRL-H.js": "a3457b121f8c3a8836babe589ceceae09b838c236d0ae81951f2e36177ef3a84",
+    "_astro/LanguageRotator.B5Onp-4o.js": "ee56eb2d3ca38d46729c074739923f6c05cfbc57d11ce7dd24f280761bcec7d8",
+    "_astro/MotionPortfolio.CEOKIuMr.js": "34e1773e94aee5f98e125420e678b68a42db76b5ee5e1c60238607dfcbd9de07",
+    "_astro/ProjectShowcase.4hy2O0wF.js": "6642a2e19cd98bb786c331193f412819c0427ff71004862dae2876c5c4fd0eaf",
+    "_astro/ScrollExpand.CPMTg2tF.js": "f2866e6c0174ae1778ba56a873659c698256e6a8243d722104898185cc857f9f",
+    "_astro/Strands.DVBGmts1.js": "592c920a198eea2ca35527f835347f14c7f19c005ab2e43f2424b86cb044c824",
+    "_astro/TypewriterText.DNpYniWD.js": "72d19f47422048f8e69d0917a3a47ae52f0847a959ae6e4d51b7d47a04a9e3a8",
+    "_astro/WorldApp.DCNGVQFH.js": "03acba2c965ebdfe7afffebe64983fa88bd20ff466f85723a96529721a76981e",
+    "_astro/WorldApp.ep7eNzZe.js": "0fb717a028294bc1bbb81fd33f10437dd81a053f9fe3348b9b69f15f7e61b16a",
+    "_astro/WorldDistricts.BZ-khm7f.js": "a9a6b0adea8bcbb1e8428339a463e14ebf74a83a706ddf3954234a5ca20b4b5a",
+    "_astro/WorldIbdHud.Ba3SYPfq.js": "8cbcc17bbc9e966147d58c9635d88aedfb36076b84f367fa451552ef004c42e2",
+    "_astro/WorldIbdYard.D9a6AA9x.js": "02fd7056d346eca6e8cc2b165e80bccf44d9bef5ccae1ef3450af5b9d6d4f44f",
+    "_astro/WorldIntentCoaster.Dwqn-3Tx.js": "daaaa3b12a861a3121bf4d24b2f6c626f9d03a69a1c22b38aad8152c23bbf6fe",
+    "_astro/WorldIntentHud.BG6FX2uV.js": "4dddd902f5114d33f460b41917b455e63ba5d2d4bbfd55e167d2a6d16707c6f0",
+    "_astro/WorldLandform.C--xP165.js": "b8c5c424b5f024ea7a5694eb03e7f18ed499695cbf13ac36e427528f9c6b0a1e",
+    "_astro/WorldLoadProgress.hf_dmCqT.js": "a0086055aadb2d21b4764f773176cdd70877bd0bde510744d2faf1ca565986b9",
+    "_astro/WorldRuntime.DqIXA9XC.js": "8d8db86c4427e7334dc6816fb352b2333d7259df66c04ed116892206545be35f",
+    "_astro/WorldUiTest.BSygnmsu.js": "9fe01aedc04d13c1ed02c409400b11838f89d16ca95423ff85b6d7b6963e9fba",
+    "_astro/actor-physics.C7mIiVjT.js": "b1dae54359645b913374876dbdd6a0f3ae87c6b0116900daa35721221b601017",
+    "_astro/analytics.CZcLqhSq.js": "7e8308ed02c15cda4728fbae437f93e33c8cf7cf96bf4a065a29c96de4c4d842",
+    "_astro/client.BINMsa6k.js": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88",
+    "_astro/client.BogH9A_j.js": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9",
+    "_astro/coaster-structure.worker-Dd6M9YSn.js": "fed646dc1b9e454a51b002fd06bf0cf379155678563206de2469c0020a12a19a",
+    "_astro/coaster-track.8ErUQE3N.js": "017982532db83db4f989ee7f10c1e139cbe4a7921a8551d5a5e11e1a4b50a98e",
+    "_astro/draco_decoder.fzg4nYZr.js": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04",
+    "_astro/draco_wasm_wrapper.DxJM36Ib.js": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+    "_astro/draco_wasm_wrapper.fZCQGLGb.js": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+    "_astro/ibd-pack-play.BaK0vW9o.js": "c2d76890d59cd7c5a46f93fad23c1c3d1523eae7d17f61eb693975ada08d1edc",
+    "_astro/ibd-yard-guide.CTCLIy72.js": "31db088ea7f40313709202fedd113fb1cee7c317575bac997d690c87bc70ff0d",
+    "_astro/index.BzumvINc.js": "c66b1944abad892a3a6ef9520645c0b33ff353cc4976f9e96e7ea4a189605c59",
+    "_astro/index.DP38BoPS.js": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f",
+    "_astro/intent-state.CyewCygC.js": "97603230487d389dba50dcf69cbb8fef9ab44f791e179a03b51a78db85709043",
+    "_astro/intent-workshop-runtime.lGqqdBTJ.js": "0631f1f70291c16f0b694cc822f7029c32bb3521e2a503a0ac98ddfc3506a084",
+    "_astro/jsx-runtime.u17CrQMm.js": "158671ca747dc8bd9874f7dc436ba4576af1f90ea02dba567022f0b3b81e231f",
+    "_astro/projectStatus.Bt-t_QXW.js": "160c8019f4f23dcb9a5c7697ffe2d9341d9fe5ea5d9b3e5643f15e553e54e522",
+    "_astro/proxy.fmCGwqvs.js": "d97f83168392521dc7ebe1e25aaf28a481a2d1febc83558901b5d963215b2dd7",
+    "_astro/shadow-chunk-hull.worker-xfxZf1i5.js": "51495d2b4799f21a11d5e74ec58b886f55d25390128fa3175ea59f5200b01220",
+    "_astro/three.core.DpqcljzU.js": "c69767995409b463ebbb9b0c667fe266afd80ba3b96064a5db474e6e223ffe31",
+    "_astro/three.module.SQfxU8nM.js": "88847511bd69dc4907c9c00961da9dee610ecefec6a4563089134ce54593ff6a",
+    "world/index.html": "b9bf2943fe3df00cb0eca0e03dd12405b184cdde7a1ebdd13f883495913c307b"
+  }
+}

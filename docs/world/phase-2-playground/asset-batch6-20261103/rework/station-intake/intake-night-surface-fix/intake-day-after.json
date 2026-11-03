@@ -1,0 +1,22 @@
+{
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-intake-day",
+  "first": {
+    "body": "",
+    "overlay": true,
+    "raw": "{\"shot\":\"craft-intake-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[31.1,3.55,-115.6],\"direction\":[0.4058425636220487,-0.1819294250719529,-0.8956525542003841],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5688,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "before": {
+    "body": "",
+    "overlay": true,
+    "raw": "{\"shot\":\"craft-intake-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[31.1,3.55,-115.6],\"direction\":[0.4058425636220487,-0.1819294250719529,-0.8956525542003841],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5688,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "after": {
+    "body": "",
+    "overlay": true,
+    "raw": "{\"shot\":\"craft-intake-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[31.1,3.55,-115.6],\"direction\":[0.4058425636220487,-0.1819294250719529,-0.8956525542003841],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5688,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "errors": []
+}
