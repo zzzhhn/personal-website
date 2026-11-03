@@ -28,9 +28,10 @@ function sceneReview() {
           ${shots.map(({id,position,target})=>`{id:${JSON.stringify(id)},position:${JSON.stringify(position)} as Vec3,target:${JSON.stringify(target)} as Vec3},`).join('\n')}`);
       }
       if (id.endsWith('/WorldIntentCoaster.tsx')) {
+        code=replace(code, 'import { WorldIntentReflectiveSurface }', 'import WorldIntentSurface, { WorldIntentReflectiveSurface }');
         code=replace(code, '<WorldIntentReflectiveSurface roughness={.82}', `<WorldIntentReflectiveSurface reflect={${variant}} roughness={.82}`);
-        return `import {createCoasterStructure as createBaselineStructure} from './coaster-geometry.baseline.ts';
-`+replace(code, 'new CoasterStructureCache(createCoasterStructure, buildCoasterInWorker)',
+        return `import {createCoasterStructure as createBaselineStructure,createCoasterCar as createBaselineCar} from './coaster-geometry.baseline.ts';
+`+replace(replace(replace(code, 'useMemo(createCoasterCar, [])', `useMemo(${variant} ? createCoasterCar : createBaselineCar, [])`), '<WorldIntentReflectiveSurface roughness={.65} metalness={.12} />', `{${variant} ? <WorldIntentReflectiveSurface roughness={.65} metalness={.12} /> : <WorldIntentSurface roughness={.65} metalness={.12} />}`), 'new CoasterStructureCache(createCoasterStructure, buildCoasterInWorker)',
           `new CoasterStructureCache(near => ${variant} ? createCoasterStructure(near, true) : createBaselineStructure(near), buildCoasterInWorker)`);
       }
       if (id.endsWith('/coaster-structure-job.ts')) {

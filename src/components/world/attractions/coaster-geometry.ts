@@ -365,15 +365,45 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
 }
 
 export function createCoasterCar() {
-  const b = new CoasterBatch();
-  for (const panel of COASTER_CAR_PANELS) b.box(panel.at, panel.size, P[panel.color]);
-  for (const side of [-.85, .85]) {
-    b.beam([1.25, .5, side], [1.25, 1.22, side], .065, P.rail);
-    for (const x of [-1, 1]) b.beam([x, .08, side - .15], [x, .08, side + .15], .26, P.dark);
+  const batch = new CoasterBatch();
+  const box = (at: Vec3, size: Vec3, pigment: string, role: number) => {
+    batch.box(at, size, pigment);
+    markIntentCraft(batch.parts[batch.parts.length - 1], role);
+  };
+  const rod = (a: Vec3, b: Vec3, radius: number, pigment: string, role: number, sides = 8) => {
+    batch.beam(a, b, radius, pigment, sides);
+    markIntentCraft(batch.parts[batch.parts.length - 1], role);
+  };
+  const { structuralCoat: coat, runningSteel: steel, galvanized, rubber } = INTENT_CRAFT;
+
+  // Preserve the six parked contact surfaces and the open boarding side.
+  const [floor, bulkhead, seat, back, left, right] = COASTER_CAR_PANELS;
+  box([floor.at[0], .335, floor.at[2]], [floor.size[0], .22, floor.size[2]], P.copper, coat);
+  batch.housing([0, .16, 0], [2.9, .13, 1.8], P.dark);
+  markIntentCraft(batch.parts[batch.parts.length - 1], coat);
+  for (const panel of [bulkhead, left, right]) box(panel.at, panel.size, P[panel.color], coat);
+  box(seat.at, seat.size, P.dark, rubber);
+  box(back.at, back.size, P.dark, rubber);
+  box([-.633, 1.047, 0], [.035, .75, 1.13], P.steel, coat);
+  for (const panel of [left, right]) {
+    const [x, y, z] = panel.at;
+    box([x, y + .154, z], [panel.size[0], .042, .159], P.rail, galvanized);
+    box([x, y - .105, z + Math.sign(z) * .077], [panel.size[0] - .11, .072, .026], P.dark, coat);
   }
-  b.beam([1.25, 1.22, -.85], [1.25, 1.22, .85], .065, P.rail);
-  b.box([1.46, .7, 0], [.03, .12, 1.2], P.cyan);
-  return b.finish();
+
+  // Wheel webs and hub rings sit inside the existing wheel envelope.
+  for (const side of [-1, 1]) {
+    const z = side * .85;
+    rod([1.25, .5, z], [1.25, 1.22, z], .065, P.rail, steel);
+    rod([1.25, 1.22, z], [1.25, 1.22, side * .57], .065, P.rail, steel);
+    for (const x of [-1, 1]) {
+      rod([x, .08, z - .15], [x, .08, z + .15], .26, P.dark, rubber, 12);
+      rod([x, .08, z + side * .15], [x, .08, z + side * .158], .147, P.rail, galvanized, 12);
+    }
+  }
+  rod([1.25, 1.22, -.57], [1.25, 1.22, .57], .065, P.dark, rubber);
+  box([1.46, .7, 0], [.03, .12, 1.2], P.cyan, coat);
+  return batch.finish();
 }
 
 export function createIntentMicroBase(id: 'route' | 'press' | 'visitor', passed: readonly string[] = []) {

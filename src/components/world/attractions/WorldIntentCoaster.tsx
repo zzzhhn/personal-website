@@ -11,7 +11,7 @@ import { activateIntentTarget, intentRideClock, intentRideQaHold, loadIntentProg
 import { advanceCoasterTransition, returnCoasterToStation } from './coaster-transition';
 import WorldIntentDevices from './WorldIntentDevices';
 import WorldIntentSigns from './WorldIntentSigns';
-import WorldIntentSurface, { WorldIntentReflectiveSurface } from './WorldIntentSurface';
+import { WorldIntentReflectiveSurface } from './WorldIntentSurface';
 import WorldCoasterVegetation from './WorldCoasterVegetation';
 import { night } from '../WorldNight';
 import { CoasterMotionAudio } from './coaster-motion-audio';
@@ -128,7 +128,7 @@ function CoasterTrain({ active }: { active: boolean }) {
     {[0, 1, 2].map(i => {
       const f = coasterFrame(-i * 3.55 / COASTER_LENGTH);
       return <group key={i} ref={el => { cars.current[i] = el; }} position={f.point} quaternion={f.rotation}>
-        <mesh geometry={geometry} castShadow receiveShadow><WorldIntentSurface roughness={.65} metalness={.12} /></mesh>
+        <mesh geometry={geometry} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.65} metalness={.12} /></mesh>
         {active && !occupied && <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-parked-car' }}>
           {COASTER_CAR_PANELS.map((p, j) => <CuboidCollider key={j} position={p.at} args={p.size.map(v => v / 2) as [number, number, number]} />)}
         </RigidBody>}
