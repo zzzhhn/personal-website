@@ -319,8 +319,11 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   const beam = (a: Vec3, b: Vec3, radius: number, color = P.steel) => steel.beam(coasterWorld(a), coasterWorld(b), radius, color);
   // Warm, deep station frontage. The central aisle and actual boarding apron stay level.
   box([0, .04, 60.5], [110, .08, 9], P.concrete, true, true);
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   box([-2, .04, 41.5], [18, .08, 23], P.concrete, true, true);
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   box([0, .04, 55], [10, .08, 8], P.concrete, true, true);
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   // Functional boarding passage: six real treads and a flush bridge to the stopped car.
   for (const step of [...COASTER_BOARDING.stairs, COASTER_BOARDING.threshold]) {
     const yaw = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw);
