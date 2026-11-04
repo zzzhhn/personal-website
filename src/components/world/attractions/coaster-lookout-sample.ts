@@ -179,7 +179,7 @@ export function addCoasterLookoutSample(steel: CoasterBatch,glow: CoasterBatch,c
       steel.add(geometry, s.colour, lookoutSolidMatrix(s));
       const rail = s.role === 'rail' || s.role === 'post';
       const finish = rail
-        ? (s.id.startsWith('shoe-') || s.id.endsWith('-2') ? INTENT_CRAFT.galvanized : INTENT_CRAFT.structuralCoat)
+        ? (s.id.startsWith('shoe-') || (s.role === 'rail' && s.id.endsWith('-2')) ? INTENT_CRAFT.galvanized : INTENT_CRAFT.structuralCoat)
         : INTENT_CRAFT.mineralCladding;
       markIntentCraft(steel.parts[steel.parts.length - 1], finish);
     }
