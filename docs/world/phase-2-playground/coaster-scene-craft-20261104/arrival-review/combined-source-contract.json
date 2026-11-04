@@ -1,0 +1,88 @@
+{
+  "baseline": "024e5a6",
+  "contract": {
+    "access": "2a8e8b3e186ddd9d4bd452ac966202b0ff84e3e0252228298eb2281cbd3a4db7",
+    "far": {
+      "track": {
+        "vertices": "0dd7984943018e8ef3a8eee5481e796309eb244bfe561e9193f590a6a0edfcd3",
+        "indices": "dff1d4fb88986fd3fb79b5a681b9ac21a611be0606c7469bd72d4963c87979c6"
+      },
+      "relief": {
+        "vertices": "ff082bbce3115c375f221e1c1c971aeae02990171f0c71c5b031138302aae9d4",
+        "indices": "b52eb6233c0a4c4d7e2898b9ba1572f4809ffdfb63d9456832f81c367b45c856",
+        "formations": "caed34fd1f73cfdd0be0e45fea2014778ccb0d6c351d5753874d99ecf4a85aa5",
+        "shrubCount": "bdd2d3af3a5a1213497d4f1f7bfcda898274fe9cb5401bbc0190885664708fc2",
+        "dropSample": "d7ba67eb2af17cef01a057a9ce232919942e5bbd06fff796ff2246f844898e84",
+        "triangleCount": "63e2d96b176b97e347ee6b79fad930783283808ce0526bab785846581ba65204"
+      },
+      "colliders": "1e29d0f7bd2823809712a2e5cfba9a5438c65f3665b47dc423994bc89891f103",
+      "glow": {
+        "position": "06015b5e6d091799864c427456340a4b3aa3757a1b8069b983e517dd8114cf4b",
+        "normal": "07c9aa5933458824ab38f8657ba4d0e03d9253cf5765acf1f616155e19433c94",
+        "color": "f16992fa871be28d2c2524ca7f11e0e3b36dfb6d2f52b1d3606e19ca41e9c926",
+        "nightRadiance": "b639cb8dbf3d96d2bc4929abd1b556db4fdb847910fa9e00b29a6f7a7da14c68"
+      }
+    },
+    "near": {
+      "track": {
+        "vertices": "6b8c84b4461f8dc26f82298785d5e8d8b8e8e932fa031f3e03065220cb5d69b4",
+        "indices": "e24306f361e1cf6ffe493d2d891054d1c5dba340e92ee6fd9c891b23933f672c"
+      },
+      "relief": {
+        "vertices": "ff082bbce3115c375f221e1c1c971aeae02990171f0c71c5b031138302aae9d4",
+        "indices": "b52eb6233c0a4c4d7e2898b9ba1572f4809ffdfb63d9456832f81c367b45c856",
+        "formations": "caed34fd1f73cfdd0be0e45fea2014778ccb0d6c351d5753874d99ecf4a85aa5",
+        "shrubCount": "bdd2d3af3a5a1213497d4f1f7bfcda898274fe9cb5401bbc0190885664708fc2",
+        "dropSample": "d7ba67eb2af17cef01a057a9ce232919942e5bbd06fff796ff2246f844898e84",
+        "triangleCount": "63e2d96b176b97e347ee6b79fad930783283808ce0526bab785846581ba65204"
+      },
+      "colliders": "c6cf0a778f8c1dcb2298561cfe86f1b1902204e765dc72e33bb0fc016eb645f3",
+      "glow": {
+        "position": "0be9ee42c1f6adee8a6e1105ee6168d25c9aa507dfd9386dc91b8ba914738f52",
+        "normal": "a715839e6c55e8c3d83a3580149c8845e2f2f4964711673ec08b39c9cc79f746",
+        "color": "5118c9bed1a26eeb387c0433b0c9349e19b16ab69712c789caf93187030c1673",
+        "nightRadiance": "0956a07fab03ec98eb3a60a1ce39d9c4912c12388cc14eac7dcb012252f0ca69"
+      }
+    },
+    "workshop": {
+      "vertices": "b18a23b7542769e0fecf51605a92bf1a2c6edd009a4aef07e80fed9546e81487",
+      "indices": "9f1cf2057c2772d93351b05d7fd08010ce03d64a8b31b9b038c5a2e541336592"
+    }
+  },
+  "before": {
+    "far": {
+      "triangles": 123080,
+      "bytes": 18092760
+    },
+    "near": {
+      "triangles": 192288,
+      "bytes": 28266336
+    },
+    "workshop": {
+      "triangles": 9776,
+      "bytes": 1437072
+    },
+    "train": {
+      "triangles": 708,
+      "bytes": 104076
+    }
+  },
+  "after": {
+    "far": {
+      "triangles": 124012,
+      "bytes": 18229764
+    },
+    "near": {
+      "triangles": 208204,
+      "bytes": 30605988
+    },
+    "workshop": {
+      "triangles": 9776,
+      "bytes": 1437072
+    },
+    "train": {
+      "triangles": 708,
+      "bytes": 104076
+    }
+  }
+}

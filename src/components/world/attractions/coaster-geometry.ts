@@ -181,7 +181,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
   for (const x of [-10, 6]) {
     box([x, 6.13, 41.5], [.48, .38, 21], P.steel);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
-    for (const z of [31, x < 0 ? 43 : 51]) {
+    if (detailed) for (const z of [31, x < 0 ? 43 : 51]) {
       box([x, 5.91, z], [1.18, .14, 1.18], P.rail);
       markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
     }
@@ -345,7 +345,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     box(p, size, '#9b9c92', true, true);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
     const [x, y, z] = p, [w, h, d] = size;
-    for (const sx of [-1,1]) {
+    if (detailed) for (const sx of [-1,1]) {
       box([x + sx * (w / 2 - .055), y - h * .15, z], [.11, h * .66, d], P.steel);
       markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
     }
@@ -390,7 +390,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     for (const y of [1.41, 3.18, 4.95]) {
       finishBox([x, y, COASTER_GATE_Z + .855], [1.50, 1.72, .09], '#bdc0b6', mineral);
     }
-    for (const side of [-1, 1]) {
+    if (detailed) for (const side of [-1, 1]) {
       finishBox([x + side * .74, 3.29, COASTER_GATE_Z + .73], [.12, 5.1, .34], '#899699', mineral);
     }
     finishBox([x, 5.83, COASTER_GATE_Z], [1.60, .23, 1.80], P.steel, coat);

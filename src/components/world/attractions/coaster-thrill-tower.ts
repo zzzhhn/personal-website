@@ -58,8 +58,10 @@ export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:Co
     box([-44,y+1.3,-151],[2.6,2.2,2.4],color.concrete);
     // Recessed motor-room panel faces the public approach. It sits on the
     // existing cabinet face and leaves the tower and catwalk outlines intact.
-    box([-44,y+1.13,-149.79],[2.22,1.52,.08],color.dark,false);
-    for (const side of [-1,1]) box([-44+side*.96,y+1.13,-149.738],[.12,1.48,.055],color.edge,false);
+    if (detailed) {
+      box([-44,y+1.13,-149.79],[2.22,1.52,.08],color.dark,false);
+      for (const side of [-1,1]) box([-44+side*.96,y+1.13,-149.738],[.12,1.48,.055],color.edge,false);
+    }
     glow.box(world([-44,y+2,-149.77]),[1.9,.18,.08],'#ffd08b');
   }
   box([-44,85.2,-151],[4.2,1.4,3.8],color.steel);
