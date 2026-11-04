@@ -1,34 +1,14 @@
-import { Color, type BufferGeometry } from 'three';
+import type { Color, BufferGeometry } from 'three';
 import type { Vec3 } from '../types';
+import { coasterGroundColours } from './coaster-landscape-finish.ts';
 
 type Sampler = (x: number, z: number) => number;
 /** Rock colours are indexed by shared vertex, independently of their flat render normals. */
 export type DropDetail = { points: Vec3[]; faces: [number, number, number][]; colours: Color[]; kind: 'rock' };
-const mineral = new Color('#aaa48e'), weathered = new Color('#99977e'), earth = new Color('#92906a'), grass = new Color('#7c8957');
-
 /** Continuous local material field, independent of the render normals.
  * Area-weighted slope prevents colour changes at arbitrary triangle diagonals. */
 export function dropSurfaceColours(points:Vec3[],faces:[number,number,number][],ground?:Sampler):Color[] {
-  const normals=points.map(()=>[0,0,0]);
-  for(const [ia,ib,ic] of faces){
-    const [a,b,c]=[points[ia],points[ib],points[ic]];
-    const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2],vx=c[0]-a[0],vy=c[1]-a[1],vz=c[2]-a[2];
-    const n=[uy*vz-uz*vy,uz*vx-ux*vz,ux*vy-uy*vx];
-    if(n[1]<-1e-6)continue; // Buried undersides do not turn upper edges into grass.
-    for(const i of [ia,ib,ic])for(let axis=0;axis<3;axis++)normals[i][axis]+=n[axis];
-  }
-  return points.map(([x,y,z],i)=>{
-    const [nx,ny,nz]=normals[i],slope=Math.hypot(nx,nz)/Math.max(.001,ny);
-    const patch=.5+.5*Math.sin(x*.09+z*.06)*Math.cos(z*.12-x*.04);
-    const strata=.5+.5*Math.sin(y*.7+x*.055-z*.035);
-    const exposed=slope/(slope+.65),ledge=1-exposed;
-    const soil=grass.clone().lerp(earth,.2+patch*.28);
-    const stone=mineral.clone().lerp(weathered,.3+strata*.3);
-    const foot=ground?Math.max(0,1-Math.max(0,y-ground(x,z))/1.1):0;
-    const apron=Math.max(0,1-Math.max(0,y-.15)/.9)*.88;
-    const cover=ground?Math.max(ledge*(.4+patch*.2),foot*.78):Math.max(ledge*(.83+patch*.1),apron);
-    return stone.lerp(soil,cover);
-  });
+  return coasterGroundColours(points, faces, { ground });
 }
 
 /** Smooth only upward ground faces within 45 degrees of level. The caller excludes

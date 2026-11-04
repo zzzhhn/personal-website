@@ -4,6 +4,7 @@ import { bakeIntentNight } from './intent-lighting.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { beddedRockColour, beddedRockHeight } from './coaster-rock-bedding.ts';
 import { createDropRock, dropSurfaceColours, smoothDropGroundNormals, DROP_ROCK_BEDS, type DropDetail } from './coaster-drop-landscape.ts';
+import { coasterGroundColours } from './coaster-landscape-finish.ts';
 import type { CoasterBatch } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -48,17 +49,6 @@ export const COASTER_THRILL_RELIEF = [
 // bands or repeated terrace offsets. Palette changes follow the rock columns.
 const PALETTE = ['#77817e', '#92988b', '#aba994', '#8b9489', '#6f7c70', '#7e885b', '#92966b', '#63754d', '#496344', '#657d46', '#819152', '#b6aa8e'];
 const fracture = (x: number, z: number, seed: number) => Math.sin(x * .71 + z * .39 + seed) * .55 + Math.cos(x * .29 - z * .64 + seed) * .45;
-const INFIELD_ROCK = new Color('#929487'), INFIELD_MOSS = new Color('#7d875c');
-function infieldColor(a: Vec3, b: Vec3, c: Vec3) {
-  const ux=b[0]-a[0], uy=b[1]-a[1], uz=b[2]-a[2], vx=c[0]-a[0], vy=c[1]-a[1], vz=c[2]-a[2];
-  const nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
-  const slope=Math.hypot(nx,nz)/Math.max(1e-6,Math.abs(ny));
-  const x=(a[0]+b[0]+c[0])/3,z=(a[2]+b[2]+c[2])/3;
-  // Broad connected mineral/moss patches; no per-cell palette jumps. Flat normals still provide facets.
-  const patch=fracture(x*.12,z*.12,4), moss=Math.max(0,Math.min(.8,.78-slope*.9+patch*.09));
-  return INFIELD_ROCK.clone().lerp(INFIELD_MOSS,moss).multiplyScalar(1+patch*.045);
-}
-
 export const COASTER_INFIELD_OUTLINE: readonly Point2[] = [[-29,-70],[-12,-73],[7,-66],[23,-59],[40,-58],[50,-47],[46,-29],[49,-17],[43,4],[43,25],[36,40],[20,44],[14,37],[14,23],[-9,15],[-23,4],[-25,-20],[-29,-43]];
 /** Closed gentle garden loop, attached to the existing x=16 promenade at its first node. */
 export const COASTER_INFIELD_WALK: readonly Vec3[] = [[16,.11,36],[25,1,34],[34,2.8,24],[32,3,16],[23,1.8,16],[17,.6,26]];
@@ -399,7 +389,10 @@ export function createCoasterTerrainRelief() {
     }
     for(const {a,b,count} of edges.values())if(count===1){face(top[b],top[a],bottom[a],3);face(top[b],bottom[a],bottom[b],3);}
   };
-  solidTop(infield.points,infield.faces,infieldColor);
+  const gardenColours = coasterGroundColours(infield.points, infield.faces, {
+    pathDistance: (x, z) => walkSample(x, z).distance,
+  });
+  solidTop(infield.points, infield.faces, () => 6, gardenColours);
   const terrainEnd=indices.length/3;
   // This loop has no decorative dead end: the first junction shares the original public promenade.
   const walkPoints:Vec3[]=[],walkFaces:[number,number,number][]=[];
@@ -427,7 +420,7 @@ export function createCoasterTerrainRelief() {
     const firstTriangle=indices.length/3,vertexStart=vertices.length/3;
     const drop=formation.id==='thrill-north-escarpment';
     const surface=drop?getDropGround().surface:clippedSurface(formation.outline,5,(x,z)=>thrillReliefHeight(formation,x,z));
-    solidTop(surface.points,surface.faces,beddedRockColour,drop?dropSurfaceColours(surface.points,surface.faces):undefined);
+    solidTop(surface.points,surface.faces,beddedRockColour,dropSurfaceColours(surface.points,surface.faces));
     if(drop){
       dropGroundTriangles=[firstTriangle,indices.length/3];
       dropSample.savedApronTriangles=surface.savedTopTriangles*2;

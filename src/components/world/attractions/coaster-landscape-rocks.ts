@@ -3,6 +3,7 @@ import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
 import { coasterFrame, coasterWorld } from './coaster-track.ts';
 import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
 import { onCoasterInfieldWalk } from './coaster-terrain-relief.ts';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -19,7 +20,8 @@ export const LANDSCAPE_ROCK_SITES: readonly (readonly number[])[] = [
   [-43,-65,8,5.6,9],[-48,-9,5,2.7,8],[70,-81,9,6,12],[84,-57,7,5.8,9],
   [-36,13,5.8,2.4,5.8],[-25,47,7,2.4,6],[-44,43,7,2.8,8],
 ];
-export const LANDSCAPE_ROCK_COLOURS=['#707c7c','#92958d','#b0ad9c','#9b9e94','#7e8580','#a4a497','#939b80'];
+// Damp foot, grey bed, calcite seam, warm stone, recess, weathered crest, turf.
+export const LANDSCAPE_ROCK_COLOURS=['#67756e','#8e9286','#bcaf94','#a79e89','#7e8378','#b4a48a','#77875b'];
 
 function clear(p:Vec3,half:Vec3,frames:ReturnType<typeof coasterFrame>[],margin=1.7) {
   if(onCoasterCliffWalk(p[0],p[2],Math.max(half[0],half[2])+2))return false;
@@ -109,7 +111,7 @@ export function landscapeRockSurfaceParts(rock:LandscapeRock) {
     const normal=new Vector3(...tri[1]).sub(new Vector3(...tri[0])).cross(new Vector3(...tri[2]).sub(new Vector3(...tri[0]))).normalize();
     for(let layer=0;layer<BED_LEVELS.length-1;layer++) {
       const polygon=clip(clip(tri,BED_LEVELS[layer],true,rock.island),BED_LEVELS[layer+1],false,rock.island);
-      const moss=rock.kind!=='cobble'&&normal.y>.8&&normal.x<-.2&&layer===5;
+      const moss=rock.kind!=='cobble'&&normal.y>.72&&normal.x*.76+normal.z*.65<-.08&&layer===5;
       const colour=moss?6:layer;
       for(let j=1;j<polygon.length-1;j++)faces[colour].push(...coasterWorld(polygon[0]),...coasterWorld(polygon[j]),...coasterWorld(polygon[j+1]));
     }
@@ -124,7 +126,10 @@ export function addLandscapeRocks(steel:CoasterBatch,colliders:CoasterCollider[]
   const {rocks,islands}=landscapeRocks();
   for(const rock of rocks) {
     for(const {geometry,colour} of landscapeRockSurfaceParts(rock)) {
-      if(geometry.attributes.position.count)steel.add(geometry,colour);else geometry.dispose();
+      if (geometry.attributes.position.count) {
+        steel.add(geometry, colour);
+        if (colour !== LANDSCAPE_ROCK_COLOURS[6]) markIntentCraft(geometry, INTENT_CRAFT.bedrock);
+      } else geometry.dispose();
     }
     colliders.push(landscapeRockCollider(rock));
   }

@@ -3,6 +3,7 @@ import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
 import { coasterInfieldHeight, COASTER_INFIELD_LAMPS } from './coaster-terrain-relief.ts';
 import { addLandscapeRocks } from './coaster-landscape-rocks.ts';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
 
 export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean) {
@@ -18,9 +19,21 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
   };
   const islandCount = addLandscapeRocks(steel, colliders);
   // Trees, their matching trunk colliders and planter foliage are owned by WorldCoasterVegetation.
-  // Continuous warm promenade reinforces the entrance-to-station route without moving its contacts.
+  // Flush cut-stone borders frame the paved tread within the existing slab.
   for (const [x,z,w,d] of [[-24,53,31,3],[31,53,34,3],[16,43,3,20],[-18,42,3,18]]) {
-    box([x,.055,z],[w,.11,d],'#b2a58c');
+    const across = w >= d ? 2 : 0;
+    const width = Math.min(w,d);
+    const border = .17;
+    const strip = (offset: number, stripWidth: number, color: string, role: number) => {
+      const center: Vec3 = [x,.055,z], size: Vec3 = [w,.11,d];
+      center[across] += offset;
+      size[across] = stripWidth;
+      box(center, size, color);
+      const part = steel.parts?.at(-1);
+      if (part) markIntentCraft(part, role);
+    };
+    strip(0, width - 2 * border, '#b8ab92', INTENT_CRAFT.courtyardPaving);
+    for (const side of [-1,1]) strip(side * (width - border) / 2, border, '#979786', INTENT_CRAFT.coping);
     for (const side of [-1,1]) light([x,.13,z+side*(d/2-.2)],[w,.04,.09]);
   }
   for (const x of [-48,-38,-18,17,29,45]) {

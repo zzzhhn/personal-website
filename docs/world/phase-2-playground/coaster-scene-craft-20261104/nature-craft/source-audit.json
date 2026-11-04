@@ -1,0 +1,332 @@
+{
+  "sourceBase": "024e5a688b80ad1853208cf1b8a2b06022918a1b",
+  "reference": "docs/world/phase-2-playground/visual-calibration-20261027/coaster-v4.json",
+  "ordinaryEvidence": {
+    "file": "craft-short-bay-day-after.jpg",
+    "sha256": "474017e4406607fae1c4b34b785ccbd6a65f3516f04a51f6adad140d48b8c247",
+    "position": [
+      69,
+      5.6,
+      -321
+    ],
+    "direction": [
+      -0.4020223690322059,
+      0.11783414264737074,
+      -0.908016040400329
+    ],
+    "fov": 50,
+    "canvas": [
+      1710,
+      875
+    ],
+    "exposure": 1,
+    "DPR": 1,
+    "quality": "balanced",
+    "weather": "clear",
+    "minutes": 720
+  },
+  "before": {
+    "scope": "Source geometry, collider and instancing inventory for the coaster landscape lane",
+    "near": {
+      "steel": {
+        "triangles": 12246,
+        "vertices": 36738,
+        "emittedParts": 448
+      },
+      "glow": {
+        "triangles": 1408,
+        "vertices": 4224,
+        "emittedParts": 68
+      },
+      "colliders": 155,
+      "colliderSHA": "ef91946d10ddc0a28aaedf090aa4e65a4436366da3d4ff0caaea09d3fd1f431d"
+    },
+    "far": {
+      "steel": {
+        "triangles": 11802,
+        "vertices": 35406,
+        "emittedParts": 425
+      },
+      "glow": {
+        "triangles": 1264,
+        "vertices": 3792,
+        "emittedParts": 56
+      },
+      "colliders": 155,
+      "colliderSHA": "ef91946d10ddc0a28aaedf090aa4e65a4436366da3d4ff0caaea09d3fd1f431d"
+    },
+    "relief": {
+      "triangles": 24546,
+      "verticesSHA": "ff082bbce3115c375f221e1c1c971aeae02990171f0c71c5b031138302aae9d4",
+      "indicesSHA": "b52eb6233c0a4c4d7e2898b9ba1572f4809ffdfb63d9456832f81c367b45c856",
+      "renderNormalsSHA": "46c237a0c0873992941a730380ff351f0a403d61e04db3bf89c8a4098207a539",
+      "renderPigmentSHA": "e97d27109413858d97f17e6dccf207dbe8327ef197e5c04dc9555f4c2e8c7195",
+      "dropSample": {
+        "rocks": 4,
+        "detailTriangles": 560,
+        "savedApronTriangles": 320
+      }
+    },
+    "vegetation": {
+      "byKind": [
+        22,
+        26,
+        36
+      ],
+      "treesSHA": "7928656bade1d75c0291d1fa9d42c84f4770a0b209ca41502ddfc7265b13f5ef",
+      "bushes": 36,
+      "budget": {
+        "trees": 48,
+        "nearTrees": 8,
+        "bushes": 36,
+        "visibleBushes": 24,
+        "nearEnter": 26,
+        "nearExit": 32,
+        "farDistance": 185,
+        "bushDistance": 65,
+        "updateSeconds": 0.1
+      },
+      "dropBushes": [
+        {
+          "id": "drop-bush-0",
+          "local": [
+            -44.5,
+            12.294236815706727,
+            -178
+          ],
+          "scale": 0.8
+        },
+        {
+          "id": "drop-bush-1",
+          "local": [
+            -35.5,
+            10.402499999999996,
+            -176.5
+          ],
+          "scale": 0.8
+        },
+        {
+          "id": "drop-bush-2",
+          "local": [
+            -24,
+            6.879999999999998,
+            -172.5
+          ],
+          "scale": 0.8
+        },
+        {
+          "id": "drop-bush-3",
+          "local": [
+            7.5,
+            7.469303009738836,
+            -166
+          ],
+          "scale": 0.8
+        },
+        {
+          "id": "drop-bush-4",
+          "local": [
+            19,
+            3.481086302269112,
+            -162
+          ],
+          "scale": 0.8
+        },
+        {
+          "id": "drop-bush-5",
+          "local": [
+            -18,
+            0.5755298414336059,
+            -134
+          ],
+          "scale": 0.8
+        }
+      ]
+    }
+  },
+  "after": {
+    "scope": "Source geometry, collider and instancing inventory for the coaster landscape lane",
+    "near": {
+      "steel": {
+        "triangles": 12710,
+        "vertices": 38130,
+        "emittedParts": 457,
+        "attributeBytes": {
+          "position": 457560,
+          "normal": 457560,
+          "color": 457560,
+          "nightRadiance": 457560,
+          "intentCraftSurface": 38130
+        },
+        "roleVertices": {
+          "0": 19317,
+          "7": 16653,
+          "8": 1392,
+          "17": 768
+        }
+      },
+      "glow": {
+        "triangles": 1408,
+        "vertices": 4224,
+        "emittedParts": 68,
+        "attributeBytes": {
+          "position": 50688,
+          "normal": 50688,
+          "color": 50688,
+          "nightRadiance": 50688
+        },
+        "roleVertices": {}
+      },
+      "colliders": 155,
+      "colliderSHA": "ef91946d10ddc0a28aaedf090aa4e65a4436366da3d4ff0caaea09d3fd1f431d"
+    },
+    "far": {
+      "steel": {
+        "triangles": 12266,
+        "vertices": 36798,
+        "emittedParts": 434,
+        "attributeBytes": {
+          "position": 441576,
+          "normal": 441576,
+          "color": 441576,
+          "nightRadiance": 441576,
+          "intentCraftSurface": 36798
+        },
+        "roleVertices": {
+          "0": 17985,
+          "7": 16653,
+          "8": 1392,
+          "17": 768
+        }
+      },
+      "glow": {
+        "triangles": 1264,
+        "vertices": 3792,
+        "emittedParts": 56,
+        "attributeBytes": {
+          "position": 45504,
+          "normal": 45504,
+          "color": 45504,
+          "nightRadiance": 45504
+        },
+        "roleVertices": {}
+      },
+      "colliders": 155,
+      "colliderSHA": "ef91946d10ddc0a28aaedf090aa4e65a4436366da3d4ff0caaea09d3fd1f431d"
+    },
+    "relief": {
+      "triangles": 24546,
+      "verticesSHA": "ff082bbce3115c375f221e1c1c971aeae02990171f0c71c5b031138302aae9d4",
+      "indicesSHA": "b52eb6233c0a4c4d7e2898b9ba1572f4809ffdfb63d9456832f81c367b45c856",
+      "renderNormalsSHA": "46c237a0c0873992941a730380ff351f0a403d61e04db3bf89c8a4098207a539",
+      "renderPigmentSHA": "6b915fd013c0af5d9cc3edbd4ed1e224a2507f9bc75c06adf906c4f5644a5a5f",
+      "dropSample": {
+        "rocks": 4,
+        "detailTriangles": 560,
+        "savedApronTriangles": 320
+      }
+    },
+    "vegetation": {
+      "byKind": [
+        22,
+        26,
+        36
+      ],
+      "treesSHA": "7928656bade1d75c0291d1fa9d42c84f4770a0b209ca41502ddfc7265b13f5ef",
+      "bushes": 36,
+      "budget": {
+        "trees": 48,
+        "nearTrees": 8,
+        "bushes": 36,
+        "visibleBushes": 24,
+        "nearEnter": 26,
+        "nearExit": 32,
+        "farDistance": 185,
+        "bushDistance": 65,
+        "updateSeconds": 0.1
+      },
+      "dropBushes": [
+        {
+          "id": "drop-bush-0",
+          "local": [
+            12,
+            -0.019999999999999962,
+            -140
+          ],
+          "scale": 0.74
+        },
+        {
+          "id": "drop-bush-1",
+          "local": [
+            14,
+            -0.019999999999999962,
+            -142
+          ],
+          "scale": 0.68
+        },
+        {
+          "id": "drop-bush-2",
+          "local": [
+            10,
+            0.9549164916148629,
+            -154
+          ],
+          "scale": 0.82
+        },
+        {
+          "id": "drop-bush-3",
+          "local": [
+            12,
+            0.7351696386387607,
+            -152
+          ],
+          "scale": 0.73
+        },
+        {
+          "id": "drop-bush-4",
+          "local": [
+            -24,
+            6.879999999999998,
+            -172.5
+          ],
+          "scale": 0.8
+        },
+        {
+          "id": "drop-bush-5",
+          "local": [
+            7.5,
+            7.469303009738836,
+            -166
+          ],
+          "scale": 0.8
+        }
+      ]
+    }
+  },
+  "checks": {
+    "nearCollisionExact": true,
+    "nearGlowGeometryExact": true,
+    "nearRolesInFinishedBatch": true,
+    "farCollisionExact": true,
+    "farGlowGeometryExact": true,
+    "farRolesInFinishedBatch": true,
+    "reliefCollisionAndNormalsExact": true,
+    "treeMatricesExact": true,
+    "vegetationCapacityExact": true,
+    "northRockDetailExact": true
+  },
+  "delta": {
+    "trianglesNear": 464,
+    "trianglesFar": 464,
+    "verticesEachLOD": 1392,
+    "existingMergedAttributeBytesPerVertex": 49,
+    "mergedAttributeBytesEachLOD": 68208,
+    "materialDraws": 0,
+    "newTextureOrGLBBytes": 0
+  },
+  "existingTests": {
+    "passed": 29,
+    "failed": 0
+  },
+  "integratedWebGL": "pending main scene review"
+}

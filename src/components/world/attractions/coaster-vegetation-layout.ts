@@ -128,11 +128,16 @@ export function coasterVegetationLayout(): readonly CoasterPlant[] {
   for (const x of [-48,-38,-18,17,29,45]) if (!onCoasterCliffWalk(x,55,3)) for (const dx of [-1.5,0,1.5]) {
     const before = plants.length; place(`planter-${x}-${dx}`,2,x+dx,55,.68,(x+dx)*.31,true); bushes += plants.length-before;
   }
-  const dropBushes=[[-44.5,-178],[-35.5,-176.5],[-24,-172.5],[7.5,-166],[19,-162],[-18,-134],[-8,-135],[0,-134.5]];
+  // Two pairs seat on the low apron and mid-slope shelf, with canopy above
+  // them on the planted ridge. The final sites are clearance fallbacks.
+  const dropBushes = [
+    [12,-140,.74], [14,-142,.68], [10,-154,.82], [12,-152,.73],
+    [-24,-172.5,.8], [7.5,-166,.8], [19,-162,.8], [-18,-134,.8],
+  ];
   let dropBushCount=0;
-  for(const [i,[x,z]] of dropBushes.entries()){
+  for(const [i,[x,z,scale]] of dropBushes.entries()){
     if(dropBushCount>=6||bushes>=COASTER_VEGETATION_BUDGET.bushes)break;
-    const before=plants.length;place(`drop-bush-${i}`,2,x,z,.8,i*.83,false,true);
+    const before=plants.length;place(`drop-bush-${i}`,2,x,z,scale,i*.83,false,true);
     dropBushCount+=plants.length-before;bushes+=plants.length-before;
   }
   const trees = plants.filter(p=>p.kind !== 2&&!p.id.startsWith('drop-'));

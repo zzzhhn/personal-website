@@ -1,6 +1,7 @@
 import { BoxGeometry, BufferAttribute, BufferGeometry, Euler, Matrix4, Quaternion, Vector3 } from 'three';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { coasterWorld } from './coaster-track.ts';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
@@ -123,7 +124,7 @@ export function createLookoutRockGeometry(s: LookoutSolid) {
   geometry.computeVertexNormals();return geometry;
 }
 const BED_LEVELS=[-Infinity,.3,1.35,1.6,3.4,3.68,5.35,5.65,Infinity];
-export const LOOKOUT_BED_COLOURS=['#707c7c','#92958d','#b0ad9c','#9b9e94','#7e8580','#a4a497','#b5af9d','#9ea293','#939b80'];
+export const LOOKOUT_BED_COLOURS=['#687673','#8a9086','#bcad93','#a09e8b','#79827b','#ae9f87','#c1b198','#a6a08d','#7a895f'];
 const beddingOrigin=coasterWorld([55,0,14]);
 const bedHeight=(p:Vec3)=>p[1]-beddingOrigin[1]-.08*(p[0]-beddingOrigin[0])+.045*(p[2]-beddingOrigin[2]);
 function clipBed(polygon:Vec3[],height:number,above:boolean):Vec3[] {
@@ -145,7 +146,7 @@ export function lookoutRockSurfaceParts(s:LookoutSolid) {
     const triangle:Vec3[]=[0,1,2].map(j=>[p.getX(i+j),p.getY(i+j),p.getZ(i+j)]);
     for(let layer=0;layer<BED_LEVELS.length-1;layer++) {
       const polygon=clipBed(clipBed(triangle,BED_LEVELS[layer],true),BED_LEVELS[layer+1],false);
-      const colour=layer===7&&n.getY(i)>.55?8:layer;
+      const colour=layer===7&&n.getY(i)>.66?8:layer;
       for(let j=1;j<polygon.length-1;j++)faces[colour].push(...polygon[0],...polygon[j],...polygon[j+1]);
     }
   }
@@ -172,7 +173,10 @@ export function addCoasterLookoutSample(steel: CoasterBatch,glow: CoasterBatch,c
   for(const s of solids) {
     if(s.role==='rock') {
       for(const {geometry,colour} of lookoutRockSurfaceParts(s)) {
-        if(geometry.attributes.position.count)steel.add(geometry,colour);else geometry.dispose();
+        if (geometry.attributes.position.count) {
+          steel.add(geometry, colour);
+          if (colour !== LOOKOUT_BED_COLOURS[8]) markIntentCraft(geometry, INTENT_CRAFT.bedrock);
+        } else geometry.dispose();
       }
     } else {
       const source=new BoxGeometry(...s.size,...s.segments),geometry=source.toNonIndexed();source.dispose();
