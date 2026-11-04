@@ -7,12 +7,13 @@ import { coasterWorld } from './coaster-track.ts';
 import type { CoasterStructureCraft } from './coaster-structure-craft.ts';
 import type { Vec3 } from '../types';
 
-/** Split the existing tube surface into short end connections and a continuous web.
- * All vertices retain the original cylinder radius and endpoints, including both caps. */
+/** Legacy members have banded ends. The full-scene tubes keep their original
+ * radius and length, with fewer radial sides in the far visual batch. */
 export function createSupportMemberDetail(beam: ThrillBeam, craft?: CoasterStructureCraft) {
   const d=beam.b.clone().sub(beam.a),length=d.length(),band=Math.min(.34,length*.12);
   if (craft?.scope === 'full') {
-    const source = new CylinderGeometry(beam.radius, beam.radius, length, 8);
+    const sides = craft.detailed === false ? 6 : 8;
+    const source = new CylinderGeometry(beam.radius, beam.radius, length, sides);
     const geometry = source.toNonIndexed();
     source.dispose();
     geometry.deleteAttribute('uv');
