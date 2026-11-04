@@ -1,0 +1,43 @@
+{
+  "source": "main agent single asset pilot",
+  "baselineCommit": "45ce8e4322f03db1ffe5ec43016c774771c8cc55",
+  "units": "metres",
+  "runtimeAxes": "+X forward +Y up",
+  "nativeParts": 138,
+  "runtimeMeshes": 8,
+  "materials": 8,
+  "triangles": 21772,
+  "bytes": 1381836,
+  "sha256": "4f6e00d708b204a21091df701ad982ad77d75d809ce691137c27d90b53b2a9b9",
+  "textures": "3 deterministic authored 512px material maps, not scans",
+  "contact": "original COASTER_CAR_PANELS unchanged; visual sample only",
+  "visualAcceptance": "main-agent inspected three matched runtime pairs; human acceptance pending",
+  "reviewPairs": [
+    {
+      "view": "front-day",
+      "conditionsMatch": true,
+      "beforeSource": "astra-car-pilot-v4",
+      "afterSource": "astra-car-pilot-v4",
+      "beforeCalls": 149,
+      "afterCalls": 191
+    },
+    {
+      "view": "ordinary-day",
+      "conditionsMatch": true,
+      "beforeSource": "astra-car-pilot-v4",
+      "afterSource": "astra-car-pilot-v4",
+      "beforeCalls": 78,
+      "afterCalls": 119
+    },
+    {
+      "view": "front-night",
+      "conditionsMatch": true,
+      "beforeSource": "astra-car-pilot-v5",
+      "afterSource": "astra-car-pilot-v5",
+      "beforeCalls": 150,
+      "afterCalls": 192
+    }
+  ],
+  "productionPromotion": false,
+  "performanceAcceptance": "not claimed; draw calls and triangles increased; LOD and actual frame-time validation required before integration"
+}

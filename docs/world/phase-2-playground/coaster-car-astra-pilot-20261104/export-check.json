@@ -1,0 +1,20 @@
+{
+  "triangles": 21772,
+  "drawsPerCar": 8,
+  "min": [
+    -1.4500000476837158,
+    -0.17999999225139618,
+    -1.0080000162124634
+  ],
+  "max": [
+    1.4842000007629395,
+    1.475000023841858,
+    1.0080000162124634
+  ],
+  "degenerateTriangles": 0,
+  "maximumNormalLengthSquaredError": 2.641504761591307e-07,
+  "embeddedImages": 3,
+  "clearcoatPortable": true,
+  "glbSha256": "4f6e00d708b204a21091df701ad982ad77d75d809ce691137c27d90b53b2a9b9",
+  "scope": "finite indexed geometry, UVs, material export and frozen outer envelope; no visual/performance/ride acceptance implied"
+}

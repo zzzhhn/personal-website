@@ -1,0 +1,27 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/coaster-car-pilot/build.py:24: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True
+Info: Saved as "coaster-car-editable.blend"
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+19:17:11 | INFO: Starting glTF 2.0 export
+19:17:11 | INFO: Extracting primitive: Hull | tapered lower chassis.001
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Hull | copper shell with continuous shoulder.001
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Hull | rubber separation bead.001
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Nose | moulded petrol guard.001
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Nose | bright upper safety edge.001
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Cube.065
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Guard | lower accent pinstripe.002
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Extracting primitive: Seat | tailored cushion crown.001
+19:17:11 | INFO: Primitives created: 1
+19:17:11 | INFO: Finished glTF 2.0 export in 0.06795406341552734 s
+
+PILOT_RESULT {"source": "main agent single asset pilot", "baselineCommit": "45ce8e4322f03db1ffe5ec43016c774771c8cc55", "units": "metres", "runtimeAxes": "+X forward +Y up", "nativeParts": 138, "runtimeMeshes": 8, "materials": 8, "triangles": 21772, "bytes": 1381836, "sha256": "4f6e00d708b204a21091df701ad982ad77d75d809ce691137c27d90b53b2a9b9", "textures": "3 deterministic authored 512px material maps, not scans", "contact": "original COASTER_CAR_PANELS unchanged; visual sample only", "visualAcceptance": "pending actual renderer comparison"}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

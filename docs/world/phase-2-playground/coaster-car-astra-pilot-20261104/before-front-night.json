@@ -1,0 +1,64 @@
+{
+  "source": "astra-car-pilot-v5",
+  "shot": "pilot-front-night",
+  "quality": "balanced",
+  "time": 0,
+  "weather": "clear",
+  "camera": [
+    46.5,
+    3.8,
+    -156.5
+  ],
+  "direction": [
+    0.5985748893963501,
+    -0.22232781606150148,
+    0.7695962863667358
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 1,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 211,
+    "total": 211,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 150,
+  "triangles": 642130,
+  "geometries": 187,
+  "textures": 78,
+  "programs": 128,
+  "frame": 5241,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    50,
+    1.9600000000000002,
+    -125
+  ],
+  "nearby": null,
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [],
+    "clarified": [],
+    "chestOpen": false,
+    "keyTaken": false,
+    "gateOpen": false
+  },
+  "car": "before"
+}

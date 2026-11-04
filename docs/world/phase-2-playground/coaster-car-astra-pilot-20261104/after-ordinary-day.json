@@ -1,0 +1,64 @@
+{
+  "source": "astra-car-pilot-v4",
+  "shot": "pilot-ordinary-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    43.3,
+    4.5,
+    -147
+  ],
+  "direction": [
+    0.7783728484842917,
+    -0.23815885662579062,
+    -0.5808752600629038
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 211,
+    "total": 211,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 119,
+  "triangles": 636589,
+  "geometries": 196,
+  "textures": 77,
+  "programs": 133,
+  "frame": 4248,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    50,
+    1.9600000000000002,
+    -125
+  ],
+  "nearby": null,
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [],
+    "clarified": [],
+    "chestOpen": false,
+    "keyTaken": false,
+    "gateOpen": false
+  },
+  "car": "after"
+}
