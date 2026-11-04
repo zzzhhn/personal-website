@@ -113,7 +113,7 @@ test('bedding colours subdivide the same convex surface without changing its are
 
 test('local rendering emits the same hulls and retains all architecture and the arrival opening',()=>{
   const emitted=[],colliders=[],glowBoxes=[];
-  addCoasterLookoutSample({add(g){emitted.push(g);}},{box(...args){glowBoxes.push(args);}},colliders);
+  addCoasterLookoutSample({parts:emitted,add(g){emitted.push(g);}},{box(...args){glowBoxes.push(args);}},colliders);
   try {
     assert.equal(colliders.length,solids.length);assert.equal(glowBoxes.length,3);
     assert.deepEqual(colliders,solids.map(lookoutSolidCollider));
@@ -129,8 +129,8 @@ test('local rendering emits the same hulls and retains all architecture and the 
 
 test('integrated local counts fit the unchanged whole-scene geometry and collider ceilings',()=>{
   const counter=()=>{
-    const c=Object.create(CoasterBatch.prototype);c.triangles=0;
-    c.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;g.dispose();};return c;
+    const c=Object.create(CoasterBatch.prototype);c.triangles=0;c.parts=[];
+    c.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts[0]=g;g.dispose();};return c;
   };
   const steel=counter(),glow=counter(),colliders=[];addCoasterCliffs(steel,glow,colliders);
   const total=steel.triangles+glow.triangles;
