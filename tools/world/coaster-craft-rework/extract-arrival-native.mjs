@@ -1,15 +1,19 @@
 import { writeFileSync } from 'node:fs';
-import { createCoasterCar, createCoasterStructure } from '../../../src/components/world/attractions/coaster-geometry.ts';
+import { addTunnel, CoasterBatch, createCoasterCar, createCoasterStructure } from '../../../src/components/world/attractions/coaster-geometry.ts';
 import { createIntentChestBody, createIntentChestLid, createIntentGateLeaf, createIntentKey } from '../../../src/components/world/attractions/coaster-device-geometry.ts';
 
 const output = process.argv[2];
 if (!output) throw new Error('Provide the destination JSON path');
 const finishes = {
   0: [.70,.16], 12: [.30,.63], 13: [.63,.06], 14: [.46,.48], 15: [.88,0],
-  16: [.93,0], 18: [.88,0], 19: [.90,0],
+  16: [.93,0], 18: [.88,0], 19: [.90,0], 20: [.53,.15],
 };
 const structure = createCoasterStructure(true, 'legacy');
+const tunnelSteel = new CoasterBatch(), tunnelLights = new CoasterBatch();
+addTunnel(tunnelSteel, tunnelLights, true);
 const batches = [
+  { name:'Tunnel structure', geometry:tunnelSteel.finish(), offset:[-16,-1,194] },
+  { name:'Tunnel light strip geometry', geometry:tunnelLights.finish(), offset:[-16,-1,194] },
   { name:'Train car', geometry:createCoasterCar(), offset:[0,0,0] },
   { name:'Gate leaf', geometry:createIntentGateLeaf(), offset:[4,0,0] },
   { name:'Chest with open locks', geometry:createIntentChestBody(['T1','T2','T3','T4','T5','T6']), offset:[12,0,0] },
@@ -22,7 +26,7 @@ const parts = new Map();
 for (const {name,geometry,offset,include} of batches) {
   const {position,normal,color,intentCraftSurface:roles} = geometry.attributes;
   for (let i=0;i<position.count;i+=3) {
-    const role = roles.getX(i);
+    const role = roles?.getX(i) ?? 0;
     if (include && !include(role,position.getX(i),position.getY(i),position.getZ(i))) continue;
     const rgb=[color.getX(i),color.getY(i),color.getZ(i)].map(channel=>Number(channel.toFixed(5)));
     const material = `Role ${role} · ${rgb.join(' ')}`, key = `${name} · ${material}`;

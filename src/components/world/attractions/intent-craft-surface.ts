@@ -1,7 +1,7 @@
 import { BufferAttribute, type BufferGeometry } from 'three';
 
 export const INTENT_CRAFT = { roofSheet: 1, flashing: 2, roller: 3, powderCoat: 4, worktop: 5,
-  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17, mineralCladding: 18, matteSoffit: 19 } as const;
+  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17, mineralCladding: 18, matteSoffit: 19, tunnelRoof: 20 } as const;
 export const INTENT_CRAFT_ATTRIBUTE = 'intentCraftSurface';
 const craftRoles = new WeakMap<BufferGeometry, number>();
 
@@ -73,6 +73,10 @@ float intentMineral(vec2 p) {
 IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
   vec3 p = vIntentCraftPoint;
   vec3 n = normalize(vIntentCraftNormal);
+  if (vIntentCraft > 19.5 && vIntentCraft < 20.5) {
+    if (n.y < -0.45) return IntentFinish(pigment * vec3(0.88, 0.91, 0.93), 0.90, 0.0);
+    return IntentFinish(pigment, 0.53, 0.15);
+  }
   if (vIntentCraft > 18.5 && vIntentCraft < 19.5) return IntentFinish(pigment, 0.9, 0.0);
   if (vIntentCraft > 17.5 && vIntentCraft < 18.5) {
     vec2 face = abs(n.x) > abs(n.z) ? p.zy : p.xy;

@@ -129,20 +129,42 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
   });
 }
 
-function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boolean) {
+export function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boolean) {
   const { start, end } = COASTER_TUNNEL, count = detailed ? 18 : 9;
   const bayLength = (end - start) * COASTER_LENGTH / count;
+  const { structuralCoat: frame, galvanized: joint, mineralCladding: wall, tunnelRoof: roof } = INTENT_CRAFT;
+  const finish = (role: number) => markIntentCraft(steel.parts[steel.parts.length - 1], role);
   for (let i = 0; i <= count; i++) {
     const f = coasterFrame(start + (end - start) * i / count);
     const p = (side: number, up: number) => tuple(f.point.clone().addScaledVector(f.side, side).addScaledVector(f.up, up));
     for (const side of [-3, 3]) {
       steel.beam(p(side, -.4), p(side, 4.25), .22, P.steel);
+      finish(frame);
       glow.beam(p(side * .92, .2), p(side * .92, 4.1), .075, i % 3 ? P.cyan : P.gold, 4);
-      if (i < count) steel.box(p(side, 1.5), [bayLength, 3.1, .3], i % 3 ? P.concrete : P.steel, f.rotation);
+      if (i < count) {
+        const serviceBay = i % 3 === 0;
+        steel.box(p(side, 1.5), [bayLength, 3.1, .3], serviceBay ? '#516773' : '#b2b3a6', f.rotation);
+        finish(serviceBay ? frame : wall);
+      }
+      if (detailed) {
+        const outward = Math.sign(side);
+        steel.box(p(side + outward * .08, .11), [.58, .30, .52], P.steel, f.rotation);
+        finish(frame);
+        steel.box(p(side, 4.29), [.58, .17, .52], P.rail, f.rotation);
+        finish(joint);
+      }
     }
     steel.beam(p(-3, 4.25), p(3, 4.25), .22, P.steel);
+    finish(frame);
     glow.beam(p(-2.76, 4.1), p(2.76, 4.1), .075, i % 3 ? P.cyan : P.gold, 4);
-    if (i < count) steel.box(p(0, 4.5), [bayLength, .45, 6.4], P.dark, f.rotation);
+    if (i < count) {
+      steel.box(p(0, 4.5), [bayLength, .45, 6.4], '#617985', f.rotation);
+      finish(roof);
+      if (detailed) {
+        steel.box(p(0, 4.746), [.14, .06, 6.39], '#94a0a0', f.rotation);
+        finish(frame);
+      }
+    }
   }
 }
 
