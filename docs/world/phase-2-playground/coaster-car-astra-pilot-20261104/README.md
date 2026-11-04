@@ -27,7 +27,7 @@
 
 正式构建通过；浏览器没有捕获到 error。截图包含固定机位、FOV 50、1710×931、DPR 1、balanced、晴天、曝光 1，正午 720 或深夜 0 分钟；每张图有单独的运行读回 JSON。主 session 已实际查看日景近景、常规距离与夜景。
 
-这是视觉校准小样，尚未经过用户视觉验收或整列车性能验收。单车从旧版 2,466 面增至 21,772 面，材质批次由 1 增至 8；相同近景的渲染提交量也增加。没有据此声称性能通过，没有更改项目现有预算门槛。正式集成前须制作远景 LOD，验证乘坐姿态、运动中的材质和实际帧时间。
+原始视觉校准小样已获用户认可；2026-11-04 的局部性能与完整行程验收见 [PERFORMANCE.md](PERFORMANCE.md)。本段记录原始版本的成本变化：单车从旧版 2,466 面增至 21,772 面，材质批次由 1 增至 8；相同近景的渲染提交量也增加。没有据此声称性能通过，没有更改项目现有预算门槛。本轮已制作远景 LOD、按三节车厢实例化，并完成实际帧时间和运行抽查；详细通过范围及未覆盖项以性能记录为准。生产入口仍未挂载。
 
 六个 `COASTER_CAR_PANELS`、列车根变换、座面高度 .72m、背板最高 1.475m、负 Z 登车开口、物理与上下车代码保持原样。鼻部标牌凸出旧外包络约 9mm，是视觉表面，不是碰撞体。
 
@@ -38,7 +38,7 @@
 真实网页 A/B 由 `tools/world/coaster-car-pilot/review.config.mjs` 注入。它只替换列车内部视觉节点，原版与候选共用其它源文件。生产配置不会挂载此小样。构建前需要可用的公共资产目录；本次借用已验证的 4341 只读资产根，不复制完整历史资产。
 
 ```sh
-COASTER_REVIEW_SOURCE=astra-car-pilot-v5 COASTER_CRAFT_EMPTY_PUBLIC=/tmp/bobby-car-pilot-empty-public npm run build -- --config tools/world/coaster-car-pilot/review.config.mjs --outDir /tmp/bobby-car-pilot-review-build
+COASTER_REVIEW_SOURCE=astra-car-perf-v8 COASTER_CRAFT_EMPTY_PUBLIC=/tmp/bobby-car-pilot-empty-public npm run build -- --config tools/world/coaster-car-pilot/review.config.mjs --outDir /tmp/bobby-car-pilot-review-build
 ```
 
 基线运行版本：`45ce8e4322f03db1ffe5ec43016c774771c8cc55`。日景图片初次由 v4 审阅构建记录，v5 只改变夜间环境强度，日景响应和几何完全相同；图片的实际来源以各自 JSON 为准。

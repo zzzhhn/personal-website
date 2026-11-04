@@ -1,0 +1,63 @@
+{
+  "variant": "optimized",
+  "at": "2026-11-04T12:51:08.979Z",
+  "shot": "pilot-chest-night",
+  "quality": "balanced",
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "camera": [
+    46.8,
+    3.65,
+    -130.8
+  ],
+  "worldMinutes": 0,
+  "night": 1,
+  "shadowPending": false,
+  "loading": {
+    "phase": "ready",
+    "loaded": 225,
+    "total": 225,
+    "active": false,
+    "failed": 0
+  },
+  "hidden": false,
+  "frameMs": {
+    "n": 360,
+    "p50": 16.899999976158142,
+    "p95": 32.39999997615814,
+    "max": 53.10000002384186
+  },
+  "over33ms": 16,
+  "over50ms": 2,
+  "calls": {
+    "n": 360,
+    "p50": 125,
+    "p95": 125,
+    "max": 125
+  },
+  "triangles": {
+    "n": 360,
+    "p50": 692450,
+    "p95": 692450,
+    "max": 692450
+  },
+  "residency": {
+    "geometries": 409,
+    "textures": 98,
+    "programs": 222
+  },
+  "craft": {
+    "lod": 0,
+    "uploads": 6657,
+    "materials": 8,
+    "shadowTriangles": 5221
+  },
+  "riding": false,
+  "ridePhase": null,
+  "rideSecond": 0,
+  "loop": "demand"
+}

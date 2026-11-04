@@ -7,7 +7,7 @@
 <main><header><div><h1>列车 · 单件精修</h1><p>同一网页场景、机位与曝光，直接对照原图。</p></div><nav aria-label="对照视角"><button data-view="front-day" aria-pressed="true">近景 · 正午</button><button data-view="ordinary-day" aria-pressed="false">常规距离</button><button data-view="front-night" aria-pressed="false">近景 · 深夜</button></nav></header>
 <div class="comparison"><img id="after" src="after-front-day.png" alt="精修后的列车"><img id="before" class="old" src="before-front-day.png" alt="原版列车"><div class="line"></div><span class="label left">原版</span><span class="label right">精修</span></div>
 <div class="slider"><span>原版</span><input aria-label="拖动对照分界线" type="range" min="0" max="100" value="50"><span>精修</span></div>
-<footer><span>圆润包边、分层车壳、软垫缝线、金属扶手与轮毂。独立小样，4341 稳定页未替换。</span><a href="/world/?start=coaster&amp;quality=balanced&amp;paused=1&amp;car=after">打开 3D 小样</a></footer></main>
+<footer><span>圆润包边、分层车壳、软垫缝线、金属扶手与轮毂。独立小样，4341 稳定页未替换。</span><a href="/world/?start=coaster&amp;quality=balanced&amp;paused=1&amp;car=optimized">打开优化版 3D 小样</a></footer><p style="margin-top:16px"><a href="/chest-review/">Sol 独立宝箱对照</a> · <a href="performance.html">查看性能验收</a></p></main>
 <script>
 const before=document.querySelector('#before'),after=document.querySelector('#after'),line=document.querySelector('.line'),slider=document.querySelector('input');
 slider.oninput=()=>{before.style.clipPath=`inset(0 ${100-slider.value}% 0 0)`;line.style.left=slider.value+'%';};

@@ -1,0 +1,53 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/coaster-chest-transfer/build.py:40: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m.use_nodes = True
+Info: Saved as "coaster-chest-editable.blend"
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+19:58:34 | INFO: Starting glTF 2.0 export
+19:58:34 | INFO: Extracting primitive: Cube.009
+19:58:34 | INFO: Primitives created: 5
+19:58:34 | INFO: Extracting primitive: Cube.012
+19:58:34 | INFO: Primitives created: 4
+19:58:34 | INFO: Extracting primitive: Cube.021
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Lock 01 forged shackle
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.027
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Lock 02 forged shackle
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.033
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Lock 03 forged shackle
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.039
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Lock 04 forged shackle
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.045
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Lock 05 forged shackle
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.051
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Lock 06 forged shackle
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.054
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.055
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.056
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.057
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.058
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.059
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Extracting primitive: Cube.060
+19:58:34 | INFO: Primitives created: 1
+19:58:34 | INFO: Finished glTF 2.0 export in 0.07138514518737793 s
+
+Chest export complete: 97 named editable parts; Blender 5.1.2
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

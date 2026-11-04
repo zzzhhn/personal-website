@@ -1,0 +1,144 @@
+{
+  "before": {
+    "source": "astra-car-perf-v8",
+    "shot": null,
+    "quality": "balanced",
+    "time": 720,
+    "weather": "clear",
+    "camera": [
+      34.916481793777606,
+      4.956373470353572,
+      -151.01468732861053
+    ],
+    "direction": [
+      0.5539846196984342,
+      -0.24599431683112505,
+      0.7953539069020593
+    ],
+    "fov": 58,
+    "exposure": 1,
+    "canvas": [
+      1710,
+      931
+    ],
+    "dpr": 1,
+    "night": 0,
+    "blend": 1,
+    "shadowPending": true,
+    "shadowError": "",
+    "loading": false,
+    "failed": {
+      "phase": "ready",
+      "loaded": 225,
+      "total": 225,
+      "active": false,
+      "failed": 0
+    },
+    "calls": 229,
+    "triangles": 1533987,
+    "geometries": 373,
+    "textures": 98,
+    "programs": 234,
+    "frame": 19305,
+    "hidden": false,
+    "paused": false,
+    "active": false,
+    "frameIntervals": null,
+    "player": [
+      36.29965275335668,
+      3.4061839251241763,
+      -149.04537546785372
+    ],
+    "nearby": null,
+    "ride": "riding",
+    "second": 110.7218999999748,
+    "progress": {
+      "version": 1,
+      "bankRevision": "original-20261027-v1",
+      "passed": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "clarified": [],
+      "chestOpen": true,
+      "keyTaken": true,
+      "gateOpen": true
+    }
+  },
+  "after": {
+    "source": "astra-car-perf-v8",
+    "shot": null,
+    "quality": "balanced",
+    "time": 720,
+    "weather": "clear",
+    "camera": [
+      34.916481793777606,
+      4.956373470353572,
+      -151.01468732861053
+    ],
+    "direction": [
+      0.5539846196984342,
+      -0.24599431683112505,
+      0.7953539069020593
+    ],
+    "fov": 58,
+    "exposure": 1,
+    "canvas": [
+      1710,
+      931
+    ],
+    "dpr": 1,
+    "night": 0,
+    "blend": 1,
+    "shadowPending": true,
+    "shadowError": "",
+    "loading": false,
+    "failed": {
+      "phase": "ready",
+      "loaded": 225,
+      "total": 225,
+      "active": false,
+      "failed": 0
+    },
+    "calls": 229,
+    "triangles": 1533987,
+    "geometries": 373,
+    "textures": 98,
+    "programs": 234,
+    "frame": 19305,
+    "hidden": false,
+    "paused": false,
+    "active": false,
+    "frameIntervals": null,
+    "player": [
+      36.29965275335668,
+      3.4061839251241763,
+      -149.04537546785372
+    ],
+    "nearby": null,
+    "ride": "riding",
+    "second": 110.7218999999748,
+    "progress": {
+      "version": 1,
+      "bankRevision": "original-20261027-v1",
+      "passed": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "clarified": [],
+      "chestOpen": true,
+      "keyTaken": true,
+      "gateOpen": true
+    }
+  },
+  "menuVisible": true,
+  "note": "The UI menu is the authoritative paused state. Render readback freezes on the last rendered frame, which can precede the paused state publication."
+}
