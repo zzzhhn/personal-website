@@ -14,7 +14,7 @@ export default function WorldIntentSigns() {
     const entries = [
       [t('骤变回路', 'SUDDEN SHIFT'), t('意图过山车', 'INTENT COASTER')],
       [t(`六道锁 · 已打开 ${Math.min(6, passed)}`, `${Math.min(6, passed)} OF SIX LOCKS OPEN`), t('处理请求 → 开箱 → 钥匙 → 大门', 'REQUESTS → CHEST → KEY → GATE')],
-      [t('回路车站', 'SHIFT STATION'), t(`${COASTER_DISPLAY_SECONDS} 秒 · 沿左侧踏步登车`, `${COASTER_DISPLAY_SECONDS} SECONDS · BOARD VIA THE LEFT STEPS`)],
+      [t('回路车站', 'SHIFT STATION'), t(`${COASTER_DISPLAY_SECONDS} 秒 · 沿登车踏步入座`, `${COASTER_DISPLAY_SECONDS} SECONDS · BOARD VIA THE BOARDING STEPS`)],
     ];
     entries.forEach(([a,b], i) => {
       const y = i * 128; ctx.fillStyle = '#1e303b'; ctx.fillRect(0, y, 1024, 128);

@@ -72,7 +72,7 @@ function WorldIntentHud() {
   const primaryText = target === 'chest' ? s.progress.keyTaken ? t('钥匙已在身上', 'You have the key') : s.progress.chestOpen ? t('拿起钥匙', 'Take the key') : t('掀开宝箱', 'Open the chest')
     : target === 'gate' ? t('用钥匙开门', 'Unlock the gate') : t('沿踏步登车', 'Board using the steps');
   const request = task?.clarification && s.progress.clarified.includes(task.id) ? task.clarification.reply[lang] : task?.request[lang];
-  const guidance = s.progress.gateOpen ? t('大门已开，左侧踏步登车。', 'Gate open. Board via the steps on the left.')
+  const guidance = s.progress.gateOpen ? t('大门已开，沿登车踏步入座。', 'Gate open. Board via the boarding steps.')
     : s.progress.keyTaken ? t('把钥匙插入大门。', 'Take the key to the gate.') : s.progress.passed.length >= 6 ? t('六道锁已解开，掀箱拿钥匙。', 'Six locks open. Take the key from the chest.')
     : workshop.phase === 'idle' ? t('接件台在入口左侧，绕到文字牌正面，拉杆接收请求。', 'Find the intake on the left. Walk to the front of its sign and pull the lever.')
     : workshop.phase === 'processing' ? t('看请求沿轨道进入机器。', 'Watch the request reach the machine.')
