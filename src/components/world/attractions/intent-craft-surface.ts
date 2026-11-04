@@ -1,7 +1,7 @@
 import { BufferAttribute, type BufferGeometry } from 'three';
 
 export const INTENT_CRAFT = { roofSheet: 1, flashing: 2, roller: 3, powderCoat: 4, worktop: 5,
-  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17 } as const;
+  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17, mineralCladding: 18, matteSoffit: 19 } as const;
 export const INTENT_CRAFT_ATTRIBUTE = 'intentCraftSurface';
 const craftRoles = new WeakMap<BufferGeometry, number>();
 
@@ -73,6 +73,12 @@ float intentMineral(vec2 p) {
 IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
   vec3 p = vIntentCraftPoint;
   vec3 n = normalize(vIntentCraftNormal);
+  if (vIntentCraft > 18.5 && vIntentCraft < 19.5) return IntentFinish(pigment, 0.9, 0.0);
+  if (vIntentCraft > 17.5 && vIntentCraft < 18.5) {
+    vec2 face = abs(n.x) > abs(n.z) ? p.zy : p.xy;
+    float mineral = intentMineral(face * 1.8);
+    return IntentFinish(pigment * mix(0.94, 1.04, mineral), 0.88, 0.0);
+  }
   if (vIntentCraft > 16.5 && vIntentCraft < 17.5) {
     vec2 panel = (p.xz - vec2(21.5, -139.0)) / vec2(2.5, 2.25);
     vec2 edge = min(fract(panel), 1.0 - fract(panel));
@@ -90,6 +96,9 @@ IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
   }
   if (vIntentCraft < 0.5) return IntentFinish(pigment, rough, metal);
   if (vIntentCraft < 1.5) {
+    // Painted liner under the folded roof takes the existing warm station light
+    // without returning a sharp specular streak into the approach camera.
+    if (n.y < -0.65) return IntentFinish(pigment * 0.82, 0.91, 0.0);
     // Formed blue-gray sheet and a folded lower lip, within the existing profile.
     float panel = (p.x - 39.0) / 1.5;
     float joint = abs(fract(panel + 0.5) - 0.5);

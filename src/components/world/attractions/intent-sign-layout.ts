@@ -6,7 +6,7 @@ import type { Vec3 } from '../types';
 /** Station lettering belongs on the solid fascia. A board below the canopy
  * can cover the player through a gap that the physical camera correctly clears. */
 export const INTENT_SIGN_PANELS: { at: Vec3; size: [number, number] }[] = [
-  { at: [0, 6.4, COASTER_GATE_Z + 1.03], size: [10, .95] },
+  { at: [0, 6.4, COASTER_GATE_Z + 1.03], size: [8.2, .72] },
   { at: [-8, 2.6, 60.2], size: [6, .95] },
   { at: [-2, 6.7, 53.1], size: [8.5, .95] },
 ];

@@ -48,5 +48,5 @@ test('the Three standard material hook applies the new diffuse response only to 
   assert.match(baseline.fragmentShader, /totalEmissiveRadiance \+= vIntentNight \* uIntentNight;/);
   assert.doesNotMatch(baseline.fragmentShader, /bakedPigment|steelDiffuse/);
   assert.match(craft.fragmentShader, /vec3 bakedPigment = diffuseColor\.rgb;\s+IntentFinish finish = intentFinish\(bakedPigment, roughness, metalness\);/);
-  assert.match(craft.fragmentShader, /vec3 nightRadiance = vIntentNight;\s+if \(vIntentCraft > 2\.5 && vIntentCraft < 3\.5\) \{[^}]*steelDiffuse = finish\.pigment \* \(1\.0 - finish\.metalness\);\s+nightRadiance = \(vIntentNight \/ bakedPigment\) \* steelDiffuse;\s+\}\s+totalEmissiveRadiance \+= nightRadiance \* uIntentNight;/);
+  assert.match(craft.fragmentShader, /vec3 nightRadiance = vIntentNight;\s+if \(vIntentCraft > 2\.5 && vIntentCraft < 3\.5\) \{[^}]*steelDiffuse = finish\.pigment \* \(1\.0 - finish\.metalness\);\s+nightRadiance = \(vIntentNight \/ bakedPigment\) \* steelDiffuse;\s+\}[\s\S]*totalEmissiveRadiance \+= nightRadiance \* uIntentNight;/);
 });

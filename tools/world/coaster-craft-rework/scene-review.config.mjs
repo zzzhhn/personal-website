@@ -81,7 +81,7 @@ const reviewReadback = { ...readback, transform(code,id) {
     'loading:s.loading.active,frame:gl.info.render.frame,', `loading:s.loading.active,frame:gl.info.render.frame,
     candidate:${variant}, assets:s.loading, drawCalls:gl.info.render.calls, triangles:gl.info.render.triangles,
     craftPrograms:gl.info.programs?.filter(program=>program.cacheKey.includes('intent-baked-night-v2-local-craft-')).length,
-    reflectivePrograms:gl.info.programs?.filter(program=>program.cacheKey.includes('intent-baked-night-v2-local-craft-reflect-r1')).length,`);
+    reflectivePrograms:gl.info.programs?.filter(program=>program.cacheKey.includes('intent-baked-night-v2-local-craft-reflect-r2')).length,`);
 }};
 export default {...base,vite:{...base.vite,
   plugins:[sceneReview(),reviewReadback,...base.vite.plugins.slice(1)],

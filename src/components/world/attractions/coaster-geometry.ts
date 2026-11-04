@@ -248,6 +248,24 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
     if(detailed)for(const x of [cx-w*.32,cx+w*.32])for(const y of [base+h*.12,base+h*.43,base+h*.6,base+h*.9])
       beam([x,y,front+.06],[x,y,front+.16],.085,P.rail);
   };
+  // Maintenance elevations have a plinth and deep louvre recesses across the
+  // full service bays, visible both from the platform and along the return.
+  for (const { x, y, width, front } of [
+    { x: -36, y: 0, width: 9, front: 17.5 },
+    { x: 24, y: 5, width: 10, front: -88 },
+  ]) {
+    box([x, y + .36, front + .055], [width - .6, .72, .18], '#818680');
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
+    for (const side of [-1,1]) {
+      const bay = x + side * width * .28;
+      box([bay, y + 1.87, front + .079], [width * .29, 2.12, .23], '#687a81');
+      markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
+      for (const dy of [-.48, -.16, .16, .48]) {
+        box([bay, y + 1.87 + dy, front + .206], [width * .245, .13, .08], '#334853');
+        markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.matteSoffit);
+      }
+    }
+  }
   equipment(-36,0,13,9,10.8,9);
   equipment(24,5,-92,10,7.6,8);
   if(detailed){
@@ -278,7 +296,12 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   box([0, .04, 55], [10, .08, 8], P.concrete, true, true);
   // Functional boarding passage: six real treads and a flush bridge to the stopped car.
   for (const step of [...COASTER_BOARDING.stairs, COASTER_BOARDING.threshold]) {
-    steel.box(step.position, step.size, P.concrete, new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw));
+    const yaw = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw);
+    steel.box(step.position, step.size, P.concrete, yaw);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
+    const lip = new Vector3(0, step.size[1] / 2 - .021, -.01 - step.size[2] / 2).applyQuaternion(yaw).add(new Vector3(...step.position));
+    steel.box(tuple(lip), [step.size[0], .042, .02], P.rail, yaw);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
     colliders.push({ position: step.position, half: step.size.map(v => v / 2) as Vec3, rotation: [0, step.yaw, 0], surface: true });
   }
   addCoasterStationRoof(steel);
@@ -314,9 +337,17 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   addCoasterBuildingArt(steel, detailed);
   // Layered service structure is staff-only; closed stair access distinguishes it from the route to the ride.
   const deck = (p: Vec3, size: Vec3) => {
-    box(p, size, P.concrete, true, true);
-    const [x, y, z] = p, [w, , d] = size;
-    for (const sx of [-1, 1]) beam([x + sx * w / 2, y + 1.2, z - d / 2], [x + sx * w / 2, y + 1.2, z + d / 2], .055, P.copper);
+    box(p, size, '#9b9c92', true, true);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
+    const [x, y, z] = p, [w, h, d] = size;
+    for (const sx of [-1,1]) {
+      box([x + sx * (w / 2 - .055), y - h * .15, z], [.11, h * .66, d], P.steel);
+      markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    }
+    for (const sx of [-1, 1]) {
+      beam([x + sx * w / 2, y + 1.2, z - d / 2], [x + sx * w / 2, y + 1.2, z + d / 2], .055, P.rail);
+      markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
+    }
     for (let at = -d / 2; at <= d / 2; at += 3) for (const sx of [-1, 1]) beam([x + sx * w / 2, y, z + at], [x + sx * w / 2, y + 1.2, z + at], .055, P.copper);
   };
   deck([-51, 15.5, -5], [2.4, .45, 38]);
@@ -342,12 +373,34 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
       for(let d=0;d<length;d+=5) housing([from[0]+dx*d/length,1.6,from[1]+dz*d/length],[.32,3.2,.32],P.concrete);
     }
   }
+  const finishBox = (p: Vec3, size: Vec3, color: string, role: number) => {
+    box(p, size, color);
+    markIntentCraft(steel.parts[steel.parts.length - 1], role);
+  };
+  const { mineralCladding: mineral, structuralCoat: coat, matteSoffit: matte } = INTENT_CRAFT;
   for (const x of [-5.8, 5.8]) {
-    housing([x, 3.3, COASTER_GATE_Z], [1.6, 6.6, 1.8], P.white);
+    housing([x, 3.3, COASTER_GATE_Z], [1.6, 6.6, 1.8], '#829094', true, .095);
+    markIntentCraft(steel.parts[steel.parts.length - 1], mineral);
+    finishBox([x, .43, COASTER_GATE_Z], [1.60, .86, 1.80], '#777d7a', mineral);
+    for (const y of [1.41, 3.18, 4.95]) {
+      finishBox([x, y, COASTER_GATE_Z + .855], [1.50, 1.72, .09], '#bdc0b6', mineral);
+    }
+    for (const side of [-1, 1]) {
+      finishBox([x + side * .74, 3.29, COASTER_GATE_Z + .73], [.12, 5.1, .34], '#899699', mineral);
+    }
+    finishBox([x, 5.83, COASTER_GATE_Z], [1.60, .23, 1.80], P.steel, coat);
     light([x, 3.5, COASTER_GATE_Z + .92], [.25, 2.3, .1], P.cyan);
   }
-  housing([0, 6.4, COASTER_GATE_Z], [13.2, 1.3, 2], P.dark);
-  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.entryFascia);
+  // Recess the upper fascia around the atlas and expose its folded lower return.
+  // Keep the original full-depth collision envelope in its original order.
+  housing([0, 6.4, COASTER_GATE_Z], [13.2, 1.3, 2], P.dark, true, .14);
+  markIntentCraft(steel.parts[steel.parts.length - 1], matte);
+  finishBox([0, 5.82, COASTER_GATE_Z], [13.2, .14, 2], P.steel, coat);
+  finishBox([0, 6.98, COASTER_GATE_Z], [13.2, .14, 2], '#a5aba5', mineral);
+  finishBox([0, 6.4, COASTER_GATE_Z + .93], [8.5, .82, .14], P.dark, coat);
+  for (const side of [-1, 1]) {
+    finishBox([side * 5.38, 6.4, COASTER_GATE_Z + .90], [1.96, .84, .17], '#72868e', coat);
+  }
   if (detailed) {
     for (let i = 0; i < 6; i++) box([8.5 + i * .6, 6.9, 43], [.25, .35, 5.5], P.rail);
     for (const x of [-41, -31]) beam([x, 12, 8], [x, 12, 18], .07, P.copper);

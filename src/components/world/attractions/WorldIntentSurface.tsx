@@ -29,18 +29,16 @@ if (vIntentCraft > ${INTENT_CRAFT.roller - 0.5} && vIntentCraft < ${INTENT_CRAFT
   vec3 steelDiffuse = finish.pigment * (1.0 - finish.metalness);
   nightRadiance = (vIntentNight / bakedPigment) * steelDiffuse;
 }
-totalEmissiveRadiance += nightRadiance * uIntentNight;`);
-};
-const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r6';
-const compileReflectiveCraft = (shader: Shader) => {
-  compileCraft(shader);
-  shader.fragmentShader = shader.fragmentShader
-    .replace('totalEmissiveRadiance += nightRadiance * uIntentNight;', `
 if (vIntentCraft > 11.5 && vIntentCraft < 14.5) {
   vec3 incident = vIntentNight / max(bakedPigment, vec3(0.001));
   nightRadiance = incident * finish.pigment * (1.0 - finish.metalness);
 }
-totalEmissiveRadiance += nightRadiance * uIntentNight;`)
+totalEmissiveRadiance += nightRadiance * uIntentNight;`);
+};
+const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r7';
+const compileReflectiveCraft = (shader: Shader) => {
+  compileCraft(shader);
+  shader.fragmentShader = shader.fragmentShader
     .replace('#include <lights_fragment_maps>', `
 #include <lights_fragment_maps>
 #if defined(USE_ENVMAP)
@@ -54,7 +52,7 @@ totalEmissiveRadiance += nightRadiance * uIntentNight;`)
 #endif
 `);
 };
-const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r1';
+const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r2';
 
 type SurfaceProps = { roughness?: number; metalness?: number; craft?: boolean; environment?: Texture | null; reflective?: boolean };
 

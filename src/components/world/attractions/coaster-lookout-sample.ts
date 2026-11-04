@@ -2,6 +2,7 @@ import { BoxGeometry, BufferAttribute, BufferGeometry, Euler, Matrix4, Quaternio
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { coasterWorld } from './coaster-track.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
 
 export interface LookoutSolid {
@@ -175,7 +176,12 @@ export function addCoasterLookoutSample(steel: CoasterBatch,glow: CoasterBatch,c
       }
     } else {
       const source=new BoxGeometry(...s.size,...s.segments),geometry=source.toNonIndexed();source.dispose();
-      steel.add(geometry,s.colour,lookoutSolidMatrix(s));
+      steel.add(geometry, s.colour, lookoutSolidMatrix(s));
+      const rail = s.role === 'rail' || s.role === 'post';
+      const finish = rail
+        ? (s.id.startsWith('shoe-') || s.id.endsWith('-2') ? INTENT_CRAFT.galvanized : INTENT_CRAFT.structuralCoat)
+        : INTENT_CRAFT.mineralCladding;
+      markIntentCraft(steel.parts[steel.parts.length - 1], finish);
     }
     colliders.push(lookoutSolidCollider(s));
   }

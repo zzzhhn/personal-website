@@ -5,7 +5,9 @@ import { CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type Rapier
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { COASTER_PALETTE as P, CoasterBatch } from './coaster-geometry';
-import WorldIntentSurface from './WorldIntentSurface';
+import { WorldIntentReflectiveSurface } from './WorldIntentSurface';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface';
+import type { Vec3 } from '../types';
 import { coasterWorld, COASTER_DISPLAY_SECONDS, COASTER_GATE_Z } from './coaster-track';
 import { INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentReachRadius, type IntentTarget } from './intent-stations';
 import { activateIntentTarget, intentAvailable, useIntentStore } from './intent-state';
@@ -35,8 +37,22 @@ function IntentChest() {
   const progress = useIntentStore(s => s.progress), lid = useRef<Group>(null);
   const initiallyOpen = useRef(progress.chestOpen).current;
   const body = useMemo(() => {
-    const b = new CoasterBatch(coasterWorld([-8, 0, 59.5])); b.box([0, .65, 0], [3.8, 1.15, 2.1], P.dark);
-    for (const x of [-1.6, 1.6]) b.box([x, .65, 0], [.14, 1.25, 2.17], P.copper);
+    const b = new CoasterBatch(coasterWorld([-8, 0, 59.5]));
+    const panel = (at: Vec3, size: Vec3, tint: string, role: number) => {
+      b.box(at, size, tint);
+      markIntentCraft(b.parts[b.parts.length - 1], role);
+    };
+    const { structuralCoat: coat, galvanized: edge, rubber } = INTENT_CRAFT;
+    panel([0,.17,0],[3.68,.19,1.98],P.dark,coat);
+    panel([0,.30,0],[3.8,.12,2.10],P.steel,coat);
+    for (const side of [-1,1]) {
+      panel([side*1.82,.75,0],[.16,.96,2.10],P.steel,coat);
+      panel([0,.75,side*.969],[3.48,.96,.162],P.dark,coat);
+      panel([side*1.76,1.208,0],[.28,.06,2.16],P.rail,edge);
+      panel([0,1.208,side*.967],[3.24,.06,.226],P.rail,edge);
+    }
+    panel([0,.39,0],[3.43,.08,1.77],'#283b46',rubber);
+    panel([0,.58,1.057],[3.45,.58,.044],'#4e6570',coat);
     for (let i = 0; i < 6; i++) {
       const x = -1.38 + i * .55, opened = i < progress.passed.length;
       b.box([x, .55, 1.1], [.34, .36, .15], opened ? P.cyan : P.gold);
@@ -47,6 +63,16 @@ function IntentChest() {
     for (let i = 0; i < 7; i++) b.box([-1.5 + i * .5, 1.04, 1.07], [.18, .1, .05], progress.passed.includes(`T${i + 1}`) ? P.cyan : P.steel);
     return b.finish();
   }, [progress.passed]);
+  const lidGeometry = useMemo(() => {
+    const b = new CoasterBatch(coasterWorld([-8, 1.23, 58.5]));
+    b.housing([0,.095,1],[3.9,.19,2.2],P.copper);
+    markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    b.box([0,.011,1],[3.73,.022,2.03],P.steel);
+    markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    b.box([0,.045,2.085],[3.82,.085,.03],P.rail);
+    markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.galvanized);
+    return b.finish();
+  }, []);
   const key = useMemo(() => {
     const b = new CoasterBatch();
     b.beam([0, 0, 0], [.65, 0, 0], .06, P.gold);
@@ -55,8 +81,10 @@ function IntentChest() {
       const a = i / 6 * Math.PI * 2, c = (i + 1) / 6 * Math.PI * 2;
       b.beam([Math.cos(a) * .18 - .18, Math.sin(a) * .18, 0], [Math.cos(c) * .18 - .18, Math.sin(c) * .18, 0], .045, P.gold);
     }
+    for (const part of b.parts) markIntentCraft(part, INTENT_CRAFT.galvanized);
     return b.finish();
   }, []);
+  useEffect(() => () => lidGeometry.dispose(), [lidGeometry]);
   useEffect(() => () => body.dispose(), [body]); useEffect(() => () => key.dispose(), [key]);
   useFrame((_, dt) => {
     if (!lid.current || useWorldStore.getState().paused || document.hidden || dt > .25) return;
@@ -65,13 +93,13 @@ function IntentChest() {
   });
   return <>
     <group position={coasterWorld([-8, 0, 59.5])} onClick={e => { e.stopPropagation(); activateIntentTarget('chest'); }}>
-      <mesh geometry={body}><WorldIntentSurface roughness={.7} /></mesh>
+      <mesh geometry={body}><WorldIntentReflectiveSurface roughness={.7} /></mesh>
       <group ref={lid} position={[0, 1.23, -1]} rotation={[initiallyOpen ? -1.3 : 0, 0, 0]}>
-        <mesh position={[0, .07, 1]}><boxGeometry args={[3.9, .2, 2.2]} /><meshStandardMaterial color={P.copper} roughness={.7} /></mesh>
+        <mesh geometry={lidGeometry}><WorldIntentReflectiveSurface roughness={.7} /></mesh>
       </group>
-      {progress.chestOpen && !progress.keyTaken && <mesh geometry={key} position={[-.2, 1.4, .25]} rotation={[-.25, 0, .25]}><WorldIntentSurface metalness={.35} roughness={.4} /></mesh>}
+      {progress.chestOpen && !progress.keyTaken && <mesh geometry={key} position={[-.2, 1.4, .25]} rotation={[-.25, 0, .25]}><WorldIntentReflectiveSurface metalness={.35} roughness={.4} /></mesh>}
     </group>
-    {progress.gateOpen && <mesh geometry={key} position={coasterWorld([5.3, 1.65, COASTER_GATE_Z + .5])}><WorldIntentSurface roughness={.4} /></mesh>}
+    {progress.gateOpen && <mesh geometry={key} position={coasterWorld([5.3, 1.65, COASTER_GATE_Z + .5])}><WorldIntentReflectiveSurface roughness={.4} /></mesh>}
   </>;
 }
 function IntentGate() {
@@ -80,10 +108,26 @@ function IntentGate() {
   const initial = useRef(open ? 1 : 0).current, rotation = useRef(new Quaternion());
   const { world } = useRapier();
   const geometry = useMemo(() => {
-    const b = new CoasterBatch(); b.box([2.5, .5, 0], [5, .8, .25], P.dark);
-    for (let x = 0; x <= 5; x += .5) b.box([x, 1.6, 0], [.1, 3.1, .16], P.steel);
-    b.box([2.5, 3.1, 0], [5.15, .18, .3], P.copper);
-    b.beam([0, .4, 0], [5, 2.9, 0], .08, P.steel); return b.finish();
+    const b = new CoasterBatch();
+    const member = (at: Vec3, size: Vec3, pigment = P.steel, finish: number = INTENT_CRAFT.structuralCoat) => {
+      b.box(at, size, pigment);
+      markIntentCraft(b.parts[b.parts.length - 1], finish);
+    };
+    member([2.5,.48,0],[5,.76,.25],P.dark);
+    for (const z of [-.129,.129]) {
+      member([2.5,.54,z],[4.74,.58,.036],'#526771');
+      member([2.5,.78,z],[4.81,.055,.046],P.rail,INTENT_CRAFT.galvanized);
+    }
+    for (const x of [.08,4.92]) member([x,1.63,0],[.18,3.06,.25]);
+    for (let x=.46; x<4.9; x+=.46) member([x,1.91,0],[.085,2.2,.13]);
+    member([2.5,3.1,0],[5.15,.18,.30],P.copper);
+    b.beam([.09,.8,0],[4.91,2.96,0],.075,P.steel);
+    markIntentCraft(b.parts[b.parts.length - 1],INTENT_CRAFT.structuralCoat);
+    for (const y of [.47,2.65]) {
+      b.beam([0,y-.12,0],[0,y+.12,0],.12,P.rail,8);
+      markIntentCraft(b.parts[b.parts.length - 1],INTENT_CRAFT.galvanized);
+    }
+    return b.finish();
   }, []);
   useEffect(() => () => geometry.dispose(), [geometry]);
   useBeforePhysicsStep(() => {
@@ -102,7 +146,7 @@ function IntentGate() {
       type="kinematicPosition" colliders={false} position={leaf.hinge} rotation={[0, coasterGateAngle(leaf.side, initial), 0]}
       userData={{ solid: true, assetId: 'coaster-gate' }}>
       <CuboidCollider position={leaf.centre} args={leaf.half} />
-      <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentSurface roughness={.8} /></mesh>
+      <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentReflectiveSurface roughness={.8} /></mesh>
     </RigidBody>)}
   </group>;
 }
