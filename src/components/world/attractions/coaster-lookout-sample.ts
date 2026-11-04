@@ -3,7 +3,6 @@ import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
 import { coasterWorld } from './coaster-track.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
-import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
 
 export interface LookoutSolid {
