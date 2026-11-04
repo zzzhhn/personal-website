@@ -409,11 +409,13 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     housing([x, 3.3, COASTER_GATE_Z], [1.6, 6.6, 1.8], '#829094', true, .095);
     markIntentCraft(steel.parts[steel.parts.length - 1], mineral);
     finishBox([x, .43, COASTER_GATE_Z], [1.60, .86, 1.80], '#777d7a', mineral);
-    for (const y of [1.41, 3.18, 4.95]) {
-      finishBox([x, y, COASTER_GATE_Z + .855], [1.50, 1.72, .09], '#bdc0b6', mineral);
+    // The boards sit between the plinth and cap, with an open joint to the
+    // recessed edge returns. No two finishes share an exposed face.
+    for (const [bottom, top] of [[.87, 2.27], [2.32, 4.04], [4.09, 5.70]]) {
+      finishBox([x, (bottom + top) / 2, COASTER_GATE_Z + .855], [1.34, top - bottom, .09], '#bdc0b6', mineral);
     }
     if (detailed) for (const side of [-1, 1]) {
-      finishBox([x + side * .74, 3.29, COASTER_GATE_Z + .73], [.12, 5.1, .34], '#899699', mineral);
+      finishBox([x + side * .74, 3.2875, COASTER_GATE_Z + .725], [.12, 4.825, .33], '#899699', mineral);
     }
     finishBox([x, 5.83, COASTER_GATE_Z], [1.60, .23, 1.80], P.steel, coat);
     light([x, 3.5, COASTER_GATE_Z + .92], [.25, 2.3, .1], P.cyan);
