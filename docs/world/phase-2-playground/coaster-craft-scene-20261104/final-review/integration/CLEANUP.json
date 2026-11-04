@@ -1,0 +1,13 @@
+{
+  "taskBrowserClosed": true,
+  "task4353ServerStopped": true,
+  "ownedHeavyLockReleased": true,
+  "scratchRemoved": [
+    "/tmp/bobby-coaster-scene-candidate-source",
+    "/tmp/bobby-coaster-scene-candidate-build",
+    "/tmp/bobby-coaster-scene-production-build"
+  ],
+  "preservedLiveRoot": "/tmp/bobby-world-coaster-scene-20261104-root",
+  "preservedRollbackRoot": "/tmp/bobby-world-batch6-beam-wood-integrated-root",
+  "publicDeployment": false
+}

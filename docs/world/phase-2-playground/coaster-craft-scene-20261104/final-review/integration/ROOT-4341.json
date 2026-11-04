@@ -1,0 +1,28 @@
+{
+  "port": 4341,
+  "pid": 1681,
+  "root": "/tmp/bobby-world-coaster-scene-20261104-root",
+  "runtimeSource": "45ce8e4322f03db1ffe5ec43016c774771c8cc55",
+  "integratedSource": "45ce8e4322f03db1ffe5ec43016c774771c8cc55",
+  "htmlSha256": "acbeb712620d7e16d705881b06e445d087ab423bb666f2e5bc8b43501fa86e62",
+  "entries": [
+    "/_astro/WorldApp.CKkj07is.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "rollbackRoot": "/tmp/bobby-world-batch6-beam-wood-integrated-root",
+  "preservedBackupRoots": [
+    "/tmp/bobby-world-batch6-beam-wood-integrated-root",
+    "/tmp/bobby-world-batch6-intake-support-integrated-root",
+    "/tmp/bobby-world-batch6-rack-intake-integrated-root",
+    "/tmp/bobby-world-batch6-ibd-sheds-integrated-root",
+    "/tmp/bobby-world-batch6-club-pavilion-integrated-root",
+    "/tmp/bobby-world-batch6-street3-integrated-root",
+    "/tmp/bobby-world-batch6-craft2-integrated-root",
+    "/tmp/bobby-world-batch6-walk-integrated-root",
+    "/tmp/bobby-world-batch6-g21-integrated-root",
+    "/tmp/bobby-world-batch6-rails-root",
+    "/tmp/bobby-world-batch6-bench-bin-root",
+    "/tmp/bobby-world-batch6-final-01a171f1"
+  ],
+  "publicDeployment": false
+}

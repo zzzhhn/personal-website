@@ -1,0 +1,77 @@
+{
+  "source": "2b22826",
+  "shot": null,
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    44.9019660949707,
+    6.943377492729391,
+    -149.26778569429757
+  ],
+  "direction": [
+    0,
+    -0.7071067811865465,
+    -0.7071067811865486
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 216,
+    "total": 216,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 74,
+  "triangles": 446960,
+  "geometries": 361,
+  "textures": 92,
+  "programs": 127,
+  "frame": 23595,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    44.9019660949707,
+    1.89882493019104,
+    -153.66233825683594
+  ],
+  "nearby": {
+    "id": "intent-board",
+    "label": {
+      "zh": "坐进列车 · 114 秒",
+      "en": "Board the train · 114 seconds"
+    },
+    "kind": "exhibit"
+  },
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6"
+    ],
+    "clarified": [],
+    "chestOpen": true,
+    "keyTaken": true,
+    "gateOpen": true
+  }
+}

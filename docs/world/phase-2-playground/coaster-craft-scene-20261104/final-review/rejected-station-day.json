@@ -1,0 +1,63 @@
+{
+  "source": "362d8d0a81840c3e8d5640e9a4014ca801a3cf6f",
+  "shot": "scene-station-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    56,
+    4.1,
+    -127.5
+  ],
+  "direction": [
+    -0.3947742213250781,
+    0.10362823309783306,
+    -0.9129153868142432
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 208,
+    "total": 208,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 103,
+  "triangles": 605033,
+  "geometries": 136,
+  "textures": 51,
+  "programs": 95,
+  "frame": 4067,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    50,
+    1.9600000000000002,
+    -125
+  ],
+  "nearby": null,
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [],
+    "clarified": [],
+    "chestOpen": false,
+    "keyTaken": false,
+    "gateOpen": false
+  }
+}

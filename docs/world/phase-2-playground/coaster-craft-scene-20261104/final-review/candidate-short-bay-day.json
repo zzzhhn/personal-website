@@ -1,0 +1,63 @@
+{
+  "source": "45ce8e4",
+  "shot": "scene-short-bay-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    69,
+    5.6,
+    -321
+  ],
+  "direction": [
+    -0.4020223690322059,
+    0.11783414264737074,
+    -0.908016040400329
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 208,
+    "total": 208,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 70,
+  "triangles": 463749,
+  "geometries": 294,
+  "textures": 61,
+  "programs": 136,
+  "frame": 4118,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    49.99639129638672,
+    1.8639421463012695,
+    -124.99615478515625
+  ],
+  "nearby": null,
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [],
+    "clarified": [],
+    "chestOpen": false,
+    "keyTaken": false,
+    "gateOpen": false
+  }
+}

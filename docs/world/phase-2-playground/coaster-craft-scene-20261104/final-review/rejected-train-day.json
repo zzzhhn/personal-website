@@ -1,0 +1,63 @@
+{
+  "source": "362d8d0a81840c3e8d5640e9a4014ca801a3cf6f",
+  "shot": "scene-train-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    45.2,
+    3.2,
+    -153.9
+  ],
+  "direction": [
+    0.9201465801625525,
+    -0.14377290315039892,
+    0.3642246879810118
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 208,
+    "total": 208,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 85,
+  "triangles": 545993,
+  "geometries": 275,
+  "textures": 61,
+  "programs": 133,
+  "frame": 5241,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    50,
+    1.9600000000000002,
+    -125
+  ],
+  "nearby": null,
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [],
+    "clarified": [],
+    "chestOpen": false,
+    "keyTaken": false,
+    "gateOpen": false
+  }
+}

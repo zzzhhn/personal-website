@@ -1,0 +1,20 @@
+{
+  "source": "45ce8e4",
+  "scope": "coaster steel + glow + three cars, excludes surrounding world",
+  "rows": [
+    {
+      "lod": "far",
+      "triangles": 139906,
+      "cap": 140000,
+      "passed": true,
+      "carTriangles": 2466
+    },
+    {
+      "lod": "near",
+      "triangles": 239794,
+      "cap": 240000,
+      "passed": true,
+      "carTriangles": 2466
+    }
+  ]
+}

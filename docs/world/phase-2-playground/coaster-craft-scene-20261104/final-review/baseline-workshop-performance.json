@@ -1,0 +1,51 @@
+{
+  "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+  "shot": "scene-workshop-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    48,
+    10,
+    -110
+  ],
+  "direction": [
+    -0.5618006477335896,
+    -0.3210289415620512,
+    -0.7624437362098716
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 217,
+    "total": 217,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 130,
+  "triangles": 617723,
+  "geometries": 167,
+  "textures": 51,
+  "programs": 81,
+  "frame": 3887,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": {
+    "samples": 180,
+    "p50": 17.5,
+    "p95": 43.89999997615814,
+    "max": 72.20000004768372
+  }
+}

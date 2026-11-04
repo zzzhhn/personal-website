@@ -1,0 +1,12 @@
+✔ folded roof remains inside the retained canopy collision bounds (3.414375ms)
+✔ building articulation stays inside the 8k near / 4k far increment without new material groups (21.079416ms)
+✔ all ride views keep the added building framework out of rider and forward sight lines (343.021875ms)
+✔ station and equipment buildings retain their original collision profiles (804.636292ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1701.237083

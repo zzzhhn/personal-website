@@ -1,0 +1,46 @@
+{
+  "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+  "shot": "scene-station-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    56,
+    4.1,
+    -127.5
+  ],
+  "direction": [
+    -0.3947742213250781,
+    0.10362823309783306,
+    -0.9129153868142432
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 217,
+    "total": 217,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 103,
+  "triangles": 579644,
+  "geometries": 176,
+  "textures": 51,
+  "programs": 104,
+  "frame": 4337,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null
+}

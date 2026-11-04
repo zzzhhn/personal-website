@@ -1,0 +1,58 @@
+
+> personal-website@0.0.1 prebuild
+> node tools/world/check-club-audio.mjs
+
+Club furniture: 4 GLBs and 16 external image references present.
+World craft: 5 production GLBs present; umbrella 4 batches, crate 11 batches, furniture 10 batches, camp 12 batches, ibdStatic 118 batches.
+Club audio: 2 runtime assets present in public.
+
+> personal-website@0.0.1 build
+> astro build --config production.config.mjs --outDir /tmp/bobby-coaster-scene-production-build
+
+12:12:31 [vite] Re-optimizing dependencies because vite config has changed
+12:12:32 [content] Syncing content
+12:12:32 [content] Synced content
+12:12:32 [types] Generated 435ms
+12:12:32 [build] output: "static"
+12:12:32 [build] mode: "static"
+12:12:32 [build] directory: /tmp/bobby-coaster-scene-production-build/
+12:12:32 [build] Collecting build info...
+12:12:32 [build] ✓ Completed in 447ms.
+12:12:32 [build] Building static entrypoints...
+12:12:32 [WARN] [vite] 
+/fonts/GeistSans-Regular.woff2 referenced in /fonts/GeistSans-Regular.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+12:12:32 [WARN] [vite] 
+/fonts/GeistSans-Medium.woff2 referenced in /fonts/GeistSans-Medium.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+12:12:32 [WARN] [vite] 
+/fonts/GeistSans-SemiBold.woff2 referenced in /fonts/GeistSans-SemiBold.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+12:12:32 [WARN] [vite] 
+/fonts/InstrumentSerif-Regular.woff2 referenced in /fonts/InstrumentSerif-Regular.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+12:12:32 [WARN] [vite] 
+/fonts/InstrumentSerif-Italic.woff2 referenced in /fonts/InstrumentSerif-Italic.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+12:12:41 [vite] ✓ built in 9.62s
+12:12:45 [WARN] [vite] [plugin vite:reporter] 
+(!) /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/layout-v4.ts is dynamically imported by /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldMap.tsx but also statically imported by /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldDistricts.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldFacilityCraftQA.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldLandform.ts, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetBillboards.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetConstructionSigns.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetFixed.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetKnock.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetLandmarks.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetRails.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetTrees.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldStreetYears.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldTerrain.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldTerrainPaving.ts, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/WorldTownAssets.tsx, /private/tmp/bobby-coaster-scene-candidate-source/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+12:12:45 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+12:12:45 [vite] ✓ built in 4.05s
+12:12:45 [build] Rearranging server assets...
+
+ generating static routes 
+12:12:45   ├─ /projects/alpha-agent/index.html (+15ms) 
+12:12:45   ├─ /projects/djc/index.html (+5ms) 
+12:12:45   ├─ /projects/evalforge/index.html (+5ms) 
+12:12:45   ├─ /projects/hepai/index.html (+3ms) 
+12:12:45   ├─ /projects/interactive-learning-platforms/index.html (+2ms) 
+12:12:45   ├─ /projects/kindred/index.html (+2ms) 
+12:12:45   ├─ /world/index.html (+6ms) 
+12:12:45   ├─ /index.html (+125ms) 
+12:12:46 ✓ Completed in 222ms.
+
+12:12:46 [build] ✓ Completed in 13.92s.
+12:12:46 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../tmp/bobby-coaster-scene-production-build`
+12:12:46 [build] 8 page(s) built in 14.37s
+12:12:46 [build] Complete!

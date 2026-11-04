@@ -1,0 +1,14 @@
+{
+  "source": "45ce8e4322f03db1ffe5ec43016c774771c8cc55",
+  "url": "http://127.0.0.1:4341/world/?start=coaster&quality=balanced&paused=1",
+  "checks": {
+    "actualSceneLoaded": true,
+    "canvasReadbackAttribute": null,
+    "browserErrors": [],
+    "localizedHUDPresent": true,
+    "existingSixOfSixProgressPreserved": true,
+    "pausedAfterReview": true
+  },
+  "screenshot": "../production-4341.jpg",
+  "scope": "Local production build; not public deployment or a new full gameplay replay"
+}

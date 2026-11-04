@@ -1,0 +1,46 @@
+{
+  "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+  "shot": "scene-short-bay-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    69,
+    5.6,
+    -321
+  ],
+  "direction": [
+    -0.4020223690322059,
+    0.11783414264737074,
+    -0.908016040400329
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 217,
+    "total": 217,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 73,
+  "triangles": 440842,
+  "geometries": 301,
+  "textures": 61,
+  "programs": 143,
+  "frame": 5057,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null
+}

@@ -1,0 +1,46 @@
+{
+  "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+  "shot": "scene-lookout-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    128,
+    16,
+    -155
+  ],
+  "direction": [
+    -0.6494998689336408,
+    -0.28239124736245247,
+    -0.7059781184061313
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 217,
+    "total": 217,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 103,
+  "triangles": 578895,
+  "geometries": 313,
+  "textures": 61,
+  "programs": 143,
+  "frame": 5237,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null
+}

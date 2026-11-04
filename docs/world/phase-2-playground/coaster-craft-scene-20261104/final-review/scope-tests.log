@@ -1,0 +1,74 @@
+using deprecated parameters for the initialization function; pass a single object instead
+✔ reported gate corner restores a visible, collision-free third-person view (1560.650541ms)
+ℹ {"before":0.3538785994052887,"after":1.9998376577020234,"offset":2.1}
+✔ station return aisle allows stepping right of the pier and exiting to the forecourt (1164.390917ms)
+✔ closed gate still locks the park and the fully open centre is walkable (0.270083ms)
+✔ all three parked cars stop a standing capsule approaching either body side (0.2665ms)
+using deprecated parameters for the initialization function; pass a single object instead
+{"supportSurfaceMaxError":1.3810611698694686e-7,"trianglesPerDetailedMember":64,"previous":32}
+{"stationTriangles":120,"stationColliders":6,"minTrainCornerClearance":2.540122898627773,"rideSamples":1800}
+{"erodedSamples":2628,"maxRockCut":1.8491836734693887}
+{"supportGroups":62,"detailedMembers":186,"nearTriangleIncrement":6072,"farTriangleIncrement":120,"colliderIncrement":6}
+✔ support connection bands retain the original closed cylinder envelope and ray contacts (5.020541ms)
+✔ station members have matching real contacts and preserve boarding and rider clearance (25.918333ms)
+✔ rock benches remove material without raising any former ridge or changing low aprons (1.142917ms)
+✔ station edge fixtures add bounded finite warm surface radiance without runtime lights (0.138167ms)
+✔ member articulation has a bounded local increment and leaves support placement unchanged (74.209417ms)
+{"rideSamples":1800,"minRailRiderToRockEnvelope":5.287281026951084}
+{"hullCount":12,"hullToEnvelopeVolumeRange":[0.3842043827121639,0.6932199045265407]}
+{"actualHullOverlapLinks":26,"connectedHulls":12}
+{"colours":9,"paintParts":68,"rockTriangles":1742,"maxPaintToHullPlaneError":0.00001109471185767319}
+{"solidCount":64,"rockSolids":12,"triangles":2726,"glowTriangles":84,"totalTriangles":2810,"colliders":64,"vertexAttributeBytes":404640,"localTriangles":4726,"localColliders":86,"derivedNear":108736,"derivedFar":61412,"derivedSceneColliders":621,"hullBytes":15192}
+✔ the public top surfaces, route and architectural members retain their bounds (8.046625ms)
+✔ rock envelopes preserve the original ride/rider clearance and three camera sight lines (15.772167ms)
+✔ each closed convex surface is the exact local hull output, enclosed by half (6.141833ms)
+✔ actual convex stones overlap, and the crown directly meets all three cornices (1.872709ms)
+✔ bedding colours subdivide the same convex surface without changing its area or collision (8.188792ms)
+✔ local rendering emits the same hulls and retains all architecture and the arrival opening (7.190125ms)
+✔ integrated local counts fit the unchanged whole-scene geometry and collider ceilings (7.672083ms)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ continuous sections bound both LOD chord error and preserve the shared ride frame and gauge (56.1475ms)
+ℹ [{"lod":"near","segments":2883,"maxChordErrorM":0.009915148778103452},{"lod":"far","segments":1659,"maxChordErrorM":0.019986502432357174}]
+✔ sample faces and node collars share physical contacts and leave all ride views and the car clear (393.683459ms)
+ℹ {"lod":"near","sampleSupportGroups":4,"contactTriangles":22256,"contactBytes":602592,"surfaceErrorM":0.0000015602349563437201,"rideSamples":3600}
+ℹ {"lod":"far","sampleSupportGroups":3,"contactTriangles":22168,"contactBytes":599712,"surfaceErrorM":0.0000015602349563437201,"rideSamples":3600}
+✔ real far/near batches retain every render, night-light and contact byte after transferable ownership handoff (1397.172875ms)
+✔ success terminates the worker, hydrates once and leaves no active job (0.473125ms)
+✔ cancellation, load failure, bad reply and post failure each release the worker exactly once (0.37725ms)
+✔ already cancelled requests do not create a worker (0.069667ms)
+✔ the continuous closed track fits its surveyed site and stays above ground (2.936666ms)
+✔ expanded ride preserves a top hold, carries momentum and brakes smoothly (0.906333ms)
+✔ the first drop carries its speed through the low run without the former artificial braking (0.343708ms)
+✔ every camera mode publishes a real seat and finite matching actor orientation (1.889625ms)
+✔ pause, tab hiding and resumption gaps never accumulate ride time (0.598958ms)
+✔ external recovery, deactivation, ownership changes and completion stop the ride (0.05775ms)
+✔ bridge begin is exclusive and external end prevents further publication (0.26975ms)
+✔ all seven tasks and chest stay outside the locked gate; station exit lies on its apron (0.105292ms)
+✔ merged static structure and three cars stay below the authored geometry budget (1467.0315ms)
+✔ nonadjacent rails clear the train and seated head envelope at all crossings (21.087167ms)
+✔ the station canopy never intersects any camera sight line during the complete ride (3.425833ms)
+✔ inversion uses a continuous full frame, with a genuinely upside-down seat (3.248292ms)
+✔ first person follows track up while both spectator views keep the horizon (2.799833ms)
+✔ static night fill exists on every merged surface with finite nonnegative radiance (612.860542ms)
+✔ third-person cameras keep rider and forward sight clear through the entire actual structure (33900.520083ms)
+✔ architecture collision volumes clear a one-metre rider envelope throughout the loop (932.480709ms)
+✔ camera movement remains continuous across inversion and tunnel transitions (0.358708ms)
+✔ departure and return ease to rest at the same closed station pose (0.108667ms)
+✔ train stays in its original envelope with one draw batch and the existing material roles (2.457ms)
+✔ the boarding sill, central cushion and backrest still meet the contact datums (6.324417ms)
+✔ the geometry leaves the doorway and seated passenger volumes clear (2.046833ms)
+✔ the shoulder flares and the lower copper body tucks inward (1.300833ms)
+✔ rear and side samples have no coincident facing surfaces (359.758375ms)
+(node:79352) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ only the nine intake rollers carry the role and source pigment used to recover baked light (33.801084ms)
+✔ the Three standard material hook applies the new diffuse response only to the roller role (0.502833ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 47
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46579.351875

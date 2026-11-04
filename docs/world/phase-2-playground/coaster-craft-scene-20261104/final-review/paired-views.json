@@ -1,0 +1,272 @@
+[
+  {
+    "view": "workshop-day",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 130,
+      "triangles": 617723
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 127,
+      "triangles": 650234
+    }
+  },
+  {
+    "view": "workshop-night",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 130,
+      "triangles": 617723
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 127,
+      "triangles": 650234
+    }
+  },
+  {
+    "view": "station-day",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 103,
+      "triangles": 579644
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 100,
+      "triangles": 611421
+    }
+  },
+  {
+    "view": "station-night",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 103,
+      "triangles": 579644
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 100,
+      "triangles": 611421
+    }
+  },
+  {
+    "view": "overview-day",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 257,
+      "triangles": 1010145
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 256,
+      "triangles": 1031321
+    }
+  },
+  {
+    "view": "overview-night",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 258,
+      "triangles": 1010873
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 257,
+      "triangles": 1032049
+    }
+  },
+  {
+    "view": "short-bay-day",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 73,
+      "triangles": 440842
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 70,
+      "triangles": 463749
+    }
+  },
+  {
+    "view": "short-bay-night",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 73,
+      "triangles": 440842
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 70,
+      "triangles": 463749
+    }
+  },
+  {
+    "view": "lookout-day",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 103,
+      "triangles": 578895
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 101,
+      "triangles": 595495
+    }
+  },
+  {
+    "view": "lookout-night",
+    "matchedFields": [
+      "shot",
+      "quality",
+      "time",
+      "weather",
+      "camera",
+      "direction",
+      "fov",
+      "exposure",
+      "canvas",
+      "dpr",
+      "night",
+      "blend"
+    ],
+    "baseline": {
+      "source": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "calls": 103,
+      "triangles": 578895
+    },
+    "candidate": {
+      "source": "45ce8e4",
+      "calls": 101,
+      "triangles": 595495
+    }
+  }
+]
