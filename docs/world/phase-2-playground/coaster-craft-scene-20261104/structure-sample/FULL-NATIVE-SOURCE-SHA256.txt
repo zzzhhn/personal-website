@@ -1,0 +1,2 @@
+aeed68de5140feff2b6f8b762717f728fe22de0cfff87e5652c921e70a2dcf6d  coaster-full-structure-far.source.json
+77102a2be47ae04ee22781b03e529fe9f2ae6b200845778e9b92e91b0d59eef9  coaster-full-structure-near.source.json

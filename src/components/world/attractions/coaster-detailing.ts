@@ -4,12 +4,32 @@ import type { ThrillBeam } from './coaster-thrill-supports.ts';
 import { bakeIntentNight } from './intent-lighting.ts';
 import { COASTER_STATION_EDGE_LIGHTS, lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { coasterWorld } from './coaster-track.ts';
+import type { CoasterStructureCraft } from './coaster-structure-craft.ts';
 import type { Vec3 } from '../types';
 
 /** Split the existing tube surface into short end connections and a continuous web.
  * All vertices retain the original cylinder radius and endpoints, including both caps. */
-export function createSupportMemberDetail(beam: ThrillBeam) {
+export function createSupportMemberDetail(beam: ThrillBeam, craft?: CoasterStructureCraft) {
   const d=beam.b.clone().sub(beam.a),length=d.length(),band=Math.min(.34,length*.12);
+  if (craft?.scope === 'full') {
+    const source = new CylinderGeometry(beam.radius, beam.radius, length, 8);
+    const geometry = source.toNonIndexed();
+    source.dispose();
+    geometry.deleteAttribute('uv');
+    geometry.clearGroups();
+    const count = geometry.attributes.position.count;
+    const colour = new Color(beam.radius < .2 ? '#526d80' : '#41596e');
+    const colours = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) colour.toArray(colours, i * 3);
+    geometry.setAttribute('color', new BufferAttribute(colours, 3));
+    geometry.applyMatrix4(new Matrix4().compose(beam.a.clone().add(beam.b).multiplyScalar(.5),
+      new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), d.normalize()), new Vector3(1, 1, 1)));
+    bakeIntentNight(geometry);
+    lightCoasterCliffs(geometry);
+    geometry.userData.intentStructureRole = 'supportCoat';
+    craft.mark?.(geometry, 'supportCoat');
+    return geometry;
+  }
   const source=new CylinderGeometry(beam.radius,beam.radius,length,8,3);
   const p=source.attributes.position;
   for(let i=0;i<p.count;i++) {

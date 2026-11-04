@@ -72,19 +72,24 @@ export function sweepCoasterSection(rings: Ring[], profile: Profile, caps: reado
 /** The sample's visible faces are also its physical faces, in one bounded static trimesh. */
 export function addCoasterRailSections(steel: CoasterBatch, detailed: boolean, spans = coasterRailSpans(detailed), craft?: CoasterStructureCraft) {
   const vertices: number[] = [], indices: number[] = [];
-  const add = (g: BufferGeometry, colour: string, solid: boolean, visible = true) => {
+  const add = (g: BufferGeometry, colour: string, solid: boolean, visible = true, surface?: CoasterStructureSurface) => {
     if (solid) {
       const offset = vertices.length / 3;
       vertices.push(...g.attributes.position.array);
       if (g.index) for (const i of g.index.array) indices.push(i + offset);
       else for (let i = 0; i < g.attributes.position.count; i++) indices.push(i + offset);
     }
-    if (visible) steel.add(g, colour);
+    if (visible && craft && surface) addCoasterCraftPart(steel, g, colour, surface, craft);
+    else if (visible) steel.add(g, colour);
     else g.dispose();
   };
   for (let section = 0; section < 3; section++) {
     const rings = spans[section], solid = section === 1;
     const sweep = (profile: Profile, colour: string, surface: CoasterStructureSurface) => {
+      if (craft?.scope === 'full') {
+        add(sweepCoasterSection(rings, profile), colour, solid, true, surface);
+        return;
+      }
       if (!craft || !solid) {
         add(sweepCoasterSection(rings, profile), colour, solid);
         return;
@@ -121,10 +126,18 @@ export function addCoasterRailSections(steel: CoasterBatch, detailed: boolean, s
       const d = b.clone().sub(a), rotation = new Quaternion().setFromUnitVectors(new Vector3(0, 1, 0), d.clone().normalize());
       add(new BoxGeometry(width, d.length(), width).applyMatrix4(new Matrix4().compose(a.clone().add(b).multiplyScalar(.5), rotation, new Vector3(1, 1, 1))), colour, true);
     };
-    const candidate = craft && inCoasterCraftBay(u);
+    const candidate = craft && (craft.scope === 'full' || inCoasterCraftBay(u));
     add(new BoxGeometry(.24, .2, 1.9).applyMatrix4(new Matrix4().compose(at(frame, 0, -.21), frame.rotation, new Vector3(1, 1, 1))), '#aa9173', true, !candidate);
-    if (candidate) addCoasterCraftTie(steel, frame, craft);
+    if (candidate) addCoasterCraftTie(steel, frame, craft, u);
     for (const side of [-1, 1]) box(at(frame, side * .78, -.21), at(frame, side * profile[0][0] * .8, profile[2][1] + .14), .18, '#526b79');
+  }
+  if (craft?.scope === 'full') {
+    // Retain the existing open-track tie locations and the established LOD cadence.
+    const steps = Math.ceil(THRILL_LENGTH / (detailed ? 1.05 : 3));
+    for (let i = 0; i < steps; i += 3) {
+      const u = i / steps;
+      if (!inCoasterStructureSample(u)) addCoasterCraftTie(steel, thrillFrame(u), craft, u);
+    }
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) } satisfies TrackContact;
 }
@@ -138,13 +151,14 @@ export function addCoasterSampleNodes(steel: CoasterBatch, supports: ThrillSuppo
     if (visible) steel.add(g, colour);
     else g.dispose();
   };
-  for (const support of supports) if (inCoasterStructureSample(support.u)) {
-    const candidate = craft && inCoasterCraftBay(support.u);
-    for (const [i, p] of [support.a, support.b].entries()) {
+  for (const support of supports) {
+    const originalSample = inCoasterStructureSample(support.u);
+    const candidate = craft && (craft.scope === 'full' || inCoasterCraftBay(support.u));
+    if (originalSample) for (const [i, p] of [support.a, support.b].entries()) {
       add(new CylinderGeometry(.82, .82, .7, 8).translate(p.x, p.y - .35, p.z), '#98a7aa', !candidate);
       add(new BoxGeometry(1.6, .15, 1.6).translate(p.x, support.beams[i].a.y + 1.05, p.z), '#273e4e', !candidate);
     }
-    if (candidate) addCoasterCraftSupportNode(steel, support, craft);
+    if (candidate) addCoasterCraftSupportNode(steel, support, craft, originalSample);
   }
   contact.vertices = new Float32Array(vertices); contact.indices = new Uint32Array(indices);
 }
