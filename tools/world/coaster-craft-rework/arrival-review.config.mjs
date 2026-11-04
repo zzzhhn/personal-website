@@ -22,7 +22,7 @@ function arrivalReview() {
     }
     // Use the same structure mode in the main-thread and Worker graphs.
     if (id.endsWith('/coaster-geometry.ts') && process.env.COASTER_SHORT_BAY === '1') {
-      return replace(code, 'craftSample = false', 'craftSample = true');
+      return replace(code, "scope: CoasterStructureScope = 'full'", "scope: CoasterStructureScope = 'short'");
     }
   }};
 }

@@ -32,7 +32,7 @@ function sceneReview() {
         code=replace(code, '<WorldIntentReflectiveSurface roughness={.82}', `<WorldIntentReflectiveSurface reflect={${variant}} roughness={.82}`);
         return `import {createCoasterStructure as createBaselineStructure,createCoasterCar as createBaselineCar} from './coaster-geometry.baseline.ts';
 `+replace(replace(replace(code, 'useMemo(createCoasterCar, [])', `useMemo(${variant} ? createCoasterCar : createBaselineCar, [])`), '<WorldIntentReflectiveSurface roughness={.65} metalness={.12} />', `{${variant} ? <WorldIntentReflectiveSurface roughness={.65} metalness={.12} /> : <WorldIntentSurface roughness={.65} metalness={.12} />}`), 'new CoasterStructureCache(createCoasterStructure, buildCoasterInWorker)',
-          `new CoasterStructureCache(near => ${variant} ? createCoasterStructure(near, true) : createBaselineStructure(near), buildCoasterInWorker)`);
+          `new CoasterStructureCache(near => ${variant} ? createCoasterStructure(near, 'short') : createBaselineStructure(near), buildCoasterInWorker)`);
       }
       if (id.endsWith('/coaster-structure-job.ts')) {
         return replace(code, 'worker.postMessage(near)', `worker.postMessage({near, candidate:${variant}})`);
@@ -40,7 +40,7 @@ function sceneReview() {
       if (id.endsWith('/coaster-structure.worker.ts')) {
         code=replace(code, 'MessageEvent<boolean>', 'MessageEvent<{near:boolean;candidate:boolean}>');
         return `import {createCoasterStructure as createBaselineStructure} from './coaster-geometry.baseline.ts';
-`+replace(code,'createCoasterStructure(event.data)', 'event.data.candidate ? createCoasterStructure(event.data.near, true) : createBaselineStructure(event.data.near)');
+`+replace(code,'createCoasterStructure(event.data)', 'event.data.candidate ? createCoasterStructure(event.data.near, "short") : createBaselineStructure(event.data.near)');
       }
       if (id.endsWith('/WorldIntentWorkshop.tsx')) {
         code=replace(code, '<WorldIntentReflectiveSurface roughness={.65}', `<WorldIntentReflectiveSurface reflect={${variant}} roughness={.65}`);

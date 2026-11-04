@@ -74,13 +74,16 @@ export interface CoasterCollider {
   rotation?: Vec3;
   surface?: boolean;
 }
-export function createCoasterStructure(detailed: boolean, craftSample = false) {
+export type CoasterStructureScope = 'legacy' | 'short' | 'full';
+export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full') {
   return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
-  const craft = craftSample ? COASTER_TRACK_CRAFT : undefined;
+  const fullStructure = scope === 'full';
+  const craft = fullStructure ? { ...COASTER_TRACK_CRAFT, scope: 'full' as const, detailed }
+    : scope === 'short' ? COASTER_TRACK_CRAFT : undefined;
   const spans = coasterRailSpans(detailed), track = addCoasterRailSections(steel, detailed, spans, craft);
   const steps = Math.ceil(COASTER_LENGTH / (detailed ? 1.05 : 3));
-  for (let i = 0; i < steps; i++) {
+  for (let i = 0; !fullStructure && i < steps; i++) {
     const a = coasterFrame(i / steps);
     if (!inCoasterStructureSample(i / steps) && i % 3 === 0) steel.beam(tuple(a.point.clone().addScaledVector(a.side, -1)), tuple(a.point.clone().addScaledVector(a.side, 1)), .09, P.copper);
   }
@@ -103,7 +106,8 @@ export function createCoasterStructure(detailed: boolean, craftSample = false) {
   for (const { a, b, beams, u } of supports) {
     for (const segment of beams) {
       const {a:from,b:to,radius}=segment,d=to.clone().sub(from);
-      if(detailed&&radius>=.3)steel.parts.push(createSupportMemberDetail(segment));
+      if (fullStructure) steel.parts.push(createSupportMemberDetail(segment, craft));
+      else if (detailed && radius >= .3) steel.parts.push(createSupportMemberDetail(segment));
       else steel.beam(tuple(from),tuple(to),radius,radius<.2?P.rail:P.steel,8);
       const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()),e=new Euler().setFromQuaternion(q);
       colliders.push({position:tuple(from.clone().add(to).multiplyScalar(.5)),half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z]});
@@ -112,7 +116,8 @@ export function createCoasterStructure(detailed: boolean, craftSample = false) {
       const base=coasterSupportBase(p.x,p.z);
       steel.housing([p.x,base+.5,p.z],[2.5,1,2.5],P.concrete);
       colliders.push({position:[p.x,base+.5,p.z],half:[1.25,.5,1.25]});
-      if (!inCoasterStructureSample(u)) steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
+      if (fullStructure) COASTER_TRACK_CRAFT.mark(steel.parts[steel.parts.length - 1], 'grout');
+      else if (!inCoasterStructureSample(u)) steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
     }
   }
   addArchitecture(steel, glow, colliders, detailed);
@@ -260,7 +265,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
       const bay = x + side * width * .28;
       box([bay, y + 1.87, front + .079], [width * .29, 2.12, .23], '#687a81');
       markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
-      for (const dy of [-.48, -.16, .16, .48]) {
+      for (const dy of detailed ? [-.48, -.16, .16, .48] : [-.32, .32]) {
         box([bay, y + 1.87 + dy, front + .206], [width * .245, .13, .08], '#334853');
         markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.matteSoffit);
       }
