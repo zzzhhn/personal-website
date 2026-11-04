@@ -33,9 +33,14 @@ if (vIntentCraft > 11.5 && vIntentCraft < 14.5) {
   vec3 incident = vIntentNight / max(bakedPigment, vec3(0.001));
   nightRadiance = incident * finish.pigment * (1.0 - finish.metalness);
 }
+if ((vIntentCraft > 16.5 && vIntentCraft < 17.5) || (vIntentCraft > 20.5 && vIntentCraft < 21.5)) {
+  // The bake contains the old flat paving pigment. Retain its illumination,
+  // while letting the actual joints and slab variation remain visible at night.
+  nightRadiance *= finish.pigment / max(bakedPigment, vec3(0.001));
+}
 totalEmissiveRadiance += nightRadiance * uIntentNight;`);
 };
-const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r9';
+const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r10';
 const compileReflectiveCraft = (shader: Shader) => {
   compileCraft(shader);
   shader.fragmentShader = shader.fragmentShader
@@ -52,7 +57,7 @@ const compileReflectiveCraft = (shader: Shader) => {
 #endif
 `);
 };
-const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r4';
+const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r5';
 
 type SurfaceProps = { roughness?: number; metalness?: number; craft?: boolean; environment?: Texture | null; reflective?: boolean };
 
