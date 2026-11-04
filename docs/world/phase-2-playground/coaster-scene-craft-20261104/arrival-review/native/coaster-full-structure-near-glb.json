@@ -1,0 +1,27 @@
+{
+  "importer": "Three.js GLTFLoader fresh import",
+  "objects": 7,
+  "triangles": 143260,
+  "materials": [
+    "connectionSteel",
+    "grout",
+    "railSeat",
+    "runningSteel",
+    "spineCoat",
+    "supportCoat",
+    "tieCoat"
+  ],
+  "coloredVertices": 429780,
+  "bounds": [
+    [
+      -48.26008224487305,
+      -10,
+      -202.16046142578125
+    ],
+    [
+      166.05393981933594,
+      84.43965911865234,
+      52.0633544921875
+    ]
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "sourceCommit": "a5525b521af96e0cdefdb5b60bff2d13265fcfb7",
+  "sourcesSha256": {
+    "arrival.json": "173119df16cb3d9e36729a0c09884e5cd77c8ae9ba179bb399c90776958b8834",
+    "coaster-full-structure-far.source.json": "aeed68de5140feff2b6f8b762717f728fe22de0cfff87e5652c921e70a2dcf6d",
+    "coaster-full-structure-near.source.json": "77102a2be47ae04ee22781b03e529fe9f2ae6b200845778e9b92e91b0d59eef9"
+  },
+  "files": {
+    "coaster-arrival-assemblies-glb.json": {
+      "bytes": 1486,
+      "sha256": "102b312341996eb41773d3a3fda5f6aa2bfaab3f8df5eb1e1aa20751a1d91fb6"
+    },
+    "coaster-arrival-assemblies.glb": {
+      "bytes": 531740,
+      "sha256": "92a45b850efc847c24e339d8f2f5ba40d31eae7c142e0f95c5b0d575d1bee742"
+    },
+    "coaster-full-structure-far-glb.json": {
+      "bytes": 429,
+      "sha256": "016f60bcaae8ac5b33c72bd3505df83d27a99e9ffea997a1a8ae505d767b7d5e"
+    },
+    "coaster-full-structure-far.glb": {
+      "bytes": 7824992,
+      "sha256": "907772bb277da8d2403663aa94406d9b97e89a10c8f420a4329d3673bbd18ba9"
+    },
+    "coaster-full-structure-near-glb.json": {
+      "bytes": 446,
+      "sha256": "0049dfc8bd628e565af8fcab2155636f4f9d604cf49ca457e5f3e7841f090316"
+    },
+    "coaster-full-structure-near.glb": {
+      "bytes": 17199616,
+      "sha256": "715866baec6138bcc0dc8c01f82a95f8b3cd7317e7d4bd004e5ce45f1b393fa5"
+    }
+  },
+  "readback": "Three.js GLTFLoader fresh import",
+  "blender": "Both invocations stalled in macOS shared file list initialization before script startup."
+}
