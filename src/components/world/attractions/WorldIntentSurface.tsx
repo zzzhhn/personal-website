@@ -35,7 +35,7 @@ if (vIntentCraft > 11.5 && vIntentCraft < 14.5) {
 }
 totalEmissiveRadiance += nightRadiance * uIntentNight;`);
 };
-const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r8';
+const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r9';
 const compileReflectiveCraft = (shader: Shader) => {
   compileCraft(shader);
   shader.fragmentShader = shader.fragmentShader
@@ -52,7 +52,7 @@ const compileReflectiveCraft = (shader: Shader) => {
 #endif
 `);
 };
-const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r3';
+const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r4';
 
 type SurfaceProps = { roughness?: number; metalness?: number; craft?: boolean; environment?: Texture | null; reflective?: boolean };
 

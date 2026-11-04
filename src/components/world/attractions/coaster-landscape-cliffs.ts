@@ -37,7 +37,9 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
     const a=new Vector3(...coasterWorld(COASTER_CLIFF_WALK[i-1])),b=new Vector3(...coasterWorld(COASTER_CLIFF_WALK[i]));
     const forward=b.clone().sub(a).normalize(),side=new Vector3(-forward.z,0,forward.x).normalize(),normal=side.clone().cross(forward).normalize();
     const q=new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(forward,normal,side)),length=a.distanceTo(b),mid=a.clone().add(b).multiplyScalar(.5);
-    addBox(mid.clone().addScaledVector(normal,-.18),[length+.2,.36,5.2],q,'#aaa08b',true);
+    const deckApproach = i === COASTER_CLIFF_WALK.length - 1;
+    addBox(mid.clone().addScaledVector(normal,-.18),[length+.2,.36,5.2],q,deckApproach ? '#a9a18c' : '#aaa08b',true);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.lookoutPaving);
     for(const sign of [-1,1]){
       glow.beam(a.clone().addScaledVector(side,sign*2.48).addScaledVector(up,.16).toArray() as Vec3,b.clone().addScaledVector(side,sign*2.48).addScaledVector(up,.16).toArray() as Vec3,.045,'#ffd087',4);
       // The final horizontal leg is already inside the guarded deck. Preserve its floor/light
@@ -58,6 +60,7 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
     }
   }
   addBox(new Vector3(...coasterWorld(COASTER_LOOKOUT.center)),COASTER_LOOKOUT.size,new Quaternion(),'#a9a18c',true);
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.lookoutPaving);
   addCoasterLookoutSample(steel,glow,colliders);
   for(const [x,y,z] of COASTER_CLIFF_LAMPS){
     steel.beam(coasterWorld([x,8.08,z]),coasterWorld([x,y+.35,z]),.1,'#62737a');

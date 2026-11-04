@@ -1,7 +1,7 @@
 import { BufferAttribute, type BufferGeometry } from 'three';
 
 export const INTENT_CRAFT = { roofSheet: 1, flashing: 2, roller: 3, powderCoat: 4, worktop: 5,
-  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17, mineralCladding: 18, matteSoffit: 19, tunnelRoof: 20 } as const;
+  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17, mineralCladding: 18, matteSoffit: 19, tunnelRoof: 20, lookoutPaving: 21 } as const;
 export const INTENT_CRAFT_ATTRIBUTE = 'intentCraftSurface';
 const craftRoles = new WeakMap<BufferGeometry, number>();
 
@@ -73,6 +73,23 @@ float intentMineral(vec2 p) {
 IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
   vec3 p = vIntentCraftPoint;
   vec3 n = normalize(vIntentCraftNormal);
+  if (vIntentCraft > 20.5 && vIntentCraft < 21.5) {
+    if (n.y < 0.7) return IntentFinish(pigment, rough, metal);
+    // The horizontal approach shares the deck projection. For a slope, the
+    // tangential projection of world up points along the actual incline.
+    vec3 run = p.y > 8.5 ? vec3(0.0, 0.0, -1.0) : normalize(vec3(29.0, 0.0, -6.0));
+    if (n.y < 0.999) run = normalize(vec3(0.0, 1.0, 0.0) - n * n.y);
+    vec3 across = normalize(cross(run, n));
+    vec3 fromLanding = p - vec3(105.0, 9.08, -175.0);
+    vec2 panel = vec2(dot(fromLanding, run), dot(fromLanding, across)) / vec2(1.8, 1.3);
+    vec2 edge = min(fract(panel), 1.0 - fract(panel));
+    vec2 footprint = fwidth(panel);
+    vec2 seam = 1.0 - smoothstep(vec2(0.012), vec2(0.023) + footprint, edge);
+    float visible = 1.0 - smoothstep(0.08, 0.32, max(footprint.x, footprint.y));
+    float variation = intentMineralHash(floor(panel));
+    float layer = mix(1.0, mix(0.92, 1.08, variation) - 0.27 * max(seam.x, seam.y), visible);
+    return IntentFinish(pigment * layer, 0.94, 0.0);
+  }
   if (vIntentCraft > 19.5 && vIntentCraft < 20.5) {
     if (n.y < -0.45) return IntentFinish(pigment * vec3(0.88, 0.91, 0.93), 0.90, 0.0);
     return IntentFinish(pigment, 0.53, 0.15);

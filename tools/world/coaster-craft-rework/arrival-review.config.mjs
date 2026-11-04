@@ -53,7 +53,7 @@ const capture = {...readback, transform(code,id) {
   return replace(replace(controlled,'s.shot?.startsWith("craft-intake-")','s.shot'),
     'loading:s.loading.active,frame:gl.info.render.frame,',`loading:s.loading.active,frame:gl.info.render.frame,
     assets:s.loading,drawCalls:gl.info.render.calls,triangles:gl.info.render.triangles,
-    reflectivePrograms:gl.info.programs?.filter(program=>program.cacheKey.includes('intent-baked-night-v2-local-craft-reflect-r3')).length,`);
+    reflectivePrograms:gl.info.programs?.filter(program=>program.cacheKey.includes('intent-baked-night-v2-local-craft-reflect-r4')).length,`);
 }};
 export default {...base,vite:{...base.vite,
   plugins:[arrivalReview(),capture,...base.vite.plugins.slice(1)],
