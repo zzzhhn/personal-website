@@ -1,0 +1,158 @@
+{
+  "first": {
+    "source": "coaster-entry-full-v17",
+    "shot": "scene-workshop-day",
+    "quality": "balanced",
+    "time": 720,
+    "weather": "clear",
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "direction": [
+      -0.5618006477335896,
+      -0.3210289415620512,
+      -0.7624437362098716
+    ],
+    "fov": 50,
+    "exposure": 1,
+    "canvas": [
+      1710,
+      875
+    ],
+    "dpr": 1,
+    "night": 0,
+    "blend": 1,
+    "shadowPending": true,
+    "shadowError": "",
+    "shadowWork": {
+      "slices": 456,
+      "cpuMs": 1352.9000009298325,
+      "cancelled": 0
+    },
+    "loading": false,
+    "failed": {
+      "phase": "ready",
+      "loaded": 231,
+      "total": 231,
+      "active": false,
+      "failed": 0
+    },
+    "calls": 212,
+    "triangles": 1756635,
+    "geometries": 201,
+    "textures": 80,
+    "programs": 117,
+    "frame": 561,
+    "hidden": false,
+    "paused": true,
+    "active": false,
+    "frameIntervals": null,
+    "player": [
+      50,
+      1.9600000000000002,
+      -125
+    ],
+    "nearby": null,
+    "ride": null,
+    "second": 0,
+    "progress": {
+      "version": 1,
+      "bankRevision": "original-20261027-v1",
+      "passed": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "clarified": [
+        "T7"
+      ],
+      "chestOpen": false,
+      "keyTaken": false,
+      "gateOpen": false
+    }
+  },
+  "second": {
+    "source": "coaster-entry-full-v17",
+    "shot": "scene-workshop-day",
+    "quality": "balanced",
+    "time": 720,
+    "weather": "clear",
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "direction": [
+      -0.5618006477335896,
+      -0.3210289415620512,
+      -0.7624437362098716
+    ],
+    "fov": 50,
+    "exposure": 1,
+    "canvas": [
+      1710,
+      875
+    ],
+    "dpr": 1,
+    "night": 0,
+    "blend": 1,
+    "shadowPending": true,
+    "shadowError": "",
+    "shadowWork": {
+      "slices": 457,
+      "cpuMs": 1356.6000008583069,
+      "cancelled": 0
+    },
+    "loading": false,
+    "failed": {
+      "phase": "ready",
+      "loaded": 231,
+      "total": 231,
+      "active": false,
+      "failed": 0
+    },
+    "calls": 212,
+    "triangles": 1756635,
+    "geometries": 201,
+    "textures": 80,
+    "programs": 117,
+    "frame": 562,
+    "hidden": false,
+    "paused": true,
+    "active": false,
+    "frameIntervals": null,
+    "player": [
+      50,
+      1.9600000000000002,
+      -125
+    ],
+    "nearby": null,
+    "ride": null,
+    "second": 0,
+    "progress": {
+      "version": 1,
+      "bankRevision": "original-20261027-v1",
+      "passed": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "clarified": [
+        "T7"
+      ],
+      "chestOpen": false,
+      "keyTaken": false,
+      "gateOpen": false
+    }
+  },
+  "sameFrame": false,
+  "note": "Bounded review-only paused window. Does not establish whole-world long-term memory or energy behavior."
+}

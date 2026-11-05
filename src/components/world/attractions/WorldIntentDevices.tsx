@@ -1,4 +1,8 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { COASTER_ARCHITECTURE_CRAFT, COASTER_WORKSHOP_CRAFT } from './coaster-craft-promotion';
+import WorldCoasterChestTransfer from './WorldCoasterChestTransfer';
+import WorldCoasterGateCraft from './WorldCoasterGateCraft';
+import WorldIntentWorkshopCraft from './WorldIntentWorkshopCraft';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Group, Quaternion } from 'three';
 import { CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
@@ -27,7 +31,7 @@ export function IntentInteraction({ target }: { target: IntentTarget }) {
   return null;
 }
 export default function WorldIntentDevices() {
-  return <><WorldIntentWorkshop /><IntentChest /><IntentGate />
+  return <>{COASTER_WORKSHOP_CRAFT ? <WorldIntentWorkshopCraft /> : <WorldIntentWorkshop />}<WorldCoasterChestTransfer keyVisual={COASTER_ARCHITECTURE_CRAFT ? <Suspense fallback={null}><WorldCoasterGateCraft part="key" /></Suspense> : undefined} /><IntentGate />
     <IntentInteraction target="chest" /><IntentInteraction target="gate" /><IntentInteraction target="board" /></>;
 }
 
@@ -60,8 +64,8 @@ function IntentGate() {
   const leaves = useRef<(RapierRigidBody | null)[]>([]), progress = useRef(open ? 1 : 0);
   const initial = useRef(open ? 1 : 0).current, rotation = useRef(new Quaternion());
   const { world } = useRapier();
-  const geometry = useMemo(createIntentGateLeaf, []);
-  useEffect(() => () => geometry.dispose(), [geometry]);
+  const geometry = useMemo(() => COASTER_ARCHITECTURE_CRAFT ? null : createIntentGateLeaf(), []);
+  useEffect(() => () => geometry?.dispose(), [geometry]);
   useBeforePhysicsStep(() => {
     const target = open ? 1 : 0;
     if (useWorldStore.getState().paused || document.hidden || progress.current === target) return;
@@ -76,9 +80,10 @@ function IntentGate() {
   return <group onClick={e => { e.stopPropagation(); activateIntentTarget('gate'); }}>
     {COASTER_GATE_LEAVES.map((leaf, i) => <RigidBody key={leaf.side} ref={body => { leaves.current[i] = body; }}
       type="kinematicPosition" colliders={false} position={leaf.hinge} rotation={[0, coasterGateAngle(leaf.side, initial), 0]}
-      userData={{ solid: true, assetId: 'coaster-gate' }}>
+      userData={{ solid: true, assetId: 'coaster-gate', shadowDynamic: true }}>
       <CuboidCollider position={leaf.centre} args={leaf.half} />
-      <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentReflectiveSurface roughness={.8} /></mesh>
+      {COASTER_ARCHITECTURE_CRAFT ? <group scale={[-leaf.side, 1, 1]}><Suspense fallback={null}><WorldCoasterGateCraft part="leaf" /></Suspense></group>
+        : geometry && <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentReflectiveSurface roughness={.8} /></mesh>}
     </RigidBody>)}
   </group>;
 }

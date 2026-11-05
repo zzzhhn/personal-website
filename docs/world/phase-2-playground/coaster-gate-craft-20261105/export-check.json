@@ -1,0 +1,246 @@
+{
+  "asset": "coaster-gate.glb",
+  "sha256": "26d02b6955ea8adf30fb2b996cb7ccfc7823685ca52f9980984d732635f6e989",
+  "bytes": 1040880,
+  "roots": {
+    "GateStatic": {
+      "min": [
+        -6.600000381469727,
+        0.0,
+        -0.9999999403953552
+      ],
+      "max": [
+        6.600000381469727,
+        7.050000190734863,
+        1.0699999332427979
+      ],
+      "triangles": 13536,
+      "primitives": 5,
+      "materials": 5,
+      "vertices": 10368
+    },
+    "GateLeaf": {
+      "min": [
+        -0.1230001449584961,
+        0.10000002384185791,
+        -0.15050001442432404
+      ],
+      "max": [
+        5.074999809265137,
+        3.190000057220459,
+        0.17800000309944153
+      ],
+      "triangles": 10608,
+      "primitives": 4,
+      "materials": 4,
+      "vertices": 8288
+    },
+    "GateKey": {
+      "min": [
+        -0.3999999761581421,
+        -0.20499999821186066,
+        -0.054999999701976776
+      ],
+      "max": [
+        0.7009999752044678,
+        0.20499999821186066,
+        0.054999999701976776
+      ],
+      "triangles": 1700,
+      "primitives": 2,
+      "materials": 2,
+      "vertices": 1360
+    },
+    "GateLeafShadow": {
+      "min": [
+        -0.12299990653991699,
+        0.10000002384185791,
+        -0.15049999952316284
+      ],
+      "max": [
+        5.074999809265137,
+        3.189999580383301,
+        0.17800000309944153
+      ],
+      "triangles": 448,
+      "primitives": 1,
+      "materials": 1,
+      "vertices": 684
+    }
+  },
+  "materials": [
+    {
+      "name": "05 Graphite gaskets and recesses",
+      "roughness": 0.7200000286102295,
+      "metallic": 0,
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    },
+    {
+      "name": "01 Petrol baked enamel",
+      "roughness": 0.3700000047683716,
+      "metallic": 0.1599999964237213,
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    },
+    {
+      "name": "04 Honed grey limestone",
+      "roughness": 1,
+      "metallic": 0,
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    },
+    {
+      "name": "03 Brushed gate hardware",
+      "roughness": 1,
+      "metallic": 0.8799999952316284,
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    },
+    {
+      "name": "02 Copper satin powder coat",
+      "roughness": 0.3400000035762787,
+      "metallic": 0.28999999165534973,
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    },
+    {
+      "name": "06 Forged warm key alloy",
+      "roughness": 1,
+      "metallic": 0.7200000286102295,
+      "extensions": [
+        "KHR_materials_clearcoat"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "name": "honed-mineral-roughness-256",
+      "width": 256,
+      "height": 256,
+      "bytes": 64429
+    },
+    {
+      "name": "directional-hardware-roughness-256",
+      "width": 256,
+      "height": 256,
+      "bytes": 60731
+    }
+  ],
+  "scope": "static exported geometry; runtime, visual uplift and performance unverified",
+  "leafPoses": {
+    "-1:closed": {
+      "min": [
+        -5.123000144958496,
+        0.10000002384185791,
+        -0.15050001442432404
+      ],
+      "max": [
+        0.07499980926513672,
+        3.190000057220459,
+        0.17800000309944153
+      ]
+    },
+    "-1:open": {
+      "min": [
+        -5.151317007661609,
+        0.10000002384185791,
+        -0.12210384179980562
+      ],
+      "max": [
+        -4.246169130708982,
+        3.190000057220459,
+        5.04946600401485
+      ]
+    },
+    "1:closed": {
+      "min": [
+        -0.07499980926513672,
+        0.10000002384185791,
+        -0.15050001442432404
+      ],
+      "max": [
+        5.123000144958496,
+        3.190000057220459,
+        0.17800000309944153
+      ]
+    },
+    "1:open": {
+      "min": [
+        4.246169130708982,
+        0.10000002384185791,
+        -0.12210384179980562
+      ],
+      "max": [
+        5.151317007661609,
+        3.190000057220459,
+        5.04946600401485
+      ]
+    }
+  },
+  "shadowLeafPoses": {
+    "-1:closed": {
+      "min": [
+        -5.122999906539917,
+        0.10000002384185791,
+        -0.15049999952316284
+      ],
+      "max": [
+        0.07499980926513672,
+        3.189999580383301,
+        0.17800000309944153
+      ]
+    },
+    "-1:open": {
+      "min": [
+        -5.151317007661609,
+        0.10000002384185791,
+        -0.12210360511858484
+      ],
+      "max": [
+        -4.246169145501558,
+        3.189999580383301,
+        5.04946600401485
+      ]
+    },
+    "1:closed": {
+      "min": [
+        -0.07499980926513672,
+        0.10000002384185791,
+        -0.15049999952316284
+      ],
+      "max": [
+        5.122999906539917,
+        3.189999580383301,
+        0.17800000309944153
+      ]
+    },
+    "1:open": {
+      "min": [
+        4.246169145501558,
+        0.10000002384185791,
+        -0.12210360511858484
+      ],
+      "max": [
+        5.151317007661609,
+        3.189999580383301,
+        5.04946600401485
+      ]
+    }
+  },
+  "shadowCarrierBufferBytes": 10896,
+  "visibleInvariance": {
+    "beforeGlbSha256": "6e1fcf85a015676b0e05a2102fd26d66b6928dae3fd0a715c8a9cc0f5e673c08",
+    "afterGlbSha256": "26d02b6955ea8adf30fb2b996cb7ccfc7823685ca52f9980984d732635f6e989",
+    "beforeVisibleSha256": "fa1f745ff4c4087f42a154d88df49b51e76c61f4e4a2b1fe42eb2dee26542eac",
+    "afterVisibleSha256": "fa1f745ff4c4087f42a154d88df49b51e76c61f4e4a2b1fe42eb2dee26542eac",
+    "allVisibleRootsEqual": true
+  },
+  "totalTriangles": 26292,
+  "drawPrimitivesOneStaticTwoLeavesOneKey": 15
+}

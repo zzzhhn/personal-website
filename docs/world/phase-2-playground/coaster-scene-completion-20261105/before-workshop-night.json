@@ -1,0 +1,63 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 148,
+  "camera": [
+    48,
+    10,
+    -110
+  ],
+  "canvas": [
+    1710,
+    875
+  ],
+  "direction": [
+    -0.5618006477335896,
+    -0.3210289415620512,
+    -0.7624437362098716
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 215,
+    "phase": "ready",
+    "total": 215
+  },
+  "fov": 50,
+  "frame": 3287,
+  "frameIntervals": null,
+  "geometries": 212,
+  "hidden": false,
+  "loading": false,
+  "nearby": null,
+  "night": 1,
+  "paused": false,
+  "player": [
+    50,
+    1.96,
+    -125
+  ],
+  "programs": 146,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": false,
+    "clarified": [],
+    "gateOpen": false,
+    "keyTaken": false,
+    "passed": [],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": null,
+  "second": 0,
+  "shadowError": "",
+  "shadowPending": false,
+  "shot": "scene-workshop-night",
+  "source": "coaster-entry-baseline-v10",
+  "textures": 73,
+  "time": 0,
+  "triangles": 797496,
+  "weather": "clear"
+}

@@ -1,3 +1,4 @@
+import { COASTER_ARCHITECTURE_CRAFT } from './coaster-craft-promotion.ts';
 import { Euler, BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
@@ -75,7 +76,7 @@ export interface CoasterCollider {
   surface?: boolean;
 }
 export type CoasterStructureScope = 'legacy' | 'short' | 'full';
-export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full') {
+export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT) {
   return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
   const fullStructure = scope === 'full';
@@ -120,7 +121,7 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
       else if (!inCoasterStructureSample(u)) steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
     }
   }
-  addArchitecture(steel, glow, colliders, detailed);
+  addArchitecture(steel, glow, colliders, detailed, craftedArchitecture);
   addTunnel(steel, glow, detailed);
   const art = addCoasterLandscape(steel, glow, colliders, detailed);
   addCoasterCliffs(steel, glow, colliders, true);
@@ -180,7 +181,8 @@ export function addCoasterStationRoof(steel: CoasterBatch) {
 }
 
 /** Static architecture only: existing solids and all luminous geometry retain their owners. */
-export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
+export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, craftedArchitecture = false) {
+  const stationArtStart = steel.parts.length;
   const box=(p:Vec3,size:Vec3,color:string)=>steel.box(coasterWorld(p),size,color);
   const shell=(p:Vec3,size:Vec3,color:string)=>steel.housing(coasterWorld(p),size,color);
   const beam=(a:Vec3,b:Vec3,r:number,color=P.copper)=>steel.beam(coasterWorld(a),coasterWorld(b),r,color,6);
@@ -244,6 +246,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
     box([-17.04,2.7,z],[.1,3.3,2.5],P.dark);
     for(const y of [1.5,2.7,3.9])box([-17.11,y,z],[.12,.12,2.5],P.rail);
   }
+  if (craftedArchitecture) discardCoasterVisuals(steel, stationArtStart);
   // Equipment buildings use corner posts and broad service bays within their retained shells.
   const equipment=(cx:number,base:number,cz:number,w:number,h:number,d:number)=>{
     for(const sx of [-1,1])for(const sz of [-1,1]){
@@ -295,7 +298,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
   }
   equipment(-36,0,13,9,10.8,9);
   equipment(24,5,-92,10,7.6,8);
-  if(detailed){
+  if(detailed && !craftedArchitecture){
     // Connection plates and fasteners are close-range accents, not a second far-LOD silhouette.
     for(const z of [36.32,40.7,45.2,49.68])for(const y of [.8,5.5]){
       box([12.82,y,z],[.13,.4,.42],P.steel);
@@ -305,7 +308,13 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
   }
 }
 
-function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean) {
+/** Only remove the visual range after its original collider/glow construction.
+ * Both near and worker-built far geometry use the same immutable selection. */
+function discardCoasterVisuals(batch: CoasterBatch, start: number) {
+  batch.parts.splice(start).forEach(geometry => geometry.dispose());
+}
+
+function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean, craftedArchitecture: boolean) {
   const box = (p: Vec3, size: Vec3, color: string, solid = false, surface = false) => {
     steel.box(coasterWorld(p), size, color);
     if (solid) colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3, surface });
@@ -324,6 +333,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   box([0, .04, 55], [10, .08, 8], P.concrete, true, true);
   markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
+  const stationVisualStart = steel.parts.length;
   // Functional boarding passage: six real treads and a flush bridge to the stopped car.
   for (const step of [...COASTER_BOARDING.stairs, COASTER_BOARDING.threshold]) {
     const yaw = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw);
@@ -350,6 +360,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   }
   box([-2, 7.55, 40], [9, .3, 6], P.steel);
   housing([10, 6.6, 43], [3.8, .8, 8], P.dark, false);
+  if (craftedArchitecture) discardCoasterVisuals(steel, stationVisualStart);
   addCoasterTower(steel, glow, colliders, detailed);
   // A tangible equipment house inside the descending helix, plus a separate rear power block.
   housing([-36, 5.4, 13], [9, 10.8, 9], P.steel, true, .06);
@@ -364,7 +375,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   }
   beam([-30.8, 1.2, 10], [-30.8, 8.7, 10], .42, P.copper);
   beam([-30.8, 8.7, 10], [-33, 8.7, 10], .42, P.copper);
-  addCoasterBuildingArt(steel, detailed);
+  addCoasterBuildingArt(steel, detailed, craftedArchitecture);
   // Layered service structure is staff-only; closed stair access distinguishes it from the route to the ride.
   const deck = (p: Vec3, size: Vec3) => {
     box(p, size, '#9b9c92', true, true);
@@ -408,6 +419,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     markIntentCraft(steel.parts[steel.parts.length - 1], role);
   };
   const { mineralCladding: mineral, structuralCoat: coat, matteSoffit: matte } = INTENT_CRAFT;
+  const gateVisualStart = steel.parts.length;
   for (const x of [-5.8, 5.8]) {
     housing([x, 3.3, COASTER_GATE_Z], [1.6, 6.6, 1.8], '#829094', true, .095);
     markIntentCraft(steel.parts[steel.parts.length - 1], mineral);
@@ -433,8 +445,9 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   for (const side of [-1, 1]) {
     finishBox([side * 5.38, 6.4, COASTER_GATE_Z + .90], [1.96, .84, .17], '#72868e', coat);
   }
+  if (craftedArchitecture) discardCoasterVisuals(steel, gateVisualStart);
   if (detailed) {
-    for (let i = 0; i < 6; i++) box([8.5 + i * .6, 6.9, 43], [.25, .35, 5.5], P.rail);
+    if (!craftedArchitecture) for (let i = 0; i < 6; i++) box([8.5 + i * .6, 6.9, 43], [.25, .35, 5.5], P.rail);
     for (const x of [-41, -31]) beam([x, 12, 8], [x, 12, 18], .07, P.copper);
     for (const z of [8, 18]) beam([-41, 12, z], [-31, 12, z], .07, P.copper);
     // Ladder is fenced staff access, not an implied guest route.

@@ -1,0 +1,65 @@
+{
+  "baselineCommit": "b75c474",
+  "originalHashes": {
+    "coaster-chest.glb": "0e4483bcee6ba2fe63848691c81b24d5fb1091f5415e26272c5cc3c22a2f7382",
+    "coaster-chest-editable.blend": "20177d76ffa77ed20cef9437c23b04c9d2fbe5e6a9e885cf9733d443f45ca1d7"
+  },
+  "scope": "CPU structure/channel audit; texture samplers are placeholders, no decoded image or WebGL performance claim",
+  "source": {
+    "visibleBatches": 28,
+    "shadowBatches": 9,
+    "triangles": 17940
+  },
+  "derivative": {
+    "mainBatches": [
+      13,
+      15
+    ],
+    "visualBatches": [
+      11,
+      13
+    ],
+    "shadowBatches": [
+      2,
+      2
+    ],
+    "visibleTriangles": [
+      17940,
+      17940
+    ],
+    "mainTriangles": [
+      31276,
+      31276
+    ],
+    "shadowTriangles": [
+      13336,
+      13336
+    ]
+  },
+  "owned": {
+    "geometry": 4,
+    "materials": 9,
+    "instanceBuffers": 2,
+    "bufferBytes": 364536
+  },
+  "motion": {
+    "lidAngle": [
+      0,
+      -1.3
+    ],
+    "shackleAngle": [
+      0,
+      -1.12
+    ],
+    "shackleLift": 0.058,
+    "independentTaskMasksAudited": 128
+  },
+  "preserved": [
+    "all visible triangles and PBR channels",
+    "original opaque double-sided shadow triangles",
+    "cached GLB geometry/materials/textures",
+    "original asset hashes"
+  ],
+  "tradeoff": "Two full-resolution nonwriting shadow carriers add main-pass geometry; fewer submissions are not an FPS result.",
+  "runtimePerformance": "pending fresh-page matched browser windows"
+}

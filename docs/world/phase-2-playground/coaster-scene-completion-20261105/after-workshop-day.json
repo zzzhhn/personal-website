@@ -1,0 +1,63 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 196,
+  "camera": [
+    48,
+    10,
+    -110
+  ],
+  "canvas": [
+    1710,
+    875
+  ],
+  "direction": [
+    -0.5618006477335896,
+    -0.3210289415620512,
+    -0.7624437362098716
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 231,
+    "phase": "ready",
+    "total": 231
+  },
+  "fov": 50,
+  "frame": 4032,
+  "frameIntervals": null,
+  "geometries": 184,
+  "hidden": false,
+  "loading": false,
+  "nearby": null,
+  "night": 0,
+  "paused": false,
+  "player": [
+    50,
+    1.96,
+    -125
+  ],
+  "programs": 125,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": false,
+    "clarified": [],
+    "gateOpen": false,
+    "keyTaken": false,
+    "passed": [],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": null,
+  "second": 0,
+  "shadowError": "",
+  "shadowPending": false,
+  "shot": "scene-workshop-day",
+  "source": "coaster-entry-full-v12",
+  "textures": 78,
+  "time": 720,
+  "triangles": 1823748,
+  "weather": "clear"
+}

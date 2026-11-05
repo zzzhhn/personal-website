@@ -1,0 +1,36 @@
+{
+  "scope": "Actual GLB loaded through Three GLTFLoader for CPU geometry/material audit. Embedded textures use placeholder samplers; no image or GPU result.",
+  "glb": {
+    "bytes": 2935220,
+    "triangles": 64272,
+    "visibleTriangles": 61948,
+    "shadowTriangles": 2324,
+    "primitives": 32,
+    "materials": 8
+  },
+  "idle": {
+    "visualBatches": 11,
+    "shadowBatches": 1,
+    "visualTriangles": 57436
+  },
+  "allOutputs": {
+    "visualBatches": 31,
+    "shadowBatches": 1,
+    "visualTriangles": 64156
+  },
+  "allocations": {
+    "ownedGeometryBytes": 59376,
+    "instanceBytes": 1344,
+    "borrowedSourceGeometry": "The original GLB geometry and texture cache remain resident; no second full visual clone"
+  },
+  "staticShadowTriangles": 2324,
+  "countsExclude": "Original unchanged glow mesh and existing single point light, integrated by WorldIntentWorkshopCraft.",
+  "articulatedLeverMatrices": 28,
+  "materialChannels": "Eight cloned physical material responses, normals, UVs, roughness samplers and clearcoat survive the loader/adapter; source cache unchanged.",
+  "shadow": "One independent authored static silhouette, merged by position/index into an opaque double-sided carrier. No dynamic output or handle shadows were added.",
+  "shadowCost": "The independent low-detail shadow silhouette is also submitted in the main pass with color/depth writes disabled. Its position/index buffers are an additional owned copy; fewer triangles/submissions do not establish a performance win.",
+  "distanceStrategy": "No LOD, resolution reduction or distance-hide threshold. One static root uses its merged whole-workshop bounds; ordinary Three frustum culling applies. The seven lever sets retain the existing frustumCulled=false behavior.",
+  "nativeCollisionAuthority": "Original createWorkshopGeometry contact and workshopColliders, byte-identical source to b75c474.",
+  "runtimeVisual": "pending ordinary day/night and articulated WebGL view",
+  "runtimePerformance": "pending matched whole-scene frame windows"
+}

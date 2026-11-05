@@ -1,15 +1,19 @@
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { COASTER_ARCHITECTURE_CRAFT } from './coaster-craft-promotion';
+import WorldCoasterStationCraft from './WorldCoasterStationCraft';
+import WorldCoasterGateCraft from './WorldCoasterGateCraft';
+import { memo, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { Group, PointLight } from 'three';
 import { useWorldStore } from '../store';
 import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, updateAttractionRide } from './attraction-ride';
-import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH } from './coaster-track';
-import { createCoasterCar, createCoasterStructure, type CoasterCollider } from './coaster-geometry';
+import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH, COASTER_GATE_Z } from './coaster-track';
+import { createCoasterStructure, type CoasterCollider } from './coaster-geometry';
 import { activateIntentTarget, intentRideClock, intentRideQaHold, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
 import { advanceCoasterTransition, returnCoasterToStation } from './coaster-transition';
 import WorldIntentDevices from './WorldIntentDevices';
+import WorldCoasterTrainCraft from './WorldCoasterTrainCraft';
 import WorldIntentSigns from './WorldIntentSigns';
 import { WorldIntentReflectiveSurface } from './WorldIntentSurface';
 import WorldCoasterVegetation from './WorldCoasterVegetation';
@@ -53,6 +57,10 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
   return <><group name="intent-coaster" userData={{noOcclusionFade:true}}>
     <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.82} metalness={.16} /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
+    {COASTER_ARCHITECTURE_CRAFT && <Suspense fallback={null}>
+      <WorldCoasterStationCraft detailed={renderedNear} />
+      <group position={coasterWorld([0, 0, COASTER_GATE_Z])}><WorldCoasterGateCraft part="static" /></group>
+    </Suspense>}
     <CoasterTrain active={enabled} />
     {enabled && <><WorldIntentDevices /><WorldIntentSigns />
       {/* LODs have different support counts. Never reuse an index-keyed collider
@@ -71,7 +79,7 @@ export default memo(WorldIntentCoaster);
 
 function CoasterTrain({ active }: { active: boolean }) {
   const occupied = useIntentStore(s => s.riding);
-  const cars = useRef<(Group | null)[]>([]), geometry = useMemo(createCoasterCar, []);
+  const cars = useRef<(Group | null)[]>([]);
   const audio = useRef<CoasterMotionAudio | null>(null);
   useEffect(() => {
     if (!active) return;
@@ -80,7 +88,6 @@ function CoasterTrain({ active }: { active: boolean }) {
     return () => { audio.current = null; release(); };
   }, [active]);
   const presented = useRef({ u: NaN, view: '' });
-  useEffect(() => () => geometry.dispose(), [geometry]);
   useFrame((_, dt) => {
     if (!active) return;
     const w = useWorldStore.getState(), s = useIntentStore.getState();
@@ -125,10 +132,10 @@ function CoasterTrain({ active }: { active: boolean }) {
   }, -60);
   // Boarding holds the cars still for seconds; they must never enter static shadow chunks.
   return <group name="intent-train" userData={{ shadowDynamic: true }} onClick={e => { e.stopPropagation(); activateIntentTarget('board'); }}>
+    <Suspense fallback={null}><WorldCoasterTrainCraft cars={cars} /></Suspense>
     {[0, 1, 2].map(i => {
       const f = coasterFrame(-i * 3.55 / COASTER_LENGTH);
       return <group key={i} ref={el => { cars.current[i] = el; }} position={f.point} quaternion={f.rotation}>
-        <mesh geometry={geometry} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.65} metalness={.12} /></mesh>
         {active && !occupied && <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-parked-car' }}>
           {COASTER_CAR_PANELS.map((p, j) => <CuboidCollider key={j} position={p.at} args={p.size.map(v => v / 2) as [number, number, number]} />)}
         </RigidBody>}

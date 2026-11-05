@@ -1,0 +1,307 @@
+[
+  {
+    "at": "2026-11-05T06:38:52.566Z",
+    "calls": {
+      "max": 148,
+      "n": 360,
+      "p50": 148,
+      "p95": 148
+    },
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 0,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 13082.899999976158,
+    "exposure": 1,
+    "frameMs": {
+      "max": 297.39999997615814,
+      "n": 360,
+      "p50": 21.600000023841854,
+      "p95": 57.39999997615814
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 1,
+    "over33ms": 108,
+    "over50ms": 32,
+    "pageAgeMs": 472720.2999999523,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 212,
+      "programs": 146,
+      "textures": 73
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-workshop-night",
+    "source": "coaster-entry-baseline-v10",
+    "triangles": {
+      "max": 797496,
+      "n": 360,
+      "p50": 797496,
+      "p95": 797496
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=workshop",
+    "variant": "optimized/optimized",
+    "worldMinutes": 0
+  },
+  {
+    "at": "2026-11-05T07:19:17.598Z",
+    "calls": {
+      "max": 194,
+      "n": 360,
+      "p50": 194,
+      "p95": 194
+    },
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 0,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 16377.100000023842,
+    "exposure": 1,
+    "frameMs": {
+      "max": 225.40000009536743,
+      "n": 360,
+      "p50": 28.600000023841854,
+      "p95": 78.89999997615814
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 1,
+    "over33ms": 156,
+    "over50ms": 71,
+    "pageAgeMs": 356188.5,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 243,
+      "programs": 165,
+      "textures": 78
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-workshop-night",
+    "source": "coaster-entry-full-v12",
+    "triangles": {
+      "max": 998747,
+      "n": 360,
+      "p50": 998747,
+      "p95": 998747
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=workshop",
+    "variant": "optimized/optimized",
+    "worldMinutes": 0
+  },
+  {
+    "at": "2026-11-05T07:39:17.491Z",
+    "calls": {
+      "max": 146,
+      "n": 360,
+      "p50": 146,
+      "p95": 146
+    },
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 0,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 10933.100000023842,
+    "exposure": 1,
+    "frameMs": {
+      "max": 83.70000004768372,
+      "n": 360,
+      "p50": 23.09999990463257,
+      "p95": 34.60000002384186
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 1,
+    "over33ms": 21,
+    "over50ms": 5,
+    "pageAgeMs": 121323.90000009535,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 219,
+      "programs": 155,
+      "textures": 73
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-workshop-night",
+    "source": "coaster-entry-baseline-v13",
+    "triangles": {
+      "max": 791578,
+      "n": 360,
+      "p50": 791578,
+      "p95": 791578
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=workshop",
+    "variant": "optimized/optimized",
+    "worldMinutes": 0
+  },
+  {
+    "at": "2026-11-05T07:46:59.227Z",
+    "calls": {
+      "max": 194,
+      "n": 360,
+      "p50": 194,
+      "p95": 194
+    },
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 0,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 11944.600000023842,
+    "exposure": 1,
+    "frameMs": {
+      "max": 72.30000007152557,
+      "n": 360,
+      "p50": 21.90000009536743,
+      "p95": 49.300000071525574
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 1,
+    "over33ms": 61,
+    "over50ms": 13,
+    "pageAgeMs": 347750.60000002384,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 228,
+      "programs": 154,
+      "textures": 81
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-workshop-night",
+    "source": "coaster-entry-full-v14",
+    "triangles": {
+      "max": 927627,
+      "n": 360,
+      "p50": 927627,
+      "p95": 927627
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=workshop",
+    "variant": "optimized/optimized",
+    "worldMinutes": 0
+  },
+  {
+    "at": "2026-11-05T07:48:37.719Z",
+    "calls": {
+      "max": 194,
+      "n": 360,
+      "p50": 194,
+      "p95": 194
+    },
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 0,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 11854.600000023842,
+    "exposure": 1,
+    "frameMs": {
+      "max": 136.70000004768372,
+      "n": 360,
+      "p50": 20.800000071525577,
+      "p95": 51.89999997615814
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 1,
+    "over33ms": 63,
+    "over50ms": 22,
+    "pageAgeMs": 446243.5,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 228,
+      "programs": 154,
+      "textures": 81
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-workshop-night",
+    "source": "coaster-entry-full-v14",
+    "triangles": {
+      "max": 927627,
+      "n": 360,
+      "p50": 927627,
+      "p95": 927627
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=workshop",
+    "variant": "optimized/optimized",
+    "worldMinutes": 0
+  }
+]

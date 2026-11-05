@@ -1,0 +1,470 @@
+[
+  {
+    "phase": "result",
+    "tool": "lookup",
+    "taskId": "T1",
+    "player": [
+      26,
+      1.9388248920440674,
+      -127.94999694824219
+    ],
+    "station": {
+      "detailed": true
+    },
+    "parts": [
+      {
+        "name": "RequestCarrier",
+        "visible": false,
+        "position": [
+          34,
+          2.66,
+          -122
+        ]
+      },
+      {
+        "name": "Motion_lookup",
+        "visible": true,
+        "position": [
+          26.45,
+          3.05,
+          -130.2
+        ]
+      },
+      {
+        "name": "Motion_plan",
+        "visible": false,
+        "position": [
+          29.15,
+          2.65,
+          -134.75
+        ]
+      },
+      {
+        "name": "Motion_debug",
+        "visible": false,
+        "position": [
+          34.2,
+          2.65,
+          -136
+        ]
+      },
+      {
+        "name": "Motion_rewrite",
+        "visible": false,
+        "position": [
+          40,
+          2.5300000000000002,
+          -132.4
+        ]
+      },
+      {
+        "name": "Motion_extract",
+        "visible": false,
+        "position": [
+          42,
+          2.5300000000000002,
+          -128
+        ]
+      },
+      {
+        "name": "Motion_act",
+        "visible": false,
+        "position": [
+          41,
+          3.03,
+          -122
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "result",
+    "tool": "plan",
+    "taskId": "T2",
+    "player": [
+      30,
+      1.9388248920440674,
+      -132.9499969482422
+    ],
+    "station": {
+      "detailed": true
+    },
+    "parts": [
+      {
+        "name": "RequestCarrier",
+        "visible": false,
+        "position": [
+          34,
+          2.66,
+          -122
+        ]
+      },
+      {
+        "name": "Motion_lookup",
+        "visible": true,
+        "position": [
+          26.45,
+          3.05,
+          -130.2
+        ]
+      },
+      {
+        "name": "Motion_plan",
+        "visible": true,
+        "position": [
+          30.45,
+          2.65,
+          -134.75
+        ]
+      },
+      {
+        "name": "Motion_debug",
+        "visible": false,
+        "position": [
+          34.2,
+          2.65,
+          -136
+        ]
+      },
+      {
+        "name": "Motion_rewrite",
+        "visible": false,
+        "position": [
+          40,
+          2.5300000000000002,
+          -132.4
+        ]
+      },
+      {
+        "name": "Motion_extract",
+        "visible": false,
+        "position": [
+          42,
+          2.5300000000000002,
+          -128
+        ]
+      },
+      {
+        "name": "Motion_act",
+        "visible": false,
+        "position": [
+          41,
+          3.03,
+          -122
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "result",
+    "tool": "rewrite",
+    "taskId": "T3",
+    "player": [
+      40,
+      1.9388248920440674,
+      -130.9499969482422
+    ],
+    "station": {
+      "detailed": true
+    },
+    "parts": [
+      {
+        "name": "RequestCarrier",
+        "visible": false,
+        "position": [
+          34,
+          2.66,
+          -122
+        ]
+      },
+      {
+        "name": "Motion_lookup",
+        "visible": true,
+        "position": [
+          26.45,
+          3.05,
+          -130.2
+        ]
+      },
+      {
+        "name": "Motion_plan",
+        "visible": true,
+        "position": [
+          30.45,
+          2.65,
+          -134.75
+        ]
+      },
+      {
+        "name": "Motion_debug",
+        "visible": false,
+        "position": [
+          34.2,
+          2.65,
+          -136
+        ]
+      },
+      {
+        "name": "Motion_rewrite",
+        "visible": true,
+        "position": [
+          40,
+          2.5300000000000002,
+          -132.4
+        ]
+      },
+      {
+        "name": "Motion_extract",
+        "visible": false,
+        "position": [
+          42,
+          2.5300000000000002,
+          -128
+        ]
+      },
+      {
+        "name": "Motion_act",
+        "visible": false,
+        "position": [
+          41,
+          3.03,
+          -122
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "result",
+    "tool": "extract",
+    "taskId": "T4",
+    "player": [
+      42,
+      1.9388248920440674,
+      -125.94999694824219
+    ],
+    "station": {
+      "detailed": true
+    },
+    "parts": [
+      {
+        "name": "RequestCarrier",
+        "visible": false,
+        "position": [
+          34,
+          2.66,
+          -122
+        ]
+      },
+      {
+        "name": "Motion_lookup",
+        "visible": true,
+        "position": [
+          26.45,
+          3.05,
+          -130.2
+        ]
+      },
+      {
+        "name": "Motion_plan",
+        "visible": true,
+        "position": [
+          30.45,
+          2.65,
+          -134.75
+        ]
+      },
+      {
+        "name": "Motion_debug",
+        "visible": false,
+        "position": [
+          34.2,
+          2.65,
+          -136
+        ]
+      },
+      {
+        "name": "Motion_rewrite",
+        "visible": true,
+        "position": [
+          40,
+          2.5300000000000002,
+          -132.4
+        ]
+      },
+      {
+        "name": "Motion_extract",
+        "visible": true,
+        "position": [
+          42,
+          2.5300000000000002,
+          -127.5
+        ]
+      },
+      {
+        "name": "Motion_act",
+        "visible": false,
+        "position": [
+          41,
+          3.03,
+          -122
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "result",
+    "tool": "debug",
+    "taskId": "T5",
+    "player": [
+      35,
+      1.9388248920440674,
+      -133.9499969482422
+    ],
+    "station": {
+      "detailed": true
+    },
+    "parts": [
+      {
+        "name": "RequestCarrier",
+        "visible": false,
+        "position": [
+          34,
+          2.66,
+          -122
+        ]
+      },
+      {
+        "name": "Motion_lookup",
+        "visible": true,
+        "position": [
+          26.45,
+          3.05,
+          -130.2
+        ]
+      },
+      {
+        "name": "Motion_plan",
+        "visible": true,
+        "position": [
+          30.45,
+          2.65,
+          -134.75
+        ]
+      },
+      {
+        "name": "Motion_debug",
+        "visible": true,
+        "position": [
+          35.6,
+          2.65,
+          -136
+        ]
+      },
+      {
+        "name": "Motion_rewrite",
+        "visible": true,
+        "position": [
+          40,
+          2.5300000000000002,
+          -132.4
+        ]
+      },
+      {
+        "name": "Motion_extract",
+        "visible": true,
+        "position": [
+          42,
+          2.5300000000000002,
+          -127.5
+        ]
+      },
+      {
+        "name": "Motion_act",
+        "visible": false,
+        "position": [
+          41,
+          3.03,
+          -122
+        ]
+      }
+    ]
+  },
+  {
+    "phase": "result",
+    "tool": "act",
+    "taskId": "T6",
+    "player": [
+      41,
+      1.9388248920440674,
+      -119.94999694824219
+    ],
+    "station": {
+      "detailed": true
+    },
+    "parts": [
+      {
+        "name": "RequestCarrier",
+        "visible": false,
+        "position": [
+          34,
+          2.66,
+          -122
+        ]
+      },
+      {
+        "name": "Motion_lookup",
+        "visible": true,
+        "position": [
+          26.45,
+          3.05,
+          -130.2
+        ]
+      },
+      {
+        "name": "Motion_plan",
+        "visible": true,
+        "position": [
+          30.45,
+          2.65,
+          -134.75
+        ]
+      },
+      {
+        "name": "Motion_debug",
+        "visible": true,
+        "position": [
+          35.6,
+          2.65,
+          -136
+        ]
+      },
+      {
+        "name": "Motion_rewrite",
+        "visible": true,
+        "position": [
+          40,
+          2.5300000000000002,
+          -132.4
+        ]
+      },
+      {
+        "name": "Motion_extract",
+        "visible": true,
+        "position": [
+          42,
+          2.5300000000000002,
+          -127.5
+        ]
+      },
+      {
+        "name": "Motion_act",
+        "visible": true,
+        "position": [
+          41,
+          2.63,
+          -122
+        ]
+      }
+    ]
+  }
+]

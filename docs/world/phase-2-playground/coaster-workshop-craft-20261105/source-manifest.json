@@ -1,0 +1,47 @@
+{
+  "baseline": "b75c474",
+  "blender": "5.1.2",
+  "units": "metres",
+  "front": "+Z",
+  "up": "+Y",
+  "editableParts": 545,
+  "shadowEditableParts": 127,
+  "roots": [
+    "StaticWorkshop",
+    "RequestCarrier",
+    "RequestSaddles",
+    "ControlLever",
+    "Motion_lookup",
+    "Motion_plan",
+    "Motion_debug",
+    "Motion_rewrite",
+    "Motion_extract",
+    "Motion_act",
+    "ShadowWorkshop"
+  ],
+  "materials": [
+    "01 Petrol baked enamel",
+    "02 Blue graphite inset",
+    "03 Copper satin powder coat",
+    "04 Brushed stainless work surface",
+    "05 Graphite molded liner",
+    "06 Warm porcelain equipment",
+    "07 Bell bronze",
+    "08 Cyan instrument lens"
+  ],
+  "textures": {
+    "source": "Deterministic authored procedural roughness, no external imagery",
+    "license": "Project-authored",
+    "size": [
+      256,
+      256
+    ]
+  },
+  "geometry": "Full source construction retained; no simplification or quality tier reduction",
+  "acceptance": {
+    "geometry": "pending verify.py",
+    "runtime": "not evaluated",
+    "visual": "not evaluated",
+    "performance": "not evaluated"
+  }
+}

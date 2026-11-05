@@ -1,0 +1,157 @@
+{
+  "first": {
+    "source": "coaster-entry-full-v16",
+    "shot": "scene-workshop-day",
+    "quality": "balanced",
+    "time": 720,
+    "weather": "clear",
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "direction": [
+      -0.5618006477335896,
+      -0.3210289415620512,
+      -0.7624437362098716
+    ],
+    "fov": 50,
+    "exposure": 1,
+    "canvas": [
+      1710,
+      875
+    ],
+    "dpr": 1,
+    "night": 0,
+    "blend": 1,
+    "shadowPending": true,
+    "shadowError": "",
+    "shadowWork": {
+      "slices": 148,
+      "cpuMs": 558.2000008821487,
+      "cancelled": 0
+    },
+    "loading": false,
+    "failed": {
+      "phase": "ready",
+      "loaded": 233,
+      "total": 233,
+      "active": false,
+      "failed": 0
+    },
+    "calls": 227,
+    "triangles": 1101515,
+    "geometries": 231,
+    "textures": 79,
+    "programs": 131,
+    "frame": 1070,
+    "hidden": false,
+    "paused": true,
+    "active": false,
+    "frameIntervals": null,
+    "player": [
+      50,
+      1.9600000000000002,
+      -125
+    ],
+    "nearby": null,
+    "ride": null,
+    "second": 0,
+    "progress": {
+      "version": 1,
+      "bankRevision": "original-20261027-v1",
+      "passed": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "clarified": [
+        "T7"
+      ],
+      "chestOpen": false,
+      "keyTaken": false,
+      "gateOpen": false
+    }
+  },
+  "second": {
+    "source": "coaster-entry-full-v16",
+    "shot": "scene-workshop-day",
+    "quality": "balanced",
+    "time": 720,
+    "weather": "clear",
+    "camera": [
+      48,
+      10,
+      -110
+    ],
+    "direction": [
+      -0.5618006477335896,
+      -0.3210289415620512,
+      -0.7624437362098716
+    ],
+    "fov": 50,
+    "exposure": 1,
+    "canvas": [
+      1710,
+      875
+    ],
+    "dpr": 1,
+    "night": 0,
+    "blend": 1,
+    "shadowPending": true,
+    "shadowError": "",
+    "shadowWork": {
+      "slices": 300,
+      "cpuMs": 1183.8000000715256,
+      "cancelled": 0
+    },
+    "loading": false,
+    "failed": {
+      "phase": "ready",
+      "loaded": 233,
+      "total": 233,
+      "active": false,
+      "failed": 0
+    },
+    "calls": 228,
+    "triangles": 1102880,
+    "geometries": 231,
+    "textures": 79,
+    "programs": 131,
+    "frame": 1222,
+    "hidden": false,
+    "paused": true,
+    "active": false,
+    "frameIntervals": null,
+    "player": [
+      50,
+      1.9600000000000002,
+      -125
+    ],
+    "nearby": null,
+    "ride": null,
+    "second": 0,
+    "progress": {
+      "version": 1,
+      "bankRevision": "original-20261027-v1",
+      "passed": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5",
+        "T6"
+      ],
+      "clarified": [
+        "T7"
+      ],
+      "chestOpen": false,
+      "keyTaken": false,
+      "gateOpen": false
+    }
+  },
+  "note": "Two paused DOM observations across separate tool calls. Frames advanced from 1070 to 1222 and chunk slices from 148 to 300. Review-owned unconditional invalidation was removed, but this does NOT establish that all initialization work stops on pause. Final page navigated to static gallery to release the canvas."
+}

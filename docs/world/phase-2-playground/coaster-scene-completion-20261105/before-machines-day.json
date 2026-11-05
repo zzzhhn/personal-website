@@ -1,0 +1,63 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 116,
+  "camera": [
+    27,
+    4,
+    -125
+  ],
+  "canvas": [
+    1710,
+    875
+  ],
+  "direction": [
+    0.7982944493305509,
+    -0.1938715091231338,
+    -0.5702103209503938
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 215,
+    "phase": "ready",
+    "total": 215
+  },
+  "fov": 50,
+  "frame": 2744,
+  "frameIntervals": null,
+  "geometries": 204,
+  "hidden": false,
+  "loading": false,
+  "nearby": null,
+  "night": 0,
+  "paused": false,
+  "player": [
+    50,
+    1.96,
+    -125
+  ],
+  "programs": 115,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": false,
+    "clarified": [],
+    "gateOpen": false,
+    "keyTaken": false,
+    "passed": [],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": null,
+  "second": 0,
+  "shadowError": "",
+  "shadowPending": false,
+  "shot": "scene-machines-day",
+  "source": "coaster-entry-baseline-v10",
+  "textures": 73,
+  "time": 720,
+  "triangles": 714440,
+  "weather": "clear"
+}

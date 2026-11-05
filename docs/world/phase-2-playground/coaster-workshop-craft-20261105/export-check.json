@@ -1,0 +1,147 @@
+{
+  "scope": "CPU GLB/source structure only; no runtime image or performance acceptance",
+  "glbBytes": 2935220,
+  "triangles": 64272,
+  "primitives": 32,
+  "materials": 8,
+  "visibleSourceTriangles": 61948,
+  "shadowSourceTriangles": 2324,
+  "images": [
+    {
+      "name": "steel-roughness-256",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 59225
+    },
+    {
+      "name": "enamel-roughness-256",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 62250
+    },
+    {
+      "name": "copper-roughness-256",
+      "size": [
+        256,
+        256
+      ],
+      "bytes": 62208
+    }
+  ],
+  "roots": [
+    "ControlLever",
+    "Motion_act",
+    "Motion_debug",
+    "Motion_extract",
+    "Motion_lookup",
+    "Motion_plan",
+    "Motion_rewrite",
+    "RequestCarrier",
+    "RequestSaddles",
+    "ShadowWorkshop",
+    "StaticWorkshop"
+  ],
+  "meshStats": {
+    "StaticWorkshop": [
+      {
+        "name": "Cube.239",
+        "triangles": 54860,
+        "primitives": 8
+      }
+    ],
+    "RequestCarrier": [
+      {
+        "name": "Cube.288",
+        "triangles": 948,
+        "primitives": 3
+      }
+    ],
+    "RequestSaddles": [
+      {
+        "name": "Cube.283",
+        "triangles": 400,
+        "primitives": 1
+      }
+    ],
+    "ControlLever": [
+      {
+        "name": "Control | grip end cap",
+        "triangles": 368,
+        "primitives": 3
+      }
+    ],
+    "Motion_lookup": [
+      {
+        "name": "Lookup | polished moving scan ring",
+        "triangles": 2112,
+        "primitives": 2
+      }
+    ],
+    "Motion_plan": [
+      {
+        "name": "Cube.291",
+        "triangles": 696,
+        "primitives": 4
+      }
+    ],
+    "Motion_debug": [
+      {
+        "name": "Cube.293",
+        "triangles": 968,
+        "primitives": 3
+      }
+    ],
+    "Motion_rewrite": [
+      {
+        "name": "Cube.295",
+        "triangles": 224,
+        "primitives": 2
+      }
+    ],
+    "Motion_extract": [
+      {
+        "name": "Cube.299",
+        "triangles": 1128,
+        "primitives": 2
+      }
+    ],
+    "Motion_act": [
+      {
+        "name": "Cube.305",
+        "triangles": 244,
+        "primitives": 3
+      }
+    ],
+    "ShadowWorkshop": [
+      {
+        "name": "Cube.371",
+        "triangles": 2324,
+        "primitives": 1
+      }
+    ]
+  },
+  "degenerateTriangles": 0,
+  "frozenSourceHashes": {
+    "src/components/world/attractions/WorldIntentWorkshop.tsx": "0777dcc14ef479e8f1ddf7c42a461eda4ee9fbcc0678f26af7844932ef462fee",
+    "src/components/world/attractions/intent-workshop-geometry.ts": "79dc57eec964f93940eaf4601fe0b6904e2c22c095803ba3700ffcae3e577724",
+    "src/components/world/attractions/intent-workshop-layout.ts": "ead808fe7837fb03fc86ca95f391fd79dcd74faf890a7da8f650312212d806c7",
+    "src/components/world/attractions/intent-workshop-runtime.ts": "35a0c0349fede96debe1e476c1da1cbacfb54ae454fa622aa0d395c4a1c383ae"
+  },
+  "preservedSourceContracts": [
+    "interaction registration",
+    "all six motion formulas",
+    "all five path points",
+    "carrier interpolation",
+    "lever x-axis and pivots",
+    "original glow",
+    "original contacts",
+    "original single point lamp"
+  ],
+  "sha256": "268fdd33212257f73e1ecf19addfb3b2a865e686f25ac8ea52c1495678f4cce2",
+  "visualAcceptance": "pending ordinary-view WebGL comparison",
+  "performance": "pending matched browser measurements"
+}

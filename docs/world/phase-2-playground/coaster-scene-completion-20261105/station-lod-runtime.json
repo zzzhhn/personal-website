@@ -1,0 +1,9 @@
+{
+  "source": "coaster-entry-full-v14",
+  "far": {
+    "detailed": false
+  },
+  "near": {
+    "detailed": true
+  }
+}

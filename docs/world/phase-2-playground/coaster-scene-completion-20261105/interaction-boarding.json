@@ -1,0 +1,70 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 79,
+  "camera": [
+    15.180321418298162,
+    39.195720942218735,
+    -234.33777635420375
+  ],
+  "canvas": [
+    1710,
+    875
+  ],
+  "direction": [
+    0.016080183955305947,
+    0.034460467604258416,
+    -0.9992766903397976
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 231,
+    "phase": "ready",
+    "total": 231
+  },
+  "fov": 58,
+  "frame": 28816,
+  "frameIntervals": null,
+  "geometries": 335,
+  "hidden": false,
+  "loading": false,
+  "nearby": null,
+  "night": 0,
+  "paused": false,
+  "player": [
+    15.29202838290772,
+    39.55511336744205,
+    -241.2796226784251
+  ],
+  "programs": 170,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": true,
+    "clarified": [],
+    "gateOpen": true,
+    "keyTaken": true,
+    "passed": [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6"
+    ],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": "riding",
+  "second": 13.167299999952316,
+  "shadowError": "",
+  "shadowPending": false,
+  "shot": null,
+  "source": "coaster-entry-full-v12",
+  "textures": 79,
+  "time": 720,
+  "triangles": 531735,
+  "weather": "clear"
+}

@@ -1,0 +1,70 @@
+{
+  "source_revision": "b75c474f73ffa186e7bbc5522e4656dcbbedf9c3",
+  "blender": "5.1.2",
+  "units": "metres",
+  "gltf_axes": "+X across / +Y up / +Z player-facing",
+  "roots": {
+    "GateStatic": {
+      "editable_parts": 72,
+      "origin": [
+        0,
+        0,
+        0
+      ]
+    },
+    "GateLeaf": {
+      "editable_parts": 60,
+      "origin": [
+        0,
+        0,
+        0
+      ]
+    },
+    "GateKey": {
+      "editable_parts": 8,
+      "origin": [
+        0,
+        0,
+        0
+      ]
+    },
+    "GateLeafShadow": {
+      "editable_parts": 24,
+      "origin": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "materials": [
+    "01 Petrol baked enamel",
+    "02 Copper satin powder coat",
+    "03 Brushed gate hardware",
+    "04 Honed grey limestone",
+    "05 Graphite gaskets and recesses",
+    "06 Forged warm key alloy"
+  ],
+  "maps": {
+    "count": 2,
+    "size": [
+      256,
+      256
+    ],
+    "kind": "authored roughness, not photographed scans"
+  },
+  "gate_static_placement": "coasterWorld([0,0,COASTER_GATE_Z])",
+  "gate_leaf_placement": "inside original kinematic hinge root, scale=[-leaf.side,1,1]",
+  "key_placement": "original key mesh root, position/rotation unchanged",
+  "generated_files": {
+    "coaster-gate.glb": {
+      "bytes": 1040880,
+      "sha256": "26d02b6955ea8adf30fb2b996cb7ccfc7823685ca52f9980984d732635f6e989"
+    },
+    "coaster-gate-editable.blend": {
+      "bytes": 306404,
+      "sha256": "5acbbd9c8e68906636577b04d1646adf68626a7e4d0bb677d7d484b88c5f6837"
+    }
+  },
+  "validation": "export only; run verify.py; runtime/visual/performance unverified"
+}

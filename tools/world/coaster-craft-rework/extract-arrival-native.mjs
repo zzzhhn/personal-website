@@ -8,7 +8,7 @@ const finishes = {
   0: [.70,.16], 12: [.30,.63], 13: [.63,.06], 14: [.46,.48], 15: [.88,0],
   16: [.93,0], 18: [.88,0], 19: [.90,0], 20: [.53,.15],
 };
-const structure = createCoasterStructure(true, 'legacy');
+const structure = createCoasterStructure(true, 'legacy', false);
 const tunnelSteel = new CoasterBatch(), tunnelLights = new CoasterBatch();
 addTunnel(tunnelSteel, tunnelLights, true);
 const batches = [

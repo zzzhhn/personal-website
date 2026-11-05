@@ -25,7 +25,7 @@ function addAssembly(name, geometry, include = () => true, offset = [0,0,0]) {
     }
   }
 }
-const workshop = createWorkshopGeometry(), carrier = createWorkshopCapsule(), structure = createCoasterStructure(true);
+const workshop = createWorkshopGeometry(), carrier = createWorkshopCapsule(), structure = createCoasterStructure(true, 'full', false);
 addAssembly('Workshop static body', workshop.body);
 addAssembly('Carrier shell', carrier, undefined, [34,4.15,-128]);
 addAssembly('Station roof, structure and paved forecourt', structure.steel, role => [1,2,6,13,14,17].includes(role));

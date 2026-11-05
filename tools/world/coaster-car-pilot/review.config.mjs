@@ -3,6 +3,7 @@ import base from '../coaster-craft-rework/full-scene-review.config.mjs';
 // Same source, environment, camera, exposure and rendering settings for A/B.
 // Only the inner car visual changes; train transforms/physics/ride are untouched.
 const pilot={name:'single-car-astra-review',enforce:'pre',transform(code,id){
+  if(id.endsWith('/coaster-craft-promotion.ts')){if(process.env.COASTER_CRAFT_BASELINE==='1')return code.replaceAll('= true;', '= false;');if(process.env.COASTER_WORKSHOP_BASELINE==='1')return code.replace('COASTER_WORKSHOP_CRAFT = true;', 'COASTER_WORKSHOP_CRAFT = false;');}
   if(id.endsWith('/layout-v4-flag.ts'))return code.replace('export const WORLD_SHOTS_V4 = [',`export const WORLD_SHOTS_V4 = [
     {id:'pilot-front-day',position:[46.5,3.8,-156.5] as Vec3,target:[50,2.5,-152] as Vec3},
     {id:'pilot-front-night',position:[46.5,3.8,-156.5] as Vec3,target:[50,2.5,-152] as Vec3},
@@ -21,29 +22,40 @@ const pilot={name:'single-car-astra-review',enforce:'pre',transform(code,id){
     button('原版',()=>variant('before'));
     button('精修原始',()=>variant('after'));
     button('精修优化',()=>variant('optimized'));
-    button('侧面',()=>view('scene-train'));button('前侧',()=>view('pilot-front'));button('常规距离',()=>view('pilot-ordinary'));
-    button('宝箱原版',()=>{window.dispatchEvent(new CustomEvent('chest-pilot',{detail:false}));view('pilot-chest');});
-    button('宝箱精修',()=>{window.dispatchEvent(new CustomEvent('chest-pilot',{detail:true}));view('pilot-chest');});
+    button('侧面',()=>view('scene-train'));button('前侧',()=>view('pilot-front'));button('常规距离',()=>view('pilot-ordinary'));button('工坊',()=>view('scene-workshop'));button('机器',()=>view('scene-machines'));button('站房',()=>view('scene-station'));button('入口',()=>view('scene-entrance'));
+    const chest=(mode:string)=>{document.documentElement.dataset.chestPilot=mode;window.dispatchEvent(new CustomEvent('chest-pilot',{detail:mode}));view('pilot-chest');};
+    button('宝箱旧版',()=>chest('legacy'));button('宝箱原始',()=>chest('source'));button('宝箱合批',()=>chest('optimized'));
     button('日 / 夜',()=>{const s=useWorldStore.getState(),dark=s.light!=='night';useWorldStore.setState(v=>({shot:(s.shot??'scene-train-day').replace(/-(day|night)$/,'')+(dark?'-night':'-day'),timeRunning:false,weather:'clear',worldMinutes:dark?0:720,light:dark?'night':'noon',timeRevision:v.timeRevision+1}));invalidate();});
-    document.body.append(bar);document.documentElement.dataset.carPilot=new URLSearchParams(location.search).get('car')??'optimized';mark(document.documentElement.dataset.carPilot);view('pilot-front');
+    document.body.append(bar);document.documentElement.dataset.carPilot=new URLSearchParams(location.search).get('car')??'optimized';mark(document.documentElement.dataset.carPilot);document.documentElement.dataset.chestPilot=new URLSearchParams(location.search).get('chest')??'optimized';const wanted=new URLSearchParams(location.search).get('view')??'front';view(['chest','front','ordinary'].includes(wanted)?'pilot-'+wanted:'scene-'+wanted);
     return()=>bar.remove();
   },[invalidate]);`);
-  if(id.endsWith('/WorldIntentDevices.tsx'))return `import { Suspense, useState } from 'react';\nimport WorldCoasterChestTransfer from './WorldCoasterChestTransfer';\n`+code.replace('<IntentChest />','<ChestTransferChoice />')+`
-function ChestTransferChoice(){const [on,setOn]=useState(false);useEffect(()=>{const fn=(e:Event)=>setOn((e as CustomEvent<boolean>).detail);window.addEventListener('chest-pilot',fn);return()=>window.removeEventListener('chest-pilot',fn);},[]);return on?<Suspense fallback={<IntentChest/>}><WorldCoasterChestTransfer/></Suspense>:<IntentChest/>;}
+  if(id.endsWith('/WorldIntentDevices.tsx'))return `import { useState } from 'react';\nimport WorldCoasterChestSourceReview from './WorldCoasterChestSourceReview';\n`+code.replace(/<WorldCoasterChestTransfer keyVisual=\{COASTER_ARCHITECTURE_CRAFT.*?\} \/>/,'<ChestTransferChoice />')+`
+function ChestTransferChoice(){const [mode,setMode]=useState(new URLSearchParams(window.location.search).get('chest')??'optimized');useEffect(()=>{const fn=(e:Event)=>setMode((e as CustomEvent<string>).detail);window.addEventListener('chest-pilot',fn);return()=>window.removeEventListener('chest-pilot',fn);},[]);return mode==='legacy'?<IntentChest/>:<Suspense fallback={null}>{mode==='source'?<WorldCoasterChestSourceReview/>:<WorldCoasterChestTransfer keyVisual={COASTER_ARCHITECTURE_CRAFT ? <Suspense fallback={null}><WorldCoasterGateCraft part="key"/></Suspense> : undefined}/>}</Suspense>;}
 `;
   if(!id.endsWith('/WorldIntentCoaster.tsx'))return;
+  const refined='<Suspense fallback={null}><WorldCoasterTrainCraft cars={cars} /></Suspense>';
   const old='<mesh geometry={geometry} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.65} metalness={.12} /></mesh>';
-  if(!code.includes(old))throw new Error('Frozen baseline car marker changed');
-  return `import { Suspense } from 'react';\nimport WorldCoasterCarPilot from './WorldCoasterCarPilot';\nimport WorldCoasterTrainCraft from './WorldCoasterTrainCraft';\n`+code.replace('function CoasterTrain({ active }: { active: boolean }) {',`function CoasterTrain({ active }: { active: boolean }) {
+  if(!code.includes(refined))throw new Error('Production train craft marker changed');
+  return `import { createCoasterCar } from './coaster-geometry';\nimport WorldCoasterCarPilot from './WorldCoasterCarPilot';\n`+code.replace('function CoasterTrain({ active }: { active: boolean }) {',`function CoasterTrain({ active }: { active: boolean }) {
+    const geometry=useMemo(createCoasterCar,[]);
+    useEffect(()=>()=>geometry.dispose(),[geometry]);
     const [pilot,setPilot]=useState(new URLSearchParams(window.location.search).get('car')??'optimized');
-    useEffect(()=>{const listener=(event:Event)=>setPilot((event as CustomEvent<string>).detail);window.addEventListener('car-pilot',listener);return()=>window.removeEventListener('car-pilot',listener);},[]);`).replace(old,
-    `{pilot==='before' ? (${old}) : pilot==='after' ? <Suspense fallback={${old}}><WorldCoasterCarPilot /></Suspense> : null}`).replace('{[0, 1, 2].map(i => {',`{pilot==='optimized' && <Suspense fallback={null}><WorldCoasterTrainCraft cars={cars}/></Suspense>}
-    {[0, 1, 2].map(i => {`);
+    useEffect(()=>{const listener=(event:Event)=>setPilot((event as CustomEvent<string>).detail);window.addEventListener('car-pilot',listener);return()=>window.removeEventListener('car-pilot',listener);},[]);`)
+    .replace(refined,`{pilot==='optimized' && ${refined}}`)
+    .replace('{active && !occupied && <RigidBody',`{pilot==='before' ? (${old}) : pilot==='after' ? <Suspense fallback={null}><WorldCoasterCarPilot /></Suspense> : null}
+        {active && !occupied && <RigidBody`);
 }};
 // Bound DOM diagnostics, equally for all variants; do not stringify the entire
 // loading/camera record on every rendered frame while profiling.
 const plugins=base.vite.plugins.map(plugin=>plugin.name==='independent-coaster-scene-review'?{...plugin,transform(code,id){
   const result=plugin.transform(code,id);
-  return typeof result==='string'?result.replace('if (!probe.active || now-probe.updated > 500)', 'if (now-probe.updated > 500 || probe.updated === 0)'):result;
+  return typeof result==='string'?result
+    .replace('!document.hidden && staticShotFrames.frame(!!shot)', '!document.hidden && !paused && staticShotFrames.frame(!!shot)')
+    .replace('if (state.shot && (shadow.pending', 'if (!state.paused && !document.hidden && state.shot && (shadow.pending')
+    .replace('shadowError:shadow.error,', 'shadowError:shadow.error,shadowWork:{slices:shadow.slices,cpuMs:shadow.cpuMs,cancelled:shadow.cancelled},')
+    .replace('updated:0});', 'updated:0,lastStatus:-1});')
+    .replace('if (!probe.active || now-probe.updated > 500)', `const statusBits=(shadow.pending?1:0)|(state.loading.active?2:0)|(sceneReviewClimate.blend<1?4:0)|(state.paused?8:0);
+    if (now-probe.updated > 500 || probe.updated === 0 || probe.lastStatus !== statusBits)`)
+    .replace('probe.updated=now;', 'probe.updated=now; probe.lastStatus=statusBits;'):result;
 }}:plugin);
 export default {...base,vite:{...base.vite,plugins:[pilot,...plugins]}};

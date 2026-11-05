@@ -1,0 +1,42 @@
+{
+  "scope": "Evaluated native source AABB / source-profile audit across all routes and state phases. No Rapier actor simulation, triangle-level contact or visual acceptance.",
+  "carrierRouteSamples": 9612,
+  "dynamicPartPairSamples": 2335716,
+  "samplesPerPhasePerTool": 801,
+  "phases": [
+    "processing",
+    "returning"
+  ],
+  "staticFixtures": 117,
+  "conflicts": [],
+  "exactPiecewiseLinearStaticIntervalChecks": 31590,
+  "staticSweep": "All carrier/source-part AABB trajectories are checked continuously against the static fixture boxes over their exact linear segments; processing and return traverse the same path.",
+  "lagBoundary": {
+    "additionalChildMotionElapsedLagSeconds": [
+      0.025,
+      0.1,
+      0.25
+    ],
+    "samplesPerLagPerTool": 201,
+    "partPairSamples": 146529,
+    "reason": "Original separate useFrame callbacks can observe adjacent clock samples. The original clock rejects dt > .25; the visual candidate adds no different clock."
+  },
+  "upperContactPlaneChecks": {
+    "Lookup | seat 0 contact insert": 1.63,
+    "Lookup | seat 0 contact pan": 1.565,
+    "Lookup | scanner contact crown": 1.99,
+    "Act | ticket contact platen": 1.5175,
+    "Plan | waypoint 0 contact crown": 1.48,
+    "Plan | waypoint socket 0": 1.5075,
+    "Debug | vice contact crown": 1.62,
+    "Debug | motor contact crown": 1.97,
+    "Extract | guide contact crown": 2.185,
+    "Extract | head contact crown": 2.19,
+    "Bell | full contact crown": 1.3
+  },
+  "carrierTravelTop": 3.4800000038743018,
+  "carrierRailLowerPlane": 3.5,
+  "carrierRailClearance": 0.01999999612569825,
+  "fixedRoots": "All original motion / carrier root formulas remain unchanged; corrections are native local geometry.",
+  "roundingLimit": "Central accessible upper planes are aligned. Existing old polygonal cylinder contacts and new denser curved surfaces differ by millimetres between facet vertices; rounded side-corners remain conservative coarse-contact approximations."
+}
