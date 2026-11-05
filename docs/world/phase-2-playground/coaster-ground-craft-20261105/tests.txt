@@ -1,0 +1,17 @@
+✔ v4 apparatus has a larger concave coast and keeps the IBD origin separate (1.566375ms)
+✔ north/east expansion preserves the established entrance, station controls and safe exit (0.102959ms)
+✔ cliff promenade has continuous physical surfaces, modest slopes and clear standing space (1814.440833ms)
+✔ new lookout paving carries diffuse warm night fill, not just luminous outlines (955.250208ms)
+✔ v4 service tower retains warm opaque equipment faces in the full structure (861.218875ms)
+✔ real far/near batches retain every render, night-light and contact byte after transferable ownership handoff (2160.003334ms)
+✔ success terminates the worker, hydrates once and leaves no active job (0.528416ms)
+✔ cancellation, load failure, bad reply and post failure each release the worker exactly once (0.425709ms)
+✔ already cancelled requests do not create a worker (0.075375ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4062.513916

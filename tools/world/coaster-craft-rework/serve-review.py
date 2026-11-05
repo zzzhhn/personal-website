@@ -19,6 +19,13 @@ class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *handler_args, **kwargs):
         super().__init__(*handler_args, directory=str(candidate), **kwargs)
 
+    def end_headers(self):
+        # Local preview roots are promoted in place behind a stable port. Never
+        # keep an old HTML entry pointing at a different build's hashed assets.
+        if self.path.split('?', 1)[0].endswith(('/', '.html', '/local-preview-version.json')):
+            self.send_header('Cache-Control', 'no-store')
+        super().end_headers()
+
     def translate_path(self, path):
         result = Path(super().translate_path(path))
         if result.exists():

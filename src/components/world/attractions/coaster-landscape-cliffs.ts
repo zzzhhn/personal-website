@@ -2,6 +2,7 @@ import { Euler, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'thr
 import { coasterWorld } from './coaster-track.ts';
 import { addCoasterLookoutSample } from './coaster-lookout-sample.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
+import { addCoasterPavingEdges } from './coaster-paving-craft.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -27,6 +28,7 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
   // Coplanar surfaces flickered visibly under the night lighting.
   steel.add(new ExtrudeGeometry(apron,{depth:.12,bevelEnabled:false}), craftApron ? '#b6b3a7' : '#aca48e', new Matrix4().makeTranslation(...coasterWorld([0,0,0])).multiply(new Matrix4().makeRotationX(-Math.PI/2)));
   if (craftApron) markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
+  if (craftApron) addCoasterPavingEdges(steel);
   colliders.push({position:coasterWorld([-16,.06,67]),half:[11,.06,10],surface:true});
   const addBox=(p:Vector3,size:Vec3,q:Quaternion,color:string,surface=false)=>{
     steel.box(p.toArray() as Vec3,size,color,q);

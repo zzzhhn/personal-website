@@ -1,4 +1,5 @@
 import { BufferAttribute, type BufferGeometry } from 'three';
+import { COASTER_PAVING_GLSL } from './coaster-paving-surface.ts';
 
 export const INTENT_CRAFT = { roofSheet: 1, flashing: 2, roller: 3, powderCoat: 4, worktop: 5,
   entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17, mineralCladding: 18, matteSoffit: 19, tunnelRoof: 20, lookoutPaving: 21 } as const;
@@ -63,6 +64,7 @@ varying float vIntentCraft;
 varying vec3 vIntentCraftPoint;
 varying vec3 vIntentCraftNormal;
 struct IntentFinish { vec3 pigment; float roughness; float metalness; };
+${COASTER_PAVING_GLSL}
 float intentMineralHash(vec2 cell) { return fract(sin(dot(cell, vec2(41.7, 289.1))) * 21321.137); }
 float intentMineral(vec2 p) {
   vec2 cell = floor(p), f = fract(p);
@@ -101,12 +103,7 @@ IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
     return IntentFinish(pigment * mix(0.94, 1.04, mineral), 0.88, 0.0);
   }
   if (vIntentCraft > 16.5 && vIntentCraft < 17.5) {
-    vec2 panel = (p.xz - vec2(21.5, -139.0)) / vec2(2.5, 2.25);
-    vec2 edge = min(fract(panel), 1.0 - fract(panel));
-    vec2 seam = 1.0 - smoothstep(vec2(0.004), vec2(0.014) + fwidth(panel), edge);
-    float variation = intentMineralHash(floor(panel));
-    vec3 paving = pigment * mix(0.94, 1.05, variation);
-    return IntentFinish(paving * (1.0 - 0.25 * max(seam.x, seam.y)), 0.91, 0.0);
+    return intentPaving(pigment,p,n);
   }
   if (vIntentCraft > 15.5 && vIntentCraft < 16.5) return IntentFinish(pigment, 0.93, 0.0);
   if (vIntentCraft > 11.5 && vIntentCraft < 15.5) {

@@ -1,0 +1,14 @@
+{
+  "far": {
+    "colliders": "1e29d0f7bd2823809712a2e5cfba9a5438c65f3665b47dc423994bc89891f103",
+    "track": "b61005f47e53475832f0eed2ae72dd6a5477e61030d39623943044d1be14e77f",
+    "relief": "b4d048d9928c51da98911ac45ab657023d13f8ed5f5c6b0a627b19e4311a52fa",
+    "steelVertices": 158448
+  },
+  "near": {
+    "colliders": "c6cf0a778f8c1dcb2298561cfe86f1b1902204e765dc72e33bb0fc016eb645f3",
+    "track": "2131f09df3865dcd2cc400eab496bf75edd4a56dbcf54609761999f283735d3b",
+    "relief": "b4d048d9928c51da98911ac45ab657023d13f8ed5f5c6b0a627b19e4311a52fa",
+    "steelVertices": 178608
+  }
+}

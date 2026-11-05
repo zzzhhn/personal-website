@@ -21,6 +21,10 @@ const compileCraft = (shader: Shader) => {
     .replace('#include <color_fragment>', '#include <color_fragment>\nvec3 bakedPigment = diffuseColor.rgb;\nIntentFinish finish = intentFinish(bakedPigment, roughness, metalness);\ndiffuseColor.rgb = finish.pigment;')
     .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = finish.roughness;')
     .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nmetalnessFactor = finish.metalness;')
+    .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
+if (vIntentCraft > 16.5 && vIntentCraft < 17.5 && vIntentCraftNormal.y > .8) {
+  normal = intentPavingNormal(-vViewPosition, normal, intentPavingHeight, gl_FrontFacing ? 1.0 : -1.0);
+}`)
     .replace(bakedNight, `
 vec3 nightRadiance = vIntentNight;
 if (vIntentCraft > ${INTENT_CRAFT.roller - 0.5} && vIntentCraft < ${INTENT_CRAFT.roller + 0.5}) {
@@ -40,7 +44,7 @@ if ((vIntentCraft > 16.5 && vIntentCraft < 17.5) || (vIntentCraft > 20.5 && vInt
 }
 totalEmissiveRadiance += nightRadiance * uIntentNight;`);
 };
-const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r10';
+const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r11-paving';
 const compileReflectiveCraft = (shader: Shader) => {
   compileCraft(shader);
   shader.fragmentShader = shader.fragmentShader
@@ -57,7 +61,7 @@ const compileReflectiveCraft = (shader: Shader) => {
 #endif
 `);
 };
-const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r5';
+const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r6-paving';
 
 type SurfaceProps = { roughness?: number; metalness?: number; craft?: boolean; environment?: Texture | null; reflective?: boolean };
 
