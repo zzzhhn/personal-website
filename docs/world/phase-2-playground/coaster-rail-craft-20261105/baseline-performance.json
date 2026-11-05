@@ -1,0 +1,124 @@
+[
+  {
+    "variant": "optimized/optimized",
+    "at": "2026-11-05T09:52:02.787Z",
+    "durationMs": 8351.100000023842,
+    "pageAgeMs": 267164,
+    "source": "coaster-entry-full-v17",
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=short-bay",
+    "shot": "scene-short-bay-day",
+    "quality": "balanced",
+    "canvas": [
+      1710,
+      875
+    ],
+    "dpr": 1,
+    "exposure": 1,
+    "camera": [
+      69,
+      5.6,
+      -321
+    ],
+    "worldMinutes": 720,
+    "night": 0,
+    "shadowPending": false,
+    "loadingActive": false,
+    "hidden": false,
+    "frameMs": {
+      "n": 360,
+      "p50": 16.600000023841858,
+      "p95": 30.600000023841858,
+      "max": 63.10000002384186
+    },
+    "over33ms": 14,
+    "over50ms": 3,
+    "calls": {
+      "n": 360,
+      "p50": 74,
+      "p95": 74,
+      "max": 74
+    },
+    "triangles": {
+      "n": 360,
+      "p50": 469195,
+      "p95": 469195,
+      "max": 469195
+    },
+    "residency": {
+      "geometries": 138,
+      "textures": 66,
+      "programs": 73
+    },
+    "craft": {
+      "lod": 1,
+      "uploads": 1,
+      "materials": 8,
+      "shadowTriangles": 5221
+    },
+    "riding": false,
+    "ridePhase": null,
+    "rideSecond": 0,
+    "loop": "demand"
+  },
+  {
+    "variant": "optimized/optimized",
+    "at": "2026-11-05T09:55:29.286Z",
+    "durationMs": 8760,
+    "pageAgeMs": 473663.39999997616,
+    "source": "coaster-entry-full-v17",
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=short-bay",
+    "shot": "scene-short-bay-night",
+    "quality": "balanced",
+    "canvas": [
+      1710,
+      875
+    ],
+    "dpr": 1,
+    "exposure": 1,
+    "camera": [
+      69,
+      5.6,
+      -321
+    ],
+    "worldMinutes": 0,
+    "night": 1,
+    "shadowPending": false,
+    "loadingActive": false,
+    "hidden": false,
+    "frameMs": {
+      "n": 360,
+      "p50": 16.700000047683716,
+      "p95": 29.5,
+      "max": 69.40000009536743
+    },
+    "over33ms": 10,
+    "over50ms": 2,
+    "calls": {
+      "n": 360,
+      "p50": 74,
+      "p95": 74,
+      "max": 74
+    },
+    "triangles": {
+      "n": 360,
+      "p50": 469195,
+      "p95": 469195,
+      "max": 469195
+    },
+    "residency": {
+      "geometries": 138,
+      "textures": 66,
+      "programs": 73
+    },
+    "craft": {
+      "lod": 1,
+      "uploads": 1,
+      "materials": 8,
+      "shadowTriangles": 5221
+    },
+    "riding": false,
+    "ridePhase": null,
+    "rideSecond": 0,
+    "loop": "demand"
+  }
+]

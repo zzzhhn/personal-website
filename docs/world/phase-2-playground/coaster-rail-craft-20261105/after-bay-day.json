@@ -1,0 +1,71 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 84,
+  "camera": [
+    69,
+    5.6,
+    -321
+  ],
+  "canvas": [
+    1710,
+    875
+  ],
+  "direction": [
+    -0.4020223690322059,
+    0.11783414264737074,
+    -0.908016040400329
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 233,
+    "phase": "ready",
+    "total": 233
+  },
+  "fov": 50,
+  "frame": 4990,
+  "frameIntervals": null,
+  "geometries": 148,
+  "hidden": false,
+  "loading": false,
+  "nearby": null,
+  "night": 0,
+  "paused": false,
+  "player": [
+    50,
+    1.96,
+    -125
+  ],
+  "programs": 76,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": false,
+    "clarified": [],
+    "gateOpen": false,
+    "keyTaken": false,
+    "passed": [
+      "T1",
+      "T2"
+    ],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": null,
+  "second": 0,
+  "shadowError": "",
+  "shadowPending": false,
+  "shadowWork": {
+    "cancelled": 0,
+    "cpuMs": 0,
+    "slices": 0
+  },
+  "shot": "scene-short-bay-day",
+  "source": "coaster-rail-full-v3",
+  "textures": 70,
+  "time": 720,
+  "triangles": 534482,
+  "weather": "clear"
+}

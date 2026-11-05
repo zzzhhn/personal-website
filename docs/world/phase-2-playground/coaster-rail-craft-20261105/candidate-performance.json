@@ -1,0 +1,185 @@
+[
+  {
+    "at": "2026-11-05T10:38:57.790Z",
+    "calls": {
+      "max": 84,
+      "n": 360,
+      "p50": 84,
+      "p95": 84
+    },
+    "camera": [
+      69,
+      5.6,
+      -321
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 1,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 8930.200000047684,
+    "exposure": 1,
+    "frameMs": {
+      "max": 171.10000002384186,
+      "n": 360,
+      "p50": 16.899999976158142,
+      "p95": 35.60000002384186
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 0,
+    "over33ms": 19,
+    "over50ms": 11,
+    "pageAgeMs": 196581.39999997616,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 148,
+      "programs": 76,
+      "textures": 70
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-short-bay-day",
+    "source": "coaster-rail-full-v3",
+    "triangles": {
+      "max": 534482,
+      "n": 360,
+      "p50": 534482,
+      "p95": 534482
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=rail-detail",
+    "variant": "optimized/optimized",
+    "worldMinutes": 720
+  },
+  {
+    "at": "2026-11-05T10:40:50.359Z",
+    "calls": {
+      "max": 84,
+      "n": 360,
+      "p50": 84,
+      "p95": 84
+    },
+    "camera": [
+      69,
+      5.6,
+      -321
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 1,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 8219.799999952316,
+    "exposure": 1,
+    "frameMs": {
+      "max": 45.89999997615814,
+      "n": 360,
+      "p50": 16.699999928474426,
+      "p95": 24.800000071525577
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 1,
+    "over33ms": 5,
+    "over50ms": 0,
+    "pageAgeMs": 309150.1999999285,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 148,
+      "programs": 76,
+      "textures": 70
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-short-bay-night",
+    "source": "coaster-rail-full-v3",
+    "triangles": {
+      "max": 534482,
+      "n": 360,
+      "p50": 534482,
+      "p95": 534482
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=rail-detail",
+    "variant": "optimized/optimized",
+    "worldMinutes": 0
+  },
+  {
+    "at": "2026-11-05T10:42:42.107Z",
+    "calls": {
+      "max": 84,
+      "n": 360,
+      "p50": 84,
+      "p95": 84
+    },
+    "camera": [
+      69,
+      5.6,
+      -321
+    ],
+    "canvas": [
+      1710,
+      875
+    ],
+    "craft": {
+      "lod": 1,
+      "materials": 8,
+      "shadowTriangles": 5221,
+      "uploads": 1
+    },
+    "dpr": 1,
+    "durationMs": 7995.199999928474,
+    "exposure": 1,
+    "frameMs": {
+      "max": 54.90000009536743,
+      "n": 360,
+      "p50": 16.600000023841858,
+      "p95": 26.799999952316284
+    },
+    "hidden": false,
+    "loadingActive": false,
+    "loop": "demand",
+    "night": 0,
+    "over33ms": 5,
+    "over50ms": 1,
+    "pageAgeMs": 420898.1999999285,
+    "quality": "balanced",
+    "residency": {
+      "geometries": 344,
+      "programs": 168,
+      "textures": 86
+    },
+    "ridePhase": null,
+    "rideSecond": 0,
+    "riding": false,
+    "shadowPending": false,
+    "shot": "scene-short-bay-day",
+    "source": "coaster-rail-full-v3",
+    "triangles": {
+      "max": 534482,
+      "n": 360,
+      "p50": 534482,
+      "p95": 534482
+    },
+    "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&car=optimized&chest=optimized&view=rail-detail",
+    "variant": "optimized/optimized",
+    "worldMinutes": 720
+  }
+]

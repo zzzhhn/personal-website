@@ -1,4 +1,6 @@
 import { COASTER_ARCHITECTURE_CRAFT } from './coaster-craft-promotion.ts';
+import { COASTER_RAIL_CRAFT } from './coaster-rail-craft-enabled.ts';
+import { createCoasterRailVisualCraft } from './coaster-rail-visual-craft.ts';
 import { Euler, BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
@@ -76,7 +78,7 @@ export interface CoasterCollider {
   surface?: boolean;
 }
 export type CoasterStructureScope = 'legacy' | 'short' | 'full';
-export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT) {
+export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT, craftedRail = COASTER_RAIL_CRAFT) {
   return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
   const fullStructure = scope === 'full';
@@ -121,12 +123,28 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
       else if (!inCoasterStructureSample(u)) steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
     }
   }
+  // Preserve the exact old contacts and shadow silhouette before replacing this
+  // bounded visual region. No role-based filtering of unrelated architecture.
+  let railShadow: BufferGeometry | null = null;
+  let railCraft: Record<string, BufferGeometry> = {};
+  if (fullStructure && craftedRail) {
+    const oldRails = new CoasterBatch();
+    oldRails.parts.push(...steel.parts.splice(0));
+    railShadow = oldRails.finish();
+    railCraft = createCoasterRailVisualCraft(detailed);
+    for (const geometry of Object.values(railCraft)) {
+      const white = new Float32Array(geometry.getAttribute('position').count * 3).fill(1);
+      geometry.setAttribute('color', new BufferAttribute(white, 3));
+      bakeIntentNight(geometry);
+      geometry.deleteAttribute('color');
+    }
+  }
   addArchitecture(steel, glow, colliders, detailed, craftedArchitecture);
   addTunnel(steel, glow, detailed);
   const art = addCoasterLandscape(steel, glow, colliders, detailed);
   addCoasterCliffs(steel, glow, colliders, true);
   const relief = addCoasterTerrainRelief(steel);
-  return { steel: steel.finish(), glow: glow.finish(), colliders, art, relief, track };
+  return { steel: steel.finish(), glow: glow.finish(), colliders, art, relief, track, railCraft, railShadow };
   });
 }
 

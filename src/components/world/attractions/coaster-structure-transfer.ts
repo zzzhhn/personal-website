@@ -9,8 +9,9 @@ type GeometryPacket = {
   sphere: { center: number[]; radius: number } | null;
   box: { min: number[]; max: number[] } | null;
 };
-export type CoasterStructurePacket = Omit<CoasterStructure, 'steel' | 'glow'> & {
+export type CoasterStructurePacket = Omit<CoasterStructure, 'steel' | 'glow' | 'railCraft' | 'railShadow'> & {
   steel: GeometryPacket; glow: GeometryPacket;
+  railCraft: Record<string, GeometryPacket>; railShadow: GeometryPacket | null;
 };
 
 /** Only the immutable, non-interleaved batches produced by this park travel here.
@@ -30,7 +31,9 @@ export function packCoasterStructure(structure: CoasterStructure) {
     sphere: g.boundingSphere ? { center: g.boundingSphere.center.toArray(), radius: g.boundingSphere.radius } : null,
     box: g.boundingBox ? { min: g.boundingBox.min.toArray(), max: g.boundingBox.max.toArray() } : null,
   });
-  const packet: CoasterStructurePacket = { ...structure, steel: geometry(structure.steel), glow: geometry(structure.glow) };
+  const packet: CoasterStructurePacket = { ...structure, steel: geometry(structure.steel), glow: geometry(structure.glow),
+    railCraft: Object.fromEntries(Object.entries(structure.railCraft ?? {}).map(([role, g]) => [role, geometry(g)])),
+    railShadow: structure.railShadow ? geometry(structure.railShadow) : null };
   for (const c of structure.colliders) if (c.hull) buffers.add(c.hull.buffer as ArrayBuffer);
   buffers.add(structure.relief.vertices.buffer as ArrayBuffer);
   buffers.add(structure.relief.indices.buffer as ArrayBuffer);
@@ -48,5 +51,7 @@ export function unpackCoasterStructure(packet: CoasterStructurePacket): CoasterS
     if (p.box) g.boundingBox = new Box3(new Vector3().fromArray(p.box.min), new Vector3().fromArray(p.box.max));
     return g;
   };
-  return { ...packet, steel: geometry(packet.steel), glow: geometry(packet.glow) };
+  return { ...packet, steel: geometry(packet.steel), glow: geometry(packet.glow),
+    railCraft: Object.fromEntries(Object.entries(packet.railCraft ?? {}).map(([role, g]) => [role, geometry(g)])),
+    railShadow: packet.railShadow ? geometry(packet.railShadow) : null };
 }

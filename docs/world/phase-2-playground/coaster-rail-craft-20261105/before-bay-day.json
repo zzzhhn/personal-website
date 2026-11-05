@@ -1,0 +1,71 @@
+{
+  "source": "coaster-entry-full-v17",
+  "shot": "scene-short-bay-day",
+  "quality": "balanced",
+  "time": 720,
+  "weather": "clear",
+  "camera": [
+    69,
+    5.6,
+    -321
+  ],
+  "direction": [
+    -0.4020223690322059,
+    0.11783414264737074,
+    -0.908016040400329
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1710,
+    875
+  ],
+  "dpr": 1,
+  "night": 0,
+  "blend": 1,
+  "shadowPending": false,
+  "shadowError": "",
+  "shadowWork": {
+    "slices": 0,
+    "cpuMs": 0,
+    "cancelled": 0
+  },
+  "loading": false,
+  "failed": {
+    "phase": "ready",
+    "loaded": 233,
+    "total": 233,
+    "active": false,
+    "failed": 0
+  },
+  "calls": 74,
+  "triangles": 469195,
+  "geometries": 138,
+  "textures": 66,
+  "programs": 73,
+  "frame": 4348,
+  "hidden": false,
+  "paused": false,
+  "active": false,
+  "frameIntervals": null,
+  "player": [
+    50,
+    1.9600000000000002,
+    -125
+  ],
+  "nearby": null,
+  "ride": null,
+  "second": 0,
+  "progress": {
+    "version": 1,
+    "bankRevision": "original-20261027-v1",
+    "passed": [
+      "T1",
+      "T2"
+    ],
+    "clarified": [],
+    "chestOpen": false,
+    "keyTaken": false,
+    "gateOpen": false
+  }
+}

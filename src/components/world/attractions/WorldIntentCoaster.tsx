@@ -1,6 +1,7 @@
 import { COASTER_ARCHITECTURE_CRAFT } from './coaster-craft-promotion';
 import WorldCoasterStationCraft from './WorldCoasterStationCraft';
 import WorldCoasterGateCraft from './WorldCoasterGateCraft';
+import WorldCoasterRailCraft from './WorldCoasterRailCraft';
 import { memo, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
@@ -57,6 +58,9 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
   return <><group name="intent-coaster" userData={{noOcclusionFade:true}}>
     <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.82} metalness={.16} /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
+    {structure.railShadow && <Suspense fallback={null}>
+      <WorldCoasterRailCraft geometry={structure.railCraft} shadow={structure.railShadow} />
+    </Suspense>}
     {COASTER_ARCHITECTURE_CRAFT && <Suspense fallback={null}>
       <WorldCoasterStationCraft detailed={renderedNear} />
       <group position={coasterWorld([0, 0, COASTER_GATE_Z])}><WorldCoasterGateCraft part="static" /></group>

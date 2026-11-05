@@ -1,0 +1,71 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 76,
+  "camera": [
+    68,
+    12.8,
+    -328
+  ],
+  "canvas": [
+    1710,
+    875
+  ],
+  "direction": [
+    -0.5742579188992619,
+    -0.5011705474029922,
+    -0.6473452903955306
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 233,
+    "phase": "ready",
+    "total": 233
+  },
+  "fov": 50,
+  "frame": 4263,
+  "frameIntervals": null,
+  "geometries": 101,
+  "hidden": false,
+  "loading": false,
+  "nearby": null,
+  "night": 0,
+  "paused": false,
+  "player": [
+    50,
+    1.96,
+    -125
+  ],
+  "programs": 76,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": false,
+    "clarified": [],
+    "gateOpen": false,
+    "keyTaken": false,
+    "passed": [
+      "T1",
+      "T2"
+    ],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": null,
+  "second": 0,
+  "shadowError": "",
+  "shadowPending": false,
+  "shadowWork": {
+    "cancelled": 0,
+    "cpuMs": 0,
+    "slices": 0
+  },
+  "shot": "scene-rail-detail-day",
+  "source": "coaster-rail-full-v3",
+  "textures": 70,
+  "time": 720,
+  "triangles": 914442,
+  "weather": "clear"
+}

@@ -1,0 +1,21 @@
+✔ production near/far preserve baseline contacts, old projection and worker transfer ownership (1893.994667ms)
+ℹ {"lod":"far","craftRoles":["runningSteel","coatedSteel","jointSteel","concrete"],"oldProjectionVertices":190284,"retainedSteelVertices":158448}
+ℹ {"lod":"near","craftRoles":["runningSteel","coatedSteel","jointSteel","concrete"],"oldProjectionVertices":440652,"retainedSteelVertices":178608}
+✔ cache counts and releases crafted and old projection resources on switch and late worker replies (0.693625ms)
+✔ shadow carrier suppresses only colour range and restores shadow/cleanup range without changing caster inputs (0.715125ms)
+✔ repeated park boundary crossings build each variant once, release GPU resources and bound CPU retention (1.567708ms)
+✔ cold detail changes retain the original contacts, deduplicate generation and never call the synchronous builder (0.20625ms)
+✔ unmount aborts pending work and a late reply cannot repopulate the cache (0.354958ms)
+✔ worker failure preserves the usable variant without synchronous fallback or automatic retry (0.107083ms)
+✔ real far/near batches retain every render, night-light and contact byte after transferable ownership handoff (1816.757375ms)
+✔ success terminates the worker, hydrates once and leaves no active job (0.631166ms)
+✔ cancellation, load failure, bad reply and post failure each release the worker exactly once (0.517083ms)
+✔ already cancelled requests do not create a worker (0.082375ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5076.682166

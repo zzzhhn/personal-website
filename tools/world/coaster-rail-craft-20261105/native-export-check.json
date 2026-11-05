@@ -1,0 +1,25 @@
+{
+  "source": {
+    "path": "tools/world/coaster-rail-craft-20261105/representative-near.source.json",
+    "bytes": 1067098,
+    "sha256": "bd725b5b4ff5388c4a3ec07a8aa37a45a95dc726801ff7750efde5fef2eaecf4"
+  },
+  "blend": {
+    "path": "docs/world/phase-2-playground/coaster-rail-craft-20261105/coaster-rail-representative.blend",
+    "bytes": 268935,
+    "sha256": "ee3f03d7e2db7bf3a59ca725946c391c9d61c3a108c1dec07e5a42adcb25711f"
+  },
+  "glb": {
+    "path": "docs/world/phase-2-playground/coaster-rail-craft-20261105/coaster-rail-representative.glb",
+    "bytes": 357084,
+    "sha256": "85f8e6d1d396b6c97e967fe92f3d9c4a950c31f83c23887d5168ce02076851fc"
+  },
+  "objects": 130,
+  "materials": 4,
+  "triangles": 5492,
+  "maxBoundsErrorMetres": 0,
+  "maxNormalLengthError": 1.2654139447398904e-7,
+  "normalAndUvPresent": true,
+  "rendered": false,
+  "verification": "Direct portable-file geometry and attribute inspection; no Blender reimport or visual judgment."
+}

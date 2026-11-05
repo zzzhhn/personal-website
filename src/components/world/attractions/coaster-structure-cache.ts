@@ -1,5 +1,7 @@
 import type { createCoasterStructure } from './coaster-geometry';
 type Structure = ReturnType<typeof createCoasterStructure>;
+const geometries = (data: Structure) =>
+  [...new Set([data.steel, data.glow, ...Object.values(data.railCraft ?? {}), ...(data.railShadow ? [data.railShadow] : [])])];
 /** Per-mounted-park ownership, at most two CPU variants. GPU buffers of the old
  * variant are released by the component on every switch; Three reuploads them
  * when revisited. No extra meshes, lights, colliders or frame callbacks. */
@@ -24,7 +26,7 @@ export class CoasterStructureCache {
     if (!this.buildAsync) return Promise.reject(new Error('No asynchronous coaster builder'));
     const controller = new AbortController();
     const promise = this.buildAsync(near, controller.signal).then(value => {
-      if (this.disposed) { value.steel.dispose(); value.glow.dispose(); throw new Error('Coaster cache disposed during generation'); }
+      if (this.disposed) { geometries(value).forEach(g => g.dispose()); throw new Error('Coaster cache disposed during generation'); }
       this.variants.set(near, value); return value;
     }).finally(() => this.pending.delete(near));
     this.pending.set(near, { controller, promise });
@@ -32,11 +34,11 @@ export class CoasterStructureCache {
   }
   releaseGpu(near: boolean) {
     const value = this.variants.get(near);
-    if (value) { value.steel.dispose(); value.glow.dispose(); }
+    if (value) geometries(value).forEach(g => g.dispose());
   }
   snapshot() {
     let attributeBytes = 0;
-    for (const data of this.variants.values()) for (const g of [data.steel, data.glow]) {
+    for (const data of this.variants.values()) for (const g of geometries(data)) {
       for (const a of Object.values(g.attributes)) attributeBytes += a.array.byteLength;
       attributeBytes += g.index?.array.byteLength ?? 0;
     }

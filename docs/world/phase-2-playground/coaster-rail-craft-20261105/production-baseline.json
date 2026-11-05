@@ -1,0 +1,199 @@
+{
+  "baseline": "5b8ef64",
+  "variants": {
+    "far": {
+      "track": {
+        "vertices": "0dd7984943018e8ef3a8eee5481e796309eb244bfe561e9193f590a6a0edfcd3",
+        "indices": "dff1d4fb88986fd3fb79b5a681b9ac21a611be0606c7469bd72d4963c87979c6",
+        "vertexBytes": 333696,
+        "indexBytes": 266016
+      },
+      "colliders": {
+        "count": 746,
+        "hash": "866c7594a5ca9c9b982277a7be3a229cdc17d40d3e98effa66c62f41e0320184"
+      },
+      "relief": {
+        "vertices": "ff082bbce3115c375f221e1c1c971aeae02990171f0c71c5b031138302aae9d4",
+        "indices": "b52eb6233c0a4c4d7e2898b9ba1572f4809ffdfb63d9456832f81c367b45c856"
+      },
+      "glow": {
+        "attributes": {
+          "position": {
+            "count": 41520,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "06015b5e6d091799864c427456340a4b3aa3757a1b8069b983e517dd8114cf4b"
+          },
+          "normal": {
+            "count": 41520,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "07c9aa5933458824ab38f8657ba4d0e03d9253cf5765acf1f616155e19433c94"
+          },
+          "color": {
+            "count": 41520,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "f16992fa871be28d2c2524ca7f11e0e3b36dfb6d2f52b1d3606e19ca41e9c926"
+          },
+          "nightRadiance": {
+            "count": 41520,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "b639cb8dbf3d96d2bc4929abd1b556db4fdb847910fa9e00b29a6f7a7da14c68"
+          }
+        },
+        "index": null,
+        "sphere": {
+          "center": [
+            107.97730175405741,
+            44.642501533031464,
+            -262.77783966064453
+          ],
+          "radius": 173.6049748828749
+        }
+      },
+      "art": "f01be99a890423690b51fb1caa3eae6c4ddec07d4b82095a6cf0d8721db9f78e",
+      "steel": {
+        "attributes": {
+          "position": {
+            "count": 348732,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "fd53b65cc74a691a2480a8f98c346174ece2f8d1b5a79f675513ec7655ad45d8"
+          },
+          "normal": {
+            "count": 348732,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "b9dded8faf30ffef89444f6e5eb16be5fc03a58d7c1384747e4df6af1185725b"
+          },
+          "color": {
+            "count": 348732,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "692e18fe935a9199f75d5ef8fb71e49a8ad60ae7f22f299268f32a90a518473b"
+          },
+          "nightRadiance": {
+            "count": 348732,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "fe9ad4e47bbc2a193012bc4b7209e19a4e4f19156c6829841aeff1f2f3e46b2f"
+          },
+          "intentCraftSurface": {
+            "count": 348732,
+            "itemSize": 1,
+            "normalized": false,
+            "hash": "894578c3f249d12fa202edd1a958e6c7b65cd330cb139692f6dce581970d4602"
+          }
+        },
+        "index": null,
+        "sphere": {
+          "center": [
+            109.58000183105469,
+            39.5,
+            -263.5800018310547
+          ],
+          "radius": 180.15116904641243
+        }
+      }
+    },
+    "near": {
+      "track": {
+        "vertices": "6b8c84b4461f8dc26f82298785d5e8d8b8e8e932fa031f3e03065220cb5d69b4",
+        "indices": "e24306f361e1cf6ffe493d2d891054d1c5dba340e92ee6fd9c891b23933f672c",
+        "vertexBytes": 335520,
+        "indexBytes": 267072
+      },
+      "colliders": {
+        "count": 1080,
+        "hash": "20f9c40f8acf9ce09a0e57785a83ff1e9d0f6ef06c828cec3cba54d3e4f0ddee"
+      },
+      "relief": {
+        "vertices": "ff082bbce3115c375f221e1c1c971aeae02990171f0c71c5b031138302aae9d4",
+        "indices": "b52eb6233c0a4c4d7e2898b9ba1572f4809ffdfb63d9456832f81c367b45c856"
+      },
+      "glow": {
+        "attributes": {
+          "position": {
+            "count": 68760,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "0be9ee42c1f6adee8a6e1105ee6168d25c9aa507dfd9386dc91b8ba914738f52"
+          },
+          "normal": {
+            "count": 68760,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "a715839e6c55e8c3d83a3580149c8845e2f2f4964711673ec08b39c9cc79f746"
+          },
+          "color": {
+            "count": 68760,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "5118c9bed1a26eeb387c0433b0c9349e19b16ab69712c789caf93187030c1673"
+          },
+          "nightRadiance": {
+            "count": 68760,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "0956a07fab03ec98eb3a60a1ce39d9c4912c12388cc14eac7dcb012252f0ca69"
+          }
+        },
+        "index": null,
+        "sphere": {
+          "center": [
+            107.97730175405741,
+            44.642501533031464,
+            -262.77783966064453
+          ],
+          "radius": 173.6049748828749
+        }
+      },
+      "art": "f01be99a890423690b51fb1caa3eae6c4ddec07d4b82095a6cf0d8721db9f78e",
+      "steel": {
+        "attributes": {
+          "position": {
+            "count": 619260,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "0c4bc37b227797529bd80907eab483b6cbc61075c8cc0491ba17df3432ae8151"
+          },
+          "normal": {
+            "count": 619260,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "58945b1ea8f13e8f12f6bdca7982a7b61b772a4c2776f15a04f58658fbf4e061"
+          },
+          "color": {
+            "count": 619260,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "538806cbf512d18293c527d1ac9e3458aa1c32fef4faefc698911be9a2af7b63"
+          },
+          "nightRadiance": {
+            "count": 619260,
+            "itemSize": 3,
+            "normalized": false,
+            "hash": "eba5b2928a47ba017ce22bb82f1ccff55f0c4f8808d99a7377ce6a5495bbaff7"
+          },
+          "intentCraftSurface": {
+            "count": 619260,
+            "itemSize": 1,
+            "normalized": false,
+            "hash": "6a0c2bd2514f8cfff7675c07ea4e173a422b5271084b9703222917a8e95fb305"
+          }
+        },
+        "index": null,
+        "sphere": {
+          "center": [
+            109.58000183105469,
+            39.5,
+            -263.5800018310547
+          ],
+          "radius": 180.15116904641243
+        }
+      }
+    }
+  }
+}
