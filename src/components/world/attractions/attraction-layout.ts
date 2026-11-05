@@ -1,4 +1,5 @@
 import type { Vec3 } from '../types';
+import { COASTER_ARRIVAL_CENTER, COASTER_ARRIVAL_RADIUS, COASTER_ROAD_HALF, createCoasterArrivalSite, sampleAttractionRoad, sitePolylineDistance, onCoasterWorkshopApron } from './coaster-arrival-site.ts';
 
 /** Shared site survey. Ground points are foot positions, never capsule centres. */
 export const IBD_YARD = {
@@ -62,8 +63,10 @@ export const ATTRACTIONS_CAPE: [number, number][] = [
 
 export const ATTRACTION_ROADS: [number, number][][] = [
   [[-4,-54],[-5,-80],[-5,-103],[-15,-123],[-35,-140],[-62,-140],[-88,-140],[-88,-148]],
-  [[-15,-123],[10,-120],[32,-120],[50,-125],[50,-131]],
+  [[-15,-123],[5,-121]],
 ];
+export const ATTRACTION_ROAD_SAMPLES = ATTRACTION_ROADS.map(sampleAttractionRoad);
+export const COASTER_ARRIVAL = createCoasterArrivalSite(ATTRACTION_ROAD_SAMPLES[0]);
 
 export function attractionCapeDistance(x:number,z:number) {
   if(z>-75||z<-450||x<-185||x>275)return Infinity;
@@ -78,18 +81,16 @@ export function attractionCapeDistance(x:number,z:number) {
 }
 export function attractionRoadDistance(x:number,z:number) {
   if(z>-48||z<-161||x<-96||x>59)return Infinity;
-  let best=Infinity;
-  for(const path of ATTRACTION_ROADS)for(let i=1;i<path.length;i++){
-    const a=path[i-1],b=path[i],dx=b[0]-a[0],dz=b[1]-a[1];
-    const t=Math.max(0,Math.min(1,((x-a[0])*dx+(z-a[1])*dz)/(dx*dx+dz*dz)));
-    best=Math.min(best,Math.hypot(x-a[0]-dx*t,z-a[1]-dz*t));
-  }
-  return best;
+  // Keep the existing centre-distance convention (asphalt half-width 3.2 m),
+  // extended to the turning head rather than the removed road beneath the apron.
+  return Math.min(...ATTRACTION_ROAD_SAMPLES.map(path=>sitePolylineDistance(x,z,path)),
+    Math.hypot(x-COASTER_ARRIVAL_CENTER[0],z-COASTER_ARRIVAL_CENTER[1])-COASTER_ARRIVAL_RADIUS+COASTER_ROAD_HALF);
 }
 export function attractionScatterBlocked(x:number,z:number) {
   const b=INTENT_COASTER.bounds;
   const coaster=x>b.minX-2&&x<b.maxX+2&&z>b.minZ-2&&z<INTENT_COASTER.entrance[2]+4;
-  return coaster||attractionRoadDistance(x,z)<5.3||
+  return coaster||onCoasterWorkshopApron(x,z)||attractionRoadDistance(x,z)<5.3||
+    sitePolylineDistance(x,z,[...COASTER_ARRIVAL.walkOutline,COASTER_ARRIVAL.walkOutline[0]])<1.6||
     ibdFootprintDistance(x,z)<2;
 }
 

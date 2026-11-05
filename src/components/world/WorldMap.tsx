@@ -5,7 +5,7 @@ import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BO
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
-import { ATTRACTION_ROADS, ATTRACTIONS_CAPE, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
+import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, ATTRACTIONS_CAPE, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -94,13 +94,15 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <polyline points={path(ALPHA_MINE_CONNECTOR)} fill='none' stroke='#B99469' strokeWidth={ALPHA_MINE_CONNECTOR_WIDTH} strokeLinejoin='round' strokeLinecap='round' />
     <polyline points={path(ALPHA_EXCHANGE_APPROACH)} fill='none' stroke='#B99469' strokeWidth='3.1'/>
     {LAYOUT_V4&&<g data-attractions='north'>
-      {ATTRACTION_ROADS.map((road,i)=><polyline key={i} points={path(road)} fill='none' stroke='#D9D2C2' strokeWidth='5.4' strokeLinejoin='round'/>)}
+      <polyline points={path(ATTRACTION_ROAD_SAMPLES[0])} fill='none' stroke='#D9D2C2' strokeWidth='6.4' strokeLinejoin='round'/>
       {[IBD_YARD,INTENT_COASTER].map((site,i)=><g key={i}>
         {i===1?<polygon points={path(INTENT_COASTER_FOOTPRINT)} fill='#36565e' stroke='#c4c5a3' strokeWidth='.7'/>:<polygon data-ibd-footprint='physical' points={path(IBD_FOOTPRINT)} fill='#89745c' stroke='#c4c5a3' strokeWidth='.7'/>}
         {i===1&&geometry&&<polyline points={path(geometry.coaster)} fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
         <circle cx={site.entrance[0]} cy={site.entrance[2]} r='3.3' fill='#23343D' stroke='#4FD1C5'/>
         <text x={site.center[0]} y={site.center[2]+(i?0:2)} textAnchor='middle' fontSize={full?'4.5':'5'} fill='#fff7de' paintOrder='stroke' stroke='#23343d' strokeWidth='1.1'>{lang==='zh'?(i?'意图过山车':'物资清点场'):(i?'INTENT COASTER':'INVENTORY YARD')}</text>
       </g>)}
+      <polygon data-coaster-arrival='vehicle' points={path(COASTER_ARRIVAL.roadOutline)} fill='#D9D2C2'/>
+      <polygon data-coaster-arrival='walk' points={path(COASTER_ARRIVAL.walkOutline)} fill='#b6b3a7'/>
     </g>}
     <rect data-exchange-footprint='building' x={ALPHA_EXCHANGE_FOOTPRINT.minX} y={ALPHA_EXCHANGE_FOOTPRINT.minZ} width={ALPHA_EXCHANGE_FOOTPRINT.maxX-ALPHA_EXCHANGE_FOOTPRINT.minX} height={ALPHA_EXCHANGE_FOOTPRINT.maxZ-ALPHA_EXCHANGE_FOOTPRINT.minZ} fill='#8d7960' stroke='#c5b591'/>
     <text x={ALPHA_EXCHANGE_ORIGIN[0]} y={ALPHA_EXCHANGE_ORIGIN[2]-5} textAnchor='middle' fontSize={full?'3.6':'4.4'} fill='#f1e3bc'>{lang==='zh'?'交易所':'EXCHANGE'}</text>

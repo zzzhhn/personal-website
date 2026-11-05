@@ -1,0 +1,82 @@
+{
+  "active": false,
+  "blend": 1,
+  "calls": 106,
+  "camera": [
+    55.36193084716797,
+    6.9442432383759085,
+    -147.5496194144027
+  ],
+  "canvas": [
+    1710,
+    931
+  ],
+  "direction": [
+    0,
+    -0.7071067811865472,
+    -0.7071067811865479
+  ],
+  "dpr": 1,
+  "exposure": 1,
+  "failed": {
+    "active": false,
+    "failed": 0,
+    "loaded": 241,
+    "phase": "ready",
+    "total": 241
+  },
+  "fov": 50,
+  "frame": 17894,
+  "frameIntervals": null,
+  "geometries": 453,
+  "hidden": false,
+  "loading": false,
+  "nearby": {
+    "id": "intent-board",
+    "kind": "exhibit",
+    "label": {
+      "en": "Board the train · 114 seconds",
+      "zh": "坐进列车 · 114 秒"
+    }
+  },
+  "night": 0,
+  "paused": false,
+  "player": [
+    55.36193084716797,
+    1.8988248109817505,
+    -151.94503784179688
+  ],
+  "programs": 168,
+  "progress": {
+    "bankRevision": "original-20261027-v1",
+    "chestOpen": true,
+    "clarified": [],
+    "gateOpen": true,
+    "keyTaken": true,
+    "passed": [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5",
+      "T6"
+    ],
+    "version": 1
+  },
+  "quality": "balanced",
+  "ride": null,
+  "second": 0,
+  "shadowError": "",
+  "shadowPending": false,
+  "shadowWork": {
+    "cancelled": 1,
+    "cpuMs": 0,
+    "slices": 0
+  },
+  "shot": null,
+  "source": "coaster-site-right-stairs-v3",
+  "textures": 109,
+  "time": 720,
+  "triangles": 661607,
+  "weather": "clear"
+}

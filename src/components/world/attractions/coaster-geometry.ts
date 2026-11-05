@@ -357,7 +357,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     const yaw = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw);
     steel.box(step.position, step.size, P.concrete, yaw);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
-    const lip = new Vector3(0, step.size[1] / 2 - .021, -.01 - step.size[2] / 2).applyQuaternion(yaw).add(new Vector3(...step.position));
+    const lip = new Vector3(0, step.size[1] / 2 - .021, .01 + step.size[2] / 2).applyQuaternion(yaw).add(new Vector3(...step.position));
     steel.box(tuple(lip), [step.size[0], .042, .02], P.rail, yaw);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
     colliders.push({ position: step.position, half: step.size.map(v => v / 2) as Vec3, rotation: [0, step.yaw, 0], surface: true });

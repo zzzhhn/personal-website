@@ -3,6 +3,7 @@ import { coasterWorld } from './coaster-track.ts';
 import { addCoasterLookoutSample } from './coaster-lookout-sample.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import { addCoasterPavingEdges } from './coaster-paving-craft.ts';
+import { COASTER_WORKSHOP_APRON } from './coaster-arrival-site.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -23,13 +24,18 @@ export function onCoasterCliffWalk(x: number,z: number,margin=3) {
 export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,colliders: CoasterCollider[], craftApron = false) {
   // Irregular mineral apron supports the new workshop; its contact positions remain owned by the main session.
   const apron = new Shape();
-  [[-34,55],[-3,55],[2,65],[-1,78],[-13,80],[-29,77],[-34,67]].forEach(([x,z],i)=>i?apron.lineTo(x,-z):apron.moveTo(x,-z)); apron.closePath();
+  const origin=coasterWorld([0,0,0]);
+  const footprint=COASTER_WORKSHOP_APRON.map(([x,z])=>[x-origin[0],z-origin[2]]);
+  footprint.forEach(([x,z],i)=>i?apron.lineTo(x,-z):apron.moveTo(x,-z)); apron.closePath();
   // A four-centimetre lip separates this paving from the retained .08 m forecourt.
   // Coplanar surfaces flickered visibly under the night lighting.
   steel.add(new ExtrudeGeometry(apron,{depth:.12,bevelEnabled:false}), craftApron ? '#b6b3a7' : '#aca48e', new Matrix4().makeTranslation(...coasterWorld([0,0,0])).multiply(new Matrix4().makeRotationX(-Math.PI/2)));
   if (craftApron) markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   if (craftApron) addCoasterPavingEdges(steel);
-  colliders.push({position:coasterWorld([-16,.06,67]),half:[11,.06,10],surface:true});
+  // Match the full convex apron, including the west pedestrian threshold.
+  // The former central box left visible corners and the new entry unsupported.
+  colliders.push({position:coasterWorld([-16,.06,67.5]),half:[18,.06,12.5],surface:true,
+    hull:new Float32Array(footprint.flatMap(([x,z])=>[x+16,-.06,z-67.5,x+16,.06,z-67.5]))});
   const addBox=(p:Vector3,size:Vec3,q:Quaternion,color:string,surface=false)=>{
     steel.box(p.toArray() as Vec3,size,color,q);
     colliders.push({position:p.toArray() as Vec3,half:size.map(v=>v/2) as Vec3,rotation:new Euler().setFromQuaternion(q).toArray().slice(0,3) as Vec3,surface});

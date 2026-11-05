@@ -12,7 +12,7 @@ export interface CoasterPlant { id: string; kind: 0 | 1 | 2; local: Vec3; scale:
 export const PLANT_ENVELOPES = [{ radius: 2.6, height: 4.96 }, { radius: 2.2, height: 6.46 }, { radius: 1.21, height: 1.06 }] as const;
 const origin = coasterWorld([0, 0, 0]);
 const rocks = [[-43,-65,8,9],[-48,-9,5,8],[70,-81,9,12],[84,-57,7,9],[-36,13,5.8,5.8],[-25,47,7,6],[-44,43,7,8]];
-const existingTrees = [[5,-137],[15,-132],[38,-116],[89,-150],[93,-180],[77,-221],[43,-226]];
+const existingTrees = [[5,-137],[15,-132],[38,-112],[89,-150],[93,-180],[77,-221],[43,-226]];
 // Small groves on continuous shoulders; no random scattering into the station or service yards.
 const groves = [[-19,-57],[-16,-39],[-13,-20],[7,-53],[13,-31],[28,-17],[38,-40],[38,-3],[39,30],
   [-45,-43],[-44,-24],[-36,-57],[60,-38],[62,-15],[-31,35],[32,43]];

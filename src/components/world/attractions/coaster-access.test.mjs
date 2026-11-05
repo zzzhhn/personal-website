@@ -6,6 +6,7 @@ import { createCoasterStructure } from './coaster-geometry.ts';
 import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { COASTER_CAR_PANELS, COASTER_GATE_LEAVES, coasterGateAngle } from './coaster-access.ts';
 import { coasterFrame, COASTER_LENGTH } from './coaster-track.ts';
+import { COASTER_BOARDING } from './coaster-transition.ts';
 import { cameraOverlapsGuide, cameraShoulderPivot, sweepCamera } from '../camera-collision.ts';
 import { orbitDirection } from '../actor-physics.ts';
 
@@ -88,6 +89,18 @@ test('closed gate still locks the park and the fully open centre is walkable', (
       assert.equal(!!hit, progress === 0);
     } finally { world.free(); }
   }
+});
+
+test('the rider-right stair landing can be reached from the open gate and exited past the east pier', () => {
+  const fixture = structureFixture();
+  try {
+    const end = [COASTER_BOARDING.exit[0],1.9,COASTER_BOARDING.exit[2]];
+    const route = [[50,1.9,-134],[50,1.9,-141],[54,1.9,-146],end];
+    for (let i=1;i<route.length;i++) {
+      assert.equal(walkSweep(fixture,route[i-1],route[i]),null,`entry segment ${i}`);
+      assert.equal(walkSweep(fixture,route[i],route[i-1]),null,`exit segment ${i}`);
+    }
+  } finally { fixture.dispose(); }
 });
 
 test('all three parked cars stop a standing capsule approaching either body side', () => {

@@ -1,0 +1,16 @@
+using deprecated parameters for the initialization function; pass a single object instead
+✔ the northern apron corners exclude grass while the replanted north tree belongs to the verge (2.032667ms)
+{"arrivalTriangles":139,"pavingEdgeAndWalkTriangles":2448,"approachMaterials":3,"newWalkMaterials":0,"walkTop":[1.045,1.12]}
+✔ the real apron collider supports the whole west entry and north corners (999.31975ms)
+✔ main asphalt samples stay identical to the retained Three curve; the car spur stops west of the apron (1.281375ms)
+✔ one joined spur contour meets the main asphalt edge without interior overlap; its shoulder has an actual opening (7.999584ms)
+✔ three metre walk has a flush road arc, flush apron edge, continuous gentle top and grass clearance (3.242959ms)
+✔ apron edge blocks leave the walk open; paving reuses its material role with bounded triangles (3.844292ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1405.898417

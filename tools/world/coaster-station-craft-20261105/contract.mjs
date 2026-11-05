@@ -18,7 +18,8 @@ for (const path of files) sourceHashes[path] = createHash('sha256').update(
   await readFile(new URL('../../../src/components/world/attractions/' + path, import.meta.url))
 ).digest('hex');
 const contract = {
-  baseline: 'b75c474f73ffa186e7bbc5522e4656dcbbedf9c3', sourceHashes,
+  baseline: '070de2fa47a9ba49239b0ac0e957326fae4ae665', sourceHashes,
+  revision: '2026-11-06 rider-right boarding and single-skin stair cheeks',
   units: 'meters; runtime X across, Y up, Z to entrance',
   worldRoot: INTENT_COASTER.center,
   roof: { profile: [[-11, 6.2], [7, 6.2], [7, 6.55], [4.7, 7.4], [-8.7, 7.4], [-11, 6.55]], z: [30, 53] },

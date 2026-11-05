@@ -1,13 +1,29 @@
 import { useEffect, useMemo } from 'react';
-import { BufferGeometry, CanvasTexture, CatmullRomCurve3, Float32BufferAttribute, MeshStandardMaterial, SRGBColorSpace, Vector3 } from 'three';
+import { BufferGeometry, CanvasTexture, Float32BufferAttribute, MeshStandardMaterial, SRGBColorSpace, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { ATTRACTION_ROADS } from './attraction-layout';
+import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL } from './attraction-layout';
+import { clipArrivalJunction, roadRail, type SiteMesh, type SitePoint } from './coaster-arrival-site';
 import { meshHeight, terrainHeight } from '../WorldLandform';
 import { useWorldStore } from '../store';
 
 /** Follow the physical triangles, including the ridge's snapped crease vertices. */
 const approachHeight = (x:number,z:number) => meshHeight(x,z)??terrainHeight(x,z);
+function siteGeometry(data:SiteMesh) {
+  const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(data.positions,3));g.setIndex(data.indices);g.computeVertexNormals();return g;
+}
+function groundPolygons(polygons:SitePoint[][],lift:number) {
+  const positions:number[]=[],indices:number[]=[];
+  for(const polygon of polygons) {
+    const base=positions.length/3;
+    for(const [x,z] of polygon)positions.push(x,approachHeight(x,z)+lift,z);
+    for(let i=1;i<polygon.length-1;i++) {
+      const a=polygon[0],b=polygon[i],c=polygon[i+1],sign=(b[0]-a[0])*(c[1]-a[1])-(b[1]-a[1])*(c[0]-a[0]);
+      indices.push(base,...(sign<0?[base+i,base+i+1]:[base+i+1,base+i]));
+    }
+  }
+  return siteGeometry({positions,indices});
+}
 function ribbon(points:Vector3[],half:number,offset:number,lift:number) {
   const p:number[]=[],indices:number[]=[];
   points.forEach((v,i)=>{
@@ -33,25 +49,38 @@ export default function WorldAttractionApproach() {
   useEffect(()=>()=>sign.dispose(),[sign]);
   const built=useMemo(()=>{
     const asphalt:BufferGeometry[]=[],edge:BufferGeometry[]=[],paint:BufferGeometry[]=[];
-    for(const path of ATTRACTION_ROADS){
-      const curve=new CatmullRomCurve3(path.map(([x,z])=>new Vector3(x,0,z)),false,'centripetal');
-      const points=curve.getPoints(Math.ceil(curve.getLength()));
-      asphalt.push(ribbon(points,3.2,0,.045));
-      for(const side of [-1,1])edge.push(ribbon(points,.55,side*3.7,.022));
-      for(let i=3;i<points.length-3;i+=8)paint.push(ribbon(points.slice(i,i+4),.075,0,.055));
+    for(const [roadIndex,path] of ATTRACTION_ROAD_SAMPLES.entries()){
+      const points=path.map(([x,z])=>new Vector3(x,0,z));
+      if(roadIndex===0) {
+        asphalt.push(ribbon(points,3.2,0,.045));
+        edge.push(ribbon(points,.55,-3.7,.022));
+        const inner=roadRail(path,3.15),outer=roadRail(path,4.25),polygons:SitePoint[][]=[];
+        for(let i=1;i<path.length;i++)polygons.push(...clipArrivalJunction([inner[i-1],outer[i-1],outer[i],inner[i]]));
+        edge.push(groundPolygons(polygons,.022));
+      } else {
+        asphalt.push(siteGeometry(COASTER_ARRIVAL.road));
+        edge.push(groundPolygons(COASTER_ARRIVAL.shoulderPolygons,.022));
+      }
+      // End the branch centre dashes before the turning head.
+      if(roadIndex===1)points.splice(Math.max(0,points.length-7));
+      for(let i=roadIndex===1?6:3;i<points.length-3;i+=8)paint.push(ribbon(points.slice(i,i+4),.075,0,.055));
     }
     const groups=[asphalt,edge,paint],colors=['#65665e','#b9ae8c','#e1d4ad'];
     const meshes=groups.map((parts,i)=>{
       const geometry=mergeGeometries(parts)!;parts.forEach(p=>p.dispose());
       return {geometry,indices:new Uint32Array(geometry.index!.array),material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
     });
-    return meshes;
+    const walk=siteGeometry(COASTER_ARRIVAL.walk);
+    return {meshes,walk,walkIndices:new Uint32Array(walk.index!.array)};
   },[]);
-  useEffect(()=>()=>built.forEach(m=>{m.geometry.dispose();m.material.dispose();}),[built]);
+  useEffect(()=>()=>{built.meshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});built.walk.dispose();},[built]);
   return <group name="north-attractions-approach" userData={{noOcclusionFade:true}}>
-    {built.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
+    {built.meshes.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
     <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
-      <TrimeshCollider args={[built[0].geometry.getAttribute('position').array as Float32Array,built[0].indices]} friction={.9}/>
+      <TrimeshCollider args={[built.meshes[0].geometry.getAttribute('position').array as Float32Array,built.meshes[0].indices]} friction={.9}/>
+    </RigidBody>
+    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'coaster-arrival-walk'}}>
+      <TrimeshCollider args={[built.walk.getAttribute('position').array as Float32Array,built.walkIndices]} friction={.9}/>
     </RigidBody>
     {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,approachHeight(x,z),z]}>
       <mesh position={[0,1.2,0]} castShadow><boxGeometry args={[.14,2.4,.14]}/><meshStandardMaterial color='#63543e' roughness={.9}/></mesh>

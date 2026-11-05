@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import { readFile, writeFile } from 'node:fs/promises';
 import { Box3, Matrix4, Mesh, Quaternion, Raycaster, Vector3 } from 'three';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../../../src/components/world/world-craft-gltf-test.mjs';
@@ -10,8 +9,8 @@ const out = new URL('../../../docs/world/phase-2-playground/coaster-station-craf
 const contract = JSON.parse(await readFile(new URL('contract.json', out)));
 const near = (a, b, eps = 3e-5) => assert.ok(a.every((v, i) => Math.abs(v-b[i]) < eps), `${a} != ${b}`);
 for (const [file, hash] of Object.entries(contract.sourceHashes)) {
-  const bytes = execFileSync('git', ['show', contract.baseline + ':src/components/world/attractions/' + file]);
-  assert.equal(createHash('sha256').update(bytes).digest('hex'), hash, 'source baseline ' + file);
+  const bytes = await readFile(new URL('../../../src/components/world/attractions/' + file, import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), hash, 'generated from current source ' + file);
 }
 const bytes = await readFile(new URL('station.glb', out));
 assert.equal(bytes.toString('ascii', 0, 4), 'glTF');
@@ -79,6 +78,16 @@ for (const name of ['Near','Far','Shadow']) {
       const hit = ray.intersectObject(level,true)[0];
       assert.ok(hit, `${name} ${step.name} has full top surface`);
       near(hit.point.toArray(), foot.toArray()); assert.ok(Math.abs(hit.point.y-top)<3e-5);
+    }
+    // Reproduce the reported grazing-side fault: each exterior cheek must have
+    // exactly one outward-facing skin. Probe both sides independently; no depth
+    // bias is allowed to hide duplicate geometry.
+    if (name !== 'Shadow') for (const sign of [-1,1]) for (const y of [-h/2+.02, -h/2+(h-.055)*.43]) for (const z of [-d*.27,d*.19]) {
+      const face = new Vector3(sign*w/2,y,z).applyQuaternion(rotation).add(new Vector3(...step.at));
+      const outward = new Vector3(sign,0,0).applyQuaternion(rotation);
+      const ray = new Raycaster(face.clone().addScaledVector(outward,.04),outward.clone().negate(),0,.045);
+      const hits = ray.intersectObject(level,true).filter(hit => Math.abs(hit.distance-.04)<.00005);
+      assert.equal(hits.length,1,`${name} ${step.name}: single exterior side at ${sign},${y},${z}`);
     }
   }
   // Top silhouette is the old extruded section, not a new canopy shape.

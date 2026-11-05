@@ -123,8 +123,8 @@ for z in [-.56,.56]:
     box('Nose | inset running light pocket',(1.466,.74,z),(.015,.079,.20),'dark',.017)
     box('Nose | opal cyan light lens',(1.476,.744,z),(.009,.028,.15),'light',.012)
 
-# Fabricated side guards. The negative-Z boarding opening remains clear.
-for z,x0,x1 in [(-.85,-1.40,.25),(.85,-1.40,1.2)]:
+# Fabricated side guards. Rider-right (+Z) is the live station boarding side.
+for z,x0,x1 in [(.85,-1.40,.25),(-.85,-1.40,1.2)]:
     mid=(x0+x1)/2;length=x1-x0
     box('Guard | shaped copper outer belt',(mid,.735,z),(length,.32,.126),'paint',.048)
     box('Guard | recessed petrol service panel',(mid,.73,z+math.copysign(.067,z)),(length-.15,.196,.019),'blue',.028)
@@ -133,8 +133,8 @@ for z,x0,x1 in [(-.85,-1.40,.25),(.85,-1.40,1.2)]:
         cylinder('Guard | flush quarter turn fastener',(x,.727,z+math.copysign(.077,z)),(x,.727,z+math.copysign(.083,z)),.014,'metal',12)
         box('Guard | fastening slot',(x,.727,z+math.copysign(.087,z)),(.016,.003,.002),'dark',.001)
     # Real vent recesses rather than random noisy texture.
-    if z>0:
-        for x in [.66,.75,.84,.93,1.02]:box('Guard | recessed cooling louvre',(x,.728,.931),(.027,.11,.008),'dark',.01)
+    if z<0:
+        for x in [.66,.75,.84,.93,1.02]:box('Guard | recessed cooling louvre',(x,.728,-.931),(.027,.11,.008),'dark',.01)
     tube('Guard | lower accent pinstripe',[(x0+.15,.63,z+math.copysign(.079,z)),(x1-.15,.63,z+math.copysign(.079,z))],.005,'trim',6)
 
 # Seat: supporting shell, upholstered crown, side bolsters and inset stitched ribs.
@@ -162,11 +162,12 @@ for z in [-.31,0,.31]:box('Seat back | rear mould stiffening rib',(-.643,1.04,z)
 
 # Safety bar with positive pivot hardware, shaped grips and locking cam housings.
 for z in [-.82,.82]:
-    box('Restraint | bolted pivot pedestal',(.87,.53,z),(.26,.16,.14),'dark',.022)
-    cylinder('Restraint | stainless pivot',(.87,.61,z-.077),(.87,.61,z+.077),.065,'metal')
-    points=[(.87,.61,z),(.94,.70,z),(1.12,1.11,z),(1.19,1.20,z),(1.24,1.215,z)]
+    # Front-supported pivots leave the actual side boarding aisle unobstructed.
+    box('Restraint | bolted pivot pedestal',(1.34,.53,z),(.22,.16,.14),'dark',.022)
+    cylinder('Restraint | stainless pivot',(1.34,.61,z-.077),(1.34,.61,z+.077),.065,'metal')
+    points=[(1.34,.61,z),(1.30,.70,z),(1.22,1.11,z),(1.21,1.20,z),(1.24,1.215,z)]
     tube('Restraint | bent tubular arm',points,.032,'metal',12)
-    cylinder('Restraint | captive pivot bolt',(.87,.61,z+math.copysign(.078,z)),(.87,.61,z+math.copysign(.088,z)),.027,'paint',6)
+    cylinder('Restraint | captive pivot bolt',(1.34,.61,z+math.copysign(.078,z)),(1.34,.61,z+math.copysign(.088,z)),.027,'paint',6)
 tube('Restraint | continuous cross tube',[(1.24,1.215,-.82),(1.24,1.215,.82)],.032,'metal',16)
 for z in [-.45,.45]:
     cylinder('Restraint | textured hand grip',(1.24,1.215,z-.19),(1.24,1.215,z+.19),.045,'rubber',20)
@@ -227,5 +228,5 @@ for o in R.objects:o.select_set(True)
 bpy.ops.export_scene.gltf(filepath=str(OUT/'coaster-car.glb'),export_format='GLB',use_selection=True,export_apply=True,export_yup=True,export_animations=False,export_cameras=False,export_lights=False)
 blob=(OUT/'coaster-car.glb').read_bytes();g=json.loads(blob[20:20+int.from_bytes(blob[12:16],'little')])
 tri=sum(g['accessors'][p['indices']]['count']//3 for m in g['meshes'] for p in m['primitives'])
-manifest={'source':'main agent single asset pilot','baselineCommit':'45ce8e4322f03db1ffe5ec43016c774771c8cc55','units':'metres','runtimeAxes':'+X forward +Y up','nativeParts':native_count,'runtimeMeshes':len(g['meshes']),'materials':len(g['materials']),'triangles':tri,'bytes':len(blob),'sha256':hashlib.sha256(blob).hexdigest(),'textures':'3 deterministic authored 512px material maps, not scans','contact':'original COASTER_CAR_PANELS unchanged; visual sample only','visualAcceptance':'pending actual renderer comparison'}
+manifest={'source':'main agent single asset pilot, right boarding revision 2026-11-06','baselineCommit':'070de2fa47a9ba49239b0ac0e957326fae4ae665','units':'metres','runtimeAxes':'+X forward +Y up; +Z rider right','nativeParts':native_count,'runtimeMeshes':len(g['meshes']),'materials':len(g['materials']),'triangles':tri,'bytes':len(blob),'sha256':hashlib.sha256(blob).hexdigest(),'textures':'3 deterministic authored 512px material maps, not scans','contact':'rider-right opening synchronized with COASTER_CAR_PANELS; restraint pivots moved out of doorway','visualAcceptance':'pending actual renderer comparison of revised doorway; existing material approval retained'}
 (OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print('PILOT_RESULT '+json.dumps(manifest),flush=True)

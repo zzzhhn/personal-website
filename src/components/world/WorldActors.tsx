@@ -17,7 +17,7 @@ import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
 import { CLUB, CLUB_POOL } from './djc-club-layout';
-import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROADS } from './attractions/attraction-layout';
+import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES } from './attractions/attraction-layout';
 import { captureCoasterStart } from './attractions/coaster-transition';
 import { attractionRide, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
 import { attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
@@ -45,7 +45,7 @@ import WorldDrivingFeedback from './WorldDrivingFeedback';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, needsVehicleRighting, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
-const attractionRecoveryRoads=ATTRACTION_ROADS.map(path=>path.map(([x,z])=>[x,1.04,z] as Vec3));
+const attractionRecoveryRoads=ATTRACTION_ROAD_SAMPLES.map(path=>path.map(([x,z])=>[x,1.045,z] as Vec3));
 function allRoadLandingCandidates(p:Vec3){
   return [roadLandingCandidates(p,ROAD_POINTS),...attractionRecoveryRoads.map(path=>roadLandingCandidates(p,path))].flat()
     .sort((a,b)=>Math.hypot(a.position[0]-p[0],a.position[2]-p[2])-Math.hypot(b.position[0]-p[0],b.position[2]-p[2]));

@@ -26,19 +26,20 @@ const stationPoint = (lateral: number, y: number): Vec3 => floorPoint.clone().ad
 /** The model, collider, foot route and surface probe all share these actual tread bounds. */
 export const COASTER_BOARDING = {
   yaw: station.yaw, platformY, floorY: floorPoint.y,
-  approach: stationPoint(-4.15, platformY),
+  // +side is the rider's right when facing the train's direction of travel.
+  approach: stationPoint(4.15, platformY),
   inside: stationPoint(0, floorPoint.y),
-  exit: stationPoint(-5.3, platformY),
-  threshold: { position: stationPoint(-.975, floorPoint.y - .05), size: [1.08, .1, .18] as Vec3, yaw: station.yaw },
+  exit: stationPoint(5.3, platformY),
+  threshold: { position: stationPoint(.975, floorPoint.y - .05), size: [1.08, .1, .18] as Vec3, yaw: station.yaw },
   stairs: Array.from({ length: 6 }, (_, i) => {
     const top = platformY + (floorPoint.y - platformY) * (i + 1) / 6;
-    return { position: stationPoint(-3.65 + i * .48, (platformY + top) / 2),
+    return { position: stationPoint(3.65 - i * .48, (platformY + top) / 2),
       size: [1.08, top - platformY, .48] as Vec3, top, yaw: station.yaw };
   }),
 };
 const stairPath: Vec3[] = [COASTER_BOARDING.approach,
   ...COASTER_BOARDING.stairs.map(s => [s.position[0], s.top, s.position[2]] as Vec3),
-  stationPoint(-.95, floorPoint.y), COASTER_BOARDING.inside];
+  stationPoint(.95, floorPoint.y), COASTER_BOARDING.inside];
 // Reuse the existing Run take on the measured tread route, easing into/out of
 // the short jog before the standing turn and seat contact phases take over.
 export const COASTER_STAIR_SPEED = 2.6;
@@ -64,17 +65,17 @@ export function coasterBoardingGround(x: number, z: number): number | null {
   const dx = x - floorPoint.x, dz = z - floorPoint.z;
   const longitudinal = dx * forward.x + dz * forward.z, lateral = dx * side.x + dz * side.z;
   if (Math.abs(longitudinal) > .54) return null;
-  if (lateral >= -1.065 && lateral <= .6) return COASTER_BOARDING.floorY;
+  if (lateral >= -.6 && lateral <= 1.065) return COASTER_BOARDING.floorY;
   for (let i = COASTER_BOARDING.stairs.length - 1; i >= 0; i--) {
     const s = COASTER_BOARDING.stairs[i];
     if (Math.abs((x - s.position[0]) * side.x + (z - s.position[2]) * side.z) <= .2401) return s.top;
   }
-  return lateral < -3.89 ? platformY : null;
+  return lateral > 3.89 ? platformY : null;
 }
 /** Start from the clear apron, never route through the side of the staircase. */
 export function coasterAtBoardingEntrance(foot: Vec3): boolean {
   const delta = new Vector3(...foot).sub(floorPoint);
-  return delta.dot(side) <= -3.95 && Math.abs(foot[1] - platformY) < .16
+  return delta.dot(side) >= 3.95 && Math.abs(foot[1] - platformY) < .16
     && Math.hypot(foot[0] - COASTER_BOARDING.approach[0], foot[2] - COASTER_BOARDING.approach[2]) < 2.2;
 }
 export interface CoasterTransition {
@@ -126,12 +127,12 @@ export function advanceCoasterTransition(t: CoasterTransition, dt: number, froze
       speed = distance(t.from, COASTER_BOARDING.approach) * 6 * q * (1 - q) / coasterTransitionDuration(t); clip = 'Walk'; break;
     }
     case 'step-in': { const jog = stairJog(q); root = along(stairPath, jog.distance); yaw = entryYaw; speed = jog.speed; clip = 'Run'; break; }
-    case 'turn-in': yaw = angle(entryYaw, station.yaw, k); clip = 'TurnL'; clipPhase = q; break;
+    case 'turn-in': yaw = angle(entryYaw, station.yaw, k); clip = 'TurnR'; clipPhase = q; break;
     case 'sit': clip = 'SitDown'; clipPhase = q; seatWeight = smooth((q - .25) / .7); break;
     case 'settle': clip = 'SitIdle'; clipPhase = q; seatWeight = 1; break;
     case 'riding': root = [...pose.seat]; yaw = pose.yaw; orientation = pose.orientation; clip = 'SitIdle'; clipPhase = 1; seatWeight = 1; break;
     case 'stand': clip = 'StandUp'; clipPhase = q; seatWeight = 1 - smooth(q / .75); break;
-    case 'turn-out': yaw = angle(station.yaw, outYaw, k); clip = 'TurnL'; clipPhase = q; break;
+    case 'turn-out': yaw = angle(station.yaw, outYaw, k); clip = 'TurnR'; clipPhase = q; break;
     case 'step-out': { const jog = stairJog(q); root = along(stairPath, 1 - jog.distance); yaw = outYaw; speed = jog.speed; clip = 'Run'; break; }
     case 'walk-out': {
       root = mix(COASTER_BOARDING.approach, COASTER_BOARDING.exit, k);

@@ -5,7 +5,7 @@ import { AnimationMixer, DoubleSide, Group, Mesh, MeshBasicMaterial, Raycaster, 
 import ts from 'typescript';
 import { COASTER_BOARDING as B, COASTER_STAIR_SPEED, advanceCoasterTransition, captureCoasterStart, coasterAtBoardingEntrance,
   coasterBoardingGround, coasterTransitionDuration, createCoasterTransition, returnCoasterToStation } from './coaster-transition.ts';
-import { coasterRidePose } from './coaster-track.ts';
+import { coasterRidePose, coasterFrame } from './coaster-track.ts';
 import { attractionRide, beginAttractionRide, completeAttractionRide, endAttractionRide, requestAttractionExit } from './attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
 import { settleGuideAttraction, GuideAttractionFeet } from '../WorldGuideAttraction.ts';
@@ -13,6 +13,7 @@ import { GuideSeatContact, holdGuideSeatIdle } from '../WorldGuideSeat.ts';
 import { GuideSlopeFit, skinnedWorldPoint } from '../WorldGuideStop.ts';
 import { GuidePhaseModel } from '../WorldGuidePhase.ts';
 import { glb, loadGuide, motionDigest } from '../../../../tools/world/guide/boot-analysis.mjs';
+import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
 const pose = coasterRidePose(0, 'chase');
 function start() {
   const from = [B.approach[0] - .4, B.platformY, B.approach[2] + .2];
@@ -89,8 +90,14 @@ test('bridge exit requests retain ownership; explicit camp recovery invalidates 
   assert.equal(attractionRide.completed, true); assert.equal(attractionRide.active, false); endAttractionRide();
 });
 test('the entry apron, six real tread tops and clear car opening agree with the animated route', () => {
+  const frame = coasterFrame(0);
+  for (const point of [B.approach, B.exit, ...B.stairs.map(s => s.position)]) {
+    assert.ok(new Vector3(...point).sub(frame.point).dot(frame.side) > 1, 'boarding stays on rider-right, not screen-dependent left/right');
+  }
   assert.ok(coasterAtBoardingEntrance(B.approach)); assert.equal(coasterAtBoardingEntrance(B.inside), false);
-  const structure = createCoasterStructure(true), material = new MeshBasicMaterial({ side: DoubleSide });
+  // This checks the procedural fallback. Shipped GLB contact faces are probed
+  // independently by the station export verifier.
+  const structure = createCoasterStructure(true,'full',false), material = new MeshBasicMaterial({ side: DoubleSide });
   const mesh = new Mesh(structure.steel, material); mesh.updateMatrixWorld(true);
   for (const tread of B.stairs) {
     assert.ok(tread.size[1] > 0);
@@ -102,13 +109,24 @@ test('the entry apron, six real tread tops and clear car opening agree with the 
   assert.ok((B.floorY - B.platformY) / 6 < .21);
   const carGeometry = createCoasterCar(), car = new Mesh(carGeometry, material); car.updateMatrixWorld(true);
   for (const x of [.6, .82, 1.05]) for (const y of [.5, .85, 1.05]) {
-    const ray = new Raycaster(new Vector3(x, y, -1.2), new Vector3(0, 0, 1), 0, 1.2);
+    const ray = new Raycaster(new Vector3(x, y, 1.2), new Vector3(0, 0, -1), 0, 1.2);
     assert.equal(ray.intersectObject(car).length, 0, `clear side passage at ${x}, ${y}`);
   }
   assert.ok(new Vector3(...B.exit).distanceTo(new Vector3(...B.stairs[0].position)) > 1.2, 'exit has clearance from the bottom stair');
   structure.steel.dispose(); structure.glow.dispose(); carGeometry.dispose(); material.dispose();
 });
 const source = new URL('../../../../tools/world/guide/out/G24_uncompressed.glb', import.meta.url);
+test('both shipped carriage LODs have a real rider-right doorway aligned with the new stairs', async () => {
+  for (const name of ['coaster-car.glb','coaster-car-distant.glb']) {
+    const asset = await readWorldCraftGltf(['docs/world/phase-2-playground/coaster-car-astra-pilot-20261104/' + name]);
+    assert.ok(asset, name); asset.scene.updateMatrixWorld(true);
+    for (const x of [.6,.82,1.05]) for (const y of [.5,.85,1.05]) {
+      const ray = new Raycaster(new Vector3(x,y,1.2),new Vector3(0,0,-1),0,1.15);
+      assert.equal(ray.intersectObject(asset.scene,true).length,0,`${name}: clear rider-right passage at ${x},${y}`);
+    }
+    disposeWorldCraftGltf(asset.scene);
+  }
+});
 test('actual running boot soles clear all six treads going up and down', { skip: !existsSync(source) }, async context => {
   const { gltf } = await loadGuide(source), { scene, animations } = gltf;
   const parent = new Group(), root = new Group(); parent.add(root); root.add(scene);

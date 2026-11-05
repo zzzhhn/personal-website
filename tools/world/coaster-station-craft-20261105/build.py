@@ -200,14 +200,17 @@ def tread(step, owner):
         return box(step["name"] + " " + name, p, size, owner, key, r, q)
     # Thick mineral riser sits flush with the low structural skin; no hollow
     # box replaces the existing full height collision volume.
-    local_box("riser", at[1] - .0275, 0, [w, h-.055, d], "mineral")
-    local_box("contact slab", top-.0275, .0275, [w, .055, d-.055], "mineral")
-    local_box("folded tread nose", top-.0275, -.5*d+.0275, [w, .055, .055], "steel")
+    near = owner.name == "Near"
+    # Side returns replace a slice of the core, rather than lying on its face.
+    # Their top stops below the contact slab so neither region has two skins.
+    local_box("riser", at[1] - .0275, 0, [w-.024 if near else w, h-.055, d], "mineral")
+    local_box("contact slab", top-.0275, -.0275, [w, .055, d-.055], "mineral")
+    local_box("folded tread nose", top-.0275, .5*d-.0275, [w, .055, .055], "steel")
     # Retain the old inherited front-lip envelope exactly, below contact height.
-    local_box("vertical lip", top-.021, -.01-.5*d, [w, .042, .02], "steel")
-    if owner.name == "Near":
+    local_box("vertical lip", top-.021, .01+.5*d, [w, .042, .02], "steel")
+    if near:
         for side in (-1, 1):
-            local_box("side return", at[1], 0, [.012, max(.02,h-.012), d-.02], "paint")
+            local_box("side return", at[1]-.0275, 0, [.012, h-.055, d], "paint")
             # The returns are offset along the tread's width axis, within its box.
             o = parts[owner.name][-1]
             o.location.x += side*(w/2-.006)*math.cos(angle)

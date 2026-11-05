@@ -1,0 +1,35 @@
+using deprecated parameters for the initialization function; pass a single object instead
+✔ reported gate corner restores a visible, collision-free third-person view (2231.668041ms)
+ℹ {"before":0.3538785994052887,"after":1.9998376577020234,"offset":2.1}
+✔ station return aisle allows stepping right of the pier and exiting to the forecourt (1831.581542ms)
+✔ closed gate still locks the park and the fully open centre is walkable (0.311541ms)
+✔ the rider-right stair landing can be reached from the open gate and exited past the east pier (903.831459ms)
+✔ all three parked cars stop a standing capsule approaching either body side (0.391833ms)
+{"arrivalTriangles":139,"pavingEdgeAndWalkTriangles":2448,"approachMaterials":3,"newWalkMaterials":0,"walkTop":[1.045,1.12]}
+✔ main asphalt samples stay identical to the retained Three curve; the car spur stops west of the apron (1.6865ms)
+✔ one joined spur contour meets the main asphalt edge without interior overlap; its shoulder has an actual opening (7.806375ms)
+✔ three metre walk has a flush road arc, flush apron edge, continuous gentle top and grass clearance (4.11925ms)
+✔ apron edge blocks leave the walk open; paving reuses its material role with bounded triangles (8.249833ms)
+✔ real far/near batches retain every render, night-light and contact byte after transferable ownership handoff (1898.91375ms)
+✔ success terminates the worker, hydrates once and leaves no active job (0.475042ms)
+✔ cancellation, load failure, bad reply and post failure each release the worker exactly once (0.38775ms)
+✔ already cancelled requests do not create a worker (0.072083ms)
+✔ click waits for the exact physics pose; boarding approaches, jogs, turns, sits and settles before dispatch (2.376458ms)
+✔ the stair jog traverses every tread in about two seconds and eases into the stationary turns (1.943666ms)
+✔ pause, tab hiding and stale-frame gaps freeze every boarding and exit phase (0.6235ms)
+✔ boarding cancellation never dispatches; moving exits do not jump to the station (4.29325ms)
+✔ bridge exit requests retain ownership; explicit camp recovery invalidates it (0.125458ms)
+✔ the entry apron, six real tread tops and clear car opening agree with the animated route (1229.618541ms)
+✔ both shipped carriage LODs have a real rider-right doorway aligned with the new stairs (28.315125ms)
+✔ actual running boot soles clear all six treads going up and down (137.247958ms)
+ℹ 301464 sole/tread samples; minimum clearance 0.003000 m
+✔ actual G24 seat patch follows full train rotation despite an interpolated parent; tread IK restores bones (24.915375ms)
+✔ the changed React integration files have no TypeScript syntax diagnostics (154.556833ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10024.319292

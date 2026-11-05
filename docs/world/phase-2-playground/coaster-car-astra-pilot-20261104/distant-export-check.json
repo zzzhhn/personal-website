@@ -15,6 +15,6 @@
   "maximumNormalLengthSquaredError": 2.7828680426722485e-07,
   "embeddedImages": 0,
   "clearcoatPortable": true,
-  "glbSha256": "e16cc5a2735f1cac86a29d4482bfccd67848526091a7e2e2f959abf435fcf82c",
+  "glbSha256": "ad178b8423ee6de2294fee8bb05a57a468ce93d8cea06bebab20d79f113dcb86",
   "scope": "finite indexed geometry, UVs, material export and frozen outer envelope; no visual/performance/ride acceptance implied"
 }

@@ -2,8 +2,8 @@
   "triangles": 5221,
   "meshes": 8,
   "images": 0,
-  "bytes": 272172,
-  "sha256": "e16cc5a2735f1cac86a29d4482bfccd67848526091a7e2e2f959abf435fcf82c",
-  "sourceSha256": "4f6e00d708b204a21091df701ad982ad77d75d809ce691137c27d90b53b2a9b9",
+  "bytes": 271720,
+  "sha256": "ad178b8423ee6de2294fee8bb05a57a468ce93d8cea06bebab20d79f113dcb86",
+  "sourceSha256": "d665c908fe998e6944eee916c1e3946f17e3065daddea42b62fffad6a9960df1",
   "policy": "near source untouched; 44/50m hysteresis; original material and texture identities reused"
 }
