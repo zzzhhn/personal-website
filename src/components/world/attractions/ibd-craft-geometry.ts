@@ -2,16 +2,28 @@ import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeo
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import type { IbdCube } from './ibd-yard-architecture.ts';
 
-const cutSteel: Surf = { color: '#b8c2c2', rough: .57, metal: .38 };
-const winding: Surf = { color: '#60737b', rough: .65, metal: .32 };
+const cutSteel: Surf = { color: '#b8c2c2', rough: .38, metal: .88 };
+const winding: Surf = { color: '#73828b', rough: .48, metal: .86 };
 /** A continuous rolled sheet, with a genuinely recessed rear inspection defect.
  * All sheet faces and bands stay inside the existing 2 × 2 × 1.4 m half extents. */
 export function addWoundCoil(b: Builder, damaged: boolean) {
+  const barrel: Surf = { color: '#a1adb2', rough: .36, metal: .92 };
+  const strap: Surf = { color: '#425c68', rough: .45, metal: .58 };
+  const begin = b.pos.length / 3;
   b.tr([0, 0, 0], [Math.PI / 2, 0, 0], () => {
-    lathe(b, [[1.9, -1.35], [1.985, -1.2], [1.985, 1.2], [1.9, 1.35]], P.steel, { sides: 40, caps: false });
-    lathe(b, [[.65, 1.35], [.65, -1.35]], winding, { sides: 32, caps: false });
-    for (const z of [-.9, .9]) lathe(b, [[1.99, z - .07], [2, z - .07], [2, z + .07], [1.99, z + .07]], P.blue, { sides: 40, caps: false });
+    // Rolled lip, slight barrel crown, and a recessed return at the bore.
+    lathe(b, [[1.9, -1.35], [1.96, -1.31], [1.985, -1.2], [1.985, 1.2], [1.96, 1.31], [1.9, 1.35]], barrel, { sides: 48, caps: false });
+    lathe(b, [[.65, 1.35], [.63, 1.3], [.63, -1.3], [.65, -1.35]], winding, { sides: 48, caps: false });
   });
+  // Project barrel grain along its roll width; the cross-axis uses local Y,
+  // avoiding an angular UV branch cut on the underside.
+  // Negative surface codes are private to IBD; positive codes still belong to
+  // paving/signs. UVs are physical coordinates, so turning moves the mill grain.
+  for (let i = begin; i < b.pos.length / 3; i++) {
+    b.mat[i * 4 + 3] = -2;
+    b.suv[i * 2] = b.pos[i * 3 + 2];
+    b.suv[i * 2 + 1] = b.pos[i * 3 + 1];
+  }
   const dent = (x: number, y: number, side: number) => damaged && side < 0
     ? .24 * Math.max(0, 1 - Math.hypot((x + .72) / .53, (y - .82) / .68)) ** 2 : 0;
   const point = (r: number, a: number, side: number): V3 => {
@@ -19,28 +31,26 @@ export function addWoundCoil(b: Builder, damaged: boolean) {
     return [x, y, side * (1.35 - dent(x, y, side))];
   };
   for (const side of [-1, 1]) {
-    for (let ring = 0; ring < 10; ring++) for (let i = 0; i < 48; i++) {
-      const r = .65 + ring * 1.25 / 10, outer = .65 + (ring + 1) * 1.25 / 10;
+    for (let ring = 0; ring < 12; ring++) for (let i = 0; i < 48; i++) {
+      const r = .65 + ring * 1.25 / 12, outer = .65 + (ring + 1) * 1.25 / 12;
       const a = i / 48 * Math.PI * 2, next = (i + 1) / 48 * Math.PI * 2;
       const p = [point(r, a, side), point(outer, a, side), point(outer, next, side), point(r, next, side)];
       const depth = dent((p[0][0] + p[2][0]) / 2, (p[0][1] + p[2][1]) / 2, side);
-      b.face(p, depth > .012 ? (depth > .08 ? winding : P.rust) : ring % 3 === 0 ? P.steel : cutSteel, [0, 0, side]);
-    }
-    // One continuous spiral per end, not five disconnected decorative rings.
-    const turns = 8.5, segments = 340;
-    for (let i = 0; i < segments; i++) {
-      const t = i / segments, u = (i + 1) / segments;
-      const a = t * turns * Math.PI * 2, next = u * turns * Math.PI * 2;
-      const p = [point(.69 + 1.16 * t, a, side), point(.69 + 1.16 * u, next, side),
-        point(.707 + 1.16 * u, next, side), point(.707 + 1.16 * t, a, side)];
-      p.forEach(v => v[2] += side * .003);
-      b.face(p, winding, [0, 0, side]);
+      const ids = b.face(p, depth > .012 ? (depth > .08 ? winding : P.rust) : cutSteel, [0, 0, side]);
+      ids.forEach((id, j) => {
+        b.suv[id * 2] = p[j][0]; b.suv[id * 2 + 1] = p[j][1];
+        if (depth <= .012) b.mat[id * 4 + 3] = -1;
+      });
     }
   }
-  // Buckles sit on the upper barrel instead of floating beyond its broad side.
+  // Real narrow tension straps; no coplanar spiral decals. Mill layers are
+  // derivative-filtered in the material, keeping distant coils stable.
+  b.tr([0, 0, 0], [Math.PI / 2, 0, 0], () => {
+    for (const z of [-.9, .9]) lathe(b, [[1.99, z - .055], [2, z - .055], [2, z + .055], [1.99, z + .055]], strap, { sides: 48, caps: false });
+  });
   for (const z of [-.9, .9]) {
-    cbox(b, [0, 1.975, z], [.23, .045, .22], winding, .015);
-    cbox(b, [0, 1.998, z], [.14, .004, .15], cutSteel);
+    cbox(b, [0, 1.975, z], [.23, .045, .19], winding, .012);
+    cbox(b, [0, 1.998, z], [.14, .004, .12], cutSteel);
   }
 }
 

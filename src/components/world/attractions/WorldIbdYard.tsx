@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { useInteractable } from '../WorldInteract';
 import { IBD_YARD } from './attraction-layout.ts';
@@ -14,6 +14,8 @@ import WorldIbdSigns from './WorldIbdSigns';
 import WorldIbdLighting from './WorldIbdLighting';
 import { createIbdMaterial } from './ibd-yard-lighting.ts';
 import { night } from '../WorldNight';
+import { useFrame } from '@react-three/fiber';
+import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import WorldIbdGuide from './WorldIbdGuide';
 import { ibdGuideStep } from './ibd-yard-guide.ts';
 import WorldIbdAudio from './WorldIbdAudio';
@@ -43,6 +45,8 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
 
 /** Mount inside the existing Canvas/Physics. Origin and ground contract come only from IBD_YARD. */
 export default memo(function WorldIbdYard({ active = true }: { active?: boolean }) {
+  const environment = useDjcFurnitureEnvironment();
+  const previousNight = useRef(-1);
   const data = useMemo(() => {
     const uniform = { value: night.value };
     const query = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search);
@@ -52,6 +56,20 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
       coilMaterial: craft.coilBaySample || craft.shedExpansion || wood ? applyCoilBayMaterial(createIbdMaterial(true, uniform), craft.shedExpansion, wood) : null,
       movingMaterial: createIbdMaterial(false, uniform) };
   }, []);
+  // Borrow the renderer's one small PMREM target; never dispose a shared map.
+  useEffect(() => {
+    for (const material of [data.material, data.coilMaterial, data.movingMaterial]) if (material) {
+      material.envMap = environment;
+      material.envMapIntensity = .55 - .32 * night.value;
+      material.needsUpdate = true;
+    }
+  }, [data, environment]);
+  useFrame(() => {
+    if (previousNight.current === night.value) return;
+    previousNight.current = night.value;
+    for (const material of [data.material, data.coilMaterial, data.movingMaterial])
+      if (material) material.envMapIntensity = .55 - .32 * night.value;
+  });
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);
   useEffect(() => () => { cancelIbdPack(true); cancelIbdAction(); data.geometry.dispose(); data.craftShellGeometry?.dispose(); data.material.dispose(); data.coilMaterial?.dispose(); data.movingMaterial.dispose(); }, [data]);
   return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>

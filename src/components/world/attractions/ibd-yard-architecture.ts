@@ -153,7 +153,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
   }
   // Heavy double bridge over the coil court. Trolley, sling and coil remain independently animated.
   for (const z of [-6, -2]) {
-    if (bridgeSample && z === -2) addIbdBridgeSample(b, z);
+    if (bridgeSample) addIbdBridgeSample(b, z);
     else cube([-17, IBD_CRANE_Y, z], [27, .78, .5], P.amber);
     cube([-17, IBD_CRANE_Y + .43, z], [27, .12, .7], P.dark);
     for (const x of [-30, -3.8]) {
@@ -214,20 +214,19 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
   // Background coils on yellow cradles stay behind the gallery, distinct from the two numbered specimens.
   for (const x of [-26, -20, -14]) {
     cube([x, .3, -21], [4.5, .45, 2.7], P.amber, true);
+    const coilStart=b.pos.length/3;
+    const steel: Surf={color:'#a1adb2',rough:.39,metal:.9};
     b.tr([x, 2, -21], [Math.PI / 2, 0, 0], () => lathe(b,
-      [[.65, -1.2], [1.7, -1.2], [1.8, -1], [1.8, 1], [1.7, 1.2], [.65, 1.2], [.65, -1.2]], P.steel, { sides: 32, caps: false }));
-    b.tr([x, 2, -21], [Math.PI / 2, 0, 0], () => {
-      for (const z of [-.7, .7]) lathe(b, [[1.8, z - .055], [1.82, z - .055], [1.82, z + .055], [1.8, z + .055]], P.blue, { sides: 24, caps: false });
-    });
-    // Both cut ends show the same continuous rolled sheet as the inspection
-    // specimen, sampled more coarsely because these coils sit behind the gallery.
-    for (const side of [-1, 1]) for (let i = 0; i < 128; i++) {
-      const edge = (step: number, width: number): V3 => {
-        const t = step / 128, a = t * Math.PI * 12, r = .7 + t * .94 + width;
-        return [x + r * Math.cos(a), 2 + r * Math.sin(a), -21 + side * 1.204];
-      };
-      b.face([edge(i, 0), edge(i + 1, 0), edge(i + 1, .015), edge(i, .015)], P.dark, [0, 0, side]);
+      [[.65, -1.2], [1.7, -1.2], [1.8, -1], [1.8, 1], [1.7, 1.2], [.65, 1.2], [.65, -1.2]], steel, { sides: 40, caps: false }));
+    for(let i=coilStart;i<b.pos.length/3;i++) {
+      const front=Math.abs(b.nrm[i*3+2])>.9;
+      b.mat[i*4+3]=front?-1:-2;
+      b.suv[i*2]=front?(b.pos[i*3]-x)*1.1:b.pos[i*3+2]+21;
+      b.suv[i*2+1]=front?(b.pos[i*3+1]-2)*1.1:b.pos[i*3+1]-2;
     }
+    b.tr([x, 2, -21], [Math.PI / 2, 0, 0], () => {
+      for (const z of [-.7, .7]) lathe(b, [[1.8, z - .055], [1.82, z - .055], [1.82, z + .055], [1.8, z + .055]], P.blue, { sides: 32, caps: false });
+    });
     solids.push({ at: [x, 2, -21], size: [3.6, 3.6, 2.4] });
   }
   // Small service cabinet and louvred vent, not a fourth competing warehouse.

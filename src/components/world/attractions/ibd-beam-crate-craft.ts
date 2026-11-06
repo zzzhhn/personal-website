@@ -1,4 +1,4 @@
-import { box, cbox, type Builder, type Surf, type V3 } from '../WorldStreetGeometry.ts';
+import { box, cbox, lathe, type Builder, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import type { CoilBayFinish } from './ibd-coil-bay';
 import { IBD_CRANE_Y } from './ibd-yard-layout.ts';
@@ -16,8 +16,13 @@ export function addIbdBridgeSample(b: Builder, z: number) {
   cbox(b, [-17, y+.005, z], [27, .55, .35], web);
   cbox(b, [-17, y+.335, z], [27, .11, .5], flange);
   cbox(b, [-17, y-.33, z], [27, .12, .5], flange);
+  // Fabricated web stiffeners and exposed, bolted end connections.
+  for (const x of [-27,-22,-17,-12,-7]) for (const side of [-1,1])
+    cbox(b,[x,y+.005,z+side*.205],[.055,.55,.06],flange,.006);
   for (const x of [-30, -3.8]) {
     cbox(b, [x, y-.385, z], [.76, .13, .56], bearing);
+    for (const dx of [-.26,.26]) for (const dz of [-.18,.18])
+      b.tr([x+dx,y-.301,z+dz],[0,0,0],()=>lathe(b,[[.032,0],[.032,.035],[0,.035]],P.cutSteel,{sides:6,caps:false}));
     // The bearing diaphragm covers the original post head between the stiffeners.
     cbox(b, [x, y-.132, z], [.425, .276, .496], bearing);
     for (const side of [-1, 1]) {

@@ -162,10 +162,30 @@ export function buildIbdCoil(damaged: boolean, number = 1) {
   for (let i = 0; i < number; i++) cbox(b, [.64 + i * .18, .65, 1.395], [.06, .24, .008], P.dark, .002);
   for (const x of [.52, 1.08]) cbox(b, [x, .8, 1.394], [.035, .035, .008], P.dark);
   cbox(b, [0, -2.07, 0], [3.9, .14, 2.7], P.dark, .03);
-  // The cradles belong to the moving dolly, so exchanging a coil cannot drag through fixed timber blocks.
-  for (const x of [-1.25, 1.25]) cbox(b, [x, -1.72, 0], [.45, .6, 2.7], P.timber, .03);
-  for (const x of [-1.7, 1.7]) for (const z of [-1.05, 1.05])
-    b.tr([x, -2.12, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.09], [.13, -.09], [.13, .09], [0, .09]], P.steel, { sides: 8 }));
+  // Wedge tops follow the tangent of the coil, rather than penetrating it as
+  // rectangular blocks. These supports travel with the same moving dolly.
+  for (const sign of [-1, 1]) {
+    const slope=.86, tangent=(1.985+.002)*Math.hypot(1,slope);
+    const section = [[sign * 1.0, -2.0], [sign * 1.5, -2.0], [sign * 1.5, slope*1.5-tangent], [sign * 1.0, slope-tangent]];
+    const point = (i: number, z: number): V3 => [section[i][0], section[i][1], z];
+    for (const z of [-1.3, 1.3]) b.face(section.map((_,i) => point(i,z)), P.endgrain, [0,0,Math.sign(z)]);
+    for (let i=0;i<4;i++) {
+      const next=(i+1)%4, points=[point(i,-1.3),point(next,-1.3),point(next,1.3),point(i,1.3)];
+      const ids=b.face(points,P.timber,[sign * (i===1?1:i===3?-1:0),i===2?1:i===0?-1:0,0]);
+      ids.forEach((id,j)=>{ b.mat[id*4+3]=-3; b.suv[id*2]=points[j][2]; b.suv[id*2+1]=points[j][0]+points[j][1]; });
+    }
+    for (const z of [-.96,.96]) {
+      cbox(b,[sign*1.58,-1.96,z],[.2,.12,.27],P.cutSteel,.012);
+      b.tr([sign*1.58,-1.875,z],[0,0,0],()=>lathe(b,[[.045,0],[.045,.04]],P.cutSteel,{sides:6}));
+    }
+  }
+  for (const z of [-1.05,1.05]) cbox(b,[0,-2.13,z],[3.65,.12,.16],P.dark,.014);
+  for (const x of [-1.7, 1.7]) for (const z of [-1.05, 1.05]) {
+    b.tr([x, -2.12, z], [0, 0, Math.PI / 2], () => {
+      lathe(b, [[0,-.09],[.11,-.09],[.13,-.065],[.13,.065],[.11,.09],[0,.09]], P.cutSteel, { sides: 12 });
+      lathe(b, [[.038,-.11],[.038,.11]], P.dark, { sides: 8 });
+    });
+  }
   return b.build();
 }
 export function buildIbdLid() {
