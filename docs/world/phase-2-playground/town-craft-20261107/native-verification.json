@@ -1,0 +1,101 @@
+{
+  "T01": {
+    "triangles": 9424,
+    "colliders": 8,
+    "anchors": 1,
+    "maxColliderErrorMetres": 4.640779518354965e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T02": {
+    "triangles": 8884,
+    "colliders": 6,
+    "anchors": 2,
+    "maxColliderErrorMetres": 7.326630629932253e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T03": {
+    "triangles": 8928,
+    "colliders": 9,
+    "anchors": 1,
+    "maxColliderErrorMetres": 5.159214990263728e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T04": {
+    "triangles": 8920,
+    "colliders": 5,
+    "anchors": 1,
+    "maxColliderErrorMetres": 7.326630629932253e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T05": {
+    "triangles": 13242,
+    "colliders": 7,
+    "anchors": 2,
+    "maxColliderErrorMetres": 7.85495147514118e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T06": {
+    "triangles": 9456,
+    "colliders": 5,
+    "anchors": 2,
+    "maxColliderErrorMetres": 0.00010351320908590512,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T07": {
+    "triangles": 23780,
+    "colliders": 7,
+    "anchors": 0,
+    "maxColliderErrorMetres": 8.252451954949927e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T09": {
+    "triangles": 992,
+    "colliders": 1,
+    "anchors": 1,
+    "maxColliderErrorMetres": 1.4386467279561052e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T10": {
+    "triangles": 7376,
+    "colliders": 2,
+    "anchors": 0,
+    "maxColliderErrorMetres": 9.059906005859375e-06,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T11": {
+    "triangles": 3254,
+    "colliders": 2,
+    "anchors": 0,
+    "maxColliderErrorMetres": 3.2368779656366614e-05,
+    "uv": true,
+    "windVertices": 0,
+    "degenerate": 0
+  },
+  "T12": {
+    "triangles": 8564,
+    "colliders": 2,
+    "anchors": 0,
+    "maxColliderErrorMetres": 2.675480150835619e-05,
+    "uv": true,
+    "windVertices": 10268,
+    "degenerate": 0
+  }
+}

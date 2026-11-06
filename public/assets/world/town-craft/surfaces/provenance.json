@@ -1,0 +1,17 @@
+{
+  "authorship": "Original deterministic procedural surfaces, not photographic scans",
+  "generator": "tools/world/town-craft/make_surfaces.py",
+  "resolution": 512,
+  "tileMetres": 2,
+  "families": [
+    "plaster",
+    "stone",
+    "wood",
+    "bark",
+    "metal",
+    "roof",
+    "cloth",
+    "brick",
+    "glazing"
+  ]
+}

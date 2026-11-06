@@ -1,0 +1,264 @@
+{
+  "owner": "town-craft-20261107",
+  "status": "current-local-delivery-source",
+  "automaticDeletion": false,
+  "sourceBaseline": "63f3fe3",
+  "blenderVersion": "4.5.3",
+  "files": [
+    {
+      "path": "public/assets/world/town-craft/T01.glb",
+      "bytes": 94096,
+      "sha256": "f0b974f728ba026d766990e2baa7bc4f5299e0f2baf8d3de846efcffd6760f32"
+    },
+    {
+      "path": "public/assets/world/town-craft/T02.glb",
+      "bytes": 74880,
+      "sha256": "7c39b42d59bf2a7e6c5154c9f4bfa8adb7cdf9e7ae23e0fd3acccf62fb110029"
+    },
+    {
+      "path": "public/assets/world/town-craft/T03.glb",
+      "bytes": 94036,
+      "sha256": "6801f39af67eaab8875423312aef416fad659b76ae183cc5f7c04e552ef495e3"
+    },
+    {
+      "path": "public/assets/world/town-craft/T04.glb",
+      "bytes": 83276,
+      "sha256": "25f4b8eea375ec4e005d2e80123ca617cfe0e72288b1cf2249e8694eaf1d6101"
+    },
+    {
+      "path": "public/assets/world/town-craft/T05.glb",
+      "bytes": 123008,
+      "sha256": "f05f8aab040bf199d13792595cb51b561cc130a60f878536bf479f85315db91d"
+    },
+    {
+      "path": "public/assets/world/town-craft/T06.glb",
+      "bytes": 81636,
+      "sha256": "9f903ad6ff4d3dfde86d642d118bf1c61d0316c58ff4f181af79ab75d6cf7726"
+    },
+    {
+      "path": "public/assets/world/town-craft/T07.glb",
+      "bytes": 258344,
+      "sha256": "d11be2d5a94a6cacf1a99c2c859f754795088d0b8da89ff7ba4c2ee2a7cf21d1"
+    },
+    {
+      "path": "public/assets/world/town-craft/T09.glb",
+      "bytes": 20360,
+      "sha256": "8b5cbeeda7cd695e8208104f5e8b84c9b460b9b19b7954f1526ca9b0a83de7a5"
+    },
+    {
+      "path": "public/assets/world/town-craft/T10.glb",
+      "bytes": 86024,
+      "sha256": "ef43c9f790809ab254c80a6e4484c4183703cb4863d99573381cfb9b8a997db1"
+    },
+    {
+      "path": "public/assets/world/town-craft/T11.glb",
+      "bytes": 43624,
+      "sha256": "b8df55c0c7f93dc014dc5af6b50bafbe8bcb71cd27e0fda83c9219a89c1c5913"
+    },
+    {
+      "path": "public/assets/world/town-craft/T12.glb",
+      "bytes": 167052,
+      "sha256": "314fa061bad92febf96954ff588cd82037851d60c4f9e6b9b7190e3487d05061"
+    },
+    {
+      "path": "public/assets/world/town-craft/manifest.json",
+      "bytes": 4198,
+      "sha256": "d3ae5e814312110b1b936200a5dc79c481ccd6697f6561f0ab1a0f8239e46763"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/bark-color.png",
+      "bytes": 33123,
+      "sha256": "aec735c120f164ff03044c180dd0d04df40f7ff967de2b5006a8b36136c3b5cf"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/bark-normal.png",
+      "bytes": 153500,
+      "sha256": "0cd5831237b07c0f2b518c084299c51296629d3ec832de698a120340d9be1fcf"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/bark-orm.png",
+      "bytes": 53935,
+      "sha256": "6a15d27804abd957855903a59d9c7d807bf6421c599a720a7f41f9613cdff0b6"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/brick-color.png",
+      "bytes": 63950,
+      "sha256": "e39446fe8cb889124f4742a16659e00c32609cbc9975b78a7487e2b41dafe4b2"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/brick-normal.png",
+      "bytes": 97935,
+      "sha256": "72b15825d64ccc7d557feebef7b4b4730bd73cd676fd14dd19dfe2fed915acc6"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/brick-orm.png",
+      "bytes": 70631,
+      "sha256": "3c8dde043b93cd959cdde03aa78f2867df5a386e841d5414149b33e2ab81bf4b"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/cloth-color.png",
+      "bytes": 10812,
+      "sha256": "cbcd534d8cc36c31e9f3ae41cc9b2598c93684e1e63531366a9d626a9689b640"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/cloth-normal.png",
+      "bytes": 2300,
+      "sha256": "0f35276f6626c405c5eded954dad532f6bdcc541b90b862b5de0ef1d50267a5e"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/cloth-orm.png",
+      "bytes": 49353,
+      "sha256": "e82d4f34dbf424129531d8d45d1f9788b28b5742256704aa15aee9d932e32dac"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/glazing-color.png",
+      "bytes": 26323,
+      "sha256": "94622ccb75c49a0d6aaa57299531325485a3f8fe63dd4fcc8f1cb61c2e4b9b46"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/glazing-normal.png",
+      "bytes": 1489,
+      "sha256": "abfbebf4f60caeed1c7ec36346eab3201005880f62b5021ef6f4df0b4e4aba3b"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/glazing-orm.png",
+      "bytes": 3523,
+      "sha256": "9c044aa93a1922f97e85a10220d829a0573d95435ae1ff602c1e7b19b19ebffd"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/metal-color.png",
+      "bytes": 7995,
+      "sha256": "bc0685c6a1f8f8fa230440fda3df47e1be30c6ac0642d51c88b4b7f6fe52e24e"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/metal-normal.png",
+      "bytes": 1524,
+      "sha256": "9baedbf2237c7bd87df5ff8f3c966a9027f0a81a371aa83544b876a51036b367"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/metal-orm.png",
+      "bytes": 16295,
+      "sha256": "1e7e561d1f858540ea3f5a204ad379b83bdb3772a2c17e02fa36d8c05cb6d0f8"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/plaster-color.png",
+      "bytes": 59187,
+      "sha256": "f4fdfcf30f0e372418cebbabe42ce53244e494900d4b4f9bbf313c5d3302dcad"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/plaster-normal.png",
+      "bytes": 247423,
+      "sha256": "8e2d8a0cee671e832b85a9c8a7a477b72681136d44097ac81071b566847ba9b8"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/plaster-orm.png",
+      "bytes": 73904,
+      "sha256": "cb990644aa476d19a47f54bbeea9d29fbc211e01bbd2b3ff7b30be39ce180224"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/provenance.json",
+      "bytes": 325,
+      "sha256": "9603eab5dd7a22e9545b736f4e123776ad653b1552478a675a9fd6e3393b1318"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/roof-color.png",
+      "bytes": 64678,
+      "sha256": "2499de7aea2d9a2f1b8e9fcfb008df8474829125906c908551ef3227254dd52f"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/roof-normal.png",
+      "bytes": 89820,
+      "sha256": "0ecda1fea96a3bf445b5ea45c968a7d480eaba6c9b1922784496ee69669a82ce"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/roof-orm.png",
+      "bytes": 63004,
+      "sha256": "0c349a1b43a3dee08755283db4aaee1d8e37b99da2a21539ea78b8f4711b062b"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/stone-color.png",
+      "bytes": 62106,
+      "sha256": "4a58b42d8342cc659589828d75984bcfaf3da6eece5645a77c57ab84a0fa4bc9"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/stone-normal.png",
+      "bytes": 191379,
+      "sha256": "f8947f2f7be437286bb51860616960d8c073f273a7cef18a47eda3f61ef72496"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/stone-orm.png",
+      "bytes": 55981,
+      "sha256": "9d347b207270c82eea55902f56dcd7d9adabeaf91aefb32abbeb739f9500ab93"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/wood-color.png",
+      "bytes": 58633,
+      "sha256": "8e4348321d09c8494bcfd827368cff0163252b75134a6a7e195d3f619d089d64"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/wood-normal.png",
+      "bytes": 32805,
+      "sha256": "517520e1557b5a9562caea69d87fbc4a41616801b1b48a47b31cd511c2caa5c4"
+    },
+    {
+      "path": "public/assets/world/town-craft/surfaces/wood-orm.png",
+      "bytes": 37130,
+      "sha256": "947648dc7b13fa4708902d1f8152189c68c8d73d066fb2dd2d8d165640d28548"
+    },
+    {
+      "path": "tools/world/town-craft/native/T01.blend",
+      "bytes": 825143,
+      "sha256": "98c46546deb3ba114c6083a1addc12544cf38d50b29940eff0ce9daedd8b2810"
+    },
+    {
+      "path": "tools/world/town-craft/native/T02.blend",
+      "bytes": 807119,
+      "sha256": "f28940f5fda4c7c8ba126455b1fc496210f4b22436b70d51ed084a170dc99877"
+    },
+    {
+      "path": "tools/world/town-craft/native/T03.blend",
+      "bytes": 1573488,
+      "sha256": "7d6bc3925870de5f8e4a34e8e3016ebebe3828d5e4207aae342f5c2feb0c55ce"
+    },
+    {
+      "path": "tools/world/town-craft/native/T04.blend",
+      "bytes": 1199236,
+      "sha256": "5f40550bc6c67d2c07af5215df4bb9cfbcd516228550a1b64e44036e26ab05c3"
+    },
+    {
+      "path": "tools/world/town-craft/native/T05.blend",
+      "bytes": 1622605,
+      "sha256": "f33f351840c568f5ee4532a3d2c7319dd2e26e611b70012e6c637b8401c34095"
+    },
+    {
+      "path": "tools/world/town-craft/native/T06.blend",
+      "bytes": 814149,
+      "sha256": "149504f0b85d8156ef82a12a31015604c6249675127a8fb617c10fbbb62755bf"
+    },
+    {
+      "path": "tools/world/town-craft/native/T07.blend",
+      "bytes": 1630597,
+      "sha256": "5803960de4f6a2be53cbb1457978d7bdafd112bb53fadaa8c4fb05cb136a4cd9"
+    },
+    {
+      "path": "tools/world/town-craft/native/T09.blend",
+      "bytes": 447737,
+      "sha256": "f496416663611123a8da7c23ebcc18f003d99c72b0b3cfbf9a10ce8a6bb33817"
+    },
+    {
+      "path": "tools/world/town-craft/native/T10.blend",
+      "bytes": 1099098,
+      "sha256": "e1ffcd75147829495db8d8128dc9fe255a591a0544d90ba7bb6e6456549b5292"
+    },
+    {
+      "path": "tools/world/town-craft/native/T11.blend",
+      "bytes": 1088458,
+      "sha256": "0600c022e91afbaf75eab9fe170cf81164c63979c5df56d92107fc62f10968ee"
+    },
+    {
+      "path": "tools/world/town-craft/native/T12.blend",
+      "bytes": 552474,
+      "sha256": "f47a13e12ec41f296b0611f8659fb75aada6a875ab40bf5b7268d82bc7434923"
+    }
+  ]
+}

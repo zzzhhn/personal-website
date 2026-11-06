@@ -971,4 +971,5 @@ def main():
         print(f'[town] {aid} tris={tris} bounds={tuple(round(v,3) for v in lo)}..{tuple(round(v,3) for v in hi)} cols={len(A.cols)}')
     print('[town-report]', json.dumps(report))
 
-main()
+if __name__ == '__main__':
+    main()

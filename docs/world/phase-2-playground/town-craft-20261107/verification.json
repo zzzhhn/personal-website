@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-06T19:14:03.557608+00:00",
+  "localPort": 4341,
+  "publicDeployment": false,
+  "reviewToolbarAbsent": true,
+  "consoleErrors": 0,
+  "browser": [
+    "ordinary start=town entry loaded",
+    "walked to MoE board, E opened existing experience card, Escape closed it",
+    "comparison scene selector, day/night buttons and 30/50 percent slider worked",
+    "final page paused in settings"
+  ],
+  "sourceBaseline": "63f3fe3",
+  "nativeFamilies": 11,
+  "materialAndRenderPolicyTests": 9,
+  "evidence": "evidence/",
+  "performance": "Paired frozen camera and drawing buffer. P50 19.6 to 19.4 ms; draw calls 333 to 336. Original outlier samples retained. Not GPU or whole-island acceptance.",
+  "visualAcceptance": "pending user review"
+}

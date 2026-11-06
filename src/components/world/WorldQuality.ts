@@ -7,16 +7,19 @@ import { useWorldStore } from './store';
  * A small high-quality canvas is supersampled to 1080 lines where the 2x cap allows it.
  * The debug API reports the actual result, never a marketing resolution label. */
 export function useWorldResolution() {
-  const { size, setDpr, frameloop } = useThree();
+  const { size, setDpr, frameloop, viewport } = useThree();
   const quality = useWorldStore(s => s.quality);
-  // Reapply after loop changes: Canvas configuration resets its DPR prop.
+  // Canvas can restore its DPR prop on a parent rerender even when the loop
+  // mode stays unchanged (for example, switching between two frozen shots).
+  // Observe the actual ratio so the pixel budget survives that reconfiguration.
   useEffect(() => {
     if (!size.width || !size.height) return;
     const high = quality === 'high';
     const budget = high ? 2560 * 1440 : 1920 * 1080;
     const desired = high ? Math.max(window.devicePixelRatio, 1080 / size.height) : window.devicePixelRatio;
-    setDpr(Math.min(high ? 2 : 1.5, desired, Math.sqrt(budget / (size.width * size.height))));
-  }, [size.width, size.height, quality, frameloop, setDpr]);
+    const target=Math.min(high ? 2 : 1.5, desired, Math.sqrt(budget / (size.width * size.height)));
+    if(Math.abs(viewport.dpr-target)>.00001)setDpr(target);
+  }, [size.width, size.height, quality, frameloop, viewport.dpr, setDpr]);
 }
 
 export function objectIdentity(object?: Object3D, bodyData?: unknown) {
