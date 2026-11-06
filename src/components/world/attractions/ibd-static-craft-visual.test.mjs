@@ -46,7 +46,7 @@ test('actual StaticAsset effect survives StrictMode cleanup/replay and disposes 
   const js=ts.transpileModule(readFileSync(new URL('./WorldIbdStaticCraft.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
   const ast=ts.createSourceFile('static.js',js,ts.ScriptTarget.Latest,true),fn=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text==='StaticAsset');
   let effect,disposals=0;const data={users:0,group:{},dispose(){disposals++;}};
-  const env={useLoader:()=>({scene:{}}),GLTFLoader:()=>{},IBD_STATIC_CRAFT_ASSET:'asset',withWorldAssetDecoder:()=>{},useMemo:fn=>fn(),createIbdStaticCraft:()=>data,useEffect:fn=>{effect=fn;},_jsx:(type,props)=>({type,props})};
+  const env={useLoader:()=>({scene:{}}),GLTFLoader:()=>{},IBD_STATIC_CRAFT_ASSET:'asset',withWorldAssetDecoder:()=>{},useMemo:fn=>fn(),createIbdStaticCraft:()=>data,useDjcFurnitureEnvironment:()=>null,useRef:value=>({current:value}),updateIbdCraftEnvironment:()=>{},useFrame:()=>{},useEffect:fn=>{effect=fn;},_jsx:(type,props)=>({type,props})};
   const component=new Function(...Object.keys(env),`return (${fn.getText(ast)});`)(...Object.values(env));component({uniform:{value:0}});
   const firstCleanup=effect();firstCleanup();const finalCleanup=effect();await Promise.resolve();assert.equal(data.users,1);assert.equal(disposals,0);
   finalCleanup();await Promise.resolve();assert.equal(data.users,0);assert.equal(disposals,1);

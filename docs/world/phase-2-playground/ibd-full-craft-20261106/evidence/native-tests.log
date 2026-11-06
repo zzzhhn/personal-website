@@ -1,0 +1,25 @@
+(node:54525) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cargo decomposition preserves every quantity/specification sample without a second shell (21.990334ms)
+✔ each dynamic placement owns only nodes while borrowing immutable source PBR resources (1.073042ms)
+✔ legacy crate comparison requires explicit QA opt-in (0.174084ms)
+✔ the actual crate wrapper mounts only one visual branch for distance, legacy, loading and error states (29.663084ms)
+✔ actual native crate material owner survives StrictMode replay and disposes only after its final release (4.962125ms)
+✔ actual crate keeps all fork channels, support pads and the existing lid sweep envelope (24.143417ms)
+(node:54529) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ shell separation preserves colliders, roller contact and every non-shell visual vertex (1058.661334ms)
+✔ static equipment QA flag requires explicit opt-in (0.215208ms)
+✔ all 14 placements batch by borrowed physical material and cleanup is idempotent (2.649583ms)
+✔ actual StaticAsset effect survives StrictMode cleanup/replay and disposes after final release (30.713708ms)
+✔ actual portable three-family pack preserves original inspection/utility/control envelopes and owns batching resources (76.95325ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2498.175833

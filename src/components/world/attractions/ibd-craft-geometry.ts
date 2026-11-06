@@ -54,17 +54,60 @@ export function addWoundCoil(b: Builder, damaged: boolean) {
   }
 }
 
+/** Bare machined surfaces reuse the yard's physical mill response. Coordinates
+ * stay in metres and no geometry, collision or additional material is created. */
+export function applyIbdMachinedFinish(b: Builder, first = 0) {
+  for (let i = first; i < b.pos.length / 3; i++) {
+    if (b.mat[i * 4 + 1] < .5 || b.mat[i * 4 + 3] !== 0) continue;
+    const nx=Math.abs(b.nrm[i*3]),ny=Math.abs(b.nrm[i*3+1]),nz=Math.abs(b.nrm[i*3+2]);
+    const normal=nx>ny&&nx>nz?0:ny>nz?1:2;
+    const u = normal === 0 ? 2 : 0, v = normal === 1 ? 2 : 1;
+    b.mat[i*4+3] = -2;
+    b.suv[i*2] = b.pos[i*3+u]; b.suv[i*2+1] = b.pos[i*3+v];
+  }
+}
+
+/** Visual support stays below each original side bar. The exact original closed
+ * roller/rail triangles remain the sole contact mesh, including their gaps. */
+export function addIbdRollerFrame(b: Builder, x: number, start: number, end: number) {
+  const first = b.pos.length / 3, length = end-start, middle = (start+end)/2;
+  for (const side of [-1, 1]) {
+    const railX = x+side*1.7;
+    // Folded channel: vertical web and two returned lips support the bearings.
+    cbox(b, [railX,.47,middle], [.055,.24,length], P.dark, .008);
+    for (const y of [.365,.575]) cbox(b, [railX,y,middle], [.16,.035,length], P.steel, .007);
+    for (const z of [start+.18,end-.18]) {
+      cbox(b, [railX,.265,z], [.13,.29,.14], P.dark, .012);
+      cbox(b, [railX,.12,z], [.16,.04,.28], P.steel, .01);
+      // The short knee is in the side-frame plane, entirely inside this bank.
+      bar(b, [railX,.2,z], [railX,.45,z+(z<middle?.32:-.32)], .035, P.steel, 6);
+    }
+    for (let z = start; z <= end; z += .8) {
+      // Axle ends bridge the former 20 cm unsupported barrel/rail gap.
+      bar(b, [x+side*1.49,.65,z], [x+side*1.755,.65,z], .037, P.cutSteel, 8);
+      cbox(b, [railX,.605,z], [.15,.12,.22], P.dark, .018);
+      b.tr([railX,.65,z], [0,0,Math.PI/2], () =>
+        lathe(b, [[.038,-.075],[.082,-.075],[.082,.075],[.038,.075],[.038,-.075]],
+          P.cutSteel, {sides:8,caps:false}));
+    }
+  }
+  applyIbdMachinedFinish(b,first);
+}
+
 export function addInspectionTorch(b: Builder) {
+  const first=b.pos.length/3;
   // Inspection head faces the cargo (-z); the handgrip stays in the old tool pivot.
   b.tr([0, 0, 0], [-Math.PI / 2, 0, 0], () => {
     lathe(b, [[0, -.27], [.085, -.27], [.09, -.23], [.09, .04], [.145, .1], [.145, .19], [0, .19]], P.dark, { sides: 16 });
     for (const y of [-.19, -.12, -.05]) lathe(b, [[.089, y], [.098, y], [.098, y + .025], [.089, y + .025]], P.rubber, { sides: 16 });
-    lathe(b, [[.11, .18], [.147, .18], [.147, .205], [.11, .205]], cutSteel, { sides: 20, caps: false });
+    lathe(b, [[.11, .18], [.147, .18], [.147, .205], [.11, .205], [.11, .18]], cutSteel, { sides: 20, caps: false });
     lathe(b, [[0, .197], [.108, .197], [.108, .2], [0, .2]], P.pale, { sides: 20 });
   });
   cbox(b, [.04, .098, .04], [.065, .025, .09], P.amber, .008);
+  applyIbdMachinedFinish(b,first);
 }
 export function addInspectionTools(b: Builder) {
+  const first=b.pos.length/3;
   addInspectionTorch(b);
   // Caliper beam, fixed jaw, sliding jaw and an engraved scale.
   cbox(b, [.4, 0, 0], [.6, .045, .07], cutSteel, .008);
@@ -75,6 +118,10 @@ export function addInspectionTools(b: Builder) {
   cbox(b, [.5, .02, 0], [.16, .1, .1], P.blue, .012);
   cbox(b, [.5, .073, 0], [.1, .008, .055], P.dark);
   for (let i = 0; i < 11; i++) cbox(b, [.21 + i * .043, .024, -.005], [.006, .003, i % 5 === 0 ? .05 : .026], winding);
+  // Slider thumbwheel is fixed to the jaw carriage, clear of the measuring tips.
+  b.tr([.51,-.025,.055],[Math.PI/2,0,0],()=>
+    lathe(b,[[0,-.012],[.045,-.012],[.05,-.006],[.05,.012],[0,.012]],cutSteel,{sides:12}));
+  applyIbdMachinedFinish(b,first);
 }
 
 /** Task-specific controls share the existing protected base and physical reach anchors. */

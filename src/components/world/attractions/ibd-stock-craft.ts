@@ -2,8 +2,8 @@ import { Builder, bar, box, cbox, type Surf, type V3 } from '../WorldStreetGeome
 import type { IbdCube } from './ibd-yard-architecture.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 
-const SHELF_ZINC = { color: '#c8cfcb', rough: .58, metal: .29 } satisfies Surf;
-const RACK_PAINT = { color: '#435c6f', rough: .56, metal: .13 } satisfies Surf;
+const SHELF_ZINC = { color: '#c8cfcb', rough: .5, metal: .66 } satisfies Surf;
+const RACK_PAINT = { color: '#435c6f', rough: .6, metal: .06 } satisfies Surf;
 
 // Shelf skin section from the deck edge to the lower bearing return, in metres.
 const SHELF_OUTER = [[1.6,.09],[1.663,.09],[1.7,.056],[1.7,-.026],[1.672,-.052],[1.54,-.052]];
@@ -38,6 +38,21 @@ function rackBox(b: Builder, at: V3, size: V3, material: Surf, faces: OmittedFac
   box(b, [x - dx, y - dy, z - dz], [x + dx, y + dy, z + dz], material, 0, faces);
 }
 
+/** A folded C-section, open toward the stored load. The web and two returns
+ * explain the upright's wall thickness without enclosing the old solid block. */
+function addRackUpright(b: Builder, x: number, z: number, direction: number) {
+  const section = [[-.1,-.1],[.1,-.1],[.1,-.076],[-.074,-.076],[-.074,.076],[.1,.076],[.1,.1],[-.1,.1]];
+  const at = (point: number[], y: number): V3 => [x + direction * point[0], y, z + point[1]];
+  for (let i = 0; i < section.length; i++) {
+    const a = section[i], c = section[(i + 1) % section.length];
+    b.face([at(a,.12),at(c,.12),at(c,5),at(a,5)], RACK_PAINT,
+      [direction * (c[1]-a[1]), 0, a[0]-c[0]]);
+  }
+  // Three non-overlapping end faces, never a fan across the concave opening.
+  for (const [x0,x1,z0,z1] of [[-.1,.1,-.1,-.076],[-.1,-.074,-.076,.076],[-.1,.1,.076,.1]])
+    b.face([at([x0,z0],5),at([x1,z0],5),at([x1,z1],5),at([x0,z1],5)],RACK_PAINT,[0,1,0]);
+}
+
 function addTrimmedRackBeam(b: Builder, x: number, y: number, side: number) {
   const z = -23 + side * 1.535;
   const noEnds = { px: null, nx: null };
@@ -63,8 +78,8 @@ export function addIbdStockRack(b: Builder, cube: IbdCube, x: number, style: 'le
   const family = style === 'family';
   for (const dx of [-3, 3]) for (const z of [-24.5, -21.5]) {
     if (family) {
-      rackBox(b, [x + dx, 2.5, z], [.2, 5, .2], RACK_PAINT, { ny: null });
-      rackBox(b, [x + dx, .1, z], [.34, .12, .34], P.steel, { ny: null });
+      addRackUpright(b, x + dx, z, -Math.sign(dx));
+      rackBox(b, [x + dx, .06, z], [.34, .12, .34], SHELF_ZINC, { ny: null });
     } else {
       cube([x + dx, 2.5, z], [.2, 5, .2], foldedShelf ? RACK_PAINT : P.dark, false, 0);
       cube([x + dx, .1, z], [.34, .12, .34], P.steel, false, 0);

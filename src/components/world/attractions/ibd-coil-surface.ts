@@ -5,11 +5,30 @@ float ibdMillWave(float phase) {
   float fade = 1. - smoothstep(.2, .65, fwidth(phase));
   return sin(phase * 6.2831853) * fade;
 }
+float ibdTimberNoise(vec2 p) {
+  vec2 cell=floor(p), f=fract(p);f=f*f*(3.-2.*f);
+  vec4 n=fract(sin(vec4(dot(cell,vec2(127.1,311.7)),dot(cell+vec2(1,0),vec2(127.1,311.7)),
+    dot(cell+vec2(0,1),vec2(127.1,311.7)),dot(cell+vec2(1,1),vec2(127.1,311.7))))*43758.5453);
+  return mix(mix(n.x,n.y,f.x),mix(n.z,n.w,f.x),f.y);
+}
 vec3 ibdCoilFinish(vec2 uv, float code) {
+  if (code < -3.5) {
+    // Raised chequer plate in metres, filtered before it becomes subpixel.
+    vec2 q = uv / .16;
+    float tile = mod(floor(q.x) + floor(q.y), 2.);
+    vec2 d = abs(fract(q) - .5);
+    float ridge = 1. - smoothstep(.075, .13, tile < .5 ? d.x : d.y);
+    ridge *= 1. - smoothstep(.28, .36, tile < .5 ? d.y : d.x);
+    ridge *= 1. - smoothstep(.2, .7, max(fwidth(q.x), fwidth(q.y)));
+    return vec3(.94 + .10*ridge, .54 - .08*ridge, .0018*ridge);
+  }
   if (code < -2.5) {
-    float grain = ibdMillWave(uv.y * 18. + .3 * sin(uv.x * 2.1));
-    float broad = sin(uv.y * 5. + sin(uv.x * 1.7));
-    return vec3(.92 + .07 * grain + .1 * broad, .82 + .07 * broad, .0004 * grain);
+    vec2 grainUv=uv*vec2(1.5,38.);
+    float grain=ibdTimberNoise(grainUv)-.5;
+    float fibre=(ibdTimberNoise(uv*vec2(4.,145.))-.5)
+      *(1.-smoothstep(.4,1.2,max(fwidth(uv.x*4.),fwidth(uv.y*145.))));
+    float variation=ibdTimberNoise(uv*vec2(.22,2.))- .5;
+    return vec3(.96+.32*grain+.13*fibre+.08*variation,.83+.1*grain,.00065*fibre);
   }
   if (code > -1.5) {
     float r = length(uv);

@@ -170,6 +170,11 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
 /** Deep rear stores and maintenance alcove, kept outside inspection faces and every animated pallet lane. */
 export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], rackMode?: 'sample' | 'family', crateSample?: 'reference' | 'grain', woodFinish?: CoilBayFinish) {
   const crate = (x: number, y: number, z: number, w = 2.2) => {
+    if (crateSample === 'grain' && woodFinish) {
+      // Skid bottom is .93 m below centre; shelf tops are .49 and 2.59 m.
+      addIbdStockCrateSample(b, x, y < 2 ? 1.42 : 3.52, z, woodFinish);
+      return;
+    }
     cube([x, y, z], [w, 1.5, 1.65], P.timber, false, .04);
     for (const xx of [-w / 2 + .14, w / 2 - .14]) cube([x + xx, y, z + .84], [.14, 1.5, .08], P.endgrain, false, 0);
     for (const yy of [-.6, .6]) cube([x, y + yy, z + .85], [w, .12, .1], P.endgrain, false, 0);
@@ -193,12 +198,17 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
     solids.push({ at: [x, 2.5, -23], size: [6.4, 5, 3.4] });
     addIbdStockRack(b, cube, x, rackMode === 'family' || x === 13 ? rackMode : undefined);
     crate(x - 1.6, 1.3, -23);
-    if (crateSample && x === 13) addIbdStockCrateSample(b, x + 1.5, 1.3, -23, crateSample === 'grain' ? woodFinish : undefined);
+    if (crateSample && x === 13) addIbdStockCrateSample(b, x + 1.5, crateSample === 'grain' ? 1.42 : 1.3, -23, crateSample === 'grain' ? woodFinish : undefined);
     else crate(x + 1.5, 1.3, -23);
     if (x === 13) {
       for (const xx of [x - 1.8, x, x + 1.8]) b.tr([xx, 2.6, -23], [0, 0, 0], () => {
-        lathe(b, [[0, 0], [.6, 0], [.65, .12], [.65, 1.5], [.6, 1.65], [0, 1.65]], P.blue, { sides: 10 });
-        for (const y of [.3, 1.3]) lathe(b, [[.65, y], [.68, y], [.68, y + .08], [.65, y + .08]], P.steel, { sides: 10 });
+        const paint: Surf = {color:'#527e92',rough:.48,metal:.14};
+        lathe(b, [[0, 0], [.6, 0], [.65, .06], [.65, .13], [.63, .18], [.63, 1.49], [.65, 1.54], [.65, 1.62], [.6, 1.65], [0, 1.65]], paint, { sides: 20 });
+        for (const y of [.3, 1.3]) lathe(b, [[.63, y], [.66, y+.02], [.66, y+.06], [.63, y+.08]], paint, { sides: 20,caps:false });
+        for (const [dx,dz,r] of [[.28,.23,.085],[-.28,-.23,.045]]) b.tr([dx,1.65,dz],[0,0,0],()=>{
+          lathe(b,[[r,0],[r+.018,0],[r+.018,.035],[r,.035]],P.cutSteel,{sides:12,caps:false});
+          cbox(b,[0,.02,0],[r*1.6,.025,r*1.6],P.dark,.004);
+        });
       });
     } else if (x === 5) for (const xx of [x - 1.6, x + 1.5]) crate(xx, 3.35, -23);
     else {
@@ -206,7 +216,7 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
       // timber cases and painted drums; all ends face the existing open frontage.
       for (const row of [0, 1]) for (let i = 0; i < 7 - row; i++) {
         b.tr([x - 2.25 + i * .7 + row * .35, 2.93 + row * .57, -23], [Math.PI / 2, 0, 0], () =>
-          lathe(b, [[.19, -1.25], [.3, -1.25], [.3, 1.25], [.19, 1.25], [.19, -1.25]], P.cutSteel, { sides: 8, caps: false }));
+          lathe(b, [[.19, -1.25], [.28, -1.25], [.3, -1.22], [.3, 1.22], [.28, 1.25], [.19, 1.25], [.19, -1.25]], {color:'#a1afb5',rough:.37,metal:.87}, { sides: 16, caps: false }));
       }
       for (const dx of [-2.7, 2.7]) cube([x + dx, 2.83, -23], [.12, .4, 2.7], P.amber, false, 0);
     }
@@ -233,5 +243,25 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
   cube([-28.5, 1.7, 12], [3, 3.4, 5.5], P.wall, true);
   cube([-28.5, 3.5, 12], [3.5, .22, 6], P.roof);
   for (let y = 1.1; y < 2.8; y += .23) cube([-26.94, y, 12], [.1, .09, 2], P.dark, false, 0);
-  cube([-27.1, .7, 16], [2.2, 1.4, 1.5], P.green, true);
+  cube([-28.5,1.72,14.79],[2.64,2.87,.075],P.dark,false,.018);
+  cube([-28.5,1.72,14.84],[2.46,2.69,.06],P.green,false,.012);
+  for (const x of [-29.5,-27.5]) for (const y of [.61,2.83])
+    cube([x,y,14.884],[.13,.13,.028],P.cutSteel,false,.008);
+  cube([-27.55,1.63,14.91],[.12,.34,.085],P.dark,false,.022);
+  for (const x of [-29.68,-27.32]) cube([x,1.72,14.91],[.08,2.55,.06],P.steel,false,0);
+  // Keep the original protected volume; separate the chest body, lid and feet.
+  solids.push({at:[-27.1,.7,16],size:[2.2,1.4,1.5]});
+  cube([-27.1,.71,16],[2.2,1.2,1.5],P.green,false,.045);
+  cube([-27.1,1.32,16],[2.2,.02,1.5],P.dark,false,.02);
+  cube([-27.1,1.365,16],[2.14,.07,1.44],P.green,false,.025);
+  for(const x of[-27.97,-26.23])for(const z of[15.43,16.57])
+    cube([x,.06,z],[.22,.12,.22],P.dark,false,.018);
+  for(const x of[-27.8,-26.4]){
+    cube([x,1.24,16.758],[.14,.21,.034],P.cutSteel,false,.008);
+    cube([x,1.26,15.235],[.24,.09,.04],P.cutSteel,false,.014);
+  }
+  for(const x of[-28.205,-25.995]){
+    cube([x,.98,16],[.03,.08,.48],P.dark,false,.015);
+    bar(b,[x,.98,15.82],[x,.98,16.18],.027,P.cutSteel,8);
+  }
 }

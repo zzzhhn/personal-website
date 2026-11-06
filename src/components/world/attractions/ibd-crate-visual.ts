@@ -1,4 +1,5 @@
-import { Group, Quaternion, Vector3, type Mesh } from 'three';
+import { Group, MeshStandardMaterial, Quaternion, Vector3, type Mesh } from 'three';
+import { cloneIbdCraftMaterial } from './ibd-static-craft-visual.ts';
 
 export const IBD_CRATE_ASSET='/assets/world/ibd/crate/crate-v1.glb';
 export const IBD_CRATE_LID_PIVOT:[number,number,number]=[0,1.08,-1.25];
@@ -24,4 +25,25 @@ export function createIbdCratePart(source:Group,part:IbdCratePart){
   root.name=`ibd-crafted-crate-${part.toLowerCase()}`;
   root.traverse(object=>{const mesh=object as Mesh;if(mesh.isMesh){mesh.castShadow=true;mesh.receiveShadow=true;}});
   return root;
+}
+
+/** Mechanism-local nodes retain cached geometry and both fabrication/AO UVs.
+ * Each placement owns material clones, so reflection/night changes cannot tint
+ * the immutable loader pack or a different articulated placement. */
+export function createIbdCrateVisual(source:Group,part:IbdCratePart,nightUniform:{value:number}){
+  const root=createIbdCratePart(source,part),copies=new Map<MeshStandardMaterial,MeshStandardMaterial>();
+  let disposed=false;
+  try{
+    root.traverse(object=>{
+      const mesh=object as Mesh;if(!mesh.isMesh)return;
+      const clone=(original:unknown)=>{
+        if(!(original instanceof MeshStandardMaterial))throw new Error('IBD crate requires exported PBR materials');
+        let material=copies.get(original);
+        if(!material){material=cloneIbdCraftMaterial(original,nightUniform,false);copies.set(original,material);}
+        return material;
+      };
+      mesh.material=Array.isArray(mesh.material)?mesh.material.map(clone):clone(mesh.material);
+    });
+  }catch(error){for(const material of copies.values())material.dispose();throw error;}
+  return {root,materials:[...copies.values()],users:0,dispose(){if(disposed)return;disposed=true;for(const material of copies.values())material.dispose();}};
 }

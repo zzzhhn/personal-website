@@ -66,3 +66,18 @@ test('carton bindings leave the label, inner sample workspace, fork channel and 
     assert.deepEqual(f.colliders, []);
   } finally { f.dispose(); }
 });
+
+test('release rack uprights expose folded walls and their footing actually reaches the floor',()=>{
+  for(const x of [5,13,23]){
+    const f=fixture((b,cube)=>addIbdStockRack(b,cube,x,'family'));
+    try{
+      assert.deepEqual(f.colliders,[]);
+      for(const side of [-1,1]){
+        const web=f.hit([x,3.8,-21.5],[side,0,0]);near(web.point.x,x+side*3.074);
+        const foot=f.hit([x+side*3.155,.3,-21.5],[0,-1,0]);near(foot.point.y,.12);
+      }
+      near(f.geometry.boundingBox.min.y,0);near(f.geometry.boundingBox.max.y,5);
+      for(const y of [.4,2.5,4.7])near(f.hit([x,y+.5,-23],[0,-1,0],.6).point.y,y+.09);
+    }finally{f.dispose();}
+  }
+});

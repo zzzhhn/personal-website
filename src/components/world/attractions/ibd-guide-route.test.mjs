@@ -9,7 +9,7 @@ import { ibdCargoPose } from './ibd-yard-motion.ts';
 import { ibdGuideRoute, ibdGuideStep } from './ibd-yard-guide.ts';
 import { ibdRouteBetween } from './ibd-guide-route.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
-import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
+import { inspectIbdTestPack, ibdTestGuideAction } from './ibd-test-pack-inspection.mjs';
 await RAPIER.init();
 const identity = { x: 0, y: 0, z: 0, w: 1 }, capsule = new RAPIER.Capsule(.48, .34);
 function act(game, action) {
@@ -43,9 +43,11 @@ test('all batch routes sweep a player capsule clear of real guards, rollers, con
     for (let index = 0; index < 4; index++) {
       let game = createIbdYardGame(index);
       for (let i = 0; i < 60 && !game.released; i++) {
-        const step = ibdGuideStep(game);
+        const step = ibdGuideStep(game), action = ibdTestGuideAction(game, step.action);
         check(game, ibdGuideRoute(game), `${index}/${game.completedAction?.station ?? 'entry'} -> ${step.action.station}`);
-        game = act(game, step.action);
+        if (action.station !== step.action.station) check(game,
+          ibdRouteBetween(game.completedAction?.station, action.station, game.core.moved), `reserve access -> ${action.station}`);
+        game = act(game, action);
       }
       assert.ok(game.released);
       game = act(game, yardActions(game, 'dispatch')[0]);

@@ -49,9 +49,22 @@ test('both languages retain all signs, atlas crops, and a single indexed batch',
   for(const lang of ['zh','en']) {
     const {data,paint,canvas}=fixture(lang);
     try {
-      assert.equal(canvas.width,1024);assert.equal(canvas.height,1024);
-      assert.equal(data.geometry.getAttribute('position').count,100);assert.equal(data.geometry.index.count/3,50);
-      assert.equal(paint.filter(c=>c[0]==='text').length,50);
+      assert.equal(canvas.width,2048);assert.equal(canvas.height,1024);
+      const stations=IBD_STATIONS.filter(s=>s.id!=='stock-room'), count=7+stations.length;
+      assert.equal(count,27, 'seven site signs and twenty physical workstation signs');
+      const positions=data.geometry.getAttribute('position');
+      assert.equal(positions.count,count*4);assert.equal(data.geometry.index.count/3,count*2);
+      assert.equal(paint.filter(c=>c[0]==='text').length,count*2);
+      for(const id of ['stock-a','stock-b']) {
+        const station=ibdStation(id), offset=(7+stations.findIndex(s=>s.id===id))*4;
+        assert.ok(offset>=7*4);
+        close((positions.getX(offset)+positions.getX(offset+1))/2,station.at[0]);
+        close((positions.getY(offset)+positions.getY(offset+2))/2,.42);
+        close(positions.getZ(offset),station.at[2]-.35);
+        assert.ok(paint.some(c=>c[0]==='text'&&c[1]===station.title[lang]));
+      }
+      assert.equal(paint.filter(c=>c[0]==='text'&&c[1]==='M8 / 4 PCS').length,2, 'identical labels belong to the two sample benches');
+      assert.equal(paint.some(c=>c[0]==='text'&&c[1]===ibdStation('stock-room').title[lang]),false, 'the reserve choice area is not a third physical inspection bench');
       assert.ok(paint.some(c=>c[1]===(lang==='zh'?'物资清点场':'INVENTORY YARD')));
       assert.ok(paint.some(c=>c[1]===(lang==='zh'?'前卷检验位':'Front coil')));
       for(const value of data.geometry.getAttribute('uv').array)assert.ok(value>=0&&value<=1);

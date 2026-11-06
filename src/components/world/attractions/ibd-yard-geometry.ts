@@ -5,7 +5,7 @@ import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdArchitecture, buildIbdStores, type IbdSolid } from './ibd-yard-architecture.ts';
 import { buildIbdSite } from './ibd-yard-site.ts';
 import { bakeIbdLight } from './ibd-yard-lighting.ts';
-import { addInspectionTools, addInspectionTorch, addWoundCoil, addYardControl } from './ibd-craft-geometry.ts';
+import { addInspectionTools, addInspectionTorch, addWoundCoil, addYardControl, addIbdRollerFrame, applyIbdMachinedFinish } from './ibd-craft-geometry.ts';
 import { buildIbdTruck } from './ibd-truck-geometry.ts';
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
@@ -17,7 +17,11 @@ function buildIbdWalkSurface(b: Builder) {
   const below = (p: V3): V3 => [p[0], p[1] - .2, p[2]];
   const face = (points: V3[]) => { const v = points.map(vertex); indices.push(v[0], v[1], v[2], v[0], v[2], v[3]); };
   const top = (points: V3[]) => {
-    b.face(points, P.dark, [0, 1, 0]); face(points);
+    // The original walk faces carry the tread treatment, without a floating
+    // overlay or any change to the welded physical top/edge contract.
+    const ids = b.face(points, {color:'#6d7d80',rough:.54,metal:.6}, [0, 1, 0]);
+    ids.forEach((id,j)=>{ b.mat[id*4+3]=-4; b.suv[id*2]=points[j][0]; b.suv[id*2+1]=points[j][2]; });
+    face(points);
     const bottom = points.map(below).reverse(); b.face(bottom, P.dark, [0, -1, 0]); face(bottom);
     for (let i = 0; i < 4; i++) {
       const a = points[i], end = points[(i + 1) % 4], key = [vertex(a), vertex(end)].sort((x, y) => x - y).join(',');
@@ -71,6 +75,7 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
   const rollerBar = (a: V3, end: V3, radius: number, surf: Surf, sides: number) => {
     const firstVertex = b.pos.length / 3, firstIndex = b.idx.length;
     bar(b, a, end, radius, surf, sides);
+    applyIbdMachinedFinish(b, firstVertex);
     const offset = rollerVertices.length / 3 - firstVertex;
     rollerVertices.push(...b.pos.slice(firstVertex * 3));
     for (let i = firstIndex; i < b.idx.length; i++) rollerIndices.push(b.idx[i] + offset);
@@ -109,7 +114,8 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
     // Leave a standing gap in front of each inspection bench; guide arrows must not enter a roller bed.
     for (const [start, end] of [[-8.2, -3], [5, 7]]) {
       for (const xx of [-1.7, 1.7]) rollerBar([x + xx, .6, start], [x + xx, .6, end], .08, P.dark, 6);
-      for (let z = start; z <= end; z += .8) rollerBar([x - 1.5, .65, z], [x + 1.5, .65, z], .13, P.steel, 8);
+      for (let z = start; z <= end; z += .8) rollerBar([x - 1.5, .65, z], [x + 1.5, .65, z], .13, {color:'#a5b1b6',rough:.4,metal:.82}, 8);
+      addIbdRollerFrame(b,x,start,end);
     }
   }
   // Exact roller/side-frame contacts stop grounded players; z=0 and z=4 stay open.
@@ -218,12 +224,20 @@ export function buildIbdCrane() {
     cbox(b, [0, .25, z], [3.65, .35, .34], P.amber, .035);
     for (const x of [-1.6, 1.6]) cbox(b, [x, .46, z], [.24, .06, .27], P.dark, .01);
   }
+  // Saddles tie the previously floating centre motor to the two trolley rails.
+  for (const z of [-.38,.38]) {
+    cbox(b,[0,.275,z],[2.6,.12,.15],P.dark,.015);
+    for (const x of [-.3,.3]) cbox(b,[x,.32,z],[.18,.06,.22],P.cutSteel,.012);
+  }
   // Central motor and gearbox, with cooling ribs; the open corners reveal the
   // mechanical silhouette rather than disguising it with a larger solid box.
   cbox(b, [0, .53, 0], [.76, .55, 1.1], P.blue, .08);
   for (let i = 0; i < 6; i++) cbox(b, [0, .57, -.42 + i * .16], [.84, .52, .045], P.steel, .015);
+  cbox(b,[0,.49,.62],[.48,.42,.32],P.blue,.04);
+  for (const x of [-1.3,1.3]) cbox(b,[x,.56,.76],[.33,.3,.23],P.dark,.025);
   bar(b, [-1.3, .56, .76], [1.3, .56, .76], .055, P.cutSteel, 10);
   cbox(b, [0, .46, 1.65], [.76, .03, .25], P.pale, .01);
+  applyIbdMachinedFinish(b);
   return b.build();
 }
 export function buildIbdHook() {
@@ -239,11 +253,23 @@ export function buildIbdHook() {
     cbox(b, [x, -.89, 0], [.33, .12, .45], P.cutSteel, .035);
   }
   for (const x of [-.7, 0, .7]) cbox(b, [x, 0, .076], [.055, .21, .035], P.dark);
+  // Closed knee plates support each clevis from the spreader web. Clamp shoes,
+  // cable anchors and all contact faces retain their previous coordinates.
+  for (const x of [-1.3,1.3]) for (const side of [-1,1]) {
+    const points:V3[]=[[x-.22,-.12,side*.17],[x+.22,-.12,side*.17],[x,-.42,side*.17]];
+    const back=points.map(([px,py,pz]):V3=>[px,py,pz-side*.035]);
+    b.face(points,P.amber,[0,0,side]);b.face(back,P.amber,[0,0,-side]);
+    for(let i=0;i<3;i++)b.face([points[i],back[i],back[(i+1)%3],points[(i+1)%3]],P.amber);
+  }
+  applyIbdMachinedFinish(b);
   return b.build();
 }
 export function buildIbdCables() {
   const b = new Builder();
-  for (const x of [-1.3, 1.3]) cbox(b, [x, -.5, 0], [.045, 1, .045], P.dark);
+  // The same two stretchable cable centrelines and endpoints, now circular.
+  // Fittings stay off this mesh because its entire Y axis scales in the runtime.
+  for (const x of [-1.3, 1.3]) bar(b,[x,-1,0],[x,0,0],.0225,{color:'#596a70',rough:.43,metal:.72},8);
+  applyIbdMachinedFinish(b);
   return b.build();
 }
 export function buildIbdTorch() {
@@ -256,7 +282,25 @@ export function buildIbdTools() {
 }
 export function buildIbdShutter() {
   const b = new Builder();
-  for (let y = 0; y < 3; y += .25) cbox(b, [0, y - 1.5, 0], [.13, .22, 8.8], P.green, .02);
+  // Thin returned steel slats and overlapping rolled knuckles close the former
+  // see-through 30 mm stripes while keeping the original local bounds/pivot.
+  for (let row=0;row<12;row++) {
+    const low=row*.25-1.61,high=low+.22;
+    const section=[ [.04,low],[-.04,low+.04],[-.04,high-.04],[.04,high],
+      [.058,high],[-.022,high-.04],[-.022,low+.04],[.058,low] ];
+    const points=(z:number):V3[]=>section.map(([x,y])=>[x,y,z]);
+    // End sections are concave thin folds: close them as three convex strips,
+    // rather than a polygon fan that could cross the folded interior.
+    for(const side of [-1,1]) {
+      const cap=points(side*4.4);
+      for(let i=0;i<3;i++)b.face([cap[i],cap[i+1],cap[6-i],cap[7-i]],P.green,[0,0,side]);
+    }
+    const near=points(-4.4),far=points(4.4);
+    for(let i=0;i<8;i++)b.face([near[i],far[i],far[(i+1)%8],near[(i+1)%8]],P.green);
+    if(row<11)bar(b,[.04,high+.015,-4.4],[.04,high+.015,4.4],.025,P.green,12);
+  }
+  // Mounts bridge the old amber rub strip to the steel slat field.
+  for(const z of [-1.3,1.3])cbox(b,[-.055,0,z],[.04,.3,.15],P.dark,.008);
   cbox(b, [-.1, 0, 0], [.06, .45, 3], P.amber);
   return b.build();
 }

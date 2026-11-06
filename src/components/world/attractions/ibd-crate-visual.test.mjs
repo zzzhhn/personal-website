@@ -62,6 +62,16 @@ test('the actual crate wrapper mounts only one visual branch for distance, legac
   instance.state=Boundary.getDerivedStateFromError();assert.equal(instance.render(),fallback);
 });
 
+test('actual native crate material owner survives StrictMode replay and disposes only after its final release',async()=>{
+  const js=ts.transpileModule(readFileSync(new URL('./WorldIbdCratePart.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
+  const ast=ts.createSourceFile('crate.js',js,ts.ScriptTarget.Latest,true),fn=ast.statements.find(node=>ts.isFunctionDeclaration(node)&&node.name?.text==='CrateAsset');
+  let effect,disposals=0;const data={users:0,root:{},materials:[],dispose(){disposals++;}};
+  const env={useLoader:()=>({scene:{}}),GLTFLoader:()=>{},IBD_CRATE_ASSET:'asset',withWorldAssetDecoder:()=>{},useMemo:fn=>fn(),createIbdCrateVisual:()=>data,useDjcFurnitureEnvironment:()=>null,useRef:value=>({current:value}),updateIbdCraftEnvironment:()=>{},useFrame:()=>{},night:{value:0},useEffect:fn=>{effect=fn;},_jsx:(type,props)=>({type,props})};
+  const component=new Function(...Object.keys(env),`return (${fn.getText(ast)});`)(...Object.values(env));component({part:'Shell'});
+  const firstCleanup=effect();firstCleanup();const finalCleanup=effect();await Promise.resolve();assert.equal(data.users,1);assert.equal(disposals,0);
+  finalCleanup();await Promise.resolve();assert.equal(data.users,0);assert.equal(disposals,1);
+});
+
 test('actual crate keeps all fork channels, support pads and the existing lid sweep envelope',async t=>{
   const gltf=await readWorldCraftGltf(['public/assets/world/ibd/crate/crate-v1.glb','docs/world/phase-2-playground/ibd-crate-craft-20261101/crate.glb']);
   if(!gltf){t.skip('crate export has not been delivered yet');return;}

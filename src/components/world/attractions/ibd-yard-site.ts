@@ -5,6 +5,7 @@ import { IBD_FIXTURES } from './ibd-yard-lighting.ts';
 import { IBD_SHEDS } from './ibd-yard-layout.ts';
 import type { IbdCube } from './ibd-yard-architecture.ts';
 import { IBD_BOUNDARY_SEGMENTS, IBD_FOOTPRINT, IBD_YARD } from './attraction-layout.ts';
+import { addIbdPlant, addIbdFencePanel, addIbdLanternFrame } from './ibd-site-craft.ts';
 
 type P2 = [number, number];
 const local = ([x, z]: readonly number[]): P2 => [x - IBD_YARD.center[0], z - IBD_YARD.center[2]];
@@ -80,12 +81,18 @@ function perimeter(b: Builder, cube: IbdCube) {
     cube([x, .22, z], [length - .12, .28, .22], P.concrete, true, 0, rotation);
     for (const y of [.8, 1.65]) cube([x, y, z], [length - .08, .08, .08], P.dark, true, 0, rotation);
     const count = Math.ceil(length / 3);
-    for (let i = 0; i < count; i++) cube([a[0] + dx * i / count, .9, a[1] + dz * i / count], [.09, 1.8, .09], P.dark, true, 0);
+    for (let i = 0; i < count; i++) {
+      const xx=a[0]+dx*i/count,zz=a[1]+dz*i/count;
+      cube([xx,.9,zz],[.09,1.8,.09],P.dark,true,0);
+      cube([xx,1.82,zz],[.14,.06,.14],P.cutSteel,false,.008);
+      cube([xx,.39,zz],[.20,.06,.20],P.steel,false,.008);
+      addIbdFencePanel(b,[xx+dx/length*.12,0,zz+dz/length*.12],
+        [a[0]+dx*(i+1)/count-dx/length*.12,0,a[1]+dz*(i+1)/count-dz/length*.12]);
+    }
   }
   // Green soakaway occupies the actual eastern notch. It stays below the paving and has no wall collider.
   b.face([[25.3, .045, -4.3], [25.3, .045, -.2], [33.5, .045, 1.8], [33, .045, -6]], P.leafDark, [0, 1, 0]);
-  for (const z of [-4.5, -1.5]) b.tr([31, .045, z], [0, z, 0], () =>
-    lathe(b, [[0, 0], [.65, .12], [.8, .55], [.35, 1], [0, 1.2]], P.leaf, { sides: 5, faceted: true }));
+  for (const z of [-4.5, -1.5]) addIbdPlant(b,[31,.045,z],z,.95);
   // Broad turning path in the west apron, separated from the pedestrian approach and quarantine pad.
   for (let angle = -.3; angle <= Math.PI + .3; angle += .3) {
     const x = -34 + Math.cos(angle) * 8, z = 22 + Math.sin(angle) * 6;
@@ -111,8 +118,9 @@ export function buildIbdSite(b: Builder, cube: IbdCube) {
   for (const x of [-24, 24]) {
     cube([x, .5, 27], [6, .85, 2.3], P.concrete, true);
     cube([x, .95, 27], [5.6, .1, 1.9], P.timber, false, 0);
-    for (const xx of [-1.8, 0, 1.8]) b.tr([x + xx, .95, 27], [0, xx, 0], () =>
-      lathe(b, [[0, 0], [.8, .2], [1.1, .9], [.6, 1.65], [0, 1.9]], xx ? P.leaf : P.leafDark, { sides: 5, faceted: true }));
+    for(const zz of [-1.06,1.06])cube([x,1.0,27+zz],[6,.14,.18],P.pale,false,.025);
+    for(const xx of [-2.9,2.9])cube([x+xx,1.0,27],[.18,.14,1.96],P.pale,false,.025);
+    for (const xx of [-1.8,0,1.8]) addIbdPlant(b,[x+xx,1.0,27],x+xx,1.35);
   }
   for (const f of IBD_FIXTURES) {
     const [x, y, z] = f.at;
@@ -151,6 +159,7 @@ export function buildIbdSite(b: Builder, cube: IbdCube) {
       cube([x, .25, z], [.6, .5, .6], P.concrete, true);
       cube([x, y, z], [.34, .6, .34], P.lens);
       cube([x, y + .38, z], [.48, .12, .48], P.dark);
+      addIbdLanternFrame(b,x,y,z);
     }
   }
 }

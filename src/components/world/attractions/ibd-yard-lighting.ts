@@ -69,7 +69,7 @@ export function bakeIbdLight(geometry: BufferGeometry) {
 /** Keep PBR material differences in the merged draw; only the authored night fill is emissive. */
 export function createIbdMaterial(baked: boolean, nightUniform: { value: number }) {
   const material = new MeshStandardMaterial({ vertexColors: true, roughness: .78, metalness: .1 });
-  material.customProgramCacheKey = () => `ibd-industrial-v5-${baked ? 'static' : 'moving'}`;
+  material.customProgramCacheKey = () => `ibd-industrial-v6-${baked ? 'static' : 'moving'}`;
   material.onBeforeCompile = shader => {
     shader.uniforms.uIbdNight = nightUniform;
     shader.vertexShader = `attribute vec2 aSuv; varying vec2 vIbdCraftUv; attribute vec4 aMat; varying vec4 vIbdSurface; varying vec3 vIbdBake; ${baked ? 'attribute vec3 aIbdBake; varying vec2 vIbdPavingXZ;' : ''}\n${shader.vertexShader}`
@@ -77,7 +77,7 @@ export function createIbdMaterial(baked: boolean, nightUniform: { value: number 
     shader.fragmentShader = `${IBD_COIL_GLSL}\nuniform float uIbdNight; varying vec4 vIbdSurface; varying vec3 vIbdBake;${baked ? `varying vec2 vIbdPavingXZ;\n${IBD_CONCRETE_GLSL}\n${IBD_GROUND_CONTACT_GLSL}` : ''}\n${shader.fragmentShader}`
       .replace('#include <color_fragment>', `#include <color_fragment>\nvec3 ibdMill = vIbdSurface.w < -.5 ? ibdCoilFinish(vIbdCraftUv, vIbdSurface.w) : vec3(1., vIbdSurface.x, 0.); diffuseColor.rgb *= ibdMill.x;\n${baked ? `${IBD_CONCRETE_COLOR}\nfloat ibdGroundVisibility = vIbdSurface.w > 1.5 ? ibdTruckGroundVisibility(vIbdPavingXZ) : 1.0;` : ''}`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>\nif (vIbdSurface.w < -.5) normal = ibdMillNormal(-vViewPosition, normal, ibdMill.z, faceDirection);\n${baked ? 'if (vIbdSurface.w > 1.5) normal = ibdConcreteNormal(-vViewPosition, normal, ibdConcreteHeight, faceDirection);' : ''}`)
-      .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = vIbdSurface.x; if (vIbdSurface.w < -.5) roughnessFactor = ibdMill.y;')
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>\nroughnessFactor = vIbdSurface.x; if (vIbdSurface.w < -.5) roughnessFactor = ibdMill.y; ${baked ? 'if (vIbdSurface.w > 1.5) roughnessFactor = ibdConcreteRoughness;' : ''}`)
       .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nmetalnessFactor = vIbdSurface.y;')
       .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>\ntotalEmissiveRadiance += uIbdNight * (diffuseColor.rgb * vIbdBake ${baked ? '* ibdGroundVisibility' : ''} + vec3(1.0, 0.68, 0.3) * step(0.5, vIbdSurface.z) * 1.6);`)
       .replace('#include <aomap_fragment>', `#include <aomap_fragment>\n${baked ? 'reflectedLight.indirectDiffuse *= ibdGroundVisibility; reflectedLight.indirectSpecular *= ibdGroundVisibility;' : ''}`);

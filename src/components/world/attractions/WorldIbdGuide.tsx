@@ -21,7 +21,7 @@ function workObjects() {
 }
 
 /** Physical affordances remain when guidance is skipped: a manifest, a takeable kit and checked cargo. */
-export default memo(function WorldIbdGuide() {
+export default memo(function WorldIbdGuide({ toolsMaterial }: { toolsMaterial: MeshStandardMaterial }) {
   const game = useIbdYardStore(s => s.game), enabled = useIbdYardStore(s => s.guideEnabled);
   const lang = useWorldStore(s => s.lang);
   const suppressed = useWorldStore(s => s.paused || !!s.card || s.poolInspect || !!s.shot || !!s.activeVehicle || !!s.seat);
@@ -64,7 +64,7 @@ export default memo(function WorldIbdGuide() {
   useEffect(() => () => { cue.geometry.dispose(); cue.material.dispose(); cue.texture.dispose(); cue.label.dispose(); }, [cue]);
   return <group name="ibd-work-guidance" dispose={null}>
     <mesh name="ibd-pickup-manifest" geometry={props.paper} material={props.material} position={[-3, .96, 26]} rotation={[.12, 0, 0]} scale={1.5} />
-    <mesh name="ibd-takeable-tools" geometry={props.tools} material={props.material} position={[-6, 1.4, 19]} scale={1.6} visible={!game.equipped} />
+    <mesh name="ibd-takeable-tools" geometry={props.tools} material={toolsMaterial} position={[-6, 1.4, 19]} scale={1.6} visible={!game.equipped} />
     <mesh name="ibd-received-stamp" position={[-2.65, 1.06, 26.1]} rotation={[-Math.PI / 2, 0, 0]} visible={game.started} geometry={props.stamp} material={props.good} />
     {IBD_SLOTS.map(slot => {
       const id = yardItemId(game, slot), loaded = game.core.loaded.includes(id), checked = yardItemJudged(game, slot);

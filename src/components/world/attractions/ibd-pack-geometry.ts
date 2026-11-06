@@ -33,8 +33,14 @@ function addPackShell(b:Builder){
 }
 function addSample(b:Builder,spec:string){
   const d=dimensions(spec),r=d.radius,h=d.height;
-  lathe(b,[[0,0],[d.headRadius,0],[d.headRadius,.13],[r,.13],[r,h],[0,h]],P.steel,{sides:6,faceted:true});
-  for(let y=.18;y+.025<=h;y+=.08)lathe(b,[[r,y],[r+.02,y],[r+.02,y+.025],[r,y+.025]],P.dark,{sides:8});
+  // The forged hex retains the exact palm contact radius at Y=.065. A turned
+  // round shaft and the lead-in chamfer distinguish it from a six-sided peg.
+  lathe(b,[[0,0],[d.headRadius,0],[d.headRadius,.11],[d.headRadius*.92,.13],[0,.13]],P.steel,{sides:6,faceted:true});
+  lathe(b,[[0,.13],[r,.13],[r,h-.018],[r-.012,h],[0,h]],P.cutSteel,{sides:12});
+  for(let y=.18;y+.025<=h;y+=.08)
+    // Annular crests meet the existing shaft. Disk caps would overlap it and
+    // spend invisible faces at every thread band.
+    lathe(b,[[r,y],[r+.02,y+.006],[r+.02,y+.019],[r,y+.025]],P.steel,{sides:8,caps:false});
 }
 export function buildIbdPack(quantity:number,spec:string,{includeShell=true}:{includeShell?:boolean}={}){
   const b=new Builder();if(includeShell)addPackShell(b);
@@ -46,6 +52,9 @@ function addPresenterTray(b:Builder){
   cbox(b,[0,-.03,-.3],[.62,.04,.12],P.blue,0);
   bar(b,[0,-.01,-.33],[0,.1,-.36],.025,P.cutSteel,8);
   cbox(b,[0,.1,-.36],[.12,.07,.08],P.dark,.01);
+  // The carrier clevis is secured to its crosshead below the hook, within the
+  // original tray envelope and the frozen fork-channel clearance.
+  for(const x of [-.27,.27])bar(b,[x,-.047,-.3],[x,-.007,-.3],.027,P.cutSteel,6);
 }
 /** Fixed face is local X=0. Pads contact the bare shaft at Y=.17, between thread
  * bands; the outboard jaw arms leave the larger thread crests clear. */
@@ -58,6 +67,8 @@ function addCaliperFixed(b:Builder){
     b.face([[x-.003,.622,-z],[x+.003,.622,-z],[x+.003,.622,z],[x-.003,.622,z]],P.dark,[0,1,0]);
   }
   cbox(b,[-.075,.105,0],[.12,.035,.1],P.blue,.006);
+  // Blade attachment below the beam, clear of the contact pad at Y=.17.
+  bar(b,[-.075,.43,-.043],[-.075,.43,.043],.024,P.steel,6);
 }
 /** Moving inner face is also X=0. Translate this geometry by the actual jaw gap
  * relative to the fixed face; the thumb tab's front plane is local [0,.18,.29]. */
@@ -67,6 +78,7 @@ function addCaliperJaw(b:Builder){
   for(const z of [-.0675,.0675])cbox(b,[.055,.6,z],[.18,.12,.025],P.blue,0);
   for(const y of [.54,.66])cbox(b,[.055,y,0],[.18,.025,.16],P.blue,0);
   cbox(b,[.055,.681,0],[.11,.016,.07],P.dark,0);
+  bar(b,[.055,.64,.087],[.055,.64,.108],.026,P.cutSteel,6);
   bar(b,[.075,.55,.08],[.03,.18,.23],.025,P.cutSteel,8);
   cbox(b,[.03,.18,.23],[.16,.09,.12],P.rubber,.008);
 }
@@ -80,7 +92,8 @@ export function buildIbdPackParts(quantity:number,spec:string){
   const caliperFixed=geometry(addCaliperFixed),caliperJaw=geometry(addCaliperJaw);
   const rigMast=rigRod(.035),rigBoom=rigRod(.045),rigTether=rigRod(.016);
   const owned=[shell,sample,tray,caliperFixed,caliperJaw,rigMast,rigBoom,rigTether];
+  let disposed=false;
   return {shell,sample,tray,caliperFixed,caliperJaw,rigMast,rigBoom,rigTether,
     slots:IBD_PACK_SLOTS.map(s=>({index:s.index,at:[...s.at] as V3,occupied:s.index<clamp(Math.floor(quantity),0,4)})),
-    dispose:()=>owned.forEach(g=>g.dispose())};
+    dispose:()=>{if(disposed)return;disposed=true;owned.forEach(g=>g.dispose());}};
 }

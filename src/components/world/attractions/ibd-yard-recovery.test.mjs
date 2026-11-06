@@ -8,10 +8,13 @@ import { canCancelIbdObservation, cancelIbdYardAction, createIbdYardGame, finish
   requestIbdYardAction, yardActions, yardCase, yardItemId } from './ibd-yard-game.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
 import { ibdVerdictEvidence } from './ibd-yard-verdict.ts';
-import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
+import { inspectIbdTestPack, ibdTestGuideAction } from './ibd-test-pack-inspection.mjs';
+
+const guideAction = game => ibdTestGuideAction(game, ibdGuideStep(game).action);
 
 const actor = (game, action) => ({ active: true, local: ibdStation(action.station, game.core.moved).at });
 function complete(game, action = ibdGuideStep(game).action) {
+  action = ibdTestGuideAction(game, action);
   if (action.kind === 'contents') return inspectIbdTestPack(game, action);
   const local = actor(game, action), requested = requestIbdYardAction(game, playerVerdict(game, action), local);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, local) : requested;
@@ -52,7 +55,7 @@ test('every batch recovers after duplicate input, suspension, cancellation and r
   for (let index = 0; index < IBD_CASES.length; index++) {
     let game = createIbdYardGame(index);
     for (let i = 0; i < 60 && !game.released; i++) {
-      const action = ibdGuideStep(game).action, local = actor(game, action);
+      const action = guideAction(game), local = actor(game, action);
       const pending = requestIbdYardAction(game, action, local);
       if (!pending.pending) { game = complete(game, action); continue; }
       const token = pending.pending.token;
@@ -65,7 +68,7 @@ test('every batch recovers after duplicate input, suspension, cancellation and r
       assert.equal(finishIbdYardAction(cancelled, token, local), cancelled);
       // A remount reads the stored game. No hidden tutorial counter is needed to resume.
       const reentered = structuredClone(cancelled);
-      assert.deepEqual(ibdGuideStep(reentered).action, action);
+      assert.deepEqual(guideAction(reentered), action);
       const retry = requestIbdYardAction(reentered, action, local);
       assert.ok(retry.pending.token > token);
       assert.equal(finishIbdYardAction(retry, token, local), retry, 'old completion cannot commit the retry');
@@ -74,7 +77,10 @@ test('every batch recovers after duplicate input, suspension, cancellation and r
     }
     assert.equal(game.released, true, `case ${index}`);
     assert.equal(assessIbd(yardCase(game), game.core).status, 'clear');
-    assert.equal(game.exchanges.length, index ? 1 : 0);
+    assert.equal(game.exchanges.length, index === 2 ? 1 : 0);
+    assert.equal(game.stock.originalReturned, [1,3].includes(index));
+    assert.equal(game.stock.requested, false);
+    assert.equal(game.stock.assigned !== null, [1,3].includes(index));
   }
   assert.equal(JSON.stringify(IBD_CASES), source);
 });

@@ -1,0 +1,47 @@
+23:46:05 [vite] Re-optimizing dependencies because vite config has changed
+23:46:05 [content] Syncing content
+23:46:05 [content] Synced content
+23:46:05 [types] Generated 466ms
+23:46:05 [build] output: "static"
+23:46:05 [build] mode: "static"
+23:46:05 [build] directory: /tmp/bobby-ibd-full-playable-20261106/
+23:46:05 [build] Collecting build info...
+23:46:05 [build] ✓ Completed in 482ms.
+23:46:05 [build] Building static entrypoints...
+23:46:05 [WARN] [vite]
+/fonts/GeistSans-Regular.woff2 referenced in /fonts/GeistSans-Regular.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+23:46:05 [WARN] [vite]
+/fonts/GeistSans-Medium.woff2 referenced in /fonts/GeistSans-Medium.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+23:46:05 [WARN] [vite]
+/fonts/GeistSans-SemiBold.woff2 referenced in /fonts/GeistSans-SemiBold.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+23:46:05 [WARN] [vite]
+/fonts/InstrumentSerif-Regular.woff2 referenced in /fonts/InstrumentSerif-Regular.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+23:46:05 [WARN] [vite]
+/fonts/InstrumentSerif-Italic.woff2 referenced in /fonts/InstrumentSerif-Italic.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+23:46:15 [vite] ✓ built in 9.87s
+23:46:19 [WARN] [vite] [plugin vite:reporter]
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldFacilityCraftQA.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+23:46:19 [WARN] [vite]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+23:46:19 [vite] ✓ built in 4.52s
+23:46:19 [build] Rearranging server assets...
+
+ generating static routes
+23:46:19   ├─ /projects/alpha-agent/index.html (+15ms)
+23:46:19   ├─ /projects/djc/index.html (+3ms)
+23:46:19   ├─ /projects/evalforge/index.html (+4ms)
+23:46:20   ├─ /projects/hepai/index.html (+2ms)
+23:46:20   ├─ /projects/interactive-learning-platforms/index.html (+2ms)
+23:46:20   ├─ /projects/kindred/index.html (+3ms)
+23:46:20   ├─ /world/index.html (+9ms)
+23:46:20   ├─ /index.html (+153ms)
+23:46:20 ✓ Completed in 262ms.
+
+23:46:20 [build] ✓ Completed in 14.68s.
+23:46:20 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-ibd-full-playable-20261106`
+23:46:20 [build] 8 page(s) built in 15.16s
+23:46:20 [build] Complete!

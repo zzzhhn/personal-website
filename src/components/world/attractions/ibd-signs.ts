@@ -23,23 +23,24 @@ export function createIbdSigns(canvas: HTMLCanvasElement, lang: 'zh' | 'en') {
           title: s.title[lang], sub: s.id === 'manifest' ? '2 COILS / 8 M8' : s.id.startsWith('stock-')?'M8 / 4 PCS':'E / Y' };
       }),
     ];
-    canvas.width = 1024; canvas.height = 1024;
+    const atlasWidth=2048, atlasHeight=1024, cellWidth=512, cellHeight=128;
+    canvas.width = atlasWidth; canvas.height = atlasHeight;
     const ctx = canvas.getContext('2d')!;
     const positions: number[] = [], normals: number[] = [], uv: number[] = [], indices: number[] = [];
     signs.forEach((s, i) => {
-      const cx = (i % 4) * 256, cy = Math.floor(i / 4) * 128;
+      const cx = (i % 4) * cellWidth, cy = Math.floor(i / 4) * cellHeight;
       // Sample a crop with the physical sign's aspect ratio; stretching every 2:1 cell distorted long headers.
-      const ch = Math.min(128, 256 * s.h / s.w), top = cy + (128 - ch) / 2;
-      ctx.fillStyle = '#243740'; ctx.fillRect(cx, cy, 256, 128);
-      ctx.fillStyle = '#e8ac39'; ctx.fillRect(cx + 10, top + ch * .08, 236, Math.max(1, ch * .04));
+      const ch = Math.min(cellHeight, cellWidth * s.h / s.w), top = cy + (cellHeight - ch) / 2;
+      ctx.fillStyle = '#243740'; ctx.fillRect(cx, cy, cellWidth, cellHeight);
+      ctx.fillStyle = '#e8ac39'; ctx.fillRect(cx + 20, top + ch * .08, cellWidth-40, Math.max(1, ch * .04));
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#f4f1e6';
-      ctx.font = `600 ${Math.min(zh ? 28 : 25, ch * .34)}px ${zh ? '"Songti SC", serif' : 'sans-serif'}`;
-      ctx.fillText(s.title, cx + 128, top + ch * .43, 235);
-      ctx.font = `500 ${Math.min(15, ch * .2)}px sans-serif`; ctx.fillStyle = '#dfd8c4'; ctx.fillText(s.sub, cx + 128, top + ch * .78, 233);
+      ctx.font = `600 ${Math.min(zh ? 48 : 42, ch * .34)}px ${zh ? '"Songti SC", serif' : 'sans-serif'}`;
+      ctx.fillText(s.title, cx + cellWidth/2, top + ch * .43, cellWidth-42);
+      ctx.font = `500 ${Math.min(25, ch * .2)}px sans-serif`; ctx.fillStyle = '#dfd8c4'; ctx.fillText(s.sub, cx + cellWidth/2, top + ch * .78, cellWidth-46);
       const [x, y, z] = s.at, n = positions.length / 3;
       positions.push(x - s.w / 2, y - s.h / 2, z, x + s.w / 2, y - s.h / 2, z, x + s.w / 2, y + s.h / 2, z, x - s.w / 2, y + s.h / 2, z);
       normals.push(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1);
-      const u = cx / 1024, v = 1 - (top + ch) / 1024, vh = ch / 1024;
+      const u = cx / atlasWidth, v = 1 - (top + ch) / atlasHeight, vh = ch / atlasHeight;
       uv.push(u, v, u + .25, v, u + .25, v + vh, u, v + vh); indices.push(n, n + 1, n + 2, n, n + 2, n + 3);
     });
     const geometry = new BufferGeometry(), position = new Float32BufferAttribute(positions, 3).setUsage(DynamicDrawUsage);

@@ -1,0 +1,305 @@
+(node:51235) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ six material patches have three deterministic finite variants, distinct spectra/envelopes and bounded memory (43.621666ms)
+✔ the domain commit gate rejects failures, cancellation, stale and duplicate callbacks (0.620083ms)
+✔ unrelated nearby gestures never create or resume audio; inactive position changes stay idle (2.316209ms)
+✔ gamepad-equivalent registry callbacks use already unlocked shared audio without an IBD gesture (5.1995ms)
+✔ a complete real shipment emits its material cue once at every accepted completion, including release (56.585542ms)
+✔ pocket audio rejects missed contact, wrong jaws, repeated callbacks, viewing empty pockets and recovery (6.181125ms)
+✔ pocket contacts share the SFX gate, preserve their quieter level on distance changes, and never replay on resume (34.570041ms)
+✔ IBD cancellation, distance and unmount stop only owned cues and keep other shared voices running (23.750083ms)
+✔ IBD and Alpha/workshop cues share one eight-source ceiling, SFX bus and lifecycle (13.474875ms)
+✔ shared resume remains latest-only, expires at 250 ms, and rejects pending IBD after cancellation or unmount (1.783708ms)
+✔ browser authorization failure remains silent and does not synthesize a trusted input (1.656042ms)
+(node:51264) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ production craft defaults retain the accepted static geometry budget (309.704792ms)
+✔ moving wooden cradle supports the barrel without entering its actual surface (17.176334ms)
+✔ barrel machining coordinates stay continuous across the cylinder seam (3.8805ms)
+(node:51290) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ timer completion cannot grant coil evidence before the real-palm gate and recovery finish (2.697459ms)
+✔ cancel before or after pose confirmation, missing render samples and lost footing grant no proof (0.934334ms)
+✔ rear observation still requires the turntable; blocked rear cargo and occupied hands cannot bypass the rules (0.651209ms)
+✔ anchor leaves feet in place, follows the lifted cargo, and beam scans steel rather than the central bore (0.128292ms)
+(node:51305) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ rear inspection damage is a real recess while the front face and bore stay intact (19.596292ms)
+✔ the inspection torch lens faces the cargo and the kit still fits its takeable desk envelope (1.823667ms)
+(node:51306) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ elapsed time, wrong direction and timer completion cannot move or finish the crane (3.974458ms)
+✔ three held legs land cargo before releasing hands and granting the move once (1.207709ms)
+✔ pause, blocked path and missing live palms hold position without catching up (0.902125ms)
+✔ cancel, unavailable actor, lost ground and round change discard the old operation (0.579958ms)
+(node:51307) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cargo decomposition preserves every quantity/specification sample without a second shell (31.624667ms)
+✔ each dynamic placement owns only nodes while borrowing immutable source PBR resources (1.279042ms)
+✔ legacy crate comparison requires explicit QA opt-in (0.194333ms)
+✔ the actual crate wrapper mounts only one visual branch for distance, legacy, loading and error states (37.788959ms)
+✔ actual native crate material owner survives StrictMode replay and disposes only after its final release (11.271958ms)
+﹣ actual crate keeps all fork channels, support pads and the existing lid sweep envelope (2.753542ms) # crate export has not been delivered yet
+(node:51308) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ operational lobes and drainage notch are real, while original sheds, actions and entrance remain inside (1.413708ms)
+✔ paving top exactly covers the polygon once, with no old rectangular floor or degenerate collision triangles (296.3215ms)
+✔ all new boundaries stay inland and physical fences leave existing roads and arrival gates clear (2.528792ms)
+(node:51314) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ all batch routes sweep a player capsule clear of real guards, rollers, controls and current cargo (297.662708ms)
+✔ neighboring cartons share the clear standing gap and never send the player back to the central entrance (0.141708ms)
+(node:51321) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all four orders resume guidance after partial gallery checks, pack work, loading and premature reconciliation (135.106667ms)
+ℹ 192 complete recovery journeys; 4208 guided actions; all dispatched with matching stock and load
+✔ a cancelled or walked-away inspection of replacement cargo cannot revive the quarantined item evidence (4.099167ms)
+✔ stock-room guidance reaches two real sample benches and sends the measured matching carton back for fresh shipment inspection (3.034333ms)
+(node:51322) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ trolley keeps an open chassis and the hoist clears the shed throughout its existing travel (10.004375ms)
+✔ clamp shoes meet the coil shoulders instead of stopping above them (8.752333ms)
+✔ each actual inspection face selects its forward worklight within the fixed two-light budget (0.17075ms)
+(node:51335) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ reserves only valid grounded reaches and legal held state without moving or changing ownership (1.626625ms)
+✔ all four actions commit once through the two-hand gate and the caller owns carrying (1.158208ms)
+✔ return and empty remain busy after confirmed contact until the tray recovery clock completes (0.345167ms)
+✔ approach requires real position and yaw; timeout cancels (0.15925ms)
+✔ stale id/time, invalid palms, either miss, unreachable reach and fabricated error reject contact (1.0985ms)
+✔ clock holds for an exact render sample and pause cannot advance or commit (0.293375ms)
+✔ cancel, lost footing, changed mode/stand, unavailable actor and lost reach have no late callback (0.176041ms)
+✔ jaw-gap rejection stays rejected; throws are visible and never retried; callbacks may cancel safely (0.314542ms)
+✔ invalid dt is inert, anchors copy, action ids cannot reuse a cancelled sample (0.104625ms)
+(node:51339) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ mechanism visual upgrade preserves all exact solids, gallery and roller contact bytes (260.179333ms)
+✔ long and short roller frames stand on the floor and stay under the original side rails (11.607125ms)
+✔ rolled shutter closes the former slat gaps within its unchanged motion envelope (1.496583ms)
+✔ mechanisms remain finite, noncollapsed and retain the shared metal attribute path (7.436333ms)
+(node:51384) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ a completely compliant batch can pass without inventing a discrepancy or changing any cargo (1.490084ms)
+✔ floor occlusion needs a real logical reveal; catwalk and crane are alternative evidence routes (0.211125ms)
+✔ scale readings and labels never prove contents, specification or quality (0.453833ms)
+✔ quantity, specification and each required quality face remain distinct proofs (0.128209ms)
+✔ an opened pack reveals actual units rather than its printed declaration (0.138083ms)
+✔ specification mismatch cannot pass because quantity or packaging labels look right (0.075791ms)
+✔ carton and piece units are separate and manifest interpretation uses the declared unit (0.097792ms)
+✔ only actual loading events count, duplicate loading is idempotent, unloading invalidates confirmation (0.115416ms)
+✔ loading unseen evidence does not convert it into verified inventory (0.061417ms)
+✔ failed actions and successful transitions do not mutate callers or case definitions (0.259917ms)
+✔ invalid item identity, carton identity and manifest definitions are rejected (0.098625ms)
+(node:51386) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"spec":"M6","triangles":{"shell":1180,"sample":204,"tray":148,"caliperFixed":190,"caliperJaw":208,"rigMast":28,"rigBoom":28,"rigTether":28},"fullPack":1996}
+{"spec":"M8","triangles":{"shell":1180,"sample":348,"tray":148,"caliperFixed":190,"caliperJaw":208,"rigMast":28,"rigBoom":28,"rigTether":28},"fullPack":2572}
+{"releaseStatic":94231,"fallback":2200,"releaseRepresentative":123437}
+{"representativeVisibleWithReserve":114025,"rackFamilyRepresentative":116029,"releaseRepresentative":123437,"releaseStatic":94231,"budget":124000}
+✔ separate parts retain the crate transport envelope and finite indexed material geometry (20.577708ms)
+✔ all four slots remain independent and a short pack exposes a genuinely empty slot (5.79025ms)
+✔ the inspection geometry owner releases every resource exactly once (1.602792ms)
+✔ M6/M8 shaft diameters and grip anchors come from actual visible surfaces (3.336542ms)
+✔ fixed and sliding anvils form the actual adjustable gap; the right palm contacts the thumb tab (1.839792ms)
+✔ tray and sample move continuously above the crate before lowering outside its front wall (10.971917ms)
+✔ the fork has a real foam channel and the presented tray leaves full standing-body clearance (3.161083ms)
+✔ the two-part caliper can stow below the existing closed lid (1.892584ms)
+✔ four real cartons and the single active inspection rig stay within the reserve-workspace budget (752.715834ms)
+(node:51387) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ four slots follow real quantity and specification and accept any inspection order (1.303417ms)
+✔ present slots require take, real aligned clamp contact and return to their own pocket (0.087958ms)
+✔ empty pockets require a visible inspection and cannot masquerade as a measured sample (0.06125ms)
+✔ repeats are bounded and cancel restores the held part while preserving completed pockets (0.080583ms)
+✔ unknown identities, malformed slots and unsupported fixtures cannot produce readings (0.141417ms)
+(node:51388) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ four pockets require physical attempts, fitted jaws, and original-pocket return before evidence (6.929333ms)
+✔ soft cancel physically puts an unmeasured piece back without completing a pocket (0.643334ms)
+✔ A/B and reserve jaws close visibly to their real shaft, with no guessed slider or early reading (3.720083ms)
+✔ paused closure is inert; aborting it puts the unmeasured sample back without evidence (0.74375ms)
+✔ closing the tool without rendered hand contact never produces a reading (0.721208ms)
+✔ hard recovery clears only inspection work and does not cancel unrelated cargo motion (0.12975ms)
+✔ advance to an unchecked pocket only after the measured sample and tray have returned (1.01775ms)
+✔ reopening preserves an unfinished choice, but a new carton or batch starts at its first unchecked pocket (0.113584ms)
+(node:51395) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+using deprecated parameters for the initialization function; pass a single object instead
+{"dynamicApproaches":16,"sideStopRange":[7.889607906341553,20.11053466796875]}
+{"fullSizeCargoSamples":1928,"colliderIncrement":0,"contactTriangleIncrement":720}
+✔ all 20 rollers and eight side bars reuse exact closed visual triangles without extra colliders (51.217292ms)
+✔ ordinary dynamic capsules stop at both long and short roller banks from the side and ends (173.062708ms)
+✔ open crosswalks, lever standing points and side approaches remain traversable (104.273958ms)
+✔ gaps below and between visible bars contain no filled-in collision wall (0.302125ms)
+✔ full-size moving cargo clears the exact rollers throughout load, unload and replacement (13.797125ms)
+(node:51427) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ relocating cargo moves only its placard and never repaints or reallocates the atlas (1.402209ms)
+✔ restarting a batch returns the placard exactly and keeps its culling sphere valid (1.677834ms)
+✔ both languages retain all signs, atlas crops, and a single indexed batch (0.766ms)
+✔ unmount releases the retained geometry, material and texture (0.268708ms)
+(node:51430) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ shell separation preserves colliders, roller contact and every non-shell visual vertex (1005.047667ms)
+✔ static equipment QA flag requires explicit opt-in (0.213792ms)
+✔ all 14 placements batch by borrowed physical material and cleanup is idempotent (2.662666ms)
+✔ actual StaticAsset effect survives StrictMode cleanup/replay and disposes after final release (31.081083ms)
+﹣ actual portable three-family pack preserves original inspection/utility/control envelopes and owns batching resources (1.542292ms) # pack pending authorized Blender slot
+(node:51445) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ rear racks expose open sides, separate posts and recessed shelf webs inside their protected volume (10.200083ms)
+✔ carton bindings leave the label, inner sample workspace, fork channel and lid sweep clear (1.190959ms)
+✔ release rack uprights expose folded walls and their footing actually reaches the floor (3.727333ms)
+(node:51446) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ both reserve cartons travel behind quarantine with their full visible envelope (420.750959ms)
+✔ reserve lids, sampling stands and the aisle between both workstations clear actual furniture (187.17725ms)
+(node:51447) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ native inspection, utility and control material batches retain texture channels and shared environment ownership (112.047459ms)
+✔ actual articulated crate retains native geometry, AO UV1, slot contacts and lid hinge while owning only cloned materials (40.453958ms)
+✔ material cloning composes earlier shader hooks and cache identity (0.185834ms)
+(node:51468) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ reserve fixtures keep stable physical IDs, identical M8 labels, and both real specifications (1.175208ms)
+✔ original quarantine, wrong choice, signed return and right choice preserve facts and require fresh final inspection (2.891917ms)
+✔ sampling is optional for selection, but reach, hands, live identity and active state remain mandatory (0.694292ms)
+✔ cancelled transfers, stale callbacks and old contact revisions cannot move or duplicate a carton (0.496292ms)
+✔ reserve contacts require its own open bench and cannot inspect the empty B workbench (0.287041ms)
+(node:51469) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the cab keeps its original solid envelope and merged batch, with finite noncollapsed faces (2.218625ms)
+✔ both windscreen panes genuinely rake backwards and the roof shoulders narrow above the doors (3.024875ms)
+✔ side glass is recessed inside the door frame and the wheel crown has an actual tyre air gap (2.279417ms)
+✔ front lamps sit in real recesses and grille gaps extend behind physical slats (1.799333ms)
+✔ each door has three separate non-slip tread levels outside the side panel (0.724709ms)
+(node:51472) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the full crafted truck keeps every original collision envelope and ramp transform (6.285375ms)
+✔ all six steel wheels have actual open webs with recessed brake drums (13.365708ms)
+✔ wear boards share the real cargo floor datum, with shallow joints and the two open loading lanes (11.419917ms)
+(node:51473) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ unchanged load and unload routes sweep the full runtime pallet collider clear of the production truck (13.12375ms)
+✔ both final visible pallet footprints have truck-floor support, wall clearance and roof headroom (34.763375ms)
+✔ ordinary player capsules climb and leave both real loading ramps without a floor-contact false wall (36.01625ms)
+✔ actual rear wheel vertices remain below the visible carrying surface and its collision floor (93.383916ms)
+✔ cab faces the exit direction while a full standing player can pass its west side to the yard exit (19.719208ms)
+(node:51488) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all three front portal columns expose a recessed web between their structural flanges (38.414375ms)
+✔ the rear parts rack contains actual hollow stock instead of a closed case or painted dark disc (12.643875ms)
+✔ the new ceiling lamps leave full closed-pallet headroom across both loaded bays, including their centres (279.66075ms)
+✔ task surfaces receive local warm fill and the live pair selects their actual desk/inside-truck fixtures (0.22275ms)
+✔ crossing between the two interior lamps preserves live-light assignments instead of restarting both fades (0.693167ms)
+(node:51491) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ complete all-clear shipment works by gallery and crane routes, with no invented discrepancy (3.23975ms)
+✔ each anomaly can be corrected and a fresh identity must be inspected before release (1.896791ms)
+✔ wrong load remains physical, unload invalidates confirmation, then correction can finish (0.441334ms)
+✔ a truck with missing cargo cannot clear and the player can simply load the missing pallet (0.274875ms)
+✔ remote, forged, inactive, hidden and paused interactions cannot produce evidence (0.257ms)
+✔ sealed packs, rear faces and occluded coils keep their action prerequisites (0.148667ms)
+✔ actions commit only at completion, pause freezes time, and walking away cancels an observation (0.11025ms)
+✔ replay resets cargo/evidence without touching the source and cycles through every fictional case (0.348458ms)
+✔ cargo has continuous motion endpoints; crane actually raises and moves the front coil (0.278875ms)
+✔ one contents action cannot grant evidence, and slot events retain real physical prerequisites (0.258667ms)
+✔ cancel and walking away restore only the held sample; stale events and unknown goods are inert (0.165875ms)
+✔ replacement, next and reset never reuse old item pocket conclusions (0.38725ms)
+✔ one held sample interlocks other machines and packs and exposes the existing cancel affordance (0.111416ms)
+(node:51492) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ the exact two-handed crane stance is reachable from the operating side with a full player capsule (235.335541ms)
+✔ geometry is finite, bounded to the survey, and stays below the provisional triangle budget (241.501458ms)
+✔ all animated transport lanes clear the enlarged architecture with the actual cargo collider sizes (214.031125ms)
+✔ south entrance and the outside portal landings have no facility collider obstruction (195.422291ms)
+✔ camera-sized sphere sweeps hit both physical roof slopes of all three sheds (199.639958ms)
+✔ west ramp, north deck and side gallery form a continuous capsule-clear route (207.808375ms)
+✔ the real player support and swept-motion helpers cross the ramp crest without a southward ejection (247.232875ms)
+✔ every station has a collision-free standing point within its own interaction radius (193.049291ms)
+(node:51535) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ a fresh player finishes the guided route by explicitly judging each item from its evidence (3.76425ms)
+✔ all anomaly cases guide through real correction, replacement reinspection and dispatch without a dead end (3.298541ms)
+✔ pending, cancelled, remote and paused actions never falsely advance the next physical instruction (0.124125ms)
+✔ resuming after free exploration respects gallery proofs, opened cartons and wrongly loaded cargo (0.757291ms)
+✔ changed React components and guide modules parse without TS/JSX syntax errors (22.748792ms)
+✔ the first-batch ground breadcrumbs avoid floor-level fixed cuboids with player-width clearance (290.797625ms)
+✔ rear-coil approach and return cues use the south opening and keep turn instructions outside the controls (0.647541ms)
+✔ every guided transition starts at the last completed workstation rather than restarting at the entrance (11.029458ms)
+✔ a nearby manual inspection updates the origin even when the recommended next step stays the same (0.284709ms)
+(node:51567) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ night bake is finite, nonuniform and lights working floors as well as lamp lenses (243.970292ms)
+✔ both material variants patch the installed Three shader and share the world night uniform (0.428208ms)
+✔ paving treatment marks only complete upward ground triangles, never equipment or slab sides (210.583875ms)
+✔ nearby fixture selection never duplicates lights or activates more than two, and shuts off outside the yard (1.566792ms)
+✔ both reserve stations receive floor fill and select their own work-face lamp within the same live pair (0.081208ms)
+(node:51594) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ receiving the next batch is one local action, retains the reusable kit and clears all cargo evidence (6.3515ms)
+✔ every batch recovers after duplicate input, suspension, cancellation and re-entry at every timed step (5.463208ms)
+✔ only local observations offer cancellation, and walking away never records their result (0.705166ms)
+✔ proof-backed evidence reports measurements before the player signs, without auto-revealing a verdict (2.543667ms)
+(node:51596) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ reported A lever position blocks before any motion; the reported outer B position stays clear (3.412833ms)
+✔ clearing the lane resumes without catch-up; pause and missing collider cannot advance or finish (3.122875ms)
+✔ a player walking into an already running lane stops the actual Rapier cargo before it can push them (11.124125ms)
+✔ rotation, raised cargo and gate queries use full 3D geometry rather than a flat radius (0.706417ms)
+✔ replacement has two continuous bodies, with no physical sweep between quarantine and spare spawn (2.170125ms)
+✔ blocked-path retries are bounded and stopping does not replace the pending action object (0.337625ms)
+(node:51598) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+--import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./")); register("./tools/world/alpha-mine-tests/loader.mjs", pathToFileURL("./"));'
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ all four cases offer unselected conclusions, wrong answers preserve evidence and correct answers seal the item (3.432916ms)
+✔ sealed, weighed and one-face evidence cannot produce a verdict or an all-clear release (0.612667ms)
+✔ verdicts require physical reach and a live item identity; replacement inspection and judgement both start fresh (0.657333ms)
+✔ unobserved cargo never reveals its hidden count, wrong specification or rear damage (0.387292ms)
+✔ a visit kept in memory from before verdicts resumes with its existing inspection evidence (0.122125ms)
+ℹ tests 182
+ℹ suites 0
+ℹ pass 180
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 2
+ℹ todo 0
+ℹ duration_ms 22837.268917

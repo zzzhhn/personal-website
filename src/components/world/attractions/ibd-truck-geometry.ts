@@ -1,11 +1,63 @@
-import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
+import { Builder, bar, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import type { IbdCube, IbdSolid } from './ibd-yard-architecture.ts';
 import { IBD_TRUCK_FLOOR as floor, IBD_TRUCK_WHEELS as wheels } from './ibd-yard-layout.ts';
 
-const trim: Surf = { color: '#b8c2c2', rough: .57, metal: .38 };
+const trim: Surf = { color: '#b8c2c2', rough: .43, metal: .62 };
 const seam: Surf = { color: '#40575c', rough: .67, metal: .28 };
-const cabGlass: Surf = { color: '#819fa8', rough: .32, metal: .18 };
+const cabGlass: Surf = { color: '#819fa8', rough: .28, metal: .12 };
+const chassisPaint: Surf = { color: '#34464a', rough: .62, metal: .25 };
+const deckWood: Surf = { color: '#ad8a61', rough: .82, metal: 0 };
+
+/** Manufacturing coordinates travel through the existing merged aMat/aSuv path.
+ * Grain runs along the chosen world axis; no sign UV, texture or draw is added. */
+function finish(b: Builder, code: -2 | -3 | -4, along: 0 | 2, draw: () => void) {
+  const start = b.pos.length / 3;
+  draw();
+  for (let i = start; i < b.pos.length / 3; i++) {
+    if(code===-4 && b.nrm[i*3+1]<.5)continue;
+    const cross = Math.abs(b.nrm[i * 3 + 1]) > .55 ? 2 - along : 1;
+    b.mat[i * 4 + 3] = code;
+    b.suv[i * 2] = b.pos[i * 3 + along];
+    b.suv[i * 2 + 1] = b.pos[i * 3 + cross];
+  }
+}
+
+/** Closed, dished steel wheel with open webs, a bead seat and three tread bands.
+ * Local +Y points outboard. The tyre retains the fixed radius/width/contact. */
+function truckWheel(b: Builder, side: number, z: number) {
+  const x = wheels.centerX + side * wheels.halfTrack;
+  b.tr([x, wheels.centerY, z], [0, 0, -side * Math.PI / 2], () => {
+    lathe(b, [[.35, -wheels.halfWidth], [.49, -wheels.halfWidth], [.56, -.18],
+      [wheels.radius, -.13], [wheels.radius, -.075], [.564, -.065], [.564, -.045], [wheels.radius, -.035],
+      [wheels.radius, .035], [.564, .045], [.564, .065], [wheels.radius, .075],
+      [wheels.radius, .13], [.56, .18], [.49, wheels.halfWidth], [.35, wheels.halfWidth], [.35, -wheels.halfWidth]],
+    P.rubber, { sides: 24, caps: false });
+    // A recessed brake drum is visible through the openings, rather than a
+    // painted dark spot coplanar with a filled wheel disc.
+    lathe(b, [[0, -.17], [.26, -.17], [.28, -.12], [.28, .09], [.25, .115], [0, .115]], chassisPaint, { sides: 16 });
+    finish(b, -2, 2, () => {
+      lathe(b, [[.29, .145], [.333, .165], [.35, .205], [.36, .225], [.373, .215],
+        [.373, .185], [.35, .145], [.29, .12], [.29, .145]], trim, { sides: 24, caps: false });
+      // Six pressed webs join the hub to the annular rim. Gaps remain actual
+      // openings, with enough dish depth to read at the player's loading view.
+      for (let spoke = 0; spoke < 6; spoke++) for (let step = 0; step < 2; step++) {
+        const a = spoke * Math.PI / 3 - .19 + step * .19, end = a + .19;
+        const point = (r: number, angle: number, back = 0): V3 => [r * Math.cos(angle), .225 - r * .25 - back, r * Math.sin(angle)];
+        const face = [point(.105, a), point(.295, a), point(.295, end), point(.105, end)];
+        const back = [point(.105, a, .025), point(.295, a, .025), point(.295, end, .025), point(.105, end, .025)];
+        b.face(face, trim, [0, 1, 0]); b.face(back, trim, [0, -1, 0]);
+        for (let i = 0; i < 4; i++) b.face([face[i], back[i], back[(i + 1) % 4], face[(i + 1) % 4]], trim);
+      }
+      lathe(b, [[0, .115], [.12, .115], [.125, .19], [.103, .235], [.07, .255], [0, .255]], trim, { sides: 16 });
+      for (let i = 0; i < 6; i++) {
+        const a = i * Math.PI / 3;
+        b.tr([.145 * Math.cos(a), .198, .145 * Math.sin(a)], [0, 0, 0], () =>
+          lathe(b, [[0, 0], [.024, 0], [.024, .025], [0, .025]], P.cutSteel, { sides: 6, faceted: true }));
+      }
+    });
+  });
+}
 
 /** One cab-over sample, inside the original cab/mirror envelope. No seat or new gameplay collider. */
 export function buildIbdCab(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
@@ -68,6 +120,11 @@ export function buildIbdCab(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
     }
     door.push([.78, 18.03]);
     for (let i = 0; i < door.length - 1; i++) bar(b, sp(door[i][0], door[i][1], .006), sp(door[i + 1][0], door[i + 1][1], .006), .009, seam, 4);
+    // A pressed lower door field and a broad belt crease articulate the cab
+    // without filling the existing wheel crown or changing the tread levels.
+    panel([sp(1.52, 18.16, .012), sp(1.52, 20.83, .012), sp(1.71, 20.83, .012), sp(1.71, 18.16, .012)],
+      { color: '#628b73', rough: .59, metal: .14 }, axis, .018);
+    bar(b, sp(2.79, 18.03, .018), sp(2.79, front(2.79) - .16, .018), .026, P.green, 6);
     cube(sp(1.6, 18.52, .009), [.025, .13, .38], P.dark, false, .012);
     bar(b, sp(1.62, 18.4, .035), sp(1.62, 18.66, .035), .02, trim, 6);
     for (const y of [.4, .68, .96]) {
@@ -116,35 +173,73 @@ export function buildIbdCab(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
     cube(frontPoint(side * 1.765, 1.15, .01), [.08, .15, .018], P.amber, false, .008);
   }
   cube([16, .64, 21.26], [3.7, .24, .22], P.dark, false, .06);
-  cube([16, .71, 21.372], [3.48, .035, .018], trim, false, .008);
+  finish(b, -2, 0, () => cube([16, .71, 21.372], [3.48, .035, .018], trim, false, .008));
+  // Separated lower valance and tow pockets sit within the existing bumper.
+  for (const side of [-1, 1]) {
+    cube([16 + side * 1.03, .6, 21.375], [.32, .065, .018], P.rubber, false, .015);
+    cube([16 + side * 1.03, .605, 21.383], [.15, .025, .004], trim, false, .004);
+  }
   cube([16, .65, 21.376], [.6, .16, .018], P.pale, false, .008);
 }
 
 /** Side-loading rigid truck. Its long axis follows the two real pallet bays (+Z).
  * West remains open all the way to the floor: no decorative sill crosses a ramp. */
 export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
-  // Preserve the two original continuous collision envelopes. Three visible
-  // deck bays and smaller liner panels give the static light bake real samples
-  // between the distant corners, without adding coplanar overlay sheets.
+  // Original collision floor, east wall, roof and end closures are unchanged.
+  // The visible deck uses a steel carrier and actual hardwood wear boards with
+  // flush 1.2 m tops, rather than a second sheet floating above the datums.
   solids.push({ at: [16, floor - .15, 12.5], size: [4, .3, 9] });
   solids.push({ at: [18, 2.3, 12.5], size: [.2, 3.1, 9] });
   for (const z of [9.5, 12.5, 15.5]) {
-    cube([16, floor - .15, z], [4, .3, 3], P.steel, false, 0);
+    cube([16, floor - .1625, z], [4, .275, 3], P.steel, false, 0);
     for (let row = 0; row < 3; row++) cube([18.01, .75 + (row + .5) * 3.1 / 3, z], [.18, 3.1 / 3, 3], P.green, false, 0);
   }
+  finish(b, -3, 2, () => {
+    for (let board = 0; board < 8; board++)
+      cube([14.335 + board * .475, floor - .0125, 12.5], [.467, .025, 8.7], deckWood, false, .003);
+  });
   cube([16, 3.9, 12.5], [4, .16, 9], P.green, true);
-  for (const z of [8, 17]) cube([16, 2.3, z], [4, 3.1, .15], P.steel, true);
+  // Roof skin and perimeter folds carry its edge; no brace crosses the open
+  // loading side below the original ceiling plane at y=3.82.
+  for (const x of [14.05, 17.95]) finish(b, -2, 2, () => cube([x, 3.93, 12.5], [.1, .12, 8.9], trim, false, .025));
+  for (let z = 8.6; z < 17; z += 1.15) cube([16, 3.997, z], [3.8, .034, .09], P.green, false, .015);
+  for (const z of [8, 17]) {
+    solids.push({ at: [16, 2.3, z], size: [4, 3.1, .15] });
+    // Two steel leaves with a real centre joint, returned jambs, compression
+    // frame and connected closure bars replace the undifferentiated end slab.
+    cube([16, 2.3, z], [4, 3.1, .07], P.dark, false, 0);
+    for (const side of [-1, 1]) cube([16 + side * .985, 2.3, z], [1.91, 3.04, .15], P.steel, false, .025);
+    for (const direction of [-1, 1]) {
+      const faceZ = z + direction * .09;
+      for (const x of [14.065, 17.935]) finish(b, -2, 2, () => cube([x, 2.3, faceZ], [.13, 3.1, .08], trim, false, .012));
+      for (const y of [.79, 3.81]) finish(b, -2, 0, () => cube([16, y, faceZ], [3.86, .08, .08], trim, false, .012));
+    }
+    const outward = z < 12 ? -1 : 1, faceZ = z + outward * .099;
+    for (const x of [14.42, 15.02, 15.62, 16.38, 16.98, 17.58])
+      cube([x, 2.3, faceZ], [.095, 2.77, .047], P.steel, false, .018);
+    for (const x of [15.82, 16.18]) {
+      bar(b, [x, .99, faceZ + outward * .05], [x, 3.6, faceZ + outward * .05], .027, trim, 8);
+      for (const y of [1.12, 2.28, 3.48]) cube([x, y, faceZ + outward * .05], [.13, .09, .1], seam, false, .01);
+      cube([x + (x < 16 ? -.12 : .12), 1.56, faceZ + outward * .11], [.28, .065, .055], trim, false, .018);
+    }
+    for (const side of [-1, 1]) for (const y of [1.28, 2.3, 3.32])
+      cube([16 + side * 1.86, y, faceZ + outward * .025], [.25, .13, .08], trim, false, .02);
+  }
+  // Formed exterior channels have broad, supported returns and remain on the
+  // far side of the unchanged wall. They add depth at an ordinary oblique view.
+  for (let z = 8.35; z <= 16.7; z += .44) {
+    b.face([[18.1, .88, z-.08], [18.155, .88, z-.035], [18.155, 3.72, z-.035], [18.1, 3.72, z-.08]], P.green, [1,0,-1]);
+    b.face([[18.155, .88, z-.035], [18.155, .88, z+.035], [18.155, 3.72, z+.035], [18.155, 3.72, z-.035]], P.green, [1,0,0]);
+    b.face([[18.155, .88, z+.035], [18.1, .88, z+.08], [18.1, 3.72, z+.08], [18.155, 3.72, z+.035]], P.green, [1,0,1]);
+    for (const y of [.88, 3.72]) b.face([[18.1,y,z-.08], [18.155,y,z-.035], [18.155,y,z+.035], [18.1,y,z+.08]], P.green, [0,y<2?-1:1,0]);
+  }
 
   // Body framing stays at the ends and east wall; the opening has no middle post.
   for (const z of [8.15, 16.85]) {
     cube([16, floor - .41, z], [3.8, .19, .18], P.steel);
     cube([16, floor + .08, z], [3.9, .12, .16], P.amber);
-    for (const x of [14.18, 15.1, 16, 16.9, 17.82]) {
-      cube([x, 2.3, z < 12 ? 7.905 : 17.095], [.08, 2.8, .035], seam, false, 0);
-      for (const y of [1.05, 3.6]) cube([x, y, z < 12 ? 7.879 : 17.121], [.06, .06, .02], trim, false, 0);
-    }
   }
-  for (let z = 8.5; z < 17; z += .65) cube([16, floor + .007, z], [3.8, .014, .025], seam, false, 0);
+  // Continuous wear boards have real longitudinal gaps; no coplanar seam overlays.
   for (const x of [14.12, 17.88]) cube([x, 3.8, 12.5], [.15, .15, 8.8], trim);
   for (const z of [8.2, 12.5, 16.8]) {
     cube([18.105, 2.3, z], [.035, 2.85, .09], seam, false, 0);
@@ -153,23 +248,29 @@ export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   // Interior wear/lashing rails remain east of the loaded cargo envelope.
   // The open west side, its ramps and the tyre/floor gap are untouched.
   for (const y of [1.53, 2.75]) {
-    cube([17.945, y, 12.5], [.07, .14, 8.5], y < 2 ? P.timber : P.steel, false, 0);
+    finish(b, y < 2 ? -3 : -2, 2, () => cube([17.945, y, 12.5], [.07, .14, 8.5], y < 2 ? deckWood : P.steel, false, .012));
     for (let z = 8.8; z <= 16.3; z += 1.25) cube([17.904, y, z], [.012, .045, .2], P.dark, false, 0);
   }
   for (const z of [8.2, 11, 14, 16.8]) cube([17.945, 2.3, z], [.07, 2.85, .075], P.steel, false, 0);
-  for (const x of [14.7, 17.3]) cube([x, .38, 14.3], [.23, .24, 13.5], P.dark);
+  for (const x of [14.7, 17.3]) {
+    cube([x, .38, 14.3], [.085, .24, 13.5], chassisPaint, false, 0);
+    for (const y of [.285, .475]) cube([x, y, 14.3], [.23, .05, 13.5], chassisPaint, false, .008);
+    for (const z of [8.15, 11.5, 16.85]) cube([x, .625, z], [.22, .27, .24], P.dark, false, .015);
+  }
+  for (const z of [8.15, 11.5, 16.85]) {
+    cube([16, .81, z], [3.8, .18, .09], chassisPaint, false, 0);
+    for (const y of [.74, .88]) cube([16, y, z], [3.8, .04, .24], P.steel, false, .007);
+  }
+  // Axle saddles and laminated springs connect the existing axle beam to its
+  // longitudinal rails; they stay entirely beneath the loading deck.
+  for (const z of wheels.axles) for (const x of [14.7, 17.3]) {
+    for (let leaf = 0; leaf < 3; leaf++) cube([x, .335 - leaf*.035, z], [.13, .025, 1.15-leaf*.2], P.dark, false, .005);
+    for (const dz of [-.48, .48]) cube([x, .395, z+dz], [.18, .18, .08], P.steel, false, .01);
+  }
   for (const z of wheels.axles) cube([wheels.centerX, .47, z], [3.5, .18, .22], P.steel);
 
   buildIbdCab(b, cube, solids);
 
-  // Six axle ends share the same travel axis as the chassis; rims face outwards.
-  for (const z of wheels.axles) for (const side of [-1, 1]) {
-    const x = wheels.centerX + side * wheels.halfTrack;
-    b.tr([x, wheels.centerY, z], [0, 0, Math.PI / 2], () => {
-      lathe(b, [[0, -wheels.halfWidth], [.5, -wheels.halfWidth], [wheels.radius, -.15], [wheels.radius, .15], [.5, wheels.halfWidth], [0, wheels.halfWidth]], P.rubber, { sides: 20 });
-      for (const y of [-.237, .237]) lathe(b, [[0, y], [.3, y], [.34, y + .008], [0, y + .008]], P.steel, { sides: 16 });
-    });
-    for (let i = 0; i < 6; i++) cbox(b, [x + side * .25, wheels.centerY + .2 * Math.sin(i * Math.PI / 3), z + .2 * Math.cos(i * Math.PI / 3)], [.025, .05, .05], seam, .005);
-  }
-  for (const z of [10.5, 14.5]) cube([12.5, floor / 2, z], [Math.hypot(3, floor), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(floor, 3)]);
+  for (const z of wheels.axles) for (const side of [-1, 1]) truckWheel(b, side, z);
+  for (const z of [10.5, 14.5]) finish(b, -4, 0, () => cube([12.5, floor / 2, z], [Math.hypot(3, floor), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(floor, 3)]));
 }

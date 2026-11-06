@@ -82,6 +82,8 @@ export const WORLD_SHOTS_V4 = [
     { id: `ibd-stock-detail-${time}`, position: [-72.5, 6.8, -178] as Vec3, target: [-72.5, 2.8, -195.8] as Vec3 },
     { id: `ibd-dispatch-detail-${time}`, position: [-80, 6.3, -147] as Vec3, target: [-72, 2.7, -162] as Vec3 },
     { id: `ibd-loading-detail-${time}`, position: [-83, 5.6, -162.5] as Vec3, target: [-72, 2.9, -162.5] as Vec3 },
+    { id: `ibd-service-detail-${time}`, position: [-108, 4, -155] as Vec3, target: [-116, 2.3, -162] as Vec3 },
+    { id: `ibd-gallery-detail-${time}`, position: [-109.5, 7.6, -183] as Vec3, target: [-100, 5.8, -190] as Vec3 },
     { id: `ibd-cab-detail-${time}`, position: [-79, 4.6, -148] as Vec3, target: [-72, 2.55, -157.1] as Vec3 },
   ]),
 ];

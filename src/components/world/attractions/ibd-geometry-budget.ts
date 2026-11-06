@@ -1,9 +1,9 @@
-/** Authored geometry allocation for the accepted three sheds/racks and the
- * single near beam + directional storage-crate sample (2026-11-03).
- * The actual production static draw measures 48,175 triangles. The existing
- * four-carton/one-rig fixture, conservatively retaining the separate 2,200-face
- * legacy equipment fallback, measures 75,813. These are measured source bounds,
- * not loaded-GLB scene totals, GPU cost or an FPS guarantee. Any family expansion
- * must be remeasured; these limits cover only the accepted single samples.
+/** Full IBD asset-family allocation (2026-11-06).
+ * Production static draw: 94,231 triangles; four-carton/one-rig authored
+ * fixture including the 2,200-triangle legacy equipment fallback: 123,437.
+ * Covers all warehouse cases, truck wheels/chassis, roller supports, planted
+ * beds, railings and the existing three-shed structure. Native GLB instances
+ * and shadow submissions are counted separately in runtime measurements.
+ * These source bounds do not imply a frame-rate guarantee.
  */
-export const IBD_GEOMETRY_BUDGET = { static: 48_500, representative: 76_000 } as const;
+export const IBD_GEOMETRY_BUDGET = { static: 95_000, representative: 124_000 } as const;

@@ -15,7 +15,7 @@ float ibdConcreteNoise(vec2 p) {
 // The installed Three bump-map chunk uses this surface-gradient construction.
 // Here the height field is procedural, so there is no UV or texture dependency.
 vec3 ibdConcreteNormal(vec3 position, vec3 surfaceNormal, float height, float faceSign) {
-  vec3 dx = normalize(dFdx(position)), dy = normalize(dFdy(position));
+  vec3 dx = dFdx(position), dy = dFdy(position);
   vec3 r1 = cross(dy, surfaceNormal), r2 = cross(surfaceNormal, dx);
   float determinant = dot(dx, r1) * faceSign;
   vec3 gradient = sign(determinant) * (dFdx(height) * r1 + dFdy(height) * r2);
@@ -25,6 +25,7 @@ vec3 ibdConcreteNormal(vec3 position, vec3 surfaceNormal, float height, float fa
 
 export const IBD_CONCRETE_COLOR = /* glsl */`
 float ibdConcreteHeight = 0.0;
+float ibdConcreteRoughness = .91;
 if (vIbdSurface.w > 1.5) {
   vec2 p = vIbdPavingXZ;
   // Offset poured bays, independent of the 2 m mesh cells used for light baking.
@@ -38,11 +39,21 @@ if (vIbdSurface.w > 1.5) {
   float joint = (1.0 - smoothstep(.009, .009 + filterWidth, distanceToJoint))
     * min(1.0, .024 / filterWidth);
   float lip = (1.0 - smoothstep(.025, .075 + filterWidth, distanceToJoint)) * (1.0 - joint);
-  float mottling = ibdConcreteNoise(vIbdPavingXZ * .65) - .5;
-  float grainVisibility = 1.0 - smoothstep(.004, .022, footprint);
-  float grain = (ibdConcreteHash(floor(vIbdPavingXZ * 70.0)) - .5) * grainVisibility;
-  float bayTone = (ibdConcreteHash(bay) - .5) * .035;
-  diffuseColor.rgb *= 1.0 + bayTone + mottling * .11 + grain * .065 + lip * .035 - joint * .32;
-  ibdConcreteHeight = grain * .0007 - joint * .003;
+  float cloud = ibdConcreteNoise(vIbdPavingXZ * .53);
+  float casting = ibdConcreteNoise(vIbdPavingXZ * 2.7 + vec2(12.3, 7.1));
+  float aggregate = ibdConcreteNoise(vIbdPavingXZ * 28.0);
+  float aggregateVisible = 1.0 - smoothstep(.024, .11, footprint);
+  float stone = smoothstep(.53, .8, aggregate) * aggregateVisible;
+  float pit = (1.0 - smoothstep(.18, .34, aggregate)) * aggregateVisible;
+  float pores = ibdConcreteHash(floor(vIbdPavingXZ * 165.0)) - .5;
+  float poresVisible = 1.0 - smoothstep(.002, .014, footprint);
+  // Burnished centre aisle, without decorative cracks or changed walk geometry.
+  float aisle = exp(-pow(vIbdPavingXZ.x / 3.4, 2.));
+  float bayTone = (ibdConcreteHash(bay) - .5) * .026;
+  diffuseColor.rgb *= 1.0 + bayTone + (cloud-.5)*.19 + (casting-.5)*.085
+    + stone*.10 - pit*.14 + pores*poresVisible*.09 + lip*.035 - joint*.32;
+  ibdConcreteHeight = (aggregate-.5)*.0035*aggregateVisible
+    + pores*.0012*poresVisible - joint*.003;
+  ibdConcreteRoughness = clamp(.89 + (casting-.5)*.11 + pit*.07 - aisle*.04, .78, .98);
 }
 `;

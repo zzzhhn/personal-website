@@ -1,0 +1,86 @@
+{
+  "baseline": "e2abcb8f71c32b69c997e2794ad26e039ae492ed",
+  "capture": "Chrome runtime; balanced; fixed shot cameras; FOV 50; exposure 1",
+  "images": {
+    "before-entrance-day.png": {
+      "bytes": 151379,
+      "sha256": "e1d2fd64f4c2c969815d6b35170cff357efc0075bb135614b1528b50d2a3de5b"
+    },
+    "after-overview-night.png": {
+      "bytes": 66418,
+      "sha256": "b9772b0d8b2271e6c070f49c0cb7ea79e7e9333a77818f2dddcd444aa30e4bd5"
+    },
+    "before-overview-night.png": {
+      "bytes": 65813,
+      "sha256": "689a96322ab1980bd8fa96a69a76af484511c9b050f48b59d4455291ee085cbc"
+    },
+    "after-stock-day.png": {
+      "bytes": 187988,
+      "sha256": "2b855265314d693d0464598f9a56b7e6196fcc19ce257c4cdba504a1b23e7393"
+    },
+    "after-loading-day.png": {
+      "bytes": 167673,
+      "sha256": "fe5c374003d551832a6c3b4de2c49195c645b2adc89916d2a9c7db42f1b9cedf"
+    },
+    "before-loading-night.png": {
+      "bytes": 117694,
+      "sha256": "eabe0f71089d00beb125749bd2456f2f90efa25b2ec8d1a4cc91715828f1ae06"
+    },
+    "after-stock-night.png": {
+      "bytes": 192041,
+      "sha256": "90f0ccc3bb6b24ab58c2afa5df8b195ed5868efde14f1b2ca067be720961e44b"
+    },
+    "after-cab-day.png": {
+      "bytes": 177110,
+      "sha256": "3615e619b83315a48c676cc8609fc2b4d2b8cbd8663e91063001421d9466978a"
+    },
+    "before-stock-day.png": {
+      "bytes": 154612,
+      "sha256": "1b58a177e95c0fe8317643d1324d82fad15f12244352ae0a49f3e8b93dc5d839"
+    },
+    "after-gallery-day.png": {
+      "bytes": 170098,
+      "sha256": "fbeff7b10c8e45f41d975657ad49687243930ebadc71f669eb17d21852080488"
+    },
+    "after-overview-day.png": {
+      "bytes": 101920,
+      "sha256": "a13ada8dd56f183b2112ef8d031a779c7bf9a39574d60f8eef84400d897d4ff2"
+    },
+    "after-loading-night.png": {
+      "bytes": 149956,
+      "sha256": "bab369262b00b2af854121f697f6f7e9ad1a57363df1b8fa6e3ae415a2455899"
+    },
+    "before-tools-day.png": {
+      "bytes": 125034,
+      "sha256": "49ddf40d9d9c4c9e3b62682ddb4c18a751c37ca9b2ae2373cc5ec5aaa6b1158b"
+    },
+    "before-overview-day.png": {
+      "bytes": 101254,
+      "sha256": "243d628bcd624b71e0ecf82ced3b7a01de3d5e96bd192df04cd04e76bee74a85"
+    },
+    "before-stock-night.png": {
+      "bytes": 158298,
+      "sha256": "028e389c525d7fbb48aa435814a0283e86f8c52659c294a7509c3c28019c2a95"
+    },
+    "before-loading-day.png": {
+      "bytes": 134890,
+      "sha256": "d6fa87695ff0ed19dd76714c7950a5bb9d9b30125eb21dee32a426b65adfa226"
+    },
+    "after-service-day.png": {
+      "bytes": 132090,
+      "sha256": "678a71f8485b1be31c5bc0db90af48852152a07bf5ad521fe3ed3568d5ff93ac"
+    },
+    "after-entrance-day.png": {
+      "bytes": 151177,
+      "sha256": "4d079760858dfeb2f852216451aa594a32a6fca546886bf5cbf95dce3062be15"
+    },
+    "after-tools-day.png": {
+      "bytes": 185300,
+      "sha256": "2c2c9506359cc1e5f3fdafea4cdf9fd7a14fbcd3b845cc1deff51fe8ca4cf0ce"
+    },
+    "before-cab-day.png": {
+      "bytes": 134912,
+      "sha256": "56249f231db8ffad060dbbffd839eb518148d105df93d0e4a7658d2dbbffab26"
+    }
+  }
+}

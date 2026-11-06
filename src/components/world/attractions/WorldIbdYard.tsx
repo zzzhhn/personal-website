@@ -85,7 +85,7 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     <WorldIbdMechanisms material={data.movingMaterial} active={active} />
     <WorldIbdLighting active={active} uniform={data.uniform} />
     {active && <WorldIbdSigns />}
-    {active && <WorldIbdGuide />}
+    {active && <WorldIbdGuide toolsMaterial={data.movingMaterial} />}
     {IBD_STATIONS.map(s => <Station key={s.id} id={s.id} active={active} />)}
   </group>;
 });

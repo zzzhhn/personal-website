@@ -47,6 +47,11 @@ test('all four slots remain independent and a short pack exposes a genuinely emp
     assert.equal(triangles(full),triangles(parts.shell)+3*triangles(parts.sample));
   }finally{parts.dispose();full.dispose();}
 });
+test('the inspection geometry owner releases every resource exactly once',()=>{
+  const parts=buildIbdPackParts(4,'M8'),geometries=Object.values(parts).filter(value=>value?.isBufferGeometry),events=[];
+  for(const geometry of geometries)geometry.addEventListener('dispose',()=>events.push(geometry));
+  parts.dispose();parts.dispose();assert.equal(events.length,geometries.length);assert.equal(new Set(events).size,geometries.length);
+});
 test('M6/M8 shaft diameters and grip anchors come from actual visible surfaces',()=>{
   for(const spec of ['M6','M8']){
     const parts=buildIbdPackParts(4,spec),d=IBD_PACK_SAMPLE_DIMENSIONS[spec],a=ibdPackInspectAnchors(spec,d.diameter);
