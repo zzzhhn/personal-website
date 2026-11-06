@@ -58,3 +58,5 @@ node node_modules/astro/bin/astro.mjs build --config tools/world/ibd-full-craft/
 覆盖材质所有权与释放、实际 GLB／AO、接触约束、装卸与角色碰撞、192 条恢复路径及 4208 次指引动作。7 个旧测试前提已先在基线复现，再按现有真实工作流修订；见 [contract-audit.md](contract-audit.md)。没有通过跳过、减少断言或更改游戏规则掩盖失败。
 
 正式试玩构建不包含临时性能工具。保留先前 4341 根与版本回执供回退，静态公共资源继续使用已有冻结根，不重复下载历史视频或大包。本轮仅本地试玩与 GitHub 同步，不做公开部署；普通移动 smoke check 不等同于人工重新玩完全部任务链。
+
+最终交付验证：4341 运行代码 `70f56ff6f65e24889930ad2758ab4bd6c512e1f8`。HTML、两个入口 bundle 和两个原生 GLB 均与构建／Git 内容逐字节或哈希匹配；实际人物穿过入口排水沟到达斑马线，接货台距离由 8 m 变为 4 m。对照页类别切换和滑杆正常。最终构建访问无新 console error，试玩页已暂停以降低空闲负载。截图与记录见 `evidence/4341-normal-play.png`、`4341-comparison.png`、`delivery.json`。临时 4354 服务及本轮两个可复现 QA build 已清理，正式 4341 和回退根保留。

@@ -1,0 +1,21 @@
+{
+  "runtimeSource": "70f56ff6f65e24889930ad2758ab4bd6c512e1f8",
+  "port": 4341,
+  "entries": [
+    "/_astro/WorldApp.CKB1wVev.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "htmlSha256": "5e2a895c716a7f4833f66a719d46f212efb932089848fdbc7dbbdb988bb8e147",
+  "verification": {
+    "http": "HTML and entry bundles byte-match final production build",
+    "reviewToolbarAbsent": true,
+    "browser": "Normal 4341 entry loaded; walked from entrance across drain to crossing, task distance changed 8m to 4m. Final equipment visible; comparison categories and slider respond.",
+    "consoleErrors": 0,
+    "consoleErrorBoundary": "Only errors after 2026-11-06T15:40:00Z; earlier rejected candidate shader errors retained in browser history.",
+    "pausedForHandoff": true,
+    "screenshot": "/tmp/ibd-full-craft-20261106/4341-normal-play.png",
+    "verifiedAt": "2026-11-06T15:57:20.998824+00:00"
+  },
+  "comparisonUrl": "http://127.0.0.1:4341/ibd-full-review/",
+  "publicDeployment": false
+}
