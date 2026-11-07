@@ -1,0 +1,1435 @@
+{
+  "source": "a23da48 + QA180",
+  "builds": {
+    "A": {
+      "buildId": "a23da48-shadow-bar-b495d7f-qa180",
+      "worldHtml": {
+        "bytes": 52274,
+        "sha256": "8c7d88178e3fb8239f1c708b12e7de60df090c0172c53239e8a3a6b8f57a5d60"
+      },
+      "runtimeName": "WorldRuntime.Ba_JKgs6.js",
+      "runtime": {
+        "bytes": 3584107,
+        "sha256": "90f7223a0bf07aa5da1d16f4ba665a0dd869971e362a8f1f25910877953807e7"
+      }
+    },
+    "B": {
+      "buildId": "a23da48-bar-prefetch-qa180",
+      "worldHtml": {
+        "bytes": 52274,
+        "sha256": "8989d995dd55c80bb2d8fec82e9850e09201d7e5f549d57711afbb0aea319b33"
+      },
+      "runtimeName": "WorldRuntime.CVzWoazM.js",
+      "runtime": {
+        "bytes": 3585162,
+        "sha256": "41816a195b1eb269665d0eed7554a5b1a1c9aaae8ed384d6075460b2b673813d"
+      }
+    }
+  },
+  "coverage": "URLs observed in prior 4356 logs plus the two roaming MP3 files; not a runtime resident set",
+  "summary": {
+    "match": 140
+  },
+  "assets": {
+    "/_astro/coaster-car-distant.LMYQPJs2.glb": {
+      "A": {
+        "bytes": 271720,
+        "sha256": "ad178b8423ee6de2294fee8bb05a57a468ce93d8cea06bebab20d79f113dcb86"
+      },
+      "B": {
+        "bytes": 271720,
+        "sha256": "ad178b8423ee6de2294fee8bb05a57a468ce93d8cea06bebab20d79f113dcb86"
+      }
+    },
+    "/_astro/coaster-car.Bio2Wbsz.glb": {
+      "A": {
+        "bytes": 1381580,
+        "sha256": "d665c908fe998e6944eee916c1e3946f17e3065daddea42b62fffad6a9960df1"
+      },
+      "B": {
+        "bytes": 1381580,
+        "sha256": "d665c908fe998e6944eee916c1e3946f17e3065daddea42b62fffad6a9960df1"
+      }
+    },
+    "/_astro/coaster-gate.Dr51F6B_.glb": {
+      "A": {
+        "bytes": 1040880,
+        "sha256": "26d02b6955ea8adf30fb2b996cb7ccfc7823685ca52f9980984d732635f6e989"
+      },
+      "B": {
+        "bytes": 1040880,
+        "sha256": "26d02b6955ea8adf30fb2b996cb7ccfc7823685ca52f9980984d732635f6e989"
+      }
+    },
+    "/_astro/directional-hardware-roughness-256.T1GFq7CI.png": {
+      "A": {
+        "bytes": 61231,
+        "sha256": "4eb29678260f2358284f974d752a402ba0cecd62ca78f58f0399b01ffe59fd85"
+      },
+      "B": {
+        "bytes": 61231,
+        "sha256": "4eb29678260f2358284f974d752a402ba0cecd62ca78f58f0399b01ffe59fd85"
+      }
+    },
+    "/_astro/honed-mineral-roughness-256.Ct_BvcNa.png": {
+      "A": {
+        "bytes": 63879,
+        "sha256": "6a26965d9222d3a90dd9f421b7810f14e6de0da5d529232702234d318b5b660d"
+      },
+      "B": {
+        "bytes": 63879,
+        "sha256": "6a26965d9222d3a90dd9f421b7810f14e6de0da5d529232702234d318b5b660d"
+      }
+    },
+    "/_astro/station.DXce7_iR.glb": {
+      "A": {
+        "bytes": 1437212,
+        "sha256": "5061871f2665834a0f56a6ea83023ee4458ea8304dae8d95fa1a024e21df74ae"
+      },
+      "B": {
+        "bytes": 1437212,
+        "sha256": "5061871f2665834a0f56a6ea83023ee4458ea8304dae8d95fa1a024e21df74ae"
+      }
+    },
+    "/assets/world/camp-shelter-craft/C04.glb": {
+      "A": {
+        "bytes": 327108,
+        "sha256": "726e4d5818c45d809a1cf51dba522b0b404341ab5e279608e8aac560f4532a6a"
+      },
+      "B": {
+        "bytes": 327108,
+        "sha256": "726e4d5818c45d809a1cf51dba522b0b404341ab5e279608e8aac560f4532a6a"
+      }
+    },
+    "/assets/world/camp-shelter-craft/C10.glb": {
+      "A": {
+        "bytes": 324668,
+        "sha256": "b8f9b4f02e63ec63bc92c362ba5ba8d38957a01d6da6928fa1ad0f7be3ce78ff"
+      },
+      "B": {
+        "bytes": 324668,
+        "sha256": "b8f9b4f02e63ec63bc92c362ba5ba8d38957a01d6da6928fa1ad0f7be3ce78ff"
+      }
+    },
+    "/assets/world/camp-site-craft/camp-site-v1.glb": {
+      "A": {
+        "bytes": 971548,
+        "sha256": "facb3ecc999c6a6132aadf65813196541fe5a73f8f38343541487d86463e0c8b"
+      },
+      "B": {
+        "bytes": 971548,
+        "sha256": "facb3ecc999c6a6132aadf65813196541fe5a73f8f38343541487d86463e0c8b"
+      }
+    },
+    "/assets/world/camp-workshop-craft/camp-workshop.glb": {
+      "A": {
+        "bytes": 1481480,
+        "sha256": "0d9e8a75b09fd2a6f5b69c8c2c7f3f2a608f0958fdc51b6e188e254fa1279d7d"
+      },
+      "B": {
+        "bytes": 1481480,
+        "sha256": "0d9e8a75b09fd2a6f5b69c8c2c7f3f2a608f0958fdc51b6e188e254fa1279d7d"
+      }
+    },
+    "/assets/world/camp/C03.glb": {
+      "A": {
+        "bytes": 53660,
+        "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde"
+      },
+      "B": {
+        "bytes": 53660,
+        "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde"
+      }
+    },
+    "/assets/world/camp/C04.glb": {
+      "A": {
+        "bytes": 54184,
+        "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94"
+      },
+      "B": {
+        "bytes": 54184,
+        "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94"
+      }
+    },
+    "/assets/world/camp/C05.glb": {
+      "A": {
+        "bytes": 11536,
+        "sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692"
+      },
+      "B": {
+        "bytes": 11536,
+        "sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692"
+      }
+    },
+    "/assets/world/camp/C06.glb": {
+      "A": {
+        "bytes": 4804,
+        "sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556"
+      },
+      "B": {
+        "bytes": 4804,
+        "sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556"
+      }
+    },
+    "/assets/world/camp/C07.glb": {
+      "A": {
+        "bytes": 15912,
+        "sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873"
+      },
+      "B": {
+        "bytes": 15912,
+        "sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873"
+      }
+    },
+    "/assets/world/camp/C08.glb": {
+      "A": {
+        "bytes": 10584,
+        "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208"
+      },
+      "B": {
+        "bytes": 10584,
+        "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208"
+      }
+    },
+    "/assets/world/camp/C09.glb": {
+      "A": {
+        "bytes": 32404,
+        "sha256": "c69ff479cdc85e4dacd6acee8dac97a0405c1f8d3896f709d17773f44e74b525"
+      },
+      "B": {
+        "bytes": 32404,
+        "sha256": "c69ff479cdc85e4dacd6acee8dac97a0405c1f8d3896f709d17773f44e74b525"
+      }
+    },
+    "/assets/world/camp/C10.glb": {
+      "A": {
+        "bytes": 23844,
+        "sha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32"
+      },
+      "B": {
+        "bytes": 23844,
+        "sha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32"
+      }
+    },
+    "/assets/world/camp/C11.glb": {
+      "A": {
+        "bytes": 38972,
+        "sha256": "2b249212e902147bac53bdb8183546871df2f36ccc987c3d5ace270c3c18973e"
+      },
+      "B": {
+        "bytes": 38972,
+        "sha256": "2b249212e902147bac53bdb8183546871df2f36ccc987c3d5ace270c3c18973e"
+      }
+    },
+    "/assets/world/camp/C12.glb": {
+      "A": {
+        "bytes": 26888,
+        "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+      },
+      "B": {
+        "bytes": 26888,
+        "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+      }
+    },
+    "/assets/world/camp/C13.glb": {
+      "A": {
+        "bytes": 7384,
+        "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+      },
+      "B": {
+        "bytes": 7384,
+        "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+      }
+    },
+    "/assets/world/camp/C14.glb": {
+      "A": {
+        "bytes": 28112,
+        "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+      },
+      "B": {
+        "bytes": 28112,
+        "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+      }
+    },
+    "/assets/world/camp/C15.glb": {
+      "A": {
+        "bytes": 19700,
+        "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+      },
+      "B": {
+        "bytes": 19700,
+        "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+      }
+    },
+    "/assets/world/camp/C16.glb": {
+      "A": {
+        "bytes": 12988,
+        "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+      },
+      "B": {
+        "bytes": 12988,
+        "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+      }
+    },
+    "/assets/world/camp/G16.glb": {
+      "A": {
+        "bytes": 246400,
+        "sha256": "c1129f71a59b46bbce88693d194ed40b5a09237e0d6f1e0298cfadb08028554b"
+      },
+      "B": {
+        "bytes": 246400,
+        "sha256": "c1129f71a59b46bbce88693d194ed40b5a09237e0d6f1e0298cfadb08028554b"
+      }
+    },
+    "/assets/world/camp/G17.glb": {
+      "A": {
+        "bytes": 184956,
+        "sha256": "9281efdf0b37757afb66aa725d7ddf85d4c411fb5e6b4e46bd29bc7684726c0f"
+      },
+      "B": {
+        "bytes": 184956,
+        "sha256": "9281efdf0b37757afb66aa725d7ddf85d4c411fb5e6b4e46bd29bc7684726c0f"
+      }
+    },
+    "/assets/world/camp/G18.glb": {
+      "A": {
+        "bytes": 219100,
+        "sha256": "8932431bfae7ee71a4f3bcb2bbdbf7973e1285b8dc217a134ee15d03b21eda63"
+      },
+      "B": {
+        "bytes": 219100,
+        "sha256": "8932431bfae7ee71a4f3bcb2bbdbf7973e1285b8dc217a134ee15d03b21eda63"
+      }
+    },
+    "/assets/world/camp/G19.glb": {
+      "A": {
+        "bytes": 70320,
+        "sha256": "08f6e076edc5b6e24798936ca6be8564126c97f49c0c18a4da2a1398d3d4f820"
+      },
+      "B": {
+        "bytes": 70320,
+        "sha256": "08f6e076edc5b6e24798936ca6be8564126c97f49c0c18a4da2a1398d3d4f820"
+      }
+    },
+    "/assets/world/camp/G20.glb": {
+      "A": {
+        "bytes": 112556,
+        "sha256": "c1ae7bffd9c7e00d701c54c2209f76c2b3777444aa38faae1e83caeac3629faf"
+      },
+      "B": {
+        "bytes": 112556,
+        "sha256": "c1ae7bffd9c7e00d701c54c2209f76c2b3777444aa38faae1e83caeac3629faf"
+      }
+    },
+    "/assets/world/camp/G21.glb": {
+      "A": {
+        "bytes": 17188,
+        "sha256": "dbfcdc52a9cf5b07f10a9f7ab7a3990392bb05ce407fdc6c3f08438234477230"
+      },
+      "B": {
+        "bytes": 17188,
+        "sha256": "dbfcdc52a9cf5b07f10a9f7ab7a3990392bb05ce407fdc6c3f08438234477230"
+      }
+    },
+    "/assets/world/camp/G22.glb": {
+      "A": {
+        "bytes": 14748,
+        "sha256": "fd617ce9a5cd59e22f942fd9a3a314abe358eeb8fe4adbe1814afdc010a1d2b0"
+      },
+      "B": {
+        "bytes": 14748,
+        "sha256": "fd617ce9a5cd59e22f942fd9a3a314abe358eeb8fe4adbe1814afdc010a1d2b0"
+      }
+    },
+    "/assets/world/camp/G23.glb": {
+      "A": {
+        "bytes": 12184,
+        "sha256": "5631e18ab802be8fa882425bf7ba73c3965c2d22252ed6677af7e941a7e76c1d"
+      },
+      "B": {
+        "bytes": 12184,
+        "sha256": "5631e18ab802be8fa882425bf7ba73c3965c2d22252ed6677af7e941a7e76c1d"
+      }
+    },
+    "/assets/world/camp/L01.glb": {
+      "A": {
+        "bytes": 8836,
+        "sha256": "e4c06c8b8e501ba10fb2827a9dbac45c08a74ec4ace9adf88505e882a715b1c9"
+      },
+      "B": {
+        "bytes": 8836,
+        "sha256": "e4c06c8b8e501ba10fb2827a9dbac45c08a74ec4ace9adf88505e882a715b1c9"
+      }
+    },
+    "/assets/world/camp/craft/camp-props-v1.glb": {
+      "A": {
+        "bytes": 3313188,
+        "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39"
+      },
+      "B": {
+        "bytes": 3313188,
+        "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39"
+      }
+    },
+    "/assets/world/club/bar/djc-north-bar-lod1-v1.glb": {
+      "A": {
+        "bytes": 10531556,
+        "sha256": "0add8f8ae011b4088c68e2cebdd07366c109ce85e30f42534f53a71f062bbf3d"
+      },
+      "B": {
+        "bytes": 10531556,
+        "sha256": "0add8f8ae011b4088c68e2cebdd07366c109ce85e30f42534f53a71f062bbf3d"
+      }
+    },
+    "/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png": {
+      "A": {
+        "bytes": 1479424,
+        "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb"
+      },
+      "B": {
+        "bytes": 1479424,
+        "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb"
+      }
+    },
+    "/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png": {
+      "A": {
+        "bytes": 1945604,
+        "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb"
+      },
+      "B": {
+        "bytes": 1945604,
+        "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb"
+      }
+    },
+    "/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png": {
+      "A": {
+        "bytes": 1366709,
+        "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7"
+      },
+      "B": {
+        "bytes": 1366709,
+        "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7"
+      }
+    },
+    "/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png": {
+      "A": {
+        "bytes": 2355851,
+        "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c"
+      },
+      "B": {
+        "bytes": 2355851,
+        "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c"
+      }
+    },
+    "/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png": {
+      "A": {
+        "bytes": 1075749,
+        "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f"
+      },
+      "B": {
+        "bytes": 1075749,
+        "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f"
+      }
+    },
+    "/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png": {
+      "A": {
+        "bytes": 839007,
+        "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed"
+      },
+      "B": {
+        "bytes": 839007,
+        "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed"
+      }
+    },
+    "/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg": {
+      "A": {
+        "bytes": 3562033,
+        "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516"
+      },
+      "B": {
+        "bytes": 3562033,
+        "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516"
+      }
+    },
+    "/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg": {
+      "A": {
+        "bytes": 2326816,
+        "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399"
+      },
+      "B": {
+        "bytes": 2326816,
+        "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399"
+      }
+    },
+    "/assets/world/club/furniture/furniture-v1.glb": {
+      "A": {
+        "bytes": 2891784,
+        "sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3"
+      },
+      "B": {
+        "bytes": 2891784,
+        "sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3"
+      }
+    },
+    "/assets/world/craft-batch6-facilities/hut-runtime.glb": {
+      "A": {
+        "bytes": 598332,
+        "sha256": "2773a10b595d15720b95c9431648643e671913e784291bfff16d7baf2d9973ac"
+      },
+      "B": {
+        "bytes": 598332,
+        "sha256": "2773a10b595d15720b95c9431648643e671913e784291bfff16d7baf2d9973ac"
+      }
+    },
+    "/assets/world/craft-batch6-facilities/wood-color.png": {
+      "A": {
+        "bytes": 388568,
+        "sha256": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02"
+      },
+      "B": {
+        "bytes": 388568,
+        "sha256": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02"
+      }
+    },
+    "/assets/world/craft-batch6-facilities/wood-normal.png": {
+      "A": {
+        "bytes": 562034,
+        "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+      },
+      "B": {
+        "bytes": 562034,
+        "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+      }
+    },
+    "/assets/world/craft-batch6-facilities/wood-rough.png": {
+      "A": {
+        "bytes": 95086,
+        "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+      },
+      "B": {
+        "bytes": 95086,
+        "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+      }
+    },
+    "/assets/world/draco/draco_decoder.wasm": {
+      "A": {
+        "bytes": 192420,
+        "sha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac"
+      },
+      "B": {
+        "bytes": 192420,
+        "sha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac"
+      }
+    },
+    "/assets/world/entry/G28.glb": {
+      "A": {
+        "bytes": 51100,
+        "sha256": "eaf94d2e83696cdd92309a433720216978b3f548a58f4293703ab99dc30dcfac"
+      },
+      "B": {
+        "bytes": 51100,
+        "sha256": "eaf94d2e83696cdd92309a433720216978b3f548a58f4293703ab99dc30dcfac"
+      }
+    },
+    "/assets/world/facility-craft/camp/camp-facilities-v1.glb": {
+      "A": {
+        "bytes": 1441740,
+        "sha256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703"
+      },
+      "B": {
+        "bytes": 1441740,
+        "sha256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703"
+      }
+    },
+    "/assets/world/facility-craft/nature/G17.glb": {
+      "A": {
+        "bytes": 587904,
+        "sha256": "e6f3d4c944b2060db5c2bf967f2c6b0a60db2e18ea7506560bbb1469a12ee506"
+      },
+      "B": {
+        "bytes": 587904,
+        "sha256": "e6f3d4c944b2060db5c2bf967f2c6b0a60db2e18ea7506560bbb1469a12ee506"
+      }
+    },
+    "/assets/world/guide/G24.glb": {
+      "A": {
+        "bytes": 726680,
+        "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+      },
+      "B": {
+        "bytes": 726680,
+        "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+      }
+    },
+    "/assets/world/nature-camp-craft/G21.glb": {
+      "A": {
+        "bytes": 704928,
+        "sha256": "a31ae02a6af323c54d5af7e9645927fcac41df3b23caef77c4a10ee8f3c5fc5f"
+      },
+      "B": {
+        "bytes": 704928,
+        "sha256": "a31ae02a6af323c54d5af7e9645927fcac41df3b23caef77c4a10ee8f3c5fc5f"
+      }
+    },
+    "/assets/world/nature-camp-craft/textures/345303abbf4a10e5bd821ac7.png": {
+      "A": {
+        "bytes": 171174,
+        "sha256": "345303abbf4a10e5bd821ac7148f22eda1f5d830c08ee3dfdc863471cd4a46d8"
+      },
+      "B": {
+        "bytes": 171174,
+        "sha256": "345303abbf4a10e5bd821ac7148f22eda1f5d830c08ee3dfdc863471cd4a46d8"
+      }
+    },
+    "/assets/world/nature-camp-craft/textures/6f361f0d505ca603a6f05e5a.png": {
+      "A": {
+        "bytes": 542797,
+        "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec"
+      },
+      "B": {
+        "bytes": 542797,
+        "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec"
+      }
+    },
+    "/assets/world/nature-camp-craft/textures/bcf66369ea932720bda81136.jpg": {
+      "A": {
+        "bytes": 58062,
+        "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f"
+      },
+      "B": {
+        "bytes": 58062,
+        "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f"
+      }
+    },
+    "/assets/world/nature-camp-craft/textures/f2d95671ea0e6b54f63997c6.png": {
+      "A": {
+        "bytes": 95534,
+        "sha256": "f2d95671ea0e6b54f63997c697180e83f8eded07d4a0e7da38a3e4b93b0b5f94"
+      },
+      "B": {
+        "bytes": 95534,
+        "sha256": "f2d95671ea0e6b54f63997c697180e83f8eded07d4a0e7da38a3e4b93b0b5f94"
+      }
+    },
+    "/assets/world/nature-craft/C09.glb": {
+      "A": {
+        "bytes": 127324,
+        "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946"
+      },
+      "B": {
+        "bytes": 127324,
+        "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946"
+      }
+    },
+    "/assets/world/nature-craft/G16.glb": {
+      "A": {
+        "bytes": 311788,
+        "sha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b"
+      },
+      "B": {
+        "bytes": 311788,
+        "sha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b"
+      }
+    },
+    "/assets/world/nature-craft/G18.glb": {
+      "A": {
+        "bytes": 273592,
+        "sha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57"
+      },
+      "B": {
+        "bytes": 273592,
+        "sha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57"
+      }
+    },
+    "/assets/world/nature-craft/G22.glb": {
+      "A": {
+        "bytes": 296956,
+        "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb"
+      },
+      "B": {
+        "bytes": 296956,
+        "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb"
+      }
+    },
+    "/assets/world/nature-craft/G23.glb": {
+      "A": {
+        "bytes": 293268,
+        "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85"
+      },
+      "B": {
+        "bytes": 293268,
+        "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85"
+      }
+    },
+    "/assets/world/nature-craft/ST1.glb": {
+      "A": {
+        "bytes": 193500,
+        "sha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6"
+      },
+      "B": {
+        "bytes": 193500,
+        "sha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6"
+      }
+    },
+    "/assets/world/nature-craft/ST2.glb": {
+      "A": {
+        "bytes": 181260,
+        "sha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d"
+      },
+      "B": {
+        "bytes": 181260,
+        "sha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d"
+      }
+    },
+    "/assets/world/park/P13.glb": {
+      "A": {
+        "bytes": 28092,
+        "sha256": "01a7e555f94693b3b45092ecba5a8bda19dbd0d00ca9741df605c4e41ead57c5"
+      },
+      "B": {
+        "bytes": 28092,
+        "sha256": "01a7e555f94693b3b45092ecba5a8bda19dbd0d00ca9741df605c4e41ead57c5"
+      }
+    },
+    "/assets/world/park/P14.glb": {
+      "A": {
+        "bytes": 55800,
+        "sha256": "4267c54a636fb1e2be9bac40f36517890b1f656afeb7164a43069c242d571c74"
+      },
+      "B": {
+        "bytes": 55800,
+        "sha256": "4267c54a636fb1e2be9bac40f36517890b1f656afeb7164a43069c242d571c74"
+      }
+    },
+    "/assets/world/park/P15.glb": {
+      "A": {
+        "bytes": 75788,
+        "sha256": "b9b846f17f60f6d6f55e1fbf48c47a82f6e9589f66f5009fa2e29b4851141fed"
+      },
+      "B": {
+        "bytes": 75788,
+        "sha256": "b9b846f17f60f6d6f55e1fbf48c47a82f6e9589f66f5009fa2e29b4851141fed"
+      }
+    },
+    "/assets/world/park/P16.glb": {
+      "A": {
+        "bytes": 18436,
+        "sha256": "881b6a383b3de096a83c9326fcb8f8eaa778e086ddf96cc919d4ae257c3635d9"
+      },
+      "B": {
+        "bytes": 18436,
+        "sha256": "881b6a383b3de096a83c9326fcb8f8eaa778e086ddf96cc919d4ae257c3635d9"
+      }
+    },
+    "/assets/world/park/P17.glb": {
+      "A": {
+        "bytes": 20044,
+        "sha256": "269dddf0d8e3feb2700e31b056ae3dd86ebfeb580e286696f206a011cd2b6ae1"
+      },
+      "B": {
+        "bytes": 20044,
+        "sha256": "269dddf0d8e3feb2700e31b056ae3dd86ebfeb580e286696f206a011cd2b6ae1"
+      }
+    },
+    "/assets/world/park/P18.glb": {
+      "A": {
+        "bytes": 20068,
+        "sha256": "ab80160ed6f53173af0fb7a1eafc052a79e8379d8a4eca743cd09aefc6f4a479"
+      },
+      "B": {
+        "bytes": 20068,
+        "sha256": "ab80160ed6f53173af0fb7a1eafc052a79e8379d8a4eca743cd09aefc6f4a479"
+      }
+    },
+    "/assets/world/park/audio/boardwalk-longform.mp3": {
+      "A": {
+        "bytes": 10045221,
+        "sha256": "21a7194db8185d9f0be6c091d89a04a31749e748ed56c04955ec33d1d0029642"
+      },
+      "B": {
+        "bytes": 10045221,
+        "sha256": "21a7194db8185d9f0be6c091d89a04a31749e748ed56c04955ec33d1d0029642"
+      }
+    },
+    "/assets/world/park/audio/boardwalk-v3-longform.mp3": {
+      "A": {
+        "bytes": 9996621,
+        "sha256": "13c4eb149ca8042774cacdf720d55450d80c1b69eaa56ac8cb3c6925146b66bb"
+      },
+      "B": {
+        "bytes": 9996621,
+        "sha256": "13c4eb149ca8042774cacdf720d55450d80c1b69eaa56ac8cb3c6925146b66bb"
+      }
+    },
+    "/assets/world/park/hut.glb": {
+      "A": {
+        "bytes": 95064,
+        "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda"
+      },
+      "B": {
+        "bytes": 95064,
+        "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda"
+      }
+    },
+    "/assets/world/park/signs.glb": {
+      "A": {
+        "bytes": 37420,
+        "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30"
+      },
+      "B": {
+        "bytes": 37420,
+        "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30"
+      }
+    },
+    "/assets/world/scenario-craft-pilot/C03-tent-v1.glb": {
+      "A": {
+        "bytes": 508592,
+        "sha256": "2cdc93151beec61a8146decb146219d224a756b29bb28e5ff13d4a05f9df4210"
+      },
+      "B": {
+        "bytes": 508592,
+        "sha256": "2cdc93151beec61a8146decb146219d224a756b29bb28e5ff13d4a05f9df4210"
+      }
+    },
+    "/assets/world/street/ST1.glb": {
+      "A": {
+        "bytes": 154668,
+        "sha256": "09991641dbd71284ac77f1a1baab02838ebc293f559b0ca66de7f54392fb53a9"
+      },
+      "B": {
+        "bytes": 154668,
+        "sha256": "09991641dbd71284ac77f1a1baab02838ebc293f559b0ca66de7f54392fb53a9"
+      }
+    },
+    "/assets/world/street/ST2.glb": {
+      "A": {
+        "bytes": 149308,
+        "sha256": "1a33b3150475ddc3a637f4b9b21bffd20e30efbe1d8b3a281a8c723b2ded9cab"
+      },
+      "B": {
+        "bytes": 149308,
+        "sha256": "1a33b3150475ddc3a637f4b9b21bffd20e30efbe1d8b3a281a8c723b2ded9cab"
+      }
+    },
+    "/assets/world/terrain/dirt_albedo.jpg": {
+      "A": {
+        "bytes": 120583,
+        "sha256": "8ac46a7ddf27f068bf0b6fc696aa3e3bacd49801ccf2e6c9c48aca65e406d889"
+      },
+      "B": {
+        "bytes": 120583,
+        "sha256": "8ac46a7ddf27f068bf0b6fc696aa3e3bacd49801ccf2e6c9c48aca65e406d889"
+      }
+    },
+    "/assets/world/terrain/dirt_nr.png": {
+      "A": {
+        "bytes": 603840,
+        "sha256": "5e947542dece3d82cb93779445c79e8b09d71ee40896369985105450b6c2499a"
+      },
+      "B": {
+        "bytes": 603840,
+        "sha256": "5e947542dece3d82cb93779445c79e8b09d71ee40896369985105450b6c2499a"
+      }
+    },
+    "/assets/world/terrain/grass_albedo.jpg": {
+      "A": {
+        "bytes": 116172,
+        "sha256": "b8596d21e5c7e0bcd74a5ecde5c767a750c00641c4e75ede5dd7e8a7dad200eb"
+      },
+      "B": {
+        "bytes": 116172,
+        "sha256": "b8596d21e5c7e0bcd74a5ecde5c767a750c00641c4e75ede5dd7e8a7dad200eb"
+      }
+    },
+    "/assets/world/terrain/grass_nr.png": {
+      "A": {
+        "bytes": 609663,
+        "sha256": "3505572c98287093ca9face00b7180d85a51d4d1d2dd8f06b3a56b1080744e14"
+      },
+      "B": {
+        "bytes": 609663,
+        "sha256": "3505572c98287093ca9face00b7180d85a51d4d1d2dd8f06b3a56b1080744e14"
+      }
+    },
+    "/assets/world/terrain/sand_albedo.jpg": {
+      "A": {
+        "bytes": 56602,
+        "sha256": "c0ebad11a4281bd5d1138c8b17d6e98ef598d2595bec34042b1a99b3a4a8e149"
+      },
+      "B": {
+        "bytes": 56602,
+        "sha256": "c0ebad11a4281bd5d1138c8b17d6e98ef598d2595bec34042b1a99b3a4a8e149"
+      }
+    },
+    "/assets/world/terrain/sand_nr.png": {
+      "A": {
+        "bytes": 501630,
+        "sha256": "e58a59c41c3487f29b528cef88f9386580e91e84a7d34255815138195f5b4985"
+      },
+      "B": {
+        "bytes": 501630,
+        "sha256": "e58a59c41c3487f29b528cef88f9386580e91e84a7d34255815138195f5b4985"
+      }
+    },
+    "/assets/world/town-craft/T01.glb": {
+      "A": {
+        "bytes": 94096,
+        "sha256": "f0b974f728ba026d766990e2baa7bc4f5299e0f2baf8d3de846efcffd6760f32"
+      },
+      "B": {
+        "bytes": 94096,
+        "sha256": "f0b974f728ba026d766990e2baa7bc4f5299e0f2baf8d3de846efcffd6760f32"
+      }
+    },
+    "/assets/world/town-craft/T02.glb": {
+      "A": {
+        "bytes": 74880,
+        "sha256": "7c39b42d59bf2a7e6c5154c9f4bfa8adb7cdf9e7ae23e0fd3acccf62fb110029"
+      },
+      "B": {
+        "bytes": 74880,
+        "sha256": "7c39b42d59bf2a7e6c5154c9f4bfa8adb7cdf9e7ae23e0fd3acccf62fb110029"
+      }
+    },
+    "/assets/world/town-craft/T03.glb": {
+      "A": {
+        "bytes": 94036,
+        "sha256": "6801f39af67eaab8875423312aef416fad659b76ae183cc5f7c04e552ef495e3"
+      },
+      "B": {
+        "bytes": 94036,
+        "sha256": "6801f39af67eaab8875423312aef416fad659b76ae183cc5f7c04e552ef495e3"
+      }
+    },
+    "/assets/world/town-craft/T04.glb": {
+      "A": {
+        "bytes": 83276,
+        "sha256": "25f4b8eea375ec4e005d2e80123ca617cfe0e72288b1cf2249e8694eaf1d6101"
+      },
+      "B": {
+        "bytes": 83276,
+        "sha256": "25f4b8eea375ec4e005d2e80123ca617cfe0e72288b1cf2249e8694eaf1d6101"
+      }
+    },
+    "/assets/world/town-craft/T05.glb": {
+      "A": {
+        "bytes": 123008,
+        "sha256": "f05f8aab040bf199d13792595cb51b561cc130a60f878536bf479f85315db91d"
+      },
+      "B": {
+        "bytes": 123008,
+        "sha256": "f05f8aab040bf199d13792595cb51b561cc130a60f878536bf479f85315db91d"
+      }
+    },
+    "/assets/world/town-craft/T06.glb": {
+      "A": {
+        "bytes": 81636,
+        "sha256": "9f903ad6ff4d3dfde86d642d118bf1c61d0316c58ff4f181af79ab75d6cf7726"
+      },
+      "B": {
+        "bytes": 81636,
+        "sha256": "9f903ad6ff4d3dfde86d642d118bf1c61d0316c58ff4f181af79ab75d6cf7726"
+      }
+    },
+    "/assets/world/town-craft/T07.glb": {
+      "A": {
+        "bytes": 258344,
+        "sha256": "d11be2d5a94a6cacf1a99c2c859f754795088d0b8da89ff7ba4c2ee2a7cf21d1"
+      },
+      "B": {
+        "bytes": 258344,
+        "sha256": "d11be2d5a94a6cacf1a99c2c859f754795088d0b8da89ff7ba4c2ee2a7cf21d1"
+      }
+    },
+    "/assets/world/town-craft/T09.glb": {
+      "A": {
+        "bytes": 20360,
+        "sha256": "8b5cbeeda7cd695e8208104f5e8b84c9b460b9b19b7954f1526ca9b0a83de7a5"
+      },
+      "B": {
+        "bytes": 20360,
+        "sha256": "8b5cbeeda7cd695e8208104f5e8b84c9b460b9b19b7954f1526ca9b0a83de7a5"
+      }
+    },
+    "/assets/world/town-craft/T10.glb": {
+      "A": {
+        "bytes": 86024,
+        "sha256": "ef43c9f790809ab254c80a6e4484c4183703cb4863d99573381cfb9b8a997db1"
+      },
+      "B": {
+        "bytes": 86024,
+        "sha256": "ef43c9f790809ab254c80a6e4484c4183703cb4863d99573381cfb9b8a997db1"
+      }
+    },
+    "/assets/world/town-craft/T11.glb": {
+      "A": {
+        "bytes": 43624,
+        "sha256": "b8df55c0c7f93dc014dc5af6b50bafbe8bcb71cd27e0fda83c9219a89c1c5913"
+      },
+      "B": {
+        "bytes": 43624,
+        "sha256": "b8df55c0c7f93dc014dc5af6b50bafbe8bcb71cd27e0fda83c9219a89c1c5913"
+      }
+    },
+    "/assets/world/town-craft/T12.glb": {
+      "A": {
+        "bytes": 167052,
+        "sha256": "314fa061bad92febf96954ff588cd82037851d60c4f9e6b9b7190e3487d05061"
+      },
+      "B": {
+        "bytes": 167052,
+        "sha256": "314fa061bad92febf96954ff588cd82037851d60c4f9e6b9b7190e3487d05061"
+      }
+    },
+    "/assets/world/town-craft/surfaces/bark-color.png": {
+      "A": {
+        "bytes": 33123,
+        "sha256": "aec735c120f164ff03044c180dd0d04df40f7ff967de2b5006a8b36136c3b5cf"
+      },
+      "B": {
+        "bytes": 33123,
+        "sha256": "aec735c120f164ff03044c180dd0d04df40f7ff967de2b5006a8b36136c3b5cf"
+      }
+    },
+    "/assets/world/town-craft/surfaces/bark-normal.png": {
+      "A": {
+        "bytes": 153500,
+        "sha256": "0cd5831237b07c0f2b518c084299c51296629d3ec832de698a120340d9be1fcf"
+      },
+      "B": {
+        "bytes": 153500,
+        "sha256": "0cd5831237b07c0f2b518c084299c51296629d3ec832de698a120340d9be1fcf"
+      }
+    },
+    "/assets/world/town-craft/surfaces/bark-orm.png": {
+      "A": {
+        "bytes": 53935,
+        "sha256": "6a15d27804abd957855903a59d9c7d807bf6421c599a720a7f41f9613cdff0b6"
+      },
+      "B": {
+        "bytes": 53935,
+        "sha256": "6a15d27804abd957855903a59d9c7d807bf6421c599a720a7f41f9613cdff0b6"
+      }
+    },
+    "/assets/world/town-craft/surfaces/brick-color.png": {
+      "A": {
+        "bytes": 63950,
+        "sha256": "e39446fe8cb889124f4742a16659e00c32609cbc9975b78a7487e2b41dafe4b2"
+      },
+      "B": {
+        "bytes": 63950,
+        "sha256": "e39446fe8cb889124f4742a16659e00c32609cbc9975b78a7487e2b41dafe4b2"
+      }
+    },
+    "/assets/world/town-craft/surfaces/brick-normal.png": {
+      "A": {
+        "bytes": 97935,
+        "sha256": "72b15825d64ccc7d557feebef7b4b4730bd73cd676fd14dd19dfe2fed915acc6"
+      },
+      "B": {
+        "bytes": 97935,
+        "sha256": "72b15825d64ccc7d557feebef7b4b4730bd73cd676fd14dd19dfe2fed915acc6"
+      }
+    },
+    "/assets/world/town-craft/surfaces/brick-orm.png": {
+      "A": {
+        "bytes": 70631,
+        "sha256": "3c8dde043b93cd959cdde03aa78f2867df5a386e841d5414149b33e2ab81bf4b"
+      },
+      "B": {
+        "bytes": 70631,
+        "sha256": "3c8dde043b93cd959cdde03aa78f2867df5a386e841d5414149b33e2ab81bf4b"
+      }
+    },
+    "/assets/world/town-craft/surfaces/cloth-color.png": {
+      "A": {
+        "bytes": 10812,
+        "sha256": "cbcd534d8cc36c31e9f3ae41cc9b2598c93684e1e63531366a9d626a9689b640"
+      },
+      "B": {
+        "bytes": 10812,
+        "sha256": "cbcd534d8cc36c31e9f3ae41cc9b2598c93684e1e63531366a9d626a9689b640"
+      }
+    },
+    "/assets/world/town-craft/surfaces/cloth-normal.png": {
+      "A": {
+        "bytes": 2300,
+        "sha256": "0f35276f6626c405c5eded954dad532f6bdcc541b90b862b5de0ef1d50267a5e"
+      },
+      "B": {
+        "bytes": 2300,
+        "sha256": "0f35276f6626c405c5eded954dad532f6bdcc541b90b862b5de0ef1d50267a5e"
+      }
+    },
+    "/assets/world/town-craft/surfaces/cloth-orm.png": {
+      "A": {
+        "bytes": 49353,
+        "sha256": "e82d4f34dbf424129531d8d45d1f9788b28b5742256704aa15aee9d932e32dac"
+      },
+      "B": {
+        "bytes": 49353,
+        "sha256": "e82d4f34dbf424129531d8d45d1f9788b28b5742256704aa15aee9d932e32dac"
+      }
+    },
+    "/assets/world/town-craft/surfaces/glazing-color.png": {
+      "A": {
+        "bytes": 26323,
+        "sha256": "94622ccb75c49a0d6aaa57299531325485a3f8fe63dd4fcc8f1cb61c2e4b9b46"
+      },
+      "B": {
+        "bytes": 26323,
+        "sha256": "94622ccb75c49a0d6aaa57299531325485a3f8fe63dd4fcc8f1cb61c2e4b9b46"
+      }
+    },
+    "/assets/world/town-craft/surfaces/glazing-normal.png": {
+      "A": {
+        "bytes": 1489,
+        "sha256": "abfbebf4f60caeed1c7ec36346eab3201005880f62b5021ef6f4df0b4e4aba3b"
+      },
+      "B": {
+        "bytes": 1489,
+        "sha256": "abfbebf4f60caeed1c7ec36346eab3201005880f62b5021ef6f4df0b4e4aba3b"
+      }
+    },
+    "/assets/world/town-craft/surfaces/glazing-orm.png": {
+      "A": {
+        "bytes": 3523,
+        "sha256": "9c044aa93a1922f97e85a10220d829a0573d95435ae1ff602c1e7b19b19ebffd"
+      },
+      "B": {
+        "bytes": 3523,
+        "sha256": "9c044aa93a1922f97e85a10220d829a0573d95435ae1ff602c1e7b19b19ebffd"
+      }
+    },
+    "/assets/world/town-craft/surfaces/metal-color.png": {
+      "A": {
+        "bytes": 7995,
+        "sha256": "bc0685c6a1f8f8fa230440fda3df47e1be30c6ac0642d51c88b4b7f6fe52e24e"
+      },
+      "B": {
+        "bytes": 7995,
+        "sha256": "bc0685c6a1f8f8fa230440fda3df47e1be30c6ac0642d51c88b4b7f6fe52e24e"
+      }
+    },
+    "/assets/world/town-craft/surfaces/metal-normal.png": {
+      "A": {
+        "bytes": 1524,
+        "sha256": "9baedbf2237c7bd87df5ff8f3c966a9027f0a81a371aa83544b876a51036b367"
+      },
+      "B": {
+        "bytes": 1524,
+        "sha256": "9baedbf2237c7bd87df5ff8f3c966a9027f0a81a371aa83544b876a51036b367"
+      }
+    },
+    "/assets/world/town-craft/surfaces/metal-orm.png": {
+      "A": {
+        "bytes": 16295,
+        "sha256": "1e7e561d1f858540ea3f5a204ad379b83bdb3772a2c17e02fa36d8c05cb6d0f8"
+      },
+      "B": {
+        "bytes": 16295,
+        "sha256": "1e7e561d1f858540ea3f5a204ad379b83bdb3772a2c17e02fa36d8c05cb6d0f8"
+      }
+    },
+    "/assets/world/town-craft/surfaces/plaster-color.png": {
+      "A": {
+        "bytes": 59187,
+        "sha256": "f4fdfcf30f0e372418cebbabe42ce53244e494900d4b4f9bbf313c5d3302dcad"
+      },
+      "B": {
+        "bytes": 59187,
+        "sha256": "f4fdfcf30f0e372418cebbabe42ce53244e494900d4b4f9bbf313c5d3302dcad"
+      }
+    },
+    "/assets/world/town-craft/surfaces/plaster-normal.png": {
+      "A": {
+        "bytes": 247423,
+        "sha256": "8e2d8a0cee671e832b85a9c8a7a477b72681136d44097ac81071b566847ba9b8"
+      },
+      "B": {
+        "bytes": 247423,
+        "sha256": "8e2d8a0cee671e832b85a9c8a7a477b72681136d44097ac81071b566847ba9b8"
+      }
+    },
+    "/assets/world/town-craft/surfaces/plaster-orm.png": {
+      "A": {
+        "bytes": 73904,
+        "sha256": "cb990644aa476d19a47f54bbeea9d29fbc211e01bbd2b3ff7b30be39ce180224"
+      },
+      "B": {
+        "bytes": 73904,
+        "sha256": "cb990644aa476d19a47f54bbeea9d29fbc211e01bbd2b3ff7b30be39ce180224"
+      }
+    },
+    "/assets/world/town-craft/surfaces/roof-color.png": {
+      "A": {
+        "bytes": 64678,
+        "sha256": "2499de7aea2d9a2f1b8e9fcfb008df8474829125906c908551ef3227254dd52f"
+      },
+      "B": {
+        "bytes": 64678,
+        "sha256": "2499de7aea2d9a2f1b8e9fcfb008df8474829125906c908551ef3227254dd52f"
+      }
+    },
+    "/assets/world/town-craft/surfaces/roof-normal.png": {
+      "A": {
+        "bytes": 89820,
+        "sha256": "0ecda1fea96a3bf445b5ea45c968a7d480eaba6c9b1922784496ee69669a82ce"
+      },
+      "B": {
+        "bytes": 89820,
+        "sha256": "0ecda1fea96a3bf445b5ea45c968a7d480eaba6c9b1922784496ee69669a82ce"
+      }
+    },
+    "/assets/world/town-craft/surfaces/roof-orm.png": {
+      "A": {
+        "bytes": 63004,
+        "sha256": "0c349a1b43a3dee08755283db4aaee1d8e37b99da2a21539ea78b8f4711b062b"
+      },
+      "B": {
+        "bytes": 63004,
+        "sha256": "0c349a1b43a3dee08755283db4aaee1d8e37b99da2a21539ea78b8f4711b062b"
+      }
+    },
+    "/assets/world/town-craft/surfaces/stone-color.png": {
+      "A": {
+        "bytes": 62106,
+        "sha256": "4a58b42d8342cc659589828d75984bcfaf3da6eece5645a77c57ab84a0fa4bc9"
+      },
+      "B": {
+        "bytes": 62106,
+        "sha256": "4a58b42d8342cc659589828d75984bcfaf3da6eece5645a77c57ab84a0fa4bc9"
+      }
+    },
+    "/assets/world/town-craft/surfaces/stone-normal.png": {
+      "A": {
+        "bytes": 191379,
+        "sha256": "f8947f2f7be437286bb51860616960d8c073f273a7cef18a47eda3f61ef72496"
+      },
+      "B": {
+        "bytes": 191379,
+        "sha256": "f8947f2f7be437286bb51860616960d8c073f273a7cef18a47eda3f61ef72496"
+      }
+    },
+    "/assets/world/town-craft/surfaces/stone-orm.png": {
+      "A": {
+        "bytes": 55981,
+        "sha256": "9d347b207270c82eea55902f56dcd7d9adabeaf91aefb32abbeb739f9500ab93"
+      },
+      "B": {
+        "bytes": 55981,
+        "sha256": "9d347b207270c82eea55902f56dcd7d9adabeaf91aefb32abbeb739f9500ab93"
+      }
+    },
+    "/assets/world/town-craft/surfaces/wood-color.png": {
+      "A": {
+        "bytes": 58633,
+        "sha256": "8e4348321d09c8494bcfd827368cff0163252b75134a6a7e195d3f619d089d64"
+      },
+      "B": {
+        "bytes": 58633,
+        "sha256": "8e4348321d09c8494bcfd827368cff0163252b75134a6a7e195d3f619d089d64"
+      }
+    },
+    "/assets/world/town-craft/surfaces/wood-normal.png": {
+      "A": {
+        "bytes": 32805,
+        "sha256": "517520e1557b5a9562caea69d87fbc4a41616801b1b48a47b31cd511c2caa5c4"
+      },
+      "B": {
+        "bytes": 32805,
+        "sha256": "517520e1557b5a9562caea69d87fbc4a41616801b1b48a47b31cd511c2caa5c4"
+      }
+    },
+    "/assets/world/town-craft/surfaces/wood-orm.png": {
+      "A": {
+        "bytes": 37130,
+        "sha256": "947648dc7b13fa4708902d1f8152189c68c8d73d066fb2dd2d8d165640d28548"
+      },
+      "B": {
+        "bytes": 37130,
+        "sha256": "947648dc7b13fa4708902d1f8152189c68c8d73d066fb2dd2d8d165640d28548"
+      }
+    },
+    "/assets/world/vehicles/G25-lod1.glb": {
+      "A": {
+        "bytes": 82744,
+        "sha256": "3fe679a5060a3e04cde06d3691479e92a39c603d2230c8fe30fd51f7d98e28c0"
+      },
+      "B": {
+        "bytes": 82744,
+        "sha256": "3fe679a5060a3e04cde06d3691479e92a39c603d2230c8fe30fd51f7d98e28c0"
+      }
+    },
+    "/assets/world/vehicles/G25.glb": {
+      "A": {
+        "bytes": 114760,
+        "sha256": "9099415b66c084be65c70fdb57c4715948e7768eb9bff1c2b19dec52c62fbfef"
+      },
+      "B": {
+        "bytes": 114760,
+        "sha256": "9099415b66c084be65c70fdb57c4715948e7768eb9bff1c2b19dec52c62fbfef"
+      }
+    },
+    "/assets/world/vehicles/G26-lod1.glb": {
+      "A": {
+        "bytes": 72348,
+        "sha256": "6597aa2c90d9d75ee77b2048e9f45385e783f42da46acb841f11ff3dba2d1128"
+      },
+      "B": {
+        "bytes": 72348,
+        "sha256": "6597aa2c90d9d75ee77b2048e9f45385e783f42da46acb841f11ff3dba2d1128"
+      }
+    },
+    "/assets/world/vehicles/G26.glb": {
+      "A": {
+        "bytes": 74828,
+        "sha256": "e394ee84a4aa687551e804e6915c3356cd601907d85906871e195087710f7999"
+      },
+      "B": {
+        "bytes": 74828,
+        "sha256": "e394ee84a4aa687551e804e6915c3356cd601907d85906871e195087710f7999"
+      }
+    },
+    "/assets/world/vehicles/G27-lod1.glb": {
+      "A": {
+        "bytes": 72048,
+        "sha256": "5a5a81e53a1a2dbc05bd8d154801794f0d7640dd27e3b62dffb0c8c158cfcde4"
+      },
+      "B": {
+        "bytes": 72048,
+        "sha256": "5a5a81e53a1a2dbc05bd8d154801794f0d7640dd27e3b62dffb0c8c158cfcde4"
+      }
+    },
+    "/assets/world/vehicles/G27.glb": {
+      "A": {
+        "bytes": 83880,
+        "sha256": "822c27860bc26e6683369307cac0a0817d4ca256fc631d0c6c9e82b25f46f428"
+      },
+      "B": {
+        "bytes": 83880,
+        "sha256": "822c27860bc26e6683369307cac0a0817d4ca256fc631d0c6c9e82b25f46f428"
+      }
+    },
+    "/favicon.svg": {
+      "A": {
+        "bytes": 260,
+        "sha256": "659a851cbd01a74733970940b3381b9fb5694850d71d4a7ad4155d90c0653c88"
+      },
+      "B": {
+        "bytes": 260,
+        "sha256": "659a851cbd01a74733970940b3381b9fb5694850d71d4a7ad4155d90c0653c88"
+      }
+    },
+    "/fonts/GeistSans-Medium.woff2": {
+      "A": {
+        "bytes": 46356,
+        "sha256": "0b50074337a05ed834a1474d3d13fc6bd8480e2ce3075d02f1d38c017a8ac2a4"
+      },
+      "B": {
+        "bytes": 46356,
+        "sha256": "0b50074337a05ed834a1474d3d13fc6bd8480e2ce3075d02f1d38c017a8ac2a4"
+      }
+    },
+    "/fonts/GeistSans-Regular.woff2": {
+      "A": {
+        "bytes": 45172,
+        "sha256": "faed18848df4a6e1b5503b589bbbc055fbdab0e1780781edf5105457395e1e5d"
+      },
+      "B": {
+        "bytes": 45172,
+        "sha256": "faed18848df4a6e1b5503b589bbbc055fbdab0e1780781edf5105457395e1e5d"
+      }
+    },
+    "/fonts/GeistSans-SemiBold.woff2": {
+      "A": {
+        "bytes": 46620,
+        "sha256": "cdb0f3869746b3cb1947ca6026962c3c56803ca8cf233b5616f3f7d3843be917"
+      },
+      "B": {
+        "bytes": 46620,
+        "sha256": "cdb0f3869746b3cb1947ca6026962c3c56803ca8cf233b5616f3f7d3843be917"
+      }
+    },
+    "/fonts/InstrumentSerif-Regular.woff2": {
+      "A": {
+        "bytes": 18656,
+        "sha256": "f3ae4af3e2e9ad592de4f2aedb75cfe49e008f6c9f2428ef8b98ec0a326742d9"
+      },
+      "B": {
+        "bytes": 18656,
+        "sha256": "f3ae4af3e2e9ad592de4f2aedb75cfe49e008f6c9f2428ef8b98ec0a326742d9"
+      }
+    },
+    "/world/alpha-mine/colliders.json": {
+      "A": {
+        "bytes": 1936329,
+        "sha256": "1316cedc6b207d7458f8bb5b5ae114e829f4555e1ee3b75f644d4cfcff86572e"
+      },
+      "B": {
+        "bytes": 1936329,
+        "sha256": "1316cedc6b207d7458f8bb5b5ae114e829f4555e1ee3b75f644d4cfcff86572e"
+      }
+    },
+    "/world/alpha-mine/detector.glb": {
+      "A": {
+        "bytes": 145956,
+        "sha256": "486065b47765528a13456ba481b230f179dd9cf72074483f3375069eb8d2ed13"
+      },
+      "B": {
+        "bytes": 145956,
+        "sha256": "486065b47765528a13456ba481b230f179dd9cf72074483f3375069eb8d2ed13"
+      }
+    },
+    "/world/alpha-mine/layout.json": {
+      "A": {
+        "bytes": 39277,
+        "sha256": "5ac05059833ca8fd4b547a2326e217e0898d3e911d63df252fb8dd3cc9afc4df"
+      },
+      "B": {
+        "bytes": 39277,
+        "sha256": "5ac05059833ca8fd4b547a2326e217e0898d3e911d63df252fb8dd3cc9afc4df"
+      }
+    },
+    "/world/alpha-mine/ore.glb": {
+      "A": {
+        "bytes": 67084,
+        "sha256": "f07e36cb0e88e06c68aa2267e370d0211bcd1a69b5bb9bc3a15aaac25a7af94c"
+      },
+      "B": {
+        "bytes": 67084,
+        "sha256": "f07e36cb0e88e06c68aa2267e370d0211bcd1a69b5bb9bc3a15aaac25a7af94c"
+      }
+    },
+    "/world/alpha-mine/pickaxe.glb": {
+      "A": {
+        "bytes": 101388,
+        "sha256": "d503fae7675e0ec7f80613b130d83834b88de3c94fa640249d0589683aaf80c4"
+      },
+      "B": {
+        "bytes": 101388,
+        "sha256": "d503fae7675e0ec7f80613b130d83834b88de3c94fa640249d0589683aaf80c4"
+      }
+    },
+    "/world/alpha-mine/quarry-static.glb": {
+      "A": {
+        "bytes": 2301720,
+        "sha256": "61b22e1fd5cc1572df088946dfbf366fe3ca14fc39166e4cf3e23858b0aea10d"
+      },
+      "B": {
+        "bytes": 2301720,
+        "sha256": "61b22e1fd5cc1572df088946dfbf366fe3ca14fc39166e4cf3e23858b0aea10d"
+      }
+    },
+    "/world/alpha-mine/veins.glb": {
+      "A": {
+        "bytes": 1077004,
+        "sha256": "ebcc25eb7bf2f1a32a22b359c4f341b191db09213963a2ff884df8fae5ce43b3"
+      },
+      "B": {
+        "bytes": 1077004,
+        "sha256": "ebcc25eb7bf2f1a32a22b359c4f341b191db09213963a2ff884df8fae5ce43b3"
+      }
+    }
+  }
+}
