@@ -1,8 +1,8 @@
-/** The mastered 40-second daily exploration recording, decoded after a trusted gesture.
+/** The Boardwalk Morning v2 recording, decoded after a trusted gesture.
  * Owns one buffer/source on the caller's context. No synthesis, context, timer, RAF or global listeners. */
 export const PARK_ROAMING_TRACK = {
-  url: '/assets/world/park/audio/island-walk-daily-v1.wav', seconds: 40, fileBytes: 3840044,
-  decodedBytesAt24k: 7680000, maxDecodedBytes: 15360000,
+  url: '/assets/world/park/audio/boardwalk-v2.wav', seconds: 1_107_555 / 44_100, fileBytes: 4_430_298,
+  maxDecodedBytes: 9_644_024, // 48 kHz stereo Float32, rounding up to a whole frame.
 } as const;
 export class ParkRoamingMusic {
   private ctx: AudioContext | null = null;
@@ -65,7 +65,7 @@ export class ParkRoamingMusic {
     // Club/pause restoration can land mid-waveform. Ease in on the audio clock
     // (95% in 240 ms); stop() still disconnects immediately at every silence gate.
     gain.gain.setTargetAtTime(volume, ctx.currentTime, .08);
-    source.buffer = this.buffer; source.loop = true; source.loopStart = 0; source.loopEnd = PARK_ROAMING_TRACK.seconds;
+    source.buffer = this.buffer; source.loop = true; source.loopStart = 0; source.loopEnd = this.buffer.duration;
     source.connect(gain).connect(output); this.at = ctx.currentTime;
     source.start(0, this.offset);
   }
@@ -89,14 +89,16 @@ export class ParkRoamingMusic {
   }
   stop(endedAt=this.ctx?.currentTime??this.at) {
     if (!this.source) return;
-    if (this.ctx) this.offset = (this.offset + Math.max(0, Math.min(endedAt,this.ctx.currentTime,this.fadeEnd) - this.at)) % PARK_ROAMING_TRACK.seconds;
+    if (this.ctx && this.buffer) this.offset = (this.offset + Math.max(0, Math.min(endedAt,this.ctx.currentTime,this.fadeEnd) - this.at)) % this.buffer.duration;
     this.source.onended = null;
     try { this.source.stop(); } catch { /* Already stopped by browser shutdown. */ }
     this.source.disconnect(); this.source = null;
     this.gain?.disconnect(); this.gain = null; this.level = -1;this.fading=false;this.fadeEnd=Infinity;
   }
   inspect() {
-    const position=(this.offset+(this.source&&this.ctx?Math.max(0,Math.min(this.ctx.currentTime,this.fadeEnd)-this.at):0))%PARK_ROAMING_TRACK.seconds;
+    const position = this.source && this.ctx && this.buffer
+      ? (this.offset + Math.max(0, Math.min(this.ctx.currentTime, this.fadeEnd) - this.at)) % this.buffer.duration
+      : this.offset;
     return { phase: this.phase, sources: this.source ? 1 : 0, buffers: this.buffer ? 1 : 0, loading: !!this.abort, decoding: !!this.decoding,
       bytes: this.buffer ? this.buffer.length * this.buffer.numberOfChannels * 4 : 0,
       seconds: this.buffer?.duration ?? 0, offset: this.offset, position, level: this.level, fading: this.fading };

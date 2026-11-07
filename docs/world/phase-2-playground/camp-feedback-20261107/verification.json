@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-11-07T05:58:52.780954+00:00",
+  "baseline": "d1c24a30e22a1a4a7bb61c06d8500e6e47ed1717",
+  "sourceSha256": {
+    "public/assets/world/park/audio/GENERALUSER-LICENSE.txt": "7b32efefdf95ce38a043799f0659853ddc00fbaa14d8c50f0aca16b9b8b405be",
+    "public/assets/world/park/audio/SOURCES.md": "89371742f32b1c4153ed39c53a5a786794a54cae85e27608b3959e0b3a4322b4",
+    "public/assets/world/park/audio/boardwalk-v2.wav": "297b3c3ae76d463015970e1f009c09c9f8548f526dd9cef65ed00ce7893e49e8",
+    "src/components/world/WorldActors.tsx": "c2306dcca8f7155caaf403c38f5cf2cf927d4bd3379a7268d20d006e8ed00bd2",
+    "src/components/world/WorldCampContent.tsx": "b42fa63be758472b1d4ec0e317c48de716396e62128afea238a7e12c37240f5a",
+    "src/components/world/WorldCampFacilityCraft.tsx": "4114e7064957509891d41238438c9a468b616b16495895142f89238a9185409d",
+    "src/components/world/WorldCampPropInteractions.tsx": "c3ced81b8819c940ee96fb8909bea6ca6d3adb400b2822f019f8cd359873e2cf",
+    "src/components/world/WorldCampShelterCraft.tsx": "9765e1d934dd50670a103851af15011eba1c7e7b5f03ac445f993f2513aea4c5",
+    "src/components/world/WorldCampSiteCraft.tsx": "0c6fe1e7ddf755f8b1dd1eabbafc24e8f837d0473c779bfe2ffb58386bae386b",
+    "src/components/world/WorldCampWorkshopCraft.tsx": "0243753df33d0e15a3316d7fee11815cf06fa2f241990f5b7db74adead30d756",
+    "src/components/world/WorldGuide.tsx": "736278ab70db608221b9ded0850efa9a20caf53d5540721284714c63e0cd6a51",
+    "src/components/world/WorldGuideCamp.ts": "dc3302db7798e724fdf74f736c012ffdccba5a0c1961aa0215abfeabfe82fafc",
+    "src/components/world/alpha-audio-lifecycle.test.mjs": "03650f0bcec1a7f86608369b03bd193564982063eea85ff68e7bc31e0857e9c8",
+    "src/components/world/camp-flag-wind.test.mjs": "154b6588a735c507403442270320a49b70407576eeb194821779e3c42fba8f05",
+    "src/components/world/camp-flag-wind.ts": "775feef3dd04c07ce1922679ade302590ac81444fd3e95e604583d4404e41222",
+    "src/components/world/camp-prop-interactions.test.mjs": "3c9427ea70de1e588e085fc3943069598ebba3f76cdb5c2ccb1981a00986c909",
+    "src/components/world/camp-prop-interactions.ts": "c22f2fc43eedb00908af986e43de29bb1cb6cda92cd95b3921731598d8e3ac51",
+    "src/components/world/camp-surface-balance.test.mjs": "b93a3097c78d418b87c792c61d5d759a875fc3ce1be009b842aa80ab91b98d77",
+    "src/components/world/camp-surface-balance.ts": "fbdf2dbd826ae9946ab0fd5d7cb815c5c488683e9decd9f817877442fcec9e82",
+    "src/components/world/park-audio-mix.ts": "9ec80fa34e83267ca3838fabb52dcd90e4e75bbe54a80c815f1afc58a7d90a47",
+    "src/components/world/park-roaming-music.test.mjs": "2cfa6d095be8388ef5ba68d281ae98520c2334499325703c68a7c6a257ce8802",
+    "src/components/world/park-roaming-music.ts": "219295df31657e0f8df03b67437eb64ce0a7e53c48827a5b74b6441c2f094d71",
+    "src/components/world/resource-lifecycle.test.mjs": "68d036788e15ae8a91ef0b7da86c9982c9796727fc188c62bb9d913d96fea44e",
+    "src/components/world/store.ts": "ef0c201635584e2e9b647dd0da2bfd010cb7de367b3bc51cce3a1931ad894eb8",
+    "src/components/world/walk-music-daily.test.mjs": "a4f6b9d0b418147c0ff94235dcb96e53e3fee0b7d85347ffe3f996fb3e40a2f6"
+  },
+  "tests": {
+    "audio": 75,
+    "interactionsFlagsSurface": 13,
+    "failed": 0
+  },
+  "build": "Astro production completed; 8 pages; review UI absent",
+  "productionRoot": "/tmp/bobby-camp-feedback-playable-20261107",
+  "htmlSha256": "0a0364538ea9dbf225b7bc968f5cf09e7d9b5fca7906fca6219ca490513c0b2e",
+  "audioSha256": "297b3c3ae76d463015970e1f009c09c9f8548f526dd9cef65ed00ce7893e49e8",
+  "port": 4341,
+  "publicDeployment": false,
+  "browser": {
+    "productionLoaded": true,
+    "characterMoved": true,
+    "reviewToolbarAbsent": true,
+    "consoleErrors": 0,
+    "comparisonImagesDecoded": 5,
+    "finalState": "paused",
+    "props": [
+      "tool pickup and return",
+      "journal page turn",
+      "dumbbell pickup curl safe drop",
+      "suitcase walk turn and release"
+    ]
+  }
+}

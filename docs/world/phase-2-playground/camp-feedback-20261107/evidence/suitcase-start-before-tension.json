@@ -1,0 +1,790 @@
+{
+  "variant": "after",
+  "shot": null,
+  "camera": [
+    -25.28631316717795,
+    9.904361235855976,
+    33.59355613408396
+  ],
+  "quaternion": [
+    -0.3630453807254041,
+    0.2921563606347249,
+    0.12101512690846808,
+    0.8764690819041743
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    2013,
+    1030
+  ],
+  "dpr": 1.1772275318111343,
+  "time": 1057.068699999927,
+  "meshes": 123,
+  "cloth": 5580,
+  "materials": [
+    {
+      "name": "pilot_canvas_binding",
+      "uv": true,
+      "map": false,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "camp_canvas_orange",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "pilot_canvas_cream",
+      "uv": true,
+      "map": false,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "pilot_groundsheet",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "pilot_timber",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "shelter_woven_selvedge",
+      "uv": true,
+      "map": false,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "shelter_waxed_walnut_and_ground",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "shelter_flax_cord",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "shelter_axial_grain_timber",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "C05 charcoal | adapted photographed willow fissures",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "C05 pale granular ash | authored powder response",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "C05 Rock Face 03 | photographed mineral and chipped face",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "Camp exposed end grain | authored cut rings",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Camp ridged bark | authored longitudinal response",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Camp cut timber | shared photographed grain",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Camp forged drawer pull and pin",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | charcoal rubber",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | colored bookcloth palette",
+      "uv": true,
+      "map": false,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "Workshop | journal study notes",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | layered paper edges",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | ruled journal leaf",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | satin brass",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | warm ash longitudinal",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "C09 | fabrication aligned timber",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "C09 | recessed dark backing",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "C09 | satin brass",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "C09 | slate book cloth",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "C09 | warm page blocks",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "C09 | orange book cloth",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "mast_turned_brass",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "mast_oiled_iron",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "mast_yarn_dyed_cloth",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "nature-craft-leaf-pigment",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": false
+    },
+    {
+      "name": "wood_trunk",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": false
+    },
+    {
+      "name": "facility-G17-leaves",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": false
+    },
+    {
+      "name": "facility-G17-bark",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": false
+    },
+    {
+      "name": "foliage_dark",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": false
+    },
+    {
+      "name": "foliage_mid",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": false
+    },
+    {
+      "name": "foliage_light",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": false
+    },
+    {
+      "name": "B6 rock | mineral beds",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "B6 rock | recessed friable seams",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "B6 rock | cleaved shoulders",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "stone_base",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": false
+    },
+    {
+      "name": "stone_top",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": false
+    },
+    {
+      "name": "stone_weathered",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": false
+    },
+    {
+      "name": "stone_moss",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": false
+    },
+    {
+      "name": "camp_quarry_stone",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "Workshop | oiled oak longitudinal",
+      "uv": true,
+      "map": true,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "Workshop | opaque surface palette",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "Workshop | small fittings palette",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": true,
+      "env": true
+    },
+    {
+      "name": "camp_craft_stone",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_wood",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_paint",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_darkmetal",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_brass",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_glass",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_wick",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_steel",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_paper",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_craft_rubber",
+      "uv": false,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_exit_diffuser",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_exit_coated_iron",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_exit_exposed_fittings",
+      "uv": true,
+      "map": false,
+      "normal": false,
+      "rough": false,
+      "env": true
+    },
+    {
+      "name": "camp_exit_timber",
+      "uv": true,
+      "map": true,
+      "normal": true,
+      "rough": true,
+      "env": true
+    }
+  ],
+  "player": [
+    -27.40737533569336,
+    5.718827247619629,
+    30.76630401611328
+  ],
+  "grounded": true,
+  "wind": 31.259899999976263,
+  "loading": false,
+  "shadow": false,
+  "motion": {
+    "flags": [
+      {
+        "name": "flag_01",
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "lift": 0
+      },
+      {
+        "name": "flag_02",
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "lift": 0
+      },
+      {
+        "name": "flag_03",
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "lift": 0
+      },
+      {
+        "name": "flag_04",
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "lift": 0
+      }
+    ],
+    "tools": [
+      0,
+      0,
+      0
+    ],
+    "page": {}
+  },
+  "camp": {
+    "id": null,
+    "state": null,
+    "actor": {
+      "position": [
+        -27.407413482666016,
+        5.718827247619629,
+        30.76617431640625
+      ],
+      "yaw": 3.7850937623830783,
+      "grounded": true,
+      "available": true
+    },
+    "hand": {
+      "mode": "reach",
+      "target": null,
+      "palm": null
+    },
+    "lastCancel": {
+      "id": "camp-prop-suitcase",
+      "state": {
+        "phase": "drag",
+        "age": 19.666667692363262,
+        "offGroundFor": 0,
+        "palmMissingFor": 0.46666669100522995,
+        "bodyX": -27.063547134399414,
+        "bodyY": 4.898975372314453,
+        "bodyZ": 29.79880714416504,
+        "colliderEnabled": true,
+        "sensor": false,
+        "collisionGroups": 4294967295,
+        "solverGroups": 4294967295
+      },
+      "actor": {
+        "position": [
+          -27.291866302490234,
+          5.718997478485107,
+          30.676105499267578
+        ],
+        "yaw": 3.7850937623830783,
+        "grounded": true,
+        "available": true
+      },
+      "hand": {
+        "mode": "grip",
+        "target": [
+          -27.024256122677045,
+          5.744961360665879,
+          29.940161055755688
+        ],
+        "palm": [
+          -27.289544083994855,
+          5.788562084158963,
+          30.277627988665714
+        ]
+      },
+      "reason": "lost-palm",
+      "afterState": {
+        "phase": "released",
+        "age": 0,
+        "offGroundFor": 0,
+        "palmMissingFor": 0,
+        "bodyX": -27.063547134399414,
+        "bodyY": 4.898975372314453,
+        "bodyZ": 29.79880714416504,
+        "colliderEnabled": true,
+        "sensor": false,
+        "collisionGroups": 4294967295,
+        "solverGroups": 4294967295
+      }
+    }
+  },
+  "input": [],
+  "audio": {
+    "owners": 4,
+    "started": true,
+    "timer": false,
+    "subscribed": true,
+    "state": "running",
+    "transitioning": false,
+    "voices": 0,
+    "ticks": 0,
+    "muted": false,
+    "cueVoices": 0,
+    "cuePending": false,
+    "pcmKeys": 0,
+    "pcmBytes": 0,
+    "candidate": null,
+    "previewPlaying": false,
+    "previewPending": false,
+    "previewBytes": 0,
+    "roaming": {
+      "phase": "ready",
+      "sources": 1,
+      "buffers": 1,
+      "loading": false,
+      "decoding": false,
+      "bytes": 4822008,
+      "seconds": 25.114625,
+      "offset": 0,
+      "position": 2.5493749999999977,
+      "level": 1.4,
+      "fading": false
+    }
+  },
+  "occlusion": {
+    "candidates": 254,
+    "tested": 32,
+    "ms": 0.20000004768371582
+  },
+  "colliders": [
+    {
+      "id": "C08",
+      "key": "camp-collider-C08-pad1-0-body-0",
+      "instance": 0,
+      "label": "pad1",
+      "part": "body",
+      "kind": "trimesh",
+      "sensor": false,
+      "aabb": {
+        "min": [
+          -52.86040115356445,
+          5.75,
+          40.85474395751953
+        ],
+        "max": [
+          -52.09758377075195,
+          6.071000099182129,
+          41.57497024536133
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "key": "camp-collider-C04-small-tents-0-shell-0",
+      "instance": 0,
+      "label": "small-tents",
+      "part": "shell",
+      "kind": "trimesh",
+      "sensor": false,
+      "aabb": {
+        "min": [
+          -52.38999938964844,
+          4.800000190734863,
+          11.170000076293945
+        ],
+        "max": [
+          -49.61000061035156,
+          7.215000152587891,
+          13.829999923706055
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "key": "camp-collider-C04-small-tents-1-shell-0",
+      "instance": 1,
+      "label": "small-tents",
+      "part": "shell",
+      "kind": "trimesh",
+      "sensor": false,
+      "aabb": {
+        "min": [
+          -34.38999938964844,
+          4.800000190734863,
+          11.170000076293945
+        ],
+        "max": [
+          -31.610000610351562,
+          7.215000152587891,
+          13.829999923706055
+        ]
+      }
+    },
+    {
+      "id": "C10",
+      "key": "camp-collider-C10-pad3-0-pole-and-base-0",
+      "instance": 0,
+      "label": "pad3",
+      "part": "pole-and-base",
+      "kind": "trimesh",
+      "sensor": false,
+      "aabb": {
+        "min": [
+          -57.32071304321289,
+          4.900000095367432,
+          29.337587356567383
+        ],
+        "max": [
+          -56.422584533691406,
+          8.104999542236328,
+          30.235715866088867
+        ]
+      }
+    }
+  ]
+}

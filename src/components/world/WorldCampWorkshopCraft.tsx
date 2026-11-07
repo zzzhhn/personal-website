@@ -4,6 +4,7 @@ import type { Material, Mesh, MeshStandardMaterial, Object3D, Texture } from 'th
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
+import { applyCampSurfaceBalance } from './camp-surface-balance';
 
 type ToolWallNode = 'C11_body' | 'C11_tools';
 const URL = '/assets/world/camp-workshop-craft/camp-workshop.glb';
@@ -22,6 +23,7 @@ function cloneVisual(source: Object3D, node: 'C08' | ToolWallNode, environment: 
       copy = original.clone() as MeshStandardMaterial;
       copy.envMap = environment;
       copy.envMapIntensity = 1.25;
+      applyCampSurfaceBalance(copy, night);
       copies.set(original, copy);
     }
     return copy;

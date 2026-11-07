@@ -39,6 +39,7 @@ import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, seatedCameraOrigin, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
+import { campPropActor, campPropHand, cancelCampPropInteraction, currentCampPropInteraction } from './camp-prop-interactions';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
 import WorldDrivingFeedback from './WorldDrivingFeedback';
@@ -909,6 +910,8 @@ export default function WorldActors() {
     const dt=world.timestep || PHYSICS_STEP;
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(attractionRide.active){
+      campPropActor.available=false;
+      cancelCampPropInteraction();
       if(!rideHeld.current){
         const start=player.current.translation();
         if(attractionRide.transition)captureCoasterStart(attractionRide.transition,[start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
@@ -981,6 +984,13 @@ export default function WorldActors() {
     Object.assign(ibdInspectionActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:exchangeActor.available&&!exchangeBody.action&&!exchangeBody.carried,mode:active?'vehicle':'guide'});
     if(ibdInspectionBodyBusy()||ibdInspectionBody.carried)exchangeActor.available=false;
+    campPropActor.position[0]=playerPosition.x;
+    campPropActor.position[1]=playerPosition.y;
+    campPropActor.position[2]=playerPosition.z;
+    campPropActor.yaw=guideYaw.current;
+    campPropActor.grounded=grounded.current;
+    campPropActor.available=exchangeActor.available&&!exchangeBody.action&&!exchangeBody.carried
+      &&!attractionRide.active&&!state.paused&&!state.poolInspect;
     if(!exchangeActor.available)cancelExchangeBodyAction();
     if(exchangeBody.carried && (playerPosition.x<ALPHA_EXCHANGE_FOOTPRINT.minX-8 || playerPosition.x>ALPHA_EXCHANGE_FOOTPRINT.maxX+8
       || playerPosition.z<ALPHA_EXCHANGE_FOOTPRINT.minZ-8 || playerPosition.z>ALPHA_EXCHANGE_FOOTPRINT.maxZ+8))cancelExchangePlay('left-hall');
@@ -1136,8 +1146,12 @@ export default function WorldActors() {
         if(spot)resetBody(player.current,spot);
         player.current.setEnabled(true);
       }
-      const speed=(seat?0:running?6.2:3.6)*magnitude;
-      moveIntent.current=magnitude>.05?(running?'run':'walk'):'idle';
+      const pullingCase=campPropHand.mode==='grip'&&currentCampPropInteraction()?.id==='camp-prop-suitcase';
+      const caseHandle=pullingCase?campPropHand.target:null;
+      // Let the rolling body catch up before a stretched arm becomes a broken grip.
+      const towPace=caseHandle?clamp((.62-Math.hypot(caseHandle[0]-p.x,caseHandle[2]-p.z))/.12,0,1):1;
+      const speed=(seat?0:pullingCase?2*towPace:running?6.2:3.6)*magnitude;
+      moveIntent.current=magnitude>.05?(running&&!pullingCase?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
       mineActor.moving = magnitude > .05;
@@ -1146,6 +1160,11 @@ export default function WorldActors() {
       const inspecting=ibdInspectionBody.action;
       const trading=exchangeBody.action??inspecting;
       const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried;
+      if (campPropHand.facing && campPropActor.available && magnitude <= .05) {
+        const focus=campPropHand.facing;
+        const desired=Math.atan2(-(focus[2]-p.z),focus[0]-p.x);
+        guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*8,dt*8);
+      }
       if (mining && mineBusy()) {
         const desired = Math.atan2(-(mining.target[2] - p.z), mining.target[0] - p.x);
         guideYaw.current += clamp(Math.atan2(Math.sin(desired - guideYaw.current), Math.cos(desired - guideYaw.current)), -dt * 10, dt * 10);
@@ -1175,6 +1194,7 @@ export default function WorldActors() {
       } else turnBeforeMove.current=false;
       guideTargetSpeed.current=Math.hypot(vx,vz);
       mineActor.yaw = guideYaw.current;
+      campPropActor.yaw = guideYaw.current;
       advanceMineAction(dt);
       exchangeActor.yaw=guideYaw.current;
       advanceExchangeBodyAction(dt);

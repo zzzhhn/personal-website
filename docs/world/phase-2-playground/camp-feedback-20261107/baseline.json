@@ -1,0 +1,11 @@
+{
+  "source": "d1c24a30e22a1a4a7bb61c06d8500e6e47ed1717",
+  "runtimeRoot": "/tmp/bobby-camp-batch-playable-20261107",
+  "sameBuildSurfaceFallback": "campSurface=legacy",
+  "scope": [
+    "C10 cloth wind",
+    "C08 C11 C13 C15 interactions",
+    "camp diffuse environment balance",
+    "Boardwalk Morning v2 music"
+  ]
+}

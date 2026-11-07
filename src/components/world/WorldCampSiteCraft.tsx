@@ -6,6 +6,7 @@ import { placementMatrix } from './WorldCampContentAssets';
 import { PAD_TOP } from './WorldCampContentLayout';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
+import { applyCampSurfaceBalance } from './camp-surface-balance';
 import type { Vec3 } from './types';
 
 export const CAMP_SITE_CRAFT_URL = '/assets/world/camp-site-craft/camp-site-v1.glb';
@@ -31,6 +32,7 @@ function SiteVisual({ family, matrices }: VisualProps) {
       if (Array.isArray(part.material)) throw new Error(`Unbatched camp site material: ${part.name}`);
       const material = part.material.clone() as MeshStandardMaterial;
       material.envMap = environment;
+      applyCampSurfaceBalance(material, night);
       const isLens = material.name === 'camp_exit_diffuser';
       if (isLens) lens = material;
       const mesh = new InstancedMesh(part.geometry, material, matrices.length);

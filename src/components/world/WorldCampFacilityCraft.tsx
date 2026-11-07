@@ -4,6 +4,7 @@ import { FrontSide, type Mesh, type MeshStandardMaterial, type Material, type Ob
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
+import { applyCampSurfaceBalance } from './camp-surface-balance';
 import { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
 
 export type CampFacilityFamily = 'C12' | 'C13' | 'C14' | 'C15' | 'C16';
@@ -34,6 +35,7 @@ export function createCampFacilityVisual(scene: Object3D, family: CampFacilityFa
           // glass and cookware retain their exported sidedness (topology checked in runtime.test).
           if (material.name === 'camp_craft_paper' || material.name === 'camp_craft_brass') material.side = FrontSide;
           material.envMap = environment; material.envMapIntensity = 1.5;
+          applyCampSurfaceBalance(material, night);
           material.userData = { ...material.userData, facilityCraft: true, restEmissive: material.emissiveIntensity };
           copies.set(original, material);
         }

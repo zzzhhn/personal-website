@@ -12,6 +12,8 @@ import { guideSkinEvidence } from './WorldGuideEvidence';
 import { GuideMineLayer } from './WorldGuideMine';
 import { GuideExchangeLayer } from './WorldGuideExchange';
 import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection';
+import { GuideCampLayer } from './WorldGuideCamp';
+import { campPropActor, campPropHand } from './camp-prop-interactions';
 import { ibdInspectionBody, ibdInspectionVisualSockets } from './attractions/ibd-inspection-motion';
 import { ibdInspectionHands } from './attractions/ibd-inspection-hands';
 import { exchangeBody, exchangeVisualSockets } from './alpha-exchange-motion';
@@ -289,7 +291,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       spineBones.push(b);
     } });
     return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), attractionFeet: new GuideAttractionFeet(), vehicleUpper: new GuideVehicleUpperBody(scene), drivingPose:new GuideDrivingPose(scene), vehicleContacts:new GuideVehicleContacts(scene), vehicleQuaternion:new Quaternion(), vehicleReference:new Vector3(), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), exchange:new GuideExchangeLayer(scene), vault:new GuideVaultLayer(scene),
-      inspection:new GuideIbdInspectionLayer(scene), vehicleSit:new GuideVehicleSitPose(scene,animations),
+      inspection:new GuideIbdInspectionLayer(scene), camp: new GuideCampLayer(scene), vehicleSit:new GuideVehicleSitPose(scene,animations),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(), vehiclePathPrevious: new Vector3(),
       solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
@@ -298,6 +300,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
     vy: 0, vyPeak: 0, fallSpeed: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => {
+    rig.camp.reset();
+    if (campPropHand.palm === rig.camp.palm) campPropHand.palm = null;
     rig.mine.dispose(); rig.exchange.dispose(); rig.inspection.dispose();
     if(ibdInspectionHands.left===rig.inspection.arms?.left.palm){ibdInspectionHands.left=null;ibdInspectionHands.right=null;}
     Object.assign(ibdInspectionVisualSockets,{valid:false,reachable:false,sampledId:null});
@@ -385,13 +389,19 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const motion = readMotion?.() ?? { speedMps: initialSpeed, grounded: initialGrounded, facing: initialFacing } as WorldGuideMotion;
     const shown = visible && !motion.hidden;
     const resumed = shown && !s.visible;
+    const frozen = world.paused || world.poolInspect || !!world.shot;
+    const campTarget = shown && motion.grounded && !motion.attraction && !motion.seat && !motion.vehicle &&
+      !motion.vault && !motion.railVault && motion.dance == null && !world.card && (frozen || campPropActor.available)
+      ? campPropHand.target : null;
+    if (!campTarget) { rig.camp.reset(); campPropHand.palm = null; }
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
     if (!shown) { rig.vehicleContacts.restore(); rig.drivingPose.restore(); rig.vehicleUpper.restore(); rig.vehicleSit.restore(); rig.seatedIdle.reset(); rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(exchangeVisualSockets,rig.exchange.apply(null,null,false)); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
     if(!shown)Object.assign(ibdInspectionVisualSockets,rig.inspection.apply(null,null,false));
-    if (world.paused || world.poolInspect || world.shot || !shown) return;
+    if (frozen || !shown) return;
+    rig.camp.restore();
     rig.vehicleContacts.restore();
     rig.drivingPose.restore();
     rig.vehicleUpper.restore();
@@ -576,7 +586,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       }
     }
     const mineIdle = useAlphaMineStore.getState();
-    const idleEligible = desired === 'Idle' && intent === 'idle' && speedMps < .12 && grounded &&
+    const idleEligible = desired === 'Idle' && intent === 'idle' && speedMps < .12 && grounded && !campTarget &&
       !seat && !s.sat && !approach && !s.turn && !motion.vehicle && !mineIdle.action && !mineIdle.carried && !mineIdle.equipped;
     const gesture = rig.idle.advance(dt, idleEligible);
     const idleLook = rig.actions.IdleLook;
@@ -919,13 +929,17 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       const handsAvailable=!attraction&&!dancing&&!motion.seat&&!motion.vehicle&&!motion.railVault;
       const exchangeActive=!!exchangeBody.action||!!exchangeBody.carried;
       const inspectionActive=!!ibdInspectionBody.action||!!ibdInspectionBody.carried;
-      const mine = rig.mine.apply(useAlphaMineStore.getState(), handsAvailable&&!exchangeActive&&!inspectionActive);
-      Object.assign(exchangeVisualSockets,rig.exchange.apply(exchangeBody.action,exchangeBody.carried,handsAvailable&&!world.card&&!inspectionActive));
-      Object.assign(ibdInspectionVisualSockets,rig.inspection.apply(ibdInspectionBody.action,ibdInspectionBody.carried,handsAvailable&&!world.card&&!exchangeActive));
+      const campActive = campTarget && handsAvailable && !sitting;
+      const otherHandsAvailable = handsAvailable && !campActive;
+      const mine = rig.mine.apply(useAlphaMineStore.getState(), otherHandsAvailable&&!exchangeActive&&!inspectionActive);
+      Object.assign(exchangeVisualSockets,rig.exchange.apply(exchangeBody.action,exchangeBody.carried,otherHandsAvailable&&!world.card&&!inspectionActive));
+      Object.assign(ibdInspectionVisualSockets,rig.inspection.apply(ibdInspectionBody.action,ibdInspectionBody.carried,otherHandsAvailable&&!world.card&&!exchangeActive));
       ibdInspectionHands.left=rig.inspection.arms?.left.palm??null;ibdInspectionHands.right=rig.inspection.arms?.right.palm??null;
       rig.vault.apply(motion.railVault);
       settleGuideAttraction(group.current, rig.seatContact, attraction);
       rig.attractionFeet.apply(rig.slope, attraction, dt);
+      if (campActive) campPropHand.palm = rig.camp.apply(campTarget, campPropHand.mode, dt);
+      else if (campTarget) { rig.camp.reset(); campPropHand.palm = null; }
       mineVisualSockets.valid = mine.valid && !world.card;
       Object.assign(mineVisualSockets, { assetsReady: mine.assetsReady, contactError: mine.contactError,
         rightReachError: mine.rightReachError, leftReachError: mine.leftReachError,

@@ -12,20 +12,23 @@ import { campColliderRecords } from './WorldCampPhysics';
 import { CAMP_CENTER } from './layout';
 import type { Vec3 } from './types';
 import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, placementMatrix, poolTexture, useContentGltfs, vertexColourMaterial, type NodePart } from './WorldCampContentAssets';
-import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, bookStack, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
+import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
 import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityCraft';
 import { bindCampPushableVisual } from './WorldCampPushableVisual';
 import WorldCampSuitcaseContact, { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
 import { createSuitcaseContactSlot } from './camp-suitcase-contact';
 import { ToolWallVisual } from './WorldCampWorkshopCraft';
 import { ExitPostVisual } from './WorldCampSiteCraft';
+import { CampJournal, CampPropSession, CampToolWall, useCampPushableInteraction } from './WorldCampPropInteractions';
+import { campPropActor, campPropHand, currentCampPropInteraction } from './camp-prop-interactions';
+import { setCampFlagLift } from './camp-flag-wind';
 
 const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('campBatch') !== 'legacy';
 
 /**
  * Camp content (owner: camp session): C11 tool wall, C12 guitar, C13 dumbbells, C14 wok + stove, C15
- * suitcase on the ring pads, C16 lantern on the C07 desk, the two exit lamp posts (L01), the About
- * interactables (E -> store.card about/<id>) with a <= 2 s feedback, and eight bench seats.
+ * suitcase on the ring pads, C16 lantern on the C07 desk, the two exit lamp posts (L01), About
+ * exhibits, playable tools/books/weights/suitcase, and eight bench seats.
  *
  * facilityCraft=legacy retains the batch-4 static/glow merge paths, including the stove and lantern.
  * Candidate art separates PBR material responses and articulated parts; its actual render and
@@ -44,7 +47,7 @@ const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.l
  */
 
 type ExhibitId = 'identity' | 'education' | 'awards' | 'languages' | 'skills' | 'interests';
-type FeedbackKey = 'tent' | 'books' | 'trophy' | 'flags' | 'tools' | 'guitar' | 'dumbbell' | 'wok' | 'suitcase';
+type FeedbackKey = 'tent' | 'trophy' | 'flags' | 'guitar' | 'wok';
 const FEEDBACK_SECONDS = 1.8;
 /** Start (performance.now ms) of each object's feedback; frame loops read it. */
 const feedback = new Map<FeedbackKey, number>();
@@ -121,13 +124,14 @@ function CampContent() {
     const sub = (id: keyof typeof g, name: string, assetM: Matrix4) => { const p = byName(id, name)[0]; return { geometry: bake({ ...p, matrix: new Matrix4() }, new Matrix4()), frame: new Matrix4().multiplyMatrices(assetM, p.matrix) }; };
     const dumbbells: Place[] = [padOffset(CONTENT_PAD.C13, -0.05, 0.95), padOffset(CONTENT_PAD.C13, -0.62, 0.9)].map((p, i) => ({ position: p, yaw: yawToFire(CONTENT_PAD.C13) + (i ? 0.12 : -0.05) }));
     const local = (list: NodePart[]) => mergeGeometries(list.map(p => bake(p, new Matrix4())))!;
+    const plates = JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[];
     return {
       place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postM, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
       tools: sub('C11', 'C11_tools', m11), wok: sub('C14', 'C14_wok', m14),
       guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: localPoints(parts.C12) },
       dumbbell: { geometry: mergeGeometries(parts.C13.map(p => bake(p, new Matrix4().makeScale(SCALE.C13, SCALE.C13, SCALE.C13))))!, hull: localPoints(parts.C13, SCALE.C13) },
       suitcase: { geometry: local(parts.C15), hull: localPoints(byName('C15', 'C15_case')) },
-      plates: JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[], m11,
+      plates, toolCentres: plates.map(plate => plate.centre[2]), m11,
     };
   }, [g, legacy]);
   useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.geometry]) geo?.dispose(); }, [data]);
@@ -157,20 +161,25 @@ function CampContent() {
       <WorldCampFacilityCraft family="C16" fallback={<><mesh geometry={data.lanternFrame} material={vc} castShadow receiveShadow /><mesh geometry={data.lanternGlass} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
     </group>}
     <HardColliders hard={data.hard} />
-    <Animated name="camp-content-C11-tools" geometry={data.tools.geometry} frame={data.tools.frame} kind="tools">{CAMP_BATCH ? <ToolWallVisual node="C11_tools" fallback={<mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />} /> : undefined}</Animated>
-    <Animated name="camp-content-C14-wok" geometry={data.wok.geometry} frame={data.wok.frame} kind="wok"><WorldCampFacilityCraft family="C14" node="C14_wok" fallback={<mesh geometry={data.wok.geometry} material={vc} castShadow receiveShadow />} /></Animated>
+    <CampPropSession />
+    <CampToolWall frame={data.tools.frame} centres={data.toolCentres}>
+      {CAMP_BATCH ? <ToolWallVisual node="C11_tools" fallback={<mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />} />
+        : <mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />}
+    </CampToolWall>
+    <AnimatedWok frame={data.wok.frame}><WorldCampFacilityCraft family="C14" node="C14_wok" fallback={<mesh geometry={data.wok.geometry} material={vc} castShadow receiveShadow />} /></AnimatedWok>
     <LabelPlates plates={data.plates} frame={data.m11} lang={lang} />
     <Pushable id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">
       <WorldCampFacilityCraft family="C12" fallback={<><mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow /><mesh name="camp-content-C12-strings" geometry={data.guitar.strings} material={vc} /></>} />
     </Pushable>
-    {data.dumbbells.map((home, i) => <Pushable key={i} id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16} feedbackKey="dumbbell">
+    {data.dumbbells.map((home, i) => <Pushable key={i} id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16}>
       <group scale={SCALE.C13}><WorldCampFacilityCraft family="C13" fallback={<mesh geometry={data.dumbbell.geometry} scale={1 / SCALE.C13} material={vc} castShadow receiveShadow />} /></group>
     </Pushable>)}
-    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} feedbackKey="suitcase" clearance={legacy ? 0.004 : 0} contactEnabled={!legacy}>
+    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} clearance={legacy ? 0.004 : 0} contactEnabled={!legacy}>
       <WorldCampFacilityCraft family="C15" fallback={<mesh geometry={data.suitcase.geometry} material={vc} castShadow receiveShadow />} />
     </Pushable>
     <LightPools lantern={data.lanternPos} />
     <SceneFeedback />
+    <CampJournal anchor={JOURNAL_ANCHOR} />
     {EXHIBITS.map(e => <Exhibit key={e.key} e={e} />)}
     <Seats top={data.benchTop} />
   </group>;
@@ -208,17 +217,17 @@ function HardColliders({ hard }: { hard: { id: string; vertices: Float32Array; i
   </RigidBody>)}</>;
 }
 
-/** A sub-part that only moves during its feedback (tool swing, wok toss); pivot = its GLB node origin. */
-function Animated({ name, geometry, frame, kind, children }: { name: string; geometry: BufferGeometry; frame: Matrix4; kind: 'tools' | 'wok'; children?: ReactNode }) {
-  const ref = useRef<Group>(null), inner = useRef<Group>(null);
-  useLayoutEffect(() => { const o = ref.current; if (o) frame.decompose(o.position, o.quaternion, o.scale); }, [frame]);
+/** The wok's feedback uses its GLB node origin as the pivot. */
+function AnimatedWok({ frame, children }: { frame: Matrix4; children: ReactNode }) {
+  const inner = useRef<Group>(null);
   useFrame(() => {
-    const m = inner.current; if (!m) return;
-    const t = fbT(kind);
-    if (kind === 'tools') m.rotation.z = t < 0 ? 0 : 0.2 * Math.abs(Math.sin(t * 6.5)) * decay(t);
-    else { m.position.y = t < 0 || t > 0.6 ? 0 : 0.09 * Math.sin(Math.PI * t / 0.6); m.rotation.z = t < 0 ? 0 : 0.12 * Math.sin(t * 9) * decay(t); }
+    const wok = inner.current;
+    if (!wok) return;
+    const t = fbT('wok');
+    wok.position.y = t < 0 || t > 0.6 ? 0 : 0.09 * Math.sin(Math.PI * t / 0.6);
+    wok.rotation.z = t < 0 ? 0 : 0.12 * Math.sin(t * 9) * decay(t);
   });
-  return <group ref={ref} name={name}><group ref={inner}>{children ?? <mesh geometry={geometry} material={vc} castShadow receiveShadow userData={{ assetId: name, solid: true }} />}</group></group>;
+  return <group matrix={frame} matrixAutoUpdate={false} name="camp-content-C14-wok"><group ref={inner}>{children}</group></group>;
 }
 
 /** Five bilingual category labels on the tool wall from UI.about.techCategories (same order as the
@@ -256,7 +265,7 @@ function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: numbe
 
 const pushables = new Map<string, { body: RefObject<RapierRigidBody | null>; home: Vec3; state: { displacedAt: number; clock: number } }>();
 /** Pushable prop: sleeping dynamic convex hull; 30 s after it leaves home it fades and returns. */
-function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.004, contactEnabled = false }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey: FeedbackKey; children: ReactNode; clearance?: number; contactEnabled?: boolean }) {
+function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.004, contactEnabled = false }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey?: FeedbackKey; children: ReactNode; clearance?: number; contactEnabled?: boolean }) {
   const body = useRef<RapierRigidBody>(null), visual = useRef<Group>(null);
   const state = useRef({ displacedAt: -1, clock: 0 });
   const contact = useMemo(createSuitcaseContactSlot, []);
@@ -274,8 +283,13 @@ function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.0
   // its candidate opts into zero clearance; the same start drives home/reset.
   const start = useMemo(() => [home.position[0], home.position[1] + clearance, home.position[2]] as Vec3, [home, clearance]);
   useEffect(() => { pushables.set(id, { body, home: start, state: state.current }); body.current?.sleep(); return () => { pushables.delete(id); }; }, [id, start]);
+  const interacting = useCampPushableInteraction(id, home, body, () => {
+    state.current.displacedAt = -1;
+    binding.current?.setFade(1);
+    if (contactEnabled) contact.fade = 1;
+  });
   useBeforePhysicsStep(world => {
-    const b = body.current; if (!b) return;
+    const b = body.current; if (!b || interacting()) return;
     const s = state.current; s.clock += world.timestep || 1 / 60;
     const p = b.translation(), q = b.rotation();
     const moved = Math.hypot(p.x - start[0], p.z - start[2]) > 0.25 || Math.abs(q.x) + Math.abs(q.z) > 0.15 || p.y < start[1] - 1;
@@ -293,17 +307,13 @@ function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.0
       if (contactEnabled) contact.fade = 1;
     }
   });
-  // <= 2 s visual-only feedback on the child group; the body and its collider never move for it.
   useFrame(() => {
-    const v = visual.current; if (!v) return;
-    const t = fbT(feedbackKey), k = decay(t);
-    v.position.set(0, 0, 0); v.rotation.set(0, 0, 0);
-    const strings = feedbackKey === 'guitar' ? binding.current?.strings : undefined;
-    if (strings) strings.position.x = t < 0 ? 0 : 0.003 * Math.sin(t * 140) * k;
-    if (t < 0) { contact.update?.(); return; }
-    if (feedbackKey === 'guitar') v.rotation.x = 0.02 * Math.sin(t * 22) * k;
-    if (feedbackKey === 'dumbbell') v.rotation.x = 0.16 * Math.sin(t * 8) * k;
-    if (feedbackKey === 'suitcase') v.position.y = 0.05 * Math.abs(Math.sin(Math.PI * Math.min(t, 0.9) / 0.45));
+    const v = visual.current;
+    if (v && feedbackKey === 'guitar') {
+      const t = fbT(feedbackKey), k = decay(t), strings = binding.current?.strings;
+      if (strings) strings.position.x = t < 0 ? 0 : 0.003 * Math.sin(t * 140) * k;
+      v.rotation.x = t < 0 ? 0 : 0.02 * Math.sin(t * 22) * k;
+    }
     contact.update?.();
   });
   return <><RigidBody ref={body} name={`camp-content-push-${id}`} position={start} rotation={[0, home.yaw, 0]} colliders={false} canSleep ccd
@@ -347,13 +357,11 @@ function LightPools({ lantern }: { lantern: Vector3 }) {
   return <mesh name="camp-content-light-pools" geometry={geometry} material={material} renderOrder={1} frustumCulled={false} userData={{ noOcclusionFade: true }} />;
 }
 
-/** Feedback on objects owned by WorldCamp, applied at runtime without editing that file: C09 brass glows,
- * C10 flags lift about their hoist, and a page flips over the C08 book stack (own transient quad). */
+/** C09 brass and C10 flags belong to WorldCamp and are driven from the camp exhibit callbacks. */
 function SceneFeedback() {
   const scene = useThree(s => s.scene);
   const cache = useRef<{ brass: MeshStandardMaterial[]; flags: Object3D[]; frame: number }>({ brass: [], flags: [], frame: -1e9 });
-  const pivot = useRef<Group>(null), frameNo = useRef(0);
-  const book = useMemo(bookStack, []);
+  const frameNo = useRef(0);
   useFrame(() => {
     const c = cache.current; frameNo.current++;
     if ((!c.flags.length || !c.brass.length) && frameNo.current - c.frame > 60) {
@@ -369,18 +377,12 @@ function SceneFeedback() {
     const tr = fbT('trophy'), glow = tr < 0 ? 0 : Math.sin(Math.PI * tr / FEEDBACK_SECONDS) * 0.7;
     for (const m of c.brass) { m.emissive.setRGB(1, 0.79, 0.47); m.emissiveIntensity = glow; }
     const tf = fbT('flags'), lift = tf < 0 ? 0 : 0.42 * Math.sin(Math.PI * tf / FEEDBACK_SECONDS) * (1 + 0.15 * Math.sin(tf * 11));
-    c.flags.forEach((f, i) => { f.rotation.x = lift * (1 - i * 0.08); });
-    const tb = fbT('books'), pv = pivot.current;
-    if (pv) { pv.visible = tb >= 0; pv.rotation.z = tb < 0 ? 0 : Math.PI * Math.min(1, (tb % 0.9) / 0.75); }
+    c.flags.forEach((f, i) => {
+      const amount = lift * (1 - i * 0.08);
+      if (!setCampFlagLift(f, amount)) f.rotation.x = amount;
+    });
   });
-  return <group position={[book.position[0], book.position[1] + 0.335, book.position[2]]} rotation={[0, book.yaw, 0]}>
-    <group ref={pivot} visible={false}>
-      <mesh name="camp-content-page-flip" position={[0.12, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[0.24, 0.17]} />
-        <meshStandardMaterial color="#E6DCCB" roughness={0.9} side={DoubleSide} />
-      </mesh>
-    </group>
-  </group>;
+  return null;
 }
 
 /**
@@ -390,17 +392,18 @@ function SceneFeedback() {
  * apart with radii 1.8 / 1.5, so standing at one never prompts the other. Pushable anchors follow
  * their prop (the array is mutated in place; useInteractable reads it live).
  */
-type ExhibitDef = { key: string; id: ExhibitId; page?: number; position: Vec3; radius: number; fb: FeedbackKey; follow?: string; label: { en: string; zh: string } };
+type ExhibitDef = { key: string; id: ExhibitId; page?: number; position: Vec3; radius: number; fb?: FeedbackKey; follow?: string; label: { en: string; zh: string } };
+const JOURNAL_ANCHOR = towardFire(PAD.desk, 1.15, 5.6);
 const EXHIBITS: ExhibitDef[] = [
   { key: 'tent', id: 'identity', position: [-42.4, 5.6, 14.75], radius: 1.8, fb: 'tent', label: { en: 'About Bobby', zh: '关于 Bobby' } },
-  { key: 'desk', id: 'education', position: towardFire(PAD.desk, 1.05, 5.6), radius: 2.0, fb: 'books', label: { en: 'Education', zh: '教育背景' } },
+  { key: 'desk', id: 'education', position: towardFire(PAD.desk, 1.05, 5.6), radius: 2.0, label: { en: 'Education', zh: '教育背景' } },
   { key: 'trophy', id: 'awards', position: towardFire(PAD.trophy, 0.75, 5.6), radius: 2.0, fb: 'trophy', label: { en: 'Awards', zh: '奖项与证书' } },
   { key: 'flags', id: 'languages', position: towardFire(PAD.flags, 0.95, 5.6), radius: 2.0, fb: 'flags', label: { en: 'Languages', zh: '语言' } },
-  { key: 'tools', id: 'skills', position: towardFire(CONTENT_PAD.C11, 0.95, 5.7), radius: 2.0, fb: 'tools', label: { en: 'Skills', zh: '技能' } },
+  { key: 'tools', id: 'skills', position: towardFire(CONTENT_PAD.C11, 0.95, 5.7), radius: 2.0, label: { en: 'Skills overview', zh: '查看技能' } },
   { key: 'guitar', id: 'interests', page: 0, position: towardFire(CONTENT_PAD.C12, 0.9, 5.4), radius: 1.8, fb: 'guitar', follow: 'C12', label: { en: 'Singing', zh: '唱歌' } },
-  { key: 'dumbbell', id: 'interests', page: 1, position: padOffset(CONTENT_PAD.C13, -1.55, 0.95, 5.3), radius: 1.5, fb: 'dumbbell', follow: 'C13-0', label: { en: 'Gym', zh: '健身' } },
+  { key: 'dumbbell', id: 'interests', page: 1, position: padOffset(CONTENT_PAD.C13, -1.55, 0.95, 5.3), radius: 1.5, follow: 'C13-0', label: { en: 'About fitness', zh: '查看健身' } },
   { key: 'wok', id: 'interests', page: 2, position: towardFire(CONTENT_PAD.C14, 0.9, 5.4), radius: 1.8, fb: 'wok', label: { en: 'Cooking', zh: '烹饪' } },
-  { key: 'suitcase', id: 'interests', page: 3, position: towardFire(CONTENT_PAD.C15, 0.85, 5.3), radius: 1.8, fb: 'suitcase', follow: 'C15', label: { en: 'Travel', zh: '旅行' } },
+  { key: 'suitcase', id: 'interests', page: 3, position: towardFire(CONTENT_PAD.C15, 0.85, 5.3), radius: 1.8, follow: 'C15', label: { en: 'About travel', zh: '查看旅行' } },
 ];
 function Exhibit({ e }: { e: ExhibitDef }) {
   const base = useMemo(() => [...e.position] as Vec3, [e]);
@@ -413,7 +416,7 @@ function Exhibit({ e }: { e: ExhibitDef }) {
   useInteractable({
     id: `camp-about-${e.key}`, position: e.position, radius: e.radius, kind: 'exhibit', label: e.label,
     onInteract: () => {
-      feedback.set(e.fb, performance.now());
+      if (e.fb) feedback.set(e.fb, performance.now());
       useWorldStore.setState({ card: e.page === undefined ? { kind: 'about', id: e.id } : { kind: 'about', id: e.id, page: e.page } });
     },
   });
@@ -456,6 +459,7 @@ function useQa(data: { place: Record<string, Place>; dumbbells: Place[]; lantern
       exhibits: () => EXHIBITS.map(e => ({ key: e.key, id: e.id, page: e.page ?? null, position: [...e.position], radius: e.radius })),
       seats: () => seatsQa,
       feedback: () => [...feedback.keys()],
+      propPlay: () => ({ id: currentCampPropInteraction()?.id ?? null, actor: { ...campPropActor }, hand: { ...campPropHand } }),
       check: () => {
         const recs = campColliderRecords(), centres = (id: string) => recs.filter(x => x.id === id).map(x => [(x.aabb.min[0] + x.aabb.max[0]) / 2, (x.aabb.min[2] + x.aabb.max[2]) / 2]);
         const near = (a: number[][], p: Vec3, tol: number) => a.some(c => Math.hypot(c[0] - p[0], c[1] - p[2]) < tol);

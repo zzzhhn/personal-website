@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Lang, Vec3, VehicleId } from './types';
 import { TIME_PRESETS, type TimePreset, type Weather } from './world-climate.ts';
+import { cancelCampPropInteraction } from './camp-prop-interactions';
 /** Content card opened by an interactable (rendered by WorldCards). `id` selects the content source. */
 export interface WorldCard { kind: 'project' | 'experience' | 'about' | 'note'; id: string; page?: number }
 /** Interactable currently in reach (prompt shown by the HUD). */
@@ -57,6 +58,7 @@ export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturn
 export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
+  if (cancelCampPropInteraction()) return;
   const state=useWorldStore.getState();
   if(state.clubMode)useWorldStore.setState({clubMode:null});
   else if(state.poolInspect)useWorldStore.setState({poolInspect:false});

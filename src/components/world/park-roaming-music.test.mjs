@@ -3,10 +3,14 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { ParkAudio } from './WorldParkAudio.ts';
+import { PARK_AUDIO_MIX } from './park-audio-mix.ts';
 import { PARK_ROAMING_TRACK } from './park-roaming-music.ts';
 import { useWorldStore } from './store.ts';
 import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from './world-audio-settings.ts';
 import { setClubAudible } from './world-music-focus.ts';
+
+const DECODED_FRAMES = 602_751;
+const DECODED_SECONDS = DECODED_FRAMES / 24_000;
 
 class Target extends EventTarget {
   listeners = new Map();
@@ -34,7 +38,7 @@ class Audio extends Target {
   createOscillator() { return this.createBufferSource(); }
   async decodeAudioData(data) { this.decodes++; assert.equal(data.byteLength, PARK_ROAMING_TRACK.fileBytes);
     if (this.holdDecode) await new Promise(resolve => this.finishDecode = resolve);
-    return { length: 960000, sampleRate: 24000, numberOfChannels: 2, duration: 40 }; }
+    return { length: DECODED_FRAMES, sampleRate: 24000, numberOfChannels: 2, duration: DECODED_SECONDS }; }
   change(state) { if (this.state === 'closed') return; this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   async resume() { this.resumes++; if (this.rejectResume) throw new Error('gesture required');
     if (this.holdResume) await new Promise(resolve => this.finishResume = resolve); this.change('running'); }
@@ -66,11 +70,12 @@ test('normal world starts only on a trusted gesture, fetches the rendered asset 
   const e = fixture(t); e.gesture(false); setWorldAudioVolume('music', .7);
   assert.equal(Audio.instances.length, 0); assert.equal(e.requests.length, 0);
   e.gesture(); const ctx = Audio.instances[0]; assert.equal(ctx.resumes, 1, 'resume is invoked inside the input before fetch resolves');
-  assert.equal(ctx.sources.length, 0, 'no synchronous 40-second PCM generation'); await settle();
-  assert.deepEqual(ctx.options, { sampleRate: 24000 }); assert.equal(e.requests[0].url, PARK_ROAMING_TRACK.url);
+  assert.equal(ctx.sources.length, 0, 'no synchronous music PCM generation'); await settle();
+  assert.deepEqual(ctx.options, { sampleRate: 24000 });
+  assert.equal(e.requests[0].url, '/assets/world/park/audio/boardwalk-v2.wav');
   assert.equal(e.audio.snapshot().roaming.sources, 1); assert.equal(e.audio.snapshot().roaming.buffers, 1);
-  assert.equal(e.audio.snapshot().roaming.bytes, 7680000); assert.equal(ctx.decodes, 1);
-  const music = ctx.sources[0]; assert.equal(music.loop, true); assert.equal(music.loopEnd, 40);
+  assert.equal(e.audio.snapshot().roaming.bytes, DECODED_FRAMES * 8); assert.equal(ctx.decodes, 1);
+  const music = ctx.sources[0]; assert.equal(music.loop, true); assert.equal(music.loopEnd, DECODED_SECONDS);
   for (let i = 0; i < 20; i++) e.gesture(); await settle();
   e.audio.workshopCue('intake'); await settle(); assert.equal(Audio.instances.length, 1);
   assert.equal(ctx.sources.filter(source => source.loop && !source.stopped).length, 1);
@@ -84,10 +89,11 @@ test('pause, background, inspection, shot and BFCache stop then resume at the sa
     v => useWorldStore.setState({ poolInspect: v }), v => useWorldStore.setState({ shot: v ? 'camp' : null }),
     v => e.page(v ? 'pagehide' : 'pageshow'),
     v => setWorldAudioMuted(v), v => setWorldAudioVolume('music', v ? 0 : 1), v => e.audio.setMuted(v)];
-  for (const gate of gates) {
+  for (const [index, gate] of gates.entries()) {
     const music = ctx.sources.at(-1); ctx.currentTime += 7; gate(true); await settle();
     assert.equal(e.audio.snapshot().roaming.sources, 0); assert.equal(music.stopped, true); assert.equal(music.disconnected, true);
     assert.equal(ctx.state, 'suspended'); const count = ctx.sources.length, offset = e.audio.snapshot().roaming.offset;
+    assert.ok(Math.abs(offset - (7 * (index + 1)) % DECODED_SECONDS) < 1e-9);
     ctx.currentTime += 30; // Hidden wall time must not fast-forward the saved phrase.
     assert.equal(ctx.sources.length, count); gate(false); await settle();
     assert.equal(ctx.sources.length, count + 1); assert.equal(ctx.sources.at(-1).offset, offset);
@@ -97,9 +103,9 @@ test('pause, background, inspection, shot and BFCache stop then resume at the sa
 
 test('shared levels and SFX duck the recording without restarting it, and Music=0 preserves finite SFX', async t => {
   const e = fixture(t); e.gesture(); await settle(); const ctx = Audio.instances[0], source = ctx.sources[0];
-  e.audio.workshopCue('intake'); await settle(); assert.equal(e.audio.snapshot().roaming.level, 3.2 * .62);
-  ctx.sources.at(-1).end(); await settle(); assert.equal(e.audio.snapshot().roaming.level, 3.2);
-  setWorldAudioVolume('music', .3); assert.equal(e.audio.snapshot().roaming.level, .96);
+  e.audio.workshopCue('intake'); await settle(); assert.equal(e.audio.snapshot().roaming.level, PARK_AUDIO_MIX.roaming * .62);
+  ctx.sources.at(-1).end(); await settle(); assert.equal(e.audio.snapshot().roaming.level, PARK_AUDIO_MIX.roaming);
+  setWorldAudioVolume('music', .3); assert.equal(e.audio.snapshot().roaming.level, .42);
   assert.equal(ctx.sources[0], source); assert.equal(source.stopped, undefined);
   setWorldAudioVolume('music', 0); await settle(); e.audio.cue('scan'); await settle();
   assert.equal(e.audio.snapshot().roaming.sources, 0); assert.equal(e.audio.snapshot().cueVoices, 1);
@@ -110,8 +116,8 @@ test('Club entry fades on the audio clock, then exit resumes the saved phrase wi
   const e = fixture(t); setWorldAudioVolume('music', .5); e.gesture(); await settle();
   const ctx = Audio.instances[0], initial = ctx.sources[0];
   const assertOnset = source => {
-    assert.deepEqual(source.connections[0].gain.events, [{ from: 0, value: 1.6, at: ctx.currentTime, tau: .08 }]);
-    assert.equal(e.audio.snapshot().roaming.level, 1.6, 'the user-selected target level is preserved');
+    assert.deepEqual(source.connections[0].gain.events, [{ from: 0, value: .7, at: ctx.currentTime, tau: .08 }]);
+    assert.equal(e.audio.snapshot().roaming.level, .7, 'the user-selected target level is preserved');
   };
   assertOnset(initial); ctx.currentTime = 13.375; setClubAudible(e.club, true);
   assert.equal(initial.stopped, false);assert.equal(initial.stopAt,13.555);
@@ -150,27 +156,38 @@ test('a rapid Club boundary reversal replaces the fading source once, and silenc
   assert.equal(e.audio.snapshot().roaming.bytes,0);assert.equal(e.win.count+e.doc.count+ctx.count,0);
 });
 
-test('the actual quiet WAV gains presence with bounded output headroom and independent user channel scaling', async t => {
+function recording() {
+  const wav = readFileSync(new URL(`../../../public${PARK_ROAMING_TRACK.url}`, import.meta.url));
+  for (let offset = 12; offset + 8 <= wav.length;) {
+    const size = wav.readUInt32LE(offset + 4);
+    if (wav.toString('ascii', offset, offset + 4) === 'data') {
+      return { wav, pcm: wav.subarray(offset + 8, offset + 8 + size) };
+    }
+    offset += 8 + size + size % 2;
+  }
+  assert.fail('the WAV is missing its PCM data chunk');
+}
+
+test('the actual recording keeps the established music level and independent user channel scaling', async t => {
   const e = fixture(t); e.gesture(); await settle();
   const ctx = Audio.instances[0], source = ctx.sources[0], musicGain = source.connections[0].gain;
-  const wav = readFileSync(new URL(`../../../public${PARK_ROAMING_TRACK.url}`, import.meta.url));
+  const { pcm } = recording();
   let peak = 0, energy = 0;
-  for (let offset = 44; offset < wav.length; offset += 2) {
-    const sample = wav.readInt16LE(offset) / 32768; peak = Math.max(peak, Math.abs(sample)); energy += sample ** 2;
+  for (let offset = 0; offset < pcm.length; offset += 2) {
+    const sample = pcm.readInt16LE(offset) / 32768; peak = Math.max(peak, Math.abs(sample)); energy += sample ** 2;
   }
   const effective = musicGain.value * e.audio.master.gain.value;
-  const rms = Math.sqrt(energy / ((wav.length - 44) / 2));
+  const rms = Math.sqrt(energy / (pcm.length / 2));
   const outputRmsDb = 20 * Math.log10(rms * effective), outputPeakDb = 20 * Math.log10(peak * effective);
   assert.ok(outputRmsDb > -36 && outputRmsDb < -35, `measured full-volume RMS ${outputRmsDb}`);
-  assert.ok(outputPeakDb < -18, 'the accepted source retains at least 18 dB of peak headroom');
-  assert.ok(Math.abs(20 * Math.log10(effective / .256) - 6.0206) < .001);
+  assert.ok(outputPeakDb < -16.5, 'the recording retains at least 16.5 dB of peak headroom');
   assert.equal(e.audio.master.gain.value, .16, 'QA audition and the safety master are unchanged');
   setWorldAudioVolume('music', .5); assert.equal(musicGain.value * e.audio.master.gain.value, effective / 2);
   setWorldAudioVolume('sfx', .4); e.audio.workshopCue('intake'); await settle();
   assert.equal(e.audio.cueOutput.gain.value, .68);
-  assert.equal(musicGain.value, 1.6 * .62, 'the cue keeps the selected music level with a finite dip');
+  assert.equal(musicGain.value, .7 * .62, 'the cue keeps the selected music level with a finite dip');
   assert.equal(useWorldAudioSettings.getState().musicVolume, .5); assert.equal(useWorldAudioSettings.getState().sfxVolume, .4);
-  setWorldAudioVolume('sfx', 0); assert.equal(e.audio.snapshot().cueVoices, 0); assert.equal(musicGain.value, 1.6);
+  setWorldAudioVolume('sfx', 0); assert.equal(e.audio.snapshot().cueVoices, 0); assert.equal(musicGain.value, .7);
   setWorldAudioVolume('music', 0); assert.equal(source.stopped, true); assert.equal(source.disconnected, true);
 });
 
@@ -226,10 +243,15 @@ test('autoplay rejection stays silent across state/settings updates until the ne
   assert.equal(ctx.resumes, attempts + 1); assert.equal(e.audio.snapshot().roaming.sources, 1);
 });
 
-test('public recording exactly matches the mastered release and reports the real uncompressed/decoded budgets', () => {
-  const root = new URL('../../../', import.meta.url);
-  const report=JSON.parse(readFileSync(new URL('docs/world/phase-2-playground/qa-20261029/walk-daily-master-v36/analysis.json',root),'utf8'));
-  const asset = readFileSync(new URL(`public${PARK_ROAMING_TRACK.url}`, root));
-  assert.equal(createHash('sha256').update(asset).digest('hex'),report.sha256);
-  assert.equal(asset.length, PARK_ROAMING_TRACK.fileBytes); assert.equal((asset.length - 44) * 2, PARK_ROAMING_TRACK.decodedBytesAt24k);
+test('public recording exactly matches the Boardwalk v2 handoff and its decoded budget', () => {
+  const { wav, pcm } = recording();
+  assert.equal(createHash('sha256').update(wav).digest('hex'), '297b3c3ae76d463015970e1f009c09c9f8548f526dd9cef65ed00ce7893e49e8');
+  assert.equal(wav.length, PARK_ROAMING_TRACK.fileBytes);
+  assert.equal(wav.readUInt16LE(20), 1); // PCM.
+  assert.equal(wav.readUInt16LE(22), 2);
+  assert.equal(wav.readUInt32LE(24), 44_100);
+  assert.equal(wav.readUInt16LE(34), 16);
+  assert.equal(pcm.length / 4, 1_107_555);
+  assert.equal(pcm.length / 4 / 44_100, PARK_ROAMING_TRACK.seconds);
+  assert.equal(Math.ceil(PARK_ROAMING_TRACK.seconds * 48_000) * 8, PARK_ROAMING_TRACK.maxDecodedBytes);
 });

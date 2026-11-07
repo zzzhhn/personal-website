@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
+import { PARK_ROAMING_TRACK } from './park-roaming-music.ts';
 
 // Native Node TS loading needs the browser bundler's extensionless store import resolved.
 const audioUrl = new URL('./WorldParkAudio.ts', import.meta.url).href;
@@ -39,7 +40,7 @@ class Audio extends Target {
   createBuffer() { return { getChannelData: () => new Float32Array(this.sampleRate) }; }
   createOscillator() { const n = new Node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
-  async decodeAudioData() { return { duration: 36, length: 864000, numberOfChannels: 2 }; }
+  async decodeAudioData() { return { duration: PARK_ROAMING_TRACK.seconds, length: 602_751, numberOfChannels: 2 }; }
   change(state) { this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   resume() {
     this.resumes++;
@@ -60,7 +61,7 @@ function env(t) {
   const request = fn => { frames.set(++id, fn); return id; }, cancel = i => frames.delete(i);
   Object.assign(win, { AudioContext: Audio, setInterval: fn => { intervals.set(++id, fn); return id; }, clearInterval: i => intervals.delete(i) });
   const values = { window: win, document: doc, navigator: { getGamepads: () => { reads++; if (denied) throw new Error('denied'); return pads; } }, requestAnimationFrame: request, cancelAnimationFrame: cancel,
-    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(3456044) }) };
+    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(PARK_ROAMING_TRACK.fileBytes) }) };
   for (const [name, value] of Object.entries(values)) Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   Audio.instances.length = 0;
   useWorldStore.setState(useWorldStore.getInitialState(), true);

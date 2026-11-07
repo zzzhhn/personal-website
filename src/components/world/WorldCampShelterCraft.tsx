@@ -7,7 +7,9 @@ import {
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
-import { applyTentWind, isWorldRunning, markTentCloth, windUniforms, type TentWindParams } from './WorldWind';
+import { applyCampSurfaceBalance } from './camp-surface-balance';
+import { createCampFlagWind } from './camp-flag-wind';
+import { applyTentWind, markTentCloth, windUniforms, type TentWindParams } from './WorldWind';
 import type { Vec3 } from './types';
 
 const BASE = '/assets/world/camp-shelter-craft';
@@ -46,6 +48,7 @@ function createResources(asset: Asset, environment: Texture | null, anisotropy: 
     const copy = source.clone();
     // Build the final material before camera occlusion can clone it.
     copy.envMap = environment;
+    applyCampSurfaceBalance(copy, night);
     if (copy.name === 'camp_canvas_orange') copy.emissive.set('#FF9A4A');
     applyNight(copy, asset, night.value);
     copy.map = filtered(source.map);
@@ -192,23 +195,18 @@ function FlagScene({ gltf, environment, placement }: {
       mesh.castShadow = true; mesh.receiveShadow = true;
       mesh.userData = { ...mesh.userData, assetId: 'C10', solid: true, craft: 'camp-shelter-v1' };
     });
-    const flags = ['flag_01', 'flag_02', 'flag_03', 'flag_04'].map(name => {
-      const node = root.getObjectByName(name);
-      if (!node) throw new Error(`C10 craft is missing ${name}`);
-      return { node, restYaw: node.rotation.y };
+    const wind = createCampFlagWind(windUniforms);
+    resources.depths.push(wind.depth);
+    ['flag_01', 'flag_02', 'flag_03', 'flag_04'].forEach((name, slot) => {
+      const flag = root.getObjectByName(name) as Mesh | undefined;
+      if (!flag?.isMesh || !(flag.material instanceof MeshStandardMaterial) || flag.material.name !== 'mast_yarn_dyed_cloth') {
+        throw new Error(`C10 craft is missing its cloth mesh ${name}`);
+      }
+      resources.geometry.push(wind.attach(flag, flag.material, slot));
     });
-    return { root, flags, resources };
+    return { root, resources };
   }, [gltf, environment, anisotropy]);
   useShelterMaterials(visual.resources, 'C10');
-  useFrame(() => {
-    if (!isWorldRunning()) return;
-    const t = windUniforms.uWindTime.value;
-    const strength = windUniforms.uWindStrength.value;
-    visual.flags.forEach(({ node, restYaw }, i) => {
-      // The interaction's independent rotation.x impulse remains intact.
-      node.rotation.y = restYaw + (.1 * Math.sin(t * 1.8 + i * .9) + .03 * Math.sin(t * 3.1 + i)) * strength;
-    });
-  });
   return <group position={placement.position} rotation={[0, placement.yaw, 0]} scale={placement.scale ?? 1} dispose={null}>
     <primitive object={visual.root} dispose={null} />
   </group>;

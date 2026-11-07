@@ -1,0 +1,29 @@
+{
+  "method": "Shipped G24 skeleton and Idle clip sampled offline. Mesh, boot calibration, physics, props and WebGL are outside this probe.",
+  "gitHead": "d1c24a3",
+  "asset": "public/assets/world/guide/G24.glb",
+  "assetGitBlob": "a55d30a763e9cad1272fd86150e2c32f2ad9a7ea",
+  "implementationSha256": "dc3302db7798e724fdf74f736c012ffdccba5a0c1961aa0215abfeabfe82fafc",
+  "nodeVersion": "v25.5.0",
+  "rootPosition": [-42, 4.9, 29],
+  "yawRadians": [0, 1.6, -2.1],
+  "idleTimesSeconds": [0.05, 0.72, 1.3],
+  "poseTimesSeconds": [0.15, 0.22],
+  "samples": 162,
+  "targets": [
+    { "label": "floor-.36", "localTarget": [0.36, 0.1001, 0], "mode": "reach", "maxPalmErrorCm": { "150": 18.05, "220": 0.2 } },
+    { "label": "floor-.50", "localTarget": [0.5, 0.1001, 0], "mode": "reach", "maxPalmErrorCm": { "150": 20.57, "220": 1.94 } },
+    { "label": "floor-.60", "localTarget": [0.6, 0.1001, 0], "mode": "reach", "maxPalmErrorCm": { "150": 23.28, "220": 4.97 } },
+    { "label": "floor-.62 side", "localTarget": [0.6, 0.1001, 0.15], "mode": "reach", "maxPalmErrorCm": { "150": 20.42, "220": 0.67 } },
+    { "label": "floor-.65", "localTarget": [0.65, 0.1001, 0], "mode": "grip", "maxPalmErrorCm": { "150": 25.48, "220": 7.82 } },
+    { "label": "tool-.60", "localTarget": [0.6, 0.85, 0], "mode": "reach", "maxPalmErrorCm": { "150": 17.84, "220": 0.21 } },
+    { "label": "tool-.66", "localTarget": [0.66, 0.95, 0], "mode": "reach", "maxPalmErrorCm": { "150": 20.08, "220": 2.49 } },
+    { "label": "suitcase-.66", "localTarget": [0.66, 0.846, 0], "mode": "grip", "maxPalmErrorCm": { "150": 19.13, "220": 3.67 } },
+    { "label": "carry", "localTarget": [0.35, 0.86, 0.31], "mode": "grip", "maxPalmErrorCm": { "150": 9.94, "220": 0 } }
+  ],
+  "maxAnkleDriftM": 2.641888692388932e-7,
+  "maxAnkleRotationRad": 0.0000011980385328675557,
+  "maxSegmentLengthChangeM": 1.2172251651065835e-7,
+  "maxRestoredLocalPositionErrorM": 0,
+  "maxRestoredLocalRotationErrorRad": 5.16191365590357e-8
+}
