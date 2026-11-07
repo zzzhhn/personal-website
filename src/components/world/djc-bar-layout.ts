@@ -1,4 +1,4 @@
-import { BoxGeometry, BufferGeometry, Float32BufferAttribute, Mesh, MeshStandardMaterial, type Object3D, type Texture } from 'three';
+import { BoxGeometry, BufferGeometry, Float32BufferAttribute, Frustum, Matrix4, Mesh, MeshStandardMaterial, Sphere, Vector3, type Camera, type Object3D, type Texture } from 'three';
 
 type V3 = [number, number, number];
 export const DJC_BAR_ORIGIN: V3 = [40.75, 1.2, 40];
@@ -6,6 +6,22 @@ export const DJC_BAR_ASSETS = {
   near: '/assets/world/club/bar/djc-north-bar-v1.glb',
   far: '/assets/world/club/bar/djc-north-bar-lod1-v1.glb',
 };
+export const DJC_BAR_NEAR_PREFETCH = 35;
+// Enclose the roof and deck, plus a margin to prefetch before the edge enters view.
+const barPrefetchBounds = new Sphere(new Vector3(DJC_BAR_ORIGIN[0], DJC_BAR_ORIGIN[1] + 2.5, DJC_BAR_ORIGIN[2]), 10);
+
+export function createDjcBarPrefetchCheck() {
+  const projectionView = new Matrix4(), frustum = new Frustum();
+  return (camera: Camera, horizontalDistance: number) => {
+    if (horizontalDistance <= DJC_BAR_NEAR_PREFETCH) return true;
+    if (horizontalDistance > 90) return false;
+    // Camera controls may have changed the pose earlier in this frame.
+    camera.updateWorldMatrix(true, false);
+    projectionView.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+    frustum.setFromProjectionMatrix(projectionView, camera.coordinateSystem, camera.reversedDepth);
+    return frustum.intersectsSphere(barPrefetchBounds);
+  };
+}
 export const DJC_BAR_STOOLS = [-3.55, -1.25, 1.05, 3.35].map(x => ({
   center: [x, .735, .25] as V3, radius: .325, top: .77,
 }));

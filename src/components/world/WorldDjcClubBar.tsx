@@ -6,7 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { night } from './WorldNight';
 import { useDjcFurnitureEnvironment as useBarEnvironment } from './WorldDjcFurnitureEnvironment';
-import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_ORIGIN, buildDjcBarProxy, cloneDjcBarVisual, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarQaSceneTransmission, shareDjcBarTexture } from './djc-bar-layout';
+import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_NEAR_PREFETCH, DJC_BAR_ORIGIN, buildDjcBarProxy, cloneDjcBarVisual, createDjcBarPrefetchCheck, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarQaSceneTransmission, shareDjcBarTexture } from './djc-bar-layout';
 
 function BarAsset({ url, environment, opaque, textures, sceneTransmission }: { url: string; environment: Texture | null; opaque: boolean; textures: Map<string, Texture>; sceneTransmission: boolean }) {
   const gltf = useLoader(GLTFLoader, url, withWorldAssetDecoder);
@@ -35,7 +35,7 @@ function BarFallback({ roof }: { roof: ReturnType<typeof buildDjcBarProxy>['roof
     <mesh castShadow receiveShadow><primitive object={roof} attach="geometry" dispose={null} /><meshStandardMaterial color="#a58a50" roughness={.95} /></mesh>
   </group>;
 }
-/** Mounted only after first approach; neither GLB requests nor PMREM run remotely. */
+/** Mounted after the bar enters the camera's prefetch range. */
 function ActiveBarVisual({ fallback }: { fallback: ReactNode }) {
   const textures = useRef(new Map<string, Texture>());
   useEffect(() => () => textures.current.clear(), []);
@@ -63,12 +63,13 @@ function ActiveBarVisual({ fallback }: { fallback: ReactNode }) {
 export default function WorldDjcClubBar() {
   const camera = useThree(s => s.camera), group = useRef<Group>(null);
   const distance = () => Math.hypot(camera.position.x - DJC_BAR_ORIGIN[0], camera.position.y - DJC_BAR_ORIGIN[1], camera.position.z - DJC_BAR_ORIGIN[2]);
-  const [active, setActive] = useState(() => distance() <= 90), activated = useRef(active);
+  const [active, setActive] = useState(() => distance() <= DJC_BAR_NEAR_PREFETCH), activated = useRef(active);
+  const shouldPrefetch = useMemo(createDjcBarPrefetchCheck, []);
   const proxy = useMemo(buildDjcBarProxy, []);
   useEffect(() => () => proxy.roof.dispose(), [proxy]);
   useFrame(() => {
     const d = distance();
-    if (!activated.current && d <= 90) { activated.current = true; setActive(true); }
+    if (!activated.current && shouldPrefetch(camera, d)) { activated.current = true; setActive(true); }
     if (group.current) group.current.visible = d < 180;
   });
   const fallback = <BarFallback roof={proxy.roof} />;

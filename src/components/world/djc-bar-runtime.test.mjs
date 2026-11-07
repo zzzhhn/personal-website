@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
-import { Group, Mesh, BoxGeometry, MeshPhysicalMaterial, Ray, Texture, Vector3 } from 'three';
+import { Group, Mesh, BoxGeometry, MeshPhysicalMaterial, PerspectiveCamera, Ray, Texture, Vector3 } from 'three';
 import { buildDjcClubGeometry } from './WorldDjcClubGeometry.ts';
-import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_DANCE_JOIN, DJC_BAR_ORIGIN, DJC_BAR_STOOLS, buildDjcBarProxy, cloneDjcBarVisual, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarWorld, shareDjcBarTexture } from './djc-bar-layout.ts';
+import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_DANCE_JOIN, DJC_BAR_NEAR_PREFETCH, DJC_BAR_ORIGIN, DJC_BAR_STOOLS, buildDjcBarProxy, cloneDjcBarVisual, createDjcBarPrefetchCheck, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarWorld, shareDjcBarTexture } from './djc-bar-layout.ts';
 
 const proxy = buildDjcBarProxy(), club = buildDjcClubGeometry();
 // Exercise production component initializers and frame callbacks without a GL
@@ -17,11 +17,13 @@ function componentRig(name, metres) {
   const declaration = componentAST.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === name);
   assert.ok(declaration);
   const text = declaration.getText(componentAST), expression = text.slice(text.indexOf('function'));
-  const camera = { position: new Vector3(DJC_BAR_ORIGIN[0] + metres, DJC_BAR_ORIGIN[1], DJC_BAR_ORIGIN[2]) };
+  const camera = new PerspectiveCamera(50, 1951 / 1062, .1, 600);
+  camera.position.set(DJC_BAR_ORIGIN[0] + metres, DJC_BAR_ORIGIN[1], DJC_BAR_ORIGIN[2]);
+  camera.lookAt(...DJC_BAR_ORIGIN);
   const frames = [], refs = [], writes = [], environmentCalls = [];
   let inTransition = false;
   const marker = () => null;
-  const env = { DJC_BAR_ORIGIN, DJC_BAR_ASSETS, djcBarLod, djcBarQaMode, djcBarQaOpaque,
+  const env = { DJC_BAR_ORIGIN, DJC_BAR_ASSETS, DJC_BAR_NEAR_PREFETCH, createDjcBarPrefetchCheck, djcBarLod, djcBarQaMode, djcBarQaOpaque,
     useThree: select => select({ camera }), useMemo: create => create(), useEffect: () => {},
     useRef(value) { const ref = { current: value }; refs.push(ref); return ref; },
     useState(init) { return [typeof init === 'function' ? init() : init, value => writes.push({ value, inTransition })]; },
@@ -139,6 +141,33 @@ test('first approach activates heavy visual resources only once while collision 
   const close = componentRig('WorldDjcClubBar', 30);
   assert.equal(close.tree.props.children[0].props.children.props.fallback.props.roof, proxy.roof, 'near branch mounts the active-resource component');
   assert.equal(close.writes.length, 0, 'close initial entry needs no activation update');
+});
+test('camp tools shot defers the bar until the camera turns toward it', () => {
+  const rig = componentRig('WorldDjcClubBar', 79);
+  rig.camera.position.set(-36.5, 7, 24.6);
+  rig.camera.quaternion.set(-.06310534784218876, -.3773144837755987, -.025780923859161607, .9235728663033786);
+  rig.frames[0]();
+  assert.equal(rig.writes.length, 0);
+  rig.camera.lookAt(...DJC_BAR_ORIGIN);
+  rig.frames[0]();
+  assert.deepEqual(rig.writes.map(w => w.value), [true]);
+});
+test('close approach prefetches offscreen and the padded bounds catch the viewport edge', () => {
+  const close = componentRig('WorldDjcClubBar', 50);
+  close.camera.lookAt(DJC_BAR_ORIGIN[0] + 100, DJC_BAR_ORIGIN[1], DJC_BAR_ORIGIN[2]);
+  close.move(36);
+  assert.equal(close.writes.length, 0);
+  close.move(35);
+  assert.deepEqual(close.writes.map(w => w.value), [true]);
+
+  const edge = componentRig('WorldDjcClubBar', 70);
+  const center = new Vector3(...DJC_BAR_ORIGIN).add(new Vector3(0, 2.5, 0));
+  edge.camera.position.y = center.y;
+  edge.camera.lookAt(center.x, center.y, center.z - 70);
+  edge.camera.updateMatrixWorld();
+  assert.ok(Math.abs(center.clone().project(edge.camera).x) > 1, 'the bar center is already offscreen');
+  edge.frames[0]();
+  assert.deepEqual(edge.writes.map(w => w.value), [true], 'the padded bound intersects the viewport');
 });
 test('LOD requests use transitions and keep stable boundary identity through cold-load waits', () => {
   const rig = componentRig('ActiveBarVisual', 60);
