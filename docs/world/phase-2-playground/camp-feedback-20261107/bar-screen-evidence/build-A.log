@@ -1,0 +1,46 @@
+16:15:58 [content] Syncing content
+16:15:58 [content] Synced content
+16:15:58 [types] Generated 333ms
+16:15:58 [build] output: "static"
+16:15:58 [build] mode: "static"
+16:15:58 [build] directory: /tmp/camp-longframes-20261107/bar-screen-a23da48/A/
+16:15:58 [build] Collecting build info...
+16:15:58 [build] ✓ Completed in 348ms.
+16:15:58 [build] Building static entrypoints...
+16:15:59 [WARN] [vite] 
+/fonts/GeistSans-Regular.woff2 referenced in /fonts/GeistSans-Regular.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+16:15:59 [WARN] [vite] 
+/fonts/GeistSans-Medium.woff2 referenced in /fonts/GeistSans-Medium.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+16:15:59 [WARN] [vite] 
+/fonts/GeistSans-SemiBold.woff2 referenced in /fonts/GeistSans-SemiBold.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+16:15:59 [WARN] [vite] 
+/fonts/InstrumentSerif-Regular.woff2 referenced in /fonts/InstrumentSerif-Regular.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+16:15:59 [WARN] [vite] 
+/fonts/InstrumentSerif-Italic.woff2 referenced in /fonts/InstrumentSerif-Italic.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+16:16:09 [vite] ✓ built in 10.11s
+16:16:13 [WARN] [vite] [plugin vite:reporter] 
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldFacilityCraftQA.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+16:16:13 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+16:16:13 [vite] ✓ built in 4.47s
+16:16:13 [build] Rearranging server assets...
+
+ generating static routes 
+16:16:13   ├─ /projects/alpha-agent/index.html (+22ms) 
+16:16:13   ├─ /projects/djc/index.html (+6ms) 
+16:16:13   ├─ /projects/evalforge/index.html (+5ms) 
+16:16:13   ├─ /projects/hepai/index.html (+5ms) 
+16:16:13   ├─ /projects/interactive-learning-platforms/index.html (+5ms) 
+16:16:13   ├─ /projects/kindred/index.html (+4ms) 
+16:16:13   ├─ /world/index.html (+9ms) 
+16:16:13   ├─ /index.html (+123ms) 
+16:16:13 ✓ Completed in 217ms.
+
+16:16:13 [build] ✓ Completed in 14.84s.
+16:16:13 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/camp-longframes-20261107/bar-screen-a23da48/A`
+16:16:13 [build] 8 page(s) built in 15.19s
+16:16:13 [build] Complete!

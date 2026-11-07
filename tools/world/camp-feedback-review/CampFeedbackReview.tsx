@@ -15,6 +15,7 @@ import { parkAudio } from '../../../src/components/world/WorldParkAudio';
 const build = { id: import.meta.env.PUBLIC_CAMP_PERF_BUILD_ID || null, moduleUrl: import.meta.url };
 const frameLimit = 360;
 const slowFrameLimit = 24;
+const warmupLimitMs = 180_000;
 
 function sampleClock(frameBoundary: number) {
   return {
@@ -94,17 +95,20 @@ export default function CampFeedbackReview() {
     const p=probe.current;if(!p.active)return;const now=performance.now(),s=useWorldStore.getState();
     if(document.hidden || s.paused){p.active=false;if(p.output)p.output.textContent='测量中断';return;}
     const shadowPending = shadowChunkWork().pending;
-    if (s.loading.active || shadowPending || climate.blend < 1) {
+    const waiting = s.loading.active || shadowPending || climate.blend < 1;
+    if ((!p.sampleStart || waiting) && now - p.start > warmupLimitMs) {
+      p.active = false;
+      if (p.output) p.output.textContent = '预热超过 180 秒';
+      return;
+    }
+    if (waiting) {
       if (p.sampleStart) {
         p.restarts++;
         p.sampleStart = null;
         p.frame.length = p.calls.length = p.tris.length = p.slowFrames.length = p.slowFrameCount = 0;
       }
       p.previous = p.warm = 0;
-      if (now - p.start > 60_000) {
-        p.active = false;
-        if (p.output) p.output.textContent = '加载未收敛';
-      } else invalidate();
+      invalidate();
       return;
     }
     if (p.previous && p.warm++ >= 90) {

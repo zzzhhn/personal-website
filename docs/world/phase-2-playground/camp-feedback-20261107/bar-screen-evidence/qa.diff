@@ -1,0 +1,61 @@
+diff --git a/tools/world/camp-feedback-review/CampFeedbackReview.tsx b/tools/world/camp-feedback-review/CampFeedbackReview.tsx
+index 7a3a077..99cea6c 100644
+--- a/tools/world/camp-feedback-review/CampFeedbackReview.tsx
++++ b/tools/world/camp-feedback-review/CampFeedbackReview.tsx
+@@ -15,6 +15,7 @@ import { parkAudio } from '../../../src/components/world/WorldParkAudio';
+ const build = { id: import.meta.env.PUBLIC_CAMP_PERF_BUILD_ID || null, moduleUrl: import.meta.url };
+ const frameLimit = 360;
+ const slowFrameLimit = 24;
++const warmupLimitMs = 180_000;
+ 
+ function sampleClock(frameBoundary: number) {
+   return {
+@@ -94,17 +95,20 @@ export default function CampFeedbackReview() {
+     const p=probe.current;if(!p.active)return;const now=performance.now(),s=useWorldStore.getState();
+     if(document.hidden || s.paused){p.active=false;if(p.output)p.output.textContent='测量中断';return;}
+     const shadowPending = shadowChunkWork().pending;
+-    if (s.loading.active || shadowPending || climate.blend < 1) {
++    const waiting = s.loading.active || shadowPending || climate.blend < 1;
++    if ((!p.sampleStart || waiting) && now - p.start > warmupLimitMs) {
++      p.active = false;
++      if (p.output) p.output.textContent = '预热超过 180 秒';
++      return;
++    }
++    if (waiting) {
+       if (p.sampleStart) {
+         p.restarts++;
+         p.sampleStart = null;
+         p.frame.length = p.calls.length = p.tris.length = p.slowFrames.length = p.slowFrameCount = 0;
+       }
+       p.previous = p.warm = 0;
+-      if (now - p.start > 60_000) {
+-        p.active = false;
+-        if (p.output) p.output.textContent = '加载未收敛';
+-      } else invalidate();
++      invalidate();
+       return;
+     }
+     if (p.previous && p.warm++ >= 90) {
+diff --git a/tools/world/camp-longframes-review/review.config.mjs b/tools/world/camp-longframes-review/review.config.mjs
+index 102e862..52c10ef 100644
+--- a/tools/world/camp-longframes-review/review.config.mjs
++++ b/tools/world/camp-longframes-review/review.config.mjs
+@@ -5,15 +5,16 @@ import {execFileSync} from 'node:child_process';
+ const helper=fileURLToPath(new URL('./frame-profile.ts',import.meta.url));
+ const ui=fileURLToPath(new URL('./LongFrameReview.tsx',import.meta.url));
+ const simpleUi=fileURLToPath(new URL('../camp-feedback-review/CampFeedbackReview.tsx',import.meta.url));
++const comparedModules=['WorldShadows.ts','shadow-chunk-builder.ts','shadow-chunk-cache.ts','WorldDjcClubBar.tsx','djc-bar-layout.ts'];
+ const profile={name:'bounded-world-longframes',enforce:'pre',transform(source,id){
+   const path=id.split('?')[0];if(!path.includes('/src/components/world/')||!/[.]tsx?$/.test(path))return;
+   let changed=false,ordinal=0;const name=path.split('/').pop();
+   const ref=process.env.CAMP_PERF_REF;
+-  const baselineSubstituted=!!ref&&['WorldShadows.ts','shadow-chunk-builder.ts','shadow-chunk-cache.ts'].includes(name);
++  const baselineSubstituted=!!ref&&comparedModules.includes(name);
+   if(baselineSubstituted)source=execFileSync('git',['show',`${ref}:src/components/world/${name}`],{encoding:'utf8'});
+   if(process.env.CAMP_PERF_SIMPLE==='1'){
+     if(name==='WorldCamp.tsx')return `import CampFeedbackReview from ${JSON.stringify(simpleUi)};\n`+source.replace('<group name="world-camp-slice">','<group name="world-camp-slice"><CampFeedbackReview />');
+-    if(ref&&['WorldShadows.ts','shadow-chunk-builder.ts','shadow-chunk-cache.ts'].includes(name))return source;
++    if(baselineSubstituted)return source;
+     return;
+   }
+   source=source.replace(/\buseFrame\(/g,()=>{changed=true;return `useProfileFrame(${JSON.stringify(name+':frame'+(++ordinal))},`;});

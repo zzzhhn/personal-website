@@ -5,15 +5,16 @@ import {execFileSync} from 'node:child_process';
 const helper=fileURLToPath(new URL('./frame-profile.ts',import.meta.url));
 const ui=fileURLToPath(new URL('./LongFrameReview.tsx',import.meta.url));
 const simpleUi=fileURLToPath(new URL('../camp-feedback-review/CampFeedbackReview.tsx',import.meta.url));
+const comparedModules=['WorldShadows.ts','shadow-chunk-builder.ts','shadow-chunk-cache.ts','WorldDjcClubBar.tsx','djc-bar-layout.ts'];
 const profile={name:'bounded-world-longframes',enforce:'pre',transform(source,id){
   const path=id.split('?')[0];if(!path.includes('/src/components/world/')||!/[.]tsx?$/.test(path))return;
   let changed=false,ordinal=0;const name=path.split('/').pop();
   const ref=process.env.CAMP_PERF_REF;
-  const baselineSubstituted=!!ref&&['WorldShadows.ts','shadow-chunk-builder.ts','shadow-chunk-cache.ts'].includes(name);
+  const baselineSubstituted=!!ref&&comparedModules.includes(name);
   if(baselineSubstituted)source=execFileSync('git',['show',`${ref}:src/components/world/${name}`],{encoding:'utf8'});
   if(process.env.CAMP_PERF_SIMPLE==='1'){
     if(name==='WorldCamp.tsx')return `import CampFeedbackReview from ${JSON.stringify(simpleUi)};\n`+source.replace('<group name="world-camp-slice">','<group name="world-camp-slice"><CampFeedbackReview />');
-    if(ref&&['WorldShadows.ts','shadow-chunk-builder.ts','shadow-chunk-cache.ts'].includes(name))return source;
+    if(baselineSubstituted)return source;
     return;
   }
   source=source.replace(/\buseFrame\(/g,()=>{changed=true;return `useProfileFrame(${JSON.stringify(name+':frame'+(++ordinal))},`;});
