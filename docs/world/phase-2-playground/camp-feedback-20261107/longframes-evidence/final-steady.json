@@ -1,0 +1,801 @@
+{
+  "start": {
+    "shot": "camp-batch-tools-day",
+    "paused": false,
+    "hidden": false,
+    "loading": false,
+    "quality": "balanced",
+    "worldMinutes": 720,
+    "camera": [
+      -36.5,
+      7,
+      24.6
+    ],
+    "quaternion": [
+      -0.06310534784218876,
+      -0.3773144837755987,
+      -0.025780923859161607,
+      0.9235728663033783
+    ],
+    "canvas": [
+      1951,
+      1062
+    ],
+    "dpr": 1.1412731405118963,
+    "exposure": 1,
+    "shadow": {
+      "pending": false,
+      "slices": 0,
+      "cpuMs": 0,
+      "maxSliceMs": 0,
+      "cancelled": 0,
+      "error": "",
+      "phases": [
+        {
+          "phase": "validate",
+          "count": 1901,
+          "totalMs": 5494.899994969368,
+          "maxMs": 83.29999995231628,
+          "maxFrame": 1301,
+          "source": ""
+        },
+        {
+          "phase": "source",
+          "count": 482,
+          "totalMs": 7.800000548362732,
+          "maxMs": 0.3999999761581421,
+          "maxFrame": 212,
+          "source": "park-rail"
+        },
+        {
+          "phase": "transform",
+          "count": 1772,
+          "totalMs": 154.1000007390976,
+          "maxMs": 4.200000047683716,
+          "maxFrame": 611,
+          "source": "AM_batch_stone"
+        },
+        {
+          "phase": "bin",
+          "count": 3358,
+          "totalMs": 433.59999775886536,
+          "maxMs": 45.60000002384186,
+          "maxFrame": 676,
+          "source": "AM_batch_wood"
+        },
+        {
+          "phase": "hull-copy",
+          "count": 1086,
+          "totalMs": 136.70000159740448,
+          "maxMs": 42.799999952316284,
+          "maxFrame": 602,
+          "source": "AM_batch_stone"
+        },
+        {
+          "phase": "hull-submit",
+          "count": 108,
+          "totalMs": 15.600000143051147,
+          "maxMs": 0.5,
+          "maxFrame": 685,
+          "source": "case_screw_3"
+        },
+        {
+          "phase": "hull-wait",
+          "count": 43,
+          "totalMs": 0.899999737739563,
+          "maxMs": 0.10000002384185791,
+          "maxFrame": 1043,
+          "source": "coaster-retained-rail-shadow"
+        },
+        {
+          "phase": "hull-hydrate",
+          "count": 108,
+          "totalMs": 8.300000309944153,
+          "maxMs": 0.40000009536743164,
+          "maxFrame": 688,
+          "source": "case_screw_5"
+        },
+        {
+          "phase": "buffer",
+          "count": 4671,
+          "totalMs": 271.00000154972076,
+          "maxMs": 21.700000047683716,
+          "maxFrame": 1930,
+          "source": ""
+        },
+        {
+          "phase": "bounds",
+          "count": 8664,
+          "totalMs": 310.7999995946884,
+          "maxMs": 3.100000023841858,
+          "maxFrame": 1952,
+          "source": ""
+        },
+        {
+          "phase": "publish",
+          "count": 1,
+          "totalMs": 7.300000071525574,
+          "maxMs": 7.300000071525574,
+          "maxFrame": 2112,
+          "source": ""
+        }
+      ],
+      "hullWorker": {
+        "requests": 108,
+        "workerMs": 1582.6999994516373,
+        "maxWorkerMs": 350.2999999523163,
+        "maxSource": "ibd-three-sheds-static",
+        "maxInputVertices": 190284
+      }
+    },
+    "memory": {
+      "geometries": 422,
+      "textures": 147,
+      "programs": 204
+    },
+    "actor": [
+      -41.995914459228516,
+      5.637802600860596,
+      19.99680519104004
+    ],
+    "occlusion": {
+      "ms": 0.5,
+      "tested": 29,
+      "candidates": 265
+    }
+  },
+  "end": {
+    "shot": "camp-batch-tools-day",
+    "paused": false,
+    "hidden": false,
+    "loading": false,
+    "quality": "balanced",
+    "worldMinutes": 720,
+    "camera": [
+      -36.5,
+      7,
+      24.6
+    ],
+    "quaternion": [
+      -0.06310534784218876,
+      -0.3773144837755987,
+      -0.025780923859161607,
+      0.9235728663033783
+    ],
+    "canvas": [
+      1951,
+      1062
+    ],
+    "dpr": 1.1412731405118963,
+    "exposure": 1,
+    "shadow": {
+      "pending": false,
+      "slices": 0,
+      "cpuMs": 0,
+      "maxSliceMs": 0,
+      "cancelled": 0,
+      "error": "",
+      "phases": [
+        {
+          "phase": "validate",
+          "count": 1901,
+          "totalMs": 5494.899994969368,
+          "maxMs": 83.29999995231628,
+          "maxFrame": 1301,
+          "source": ""
+        },
+        {
+          "phase": "source",
+          "count": 482,
+          "totalMs": 7.800000548362732,
+          "maxMs": 0.3999999761581421,
+          "maxFrame": 212,
+          "source": "park-rail"
+        },
+        {
+          "phase": "transform",
+          "count": 1772,
+          "totalMs": 154.1000007390976,
+          "maxMs": 4.200000047683716,
+          "maxFrame": 611,
+          "source": "AM_batch_stone"
+        },
+        {
+          "phase": "bin",
+          "count": 3358,
+          "totalMs": 433.59999775886536,
+          "maxMs": 45.60000002384186,
+          "maxFrame": 676,
+          "source": "AM_batch_wood"
+        },
+        {
+          "phase": "hull-copy",
+          "count": 1086,
+          "totalMs": 136.70000159740448,
+          "maxMs": 42.799999952316284,
+          "maxFrame": 602,
+          "source": "AM_batch_stone"
+        },
+        {
+          "phase": "hull-submit",
+          "count": 108,
+          "totalMs": 15.600000143051147,
+          "maxMs": 0.5,
+          "maxFrame": 685,
+          "source": "case_screw_3"
+        },
+        {
+          "phase": "hull-wait",
+          "count": 43,
+          "totalMs": 0.899999737739563,
+          "maxMs": 0.10000002384185791,
+          "maxFrame": 1043,
+          "source": "coaster-retained-rail-shadow"
+        },
+        {
+          "phase": "hull-hydrate",
+          "count": 108,
+          "totalMs": 8.300000309944153,
+          "maxMs": 0.40000009536743164,
+          "maxFrame": 688,
+          "source": "case_screw_5"
+        },
+        {
+          "phase": "buffer",
+          "count": 4671,
+          "totalMs": 271.00000154972076,
+          "maxMs": 21.700000047683716,
+          "maxFrame": 1930,
+          "source": ""
+        },
+        {
+          "phase": "bounds",
+          "count": 8664,
+          "totalMs": 310.7999995946884,
+          "maxMs": 3.100000023841858,
+          "maxFrame": 1952,
+          "source": ""
+        },
+        {
+          "phase": "publish",
+          "count": 1,
+          "totalMs": 7.300000071525574,
+          "maxMs": 7.300000071525574,
+          "maxFrame": 2112,
+          "source": ""
+        }
+      ],
+      "hullWorker": {
+        "requests": 108,
+        "workerMs": 1582.6999994516373,
+        "maxWorkerMs": 350.2999999523163,
+        "maxSource": "ibd-three-sheds-static",
+        "maxInputVertices": 190284
+      }
+    },
+    "memory": {
+      "geometries": 422,
+      "textures": 147,
+      "programs": 204
+    },
+    "actor": [
+      -41.995914459228516,
+      5.637802600860596,
+      19.99680519104004
+    ],
+    "occlusion": {
+      "ms": 0.5,
+      "tested": 29,
+      "candidates": 265
+    }
+  },
+  "frameMs": {
+    "n": 600,
+    "p50": 25,
+    "p95": 130.60000002384186,
+    "p99": 375,
+    "max": 956.2000000476837,
+    "over50": 106,
+    "over100": 40
+  },
+  "calls": {
+    "n": 600,
+    "p50": 342,
+    "p95": 342,
+    "p99": 342,
+    "max": 342,
+    "over50": 600,
+    "over100": 600
+  },
+  "triangles": {
+    "n": 600,
+    "p50": 1036123,
+    "p95": 1036123,
+    "p99": 1036123,
+    "max": 1036123,
+    "over50": 600,
+    "over100": 600
+  },
+  "bufferSubData": {
+    "calls": 12600,
+    "bytes": 8536800
+  },
+  "gpuMs": {
+    "n": 75,
+    "p50": 15.03475,
+    "p95": 30.481749,
+    "p99": 52.46725,
+    "max": 52.46725,
+    "over50": 1,
+    "over100": 0
+  },
+  "longTasks": [
+    {
+      "start": 357472.2000000477,
+      "duration": 72
+    },
+    {
+      "start": 357544.7000000477,
+      "duration": 150
+    },
+    {
+      "start": 357918.3000000715,
+      "duration": 82
+    },
+    {
+      "start": 358001.2000000477,
+      "duration": 67
+    },
+    {
+      "start": 358175.60000002384,
+      "duration": 69
+    },
+    {
+      "start": 358251,
+      "duration": 91
+    },
+    {
+      "start": 358345.10000002384,
+      "duration": 63
+    },
+    {
+      "start": 358493.39999997616,
+      "duration": 98
+    },
+    {
+      "start": 358794.5,
+      "duration": 56
+    },
+    {
+      "start": 358916.89999997616,
+      "duration": 227
+    },
+    {
+      "start": 359150.60000002384,
+      "duration": 96
+    },
+    {
+      "start": 359246.60000002384,
+      "duration": 156
+    },
+    {
+      "start": 359404.7000000477,
+      "duration": 128
+    },
+    {
+      "start": 359584.5,
+      "duration": 292
+    },
+    {
+      "start": 359900.2000000477,
+      "duration": 500
+    },
+    {
+      "start": 360482.3000000715,
+      "duration": 93
+    },
+    {
+      "start": 360576.39999997616,
+      "duration": 82
+    },
+    {
+      "start": 360659.3000000715,
+      "duration": 166
+    },
+    {
+      "start": 360988.7000000477,
+      "duration": 67
+    },
+    {
+      "start": 361056.39999997616,
+      "duration": 356
+    },
+    {
+      "start": 361413.7000000477,
+      "duration": 342
+    },
+    {
+      "start": 361757.8000000715,
+      "duration": 50
+    },
+    {
+      "start": 361808.2000000477,
+      "duration": 73
+    },
+    {
+      "start": 361900.39999997616,
+      "duration": 50
+    },
+    {
+      "start": 361953.10000002384,
+      "duration": 68
+    },
+    {
+      "start": 362053.2000000477,
+      "duration": 71
+    },
+    {
+      "start": 362277.10000002384,
+      "duration": 77
+    },
+    {
+      "start": 362396.60000002384,
+      "duration": 85
+    },
+    {
+      "start": 362736.10000002384,
+      "duration": 151
+    },
+    {
+      "start": 362950.3000000715,
+      "duration": 100
+    },
+    {
+      "start": 363051.2000000477,
+      "duration": 67
+    },
+    {
+      "start": 363119.5,
+      "duration": 52
+    },
+    {
+      "start": 363172.39999997616,
+      "duration": 200
+    },
+    {
+      "start": 363374.89999997616,
+      "duration": 64
+    },
+    {
+      "start": 363440.2000000477,
+      "duration": 61
+    },
+    {
+      "start": 363508.10000002384,
+      "duration": 103
+    },
+    {
+      "start": 363663,
+      "duration": 58
+    },
+    {
+      "start": 364166.89999997616,
+      "duration": 50
+    },
+    {
+      "start": 364222.5,
+      "duration": 375
+    },
+    {
+      "start": 364724.39999997616,
+      "duration": 99
+    }
+  ],
+  "timing": {
+    "buckets": [
+      {
+        "name": "renderer.render (includes shadow)",
+        "count": 600,
+        "ms": 21411.099998116493,
+        "max": 784.5
+      },
+      {
+        "name": "shadow.applySunPass",
+        "count": 1800,
+        "ms": 866.4000037908554,
+        "max": 60
+      },
+      {
+        "name": "WorldEnvironment.tsx:frame1",
+        "count": 600,
+        "ms": 635.1999996900558,
+        "max": 137
+      },
+      {
+        "name": "WorldStreetKnock.tsx:frame1",
+        "count": 3000,
+        "ms": 508.5999970436096,
+        "max": 33.5
+      },
+      {
+        "name": "WorldGrass.tsx:frame1",
+        "count": 600,
+        "ms": 429.4000014066696,
+        "max": 46.89999997615814
+      },
+      {
+        "name": "shadow.rescan",
+        "count": 20,
+        "ms": 356.4999998807907,
+        "max": 136.90000009536743
+      },
+      {
+        "name": "WorldParkWalk.tsx:frame1",
+        "count": 2400,
+        "ms": 154.70000159740448,
+        "max": 70.59999990463257
+      },
+      {
+        "name": "WorldParkExhibits.tsx:frame6",
+        "count": 3000,
+        "ms": 127.2999997138977,
+        "max": 17.40000009536743
+      },
+      {
+        "name": "WorldVehicleVisual.tsx:frame1",
+        "count": 1800,
+        "ms": 109.10000097751617,
+        "max": 17.399999976158142
+      },
+      {
+        "name": "WorldStreetTrees.tsx:frame1",
+        "count": 600,
+        "ms": 90.89999949932098,
+        "max": 17.5
+      },
+      {
+        "name": "WorldCampContent.tsx:frame6",
+        "count": 5400,
+        "ms": 83.19999992847443,
+        "max": 17
+      },
+      {
+        "name": "WorldStreetStatic.tsx:frame1",
+        "count": 2400,
+        "ms": 81.7000002861023,
+        "max": 17
+      },
+      {
+        "name": "WorldParkLOD.tsx:frame1",
+        "count": 9600,
+        "ms": 72.00000035762787,
+        "max": 22.100000023841858
+      },
+      {
+        "name": "WorldActors.tsx:frame1",
+        "count": 1800,
+        "ms": 66.50000035762787,
+        "max": 16.899999976158142
+      },
+      {
+        "name": "WorldIbdPackInspection.tsx:frame1",
+        "count": 2400,
+        "ms": 57.700000286102295,
+        "max": 16.299999952316284
+      },
+      {
+        "name": "WorldTownAssets.tsx:frame1",
+        "count": 600,
+        "ms": 48.99999976158142,
+        "max": 14.5
+      },
+      {
+        "name": "WorldAlphaMine.tsx:frame4",
+        "count": 600,
+        "ms": 46,
+        "max": 17.5
+      },
+      {
+        "name": "WorldCampContent.tsx:frame5",
+        "count": 600,
+        "ms": 39.19999980926514,
+        "max": 6
+      },
+      {
+        "name": "WorldActors.tsx:frame2",
+        "count": 600,
+        "ms": 37.799999952316284,
+        "max": 15.600000023841858
+      },
+      {
+        "name": "WorldGuide.tsx:frame1",
+        "count": 600,
+        "ms": 37.600000500679016,
+        "max": 10.5
+      },
+      {
+        "name": "WorldCoasterStationCraft.tsx:frame1",
+        "count": 600,
+        "ms": 36.30000030994415,
+        "max": 17.300000071525574
+      },
+      {
+        "name": "WorldDjcClubFurniture.tsx:frame1",
+        "count": 600,
+        "ms": 36.10000002384186,
+        "max": 16.700000047683716
+      },
+      {
+        "name": "WorldCoasterTrainCraft.tsx:frame1",
+        "count": 600,
+        "ms": 35.99999976158142,
+        "max": 8.299999952316284
+      },
+      {
+        "name": "WorldSea.tsx:frame1",
+        "count": 600,
+        "ms": 34.19999980926514,
+        "max": 16.299999952316284
+      },
+      {
+        "name": "WorldCampContent.tsx:frame3",
+        "count": 2400,
+        "ms": 33.59999978542328,
+        "max": 17.100000023841858
+      },
+      {
+        "name": "WorldAlphaMine.tsx:frame2",
+        "count": 600,
+        "ms": 31.5,
+        "max": 15.900000095367432
+      },
+      {
+        "name": "WorldDjcClubBar.tsx:frame1",
+        "count": 600,
+        "ms": 27.0999995470047,
+        "max": 16.399999976158142
+      },
+      {
+        "name": "WorldParkWalk.tsx:frame2",
+        "count": 600,
+        "ms": 26.699999690055847,
+        "max": 15
+      },
+      {
+        "name": "WorldWeather.tsx:frame1",
+        "count": 600,
+        "ms": 24.799999713897705,
+        "max": 16.399999976158142
+      },
+      {
+        "name": "WorldCamp.tsx:frame5",
+        "count": 600,
+        "ms": 24.59999978542328,
+        "max": 16.299999952316284
+      }
+    ],
+    "slow": [
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 784.5,
+        "frame": 108
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 590.8999999761581,
+        "frame": 110
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 536.5,
+        "frame": 125
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 439.5,
+        "frame": 36
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 372.60000002384186,
+        "frame": 99
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 371.3000000715256,
+        "frame": 137
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 337.40000009536743,
+        "frame": 48
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 337.39999997615814,
+        "frame": 47
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 266.3000000715256,
+        "frame": 135
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 254,
+        "frame": 121
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 240.29999995231628,
+        "frame": 139
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 218.60000002384186,
+        "frame": 28
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 198.70000004768372,
+        "frame": 155
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 192.89999997615814,
+        "frame": 133
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 183.39999997615814,
+        "frame": 75
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 159.69999992847443,
+        "frame": 145
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 153.5,
+        "frame": 142
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 151.89999997615814,
+        "frame": 149
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 151,
+        "frame": 30
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 150.10000002384186,
+        "frame": 161
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 145,
+        "frame": 70
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 142.39999997615814,
+        "frame": 131
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 140.5,
+        "frame": 154
+      },
+      {
+        "name": "WorldEnvironment.tsx:frame1",
+        "ms": 137,
+        "frame": 145
+      }
+    ]
+  },
+  "notes": "Nested timing buckets overlap. GPU samples cover every eighth renderer call; no finish/readPixels sync."
+}

@@ -1,0 +1,789 @@
+{
+  "start": {
+    "shot": "camp-batch-tools-day",
+    "paused": false,
+    "hidden": false,
+    "loading": false,
+    "quality": "balanced",
+    "worldMinutes": 720,
+    "camera": [
+      -36.5,
+      7,
+      24.6
+    ],
+    "quaternion": [
+      -0.06310534784218876,
+      -0.3773144837755987,
+      -0.025780923859161607,
+      0.9235728663033783
+    ],
+    "canvas": [
+      1951,
+      1062
+    ],
+    "dpr": 1.1412731405118963,
+    "exposure": 1,
+    "shadow": {
+      "pending": false,
+      "slices": 0,
+      "cpuMs": 0,
+      "maxSliceMs": 0,
+      "cancelled": 0,
+      "error": "",
+      "phases": [
+        {
+          "phase": "validate",
+          "count": 335,
+          "totalMs": 1124.2999995946884,
+          "maxMs": 69.20000004768372,
+          "maxFrame": 1605,
+          "source": ""
+        },
+        {
+          "phase": "source",
+          "count": 98,
+          "totalMs": 3,
+          "maxMs": 1.1999999284744263,
+          "maxFrame": 1563,
+          "source": "park-exhibit-P15-stool"
+        },
+        {
+          "phase": "transform",
+          "count": 139,
+          "totalMs": 6.300000429153442,
+          "maxMs": 0.30000007152557373,
+          "maxFrame": 1657,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "bin",
+          "count": 306,
+          "totalMs": 86,
+          "maxMs": 49.699999928474426,
+          "maxFrame": 1658,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-copy",
+          "count": 41,
+          "totalMs": 5.200000166893005,
+          "maxMs": 0.5,
+          "maxFrame": 1613,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-submit",
+          "count": 22,
+          "totalMs": 30.40000009536743,
+          "maxMs": 27.799999952316284,
+          "maxFrame": 1580,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-wait",
+          "count": 4,
+          "totalMs": 0.19999980926513672,
+          "maxMs": 0.09999990463256836,
+          "maxFrame": 1584,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-hydrate",
+          "count": 22,
+          "totalMs": 1.2999998331069946,
+          "maxMs": 0.20000004768371582,
+          "maxFrame": 1615,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "buffer",
+          "count": 880,
+          "totalMs": 87.10000002384186,
+          "maxMs": 22.100000023841858,
+          "maxFrame": 1728,
+          "source": ""
+        },
+        {
+          "phase": "bounds",
+          "count": 1716,
+          "totalMs": 43.90000033378601,
+          "maxMs": 0.3999999761581421,
+          "maxFrame": 1804,
+          "source": ""
+        },
+        {
+          "phase": "publish",
+          "count": 1,
+          "totalMs": 3.5,
+          "maxMs": 3.5,
+          "maxFrame": 1895,
+          "source": ""
+        }
+      ],
+      "hullWorker": {
+        "requests": 22,
+        "workerMs": 83,
+        "maxWorkerMs": 40,
+        "maxSource": "(unnamed)",
+        "maxInputVertices": 7952
+      }
+    },
+    "memory": {
+      "geometries": 383,
+      "textures": 145,
+      "programs": 122
+    },
+    "actor": [
+      -41.99534225463867,
+      5.637729167938232,
+      19.996381759643555
+    ],
+    "occlusion": {
+      "ms": 0.2999999523162842,
+      "tested": 29,
+      "candidates": 265
+    }
+  },
+  "end": {
+    "shot": "camp-batch-tools-day",
+    "paused": false,
+    "hidden": false,
+    "loading": false,
+    "quality": "balanced",
+    "worldMinutes": 720,
+    "camera": [
+      -36.5,
+      7,
+      24.6
+    ],
+    "quaternion": [
+      -0.06310534784218876,
+      -0.3773144837755987,
+      -0.025780923859161607,
+      0.9235728663033783
+    ],
+    "canvas": [
+      1951,
+      1062
+    ],
+    "dpr": 1.1412731405118963,
+    "exposure": 1,
+    "shadow": {
+      "pending": false,
+      "slices": 0,
+      "cpuMs": 0,
+      "maxSliceMs": 0,
+      "cancelled": 0,
+      "error": "",
+      "phases": [
+        {
+          "phase": "validate",
+          "count": 335,
+          "totalMs": 1124.2999995946884,
+          "maxMs": 69.20000004768372,
+          "maxFrame": 1605,
+          "source": ""
+        },
+        {
+          "phase": "source",
+          "count": 98,
+          "totalMs": 3,
+          "maxMs": 1.1999999284744263,
+          "maxFrame": 1563,
+          "source": "park-exhibit-P15-stool"
+        },
+        {
+          "phase": "transform",
+          "count": 139,
+          "totalMs": 6.300000429153442,
+          "maxMs": 0.30000007152557373,
+          "maxFrame": 1657,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "bin",
+          "count": 306,
+          "totalMs": 86,
+          "maxMs": 49.699999928474426,
+          "maxFrame": 1658,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-copy",
+          "count": 41,
+          "totalMs": 5.200000166893005,
+          "maxMs": 0.5,
+          "maxFrame": 1613,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-submit",
+          "count": 22,
+          "totalMs": 30.40000009536743,
+          "maxMs": 27.799999952316284,
+          "maxFrame": 1580,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-wait",
+          "count": 4,
+          "totalMs": 0.19999980926513672,
+          "maxMs": 0.09999990463256836,
+          "maxFrame": 1584,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "hull-hydrate",
+          "count": 22,
+          "totalMs": 1.2999998331069946,
+          "maxMs": 0.20000004768371582,
+          "maxFrame": 1615,
+          "source": "(unnamed)"
+        },
+        {
+          "phase": "buffer",
+          "count": 880,
+          "totalMs": 87.10000002384186,
+          "maxMs": 22.100000023841858,
+          "maxFrame": 1728,
+          "source": ""
+        },
+        {
+          "phase": "bounds",
+          "count": 1716,
+          "totalMs": 43.90000033378601,
+          "maxMs": 0.3999999761581421,
+          "maxFrame": 1804,
+          "source": ""
+        },
+        {
+          "phase": "publish",
+          "count": 1,
+          "totalMs": 3.5,
+          "maxMs": 3.5,
+          "maxFrame": 1895,
+          "source": ""
+        }
+      ],
+      "hullWorker": {
+        "requests": 22,
+        "workerMs": 83,
+        "maxWorkerMs": 40,
+        "maxSource": "(unnamed)",
+        "maxInputVertices": 7952
+      }
+    },
+    "memory": {
+      "geometries": 383,
+      "textures": 145,
+      "programs": 122
+    },
+    "actor": [
+      -41.99534225463867,
+      5.637729167938232,
+      19.996381759643555
+    ],
+    "occlusion": {
+      "ms": 0.2999999523162842,
+      "tested": 29,
+      "candidates": 265
+    }
+  },
+  "frameMs": {
+    "n": 600,
+    "p50": 19.700000047683716,
+    "p95": 60.10000002384186,
+    "p99": 158.39999997615814,
+    "max": 513.4000000953674,
+    "over50": 41,
+    "over100": 12
+  },
+  "calls": {
+    "n": 600,
+    "p50": 342,
+    "p95": 342,
+    "p99": 342,
+    "max": 342,
+    "over50": 600,
+    "over100": 600
+  },
+  "triangles": {
+    "n": 600,
+    "p50": 1036123,
+    "p95": 1036123,
+    "p99": 1036123,
+    "max": 1036123,
+    "over50": 600,
+    "over100": 600
+  },
+  "bufferSubData": {
+    "calls": 21000,
+    "bytes": 11954400
+  },
+  "gpuMs": {
+    "n": 75,
+    "p50": 14.017625,
+    "p95": 18.132874,
+    "p99": 32.940124,
+    "max": 32.940124,
+    "over50": 0,
+    "over100": 0
+  },
+  "longTasks": [
+    {
+      "start": 188642.10000002384,
+      "duration": 53
+    },
+    {
+      "start": 188695.29999995232,
+      "duration": 97
+    },
+    {
+      "start": 188933.19999992847,
+      "duration": 71
+    },
+    {
+      "start": 189004.79999995232,
+      "duration": 156
+    },
+    {
+      "start": 189163.10000002384,
+      "duration": 98
+    },
+    {
+      "start": 189265.60000002384,
+      "duration": 522
+    },
+    {
+      "start": 189788.60000002384,
+      "duration": 93
+    },
+    {
+      "start": 189910.29999995232,
+      "duration": 60
+    },
+    {
+      "start": 190043.89999997616,
+      "duration": 59
+    },
+    {
+      "start": 190271.69999992847,
+      "duration": 56
+    },
+    {
+      "start": 190329.69999992847,
+      "duration": 66
+    },
+    {
+      "start": 190458.19999992847,
+      "duration": 263
+    },
+    {
+      "start": 190721.29999995232,
+      "duration": 56
+    },
+    {
+      "start": 190778.60000002384,
+      "duration": 69
+    },
+    {
+      "start": 190880.69999992847,
+      "duration": 483
+    },
+    {
+      "start": 191367,
+      "duration": 217
+    },
+    {
+      "start": 191586.29999995232,
+      "duration": 78
+    },
+    {
+      "start": 191665,
+      "duration": 60
+    },
+    {
+      "start": 191730.10000002384,
+      "duration": 79
+    },
+    {
+      "start": 191811.5,
+      "duration": 53
+    },
+    {
+      "start": 191911.39999997616,
+      "duration": 95
+    },
+    {
+      "start": 192007.5,
+      "duration": 51
+    },
+    {
+      "start": 192141.19999992847,
+      "duration": 228
+    },
+    {
+      "start": 192382.69999992847,
+      "duration": 64
+    },
+    {
+      "start": 192475,
+      "duration": 105
+    },
+    {
+      "start": 192581,
+      "duration": 110
+    },
+    {
+      "start": 192692.19999992847,
+      "duration": 61
+    },
+    {
+      "start": 192754.69999992847,
+      "duration": 110
+    },
+    {
+      "start": 192962.60000002384,
+      "duration": 60
+    },
+    {
+      "start": 193242.39999997616,
+      "duration": 116
+    },
+    {
+      "start": 195049.60000002384,
+      "duration": 50
+    },
+    {
+      "start": 198137.89999997616,
+      "duration": 51
+    },
+    {
+      "start": 198352.5,
+      "duration": 96
+    },
+    {
+      "start": 198475.89999997616,
+      "duration": 71
+    },
+    {
+      "start": 198591,
+      "duration": 52
+    },
+    {
+      "start": 200326.60000002384,
+      "duration": 62
+    },
+    {
+      "start": 203158.79999995232,
+      "duration": 96
+    }
+  ],
+  "timing": {
+    "buckets": [
+      {
+        "name": "renderer.render (includes shadow)",
+        "count": 600,
+        "ms": 14064.00000011921,
+        "max": 489.89999997615814
+      },
+      {
+        "name": "shadow.applySunPass",
+        "count": 1800,
+        "ms": 569.9999997615814,
+        "max": 27.100000023841858
+      },
+      {
+        "name": "WorldEnvironment.tsx:frame1",
+        "count": 600,
+        "ms": 303.0000014305115,
+        "max": 81.10000002384186
+      },
+      {
+        "name": "shadow.rescan",
+        "count": 20,
+        "ms": 237.00000023841858,
+        "max": 81
+      },
+      {
+        "name": "WorldGrass.tsx:frame1",
+        "count": 600,
+        "ms": 152.79999804496765,
+        "max": 10.200000047683716
+      },
+      {
+        "name": "WorldStreetKnock.tsx:frame1",
+        "count": 3000,
+        "ms": 123.7000002861023,
+        "max": 4.399999976158142
+      },
+      {
+        "name": "WorldParkExhibits.tsx:frame6",
+        "count": 3000,
+        "ms": 104.59999907016754,
+        "max": 1
+      },
+      {
+        "name": "WorldVehicleVisual.tsx:frame1",
+        "count": 1800,
+        "ms": 64.30000066757202,
+        "max": 14.799999952316284
+      },
+      {
+        "name": "WorldTownAssets.tsx:frame1",
+        "count": 600,
+        "ms": 40.70000159740448,
+        "max": 5.100000023841858
+      },
+      {
+        "name": "WorldActors.tsx:frame1",
+        "count": 1800,
+        "ms": 37.90000081062317,
+        "max": 6.300000071525574
+      },
+      {
+        "name": "WorldGuide.tsx:frame1",
+        "count": 600,
+        "ms": 35.199999928474426,
+        "max": 16.700000047683716
+      },
+      {
+        "name": "WorldStreetStatic.tsx:frame1",
+        "count": 2400,
+        "ms": 33.700000166893005,
+        "max": 3.799999952316284
+      },
+      {
+        "name": "WorldCampContent.tsx:frame5",
+        "count": 600,
+        "ms": 30.399999976158142,
+        "max": 3.399999976158142
+      },
+      {
+        "name": "WorldParkWalk.tsx:frame1",
+        "count": 2400,
+        "ms": 27.800001859664917,
+        "max": 2.600000023841858
+      },
+      {
+        "name": "shadow.instanceSpheres",
+        "count": 4660,
+        "ms": 26.00000023841858,
+        "max": 5.299999952316284
+      },
+      {
+        "name": "WorldParkLOD.tsx:frame1",
+        "count": 9600,
+        "ms": 25.299999713897705,
+        "max": 5.799999952316284
+      },
+      {
+        "name": "WorldAlphaMine.tsx:frame4",
+        "count": 600,
+        "ms": 23.500000715255737,
+        "max": 2.1999999284744263
+      },
+      {
+        "name": "WorldEntry.tsx:frame1",
+        "count": 600,
+        "ms": 17.399999976158142,
+        "max": 4.199999928474426
+      },
+      {
+        "name": "WorldCoasterTrainCraft.tsx:frame1",
+        "count": 600,
+        "ms": 17.399999856948853,
+        "max": 0.5
+      },
+      {
+        "name": "WorldPark.tsx:frame1",
+        "count": 600,
+        "ms": 15.599999785423279,
+        "max": 15.299999952316284
+      },
+      {
+        "name": "WorldMinePool.tsx:frame1",
+        "count": 600,
+        "ms": 15.000000238418579,
+        "max": 9
+      },
+      {
+        "name": "WorldCampContent.tsx:frame3",
+        "count": 2400,
+        "ms": 14,
+        "max": 0.5
+      },
+      {
+        "name": "WorldCampContent.tsx:frame6",
+        "count": 5400,
+        "ms": 13.200000524520874,
+        "max": 1.399999976158142
+      },
+      {
+        "name": "WorldStreetTrees.tsx:frame1",
+        "count": 600,
+        "ms": 12.100000500679016,
+        "max": 0.40000009536743164
+      },
+      {
+        "name": "WorldNight.ts:frame1",
+        "count": 600,
+        "ms": 9.000000834465027,
+        "max": 0.5
+      },
+      {
+        "name": "WorldIbdPackInspection.tsx:frame1",
+        "count": 2400,
+        "ms": 8.500000476837158,
+        "max": 0.2999999523162842
+      },
+      {
+        "name": "WorldCampFacilityCraft.tsx:frame1",
+        "count": 4200,
+        "ms": 8.199999809265137,
+        "max": 1.5
+      },
+      {
+        "name": "WorldDjcClubBar.tsx:frame1",
+        "count": 600,
+        "ms": 7.799999713897705,
+        "max": 2.600000023841858
+      },
+      {
+        "name": "WorldStreetLandmarks.tsx:frame1",
+        "count": 600,
+        "ms": 7.199999809265137,
+        "max": 0.20000004768371582
+      },
+      {
+        "name": "WorldCampCraftProps.tsx:frame1",
+        "count": 1800,
+        "ms": 7.000000238418579,
+        "max": 1.600000023841858
+      }
+    ],
+    "slow": [
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 489.89999997615814,
+        "frame": 11
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 472,
+        "frame": 31
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 258.2999999523163,
+        "frame": 26
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 207,
+        "frame": 42
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 196.20000004768372,
+        "frame": 32
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 139.29999995231628,
+        "frame": 9
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 113.10000002384186,
+        "frame": 58
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 106.39999997615814,
+        "frame": 47
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 99.70000004768372,
+        "frame": 45
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 96.10000002384186,
+        "frame": 2
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 95.10000002384186,
+        "frame": 513
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 91,
+        "frame": 38
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 87.29999995231628,
+        "frame": 288
+      },
+      {
+        "name": "WorldEnvironment.tsx:frame1",
+        "ms": 81.10000002384186,
+        "frame": 12
+      },
+      {
+        "name": "shadow.rescan",
+        "ms": 81,
+        "frame": 12
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 72.79999995231628,
+        "frame": 33
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 70.40000009536743,
+        "frame": 44
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 70.10000002384186,
+        "frame": 35
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 69.5,
+        "frame": 8
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 67.79999995231628,
+        "frame": 28
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 63.89999997615814,
+        "frame": 10
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 61.10000002384186,
+        "frame": 43
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 58.699999928474426,
+        "frame": 51
+      },
+      {
+        "name": "renderer.render (includes shadow)",
+        "ms": 57.39999997615814,
+        "frame": 34
+      }
+    ]
+  },
+  "notes": "Nested timing buckets overlap. GPU samples cover every eighth renderer call; no finish/readPixels sync."
+}
