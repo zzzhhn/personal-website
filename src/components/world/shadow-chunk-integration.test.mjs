@@ -1,8 +1,51 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { BoxGeometry, DirectionalLight, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Scene, SphereGeometry } from 'three';
+import { BoxGeometry, DirectionalLight, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Scene, SphereGeometry } from 'three';
 import { fitSunShadow, shadowChunkWork } from './WorldShadows.ts';
 import { computeShadowHull } from './shadow-chunk-hull.ts';
+
+test('sun instance proxies retain their upload version at rest and refresh when the compacted matrices change', t => {
+  const scene = new Scene(), target = new Object3D(), light = new DirectionalLight(), camera = new PerspectiveCamera();
+  camera.position.set(0, 2, 8); camera.lookAt(0, 0, 0); camera.updateMatrixWorld();
+  const geometry = new BoxGeometry(), material = new MeshBasicMaterial();
+  const source = new InstancedMesh(geometry, material, 2);
+  source.name = 'moving-shadow-sample';
+  source.userData.shadowDynamic = true;
+  source.castShadow = true;
+  const matrix = new Matrix4();
+  source.setMatrixAt(0, matrix.makeTranslation(-1, 0, 0));
+  source.setMatrixAt(1, matrix.makeTranslation(1, 0, 0));
+  scene.add(target, light, source);
+  t.after(() => { scene.remove(light); source.dispose(); geometry.dispose(); material.dispose(); });
+  fitSunShadow(light, target, camera, { mapSize: 2048, wide: false, focus: [0, 0, 0] });
+  const sun = scene.getObjectByName('world-sun-cascaded');
+  const proxy = scene.getObjectByName('moving-shadow-sample#sun0');
+  let submitted;
+  const renderer = { shadowMap: { render() {
+    sun.shadow.updateMatrices(sun, camera); sun.shadow.getFrustum(0);
+    submitted = { count: proxy.count, cast: proxy.castShadow, version: proxy.instanceMatrix.version,
+      translations: Array.from({ length: proxy.count }, (_, i) => proxy.instanceMatrix.array[i * 16 + 12]) };
+  } } };
+  scene.onBeforeRender(renderer, scene, camera);
+  const pass = () => { renderer.shadowMap.render(); return submitted; };
+  const first = pass();
+  assert.deepEqual(first.translations, [-1, 1]);
+  assert.equal(first.cast, true);
+  assert.deepEqual(pass(), first, 'identical visible matrices need no buffer upload');
+  source.setMatrixAt(0, matrix.makeTranslation(1000, 0, 0));
+  const compacted = pass();
+  assert.deepEqual(compacted.translations, [1]);
+  assert.equal(compacted.version, first.version + 1);
+  source.setMatrixAt(1, matrix.makeTranslation(1.5, 0, 0));
+  const moved = pass();
+  assert.deepEqual(moved.translations, [1.5]);
+  assert.equal(moved.version, compacted.version + 1);
+  source.count = 0;
+  assert.deepEqual(pass(), { count: 0, cast: false, version: moved.version, translations: [] });
+  source.count = 2;
+  assert.deepEqual(pass(), moved, 'visibility count can recover without reuploading unchanged bytes');
+  assert.equal(source.castShadow, true, 'the wrapper restores original caster flags');
+});
 
 test('actual scene rescans append late stable casters, reuse untouched mesh/buffers, and rebuild on removal/replacement', t => {
   const scene = new Scene(), target = new Object3D(), light = new DirectionalLight(), camera = new PerspectiveCamera();

@@ -310,13 +310,18 @@ function* chunkFarHull(g: BufferGeometry, name: string, worker: ShadowHullJob): 
   return hull;
 }
 
-function instanceSpheres(mesh: InstancedMesh, animated: boolean) {
+function instanceSpheres(mesh: InstancedMesh, animated: boolean, previous: Float32Array) {
   const g = mesh.geometry; if (!g.boundingSphere) g.computeBoundingSphere();
-  const local = g.boundingSphere!, n = mesh.count, out = new Float32Array(n * 4);
+  const local = g.boundingSphere!, n = mesh.count;
+  const out = previous.length === n * 4 ? previous : new Float32Array(n * 4);
   for (let i = 0; i < n; i++) {
     mesh.getMatrixAt(i, m4); m4.premultiply(mesh.matrixWorld);
     sphere.copy(local).applyMatrix4(m4);
-    out.set([sphere.center.x, sphere.center.y, sphere.center.z, sphere.radius + (animated ? ANIMATED_MARGIN : 0)], i * 4);
+    const offset = i * 4;
+    out[offset] = sphere.center.x;
+    out[offset + 1] = sphere.center.y;
+    out[offset + 2] = sphere.center.z;
+    out[offset + 3] = sphere.radius + (animated ? ANIMATED_MARGIN : 0);
   }
   return out;
 }
@@ -372,7 +377,7 @@ function rescan(scene: Object3D) {
     if (meta.movable || meta.vehicle || (instanced && (mesh as InstancedMesh).instanceMatrix.usage === DynamicDrawUsage) || (mesh as unknown as { isSkinnedMesh?: boolean }).isSkinnedMesh) c.dynamic = true;
     if (instanced) {
       const src = mesh as InstancedMesh;
-      c.spheres = instanceSpheres(src, animated);
+      c.spheres = instanceSpheres(src, animated, c.spheres);
       for (const p of c.proxies) {
         p.material = mesh.material; p.customDepthMaterial = mesh.customDepthMaterial; p.customDistanceMaterial = mesh.customDistanceMaterial;
         p.matrixWorld.copy(mesh.matrixWorld);
@@ -846,6 +851,27 @@ function chunkInCascade(k: number, chunk: Chunk) {
   return shadowVisible(s.center.x, s.center.y, s.center.z, s.radius);
 }
 
+/** Compact in source order and upload only when a selected matrix changes. */
+function compactSunInstances(k: number, proxy: InstancedMesh, source: InstancedMesh, spheres: Float32Array) {
+  const src = source.instanceMatrix.array, dst = proxy.instanceMatrix.array;
+  let count = 0, changed = false;
+  for (let i = 0; i * 4 < spheres.length; i++) {
+    const offset = i * 4;
+    if (!inCascade(k, spheres[offset], spheres[offset + 1], spheres[offset + 2], spheres[offset + 3])) continue;
+    const from = i * 16, to = count++ * 16;
+    for (let j = 0; j < 16; j++) {
+      if (Object.is(src[from + j], dst[to + j])) continue;
+      dst.set(src.subarray(from, from + 16), to);
+      changed = true;
+      break;
+    }
+  }
+  proxy.count = count;
+  if (changed) proxy.instanceMatrix.needsUpdate = true;
+  proxy.castShadow = count > 0;
+  return count;
+}
+
 function applySunPass(k: number) {
   restoreShadowGeometry();
   let nCasters = 0, nProxies = 0, nInstances = 0;
@@ -858,15 +884,8 @@ function applySunPass(k: number) {
     gr.proxies.forEach((p, j) => { if (j !== k) p.castShadow = false; });
     const p = gr.proxies[k], lead = gr.members[0].mesh as InstancedMesh;
     if (!gr.members.every(m => m.cast)) { p.castShadow = false; continue; }
-    const src = lead.instanceMatrix.array as Float32Array, dst = p.instanceMatrix.array as Float32Array, s = gr.spheres;
     p.matrixWorld.copy(lead.matrixWorld);
-    let n = 0;
-    for (let i = 0; i * 4 < s.length; i++) {
-      if (!inCascade(k, s[i * 4], s[i * 4 + 1], s[i * 4 + 2], s[i * 4 + 3])) continue;
-      dst.set(src.subarray(i * 16, i * 16 + 16), n * 16); n++;
-    }
-    if (n !== p.count || n) { p.count = n; p.instanceMatrix.needsUpdate = true; }
-    p.castShadow = n > 0;
+    const n = compactSunInstances(k, p, lead, gr.spheres);
     if (n) { nProxies++; nInstances += n; }
   }
   for (const c of casters.values()) {
@@ -874,22 +893,16 @@ function applySunPass(k: number) {
     if (c.instanced) {
       c.mesh.castShadow = false;
       // Moving instances (knocked props): culling spheres follow them every frame, not every 30 frames.
-      if (k === 0 && c.dynamic) c.spheres = instanceSpheres(c.mesh as InstancedMesh, c.animated);
-      const src = (c.mesh as InstancedMesh).instanceMatrix.array as Float32Array, s = c.spheres;
+      const src = c.mesh as InstancedMesh;
+      if (k === 0 && c.dynamic) c.spheres = instanceSpheres(src, c.animated, c.spheres);
       c.proxies.forEach((p, j) => { if (j !== k) p.castShadow = false; });
-      const p = c.proxies[k], dst = p.instanceMatrix.array as Float32Array;
+      const p = c.proxies[k];
       // Dynamic wheel batches can swap LOD geometry without replacing their InstancedMesh.
       // Refresh shadow geometry as well, so distant wheels do not keep submitting the near mesh.
       const shadowLod = c.mesh.userData.shadowLodGeometry as BufferGeometry | undefined;
       p.geometry = k > 0 && shadowLod ? shadowLod : k === 2 ? farHull(c.mesh.geometry) ?? c.mesh.geometry : c.mesh.geometry;
       p.matrixWorld.copy(c.mesh.matrixWorld);
-      let n = 0;
-      for (let i = 0; i * 4 < s.length; i++) {
-        if (!inCascade(k, s[i * 4], s[i * 4 + 1], s[i * 4 + 2], s[i * 4 + 3])) continue;
-        dst.set(src.subarray(i * 16, i * 16 + 16), n * 16); n++;
-      }
-      if (n !== p.count || n) { p.count = n; p.instanceMatrix.needsUpdate = true; }
-      p.castShadow = n > 0;
+      const n = compactSunInstances(k, p, src, c.spheres);
       if (n) { nProxies++; nInstances += n; }
     } else {
       meshSphere(c, sphere);
