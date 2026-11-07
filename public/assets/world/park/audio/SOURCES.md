@@ -1,5 +1,11 @@
 # 漫游音乐来源
 
+## 栈道晨光长版
+
+2026-11-07 延续本项目原谱与同一套音源续写。`boardwalk-longform.mp3` 为 44.1 kHz 双声道、160 kbps MP3，502.187800 秒，约为原曲的 19.996 倍，10,045,221 字节。SHA-256：`21a7194db8185d9f0be6c091d89a04a31749e748ed56c04955ec33d1d0029642`。前 8 小节保留原谱，之后续写主题、问答、疏朗段落与尾声，不是循环拼接旧 WAV。吉他继续使用下述 CC0 Meta Steel Guitar，辅助声部继续使用 GeneralUser GS 与 TinySoundFont，来源与许可不变。
+
+完整谱面、逐段编排、许可、渲染代码和 QC 位于 `docs/world/phase-2-playground/boardwalk-longform/` 与 `tools/world/boardwalk-longform/`。成品 −22.50 LUFS、−3.59 dBTP，比旧试听低约 2.24 LU；保留现有运行时音量档位。浏览器媒体管线流式播放，不由应用整段解码为 AudioBuffer；浏览器仍有自己的媒体缓存。尾声包含约 1.1 秒低电平停顿后整首重播。
+
 ## 栈道晨光 v2
 
 2026-10-30 由本项目 Phase 2 音乐会话制作原谱和混音。公开文件 `boardwalk-v2.wav` 是主试听 WAV 的逐字节副本，SHA-256 为 `297b3c3ae76d463015970e1f009c09c9f8548f526dd9cef65ed00ce7893e49e8`。44.1 kHz 双声道 16-bit PCM，1,107,555 帧，25.114626 秒，4,430,298 字节。运行时保留自然收尾，结束后重头播放。

@@ -4,7 +4,7 @@ import { registerHooks } from 'node:module';
 import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from './world-audio-settings.ts';
 import { isClubAudible, setClubAudible } from './world-music-focus.ts';
 import { renderWorkshopCandidate } from './walk-music-candidate.ts';
-import { PARK_ROAMING_TRACK } from './park-roaming-music.ts';
+import { mockRoamingMedia, attachMediaNode } from './roaming-media-test-fixture.mjs';
 
 const audioUrl = new URL('./WorldParkAudio.ts', import.meta.url).href;
 const hook = registerHooks({ resolve(specifier, context, next) {
@@ -21,6 +21,7 @@ class Target extends EventTarget {
   get count() { return [...this.listeners.values()].reduce((n, set) => n + set.size, 0); }
 }
 const param = () => ({ value: 0, events: [],
+  cancelScheduledValues() {},
   cancelAndHoldAtTime(at) { this.events.push(['hold', at]); },
   setValueAtTime(value, at) { this.events.push([value, at]); },
   linearRampToValueAtTime(value, at) { this.events.push([value, at]); },
@@ -40,7 +41,7 @@ class Audio extends Target {
   static instances = []; static initialState = 'running';
   state = Audio.initialState; currentTime = 1; sampleRate = 32; destination = new AudioNode(); sources = []; nodes = [];
   resumes = 0; suspends = 0; closes = 0; holdResume = false; rejectResume = false;
-  decodes = 0;
+  mediaSources = [];
   constructor() { super(); Audio.instances.push(this); }
   node() { const n = new AudioNode(); this.nodes.push(n); return n; }
   createGain() { return this.node(); }
@@ -52,7 +53,11 @@ class Audio extends Target {
   }
   createOscillator() { const n = this.node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
-  async decodeAudioData() { this.decodes++; return { duration: PARK_ROAMING_TRACK.seconds, length: 602_751, numberOfChannels: 2 }; }
+  createMediaElementSource(media) {
+    const source = attachMediaNode(media, this.node());
+    this.mediaSources.push(source);
+    return source;
+  }
   change(state) { if (this.state === 'closed') return; this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   resume() {
     this.resumes++;
@@ -66,6 +71,7 @@ class Audio extends Target {
 const settle = () => new Promise(resolve => setImmediate(resolve));
 function env(t) {
   const win = new Target(), doc = Object.assign(new Target(), { hidden: false });
+  const media = mockRoamingMedia(doc);
   const originals = new Map(['window', 'document', 'performance', 'fetch'].map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)]));
   let clock = 0, sequence = 0, subscriptions = 0;
   const intervals = new Map(), audios = [];
@@ -75,7 +81,7 @@ function env(t) {
     requestAnimationFrame() { assert.fail('cue must not create a RAF'); },
   });
   for (const [name, value] of Object.entries({ window: win, document: doc, performance: { now: () => clock },
-    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(PARK_ROAMING_TRACK.fileBytes) }) })) {
+    fetch() { assert.fail('no JavaScript media fetch'); } })) {
     Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   }
   Audio.instances.length = 0; Audio.initialState = 'running'; store.setState(store.getInitialState(), true);
@@ -88,7 +94,7 @@ function env(t) {
     useWorldAudioSettings.setState(useWorldAudioSettings.getInitialState(), true);
     for (const [name, descriptor] of originals) { if (descriptor) Object.defineProperty(globalThis, name, descriptor); else delete globalThis[name]; }
   });
-  return { win, doc, intervals,
+  return { win, doc, intervals, ...media,
     audio() { const a = new ParkAudio(); audios.push(a); return a; },
     get subscriptions() { return subscriptions; }, now(value) { clock = value; },
     hidden(value) { doc.hidden = value; doc.dispatchEvent(new Event('visibilitychange')); },
@@ -258,10 +264,10 @@ test('the recording replaces the old DJ on the existing cue context without a mu
   a.setCrossfade(0.75); a.start(); a.start(); assert.equal(a.ctx, ctx); assert.equal(Audio.instances.length, 1);
   assert.equal(e.intervals.size, 0); assert.equal(a.crossfade, 0.75);
   ctx.sources[0].end(); await settle(); assert.equal(ctx.state, 'running'); assert.equal(e.intervals.size, 0);
-  const music = ctx.sources.find(source => source.loop); assert.ok(music); assert.equal(ctx.decodes, 1); a.cue('strike');
+  const music = ctx.mediaSources[0]; assert.ok(music); assert.equal(music.mediaElement.loop, true); a.cue('strike');
   store.setState({ paused: true }); await settle(); assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().cueVoices, 0);
-  assert.ok(!music.onended && music.disconnected);
-  store.setState({ paused: false }); await settle(); assert.equal(e.intervals.size, 0); assert.equal(ctx.decodes, 1);
+  assert.equal(music.mediaElement.paused, true);
+  store.setState({ paused: false }); await settle(); assert.equal(e.intervals.size, 0); assert.equal(ctx.mediaSources.length, 1);
   assert.equal(a.snapshot().roaming.sources, 1); release();
 });
 
@@ -299,12 +305,16 @@ test('an initially suspended browser context resumes once before creating any so
 });
 
 test('old loading work cannot start music on a later cue-only context', async t => {
-  const e = env(t), a = e.audio(); let finish;
-  globalThis.fetch = () => new Promise(resolve => { finish = resolve; });
-  let release = a.retain(); a.start(); release(); await settle();
+  const e = env(t), a = e.audio();
+  e.options.holdPlay = e.options.deferAborts = true;
+  let release = a.retain(); a.start();
+  const oldMedia = e.media[0], oldPlay = oldMedia.lastPlay;
+  release(); await settle();
   release = a.retain(); a.cue('scan'); const ctx = a.ctx;
-  finish({ ok: true, arrayBuffer: async () => new ArrayBuffer(PARK_ROAMING_TRACK.fileBytes) }); await settle();
-  assert.equal(a.started, false); assert.equal(ctx.sources.length, 1); assert.equal(e.intervals.size, 0); release();
+  oldPlay.resolve(); await settle();
+  assert.equal(oldMedia.src, ''); assert.equal(oldMedia.paused, true);
+  assert.equal(a.started, false); assert.equal(ctx.sources.length, 1);
+  assert.equal(ctx.mediaSources.length, 0); assert.equal(e.intervals.size, 0); release();
 });
 
 test('shared SFX mute drops pending and live cues, music volume does not mute cues', async t => {
@@ -323,15 +333,15 @@ test('shared SFX mute drops pending and live cues, music volume does not mute cu
   assert.equal(ctx.state, 'suspended'); release();
 });
 
-test('music zero stops the recording while SFX stays usable and restoration reuses its cache', async t => {
+test('music zero stops the recording while SFX stays usable and restoration reuses its media source', async t => {
   const e = env(t), a = e.audio(), release = a.retain(); a.start(); await settle();
-  const ctx = a.ctx; assert.ok(ctx.sources.length > 0);
+  const ctx = a.ctx; assert.equal(ctx.mediaSources.length, 1);
   setWorldAudioVolume('music', 0); await settle();
   assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().voices, 0);
   a.cue('scan'); await settle(); assert.equal(a.snapshot().cueVoices, 1); assert.equal(e.intervals.size, 0);
   setWorldAudioVolume('sfx', 0); setWorldAudioVolume('music', .5); await settle();
   assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().cueVoices, 0);
-  assert.equal(a.snapshot().roaming.level, .7); assert.equal(ctx.decodes, 1); release();
+  assert.equal(a.snapshot().roaming.level, .7); assert.equal(ctx.mediaSources.length, 1); release();
 });
 
 test('workshop renders seven distinct finite PCM sounds with bounded samples and faded endpoints', () => {

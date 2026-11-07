@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
-import { PARK_ROAMING_TRACK } from './park-roaming-music.ts';
+import { mockRoamingMedia, attachMediaNode } from './roaming-media-test-fixture.mjs';
 
 // Native Node TS loading needs the browser bundler's extensionless store import resolved.
 const audioUrl = new URL('./WorldParkAudio.ts', import.meta.url).href;
@@ -19,7 +19,7 @@ class Target extends EventTarget {
   removeEventListener(type, fn, options) { this.listeners.get(type)?.delete(fn); super.removeEventListener(type, fn, options); }
   get count() { return [...this.listeners.values()].reduce((n, set) => n + set.size, 0); }
 }
-const param = () => ({ value: 0, setValueAtTime() {}, linearRampToValueAtTime() {}, exponentialRampToValueAtTime() {}, setTargetAtTime() {} });
+const param = () => ({ value: 0, setValueAtTime() {}, cancelScheduledValues() {}, linearRampToValueAtTime() {}, exponentialRampToValueAtTime() {}, setTargetAtTime() {} });
 class Node {
   gain = param(); frequency = param(); threshold = param(); ratio = param(); onended = null;
   disconnected = false;
@@ -40,7 +40,7 @@ class Audio extends Target {
   createBuffer() { return { getChannelData: () => new Float32Array(this.sampleRate) }; }
   createOscillator() { const n = new Node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
-  async decodeAudioData() { return { duration: PARK_ROAMING_TRACK.seconds, length: 602_751, numberOfChannels: 2 }; }
+  createMediaElementSource(media) { return attachMediaNode(media, new Node()); }
   change(state) { this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   resume() {
     this.resumes++;
@@ -56,12 +56,13 @@ function env(t) {
   const names = ['window', 'document', 'navigator', 'requestAnimationFrame', 'cancelAnimationFrame', 'fetch'];
   const descriptors = new Map(names.map(n => [n, Object.getOwnPropertyDescriptor(globalThis, n)]));
   const win = new Target(), doc = Object.assign(new Target(), { hidden: false });
+  const media = mockRoamingMedia(doc);
   const intervals = new Map(), frames = new Map(), audios = [], stops = [];
   let id = 0, pads = [], reads = 0, denied = false, subscriptions = 0;
   const request = fn => { frames.set(++id, fn); return id; }, cancel = i => frames.delete(i);
   Object.assign(win, { AudioContext: Audio, setInterval: fn => { intervals.set(++id, fn); return id; }, clearInterval: i => intervals.delete(i) });
   const values = { window: win, document: doc, navigator: { getGamepads: () => { reads++; if (denied) throw new Error('denied'); return pads; } }, requestAnimationFrame: request, cancelAnimationFrame: cancel,
-    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(PARK_ROAMING_TRACK.fileBytes) }) };
+    fetch() { assert.fail('no JavaScript media fetch'); } };
   for (const [name, value] of Object.entries(values)) Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   Audio.instances.length = 0;
   useWorldStore.setState(useWorldStore.getInitialState(), true);
@@ -75,7 +76,7 @@ function env(t) {
     useWorldStore.subscribe = subscribe; useWorldStore.setState(useWorldStore.getInitialState(), true);
     for (const name of names) { const d = descriptors.get(name); if (d) Object.defineProperty(globalThis, name, d); else delete globalThis[name]; }
   });
-  return { win, doc, intervals, frames,
+  return { win, doc, intervals, frames, ...media,
     audio() { const a = new ParkAudio(); audios.push(a); return a; },
     watch(fn) { const stop = watchUiGamepads(fn); stops.push(stop); return stop; },
     get reads() { return reads; }, get subscriptions() { return subscriptions; },
@@ -98,6 +99,7 @@ test('audio ownership: five start/unmount cycles release timers, graphs and list
     release(); release(); await settle();
     assert.equal(a.started, false); assert.equal(a.ctx, null); assert.equal(ctx.state, 'closed');
     assert.equal(e.intervals.size, 0); assert.equal(e.subscriptions, 0); assert.equal(e.win.count + e.doc.count, 0);
+    assert.equal(e.media[i].src, ''); assert.equal(e.media[i].source.disconnected, true);
     assert.equal(a.snapshot().voices, 0); assert.ok(ctx.sources.every(s => s.disconnected));
   }
   assert.equal(Audio.instances.length, 5);

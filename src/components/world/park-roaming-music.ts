@@ -1,110 +1,191 @@
-/** The Boardwalk Morning v2 recording, decoded after a trusted gesture.
- * Owns one buffer/source on the caller's context. No synthesis, context, timer, RAF or global listeners. */
+/** The Boardwalk Morning recording streams through the caller's existing mix. */
 export const PARK_ROAMING_TRACK = {
-  url: '/assets/world/park/audio/boardwalk-v2.wav', seconds: 1_107_555 / 44_100, fileBytes: 4_430_298,
-  maxDecodedBytes: 9_644_024, // 48 kHz stereo Float32, rounding up to a whole frame.
+  url: '/assets/world/park/audio/boardwalk-longform.mp3', seconds: 22_146_482 / 44_100, fileBytes: 10_045_221,
 } as const;
+
+const HANDOFF_SECONDS = .18;
+const DURATION_TOLERANCE = .25; // Media containers may report encoder delay and padding.
+type Stream = { ctx: AudioContext; media: HTMLAudioElement; source: MediaElementAudioSourceNode; gain: GainNode };
+
 export class ParkRoamingMusic {
-  private ctx: AudioContext | null = null;
-  private buffer: AudioBuffer | null = null;
-  private source: AudioBufferSourceNode | null = null;
-  private gain: GainNode | null = null;
-  private abort: AbortController | null = null;
-  private decoding: Promise<AudioBuffer> | null = null;
-  private revision = 0;
+  private stream: Stream | null = null;
+  private attempt: { pending: boolean } | null = null;
+  private fade: { timer: number; at: number; position: number } | null = null;
+  private seconds = 0;
   private offset = 0;
-  private at = 0;
   private level = -1;
-  private fadeEnd = Infinity;
-  fading = false;
   phase: 'idle' | 'loading' | 'ready' | 'error' = 'idle';
   constructor(private changed: () => void) {}
+
+  get fading() { return this.fade !== null; }
   retry() { if (this.phase === 'error') this.phase = 'idle'; }
-  request(ctx: AudioContext) {
-    if (this.phase !== 'idle') return;
-    this.ctx = ctx;
-    if (this.decoding) return; // An aborted decode cannot be interrupted; do not overlap another one.
+
+  private connect(ctx: AudioContext, output: AudioNode) {
+    const media = document.createElement('audio');
+    media.preload = 'none';
+    media.loop = true;
+    const gain = ctx.createGain();
+    gain.gain.value = 0;
+    const source = ctx.createMediaElementSource(media);
+    this.stream = { ctx, media, source, gain };
+    source.connect(gain).connect(output);
+    return this.stream;
+  }
+
+  private load(stream: Stream) {
+    const { media } = stream;
     this.phase = 'loading';
-    const abort = this.abort = new AbortController(), revision = ++this.revision;
-    void (async () => {
-      try {
-        const response = await fetch(PARK_ROAMING_TRACK.url, { signal: abort.signal });
-        if (!response.ok) throw new Error('Roaming music unavailable');
-        const data = await response.arrayBuffer();
-        if (data.byteLength !== PARK_ROAMING_TRACK.fileBytes) throw new Error('Unexpected music size');
-        if (abort.signal.aborted || this.revision !== revision) return;
-        const decoding = this.decoding = ctx.decodeAudioData(data);
-        let buffer: AudioBuffer;
-        try { buffer = await decoding; }
-        finally { if (this.decoding === decoding) this.decoding = null; }
-        if (abort.signal.aborted || this.revision !== revision || this.ctx !== ctx) return;
-        const bytes = buffer.length * buffer.numberOfChannels * 4;
-        if (buffer.numberOfChannels !== 2 || Math.abs(buffer.duration - PARK_ROAMING_TRACK.seconds) > .005
-          || bytes > PARK_ROAMING_TRACK.maxDecodedBytes) throw new Error('Unexpected decoded music budget');
-        this.buffer = buffer; this.phase = 'ready';
-      } catch {
-        if (abort.signal.aborted || this.revision !== revision) return;
-        this.phase = 'error';
-      } finally {
-        if (this.revision === revision) { this.abort = null; this.changed(); }
-        else if (this.ctx && this.phase === 'idle') this.changed();
+    const readDuration = () => {
+      if (media.onloadedmetadata !== readDuration || media.readyState < 1) return;
+      const seconds = media.duration;
+      if (!Number.isFinite(seconds) || Math.abs(seconds - PARK_ROAMING_TRACK.seconds) > DURATION_TOLERANCE) {
+        this.fail();
+        return;
       }
-    })();
+      const wasLoading = this.phase === 'loading';
+      this.seconds = seconds;
+      this.phase = 'ready';
+      if (wasLoading) this.changed();
+    };
+    const mediaError = () => { if (media.onerror === mediaError) this.fail(); };
+    media.onloadedmetadata = media.ondurationchange = readDuration;
+    media.onerror = mediaError;
+    media.src = PARK_ROAMING_TRACK.url;
   }
-  cancelLoading() {
-    if (!this.abort) return;
-    this.revision++; this.abort.abort(); this.abort = null; this.phase = 'idle';
+
+  private unload() {
+    const media = this.stream?.media;
+    if (media?.onloadedmetadata) {
+      media.onloadedmetadata = media.ondurationchange = media.onerror = null;
+      media.removeAttribute('src');
+      media.load(); // Abort selection, pending play and browser buffering for this resource.
+    }
+    this.seconds = 0;
   }
+
+  private fail() {
+    this.stop();
+    this.unload();
+    this.phase = 'error';
+    this.changed();
+  }
+
+  /** Call inside the trusted gesture as well as after context resume. The gain
+   * stays at zero until both the media and the shared context are ready. */
   play(ctx: AudioContext, output: AudioNode, volume: number) {
-    // A quick Club boundary reversal cannot unschedule stop() on the old source.
-    // Retire it first, keeping the current phrase position and one source only.
-    if (this.fading) this.stop();
-    if (this.source || !this.buffer || this.ctx !== ctx || ctx.state !== 'running') return;
-    const gain = this.gain = ctx.createGain(), source = this.source = ctx.createBufferSource();
-    this.level = volume; gain.gain.value = 0;
-    // Club/pause restoration can land mid-waveform. Ease in on the audio clock
-    // (95% in 240 ms); stop() still disconnects immediately at every silence gate.
-    gain.gain.setTargetAtTime(volume, ctx.currentTime, .08);
-    source.buffer = this.buffer; source.loop = true; source.loopStart = 0; source.loopEnd = this.buffer.duration;
-    source.connect(gain).connect(output); this.at = ctx.currentTime;
-    source.start(0, this.offset);
+    if (this.phase === 'error' || ctx.state === 'closed') return;
+    try {
+      const stream = this.stream ?? this.connect(ctx, output);
+      const { media, gain } = stream;
+      if (this.fade && ctx.currentTime >= this.fade.at + HANDOFF_SECONDS) this.stop();
+      if (this.fade) {
+        this.clearFade();
+        this.holdGain(stream);
+        gain.gain.setTargetAtTime(volume, ctx.currentTime, .08);
+        this.level = volume;
+      }
+      if (!this.attempt) {
+        if (this.phase === 'idle') this.load(stream);
+        if (media.currentTime !== this.offset) media.currentTime = this.offset;
+        const attempt = this.attempt = { pending: true };
+        void media.play().then(() => {
+          if (this.attempt !== attempt) return;
+          attempt.pending = false;
+          this.changed();
+        }, () => {
+          if (this.attempt === attempt) this.fail();
+        });
+      }
+      if (!this.attempt.pending && this.phase === 'ready' && ctx.state === 'running' && this.level < 0) {
+        gain.gain.setTargetAtTime(volume, ctx.currentTime, .08);
+        this.level = volume;
+      }
+    } catch { this.fail(); }
   }
+
   volume(volume: number) {
-    if (this.fading || !this.ctx || !this.gain || Math.abs(volume - this.level) < .0001) return;
+    if (this.fading || !this.stream || this.level < 0 || Math.abs(volume - this.level) < .0001) return;
+    const { ctx, gain } = this.stream;
     const lowering = volume < this.level;
-    this.level = volume; this.gain.gain.setTargetAtTime(volume, this.ctx.currentTime, lowering ? .045 : .22);
+    this.level = volume;
+    gain.gain.setTargetAtTime(volume, ctx.currentTime, lowering ? .045 : .22);
   }
-  /** Only musical hand-off uses a bounded tail. Silence gates still call stop(). */
-  handoff() {
-    if (!this.source || this.fading) return;
-    const ctx=this.ctx, gain=this.gain?.gain;
-    if (!ctx || ctx.state!=='running' || !gain) { this.stop(); return; }
-    const source=this.source, now=ctx.currentTime, end=now+.18;
-    this.fading=true;this.fadeEnd=end;
+
+  private holdGain({ ctx, gain: { gain } }: Stream) {
+    const now = ctx.currentTime;
     if (gain.cancelAndHoldAtTime) gain.cancelAndHoldAtTime(now);
-    else { const current=gain.value;gain.cancelScheduledValues(now);gain.setValueAtTime(current,now); }
-    gain.linearRampToValueAtTime(0,end);
-    source.onended=()=>{if(this.source!==source)return;this.stop(end);this.changed();};
-    source.stop(end);
+    else {
+      const current = gain.value;
+      gain.cancelScheduledValues(now);
+      gain.setValueAtTime(current, now);
+    }
   }
-  stop(endedAt=this.ctx?.currentTime??this.at) {
-    if (!this.source) return;
-    if (this.ctx && this.buffer) this.offset = (this.offset + Math.max(0, Math.min(endedAt,this.ctx.currentTime,this.fadeEnd) - this.at)) % this.buffer.duration;
-    this.source.onended = null;
-    try { this.source.stop(); } catch { /* Already stopped by browser shutdown. */ }
-    this.source.disconnect(); this.source = null;
-    this.gain?.disconnect(); this.gain = null; this.level = -1;this.fading=false;this.fadeEnd=Infinity;
+
+  /** Only musical hand-off has a tail. Gain reaches zero on the audio clock
+   * even if a long frame delays the one-shot media pause. */
+  handoff() {
+    const stream = this.stream;
+    if (!stream || !this.attempt) return;
+    const { ctx, gain, media } = stream;
+    if (ctx.state !== 'running' || this.level < 0 || media.paused) { this.stop(); return; }
+    if (this.fade) return;
+    this.holdGain(stream);
+    const at = ctx.currentTime;
+    gain.gain.linearRampToValueAtTime(0, at + HANDOFF_SECONDS);
+    const timer = window.setTimeout(() => {
+      if (this.fade?.timer !== timer) return;
+      this.stop();
+      this.changed();
+    }, HANDOFF_SECONDS * 1000);
+    this.fade = { timer, at, position: media.currentTime };
   }
+
+  private clearFade() {
+    if (!this.fade) return;
+    window.clearTimeout(this.fade.timer);
+    this.fade = null;
+  }
+
+  private position() {
+    if (!this.stream || this.level < 0) return this.offset;
+    const { ctx, media } = this.stream;
+    const position = media.currentTime;
+    if (!this.fade || !this.seconds) return position;
+    const elapsed = (position - this.fade.position + this.seconds) % this.seconds;
+    return (this.fade.position + Math.min(elapsed, ctx.currentTime - this.fade.at, HANDOFF_SECONDS)) % this.seconds;
+  }
+
+  stop() {
+    const buffering = this.phase === 'loading' || this.attempt?.pending;
+    this.offset = this.position();
+    this.clearFade();
+    if (this.stream && this.attempt) {
+      const { ctx, gain, media } = this.stream;
+      this.attempt = null; // Older play promise results cannot touch a later attempt.
+      this.level = -1;
+      gain.gain.cancelScheduledValues(ctx.currentTime);
+      gain.gain.setValueAtTime(0, ctx.currentTime);
+      media.pause();
+    }
+    if (buffering) { this.unload(); this.phase = 'idle'; }
+  }
+
   inspect() {
-    const position = this.source && this.ctx && this.buffer
-      ? (this.offset + Math.max(0, Math.min(this.ctx.currentTime, this.fadeEnd) - this.at)) % this.buffer.duration
-      : this.offset;
-    return { phase: this.phase, sources: this.source ? 1 : 0, buffers: this.buffer ? 1 : 0, loading: !!this.abort, decoding: !!this.decoding,
-      bytes: this.buffer ? this.buffer.length * this.buffer.numberOfChannels * 4 : 0,
-      seconds: this.buffer?.duration ?? 0, offset: this.offset, position, level: this.level, fading: this.fading };
+    return {
+      phase: this.phase, sources: this.level >= 0 ? 1 : 0, buffers: 0, loading: this.phase === 'loading', decoding: false,
+      bytes: 0, // App-owned decoded PCM only. The browser manages its own media buffers.
+      streaming: this.stream !== null, playPending: !!this.attempt?.pending,
+      seconds: this.seconds, offset: this.offset, position: this.position(), level: this.level, fading: this.fading,
+    };
   }
+
   dispose() {
-    this.cancelLoading(); this.stop(); this.revision++; this.buffer = null; this.ctx = null;
-    this.offset = 0; this.at = 0; this.phase = 'idle';
+    this.stop();
+    this.unload();
+    this.stream?.source.disconnect();
+    this.stream?.gain.disconnect();
+    this.stream = null;
+    this.offset = 0;
+    this.phase = 'idle';
   }
 }

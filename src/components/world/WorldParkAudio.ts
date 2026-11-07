@@ -123,12 +123,17 @@ export class ParkAudio {
   private onContextState = () => this.sync();
   private onGesture = (event: Event) => {
     if (!event.isTrusted || (event as KeyboardEvent).repeat) return;
+    const pointerType = (event as PointerEvent).pointerType;
+    // Browsers grant activation on mouse down and on touch/pen up.
+    if (event.type === 'pointerdown' && pointerType && pointerType !== 'mouse') return;
+    if (event.type === 'pointerup' && (!pointerType || pointerType === 'mouse')) return;
     this.cueBlocked = false;
     if (this.candidate && !this.previewAttempted && this.musicEnabled()) {
       this.previewAttempted = true;
       this.previewMusic(this.candidate, event);
     } else if (!this.candidate && this.musicEnabled()) {
       this.roaming.retry(); this.start();
+      this.playRoaming(); // A pending AudioContext resume must not consume media's trusted-input window.
     }
   };
   private listen() {
@@ -139,7 +144,8 @@ export class ParkAudio {
     document.addEventListener('visibilitychange', this.onVisibility);
     window.addEventListener('pagehide', this.onPageHide);
     window.addEventListener('pageshow', this.onPageShow);
-    window.addEventListener('keydown', this.onGesture); window.addEventListener('pointerdown', this.onGesture);
+    window.addEventListener('keydown', this.onGesture);
+    window.addEventListener('pointerdown', this.onGesture); window.addEventListener('pointerup', this.onGesture);
   }
   private available() {
     const s = useWorldStore.getState();
@@ -153,11 +159,9 @@ export class ParkAudio {
     const ctx = this.ctx; if (!ctx) return;
     if (ctx.state === 'closed') { this.dispose(); return; }
     if (!this.cuesEnabled()) this.clearCues();
-    if (this.roamingWanted()) this.roaming.request(ctx);
-    else {
-      if(this.available()&&!this.muted&&worldAudioLevel('music')>0&&isClubAudible())this.roaming.handoff();
+    if (!this.roamingWanted()) {
+      if (this.available() && !this.muted && worldAudioLevel('music') > 0 && isClubAudible()) this.roaming.handoff();
       else this.roaming.stop();
-      this.roaming.cancelLoading();
     }
     if (!this.musicEnabled()) {
       this.stopPreview();
@@ -185,12 +189,15 @@ export class ParkAudio {
       this.pendingCue = null;
       this.stopPreview();
       this.cueBlocked = true;
-      this.roaming.stop(); this.roaming.cancelLoading(); // Retry only on a trusted input.
+      this.roaming.stop(); // Retry only on a trusted input.
     });
   }
   private roamingLevel() { return worldAudioLevel('music') * PARK_AUDIO_MIX.roaming * (this.pendingCue || this.cueVoices.size ? PARK_AUDIO_MIX.roamingCueDuck : 1); }
   private playReady() {
     this.flushPreview(); this.flushCue();
+    this.playRoaming();
+  }
+  private playRoaming() {
     if (this.roamingWanted() && this.ctx && this.master) this.roaming.play(this.ctx, this.master, this.roamingLevel());
     this.roaming.volume(this.roamingLevel());
   }
@@ -200,7 +207,7 @@ export class ParkAudio {
     if (!gesture?.isTrusted || (variant !== 'a' && variant !== 'b') || !this.musicEnabled() || this.cueBlocked || this.started) return;
     this.listen();
     if (!this.ensureContext()) return;
-    this.roaming.dispose(); // QA preview and roaming keep only one music buffer between them.
+    this.roaming.dispose(); // QA preview and roaming never play together.
     this.stopPreview();
     this.previewPending = { variant, at: performance.now() };
     this.sync();
@@ -412,7 +419,7 @@ export class ParkAudio {
     this.ownVoice(s, [flt, g], cue);
     s.connect(flt).connect(g).connect(out); s.start(t, Math.random() * 0.5); s.stop(t + dur + 0.02);
   }
-  snapshot() { return { owners: this.owners, started: this.started, timer: false, subscribed: !!this.unsubscribe,
+  snapshot() { return { owners: this.owners, started: this.started, timer: this.roaming.fading, subscribed: !!this.unsubscribe,
     state: this.ctx?.state ?? 'absent', transitioning: this.transitioning, voices: this.voices.size, ticks: 0, muted: this.muted,
     cueVoices: this.cueVoices.size, cuePending: !!this.pendingCue, pcmKeys: this.pcmBuffers.size,
     pcmBytes: [...this.pcmBuffers.values()].reduce((n, b) => n + b.length * b.numberOfChannels * 4, 0),
@@ -427,7 +434,8 @@ export class ParkAudio {
     this.stopPreview(); this.previewBuffer = null; this.candidate = null; this.previewAttempted = false;
     document.removeEventListener('visibilitychange', this.onVisibility);
     window.removeEventListener('pagehide', this.onPageHide); window.removeEventListener('pageshow', this.onPageShow);
-    window.removeEventListener('keydown', this.onGesture); window.removeEventListener('pointerdown', this.onGesture);
+    window.removeEventListener('keydown', this.onGesture);
+    window.removeEventListener('pointerdown', this.onGesture); window.removeEventListener('pointerup', this.onGesture);
     const ctx = this.ctx; this.ctx = null; this.started = false; this.transitioning = false;
     this.pendingCue = null; this.cueVoices.clear(); this.cueBlocked = false;
     this.workshopBuffers.clear();
