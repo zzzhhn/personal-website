@@ -714,26 +714,15 @@ function rebuildChunks() {
   const scene = chunkScene!;
   const hullWorker = new ShadowHullJob();
   const stamps = rigid.map(({ mesh }) => ({ sum: matrixSum(mesh), zone: budgetZoneOf(mesh), matches: watchShadowChunkSource(mesh) }));
-  const refreshed = new Map<Object3D, boolean>();
-  const refresh = (node: Object3D): boolean => {
-    const cached = refreshed.get(node);
-    if (cached !== undefined) return cached;
-    const parentInScene = node.parent ? refresh(node.parent) : false;
-    node.updateWorldMatrix(false, false);
-    const inScene = parentInScene || node === scene;
-    refreshed.set(node, inScene);
-    return inScene;
-  };
-  const valid = () => {
-    // Share ancestor work within one validation only, including a fresh pass at publication.
-    refreshed.clear();
-    return rigid.every((c, i) => {
-      const mesh = c.mesh, stamp = stamps[i];
-      if (casters.get(mesh) !== c || !refresh(mesh) || !eligibleChunkCaster(c)) return false;
-      const sum = matrixSum(mesh);
-      return sum === c.sum && sum === stamp.sum && stamp.matches() && budgetZoneOf(mesh) === stamp.zone;
-    });
-  };
+  const valid = () => rigid.every((c, i) => {
+    const mesh = c.mesh, stamp = stamps[i];
+    let parent: Object3D | null = mesh;
+    while (parent && parent !== scene) parent = parent.parent;
+    mesh.updateWorldMatrix(true, false);
+    const sum = matrixSum(mesh);
+    return parent === scene && casters.get(mesh) === c && eligibleChunkCaster(c)
+      && sum === c.sum && sum === stamp.sum && stamp.matches() && budgetZoneOf(mesh) === stamp.zone;
+  });
   const geometrySet = new Set<BufferGeometry>(), ancestors = new Set<Object3D>();
   for (const c of rigid) {
     geometrySet.add(c.mesh.geometry);
