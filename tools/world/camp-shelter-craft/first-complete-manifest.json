@@ -1,0 +1,285 @@
+{
+  "sourceRevision": "3c66e8da538e83a9bbc56aa65592251b87764cca",
+  "generatorSha256": "932e5bddd4825469a170d465f9d2cbf6fb46d6d2857deed7acdb2feaba3e5fd0",
+  "blender": "5.1.2",
+  "assets": {
+    "C04": {
+      "baselineSha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94",
+      "glbSha256": "cd792456c03e550671aee73cd9bdd4898b8d1d05f22847f76d6ff263df9cf8a2",
+      "runtime": {
+        "bytes": 332860,
+        "extensions_used": [],
+        "extensions_required": [],
+        "nodes": 6,
+        "meshes": 5,
+        "triangles": 8232,
+        "morph_targets": {},
+        "skins": [],
+        "animations": [],
+        "materials": 5,
+        "images": [
+          "image/png",
+          "image/png",
+          "image/png",
+          "image/png",
+          "image/png"
+        ]
+      },
+      "contract": {
+        "placements": [
+          [
+            -51,
+            4.8,
+            12.5
+          ],
+          [
+            -33,
+            4.8,
+            12.5
+          ]
+        ],
+        "yaw": -1.5707963267948966,
+        "front": "+X",
+        "doorProfile": [
+          -0.63,
+          0.0,
+          -0.63,
+          1.36,
+          -0.3,
+          1.9,
+          0.3,
+          1.9,
+          0.63,
+          1.36,
+          0.63,
+          0.0
+        ],
+        "tentParams": {
+          "L": 2.4,
+          "W": 1.28,
+          "hw": 0.68,
+          "hr": 2.35,
+          "dw": 0.63,
+          "dh": 1.9,
+          "jamb": 1.36,
+          "topw": 0.3,
+          "Xh": 1.7,
+          "Yh": 2.2,
+          "H": 2.5,
+          "ovx": 0.13,
+          "ovs": 0.11,
+          "t": 0.065,
+          "win": [
+            0.28,
+            1.0,
+            1.32
+          ]
+        },
+        "physics": "Original camp GLB fitted collider and placement are unchanged"
+      }
+    },
+    "C10": {
+      "baselineSha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32",
+      "glbSha256": "b8f9b4f02e63ec63bc92c362ba5ba8d38957a01d6da6928fa1ad0f7be3ce78ff",
+      "runtime": {
+        "bytes": 324668,
+        "extensions_used": [],
+        "extensions_required": [],
+        "nodes": 10,
+        "meshes": 8,
+        "triangles": 4296,
+        "morph_targets": {},
+        "skins": [],
+        "animations": [],
+        "materials": 5,
+        "images": [
+          "image/png",
+          "image/png",
+          "image/png"
+        ]
+      },
+      "contract": {
+        "poleAxisGLB_xz": [
+          -0.0,
+          0.249
+        ],
+        "yaw": 2.6,
+        "pivots": {
+          "flag_01": [
+            0,
+            2.9600000381469727,
+            0.24897998571395874
+          ],
+          "flag_02": [
+            0,
+            2.509999990463257,
+            0.24897998571395874
+          ],
+          "flag_03": [
+            0,
+            2.059999942779541,
+            0.24897998571395874
+          ],
+          "flag_04": [
+            0,
+            1.6100000143051147,
+            0.24897998571395874
+          ]
+        },
+        "hoist": {
+          "flag_01": {
+            "role": "wind-flag",
+            "pivot": "node origin = top clip on pole axis; rotate about local +Y (glTF) for sway",
+            "hoistTopLocalGLB": [
+              0.0,
+              0.0,
+              -0.04256
+            ],
+            "hoistBottomLocalGLB": [
+              0.0,
+              -0.36,
+              -0.04256
+            ],
+            "flyDirectionGLB": [
+              0,
+              0,
+              -1
+            ],
+            "lengthM": 0.95,
+            "hoistHeightM": 0.36,
+            "shape": "pennant"
+          },
+          "flag_02": {
+            "role": "wind-flag",
+            "pivot": "node origin = top clip on pole axis; rotate about local +Y (glTF) for sway",
+            "hoistTopLocalGLB": [
+              0.0,
+              0.0,
+              -0.04436
+            ],
+            "hoistBottomLocalGLB": [
+              0.0,
+              -0.36,
+              -0.04436
+            ],
+            "flyDirectionGLB": [
+              0,
+              0,
+              -1
+            ],
+            "lengthM": 0.95,
+            "hoistHeightM": 0.36,
+            "shape": "swallow"
+          },
+          "flag_03": {
+            "role": "wind-flag",
+            "pivot": "node origin = top clip on pole axis; rotate about local +Y (glTF) for sway",
+            "hoistTopLocalGLB": [
+              0.0,
+              0.0,
+              -0.04616000000000001
+            ],
+            "hoistBottomLocalGLB": [
+              0.0,
+              -0.36,
+              -0.04616000000000001
+            ],
+            "flyDirectionGLB": [
+              0,
+              0,
+              -1
+            ],
+            "lengthM": 0.95,
+            "hoistHeightM": 0.36,
+            "shape": "pennant"
+          },
+          "flag_04": {
+            "role": "wind-flag",
+            "pivot": "node origin = top clip on pole axis; rotate about local +Y (glTF) for sway",
+            "hoistTopLocalGLB": [
+              0.0,
+              0.0,
+              -0.04796
+            ],
+            "hoistBottomLocalGLB": [
+              0.0,
+              -0.36,
+              -0.04796
+            ],
+            "flyDirectionGLB": [
+              0,
+              0,
+              -1
+            ],
+            "lengthM": 0.95,
+            "hoistHeightM": 0.36,
+            "shape": "swallow"
+          }
+        },
+        "physics": "Original camp GLB fitted collider and placement are unchanged"
+      }
+    }
+  },
+  "firstCompleteFrozen": true,
+  "blendSha256": "26e863280ad2fc37849af98e78b7dc5823ce05edb67570bec573ad1066a59acb",
+  "maps": [
+    {
+      "name": "canvas-color.png",
+      "sha256": "3784962e99f931df065c2183e507f80af42fc5cfb30ce9babe19cfd430ed0c5b",
+      "size": [
+        256,
+        256
+      ],
+      "source": "Original deterministic procedural, CC0"
+    },
+    {
+      "name": "canvas-normal.png",
+      "sha256": "4a660221939de241115e0cf20e507569ed6c692565f81844a94393e400cd2801",
+      "size": [
+        256,
+        256
+      ],
+      "source": "Original deterministic procedural, CC0"
+    },
+    {
+      "name": "canvas-rough.png",
+      "sha256": "df3c2d3e22d8eb89995516a016e2e3b7859c778e989d36699f41ce5ae2b1bc41",
+      "size": [
+        256,
+        256
+      ],
+      "source": "Original deterministic procedural, CC0"
+    },
+    {
+      "name": "flag-dye-atlas.png",
+      "sha256": "56c08481c83a591a8322dc4d2ecf808d39c9a8bb8b32175293887dabb955d159",
+      "size": [
+        512,
+        512
+      ],
+      "source": "Original deterministic procedural, CC0"
+    },
+    {
+      "name": "timber-color.png",
+      "sha256": "a433a4df90ce9aeb0ad30f3c75ca42c1f1a877e0cbada4ad8c7a5c0e5db275fe",
+      "size": [
+        256,
+        256
+      ],
+      "source": "Original deterministic procedural, CC0"
+    },
+    {
+      "name": "timber-rough.png",
+      "sha256": "7630e371a8b58231b5f694afdf4d567e50e5d0743f24093a6264c93fa7b8137c",
+      "size": [
+        256,
+        256
+      ],
+      "source": "Original deterministic procedural, CC0"
+    }
+  ],
+  "verification": {
+    "nativeExport": "complete; see qa/export-audit.json",
+    "runtime": "separate coordinator integration and fixed-camera browser review"
+  }
+}

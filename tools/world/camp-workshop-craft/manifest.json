@@ -1,0 +1,879 @@
+{
+  "generator": "tools/world/camp-workshop-craft/build.py",
+  "baselineRevision": "3c66e8da538e83a9bbc56aa65592251b87764cca",
+  "baseline": {
+    "C08": {
+      "source": "public/assets/world/camp/C08.glb",
+      "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208"
+    },
+    "C11": {
+      "source": "public/assets/world/camp/C11.glb",
+      "sha256": "2b249212e902147bac53bdb8183546871df2f36ccc987c3d5ace270c3c18973e"
+    }
+  },
+  "blender": "5.1.2",
+  "unit": "meters",
+  "front": "+X",
+  "runtime": {
+    "url": "/assets/world/camp-workshop-craft/camp-workshop.glb",
+    "bytes": 1481480,
+    "sha256": "0d9e8a75b09fd2a6f5b69c8c2c7f3f2a608f0958fdc51b6e188e254fa1279d7d",
+    "toolPivotGltfXYZ": [
+      0.20590023696422577,
+      1.0299999713897705,
+      0
+    ],
+    "bookLeafTop": 0.333,
+    "bookFlipRest": 0.335,
+    "labelPlanesGLTF": [
+      {
+        "centre": [
+          0.1714,
+          1.7,
+          0.742
+        ],
+        "w": 0.226,
+        "h": 0.14,
+        "normal": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "centre": [
+          0.1714,
+          1.7,
+          0.371
+        ],
+        "w": 0.226,
+        "h": 0.14,
+        "normal": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "centre": [
+          0.1714,
+          1.7,
+          -0.0
+        ],
+        "w": 0.226,
+        "h": 0.14,
+        "normal": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "centre": [
+          0.1714,
+          1.7,
+          -0.371
+        ],
+        "w": 0.226,
+        "h": 0.14,
+        "normal": [
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "centre": [
+          0.1714,
+          1.7,
+          -0.742
+        ],
+        "w": 0.226,
+        "h": 0.14,
+        "normal": [
+          1,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "native": {
+    "path": "tools/world/camp-workshop-craft/workshop.blend",
+    "sha256": "29a93d72c632fd71de86ce3678f5cbf6295e9cb3a2abf1fdbe1408403c421da2"
+  },
+  "materials": [
+    {
+      "name": "Workshop | charcoal rubber",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.03310476616024971,
+          0.045186202973127365,
+          0.0423114113509655,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8500000238418579
+      }
+    },
+    {
+      "name": "Workshop | colored bookcloth palette",
+      "normalTexture": {
+        "index": 0,
+        "scale": 0.3499999940395355
+      },
+      "pbrMetallicRoughness": {
+        "metallicRoughnessTexture": {
+          "index": 1,
+          "texCoord": 1
+        }
+      }
+    },
+    {
+      "name": "Workshop | journal study notes",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9399999976158142
+      }
+    },
+    {
+      "name": "Workshop | layered paper edges",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9100000262260437
+      }
+    },
+    {
+      "name": "Workshop | ruled journal leaf",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 4
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9399999976158142
+      }
+    },
+    {
+      "name": "Workshop | satin brass",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5149176716804504,
+          0.2961382567882538,
+          0.10461648553609848,
+          1
+        ],
+        "metallicFactor": 0.5799999833106995,
+        "roughnessFactor": 0.4300000071525574
+      }
+    },
+    {
+      "name": "Workshop | warm ash longitudinal",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 5
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.7400000095367432
+      }
+    },
+    {
+      "name": "Workshop | oiled oak longitudinal",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 6
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.6600000262260437
+      }
+    },
+    {
+      "name": "Workshop | opaque surface palette",
+      "pbrMetallicRoughness": {
+        "metallicRoughnessTexture": {
+          "index": 7,
+          "texCoord": 1
+        }
+      }
+    },
+    {
+      "name": "Workshop | small fittings palette",
+      "pbrMetallicRoughness": {
+        "metallicRoughnessTexture": {
+          "index": 8,
+          "texCoord": 1
+        }
+      }
+    }
+  ],
+  "textures": {
+    "ash-timber.png": {
+      "sha256": "c883293afebb8ac84c37f15238e0188988a262956280607ab8462dbc5865fed6",
+      "size": [
+        256,
+        256
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    },
+    "bookcloth-normal.png": {
+      "sha256": "92920c85b380d05aaaf3400533cfca36163d1365fab0c3223db33da0779ca98c",
+      "size": [
+        128,
+        128
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    },
+    "oak-timber.png": {
+      "sha256": "06d481f215eccc8ad8cdc872506acb330a34e57e1b52f8cae8c92dc6c0c7c9aa",
+      "size": [
+        256,
+        256
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    },
+    "page-edge.png": {
+      "sha256": "019262c22763ea6fd38662d160a4bb610d1c49c96f044857ba6e00d3406d7c3f",
+      "size": [
+        256,
+        256
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    },
+    "ruled-leaf.png": {
+      "sha256": "24151df4ddf21a13527eea96ceb75d9d31fae9d7b1fa1a2a47cf5fd4a921fd48",
+      "size": [
+        256,
+        256
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    },
+    "study-notes.png": {
+      "sha256": "73d7dfaf47b3ff68c538928257efeb3395c32e2976abe2324710b892aee2cc17",
+      "size": [
+        256,
+        256
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    },
+    "workshop-orm.png": {
+      "sha256": "2be7610ef58702802a06ac3f6164ef9a6dc72e06a87c9c33081ecae195bea59a",
+      "size": [
+        32,
+        32
+      ],
+      "authoring": "Deterministic procedural maps from surfaces.py"
+    }
+  },
+  "sourceAudit": {
+    "C08": {
+      "minBlenderXYZ": [
+        -0.22005970776081085,
+        -0.17636124789714813,
+        0.0
+      ],
+      "maxBlenderXYZ": [
+        0.2459999918937683,
+        0.33728229999542236,
+        0.3330000042915344
+      ],
+      "triangles": 1776,
+      "zeroAreaTriangles": 0,
+      "zeroUVAreaTriangles": 0,
+      "meshCount": 42,
+      "materials": [
+        "Workshop | burnt-orange bookcloth",
+        "Workshop | charcoal rubber",
+        "Workshop | journal study notes",
+        "Workshop | layered paper edges",
+        "Workshop | olive bookcloth",
+        "Workshop | ruled journal leaf",
+        "Workshop | satin brass",
+        "Workshop | slate bookcloth",
+        "Workshop | warm ash longitudinal"
+      ]
+    },
+    "C11_body": {
+      "minBlenderXYZ": [
+        -0.3495997488498688,
+        -1.0299999713897705,
+        0.0
+      ],
+      "maxBlenderXYZ": [
+        0.3856232166290283,
+        1.0299999713897705,
+        2.1024999618530273
+      ],
+      "triangles": 9204,
+      "zeroAreaTriangles": 0,
+      "zeroUVAreaTriangles": 0,
+      "meshCount": 271,
+      "materials": [
+        "Workshop | aperture",
+        "Workshop | blackened steel",
+        "Workshop | burnt-orange bookcloth",
+        "Workshop | dark-stained frame",
+        "Workshop | forged tool steel",
+        "Workshop | oiled oak longitudinal",
+        "Workshop | olive bookcloth",
+        "Workshop | satin brass",
+        "Workshop | slate bookcloth",
+        "Workshop | unprinted warm paper",
+        "Workshop | warm ash longitudinal"
+      ]
+    },
+    "C11_tools": {
+      "minBlenderXYZ": [
+        0.17231960594654083,
+        -0.8399999737739563,
+        0.6619999408721924
+      ],
+      "maxBlenderXYZ": [
+        0.22748087346553802,
+        0.8229219317436218,
+        1.0533982515335083
+      ],
+      "triangles": 1980,
+      "zeroAreaTriangles": 0,
+      "zeroUVAreaTriangles": 0,
+      "meshCount": 32,
+      "materials": [
+        "Workshop | blackened steel",
+        "Workshop | charcoal rubber",
+        "Workshop | forged tool steel",
+        "Workshop | orange dipped rubber",
+        "Workshop | satin brass",
+        "Workshop | warm ash longitudinal"
+      ]
+    }
+  },
+  "reimportAudit": {
+    "C08": {
+      "minBlenderXYZ": [
+        -0.22005970776081085,
+        -0.17636123299598694,
+        0.0
+      ],
+      "maxBlenderXYZ": [
+        0.2459999918937683,
+        0.33728229999542236,
+        0.3330000042915344
+      ],
+      "triangles": 1776,
+      "zeroAreaTriangles": 0,
+      "zeroUVAreaTriangles": 0,
+      "meshCount": 7,
+      "materials": [
+        "Workshop | charcoal rubber",
+        "Workshop | colored bookcloth palette",
+        "Workshop | journal study notes",
+        "Workshop | layered paper edges",
+        "Workshop | ruled journal leaf",
+        "Workshop | satin brass",
+        "Workshop | warm ash longitudinal"
+      ]
+    },
+    "C11_body": {
+      "minBlenderXYZ": [
+        -0.3495997488498688,
+        -1.0299999713897705,
+        0.0
+      ],
+      "maxBlenderXYZ": [
+        0.3856232166290283,
+        1.0299999713897705,
+        2.1024999618530273
+      ],
+      "triangles": 9204,
+      "zeroAreaTriangles": 0,
+      "zeroUVAreaTriangles": 0,
+      "meshCount": 5,
+      "materials": [
+        "Workshop | colored bookcloth palette",
+        "Workshop | oiled oak longitudinal",
+        "Workshop | opaque surface palette",
+        "Workshop | small fittings palette",
+        "Workshop | warm ash longitudinal"
+      ]
+    },
+    "C11_tools": {
+      "minBlenderXYZ": [
+        0.17231959104537964,
+        -0.8399999737739563,
+        0.6619999408721924
+      ],
+      "maxBlenderXYZ": [
+        0.22748087346553802,
+        0.8229219317436218,
+        1.0533982515335083
+      ],
+      "triangles": 1980,
+      "zeroAreaTriangles": 0,
+      "zeroUVAreaTriangles": 0,
+      "meshCount": 3,
+      "materials": [
+        "Workshop | opaque surface palette",
+        "Workshop | satin brass",
+        "Workshop | warm ash longitudinal"
+      ]
+    }
+  },
+  "runtimeOrm": {
+    "size": [
+      32,
+      32
+    ],
+    "constantCellSize": 8,
+    "paddingTexels": 4,
+    "maxOrmQuantization": 0.0019607723927965726,
+    "maxLinearColorError": 0,
+    "glbPaletteMatchesAuthoredPng": true,
+    "branches": {
+      "C08": {
+        "Workshop | colored bookcloth palette": {
+          "slate linen": 440,
+          "rust linen": 372,
+          "olive linen": 440
+        }
+      },
+      "C11_body": {
+        "Workshop | colored bookcloth palette": {
+          "slate linen": 356,
+          "olive linen": 132,
+          "rust linen": 132
+        },
+        "Workshop | opaque surface palette": {
+          "paper": 264,
+          "dark timber": 880,
+          "dark steel": 268,
+          "steel": 44
+        },
+        "Workshop | small fittings palette": {
+          "warm brass": 1228,
+          "shadow": 4480
+        }
+      },
+      "C11_tools": {
+        "Workshop | opaque surface palette": {
+          "dark steel": 720,
+          "steel": 728,
+          "rubber": 80,
+          "orange grip": 268
+        }
+      }
+    },
+    "swatches": {
+      "slate linen": {
+        "sourceMaterial": "Workshop | slate bookcloth",
+        "rgbaLinear": [
+          0.04970656707882881,
+          0.10224173218011856,
+          0.1441284716129303,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.125,
+          0.125
+        ],
+        "roughness": 0.8199999928474426,
+        "metallic": 0.0,
+        "roughnessByte": 209,
+        "metallicByte": 0
+      },
+      "olive linen": {
+        "sourceMaterial": "Workshop | olive bookcloth",
+        "rgbaLinear": [
+          0.15896083414554596,
+          0.20507873594760895,
+          0.06480326503515244,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.375,
+          0.125
+        ],
+        "roughness": 0.8500000238418579,
+        "metallic": 0.0,
+        "roughnessByte": 217,
+        "metallicByte": 0
+      },
+      "rust linen": {
+        "sourceMaterial": "Workshop | burnt-orange bookcloth",
+        "rgbaLinear": [
+          0.4019777774810791,
+          0.09989872574806213,
+          0.039546236395835876,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.625,
+          0.125
+        ],
+        "roughness": 0.7900000214576721,
+        "metallic": 0.0,
+        "roughnessByte": 201,
+        "metallicByte": 0
+      },
+      "dark timber": {
+        "sourceMaterial": "Workshop | dark-stained frame",
+        "rgbaLinear": [
+          0.12477181851863861,
+          0.061246052384376526,
+          0.03310476616024971,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.875,
+          0.125
+        ],
+        "roughness": 0.699999988079071,
+        "metallic": 0.0,
+        "roughnessByte": 178,
+        "metallicByte": 0
+      },
+      "dark steel": {
+        "sourceMaterial": "Workshop | blackened steel",
+        "rgbaLinear": [
+          0.06847816705703735,
+          0.07227185368537903,
+          0.0666259378194809,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.125,
+          0.375
+        ],
+        "roughness": 0.46000000834465027,
+        "metallic": 0.6600000262260437,
+        "roughnessByte": 117,
+        "metallicByte": 168
+      },
+      "steel": {
+        "sourceMaterial": "Workshop | forged tool steel",
+        "rgbaLinear": [
+          0.35153260827064514,
+          0.38642942905426025,
+          0.3762621283531189,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.375,
+          0.375
+        ],
+        "roughness": 0.3199999928474426,
+        "metallic": 0.7200000286102295,
+        "roughnessByte": 82,
+        "metallicByte": 184
+      },
+      "paper": {
+        "sourceMaterial": "Workshop | unprinted warm paper",
+        "rgbaLinear": [
+          0.8069522380828857,
+          0.6938717365264893,
+          0.4793201684951782,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.625,
+          0.375
+        ],
+        "roughness": 0.8700000047683716,
+        "metallic": 0.0,
+        "roughnessByte": 222,
+        "metallicByte": 0
+      },
+      "warm brass": {
+        "sourceMaterial": "Workshop | satin brass",
+        "rgbaLinear": [
+          0.5149176716804504,
+          0.2961382567882538,
+          0.10461648553609848,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.875,
+          0.375
+        ],
+        "roughness": 0.4300000071525574,
+        "metallic": 0.5799999833106995,
+        "roughnessByte": 110,
+        "metallicByte": 148
+      },
+      "shadow": {
+        "sourceMaterial": "Workshop | aperture",
+        "rgbaLinear": [
+          0.1119324266910553,
+          0.07036009430885315,
+          0.039546236395835876,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.125,
+          0.625
+        ],
+        "roughness": 0.9300000071525574,
+        "metallic": 0.0,
+        "roughnessByte": 237,
+        "metallicByte": 0
+      },
+      "rubber": {
+        "sourceMaterial": "Workshop | charcoal rubber",
+        "rgbaLinear": [
+          0.03310476616024971,
+          0.045186202973127365,
+          0.0423114113509655,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.375,
+          0.625
+        ],
+        "roughness": 0.8500000238418579,
+        "metallic": 0.0,
+        "roughnessByte": 217,
+        "metallicByte": 0
+      },
+      "orange grip": {
+        "sourceMaterial": "Workshop | orange dipped rubber",
+        "rgbaLinear": [
+          0.4677838087081909,
+          0.11443537473678589,
+          0.039546236395835876,
+          1.0
+        ],
+        "texcoord1Gltf": [
+          0.625,
+          0.625
+        ],
+        "roughness": 0.7300000190734863,
+        "metallic": 0.0,
+        "roughnessByte": 186,
+        "metallicByte": 0
+      }
+    }
+  },
+  "scenario": {
+    "glb": {
+      "bytes": 1481480,
+      "extensions_used": [],
+      "extensions_required": [],
+      "nodes": 19,
+      "meshes": 15,
+      "triangles": 12960,
+      "morph_targets": {},
+      "skins": [],
+      "animations": [],
+      "materials": 10,
+      "images": [
+        "image/png",
+        "image/png",
+        "image/png",
+        "image/png",
+        "image/png",
+        "image/png",
+        "image/png"
+      ]
+    },
+    "materialIssues": {
+      "Workshop | slate bookcloth": [
+        [
+          "info",
+          "constant Roughness 0.82: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | olive bookcloth": [
+        [
+          "info",
+          "constant Roughness 0.85: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | burnt-orange bookcloth": [
+        [
+          "info",
+          "constant Roughness 0.79: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | layered paper edges": [
+        [
+          "info",
+          "constant Roughness 0.91: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | ruled journal leaf": [
+        [
+          "info",
+          "constant Roughness 0.94: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | journal study notes": [
+        [
+          "info",
+          "constant Roughness 0.94: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | unprinted warm paper": [
+        [
+          "info",
+          "constant Roughness 0.87: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | oiled oak longitudinal": [
+        [
+          "info",
+          "constant Roughness 0.66: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | warm ash longitudinal": [
+        [
+          "info",
+          "constant Roughness 0.74: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | dark-stained frame": [
+        [
+          "info",
+          "constant Roughness 0.70: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | satin brass": [
+        [
+          "warn",
+          "constant Metallic 0.58: real surfaces are 0 or 1 (mix only in transitions/dirt)"
+        ],
+        [
+          "info",
+          "constant Roughness 0.43: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | blackened steel": [
+        [
+          "warn",
+          "constant Metallic 0.66: real surfaces are 0 or 1 (mix only in transitions/dirt)"
+        ],
+        [
+          "info",
+          "constant Roughness 0.46: roughness variation is what sells a surface"
+        ],
+        [
+          "warn",
+          "metal base colour sRGB max 76 < 180 (metals reflect 70-100%)"
+        ]
+      ],
+      "Workshop | forged tool steel": [
+        [
+          "warn",
+          "constant Metallic 0.72: real surfaces are 0 or 1 (mix only in transitions/dirt)"
+        ],
+        [
+          "info",
+          "constant Roughness 0.32: roughness variation is what sells a surface"
+        ],
+        [
+          "warn",
+          "metal base colour sRGB max 167 < 180 (metals reflect 70-100%)"
+        ]
+      ],
+      "Workshop | charcoal rubber": [
+        [
+          "info",
+          "constant Roughness 0.85: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | orange dipped rubber": [
+        [
+          "info",
+          "constant Roughness 0.73: roughness variation is what sells a surface"
+        ]
+      ],
+      "Workshop | aperture": [
+        [
+          "info",
+          "constant Roughness 0.93: roughness variation is what sells a surface"
+        ]
+      ]
+    }
+  },
+  "reviewRig": {
+    "engine": "Cycles CPU",
+    "samples": 8,
+    "resolution": [
+      850,
+      640
+    ],
+    "view": "AgX",
+    "exposure": 0,
+    "ambientStrength": 0.36,
+    "sunEnergyAzimuth": [
+      [
+        2.4,
+        52
+      ],
+      [
+        0.64,
+        236
+      ]
+    ],
+    "sunTilt": 46,
+    "sunAngle": 12,
+    "shots": {
+      "C08": {
+        "cameraLocationBlenderXYZ": [
+          5.976827621459961,
+          -2.9834136962890625,
+          4.54545259475708
+        ],
+        "cameraTargetBlenderXYZ": [
+          0.009999999776482582,
+          0.0,
+          0.12999999523162842
+        ],
+        "orthoScale": 0.94,
+        "images": {
+          "baseline": {
+            "file": "C08-baseline.jpg",
+            "sha256": "db34a6d12112e49cf1833d91bd9a2d17d27fcf58daaafe9dc7d0e3299ec47bed"
+          },
+          "reimport": {
+            "file": "C08-reimport.jpg",
+            "sha256": "087d67ae72f705ffa411d525df9c9c8cd2fdf41cfcb28f773d3f2bbbe83c13f9"
+          },
+          "clay": {
+            "file": "C08-clay.jpg",
+            "sha256": "c79bde425a07ed5a5d2ac1cbd157258aa6a7a5f95d086c1b96e6ccd6eaf5bb1f"
+          }
+        }
+      },
+      "C11": {
+        "cameraLocationBlenderXYZ": [
+          7.447813987731934,
+          -2.3769004344940186,
+          2.782675266265869
+        ],
+        "cameraTargetBlenderXYZ": [
+          0.019999999552965164,
+          0.0,
+          1.0
+        ],
+        "orthoScale": 3.1,
+        "images": {
+          "baseline": {
+            "file": "C11-baseline.jpg",
+            "sha256": "83044a95fbc4d106b19ebadbd4b8c0ab61682a00defe58ae1d8f1daebb4a00c6"
+          },
+          "reimport": {
+            "file": "C11-reimport.jpg",
+            "sha256": "114a628b182181ba7ee16681f20dbf820196fcba6df6d5c88209849879e80976"
+          },
+          "clay": {
+            "file": "C11-clay.jpg",
+            "sha256": "a36bd504b3c345739333b06bc7b3a31cf9faf029c02184254c770e6d25cd6415"
+          }
+        }
+      }
+    }
+  }
+}

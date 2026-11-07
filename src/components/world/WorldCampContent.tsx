@@ -17,6 +17,10 @@ import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityC
 import { bindCampPushableVisual } from './WorldCampPushableVisual';
 import WorldCampSuitcaseContact, { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
 import { createSuitcaseContactSlot } from './camp-suitcase-contact';
+import { ToolWallVisual } from './WorldCampWorkshopCraft';
+import { ExitPostVisual } from './WorldCampSiteCraft';
+
+const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('campBatch') !== 'legacy';
 
 /**
  * Camp content (owner: camp session): C11 tool wall, C12 guitar, C13 dumbbells, C14 wok + stove, C15
@@ -88,15 +92,24 @@ function CampContent() {
     const postM = EXIT_POSTS.map(p => placementMatrix(p, 0));
     const m11 = placementMatrix(place.C11.position, place.C11.yaw), m14 = placementMatrix(place.C14.position, place.C14.yaw, SCALE.C14);
     // Static merge: everything that never moves (tool-wall body, stove, lantern frame, both posts).
-    const staticGeometry = legacy ? mergeGeometries([
-      ...byName('C11', 'C11_body').map(p => bake(p, m11)), ...byName('C14', 'C14_stove').map(p => bake(p, m14)),
-      ...byName('C16', 'C16_frame').map(p => bake(p, lanternM)), ...postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m))),
-    ])! : mergeGeometries([
-      ...byName('C11', 'C11_body').map(p => bake(p, m11)), ...postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m))),
-    ])!;
-    const glowGeometry = legacy
-      ? mergeGeometries([...byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)), ...postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false)))])!
-      : mergeGeometries(postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false))))!;
+    const merge = (parts: BufferGeometry[]) => {
+      if (!parts.length) return null;
+      const geometry = mergeGeometries(parts);
+      parts.forEach(part => part.dispose());
+      return geometry;
+    };
+    const staticGeometry = merge([
+      ...(!CAMP_BATCH ? [...byName('C11', 'C11_body').map(p => bake(p, m11)), ...postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m)))] : []),
+      ...(legacy ? [...byName('C14', 'C14_stove').map(p => bake(p, m14)), ...byName('C16', 'C16_frame').map(p => bake(p, lanternM))] : []),
+    ]);
+    const glowGeometry = merge([
+      ...(legacy ? byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)) : []),
+      ...(!CAMP_BATCH ? postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false))) : []),
+    ]);
+    // Separate visual fallbacks let each streamed family fail independently.
+    const toolWall = CAMP_BATCH ? merge(byName('C11', 'C11_body').map(p => bake(p, new Matrix4()))) : null;
+    const postBody = CAMP_BATCH ? merge(postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m)))) : null;
+    const postGlow = CAMP_BATCH ? merge(postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false)))) : null;
     const stoveGeometry = mergeGeometries(byName('C14', 'C14_stove').map(p => bake(p, new Matrix4())))!;
     const lanternFrame = mergeGeometries(byName('C16', 'C16_frame').map(p => bake(p, new Matrix4())))!;
     const lanternGlass = mergeGeometries(byName('C16', 'C16_glass').map(p => glowBake(p, new Matrix4(), true)))!;
@@ -109,7 +122,7 @@ function CampContent() {
     const dumbbells: Place[] = [padOffset(CONTENT_PAD.C13, -0.05, 0.95), padOffset(CONTENT_PAD.C13, -0.62, 0.9)].map((p, i) => ({ position: p, yaw: yawToFire(CONTENT_PAD.C13) + (i ? 0.12 : -0.05) }));
     const local = (list: NodePart[]) => mergeGeometries(list.map(p => bake(p, new Matrix4())))!;
     return {
-      place, lanternPos, staticGeometry, glowGeometry, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
+      place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postM, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
       tools: sub('C11', 'C11_tools', m11), wok: sub('C14', 'C14_wok', m14),
       guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: localPoints(parts.C12) },
       dumbbell: { geometry: mergeGeometries(parts.C13.map(p => bake(p, new Matrix4().makeScale(SCALE.C13, SCALE.C13, SCALE.C13))))!, hull: localPoints(parts.C13, SCALE.C13) },
@@ -117,7 +130,7 @@ function CampContent() {
       plates: JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[], m11,
     };
   }, [g, legacy]);
-  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.geometry]) geo.dispose(); }, [data]);
+  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.geometry]) geo?.dispose(); }, [data]);
 
   // Formal replacements for the five pad stand-ins and both exit lamps are mounted (visual + collider).
   useGreyboxClaim('camp-placeholder', 'camp-lamps');
@@ -131,8 +144,12 @@ function CampContent() {
   useQa(data);
 
   return <group name="world-camp-content">
-    <mesh name="camp-content-static" geometry={data.staticGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'camp-content', solid: true }} />
-    <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material} userData={{ noOcclusionFade: true }} />
+    {data.staticGeometry && <mesh name="camp-content-static" geometry={data.staticGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'camp-content', solid: true }} />}
+    {data.glowGeometry && <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material} userData={{ noOcclusionFade: true }} />}
+    {CAMP_BATCH && <>
+      <group matrix={data.m11} matrixAutoUpdate={false}><ToolWallVisual node="C11_body" fallback={<mesh geometry={data.toolWall!} material={vc} castShadow receiveShadow />} /></group>
+      <ExitPostVisual matrices={data.postM} fallback={<><mesh geometry={data.postBody!} material={vc} castShadow receiveShadow /><mesh geometry={data.postGlow!} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
+    </>}
     {!legacy && <group matrix={data.m14} matrixAutoUpdate={false}>
       <WorldCampFacilityCraft family="C14" node="C14_stove" fallback={<mesh geometry={data.stoveGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'C14', solid: true }} />} />
     </group>}
@@ -140,7 +157,7 @@ function CampContent() {
       <WorldCampFacilityCraft family="C16" fallback={<><mesh geometry={data.lanternFrame} material={vc} castShadow receiveShadow /><mesh geometry={data.lanternGlass} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
     </group>}
     <HardColliders hard={data.hard} />
-    <Animated name="camp-content-C11-tools" geometry={data.tools.geometry} frame={data.tools.frame} kind="tools" />
+    <Animated name="camp-content-C11-tools" geometry={data.tools.geometry} frame={data.tools.frame} kind="tools">{CAMP_BATCH ? <ToolWallVisual node="C11_tools" fallback={<mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />} /> : undefined}</Animated>
     <Animated name="camp-content-C14-wok" geometry={data.wok.geometry} frame={data.wok.frame} kind="wok"><WorldCampFacilityCraft family="C14" node="C14_wok" fallback={<mesh geometry={data.wok.geometry} material={vc} castShadow receiveShadow />} /></Animated>
     <LabelPlates plates={data.plates} frame={data.m11} lang={lang} />
     <Pushable id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">

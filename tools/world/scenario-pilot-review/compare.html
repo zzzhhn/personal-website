@@ -8,6 +8,8 @@
 <input id="split" type="range" min="0" max="100" value="50" aria-label="前后对比位置"><footer><span>拖动滑杆查看细节</span><span>同机位 · Balanced · 固定曝光</span></footer><small>保留原门洞、碰撞与交互。图像来自实际 WebGL，未做后期调色；新版主要改善布料、包边与收褶，大轮廓保持不变。</small></main>
 <script>
 let time='day';const $=id=>document.getElementById(id);
-function render(){const view=$('view').value;if(view!=='ordinary')time='day';$('night').disabled=view!=='ordinary';for(const t of ['day','night'])$(t).setAttribute('aria-pressed',String(time===t));for(const state of ['before','after'])$(state).src=`images/${state}-${view}-${time}.jpg`;}
+const imageBase=new URL(location.protocol==='file:'?'../../../docs/world/phase-2-playground/scenario-tent-pilot-20261107/evidence/':'images/',location.href);
+if(location.protocol==='file:')document.querySelector('header a').href='http://127.0.0.1:4341/world/?start=tent&quality=balanced&paused=1';
+function render(){const view=$('view').value;if(view!=='ordinary')time='day';$('night').disabled=view!=='ordinary';for(const t of ['day','night'])$(t).setAttribute('aria-pressed',String(time===t));for(const state of ['before','after'])$(state).src=new URL(`${state}-${view}-${time}.jpg`,imageBase).href;}
 $('view').onchange=render;for(const t of ['day','night'])$(t).onclick=()=>{time=t;render()};$('split').oninput=()=>{$('frame').style.setProperty('--split',`${$('split').value}%`)};render();
 </script></html>

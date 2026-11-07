@@ -1,0 +1,138 @@
+[
+  {
+    "view": "overview",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-overview-day.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-overview-day.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "shelter",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-shelter-day.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-shelter-day.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "flags",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-flags-day.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-flags-day.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "books",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-books-day.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-books-day.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "tools",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-tools-day.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-tools-day.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "lamps",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-lamps-day.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-lamps-day.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "lamps-night",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-lamps-night.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-lamps-night.jpg",
+        "width": 1710
+      }
+    ]
+  },
+  {
+    "view": "overview-night",
+    "images": [
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/before-overview-night.jpg",
+        "width": 1710
+      },
+      {
+        "complete": true,
+        "height": 875,
+        "src": "http://127.0.0.1:4341/camp-review/images/after-overview-night.jpg",
+        "width": 1710
+      }
+    ]
+  }
+]

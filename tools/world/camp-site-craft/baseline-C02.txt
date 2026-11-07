@@ -1,0 +1,23 @@
+/** C02: grout slab plus six flagstones whose tops sit exactly on the unchanged pad collider top. */
+function padTiles(pads: CampBlock[]): CampBlock[] {
+  // Fable P2-02: a cooler grey than the sand so the pads separate from the plaza.
+  const tones = ['#8A8580', '#97928B', '#807B75'];
+  const widths = [1.1, 0.9, 1.0], depths = [1.3, 1.1], gap = 0.05;
+  const items: CampBlock[] = [];
+  pads.forEach((pad, p) => {
+    const yaw = pad.rotation?.[1] ?? 0;
+    items.push({ position: [pad.position[0], 4.835, pad.position[2]], size: [pad.size[0], 0.07, pad.size[2]], color: '#6A6560', rotation: [0, yaw, 0] });
+    let x0 = -widths.reduce((a, b) => a + b, 0) / 2;
+    widths.forEach((w, c) => {
+      let z0 = -depths.reduce((a, b) => a + b, 0) / 2;
+      depths.forEach((d, r) => {
+        const [ox, oz] = rotateY(x0 + w / 2, z0 + d / 2, yaw);
+        items.push({ position: [pad.position[0] + ox, PAD_TOP - 0.035, pad.position[2] + oz], size: [w - gap, 0.07, d - gap], color: tones[(c + r * 2 + p) % 3], rotation: [0, yaw + hash(p * 6 + c * 2 + r, 9) * 0.025, 0] });
+        z0 += d;
+      });
+      x0 += w;
+    });
+  });
+  return items;
+}
+

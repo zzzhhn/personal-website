@@ -1,0 +1,117 @@
+{
+  "sourceRevision": "3c66e8da538e83a9bbc56aa65592251b87764cca",
+  "blender": "5.1.2",
+  "generator": {
+    "build.py": "a23af3eb7699a1f41ec3039a38512fce6af7b2e27ee27142f8f65d6ebbfc98b2",
+    "surfaces.py": "14bff8e38525e9bf2bfd108a058b04fb601ebff3813123828b9f27a654a77010"
+  },
+  "baseline": {
+    "baseline-C02.txt": "bd5102b5ef304f4042316a8595ed75edb40f6e95c177870c9c312a714776542e",
+    "baseline-L01.glb": "e4c06c8b8e501ba10fb2827a9dbac45c08a74ec4ace9adf88505e882a715b1c9"
+  },
+  "families": {
+    "C02": {
+      "dimensionsXYZ_m": [
+        3.1,
+        0.1,
+        2.5
+      ],
+      "origin": "top centre, Y=4.9 in camp",
+      "instances": 8
+    },
+    "L01": {
+      "dimensionsXYZ_m": [
+        0.4916565,
+        2.777,
+        0.4785151
+      ],
+      "origin": "foot centre, Y=4.8 in camp",
+      "instances": [
+        [
+          -30,
+          4.8,
+          31
+        ],
+        [
+          -30,
+          4.8,
+          37
+        ]
+      ],
+      "lensCentreXYZ_m": [
+        -0.0083728152513504,
+        2.41,
+        -0.001736642718315125
+      ]
+    }
+  },
+  "materials": [
+    "quarry sandstone",
+    "oiled timber",
+    "powder-coated iron",
+    "warm iron fittings",
+    "cyan diffuser"
+  ],
+  "maps": {
+    "exit-timber-color.png": {
+      "sha256": "894c75ac238716d719e7af13850dd1ff221c77b63ef2ef0d1a76c42e24c12bc8",
+      "size": [
+        512,
+        512
+      ],
+      "source": "original procedural"
+    },
+    "exit-timber-normal.png": {
+      "sha256": "5cdda7607c17c5963d5dd2494dfdb5c66003722c4c9a8bd821c92a65dfcf0303",
+      "size": [
+        512,
+        512
+      ],
+      "source": "original procedural"
+    },
+    "exit-timber-roughness.png": {
+      "sha256": "a1c1a944b567543b7165084d9042f0ab45ea5f9f80819bcaa3be96a23d2d3bbd",
+      "size": [
+        512,
+        512
+      ],
+      "source": "original procedural"
+    },
+    "quarry-stone-color.png": {
+      "sha256": "5f30a24fae8b7e668ba2d723816a43bfc70d9ec08b40da4403a0cebdfeeaa3b3",
+      "size": [
+        512,
+        512
+      ],
+      "source": "original procedural"
+    },
+    "quarry-stone-normal.png": {
+      "sha256": "5134e22b4ccfc9ff0f2e16f598fd9f76263658dc69f837bb1ee4f89f1efc6977",
+      "size": [
+        512,
+        512
+      ],
+      "source": "original procedural"
+    },
+    "quarry-stone-roughness.png": {
+      "sha256": "187613e411ab8611c63ffc5f02a20ec3541f1e30b1fb604226566a9509bdc4a1",
+      "size": [
+        512,
+        512
+      ],
+      "source": "original procedural"
+    }
+  },
+  "firstCompleteHashes": {
+    "camp-site-v1.blend": "37ba5af62ca8193a48af581891c0d00020dedff9679e1a8a159b5b73459839a7",
+    "camp-site-v1.glb": "facb3ecc999c6a6132aadf65813196541fe5a73f8f38343541487d86463e0c8b"
+  },
+  "trianglesByBatch": {
+    "C02_stone_batch": 308,
+    "L01_lens": 108,
+    "L01_coated_iron_batch": 916,
+    "L01_fittings_batch": 588,
+    "L01_footing_batch": 76,
+    "L01_timber_batch": 44
+  }
+}

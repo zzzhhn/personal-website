@@ -1,0 +1,138 @@
+{
+  "export": {
+    "bytes": 971548,
+    "extensions_used": [],
+    "extensions_required": [],
+    "nodes": 9,
+    "meshes": 6,
+    "triangles": 2040,
+    "morph_targets": {},
+    "skins": [],
+    "animations": [],
+    "materials": 5,
+    "images": [
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png"
+    ]
+  },
+  "trianglesByBatch": {
+    "C02_stone_batch": 308,
+    "L01_lens": 108,
+    "L01_coated_iron_batch": 916,
+    "L01_fittings_batch": 588,
+    "L01_footing_batch": 76,
+    "L01_timber_batch": 44
+  },
+  "tilingUV0": {
+    "note": "Deliberately repeated UV0. Overlap and tile crossings are expected; no unique bake atlas.",
+    "parts": {
+      "C02_compacted_bedding": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.0,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 51.95,
+        "faces_crossing_tiles": 10
+      },
+      "C02_cleft_flagstone_01": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.78,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 0.747,
+        "faces_crossing_tiles": 11
+      },
+      "C02_cleft_flagstone_02": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.44,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 2.159,
+        "faces_crossing_tiles": 6
+      },
+      "C02_cleft_flagstone_03": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.96,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 0.631,
+        "faces_crossing_tiles": 8
+      },
+      "C02_cleft_flagstone_04": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.45,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 0.19,
+        "faces_crossing_tiles": 6
+      },
+      "C02_cleft_flagstone_05": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.77,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 1.863,
+        "faces_crossing_tiles": 14
+      },
+      "C02_cleft_flagstone_06": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.7,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 0.628,
+        "faces_crossing_tiles": 8
+      },
+      "L01_split_stone_socket": {
+        "td_px_per_m": 393.8,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 0.0,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 8.759,
+        "faces_crossing_tiles": 0
+      },
+      "L01_tapered_oiled_timber": {
+        "td_px_per_m": 498.2,
+        "td_face_spread_p95_p05": 1.0,
+        "angle_err_p95_deg": 32.69,
+        "flipped_faces": 0,
+        "zero_area_faces": 0,
+        "overlap_px_pct": 25.47,
+        "faces_crossing_tiles": 8
+      }
+    }
+  },
+  "materialAudit": {
+    "camp_quarry_stone": [],
+    "camp_exit_timber": [],
+    "camp_exit_coated_iron": [
+      [
+        "info",
+        "constant Roughness 0.66: roughness variation is what sells a surface"
+      ]
+    ],
+    "camp_exit_exposed_fittings": [
+      [
+        "info",
+        "constant Roughness 0.56: roughness variation is what sells a surface"
+      ]
+    ],
+    "camp_exit_diffuser": [
+      [
+        "info",
+        "constant Roughness 0.90: roughness variation is what sells a surface"
+      ]
+    ]
+  }
+}

@@ -61,6 +61,12 @@ export const WORLD_SHOTS_V4 = [
   { id: 'ridge', position: [10, 40, -40] as Vec3, target: [-30, 4, -84] as Vec3 },
   // Paired evidence cameras share geometry, projection and time presets across revisions.
   ...(['day', 'night'] as const).flatMap(time => [
+    { id: `camp-batch-overview-${time}`, position: [-24, 12.5, 48] as Vec3, target: [-43, 6.1, 27] as Vec3 },
+    { id: `camp-batch-shelter-${time}`, position: [-37.5, 7.2, 19.3] as Vec3, target: [-33, 6.0, 12.5] as Vec3 },
+    { id: `camp-batch-flags-${time}`, position: [-50.7, 7.0, 34.9] as Vec3, target: [-57, 6.4, 30] as Vec3 },
+    { id: `camp-batch-books-${time}`, position: [-49.3, 7.0, 37.7] as Vec3, target: [-52.5, 5.9, 40.6] as Vec3 },
+    { id: `camp-batch-tools-${time}`, position: [-36.5, 7.0, 24.6] as Vec3, target: [-31.4, 6.0, 19.4] as Vec3 },
+    { id: `camp-batch-lamps-${time}`, position: [-34.5, 7.2, 28] as Vec3, target: [-30, 6.0, 31.3] as Vec3 },
     { id: `tent-pilot-ordinary-${time}`, position: [-33.4, 8.1, 22.6] as Vec3, target: [-42, 6.0, 12.5] as Vec3 },
     { id: `tent-pilot-close-${time}`, position: [-37.6, 7.3, 18.5] as Vec3, target: [-42, 6.4, 13.6] as Vec3 },
     { id: `tent-pilot-side-${time}`, position: [-34.8, 7.7, 10.3] as Vec3, target: [-42, 6.3, 12.5] as Vec3 },

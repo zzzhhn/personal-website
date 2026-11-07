@@ -1,0 +1,29 @@
+{
+  "reviewHtmlSha256": "e91b71a8f57210ef0275d65747cee24960b1c504140010173745de38c9b02c90",
+  "source": {
+    "src/components/world/WorldCamp.tsx": "3b298cd2bfb591de1dc9f408fde17dd59f0965bc9946db0a6fd244d6ba9c52e9",
+    "src/components/world/WorldCampContent.tsx": "6bcc2a433a5f6c33fd2727d9850bc1e6ba52f7df35c53b6f92cc40475188ddfb",
+    "src/components/world/WorldCampShelterCraft.tsx": "1cb5df9ff06335f27c8b94e50a7fad3f26f9834ba5c4b4d39a7d0ed0b524eec4",
+    "src/components/world/WorldCampSiteCraft.tsx": "14e6a52bbd98647a26e3a8bac22c3f2ab9aeca652bc0925b4e12fba873368fe1",
+    "src/components/world/WorldCampWorkshopCraft.tsx": "a7618f2cc2a20dd0d699527f5c2435de4826697ae356cb49fce873f30a0f072e"
+  },
+  "assets": {
+    "public/assets/world/camp-shelter-craft/C04.glb": {
+      "bytes": 327108,
+      "sha256": "726e4d5818c45d809a1cf51dba522b0b404341ab5e279608e8aac560f4532a6a"
+    },
+    "public/assets/world/camp-shelter-craft/C10.glb": {
+      "bytes": 324668,
+      "sha256": "b8f9b4f02e63ec63bc92c362ba5ba8d38957a01d6da6928fa1ad0f7be3ce78ff"
+    },
+    "public/assets/world/camp-site-craft/camp-site-v1.glb": {
+      "bytes": 971548,
+      "sha256": "facb3ecc999c6a6132aadf65813196541fe5a73f8f38343541487d86463e0c8b"
+    },
+    "public/assets/world/camp-workshop-craft/camp-workshop.glb": {
+      "bytes": 1481480,
+      "sha256": "0d9e8a75b09fd2a6f5b69c8c2c7f3f2a608f0958fdc51b6e188e254fa1279d7d"
+    }
+  },
+  "workshopBatches": 15
+}

@@ -1,0 +1,23 @@
+{
+  "scope": "Node GLTFLoader checked the actual delivered scene graph and current WorldWind functions; image decode was stubbed, and no WebGL shader or visual output was tested.",
+  "C04": {
+    "canvasVertices": 2352,
+    "classifiedCurtainShells": 2,
+    "nonzeroCurtainMotionMaskVertices": 380,
+    "matchingShadowDepthProgram": true,
+    "boundMaps": [
+      "color",
+      "roughness",
+      "normal"
+    ],
+    "glbSha256": "726e4d5818c45d809a1cf51dba522b0b404341ab5e279608e8aac560f4532a6a"
+  },
+  "C10": {
+    "namedMeshHoists": 4,
+    "matchingHoistTranslation": true,
+    "flagColorAtlasBound": true,
+    "glbSha256": "b8f9b4f02e63ec63bc92c362ba5ba8d38957a01d6da6928fa1ad0f7be3ce78ff"
+  },
+  "adapterTranspile": "passed with no diagnostics",
+  "occlusionSourceReview": "WorldOcclusion chains the source onBeforeCompile and program cache key. PMREM is set on the adapter's material before the scene receives it."
+}

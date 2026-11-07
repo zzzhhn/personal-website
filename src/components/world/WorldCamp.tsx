@@ -20,6 +20,9 @@ import { campCraftMaterial } from './WorldCraftMaterials';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import WorldCampCraftProps from './WorldCampCraftProps';
 import WorldCampTentPilot from './WorldCampTentPilot';
+import { SmallTents, FlagVisual } from './WorldCampShelterCraft';
+import { BookStackVisual } from './WorldCampWorkshopCraft';
+import { CampPadVisual } from './WorldCampSiteCraft';
 import type { CampCraftFamily } from './camp-craft-visual';
 import type { Vec3 } from './types';
 
@@ -49,6 +52,7 @@ function withDraco(loader: GLTFLoader) {
 }
 const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy';
 const TENT_PILOT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('tentCraft') !== 'legacy';
+const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('campBatch') !== 'legacy';
 // The older explicit global legacy request wins; facilityCraft=legacy by itself
 // returns batch4. This sample never silently overrides a requested old nature pack.
 const FACILITY_TREE_CRAFT = typeof window === 'undefined' || (new URLSearchParams(window.location.search).get('facilityCraft') !== 'legacy' && new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy');
@@ -327,6 +331,24 @@ function CampTentPilotAsset({ placement }: { placement: Placement }) {
     <WorldCampTentPilot placement={placement} />
     <CampColliders id="C03" label="large-tent" shapes={shapes} matrices={matrices} />
   </group>;
+}
+
+/** Art changes never replace the fitted source collision contracts. */
+function CampBatchSolid({ id, label, placements, children }: { id: string; label: string; placements: Placement[]; children: ReactNode }) {
+  const physics = useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco) as GLTF;
+  const shapes = useMemo(() => campShapes(id, physics), [id, physics]);
+  const matrices = useMemo(() => { const bounds = new Box3().setFromObject(physics.scene); return placements.map(p => toMatrix(p, bounds)); }, [physics, placements]);
+  if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
+  return <group name={`camp-asset-${id}-${label}`}>{children}<CampColliders id={id} label={label} shapes={shapes} matrices={matrices} /></group>;
+}
+function CampBooks({ placement }: { placement: Placement }) {
+  const fallback = useCampScene('C08');
+  const placements = useMemo(() => [placement], [placement]);
+  return <CampBatchSolid id="C08" label="pad1" placements={placements}>
+    <group position={placement.position} rotation={[0, placement.yaw, 0]}>
+      <BookStackVisual fallback={<primitive object={fallback} dispose={null} />} />
+    </group>
+  </CampBatchSolid>;
 }
 /** G21 owns three material copies and borrows existing maps/renderer PMREM.
  * InstancedAsset keeps original camp geometry for placement and collision. */
@@ -715,7 +737,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
     <CampFireSpill />
     <CampNightMaterials />
     {!lampsClaimed && <CampLamps heads={layout.lampHeads} />}
-    <Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />
+    {CAMP_BATCH ? <CampPadVisual pads={layout.pads} fallback={<Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />} /> : <Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />}
     {/* Pads 4-8 keep their old collider: low canvas bundles mark C11-C15 as not yet made. */}
     {!placeholderClaimed && <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
       <BlockColliders id="C11-C15" blocks={data.placeholders} />
@@ -726,7 +748,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
       {TENT_PILOT ? <CampTentPilotAsset placement={data.tents[1]} /> : <SingleAsset id="C03" label="large-tent" placement={data.tents[1]} materialMap={canvasGlowCopy} />}
     </AssetGuard>
     <AssetGuard id="C04" fallback={<Boxes collisionId="C04" items={[layout.tents[0], layout.tents[2]]} />}>
-      <InstancedAsset id="C04" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />
+      {CAMP_BATCH ? <CampBatchSolid id="C04" label="small-tents" placements={[data.tents[0], data.tents[2]]}><SmallTents placements={[data.tents[0], data.tents[2]]} /></CampBatchSolid> : <InstancedAsset id="C04" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />}
     </AssetGuard>
     <AssetGuard id="C05" fallback={<Boxes collisionId="C05" items={[{ position: [firePosition[0], 4.95, firePosition[2]], size: [3.2, 0.3, 3.2], color: '#8C8276' }]} />}>
       <SingleAsset id="C05" label="fire-pit" placement={{ position: firePosition, yaw: 0 }} materialMap={campCraftMaterial} />
@@ -739,14 +761,14 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
       <SingleAsset id="C07" label="pad1" placement={data.onPad(0)} />
     </AssetGuard>
     <AssetGuard id="C08" fallback={null}>
-      <SingleAsset id="C08" label="pad1" placement={data.bookStack} />
+      {CAMP_BATCH ? <CampBooks placement={data.bookStack} /> : <SingleAsset id="C08" label="pad1" placement={data.bookStack} />}
     </AssetGuard>
     <AssetGuard id="C09" fallback={<Boxes collisionId="C09" items={padObject(1)} />}>
       {NATURE_CRAFT ? <CabinetCraft placement={data.onPad(1)} /> : <SingleAsset id="C09" label="pad2" placement={data.onPad(1)} />}
     </AssetGuard>
     <AssetGuard id="C10" fallback={<Boxes collisionId="C10" items={padObject(2)} />}>
       {/* West pad, centred: yaw 2.6 turns the cloth plane (local X normal) to the default follow camera. */}
-      <FlagPole label="pad3" placement={{ ...data.onPad(2), yaw: 2.6 }} />
+      {CAMP_BATCH ? <CampBatchSolid id="C10" label="pad3" placements={[{ ...data.onPad(2), yaw: 2.6 }]}><FlagVisual placement={{ ...data.onPad(2), yaw: 2.6 }} /></CampBatchSolid> : <FlagPole label="pad3" placement={{ ...data.onPad(2), yaw: 2.6 }} />}
     </AssetGuard>
     {treeGroups.map(({ id, placements }) => <AssetGuard key={id} id={id} fallback={<Boxes collisionId={id} items={fallbackTree(id)} />}>
       <InstancedAsset id={id} placements={placements} />

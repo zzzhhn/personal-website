@@ -1,0 +1,76 @@
+{
+  "pairedViews": 8,
+  "unchangedColliders": true,
+  "walkingAndInteractions": true,
+  "pauseStopsWind": true,
+  "sourceAndAssetsMatch": true,
+  "performance": {
+    "day": {
+      "before": {
+        "n": 360,
+        "p50": 18.100000023841858,
+        "p95": 28.100000023841858,
+        "max": 99.19999992847443
+      },
+      "after": {
+        "n": 360,
+        "p50": 22.899999976158142,
+        "p95": 24.899999976158142,
+        "max": 51.89999997615814
+      },
+      "drawCalls": [
+        443,
+        455
+      ],
+      "triangles": [
+        1341187,
+        1372379
+      ]
+    },
+    "night": {
+      "before": {
+        "n": 360,
+        "p50": 19.799999952316284,
+        "p95": 38.5,
+        "max": 228.69999992847443
+      },
+      "after": {
+        "n": 360,
+        "p50": 24.100000023841858,
+        "p95": 25.199999928474426,
+        "max": 34.299999952316284
+      },
+      "drawCalls": [
+        444,
+        456
+      ],
+      "triangles": [
+        1341915,
+        1373107
+      ]
+    },
+    "play": {
+      "before": {
+        "n": 360,
+        "p50": 16.699999928474426,
+        "p95": 27,
+        "max": 54.89999997615814
+      },
+      "after": {
+        "n": 360,
+        "p50": 16.699999928474426,
+        "p95": 17.699999928474426,
+        "max": 20.800000071525574
+      },
+      "drawCalls": [
+        194,
+        197
+      ],
+      "triangles": [
+        765662,
+        808350
+      ]
+    }
+  },
+  "boundary": "Local matched captures; visual acceptance remains with the user. Not whole-island performance certification."
+}

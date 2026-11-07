@@ -1,0 +1,540 @@
+{
+  "materials": {
+    "camp_canvas_orange": [],
+    "shelter_woven_selvedge": [],
+    "shelter_flax_cord": [
+      [
+        "info",
+        "constant Roughness 0.90: roughness variation is what sells a surface"
+      ]
+    ],
+    "shelter_axial_grain_timber": [],
+    "shelter_waxed_walnut_and_ground": [
+      [
+        "info",
+        "constant Roughness 0.92: roughness variation is what sells a surface"
+      ]
+    ],
+    "mast_oiled_iron": [
+      [
+        "warn",
+        "constant Metallic 0.47: real surfaces are 0 or 1 (mix only in transitions/dirt)"
+      ],
+      [
+        "info",
+        "constant Roughness 0.61: roughness variation is what sells a surface"
+      ]
+    ],
+    "mast_turned_brass": [
+      [
+        "warn",
+        "constant Metallic 0.62: real surfaces are 0 or 1 (mix only in transitions/dirt)"
+      ],
+      [
+        "info",
+        "constant Roughness 0.44: roughness variation is what sells a surface"
+      ]
+    ],
+    "mast_yarn_dyed_cloth": [
+      [
+        "info",
+        "constant Roughness 0.82: roughness variation is what sells a surface"
+      ]
+    ]
+  },
+  "assets": {
+    "C04": {
+      "nativeGeometry": {
+        "south_cut_tensioned_rain_fly": {
+          "vertices": 650,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "rear_south_folded_selvedge": {
+          "vertices": 104,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "door_south_folded_selvedge": {
+          "vertices": 104,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "south_rolled_eave": {
+          "vertices": 200,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "south_overlap_seam_-0.44": {
+          "vertices": 78,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "south_overlap_seam_+0.44": {
+          "vertices": 78,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "south_sidewall_drawn_up_at_ridge": {
+          "vertices": 190,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "south_turned_weather_apron": {
+          "vertices": 114,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "north_cut_tensioned_rain_fly": {
+          "vertices": 650,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "rear_north_folded_selvedge": {
+          "vertices": 104,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "door_north_folded_selvedge": {
+          "vertices": 104,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "north_rolled_eave": {
+          "vertices": 200,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "north_overlap_seam_-0.44": {
+          "vertices": 78,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "north_overlap_seam_+0.44": {
+          "vertices": 78,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "north_sidewall_drawn_up_at_ridge": {
+          "vertices": 190,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "north_turned_weather_apron": {
+          "vertices": 114,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "ridge_lapped_cord": {
+          "vertices": 50,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "corner_turned_vertical_binding_-1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "corner_turned_vertical_binding_-1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "corner_turned_vertical_binding_1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "corner_turned_vertical_binding_1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "front_gable_cut_around_door": {
+          "vertices": 50,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "rear_gable_canvas": {
+          "vertices": 38,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "doorway_turned_brown_hem": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "hand_gathered_door_curtain_-1": {
+          "vertices": 204,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "woven_tie_wrap_-1": {
+          "vertices": 30,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "tie_hanging_tail_-1": {
+          "vertices": 18,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "hand_gathered_door_curtain_1": {
+          "vertices": 204,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "woven_tie_wrap_1": {
+          "vertices": 30,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "tie_hanging_tail_1": {
+          "vertices": 18,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "groundsheet_under_canvas": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "ridge_pole": {
+          "vertices": 20,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "rear_ridge_upright": {
+          "vertices": 20,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "door_jamb_-1": {
+          "vertices": 20,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "door_jamb_angled_brace_-1": {
+          "vertices": 20,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "brace_sewn_lashing_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "door_jamb_1": {
+          "vertices": 20,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "door_jamb_angled_brace_1": {
+          "vertices": 20,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "brace_sewn_lashing_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "stitched_ridge_tenon_-1.09": {
+          "vertices": 30,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "stitched_ridge_tenon_1.06": {
+          "vertices": 30,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "rear_vent_under_folded_flap": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "rear_vent_folded_canvas_cowl": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "leaning_wooden_peg_-1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "looped_guy_line_-1_-1": {
+          "vertices": 18,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "knotted_peg_hitch_-1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "canvas_guy_eye_-1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "leaning_wooden_peg_-1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "looped_guy_line_-1_1": {
+          "vertices": 18,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "knotted_peg_hitch_-1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "canvas_guy_eye_-1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "leaning_wooden_peg_1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "looped_guy_line_1_-1": {
+          "vertices": 18,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "knotted_peg_hitch_1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "canvas_guy_eye_1_-1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "leaning_wooden_peg_1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "looped_guy_line_1_1": {
+          "vertices": 18,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "knotted_peg_hitch_1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "canvas_guy_eye_1_1": {
+          "vertices": 16,
+          "closed": true,
+          "degenerateFaces": 0
+        }
+      },
+      "representativeUvDensity": {
+        "px_per_m": 505.3,
+        "px_per_cm": 5.05,
+        "islands": [
+          505.3
+        ]
+      },
+      "glbSummary": {
+        "bytes": 327108,
+        "extensions_used": [],
+        "extensions_required": [],
+        "nodes": 6,
+        "meshes": 5,
+        "triangles": 8440,
+        "morph_targets": {},
+        "skins": [],
+        "animations": [],
+        "materials": 5,
+        "images": [
+          "image/png",
+          "image/png",
+          "image/png",
+          "image/png",
+          "image/png"
+        ]
+      }
+    },
+    "C10": {
+      "nativeGeometry": {
+        "lathe_tapered_timber_mast": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "oak_ground_hub": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "cast_socket_top_band": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "0_rebated_oak_foot": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "0_mast_diagonal_stay": {
+          "vertices": 24,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "0_stay_heel_strap": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "1_rebated_oak_foot": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "1_mast_diagonal_stay": {
+          "vertices": 24,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "1_stay_heel_strap": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "2_rebated_oak_foot": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "2_mast_diagonal_stay": {
+          "vertices": 24,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "2_stay_heel_strap": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "3_rebated_oak_foot": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "3_mast_diagonal_stay": {
+          "vertices": 24,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "3_stay_heel_strap": {
+          "vertices": 8,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "gilt_crown_spun_over_pole": {
+          "vertices": 84,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_1_split_hoist_collar_0": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_1_split_hoist_collar_1": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_2_split_hoist_collar_0": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_2_split_hoist_collar_1": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_3_split_hoist_collar_0": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_3_split_hoist_collar_1": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_4_split_hoist_collar_0": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_4_split_hoist_collar_1": {
+          "vertices": 48,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_01_sewn_cloth_source": {
+          "vertices": 254,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_02_sewn_cloth_source": {
+          "vertices": 266,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_03_sewn_cloth_source": {
+          "vertices": 254,
+          "closed": true,
+          "degenerateFaces": 0
+        },
+        "flag_04_sewn_cloth_source": {
+          "vertices": 266,
+          "closed": true,
+          "degenerateFaces": 0
+        }
+      },
+      "representativeUvDensity": {
+        "px_per_m": 692.2,
+        "px_per_cm": 6.92,
+        "islands": [
+          692.2
+        ]
+      },
+      "glbSummary": {
+        "bytes": 324668,
+        "extensions_used": [],
+        "extensions_required": [],
+        "nodes": 10,
+        "meshes": 8,
+        "triangles": 4296,
+        "morph_targets": {},
+        "skins": [],
+        "animations": [],
+        "materials": 5,
+        "images": [
+          "image/png",
+          "image/png",
+          "image/png"
+        ]
+      }
+    }
+  }
+}

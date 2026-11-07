@@ -1,0 +1,273 @@
+{
+  "scope": "Offline matched views. The game runtime and collider behavior are separate checks.",
+  "settings": {
+    "Blender": "5.1.2",
+    "engine": "CYCLES",
+    "threads": 2,
+    "resolution": [
+      740,
+      660
+    ],
+    "samples": 12,
+    "exposure": 0.0,
+    "viewTransform": "AgX"
+  },
+  "assets": {
+    "C04": {
+      "camera": {
+        "position": [
+          5.0999999,
+          -6.0,
+          3.4200001
+        ],
+        "target": [
+          0.0,
+          0.0,
+          1.09
+        ],
+        "lensMm": 55.0
+      },
+      "checks": {
+        "tentParams": true,
+        "doorProfile": true,
+        "collisionVertices": true,
+        "collisionIndices": true
+      },
+      "reimportedMeshes": [
+        {
+          "name": "C04_craft_binding.001",
+          "triangles": 3088,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "shelter_woven_selvedge.001"
+          ]
+        },
+        {
+          "name": "C04_craft_canvas.001",
+          "triangles": 4320,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "camp_canvas_orange.001"
+          ]
+        },
+        {
+          "name": "C04_craft_dark.001",
+          "triangles": 120,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "shelter_waxed_walnut_and_ground.001"
+          ]
+        },
+        {
+          "name": "C04_craft_hemp.001",
+          "triangles": 472,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "shelter_flax_cord.001"
+          ]
+        },
+        {
+          "name": "C04_craft_wood.001",
+          "triangles": 440,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "shelter_axial_grain_timber.001"
+          ]
+        }
+      ],
+      "boundsBlenderZUp": {
+        "baseline": [
+          [
+            -1.6564767360687256,
+            -2.1594650745391846,
+            0.0
+          ],
+          [
+            1.6564762592315674,
+            2.1594650745391846,
+            2.4999990463256836
+          ]
+        ],
+        "candidate": [
+          [
+            -1.6169999837875366,
+            -2.1088802814483643,
+            0.0
+          ],
+          [
+            1.6169999837875366,
+            2.1088802814483643,
+            2.5
+          ]
+        ]
+      }
+    },
+    "C10": {
+      "camera": {
+        "position": [
+          5.3000002,
+          2.3,
+          2.3199999
+        ],
+        "target": [
+          0.015,
+          0.0,
+          1.61
+        ],
+        "lensMm": 48.0
+      },
+      "checks": {
+        "flag_01": {
+          "translationGLB": [
+            0,
+            2.9600000381469727,
+            0.24897998571395874
+          ],
+          "extrasExact": true
+        },
+        "flag_02": {
+          "translationGLB": [
+            0,
+            2.509999990463257,
+            0.24897998571395874
+          ],
+          "extrasExact": true
+        },
+        "flag_03": {
+          "translationGLB": [
+            0,
+            2.059999942779541,
+            0.24897998571395874
+          ],
+          "extrasExact": true
+        },
+        "flag_04": {
+          "translationGLB": [
+            0,
+            1.6100000143051147,
+            0.24897998571395874
+          ],
+          "extrasExact": true
+        }
+      },
+      "reimportedMeshes": [
+        {
+          "name": "C10_craft_brass.001",
+          "triangles": 164,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "mast_turned_brass.001"
+          ]
+        },
+        {
+          "name": "C10_craft_dark.001",
+          "triangles": 540,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "shelter_waxed_walnut_and_ground.002"
+          ]
+        },
+        {
+          "name": "C10_craft_iron.001",
+          "triangles": 1260,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "mast_oiled_iron.001"
+          ]
+        },
+        {
+          "name": "C10_craft_wood.001",
+          "triangles": 268,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "shelter_axial_grain_timber.002"
+          ]
+        },
+        {
+          "name": "flag_01.001",
+          "triangles": 504,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "mast_yarn_dyed_cloth.001"
+          ]
+        },
+        {
+          "name": "flag_02.001",
+          "triangles": 528,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "mast_yarn_dyed_cloth.001"
+          ]
+        },
+        {
+          "name": "flag_03.001",
+          "triangles": 504,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "mast_yarn_dyed_cloth.001"
+          ]
+        },
+        {
+          "name": "flag_04.001",
+          "triangles": 528,
+          "uvLayers": [
+            "UVMap"
+          ],
+          "materials": [
+            "mast_yarn_dyed_cloth.001"
+          ]
+        }
+      ],
+      "boundsBlenderZUp": {
+        "baseline": [
+          [
+            -0.5,
+            -0.7489799857139587,
+            0.0
+          ],
+          [
+            0.5,
+            0.7489799857139587,
+            3.2049999237060547
+          ]
+        ],
+        "candidate": [
+          [
+            -0.5,
+            -0.7489799857139587,
+            0.0
+          ],
+          [
+            0.5,
+            0.7489799857139587,
+            3.2049999237060547
+          ]
+        ]
+      }
+    }
+  }
+}

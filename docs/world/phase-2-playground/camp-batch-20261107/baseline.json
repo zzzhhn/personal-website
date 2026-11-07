@@ -1,0 +1,34 @@
+{
+  "baselineCommit": "3c66e8da538e83a9bbc56aa65592251b87764cca",
+  "baselinePreview": "/tmp/bobby-scenario-tent-playable-20261107",
+  "reviewBuild": "/tmp/camp-batch-20261107/review",
+  "baselineImages": {
+    "before-books-day.png": "ab18b4b299c2e5bbb0f9ef5bcaa2f354272b4f925fba5e4524e59f6b075da522",
+    "before-flags-day.png": "51c9cbe19b52fdafeaa337c3261da58019a619e413cefa028df638cfaa8b304a",
+    "before-lamps-day.png": "dbe1b7a612693840672bf020f17d99cabd10177466ef6090b72fb8567816d3de",
+    "before-lamps-night.png": "c3cafc3886fe9ffd062919bd9878d80fe40d0b5c7372b24266610f42015321ce",
+    "before-overview-day.png": "d9c83529957a5ea6f5ad516be84e063852cd8e75f28137d8dcfe29480fa07aa3",
+    "before-overview-night.png": "ea73472fe565a0e69eba1aa678dd1f5af66e3098e835951d9f1870885778597b",
+    "before-shelter-day.png": "1a25925c286e78121a3943e9117b1f65908b073f0499e9e9704f06dc9f42c538",
+    "before-tools-day.png": "8300ab3dcd0bd93c863337788af4ceb0bc5471bb6618ca9da5aa8c38378fb4c6"
+  },
+  "cameraDrafts": "occluded-camera-drafts excluded: tree/car occluded target, replaced before authoring",
+  "scope": [
+    "C02 stone pads",
+    "C04 small tents",
+    "C08 books",
+    "C10 flags",
+    "C11 tool wall",
+    "L01 exit posts"
+  ],
+  "retain": [
+    "C03 pilot",
+    "C05-C07 props craft",
+    "C09 cabinet",
+    "C12-C16 facility craft",
+    "portal",
+    "nature",
+    "ground",
+    "gameplay/physics"
+  ]
+}
