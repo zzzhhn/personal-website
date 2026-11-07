@@ -1,0 +1,70 @@
+{
+  "renderer": "5.1.2",
+  "scope": "matched offline only; engine view and actual collision not checked",
+  "meshes": [
+    {
+      "name": "C03_pilot_binding.001",
+      "triangles": 3284,
+      "uvLayers": [
+        "UVMap"
+      ],
+      "materials": [
+        "pilot_canvas_binding.001"
+      ]
+    },
+    {
+      "name": "C03_pilot_canvas.001",
+      "triangles": 6264,
+      "uvLayers": [
+        "UVMap"
+      ],
+      "materials": [
+        "camp_canvas_orange.001"
+      ]
+    },
+    {
+      "name": "C03_pilot_cream.001",
+      "triangles": 460,
+      "uvLayers": [
+        "UVMap"
+      ],
+      "materials": [
+        "pilot_canvas_cream.001"
+      ]
+    },
+    {
+      "name": "C03_pilot_ground.001",
+      "triangles": 80,
+      "uvLayers": [
+        "UVMap"
+      ],
+      "materials": [
+        "pilot_groundsheet.001"
+      ]
+    },
+    {
+      "name": "C03_pilot_wood.001",
+      "triangles": 480,
+      "uvLayers": [
+        "UVMap"
+      ],
+      "materials": [
+        "pilot_timber.001"
+      ]
+    }
+  ],
+  "doorProfileEqual": true,
+  "tentParamsEqual": true,
+  "camera": [
+    7.0,
+    -8.0,
+    4.699999809265137
+  ],
+  "lens": 49.0,
+  "resolution": [
+    1100,
+    850
+  ],
+  "samples": 20,
+  "rig": "source .blend unchanged; imported candidate and exact old GLB same camera/lights/exposure"
+}

@@ -1,0 +1,73 @@
+{
+  "skill": "/Users/a22309/.codex/skills/blender-material-craft",
+  "upstream": "https://github.com/scenario-labs/skills",
+  "commit": "e7e19d5f7cf14f3b84a16a261dfb6f77724bd637",
+  "license": "MIT upstream; wrapper authored locally",
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "eae399274ad1d936f3f823108c1ad0e3600dda302d7c3f5a2f70b9070e749c62",
+      "bytes": 11126
+    },
+    {
+      "path": "references/scenario-tools.md",
+      "sha256": "a9d6aea05ca9334f847367ae9bd89ebaf6a58d7902c4a2ec654e9a7cf38b5b2a",
+      "bytes": 5851
+    },
+    {
+      "path": "scripts/scenario_tools.py",
+      "sha256": "4997c035750b4677f15cdd1f964be6f633bc04ae252d6da9c3fd2ac3a6abea03",
+      "bytes": 2267
+    },
+    {
+      "path": "scripts/scenario_smoke.py",
+      "sha256": "23fec5493f4ef4a8d62f0c7e23a056db11ac565c9bb53c875812775b663dc933",
+      "bytes": 2542
+    },
+    {
+      "path": "vendor/scenario-blender/LICENSE",
+      "sha256": "d7b40cfbaadd75a60b1b5fbeac7a751efffe8502d1b7e942d69b11edbeb4a37a",
+      "bytes": 1071
+    },
+    {
+      "path": "vendor/scenario-blender/UPSTREAM.json",
+      "sha256": "8cf15e2cc9352556be8e281c8cdd6f3533ec5cfa6bd2190130a7527ed3ab4d11",
+      "bytes": 1358
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-uv-baking/scripts/bx_uvbake.py",
+      "sha256": "c81a0bb7400344d3fdf83318213a2f8eded47286b89b92dbf38731ede2e67f95",
+      "bytes": 107562
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-hard-surface/scripts/bx_hardsurface.py",
+      "sha256": "31ca40f206f9ba6cf3a7ce8726cfadc6535c12d3d6b03bb37e2ed7d55285f549",
+      "bytes": 69530
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-export/scripts/bx_export.py",
+      "sha256": "a3317b2b290127dbff39cbf2f67d1d222a3cfb9530c9936e145e09e136d415cf",
+      "bytes": 35526
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-expert/scripts/bx_audit.py",
+      "sha256": "735bea200fd11fe806851a07d1f2c74303045551bde0cbe87386859fad9dd2f4",
+      "bytes": 31887
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-expert/scripts/bx_review.py",
+      "sha256": "fd0d7952cd0606c338bdbf4e6d0c58ce12602b2dac482727a227ccf9837ad98c",
+      "bytes": 15645
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-expert/scripts/bx_gui.py",
+      "sha256": "4fbf3d8e7501d9717ee070727862b4cf2cfc138ff435e05beb295a419c18f5ca",
+      "bytes": 8952
+    },
+    {
+      "path": "vendor/scenario-blender/scenario-blender-texturing-shading/scripts/bx_materials.py",
+      "sha256": "8b7676372283089694013b092974c81ea6477107b0fa596dcc4c8fd9df4656d5",
+      "bytes": 87245
+    }
+  ]
+}

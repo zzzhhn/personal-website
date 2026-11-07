@@ -1,0 +1,144 @@
+{
+  "asset": "C03",
+  "candidate": "independent-sol-scenario-v1",
+  "sourceRevision": "4f4f386b345df93449cfd08c392e948c8b85f9b2",
+  "baselineSha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde",
+  "glbSha256": "2cdc93151beec61a8146decb146219d224a756b29bb28e5ff13d4a05f9df4210",
+  "blendSha256": "1cd17dc285eb751909081d5e0d34370679e64477ff2976e33b77f3c4a7a0370d",
+  "generatorSha256": "7aef8ba02d4543223eb9ddb71eb4e18c496447f3fb1b7e56e5a7003fd530fe1e",
+  "dimensionsM_ZUp": {
+    "min": [
+      -2.0303571224212646,
+      -2.6906943321228027,
+      0.0
+    ],
+    "max": [
+      2.0303571224212646,
+      2.6906943321228027,
+      3.299999952316284
+    ]
+  },
+  "runtime": {
+    "bytes": 508592,
+    "extensions_used": [],
+    "extensions_required": [],
+    "nodes": 6,
+    "meshes": 5,
+    "triangles": 10568,
+    "morph_targets": {},
+    "skins": [],
+    "animations": [],
+    "materials": 5,
+    "images": [
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png"
+    ]
+  },
+  "textures": [
+    {
+      "file": "textures/canvas_baseColor.png",
+      "sha256": "2fe3d647552fcdafb1d6407788eb8f4f5e0dcb6a199d472f263a06efb14b5c69",
+      "size": [
+        512,
+        512
+      ],
+      "license": "CC0, original deterministic author generation; not photographed scans"
+    },
+    {
+      "file": "textures/canvas_normal.png",
+      "sha256": "9fb5f70d35f8f81038aaca3e3872f7234b50e7843b68e106d1e29992361ddae2",
+      "size": [
+        512,
+        512
+      ],
+      "license": "CC0, original deterministic author generation; not photographed scans"
+    },
+    {
+      "file": "textures/canvas_roughness.png",
+      "sha256": "dd4f692b57d8d871251bd081e3821f91ed4f3d6894fa015c8f9f54f5d5a9b1a1",
+      "size": [
+        512,
+        512
+      ],
+      "license": "CC0, original deterministic author generation; not photographed scans"
+    },
+    {
+      "file": "textures/wood_baseColor.png",
+      "sha256": "057d937d0c4ec1234df00f56e99e1f6b86559c82a5ed9d7e0c129d0be0a5e7d6",
+      "size": [
+        512,
+        512
+      ],
+      "license": "CC0, original deterministic author generation; not photographed scans"
+    },
+    {
+      "file": "textures/wood_roughness.png",
+      "sha256": "c5a5bab8e5de6f6968695bc79b0968669ddc85ec32e9956a6455c8ed52547080",
+      "size": [
+        512,
+        512
+      ],
+      "license": "CC0, original deterministic author generation; not photographed scans"
+    }
+  ],
+  "contract": {
+    "position": [
+      -42,
+      4.8,
+      12.5
+    ],
+    "yaw": -1.5707963267948966,
+    "front": "+X local -> +Z world",
+    "physics": "Original baseline camp-tent-shell-v2 remains the only collider",
+    "doorProfile": [
+      -0.7,
+      0.0,
+      -0.7,
+      1.7,
+      -0.32,
+      2.25,
+      0.32,
+      2.25,
+      0.7,
+      1.7,
+      0.7,
+      0.0
+    ],
+    "tentParams": {
+      "L": 3.0,
+      "W": 1.6,
+      "hw": 0.6,
+      "hr": 3.0,
+      "dw": 0.7,
+      "dh": 2.25,
+      "jamb": 1.7,
+      "topw": 0.32,
+      "Xh": 2.1,
+      "Yh": 2.75,
+      "H": 3.3,
+      "ovx": 0.16,
+      "ovs": 0.13,
+      "t": 0.07,
+      "win": [
+        0.36,
+        1.32,
+        1.74
+      ]
+    },
+    "identityAnchor": [
+      -42.4,
+      5.6,
+      14.75
+    ]
+  },
+  "status": {
+    "offlineQA": "raw reports retained; review required",
+    "runtimeVisual": "not reviewed",
+    "runtimePerformance": "not measured",
+    "userAcceptance": "pending"
+  },
+  "firstCompleteFrozen": true
+}

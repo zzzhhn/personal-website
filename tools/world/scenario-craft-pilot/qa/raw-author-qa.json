@@ -1,0 +1,458 @@
+{
+  "nativeTopology": [
+    {
+      "part": "fly_-1_tensioned_canvas",
+      "vertices": 1050,
+      "faces": 1048,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "rear_rolled_hem_-1",
+      "vertices": 168,
+      "faces": 162,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "front_rolled_hem_-1",
+      "vertices": 168,
+      "faces": 162,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "eave_rolled_hem_-1",
+      "vertices": 200,
+      "faces": 194,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "sewn_lapped_panel_-1_-0.5",
+      "vertices": 126,
+      "faces": 122,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "sewn_lapped_panel_-1_0.5",
+      "vertices": 126,
+      "faces": 122,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "fly_1_tensioned_canvas",
+      "vertices": 1050,
+      "faces": 1048,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "rear_rolled_hem_1",
+      "vertices": 168,
+      "faces": 162,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "front_rolled_hem_1",
+      "vertices": 168,
+      "faces": 162,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "eave_rolled_hem_1",
+      "vertices": 200,
+      "faces": 194,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "sewn_lapped_panel_1_-0.5",
+      "vertices": 126,
+      "faces": 122,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "sewn_lapped_panel_1_0.5",
+      "vertices": 126,
+      "faces": 122,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "ridge_double_lapped_seam",
+      "vertices": 30,
+      "faces": 22,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "front_gable_open_door",
+      "vertices": 26,
+      "faces": 15,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "rear_gable",
+      "vertices": 14,
+      "faces": 9,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "low_sidewall_-1",
+      "vertices": 300,
+      "faces": 298,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "weather_skirt_-1",
+      "vertices": 8,
+      "faces": 6,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "gathered_curtain_-1",
+      "vertices": 204,
+      "faces": 194,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "curtain_cuff_-1",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "low_sidewall_1",
+      "vertices": 300,
+      "faces": 298,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "weather_skirt_1",
+      "vertices": 8,
+      "faces": 6,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "gathered_curtain_1",
+      "vertices": 204,
+      "faces": 194,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "curtain_cuff_1",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "door_sewn_binding",
+      "vertices": 48,
+      "faces": 42,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "rear_vent_dark_inset",
+      "vertices": 8,
+      "faces": 6,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "rear_vent_folded_rainflap",
+      "vertices": 8,
+      "faces": 6,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "groundsheet_turned_edge",
+      "vertices": 8,
+      "faces": 6,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "groundsheet_edge_-1",
+      "vertices": 16,
+      "faces": 10,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "groundsheet_edge_1",
+      "vertices": 16,
+      "faces": 10,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "ridge_support",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "rear_upright",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "door_jamb_-1",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "door_roof_brace_-1",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "jamb_lashing_-1",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "door_jamb_1",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "door_roof_brace_1",
+      "vertices": 24,
+      "faces": 14,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "jamb_lashing_1",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "ridge_finial_-1.38",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "ridge_finial_1.38",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "stake_-1_-1",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "braided_guy_-1_-1",
+      "vertices": 24,
+      "faces": 18,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "eave_loop_-1_-1",
+      "vertices": 16,
+      "faces": 10,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "stake_-1_1",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "braided_guy_-1_1",
+      "vertices": 24,
+      "faces": 18,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "eave_loop_-1_1",
+      "vertices": 16,
+      "faces": 10,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "stake_1_-1",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "braided_guy_1_-1",
+      "vertices": 24,
+      "faces": 18,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "eave_loop_1_-1",
+      "vertices": 16,
+      "faces": 10,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "stake_1_1",
+      "vertices": 20,
+      "faces": 12,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "braided_guy_1_1",
+      "vertices": 24,
+      "faces": 18,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "eave_loop_1_1",
+      "vertices": 16,
+      "faces": 10,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    }
+  ],
+  "uvDensity": {
+    "fly_1_tensioned_canvas": {
+      "px_per_m": 1018.1,
+      "px_per_cm": 10.18,
+      "islands": [
+        1018.1
+      ]
+    },
+    "door_jamb_1": {
+      "px_per_m": 1373.3,
+      "px_per_cm": 13.73,
+      "islands": [
+        1373.3
+      ]
+    }
+  },
+  "materialAudit": {
+    "camp_canvas_orange": [],
+    "pilot_canvas_binding": [],
+    "pilot_canvas_cream": [],
+    "pilot_timber": [],
+    "pilot_groundsheet": [
+      [
+        "info",
+        "constant Roughness 0.95: roughness variation is what sells a surface"
+      ]
+    ]
+  },
+  "nativeBoundsZUp": {
+    "min": [
+      -2.0303571224212646,
+      -2.6906943321228027,
+      0.0
+    ],
+    "max": [
+      2.0303571224212646,
+      2.6906943321228027,
+      3.299999952316284
+    ]
+  },
+  "toolSelection": "UV density, PBR node audit, GLB summary; no unneeded remesh or unique atlas",
+  "glbSummary": {
+    "bytes": 508592,
+    "extensions_used": [],
+    "extensions_required": [],
+    "nodes": 6,
+    "meshes": 5,
+    "triangles": 10568,
+    "morph_targets": {},
+    "skins": [],
+    "animations": [],
+    "materials": 5,
+    "images": [
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png",
+      "image/png"
+    ]
+  },
+  "runtimeTopology": [
+    {
+      "part": "C03_pilot_canvas",
+      "vertices": 3148,
+      "faces": 3104,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "C03_pilot_binding",
+      "vertices": 1670,
+      "faces": 1600,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "C03_pilot_cream",
+      "vertices": 256,
+      "faces": 170,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "C03_pilot_wood",
+      "vertices": 264,
+      "faces": 156,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    },
+    {
+      "part": "C03_pilot_ground",
+      "vertices": 48,
+      "faces": 32,
+      "nonManifoldEdges": 0,
+      "degenerateFaces": 0
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/build_tent.py:69: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+10:49:38 | INFO: Starting glTF 2.0 export
+10:49:38 | INFO: Extracting primitive: rear_rolled_hem_-1.001
+10:49:38 | INFO: Primitives created: 1
+10:49:38 | INFO: Extracting primitive: fly_-1_tensioned_canvas.001
+10:49:38 | INFO: Primitives created: 1
+10:49:38 | INFO: Extracting primitive: curtain_cuff_-1.001
+10:49:38 | INFO: Primitives created: 1
+10:49:38 | INFO: Extracting primitive: rear_vent_dark_inset.001
+10:49:38 | INFO: Primitives created: 1
+10:49:38 | INFO: Extracting primitive: ridge_support.001
+10:49:38 | INFO: Primitives created: 1
+10:49:38 | INFO: Finished glTF 2.0 export in 0.10505890846252441 s
+
+Info: Saved as "C03-tent-editable.blend"
+FIRST_COMPLETE {"glb": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/public/assets/world/scenario-craft-pilot/C03-tent-v1.glb", "glbSha256": "2cdc93151beec61a8146decb146219d224a756b29bb28e5ff13d4a05f9df4210", "blendSha256": "1cd17dc285eb751909081d5e0d34370679e64477ff2976e33b77f3c4a7a0370d", "triangles": 10568}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

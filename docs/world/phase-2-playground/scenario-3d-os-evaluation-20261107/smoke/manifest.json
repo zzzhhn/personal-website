@@ -1,0 +1,31 @@
+{
+  "upstream": "e7e19d5f7cf14f3b84a16a261dfb6f77724bd637",
+  "scope": "7 fixtures only; no skill installation or production changes",
+  "files": [
+    {
+      "path": "bx_audit.py",
+      "sha256": "735bea200fd11fe806851a07d1f2c74303045551bde0cbe87386859fad9dd2f4",
+      "bytes": 31887
+    },
+    {
+      "path": "smoke.py",
+      "sha256": "9643fa543d03f0b05a53c59c09807a61c966fed1b26f1d003732fbc29d1c61cf",
+      "bytes": 3987
+    },
+    {
+      "path": "smoke-result.json",
+      "sha256": "033885fb86134a66d6e9863e38177ef7942618e96068fe7ebfa4f520cb800807",
+      "bytes": 6707
+    },
+    {
+      "path": "smoke.log",
+      "sha256": "1367dbe1f229dc94458832ba7e31aa5e79088b1e8d5b05d0b3a4a9f45014fc81",
+      "bytes": 1144
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "d7b40cfbaadd75a60b1b5fbeac7a751efffe8502d1b7e942d69b11edbeb4a37a",
+      "bytes": 1071
+    }
+  ]
+}

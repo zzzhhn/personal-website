@@ -19,6 +19,7 @@ import { night as worldNight } from './WorldNight';
 import { campCraftMaterial } from './WorldCraftMaterials';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import WorldCampCraftProps from './WorldCampCraftProps';
+import WorldCampTentPilot from './WorldCampTentPilot';
 import type { CampCraftFamily } from './camp-craft-visual';
 import type { Vec3 } from './types';
 
@@ -47,6 +48,7 @@ function withDraco(loader: GLTFLoader) {
   loader.setDRACOLoader(draco);
 }
 const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy';
+const TENT_PILOT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('tentCraft') !== 'legacy';
 // The older explicit global legacy request wins; facilityCraft=legacy by itself
 // returns batch4. This sample never silently overrides a requested old nature pack.
 const FACILITY_TREE_CRAFT = typeof window === 'undefined' || (new URLSearchParams(window.location.search).get('facilityCraft') !== 'legacy' && new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy');
@@ -313,6 +315,18 @@ function useCampScene(id: string, materialMap?: MaterialMap) {
 function SingleAsset({ id, label, placement, materialMap }: { id: string; label: string; placement: Placement; materialMap?: MaterialMap }) {
   const placements = useMemo(() => [placement], [placement]);
   return <InstancedAsset id={id} label={label} placements={placements} materialMap={materialMap} />;
+}
+
+/** Keep the established hollow shell and door opening; load only the new visual. */
+function CampTentPilotAsset({ placement }: { placement: Placement }) {
+  const physics = useLoader(GLTFLoader, '/assets/world/camp/C03.glb', withDraco) as GLTF;
+  const shapes = useMemo(() => campShapes('C03', physics), [physics]);
+  const matrices = useMemo(() => [toMatrix(placement, new Box3().setFromObject(physics.scene))], [physics, placement]);
+  if (!shapes) throw new Error('Missing fitted collision recipe for C03');
+  return <group name="camp-asset-C03-large-tent">
+    <WorldCampTentPilot placement={placement} />
+    <CampColliders id="C03" label="large-tent" shapes={shapes} matrices={matrices} />
+  </group>;
 }
 /** G21 owns three material copies and borrows existing maps/renderer PMREM.
  * InstancedAsset keeps original camp geometry for placement and collision. */
@@ -709,7 +723,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
       <Boxes items={data.placeholders.flatMap(b => [-0.25, 0.25].map(o => ({ position: [b.position[0] + o, b.position[1], b.position[2]] as Vec3, size: [0.09, b.size[1] + 0.02, b.size[2] + 0.02] as Vec3, color: '#6E5A44' })))} />
     </group>}
     <AssetGuard id="C03" fallback={<Boxes collisionId="C03" items={[layout.tents[1]]} />}>
-      <SingleAsset id="C03" label="large-tent" placement={data.tents[1]} materialMap={canvasGlowCopy} />
+      {TENT_PILOT ? <CampTentPilotAsset placement={data.tents[1]} /> : <SingleAsset id="C03" label="large-tent" placement={data.tents[1]} materialMap={canvasGlowCopy} />}
     </AssetGuard>
     <AssetGuard id="C04" fallback={<Boxes collisionId="C04" items={[layout.tents[0], layout.tents[2]]} />}>
       <InstancedAsset id="C04" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />

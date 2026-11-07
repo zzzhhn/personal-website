@@ -1,0 +1,11 @@
+--- blender-material-craft/SKILL.md (before)
++++ blender-material-craft/SKILL.md
+@@ -32,6 +32,8 @@
+ Read [forms-and-materials.md](references/forms-and-materials.md) while choosing the construction and materials. It includes failure symptoms and practical corrections. The optional [craft_geometry.py](scripts/craft_geometry.py) supplies bevel-safe boxes, oriented beams and closed hollow vessels; adapt it rather than forcing every form into its primitives.
+ 
+ Keep native parts named and editable. Separate asset, baseline and render-rig collections. Use meters and document the asset root and front. Work from a high-quality editable source, then derive runtime geometry separately; do not let an inherited triangle cap determine the design before measuring the target.
++
++For hard-surface edges, UV/bake defects, layered material diagnosis or cross-part export checks, use the bundled [Scenario production tools](references/scenario-tools.md). Choose the tool that addresses the observed problem; its scripts supplement our construction judgment and runtime checks. The pinned tools include semantic assembly audits, shading/UV measurements and review sheets. Apply their defaults to the actual asset and viewing distance, not as universal budgets.
+ 
+ ## Material decisions must survive export
+ 

@@ -1,0 +1,12 @@
+/Users/a22309/.codex/skills/blender-material-craft/scripts/scenario_smoke.py:20: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+10:45:41 | INFO: Starting glTF 2.0 export
+10:45:41 | INFO: Extracting primitive: Cube
+10:45:41 | INFO: Primitives created: 1
+10:45:41 | INFO: Finished glTF 2.0 export in 0.0032880306243896484 s
+
+SCENARIO_COMPATIBILITY_OK 5.1.2
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

@@ -1,0 +1,31 @@
+00:00.887  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/C03-tent-editable.blend"
+00:07.146  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/qa/author-source-ordinary.png'
+10:50:27 | INFO: Data are loaded, start creating Blender stuff
+10:50:27 | INFO: Blender create Mesh node rear_rolled_hem_-1.001
+10:50:27 | INFO: Blender create Mesh node fly_-1_tensioned_canvas.001
+10:50:27 | INFO: Blender create Mesh node curtain_cuff_-1.001
+10:50:27 | INFO: Blender create Mesh node rear_vent_dark_inset.001
+10:50:27 | INFO: Blender create Mesh node ridge_support.001
+10:50:27 | INFO: glTF import finished in 0.02s
+00:13.259  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/qa/export-reimport-ordinary.png'
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/render_review.py:27: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  clay=bpy.data.materials.new('neutral clay');clay.diffuse_color=(.48,.48,.48,1);clay.use_nodes=True
+00:18.688  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/qa/export-reimport-clay.png'
+10:50:38 | INFO: Data are loaded, start creating Blender stuff
+10:50:38 | INFO: Blender create Mesh node C03_mesh
+10:50:38 | INFO: Draco Decoder: Decode primitive C03_mesh
+10:50:38 | INFO: Draco Decoder: Decode primitive C03_mesh
+10:50:38 | INFO: Draco Decoder: Decode primitive C03_mesh
+10:50:38 | INFO: Draco Decoder: Decode primitive C03_mesh
+10:50:38 | INFO: Draco Decoder: Decode primitive C03_mesh
+10:50:39 | INFO: glTF import finished in 0.02s
+00:23.974  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-coaster-car-pilot/tools/world/scenario-craft-pilot/qa/baseline-exact-glb-ordinary.png'
+REVIEW_DONE 5
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+DracoDecoder | Decoded 388 vertices, 660 indices
+DracoDecoder | Decoded 576 vertices, 864 indices
+DracoDecoder | Decoded 216 vertices, 348 indices
+DracoDecoder | Decoded 24 vertices, 36 indices
+DracoDecoder | Decoded 672 vertices, 1152 indices
+
+Blender quit

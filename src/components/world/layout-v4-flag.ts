@@ -61,6 +61,9 @@ export const WORLD_SHOTS_V4 = [
   { id: 'ridge', position: [10, 40, -40] as Vec3, target: [-30, 4, -84] as Vec3 },
   // Paired evidence cameras share geometry, projection and time presets across revisions.
   ...(['day', 'night'] as const).flatMap(time => [
+    { id: `tent-pilot-ordinary-${time}`, position: [-33.4, 8.1, 22.6] as Vec3, target: [-42, 6.0, 12.5] as Vec3 },
+    { id: `tent-pilot-close-${time}`, position: [-37.6, 7.3, 18.5] as Vec3, target: [-42, 6.4, 13.6] as Vec3 },
+    { id: `tent-pilot-side-${time}`, position: [-34.8, 7.7, 10.3] as Vec3, target: [-42, 6.3, 12.5] as Vec3 },
     { id: `town-craft-sdic-${time}`, position: [23, 6.8, 31] as Vec3, target: [7, 4.5, 18.5] as Vec3 },
     { id: `town-craft-wq-${time}`, position: [24, 8, 17] as Vec3, target: [7, 6, 7.5] as Vec3 },
     { id: `town-craft-moe-${time}`, position: [22, 5.8, 7] as Vec3, target: [8, 3.3, -2.5] as Vec3 },

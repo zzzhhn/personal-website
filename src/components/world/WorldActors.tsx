@@ -356,6 +356,7 @@ export default function WorldActors() {
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
     if(start==='town')return [14,1.2+PLAYER_CENTER_HEIGHT,-2.5];
+    if(start==='tent')return [-42,4.8+PLAYER_CENTER_HEIGHT,20];
     if(start==='ibd'||start==='coaster'){
       const p=(start==='ibd'?IBD_YARD:INTENT_COASTER).entrance;
       return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];

@@ -1,0 +1,316 @@
+{
+  "blender": "5.1.2",
+  "upstream": "e7e19d5f7cf14f3b84a16a261dfb6f77724bd637",
+  "fixture_cases": 7,
+  "cases": {
+    "crate_defects": {
+      "profile": "game",
+      "eps": 0.000148,
+      "tol": 0.002967,
+      "gap": 0.014836,
+      "pass": false,
+      "errors": [
+        "Lid: unapplied scale [1.04, 0.74, 0.05]",
+        "Bracket: 1 closed part with normals pointing inward",
+        "Body <-> Label: 2 coplanar overlapping faces (z-fighting)",
+        "Handle: floating, 0.02 from the nearest part"
+      ],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [
+            "Body <-> Label: 2 coplanar overlapping faces (z-fighting)"
+          ],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [
+            "Body <-> Label: 2 coplanar overlapping faces (z-fighting)"
+          ],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [
+            "Handle: floating, 0.02 from the nearest part"
+          ],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [
+            "Lid: unapplied scale [1.04, 0.74, 0.05]"
+          ],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [
+            "Bracket: 1 closed part with normals pointing inward"
+          ],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    },
+    "crate_clean": {
+      "profile": "game",
+      "eps": 0.000146,
+      "tol": 0.002924,
+      "gap": 0.01462,
+      "pass": true,
+      "errors": [],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    },
+    "crate_fixed": {
+      "profile": "game",
+      "eps": 0.000146,
+      "tol": 0.002924,
+      "gap": 0.01462,
+      "pass": true,
+      "errors": [],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    },
+    "crate_clean_render": {
+      "profile": "render",
+      "eps": 0.000146,
+      "tol": 0.002924,
+      "gap": 0.01462,
+      "pass": true,
+      "errors": [],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    },
+    "crate_clean_print": {
+      "profile": "print",
+      "eps": 0.000146,
+      "tol": 0.002924,
+      "gap": 0.01462,
+      "pass": true,
+      "errors": [],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    },
+    "crate_clean_roblox": {
+      "profile": "roblox",
+      "eps": 0.000146,
+      "tol": 0.002924,
+      "gap": 0.01462,
+      "pass": true,
+      "errors": [],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    },
+    "crate_glb": {
+      "profile": "game",
+      "eps": 0.000146,
+      "tol": 0.002924,
+      "gap": 0.01462,
+      "pass": true,
+      "errors": [],
+      "warnings": [],
+      "per_object": {
+        "Body": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Label": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Handle": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Lid": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        },
+        "Bracket": {
+          "tris": 12,
+          "parts": 1,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "skipped": []
+    }
+  }
+}

@@ -1,0 +1,1 @@
+{"doorway":{"hit":false,"toi":1,"other":null,"normal":null},"sideWall":{"hit":true,"toi":0.48311319947242737,"other":{"colliderHandle":6.090127921133e-312,"name":"camp-collider-C03-large-tent-0-shell-0","assetId":"C03","kind":"solid"},"normal":null},"exit":{"hit":false,"toi":1,"other":null,"normal":null}}

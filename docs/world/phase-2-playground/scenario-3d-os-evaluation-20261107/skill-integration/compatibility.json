@@ -1,0 +1,206 @@
+{
+  "blender": "5.1.2",
+  "imports": [
+    "audit",
+    "review",
+    "hard_surface",
+    "materials",
+    "uv",
+    "export"
+  ],
+  "uv_fields": [
+    "object",
+    "uv_map",
+    "tex_res",
+    "faces",
+    "islands",
+    "td_px_per_m",
+    "td_face_spread_p95_p05",
+    "td_island_spread_p95_p05",
+    "td_island_min_max",
+    "angle_err_mean_deg",
+    "angle_err_p95_deg",
+    "area_stretch_p95_log2",
+    "flipped_faces",
+    "zero_area_faces",
+    "overlap_px_pct",
+    "overlapping_island_pairs",
+    "self_overlapping_islands",
+    "tiles",
+    "per_tile",
+    "faces_crossing_tiles",
+    "min_gap_px",
+    "gap_required_px",
+    "tiny_islands",
+    "sharp_edges_not_on_seams",
+    "flat_shaded_share",
+    "mirror_stacked_hint",
+    "islands_detail"
+  ],
+  "material_issues": [
+    [
+      "info",
+      "constant Roughness 0.50: roughness variation is what sells a surface"
+    ]
+  ],
+  "body_audit": {
+    "pass": true,
+    "groups": {
+      "body": {
+        "profile": "game",
+        "eps": 0.000173,
+        "tol": 0.003464,
+        "gap": 0.017321,
+        "pass": true,
+        "errors": [],
+        "warnings": [],
+        "per_object": {
+          "Body": {
+            "tris": 12,
+            "parts": 1,
+            "errors": [],
+            "warnings": []
+          }
+        },
+        "skipped": []
+      }
+    },
+    "not_checked": [
+      "inter-group contacts and articulation",
+      "runtime collision and camera",
+      "visual quality",
+      "runtime performance"
+    ]
+  },
+  "detached_audit": {
+    "pass": false,
+    "groups": {
+      "fixed": {
+        "profile": "game",
+        "eps": 0.000196,
+        "tol": 0.00391,
+        "gap": 0.019551,
+        "pass": false,
+        "errors": [
+          "DetachedHandle: floating, 0.25 from the nearest part"
+        ],
+        "warnings": [],
+        "per_object": {
+          "Body": {
+            "tris": 12,
+            "parts": 1,
+            "errors": [],
+            "warnings": []
+          },
+          "DetachedHandle": {
+            "tris": 12,
+            "parts": 1,
+            "errors": [
+              "DetachedHandle: floating, 0.25 from the nearest part"
+            ],
+            "warnings": []
+          }
+        },
+        "skipped": []
+      }
+    },
+    "not_checked": [
+      "inter-group contacts and articulation",
+      "runtime collision and camera",
+      "visual quality",
+      "runtime performance"
+    ]
+  },
+  "separate_groups": {
+    "pass": true,
+    "groups": {
+      "body": {
+        "profile": "game",
+        "eps": 0.000173,
+        "tol": 0.003464,
+        "gap": 0.017321,
+        "pass": true,
+        "errors": [],
+        "warnings": [],
+        "per_object": {
+          "Body": {
+            "tris": 12,
+            "parts": 1,
+            "errors": [],
+            "warnings": []
+          }
+        },
+        "skipped": []
+      },
+      "independent": {
+        "profile": "game",
+        "eps": 1.7e-05,
+        "tol": 0.000346,
+        "gap": 0.001732,
+        "pass": true,
+        "errors": [],
+        "warnings": [],
+        "per_object": {
+          "DetachedHandle": {
+            "tris": 12,
+            "parts": 1,
+            "errors": [],
+            "warnings": []
+          }
+        },
+        "skipped": []
+      }
+    },
+    "not_checked": [
+      "inter-group contacts and articulation",
+      "runtime collision and camera",
+      "visual quality",
+      "runtime performance"
+    ]
+  },
+  "stack_problems": [],
+  "shading_fields": [
+    "object",
+    "stack",
+    "stack_problems",
+    "scale_applied",
+    "school",
+    "eval_verts",
+    "eval_faces",
+    "eval_tris",
+    "custom_normals",
+    "custom_normals_expected",
+    "eval_non_manifold_edges",
+    "eval_ngons",
+    "eval_flat_shaded_faces",
+    "normals",
+    "base_flat_shaded_faces",
+    "sharp_edges_on_smooth_surface",
+    "nonplanar_base_faces",
+    "nonplanar_worst",
+    "nonplanar_sample",
+    "base_ngons",
+    "cuts_on_curvature",
+    "has_normal_transfer",
+    "clamp"
+  ],
+  "glb": {
+    "bytes": 1640,
+    "extensions_used": [],
+    "extensions_required": [],
+    "nodes": 1,
+    "meshes": 1,
+    "triangles": 12,
+    "morph_targets": {},
+    "skins": [],
+    "animations": [],
+    "materials": 1,
+    "images": []
+  },
+  "not_tested": [
+    "full tool suites",
+    "render helpers",
+    "baking",
+    "visual uplift"
+  ]
+}
