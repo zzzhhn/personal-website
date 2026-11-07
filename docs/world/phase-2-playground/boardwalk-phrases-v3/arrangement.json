@@ -1,0 +1,1991 @@
+{
+  "bpm": 82,
+  "bars": 16,
+  "sample_rate": 44100,
+  "frames": 2118091,
+  "harmony": {
+    "1": "C6",
+    "2": "Fmaj7",
+    "3": "Am7",
+    "4": "C/E",
+    "5": "Fmaj7",
+    "6": "Dm7",
+    "7": "G7",
+    "8": "G7",
+    "9": "C6",
+    "10": "Fmaj7",
+    "11": "Dm7",
+    "12": "C/E",
+    "13": "Fmaj7",
+    "14": "Dm7",
+    "15": "G7",
+    "16": "C6"
+  },
+  "note_counts": {
+    "bass": 33,
+    "brush": 51,
+    "guitar": 66,
+    "marimba": 53
+  },
+  "notes": [
+    {
+      "part": "bass",
+      "bar": 1,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 0.0,
+      "duration": 1.4634146341463414,
+      "velocity": 59
+    },
+    {
+      "part": "brush",
+      "bar": 1,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 0.0,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 1.0,
+      "pitch": 48,
+      "start": 0.0,
+      "duration": 1.2804878048780488,
+      "velocity": 53,
+      "string": "A",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 1,
+      "beat": 1.5,
+      "pitch": 76,
+      "start": 0.36585365853658536,
+      "duration": 0.36585365853658536,
+      "velocity": 61
+    },
+    {
+      "part": "brush",
+      "bar": 1,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 0.7317073170731707,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 2.0,
+      "pitch": 52,
+      "start": 0.7317073170731707,
+      "duration": 1.2804878048780488,
+      "velocity": 43,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 1,
+      "beat": 2.0,
+      "pitch": 74,
+      "start": 0.7317073170731707,
+      "duration": 0.36585365853658536,
+      "velocity": 55
+    },
+    {
+      "part": "marimba",
+      "bar": 1,
+      "beat": 2.5,
+      "pitch": 72,
+      "start": 1.0975609756097562,
+      "duration": 0.7317073170731707,
+      "velocity": 59
+    },
+    {
+      "part": "bass",
+      "bar": 1,
+      "beat": 3.0,
+      "pitch": 31,
+      "start": 1.4634146341463414,
+      "duration": 1.2073170731707317,
+      "velocity": 49
+    },
+    {
+      "part": "brush",
+      "bar": 1,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 1.4634146341463414,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 3.0,
+      "pitch": 57,
+      "start": 1.4634146341463414,
+      "duration": 1.0975609756097562,
+      "velocity": 41,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 1,
+      "beat": 3.75,
+      "pitch": 67,
+      "start": 2.0121951219512195,
+      "duration": 0.9146341463414634,
+      "velocity": 53
+    },
+    {
+      "part": "brush",
+      "bar": 1,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 2.1951219512195124,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 4.0,
+      "pitch": 60,
+      "start": 2.1951219512195124,
+      "duration": 0.6219512195121951,
+      "velocity": 38,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 2,
+      "beat": 1.0,
+      "pitch": 29,
+      "start": 2.926829268292683,
+      "duration": 1.829268292682927,
+      "velocity": 57
+    },
+    {
+      "part": "brush",
+      "bar": 2,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 2.926829268292683,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 1.0,
+      "pitch": 53,
+      "start": 2.926829268292683,
+      "duration": 1.646341463414634,
+      "velocity": 52,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 2,
+      "beat": 1.0,
+      "pitch": 69,
+      "start": 2.926829268292683,
+      "duration": 0.9146341463414634,
+      "velocity": 60
+    },
+    {
+      "part": "brush",
+      "bar": 2,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 3.658536585365854,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 2.0,
+      "pitch": 57,
+      "start": 3.658536585365854,
+      "duration": 1.829268292682927,
+      "velocity": 43,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 2,
+      "beat": 2.5,
+      "pitch": 67,
+      "start": 4.024390243902439,
+      "duration": 0.36585365853658536,
+      "velocity": 53
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 3.0,
+      "pitch": 60,
+      "start": 4.390243902439025,
+      "duration": 1.2804878048780488,
+      "velocity": 39,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 2,
+      "beat": 3.5,
+      "pitch": 36,
+      "start": 4.7560975609756095,
+      "duration": 0.9146341463414634,
+      "velocity": 48
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 3.5,
+      "pitch": 64,
+      "start": 4.7560975609756095,
+      "duration": 1.4634146341463414,
+      "velocity": 44,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 2,
+      "beat": 3.5,
+      "pitch": 64,
+      "start": 4.7560975609756095,
+      "duration": 1.4634146341463414,
+      "velocity": 51
+    },
+    {
+      "part": "brush",
+      "bar": 2,
+      "beat": 4.0,
+      "pitch": 44,
+      "start": 5.121951219512195,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "bass",
+      "bar": 3,
+      "beat": 1.0,
+      "pitch": 33,
+      "start": 5.853658536585366,
+      "duration": 1.4268292682926829,
+      "velocity": 56
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 1.0,
+      "pitch": 45,
+      "start": 5.853658536585366,
+      "duration": 1.353658536585366,
+      "velocity": 51,
+      "string": "A",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 3,
+      "beat": 1.5,
+      "pitch": 69,
+      "start": 6.219512195121951,
+      "duration": 0.36585365853658536,
+      "velocity": 55
+    },
+    {
+      "part": "brush",
+      "bar": 3,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 6.585365853658536,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 2.0,
+      "pitch": 55,
+      "start": 6.585365853658536,
+      "duration": 1.353658536585366,
+      "velocity": 41,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 3,
+      "beat": 2.0,
+      "pitch": 71,
+      "start": 6.585365853658536,
+      "duration": 0.36585365853658536,
+      "velocity": 49
+    },
+    {
+      "part": "marimba",
+      "bar": 3,
+      "beat": 2.5,
+      "pitch": 72,
+      "start": 6.951219512195122,
+      "duration": 1.0975609756097562,
+      "velocity": 56
+    },
+    {
+      "part": "bass",
+      "bar": 3,
+      "beat": 3.0,
+      "pitch": 40,
+      "start": 7.317073170731708,
+      "duration": 1.170731707317073,
+      "velocity": 47
+    },
+    {
+      "part": "brush",
+      "bar": 3,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 7.317073170731708,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 3.0,
+      "pitch": 60,
+      "start": 7.317073170731708,
+      "duration": 0.9146341463414634,
+      "velocity": 40,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 3,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 8.048780487804878,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 4.0,
+      "pitch": 52,
+      "start": 8.048780487804878,
+      "duration": 0.6219512195121951,
+      "velocity": 43,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 3,
+      "beat": 4.25,
+      "pitch": 69,
+      "start": 8.231707317073171,
+      "duration": 0.5487804878048781,
+      "velocity": 51
+    },
+    {
+      "part": "bass",
+      "bar": 4,
+      "beat": 1.0,
+      "pitch": 28,
+      "start": 8.78048780487805,
+      "duration": 1.646341463414634,
+      "velocity": 55
+    },
+    {
+      "part": "brush",
+      "bar": 4,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 8.78048780487805,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 1.0,
+      "pitch": 40,
+      "start": 8.78048780487805,
+      "duration": 1.829268292682927,
+      "velocity": 54,
+      "string": "LowE",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 4,
+      "beat": 1.0,
+      "pitch": 67,
+      "start": 8.78048780487805,
+      "duration": 1.0975609756097562,
+      "velocity": 55
+    },
+    {
+      "part": "brush",
+      "bar": 4,
+      "beat": 2.0,
+      "pitch": 44,
+      "start": 9.512195121951219,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 2.25,
+      "pitch": 55,
+      "start": 9.695121951219512,
+      "duration": 1.2804878048780488,
+      "velocity": 42,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 4,
+      "beat": 2.75,
+      "pitch": 64,
+      "start": 10.060975609756097,
+      "duration": 0.9146341463414634,
+      "velocity": 49
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 3.25,
+      "pitch": 60,
+      "start": 10.426829268292684,
+      "duration": 1.0975609756097562,
+      "velocity": 39,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 4,
+      "beat": 3.5,
+      "pitch": 31,
+      "start": 10.609756097560975,
+      "duration": 1.0975609756097562,
+      "velocity": 47
+    },
+    {
+      "part": "brush",
+      "bar": 4,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 10.975609756097562,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 4.0,
+      "pitch": 64,
+      "start": 10.975609756097562,
+      "duration": 0.6585365853658537,
+      "velocity": 40,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 4,
+      "beat": 4.5,
+      "pitch": 67,
+      "start": 11.341463414634147,
+      "duration": 0.36585365853658536,
+      "velocity": 52
+    },
+    {
+      "part": "bass",
+      "bar": 5,
+      "beat": 1.0,
+      "pitch": 29,
+      "start": 11.707317073170731,
+      "duration": 2.0121951219512195,
+      "velocity": 58
+    },
+    {
+      "part": "brush",
+      "bar": 5,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 11.707317073170731,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 1.0,
+      "pitch": 53,
+      "start": 11.707317073170731,
+      "duration": 1.9024390243902438,
+      "velocity": 54,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 5,
+      "beat": 1.0,
+      "pitch": 69,
+      "start": 11.707317073170731,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 1.75,
+      "pitch": 57,
+      "start": 12.25609756097561,
+      "duration": 1.829268292682927,
+      "velocity": 45,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 5,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 12.439024390243903,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 2.5,
+      "pitch": 60,
+      "start": 12.804878048780488,
+      "duration": 1.646341463414634,
+      "velocity": 43,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 5,
+      "beat": 2.5,
+      "pitch": 72,
+      "start": 12.804878048780488,
+      "duration": 0.36585365853658536,
+      "velocity": 54
+    },
+    {
+      "part": "brush",
+      "bar": 5,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 13.170731707317072,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 3.25,
+      "pitch": 64,
+      "start": 13.353658536585366,
+      "duration": 1.170731707317073,
+      "velocity": 43,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 5,
+      "beat": 3.5,
+      "pitch": 76,
+      "start": 13.536585365853659,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "bass",
+      "bar": 5,
+      "beat": 4.0,
+      "pitch": 36,
+      "start": 13.902439024390244,
+      "duration": 0.5853658536585366,
+      "velocity": 47
+    },
+    {
+      "part": "brush",
+      "bar": 5,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 13.902439024390244,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "bass",
+      "bar": 6,
+      "beat": 1.0,
+      "pitch": 38,
+      "start": 14.634146341463415,
+      "duration": 1.829268292682927,
+      "velocity": 57
+    },
+    {
+      "part": "brush",
+      "bar": 6,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 14.634146341463415,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 1.0,
+      "pitch": 50,
+      "start": 14.634146341463415,
+      "duration": 1.353658536585366,
+      "velocity": 55,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 6,
+      "beat": 1.0,
+      "pitch": 77,
+      "start": 14.634146341463415,
+      "duration": 0.7317073170731707,
+      "velocity": 61
+    },
+    {
+      "part": "brush",
+      "bar": 6,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 15.365853658536585,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 2.0,
+      "pitch": 57,
+      "start": 15.365853658536585,
+      "duration": 1.829268292682927,
+      "velocity": 42,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 6,
+      "beat": 2.0,
+      "pitch": 76,
+      "start": 15.365853658536585,
+      "duration": 0.36585365853658536,
+      "velocity": 53
+    },
+    {
+      "part": "marimba",
+      "bar": 6,
+      "beat": 2.5,
+      "pitch": 74,
+      "start": 15.731707317073171,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 3.0,
+      "pitch": 60,
+      "start": 16.097560975609756,
+      "duration": 1.2073170731707317,
+      "velocity": 42,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 6,
+      "beat": 3.5,
+      "pitch": 33,
+      "start": 16.463414634146343,
+      "duration": 0.9146341463414634,
+      "velocity": 47
+    },
+    {
+      "part": "brush",
+      "bar": 6,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 16.829268292682926,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 4.25,
+      "pitch": 65,
+      "start": 17.01219512195122,
+      "duration": 0.47560975609756095,
+      "velocity": 42,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 6,
+      "beat": 4.25,
+      "pitch": 72,
+      "start": 17.01219512195122,
+      "duration": 0.5487804878048781,
+      "velocity": 51
+    },
+    {
+      "part": "bass",
+      "bar": 7,
+      "beat": 1.0,
+      "pitch": 31,
+      "start": 17.5609756097561,
+      "duration": 1.4268292682926829,
+      "velocity": 56
+    },
+    {
+      "part": "brush",
+      "bar": 7,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 17.5609756097561,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 1.0,
+      "pitch": 43,
+      "start": 17.5609756097561,
+      "duration": 1.7926829268292683,
+      "velocity": 54,
+      "string": "LowE",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 7,
+      "beat": 1.0,
+      "pitch": 71,
+      "start": 17.5609756097561,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "brush",
+      "bar": 7,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 18.29268292682927,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 2.0,
+      "pitch": 50,
+      "start": 18.29268292682927,
+      "duration": 1.1341463414634145,
+      "velocity": 42,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 7,
+      "beat": 2.5,
+      "pitch": 74,
+      "start": 18.658536585365855,
+      "duration": 0.36585365853658536,
+      "velocity": 53
+    },
+    {
+      "part": "bass",
+      "bar": 7,
+      "beat": 3.0,
+      "pitch": 38,
+      "start": 19.024390243902438,
+      "duration": 1.0975609756097562,
+      "velocity": 49
+    },
+    {
+      "part": "brush",
+      "bar": 7,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 19.024390243902438,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 3.0,
+      "pitch": 55,
+      "start": 19.024390243902438,
+      "duration": 1.353658536585366,
+      "velocity": 41,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 7,
+      "beat": 3.5,
+      "pitch": 77,
+      "start": 19.390243902439025,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "brush",
+      "bar": 7,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 19.75609756097561,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 4.0,
+      "pitch": 59,
+      "start": 19.75609756097561,
+      "duration": 0.6219512195121951,
+      "velocity": 43,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 8,
+      "beat": 1.0,
+      "pitch": 31,
+      "start": 20.48780487804878,
+      "duration": 1.4634146341463414,
+      "velocity": 54
+    },
+    {
+      "part": "brush",
+      "bar": 8,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 20.48780487804878,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 1.0,
+      "pitch": 43,
+      "start": 20.48780487804878,
+      "duration": 1.7926829268292683,
+      "velocity": 51,
+      "string": "LowE",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 8,
+      "beat": 1.0,
+      "pitch": 74,
+      "start": 20.48780487804878,
+      "duration": 1.0975609756097562,
+      "velocity": 55
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 1.75,
+      "pitch": 65,
+      "start": 21.036585365853657,
+      "duration": 1.2439024390243902,
+      "velocity": 43,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 8,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 21.21951219512195,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "marimba",
+      "bar": 8,
+      "beat": 2.5,
+      "pitch": 67,
+      "start": 21.585365853658537,
+      "duration": 1.0975609756097562,
+      "velocity": 51
+    },
+    {
+      "part": "bass",
+      "bar": 8,
+      "beat": 3.0,
+      "pitch": 38,
+      "start": 21.951219512195124,
+      "duration": 0.9146341463414634,
+      "velocity": 47
+    },
+    {
+      "part": "brush",
+      "bar": 8,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 21.951219512195124,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 3.0,
+      "pitch": 50,
+      "start": 21.951219512195124,
+      "duration": 1.2804878048780488,
+      "velocity": 40,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 4.25,
+      "pitch": 59,
+      "start": 22.865853658536587,
+      "duration": 0.47560975609756095,
+      "velocity": 41,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 8,
+      "beat": 4.5,
+      "pitch": 35,
+      "start": 23.048780487804876,
+      "duration": 0.36585365853658536,
+      "velocity": 45
+    },
+    {
+      "part": "marimba",
+      "bar": 8,
+      "beat": 4.5,
+      "pitch": 71,
+      "start": 23.048780487804876,
+      "duration": 0.36585365853658536,
+      "velocity": 52
+    },
+    {
+      "part": "bass",
+      "bar": 9,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 23.414634146341463,
+      "duration": 1.4268292682926829,
+      "velocity": 58
+    },
+    {
+      "part": "brush",
+      "bar": 9,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 23.414634146341463,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 1.0,
+      "pitch": 48,
+      "start": 23.414634146341463,
+      "duration": 1.2804878048780488,
+      "velocity": 54,
+      "string": "A",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 9,
+      "beat": 1.0,
+      "pitch": 72,
+      "start": 23.414634146341463,
+      "duration": 0.36585365853658536,
+      "velocity": 59
+    },
+    {
+      "part": "marimba",
+      "bar": 9,
+      "beat": 1.5,
+      "pitch": 76,
+      "start": 23.78048780487805,
+      "duration": 0.36585365853658536,
+      "velocity": 61
+    },
+    {
+      "part": "brush",
+      "bar": 9,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 24.146341463414632,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 2.0,
+      "pitch": 52,
+      "start": 24.146341463414632,
+      "duration": 1.2804878048780488,
+      "velocity": 44,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 9,
+      "beat": 2.0,
+      "pitch": 74,
+      "start": 24.146341463414632,
+      "duration": 0.36585365853658536,
+      "velocity": 55
+    },
+    {
+      "part": "marimba",
+      "bar": 9,
+      "beat": 2.5,
+      "pitch": 72,
+      "start": 24.51219512195122,
+      "duration": 0.7317073170731707,
+      "velocity": 59
+    },
+    {
+      "part": "bass",
+      "bar": 9,
+      "beat": 3.0,
+      "pitch": 31,
+      "start": 24.878048780487806,
+      "duration": 1.2073170731707317,
+      "velocity": 49
+    },
+    {
+      "part": "brush",
+      "bar": 9,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 24.878048780487806,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 3.0,
+      "pitch": 57,
+      "start": 24.878048780487806,
+      "duration": 1.0975609756097562,
+      "velocity": 42,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 9,
+      "beat": 3.75,
+      "pitch": 67,
+      "start": 25.426829268292682,
+      "duration": 0.9146341463414634,
+      "velocity": 53
+    },
+    {
+      "part": "brush",
+      "bar": 9,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 25.609756097560975,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 4.0,
+      "pitch": 60,
+      "start": 25.609756097560975,
+      "duration": 0.6219512195121951,
+      "velocity": 40,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 10,
+      "beat": 1.0,
+      "pitch": 29,
+      "start": 26.341463414634145,
+      "duration": 1.7560975609756098,
+      "velocity": 57
+    },
+    {
+      "part": "brush",
+      "bar": 10,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 26.341463414634145,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 1.0,
+      "pitch": 53,
+      "start": 26.341463414634145,
+      "duration": 1.829268292682927,
+      "velocity": 52,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 10,
+      "beat": 1.0,
+      "pitch": 69,
+      "start": 26.341463414634145,
+      "duration": 0.9146341463414634,
+      "velocity": 60
+    },
+    {
+      "part": "brush",
+      "bar": 10,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 27.073170731707318,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 2.0,
+      "pitch": 64,
+      "start": 27.073170731707318,
+      "duration": 1.829268292682927,
+      "velocity": 43,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 10,
+      "beat": 2.5,
+      "pitch": 72,
+      "start": 27.4390243902439,
+      "duration": 0.36585365853658536,
+      "velocity": 53
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 3.0,
+      "pitch": 57,
+      "start": 27.804878048780488,
+      "duration": 1.829268292682927,
+      "velocity": 44,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 10,
+      "beat": 3.5,
+      "pitch": 36,
+      "start": 28.170731707317074,
+      "duration": 0.9146341463414634,
+      "velocity": 48
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 3.5,
+      "pitch": 60,
+      "start": 28.170731707317074,
+      "duration": 1.4634146341463414,
+      "velocity": 43,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 10,
+      "beat": 3.5,
+      "pitch": 69,
+      "start": 28.170731707317074,
+      "duration": 1.4634146341463414,
+      "velocity": 53
+    },
+    {
+      "part": "brush",
+      "bar": 10,
+      "beat": 4.0,
+      "pitch": 44,
+      "start": 28.536585365853657,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "bass",
+      "bar": 11,
+      "beat": 1.0,
+      "pitch": 38,
+      "start": 29.26829268292683,
+      "duration": 1.829268292682927,
+      "velocity": 56
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 1.0,
+      "pitch": 50,
+      "start": 29.26829268292683,
+      "duration": 1.829268292682927,
+      "velocity": 53,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 11,
+      "beat": 1.5,
+      "pitch": 65,
+      "start": 29.634146341463413,
+      "duration": 0.36585365853658536,
+      "velocity": 52
+    },
+    {
+      "part": "brush",
+      "bar": 11,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 30.0,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "marimba",
+      "bar": 11,
+      "beat": 2.0,
+      "pitch": 67,
+      "start": 30.0,
+      "duration": 0.36585365853658536,
+      "velocity": 48
+    },
+    {
+      "part": "marimba",
+      "bar": 11,
+      "beat": 2.5,
+      "pitch": 69,
+      "start": 30.365853658536587,
+      "duration": 1.0975609756097562,
+      "velocity": 55
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 2.75,
+      "pitch": 65,
+      "start": 30.548780487804876,
+      "duration": 1.2804878048780488,
+      "velocity": 41,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 11,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 30.73170731707317,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "bass",
+      "bar": 11,
+      "beat": 3.5,
+      "pitch": 33,
+      "start": 31.097560975609756,
+      "duration": 0.9146341463414634,
+      "velocity": 47
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 3.5,
+      "pitch": 60,
+      "start": 31.097560975609756,
+      "duration": 0.9878048780487805,
+      "velocity": 40,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 11,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 31.463414634146343,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 4.0,
+      "pitch": 57,
+      "start": 31.463414634146343,
+      "duration": 0.6219512195121951,
+      "velocity": 42,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 11,
+      "beat": 4.25,
+      "pitch": 72,
+      "start": 31.646341463414632,
+      "duration": 0.5487804878048781,
+      "velocity": 53
+    },
+    {
+      "part": "bass",
+      "bar": 12,
+      "beat": 1.0,
+      "pitch": 28,
+      "start": 32.19512195121951,
+      "duration": 1.646341463414634,
+      "velocity": 55
+    },
+    {
+      "part": "brush",
+      "bar": 12,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 32.19512195121951,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 1.0,
+      "pitch": 40,
+      "start": 32.19512195121951,
+      "duration": 1.829268292682927,
+      "velocity": 52,
+      "string": "LowE",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 12,
+      "beat": 1.0,
+      "pitch": 76,
+      "start": 32.19512195121951,
+      "duration": 1.0975609756097562,
+      "velocity": 58
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 1.75,
+      "pitch": 55,
+      "start": 32.74390243902439,
+      "duration": 1.0975609756097562,
+      "velocity": 44,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 12,
+      "beat": 2.0,
+      "pitch": 44,
+      "start": 32.926829268292686,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "marimba",
+      "bar": 12,
+      "beat": 2.75,
+      "pitch": 74,
+      "start": 33.47560975609756,
+      "duration": 0.36585365853658536,
+      "velocity": 51
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 3.0,
+      "pitch": 52,
+      "start": 33.65853658536585,
+      "duration": 1.2804878048780488,
+      "velocity": 43,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 12,
+      "beat": 3.25,
+      "pitch": 72,
+      "start": 33.84146341463415,
+      "duration": 1.2804878048780488,
+      "velocity": 55
+    },
+    {
+      "part": "bass",
+      "bar": 12,
+      "beat": 3.5,
+      "pitch": 31,
+      "start": 34.02439024390244,
+      "duration": 1.0975609756097562,
+      "velocity": 47
+    },
+    {
+      "part": "brush",
+      "bar": 12,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 34.390243902439025,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 4.0,
+      "pitch": 60,
+      "start": 34.390243902439025,
+      "duration": 0.6219512195121951,
+      "velocity": 40,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 13,
+      "beat": 1.0,
+      "pitch": 29,
+      "start": 35.1219512195122,
+      "duration": 2.0121951219512195,
+      "velocity": 58
+    },
+    {
+      "part": "brush",
+      "bar": 13,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 35.1219512195122,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 1.0,
+      "pitch": 53,
+      "start": 35.1219512195122,
+      "duration": 1.829268292682927,
+      "velocity": 54,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 13,
+      "beat": 1.0,
+      "pitch": 69,
+      "start": 35.1219512195122,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 1.75,
+      "pitch": 57,
+      "start": 35.670731707317074,
+      "duration": 1.829268292682927,
+      "velocity": 45,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 13,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 35.853658536585364,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 2.5,
+      "pitch": 60,
+      "start": 36.21951219512195,
+      "duration": 1.646341463414634,
+      "velocity": 42,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 13,
+      "beat": 2.5,
+      "pitch": 72,
+      "start": 36.21951219512195,
+      "duration": 0.36585365853658536,
+      "velocity": 54
+    },
+    {
+      "part": "brush",
+      "bar": 13,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 36.58536585365854,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 3.25,
+      "pitch": 64,
+      "start": 36.76829268292683,
+      "duration": 1.170731707317073,
+      "velocity": 42,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 13,
+      "beat": 3.5,
+      "pitch": 76,
+      "start": 36.951219512195124,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "bass",
+      "bar": 13,
+      "beat": 4.0,
+      "pitch": 36,
+      "start": 37.31707317073171,
+      "duration": 0.5853658536585366,
+      "velocity": 48
+    },
+    {
+      "part": "brush",
+      "bar": 13,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 37.31707317073171,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "bass",
+      "bar": 14,
+      "beat": 1.0,
+      "pitch": 38,
+      "start": 38.048780487804876,
+      "duration": 1.829268292682927,
+      "velocity": 57
+    },
+    {
+      "part": "brush",
+      "bar": 14,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 38.048780487804876,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 1.0,
+      "pitch": 50,
+      "start": 38.048780487804876,
+      "duration": 1.829268292682927,
+      "velocity": 54,
+      "string": "D",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 14,
+      "beat": 1.0,
+      "pitch": 77,
+      "start": 38.048780487804876,
+      "duration": 0.7317073170731707,
+      "velocity": 61
+    },
+    {
+      "part": "brush",
+      "bar": 14,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 38.78048780487805,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 2.0,
+      "pitch": 57,
+      "start": 38.78048780487805,
+      "duration": 1.646341463414634,
+      "velocity": 42,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 14,
+      "beat": 2.0,
+      "pitch": 76,
+      "start": 38.78048780487805,
+      "duration": 0.36585365853658536,
+      "velocity": 53
+    },
+    {
+      "part": "marimba",
+      "bar": 14,
+      "beat": 2.5,
+      "pitch": 74,
+      "start": 39.146341463414636,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 3.0,
+      "pitch": 60,
+      "start": 39.51219512195122,
+      "duration": 1.2804878048780488,
+      "velocity": 41,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "bass",
+      "bar": 14,
+      "beat": 3.5,
+      "pitch": 33,
+      "start": 39.8780487804878,
+      "duration": 0.9146341463414634,
+      "velocity": 48
+    },
+    {
+      "part": "brush",
+      "bar": 14,
+      "beat": 4.0,
+      "pitch": 38,
+      "start": 40.24390243902439,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 4.0,
+      "pitch": 65,
+      "start": 40.24390243902439,
+      "duration": 0.6585365853658537,
+      "velocity": 41,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 14,
+      "beat": 4.25,
+      "pitch": 69,
+      "start": 40.426829268292686,
+      "duration": 0.5487804878048781,
+      "velocity": 51
+    },
+    {
+      "part": "bass",
+      "bar": 15,
+      "beat": 1.0,
+      "pitch": 31,
+      "start": 40.97560975609756,
+      "duration": 1.4268292682926829,
+      "velocity": 56
+    },
+    {
+      "part": "brush",
+      "bar": 15,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 40.97560975609756,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 1.0,
+      "pitch": 43,
+      "start": 40.97560975609756,
+      "duration": 1.829268292682927,
+      "velocity": 53,
+      "string": "LowE",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 15,
+      "beat": 1.0,
+      "pitch": 71,
+      "start": 40.97560975609756,
+      "duration": 1.0975609756097562,
+      "velocity": 57
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 1.75,
+      "pitch": 50,
+      "start": 41.52439024390244,
+      "duration": 1.2804878048780488,
+      "velocity": 44,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "brush",
+      "bar": 15,
+      "beat": 2.0,
+      "pitch": 38,
+      "start": 41.707317073170735,
+      "duration": 0.23414634146341465,
+      "velocity": 31
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 2.5,
+      "pitch": 55,
+      "start": 42.073170731707314,
+      "duration": 1.2804878048780488,
+      "velocity": 43,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 15,
+      "beat": 2.5,
+      "pitch": 74,
+      "start": 42.073170731707314,
+      "duration": 1.0975609756097562,
+      "velocity": 53
+    },
+    {
+      "part": "bass",
+      "bar": 15,
+      "beat": 3.0,
+      "pitch": 38,
+      "start": 42.4390243902439,
+      "duration": 0.9512195121951219,
+      "velocity": 49
+    },
+    {
+      "part": "brush",
+      "bar": 15,
+      "beat": 3.0,
+      "pitch": 44,
+      "start": 42.4390243902439,
+      "duration": 0.11707317073170732,
+      "velocity": 21
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 3.0,
+      "pitch": 65,
+      "start": 42.4390243902439,
+      "duration": 1.3902439024390243,
+      "velocity": 43,
+      "string": "HighE",
+      "layer": 1
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 4.0,
+      "pitch": 59,
+      "start": 43.170731707317074,
+      "duration": 0.6585365853658537,
+      "velocity": 43,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "marimba",
+      "bar": 15,
+      "beat": 4.0,
+      "pitch": 71,
+      "start": 43.170731707317074,
+      "duration": 0.7317073170731707,
+      "velocity": 52
+    },
+    {
+      "part": "bass",
+      "bar": 15,
+      "beat": 4.5,
+      "pitch": 35,
+      "start": 43.53658536585366,
+      "duration": 0.36585365853658536,
+      "velocity": 45
+    },
+    {
+      "part": "bass",
+      "bar": 16,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 43.90243902439025,
+      "duration": 2.7439024390243905,
+      "velocity": 58
+    },
+    {
+      "part": "brush",
+      "bar": 16,
+      "beat": 1.0,
+      "pitch": 36,
+      "start": 43.90243902439025,
+      "duration": 0.13170731707317074,
+      "velocity": 33
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 1.0,
+      "pitch": 48,
+      "start": 43.90243902439025,
+      "duration": 3.182926829268293,
+      "velocity": 55,
+      "string": "A",
+      "layer": 2
+    },
+    {
+      "part": "marimba",
+      "bar": 16,
+      "beat": 1.0,
+      "pitch": 72,
+      "start": 43.90243902439025,
+      "duration": 2.5609756097560976,
+      "velocity": 59
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 1.02,
+      "pitch": 52,
+      "start": 43.917073170731705,
+      "duration": 3.1682926829268294,
+      "velocity": 46,
+      "string": "D",
+      "layer": 1
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 1.04,
+      "pitch": 57,
+      "start": 43.93170731707317,
+      "duration": 3.153658536585366,
+      "velocity": 43,
+      "string": "G",
+      "layer": 1
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 1.06,
+      "pitch": 60,
+      "start": 43.94634146341463,
+      "duration": 3.1390243902439026,
+      "velocity": 42,
+      "string": "B",
+      "layer": 1
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 1.08,
+      "pitch": 64,
+      "start": 43.9609756097561,
+      "duration": 3.124390243902439,
+      "velocity": 43,
+      "string": "HighE",
+      "layer": 1
+    }
+  ]
+}

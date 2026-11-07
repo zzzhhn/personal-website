@@ -1,0 +1,586 @@
+{
+  "status": "offline event and audio checks only; no subjective listening acceptance",
+  "sources": {
+    "lead_sheet_sha256": "54adba112cc3c94b827a58a6f822e48530cbdeb20cbfe2db6c41b83618c335da",
+    "soundfont_and_header": {
+      "GeneralUser-GS-2.0.3.sf2": "9575028c7a1f589f5770fccc8cff2734566af40cd26ed836944e9a5152688cfe",
+      "tsf.h": "70d55963c98f60ebb81518eaa1f25d46888d5180eb5f5289fd6b74ffc177d197"
+    },
+    "guitar": {
+      "INSGuitarSteel_StringA_Vel02_A2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringA_Vel02_A2_01.ogg",
+        "sha256": "b60289b81de9f65d5c9c4653d9e76286413bcb0fd8283f62a25a05b574b24d23"
+      },
+      "INSGuitarSteel_StringA_Vel02_C3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringA_Vel02_C3_01.ogg",
+        "sha256": "ac74e2a3ebfedf276a45881f8b16d6deaa35fe50d9db8fa5e9b496423dfb7b68"
+      },
+      "INSGuitarSteel_StringB_Vel01_B3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringB_Vel01_B3_01.ogg",
+        "sha256": "6fbe92f8276fd3df8d7d1a9ac9dcf49dc6148376db818f35458ea7c0607a2acb"
+      },
+      "INSGuitarSteel_StringB_Vel01_C4_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringB_Vel01_C4_01.ogg",
+        "sha256": "c95327e99cac5193b8aeb2f09dd4564bc935de579de5ff400c05b9e4a99e7e78"
+      },
+      "INSGuitarSteel_StringD_Vel01_D3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel01_D3_01.ogg",
+        "sha256": "22f3862521158efbed7954a219a6baf8d9d66b88714ff30216cc2fc43748600c"
+      },
+      "INSGuitarSteel_StringD_Vel01_E3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel01_E3_01.ogg",
+        "sha256": "ac5628457797a4d030f753835068317dd0abc3ef7f83c2589659ce7d28c1a62e"
+      },
+      "INSGuitarSteel_StringD_Vel02_D3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel02_D3_01.ogg",
+        "sha256": "e7a377f4dca632ea11c0faca9b52b1463f7e9ff1325bd3643198774e08d1935b"
+      },
+      "INSGuitarSteel_StringD_Vel02_F3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel02_F3_01.ogg",
+        "sha256": "52436f0c7d8f3b073d4d7833c63353eff1a52d9269f2d0394a64902602ee3198"
+      },
+      "INSGuitarSteel_StringG_Vel01_A3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringG_Vel01_A3_01.ogg",
+        "sha256": "802e68243a831d86c404ec558e2c1d806f7b9c92d4dd8bb2584dd7f73dbb9982"
+      },
+      "INSGuitarSteel_StringG_Vel01_G3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringG_Vel01_G3_01.ogg",
+        "sha256": "ac241e6442693e437242cb6d20aa97fe3cff298938e76fc55e7b56cec627937e"
+      },
+      "INSGuitarSteel_StringHighE_Vel01_E4_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringHighE_Vel01_E4_01.ogg",
+        "sha256": "b2f6a24537c70f22e529b1dba1f41ed1d4a26612a735992bf5b5bbdb304eefed"
+      },
+      "INSGuitarSteel_StringHighE_Vel01_F4_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringHighE_Vel01_F4_01.ogg",
+        "sha256": "2f18fbb38489759aa1aec11b1a362a4413f023e9f52909cabaf1e8943532912e"
+      },
+      "INSGuitarSteel_StringLowE_Vel02_E2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringLowE_Vel02_E2_01.ogg",
+        "sha256": "07643f0430551e6cbba6c9884c0ca8a1ea2f7f23e3daa12fa141d9476d84fd6d"
+      },
+      "INSGuitarSteel_StringLowE_Vel02_G2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringLowE_Vel02_G2_01.ogg",
+        "sha256": "c641ff5f3b777fac567abce68645aeaaa984ddc8eb37cbdda87faad1895270c4"
+      }
+    },
+    "scripts": {
+      "render_study.py": "0e30039ea85d38462ea231927288d0125227599ef83b99229c50adae230d1403",
+      "render.py": "50568c1488bc51a42119baecfd35e8a053586920106bd602bf4105ac1f71a572",
+      "aux.c": "948be874e285aff223cefe3c184b97d5ff9d4c952cd608590b22eb1dd9555dcd",
+      "score.py": "05833a537f3c3d2ee4c2eafb855176c0e636eedf9d4d497340bbd06ebbea3b03",
+      "v2-seed.json": "8e784c1f62b39ee521af3bc92367b013dfc47455bf59b8e2749d8cf626af3b4a",
+      "study_score.py": "f8e6134b8a0f812ce84b2fbe817cec9d505a6e9a109129864fe9705322941688",
+      "check_phrase.py": "a135c873f8203c1a287f22b44923a3e365fe97e96be17013c4464d46eb1d54fb"
+    }
+  },
+  "notes_checked": {
+    "midi_on_and_off": 106,
+    "full_and_solo_aux_on_and_off_each": 106,
+    "solo_pcm_written_pitch_windows": 53
+  },
+  "full_and_solo_linear_gain_db": 0.92,
+  "variants": {
+    "full": {
+      "seconds": 48.029274376417234,
+      "decoded_frames": 2118091,
+      "sample_peak_dbfs": -4.637,
+      "clipped_samples": 0,
+      "integrated_lufs": -20.7,
+      "true_peak_dbtp": -4.64,
+      "per_bar_rms_dbfs": [
+        -23.002,
+        -23.432,
+        -22.034,
+        -22.324,
+        -23.171,
+        -23.264,
+        -21.496,
+        -22.751,
+        -22.333,
+        -22.999,
+        -22.897,
+        -22.41,
+        -23.229,
+        -23.075,
+        -21.221,
+        -24.916
+      ],
+      "bars_below_minus_55_dbfs": 0,
+      "aux_event_tsv_sha256": "8c4afdc3ef09a56a2f0a1c4ec9944407440bea983777b2b9fb5680637d68bb2e"
+    },
+    "solo": {
+      "seconds": 48.029274376417234,
+      "decoded_frames": 2118091,
+      "sample_peak_dbfs": -12.508,
+      "clipped_samples": 0,
+      "integrated_lufs": -23.0,
+      "true_peak_dbtp": -12.41,
+      "per_bar_rms_dbfs": [
+        -25.685,
+        -26.537,
+        -25.986,
+        -26.978,
+        -26.812,
+        -26.393,
+        -27.606,
+        -27.598,
+        -24.528,
+        -26.647,
+        -25.792,
+        -27.613,
+        -26.952,
+        -26.242,
+        -27.614,
+        -31.344
+      ],
+      "bars_below_minus_55_dbfs": 0,
+      "solo_fft_pitch_checks": [
+        {
+          "bar": 1,
+          "beat": 1.5,
+          "pitch": "E5",
+          "start_frame": 16134,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 1,
+          "beat": 2.0,
+          "pitch": "D5",
+          "start_frame": 32268,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.05
+        },
+        {
+          "bar": 1,
+          "beat": 2.5,
+          "pitch": "C5",
+          "start_frame": 48402,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.99
+        },
+        {
+          "bar": 1,
+          "beat": 3.75,
+          "pitch": "G4",
+          "start_frame": 88738,
+          "detected_hz": 391.11,
+          "cents_from_written": -3.91
+        },
+        {
+          "bar": 2,
+          "beat": 1.0,
+          "pitch": "A4",
+          "start_frame": 129073,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.3
+        },
+        {
+          "bar": 2,
+          "beat": 2.5,
+          "pitch": "G4",
+          "start_frame": 177476,
+          "detected_hz": 391.11,
+          "cents_from_written": -3.9
+        },
+        {
+          "bar": 2,
+          "beat": 3.5,
+          "pitch": "E4",
+          "start_frame": 209744,
+          "detected_hz": 328.79,
+          "cents_from_written": -4.38
+        },
+        {
+          "bar": 3,
+          "beat": 1.5,
+          "pitch": "A4",
+          "start_frame": 274280,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.29
+        },
+        {
+          "bar": 3,
+          "beat": 2.0,
+          "pitch": "B4",
+          "start_frame": 290415,
+          "detected_hz": 493.16,
+          "cents_from_written": -2.52
+        },
+        {
+          "bar": 3,
+          "beat": 2.5,
+          "pitch": "C5",
+          "start_frame": 306549,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.99
+        },
+        {
+          "bar": 3,
+          "beat": 4.25,
+          "pitch": "A4",
+          "start_frame": 363018,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.31
+        },
+        {
+          "bar": 4,
+          "beat": 1.0,
+          "pitch": "G4",
+          "start_frame": 387220,
+          "detected_hz": 391.11,
+          "cents_from_written": -3.91
+        },
+        {
+          "bar": 4,
+          "beat": 2.75,
+          "pitch": "E4",
+          "start_frame": 443689,
+          "detected_hz": 328.79,
+          "cents_from_written": -4.38
+        },
+        {
+          "bar": 4,
+          "beat": 4.5,
+          "pitch": "G4",
+          "start_frame": 500159,
+          "detected_hz": 391.11,
+          "cents_from_written": -3.92
+        },
+        {
+          "bar": 5,
+          "beat": 1.0,
+          "pitch": "A4",
+          "start_frame": 516293,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.33
+        },
+        {
+          "bar": 5,
+          "beat": 2.5,
+          "pitch": "C5",
+          "start_frame": 564695,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.99
+        },
+        {
+          "bar": 5,
+          "beat": 3.5,
+          "pitch": "E5",
+          "start_frame": 596963,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 6,
+          "beat": 1.0,
+          "pitch": "F5",
+          "start_frame": 645366,
+          "detected_hz": 698.4,
+          "cents_from_written": -0.15
+        },
+        {
+          "bar": 6,
+          "beat": 2.0,
+          "pitch": "E5",
+          "start_frame": 677634,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 6,
+          "beat": 2.5,
+          "pitch": "D5",
+          "start_frame": 693768,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.05
+        },
+        {
+          "bar": 6,
+          "beat": 4.25,
+          "pitch": "C5",
+          "start_frame": 750238,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.99
+        },
+        {
+          "bar": 7,
+          "beat": 1.0,
+          "pitch": "B4",
+          "start_frame": 774439,
+          "detected_hz": 493.17,
+          "cents_from_written": -2.51
+        },
+        {
+          "bar": 7,
+          "beat": 2.5,
+          "pitch": "D5",
+          "start_frame": 822841,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.06
+        },
+        {
+          "bar": 7,
+          "beat": 3.5,
+          "pitch": "F5",
+          "start_frame": 855110,
+          "detected_hz": 698.4,
+          "cents_from_written": -0.15
+        },
+        {
+          "bar": 8,
+          "beat": 1.0,
+          "pitch": "D5",
+          "start_frame": 903512,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.05
+        },
+        {
+          "bar": 8,
+          "beat": 2.5,
+          "pitch": "G4",
+          "start_frame": 951915,
+          "detected_hz": 391.11,
+          "cents_from_written": -3.91
+        },
+        {
+          "bar": 8,
+          "beat": 4.5,
+          "pitch": "B4",
+          "start_frame": 1016451,
+          "detected_hz": 493.16,
+          "cents_from_written": -2.52
+        },
+        {
+          "bar": 9,
+          "beat": 1.0,
+          "pitch": "C5",
+          "start_frame": 1032585,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.99
+        },
+        {
+          "bar": 9,
+          "beat": 1.5,
+          "pitch": "E5",
+          "start_frame": 1048720,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 9,
+          "beat": 2.0,
+          "pitch": "D5",
+          "start_frame": 1064854,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.05
+        },
+        {
+          "bar": 9,
+          "beat": 2.5,
+          "pitch": "C5",
+          "start_frame": 1080988,
+          "detected_hz": 522.68,
+          "cents_from_written": -1.89
+        },
+        {
+          "bar": 9,
+          "beat": 3.75,
+          "pitch": "G4",
+          "start_frame": 1121323,
+          "detected_hz": 391.11,
+          "cents_from_written": -3.91
+        },
+        {
+          "bar": 10,
+          "beat": 1.0,
+          "pitch": "A4",
+          "start_frame": 1161659,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.3
+        },
+        {
+          "bar": 10,
+          "beat": 2.5,
+          "pitch": "C5",
+          "start_frame": 1210061,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.98
+        },
+        {
+          "bar": 10,
+          "beat": 3.5,
+          "pitch": "A4",
+          "start_frame": 1242329,
+          "detected_hz": 439.17,
+          "cents_from_written": -3.27
+        },
+        {
+          "bar": 11,
+          "beat": 1.5,
+          "pitch": "F4",
+          "start_frame": 1306866,
+          "detected_hz": 348.35,
+          "cents_from_written": -4.35
+        },
+        {
+          "bar": 11,
+          "beat": 2.0,
+          "pitch": "G4",
+          "start_frame": 1323000,
+          "detected_hz": 391.12,
+          "cents_from_written": -3.86
+        },
+        {
+          "bar": 11,
+          "beat": 2.5,
+          "pitch": "A4",
+          "start_frame": 1339134,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.33
+        },
+        {
+          "bar": 11,
+          "beat": 4.25,
+          "pitch": "C5",
+          "start_frame": 1395604,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.99
+        },
+        {
+          "bar": 12,
+          "beat": 1.0,
+          "pitch": "E5",
+          "start_frame": 1419805,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 12,
+          "beat": 2.75,
+          "pitch": "D5",
+          "start_frame": 1476274,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.06
+        },
+        {
+          "bar": 12,
+          "beat": 3.25,
+          "pitch": "C5",
+          "start_frame": 1492409,
+          "detected_hz": 522.65,
+          "cents_from_written": -2.0
+        },
+        {
+          "bar": 13,
+          "beat": 1.0,
+          "pitch": "A4",
+          "start_frame": 1548878,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.3
+        },
+        {
+          "bar": 13,
+          "beat": 2.5,
+          "pitch": "C5",
+          "start_frame": 1597280,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.98
+        },
+        {
+          "bar": 13,
+          "beat": 3.5,
+          "pitch": "E5",
+          "start_frame": 1629549,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 14,
+          "beat": 1.0,
+          "pitch": "F5",
+          "start_frame": 1677951,
+          "detected_hz": 698.4,
+          "cents_from_written": -0.15
+        },
+        {
+          "bar": 14,
+          "beat": 2.0,
+          "pitch": "E5",
+          "start_frame": 1710220,
+          "detected_hz": 659.06,
+          "cents_from_written": -0.52
+        },
+        {
+          "bar": 14,
+          "beat": 2.5,
+          "pitch": "D5",
+          "start_frame": 1726354,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.05
+        },
+        {
+          "bar": 14,
+          "beat": 4.25,
+          "pitch": "A4",
+          "start_frame": 1782823,
+          "detected_hz": 439.16,
+          "cents_from_written": -3.29
+        },
+        {
+          "bar": 15,
+          "beat": 1.0,
+          "pitch": "B4",
+          "start_frame": 1807024,
+          "detected_hz": 493.16,
+          "cents_from_written": -2.52
+        },
+        {
+          "bar": 15,
+          "beat": 2.5,
+          "pitch": "D5",
+          "start_frame": 1855427,
+          "detected_hz": 586.97,
+          "cents_from_written": -1.06
+        },
+        {
+          "bar": 15,
+          "beat": 4.0,
+          "pitch": "B4",
+          "start_frame": 1903829,
+          "detected_hz": 493.16,
+          "cents_from_written": -2.53
+        },
+        {
+          "bar": 16,
+          "beat": 1.0,
+          "pitch": "C5",
+          "start_frame": 1936098,
+          "detected_hz": 522.65,
+          "cents_from_written": -1.98
+        }
+      ],
+      "aux_event_tsv_sha256": "1df008e73274d26fc37cce0a2a2a8046afb0dc7d11bf15a48fd0426cf68de18c"
+    }
+  },
+  "files": {
+    "boardwalk-v3-study.mp3": {
+      "bytes": 961926,
+      "sha256": "5b3d96d6b11e69ceca12db2a5098e5580cd01ac726b896352d8d82dc2265604d"
+    },
+    "boardwalk-v3-melody.mp3": {
+      "bytes": 961925,
+      "sha256": "72507f5aaf2743f7babe28392a2391c1f28254ac106a7f5bce38c02dda37d941"
+    },
+    "score.mid": {
+      "bytes": 2288,
+      "sha256": "b3706671ef6c91c31ea52ae2fe59ab79b0bfc0d07358819cce96e35f665a1cfb"
+    },
+    "arrangement.json": {
+      "bytes": 40562,
+      "sha256": "298ca422aba2de0185ff809171578751e1782314c320d059ae94bf6dbc88b956"
+    }
+  },
+  "elapsed_seconds": 9.08
+}
