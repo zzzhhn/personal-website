@@ -4,11 +4,12 @@ import type { ShadowChunkStage } from './shadow-chunk-stages';
 type Cascade = 0 | 1 | 2;
 const attributeIds = new WeakMap<object, number>();
 let nextAttributeId = 0;
-function attributeKey(attribute: ReturnType<BufferGeometry['getAttribute']> | BufferGeometry['index']) {
+type SourceAttribute = ReturnType<BufferGeometry['getAttribute']> | BufferGeometry['index'];
+const attributeVersion = (attribute: NonNullable<SourceAttribute>) => 'data' in attribute ? attribute.data.version : attribute.version;
+function attributeKey(attribute: SourceAttribute) {
   if (!attribute) return '-';
   if (!attributeIds.has(attribute)) attributeIds.set(attribute, ++nextAttributeId);
-  const version = 'data' in attribute ? attribute.data.version : attribute.version;
-  return `${attributeIds.get(attribute)}:${version}:${attribute.count}`;
+  return `${attributeIds.get(attribute)}:${attributeVersion(attribute)}:${attribute.count}`;
 }
 export type ShadowChunkBucket = {
   side: number; cascade: Cascade; zones: Map<string, number>;
@@ -36,11 +37,32 @@ function appendTriangle(bucket: ShadowChunkBucket, world: Float32Array, a: numbe
 }
 
 /** Source replacement must invalidate even when the mesh and its transform are unchanged. */
+const shadowGeometryOf = (mesh: Mesh): BufferGeometry => mesh.userData.shadowGeometry ?? mesh.geometry;
+const shadowSideOf = (mesh: Mesh) => (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material).side;
 export function shadowChunkSourceKey(mesh: Mesh, transformChecksum: number) {
-  const geometry = (mesh.userData.shadowGeometry as BufferGeometry | undefined) ?? mesh.geometry;
-  const material = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
   const key = (g: BufferGeometry) => `${g.uuid}:${attributeKey(g.getAttribute('position'))}:${attributeKey(g.index)}`;
-  return `${mesh.uuid}:${transformChecksum}:${key(mesh.geometry)}:${key(geometry)}:${material.side}`;
+  return `${mesh.uuid}:${transformChecksum}:${key(mesh.geometry)}:${key(shadowGeometryOf(mesh))}:${shadowSideOf(mesh)}`;
+}
+
+function watchAttribute(attribute: SourceAttribute) {
+  const version = attribute && attributeVersion(attribute), count = attribute?.count;
+  return (current: SourceAttribute) => current === attribute
+    && (!current || (attributeVersion(current) === version && current.count === count));
+}
+
+function watchGeometry(geometry: BufferGeometry) {
+  const uuid = geometry.uuid, position = watchAttribute(geometry.getAttribute('position')), index = watchAttribute(geometry.index);
+  return (current: BufferGeometry) => current === geometry && current.uuid === uuid
+    && position(current.getAttribute('position')) && index(current.index);
+}
+
+/** Compare the live source fields without building a cache key on every frame. */
+export function watchShadowChunkSource(mesh: Mesh) {
+  const uuid = mesh.uuid, side = shadowSideOf(mesh);
+  const override = shadowGeometryOf(mesh), base = watchGeometry(mesh.geometry);
+  const shadow = override === mesh.geometry ? null : watchGeometry(override);
+  return () => mesh.uuid === uuid && shadowSideOf(mesh) === side && base(mesh.geometry)
+    && (shadow ? shadow(shadowGeometryOf(mesh)) : shadowGeometryOf(mesh) === mesh.geometry);
 }
 
 /** Rebuild-local scratch only. Preserves legacy bucket/triangle insertion order and Float32 rounding. */

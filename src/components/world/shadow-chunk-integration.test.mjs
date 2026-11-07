@@ -138,11 +138,11 @@ test('pending first cohort retains actual raw shadow draws, cancels on replaceme
 });
 
 test('late qualification does not restart the first cohort; mutation, subtree removal and geometry disposal cancel without stale publication', t => {
-  const scene = new Scene(), root = new Object3D(), target = new Object3D(), light = new DirectionalLight(), camera = new PerspectiveCamera();
+  const scene = new Scene(), root = new Object3D(), branch = new Object3D(), target = new Object3D(), light = new DirectionalLight(), camera = new PerspectiveCamera();
   const geometry = new BoxGeometry(), material = new MeshBasicMaterial();
-  scene.add(root, target, light);
-  const cohort = Array.from({ length: 600 }, () => {
-    const mesh = new Mesh(geometry, material); mesh.castShadow = true; root.add(mesh); return mesh;
+  scene.add(root, target, light); root.add(branch);
+  const cohort = Array.from({ length: 600 }, (_, i) => {
+    const mesh = new Mesh(geometry, material); mesh.castShadow = true; (i % 2 ? root : branch).add(mesh); return mesh;
   });
   const advance = frames => { for (let i = 0; i < frames; i++) fitSunShadow(light, target, camera, { mapSize: 2048, wide: false, focus: [0, 0, 0] }); };
   const chunks = () => scene.getObjectByName('world-shadow-proxies')?.children.filter(o => o.name.startsWith('sun-chunk-')) ?? [];
@@ -167,6 +167,19 @@ test('late qualification does not restart the first cohort; mutation, subtree re
   scene.remove(light); scene.add(light); pending();
   cohort[0].position.x = 2; advance(1);
   assert.equal(shadowChunkWork().pending, false); assert.equal(chunks().length, 0);
+  pending(); root.position.x = 1; advance(1);
+  assert.equal(shadowChunkWork().pending, false, 'shared ancestor moves before rendering');
+  assert.equal(chunks().length, 0);
+  root.position.x = 0; // Keep the cohort eligible for the remaining mutation cases.
+  for (const [mutate, label] of [
+    [() => { geometry.getAttribute('position').needsUpdate = true; }, 'position version changes in place'],
+    [() => { geometry.setIndex(geometry.index.clone()); }, 'index identity changes with the same values'],
+    [() => { material.side = 2; }, 'depth side changes'],
+  ]) {
+    pending(); mutate(); advance(1);
+    assert.equal(shadowChunkWork().pending, false, label);
+    assert.equal(chunks().length, 0, label);
+  }
   pending(); scene.remove(root);
   assert.equal(shadowChunkWork().pending, false, 'subtree exit releases scratch without another frame');
   scene.add(root); pending();
