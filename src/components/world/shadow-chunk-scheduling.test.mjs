@@ -56,8 +56,15 @@ test('cancellation after staged chunks frees exactly staged geometry; published 
   BufferGeometry.prototype.dispose = function() { disposed.push(this); return dispose.call(this); };
   try {
     const job = cache.updateSteps([...source, { id: 'b', version: '1' }], fill(geometry));
-    // Tiny geometry: four build yields, one source, buffer/bounds, then a staged chunk.
-    for (let i = 0; i < 8; i++) assert.equal(job.next().done, false);
+    // A buffer yield after the bounds phase means a staged chunk is ready.
+    let staged = false, sawBounds = false;
+    for (let i = 0; i < 100 && !staged; i++) {
+      const step = job.next();
+      assert.equal(step.done, false);
+      staged = sawBounds && step.value === 'buffer';
+      sawBounds ||= step.value === 'bounds';
+    }
+    assert.equal(staged, true);
     job.return(); job.return();
     assert.ok(disposed.length > 0);
     assert.equal(new Set(disposed).size, disposed.length);

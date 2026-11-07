@@ -54,8 +54,6 @@ export class ShadowChunkCache {
       for (const [key, bucket] of builder.buckets) {
         const chunk = yield* this.makeChunk(bucket, mode === 'append' ? this.chunks.get(key) : undefined);
         created.push(chunk.geometry); result.set(key, chunk);
-        // Drop numeric scratch as soon as its final typed buffers exist.
-        bucket.data[0].length = 0; bucket.data[1].length = 0;
         yield 'buffer';
       }
       if (revision !== this.revision || !valid()) return null;
@@ -75,19 +73,30 @@ export class ShadowChunkCache {
   }
 
   private *makeChunk(bucket: ShadowChunkBucket, previous?: CachedShadowChunk): Generator<ShadowChunkStage, CachedShadowChunk> {
-    const oldPosition = previous?.geometry.getAttribute('position'), oldIndex = previous?.geometry.index;
-    const offset = oldPosition?.count ?? 0, [points, indices] = bucket.data;
-    const positions = new Float32Array(offset * 3 + points.length);
-    for (let i = 0; i < positions.length; i++) {
-      positions[i] = i < offset * 3 ? oldPosition!.array[i] : points[i - offset * 3];
-      if ((i + 1) % 4096 === 0) yield 'buffer';
+    const oldPositions = previous?.geometry.getAttribute('position').array;
+    const offset = oldPositions?.length ?? 0;
+    const positions = new Float32Array(offset + bucket.pointCount);
+    if (oldPositions) {
+      for (let i = 0; i < offset; i += 4096) {
+        positions.set(oldPositions.subarray(i, i + 4096), i);
+        yield 'buffer';
+      }
     }
-    const oldCount = oldIndex?.count ?? 0;
+    let written = offset, sinceYield = 0;
+    for (const page of bucket.pages) {
+      const count = Math.min(page.length, positions.length - written);
+      positions.set(count === page.length ? page : page.subarray(0, count), written);
+      written += count;
+      sinceYield += count;
+      if (sinceYield >= 4096) { sinceYield = 0; yield 'buffer'; }
+    }
+    bucket.pages.length = 0;
+    const vertexCount = positions.length / 3;
     // Builder chunks use sequential indices. Match Three's primitive-restart
     // boundary, including exactly 65535, when an appended bucket outgrows u16.
-    const index = positions.length / 3 > 65535 ? new Uint32Array(oldCount + indices.length) : new Uint16Array(oldCount + indices.length);
+    const index = vertexCount > 65535 ? new Uint32Array(vertexCount) : new Uint16Array(vertexCount);
     for (let i = 0; i < index.length; i++) {
-      index[i] = i < oldCount ? oldIndex!.array[i] : offset + indices[i - oldCount];
+      index[i] = i;
       if ((i + 1) % 4096 === 0) yield 'buffer';
     }
     yield 'buffer';
@@ -98,7 +107,7 @@ export class ShadowChunkCache {
     for (let i = 0; i < positions.length; i += 3) {
       p.fromArray(positions, i);
       min.min(p); max.max(p);
-      if (i >= offset * 3) {
+      if (i >= offset) {
         const r = p.dot(this.right), u = p.dot(this.up);
         bounds[0] = Math.min(bounds[0], r); bounds[1] = Math.max(bounds[1], r);
         bounds[2] = Math.min(bounds[2], u); bounds[3] = Math.max(bounds[3], u);

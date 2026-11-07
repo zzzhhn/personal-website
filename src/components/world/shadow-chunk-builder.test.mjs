@@ -29,8 +29,12 @@ function legacyAdd(buckets, geometry, matrix, cascades, side, zone, axes = [righ
     }
   }
 }
-const snapshot = buckets => [...buckets].map(([key, b]) => ({ key, side: b.side, cascade: b.cascade,
-  positions: [...new Float32Array(b.data[0])], indices: b.data[1], zones: [...b.zones] }));
+const snapshot = buckets => [...buckets].map(([key, b]) => {
+  const positions = b.pages ? b.pages.flatMap((page, i) =>
+    [...(i === b.pages.length - 1 ? page.subarray(0, b.pageUsed) : page)]) : [...new Float32Array(b.data[0])];
+  return { key, side: b.side, cascade: b.cascade, positions,
+    indices: b.data?.[1] ?? Array.from({ length: positions.length / 3 }, (_, i) => i), zones: [...b.zones] };
+});
 
 test('indexed/nonindexed instances preserve exact positions, indices, bucket order and zone attribution', () => {
   const indexed = new BoxGeometry(35, 17, 29, 2, 2, 2), flat = indexed.toNonIndexed();
@@ -113,7 +117,7 @@ test('builder borrows source geometry without mutation or disposal and emits no 
     const builder = new ShadowChunkBuilder(cells, right, up);
     builder.add(geometry, new Matrix4().makeTranslation(13, 2, -17), [0, 1], 0, 'other');
     assert.deepEqual(geometry.getAttribute('position').array, before); assert.equal(disposed, 0);
-    for (const bucket of builder.buckets.values()) assert.ok(bucket.data[1].length > 0);
+    for (const bucket of builder.buckets.values()) assert.ok(bucket.pointCount > 0);
     const empty = new BufferGeometry().setAttribute('position', new Float32BufferAttribute([], 3));
     try {
       const count = builder.buckets.size; builder.add(empty, new Matrix4(), [0, 1, 2], 0, 'other');

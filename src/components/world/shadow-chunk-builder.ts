@@ -11,8 +11,29 @@ function attributeKey(attribute: ReturnType<BufferGeometry['getAttribute']> | Bu
   return `${attributeIds.get(attribute)}:${version}:${attribute.count}`;
 }
 export type ShadowChunkBucket = {
-  side: number; cascade: Cascade; data: [number[], number[]]; zones: Map<string, number>;
+  side: number; cascade: Cascade; zones: Map<string, number>;
+  pages: Float32Array[]; pointCount: number; pageUsed: number;
 };
+
+const FIRST_PAGE_POINTS = 32 * 9;
+const PAGE_POINTS = 256 * 9;
+
+/** Each triangle contributes three consecutive vertices. Never resize or copy
+ * a filled scratch page, and leave the sequential index to finalization. */
+function appendTriangle(bucket: ShadowChunkBucket, world: Float32Array, a: number, b: number, c: number) {
+  let page = bucket.pages[bucket.pages.length - 1];
+  if (!page || bucket.pageUsed === page.length) {
+    page = new Float32Array(page ? PAGE_POINTS : FIRST_PAGE_POINTS);
+    bucket.pages.push(page);
+    bucket.pageUsed = 0;
+  }
+  const i = bucket.pageUsed;
+  page[i] = world[a]; page[i + 1] = world[a + 1]; page[i + 2] = world[a + 2];
+  page[i + 3] = world[b]; page[i + 4] = world[b + 1]; page[i + 5] = world[b + 2];
+  page[i + 6] = world[c]; page[i + 7] = world[c + 1]; page[i + 8] = world[c + 2];
+  bucket.pageUsed += 9;
+  bucket.pointCount += 9;
+}
 
 /** Source replacement must invalidate even when the mesh and its transform are unchanged. */
 export function shadowChunkSourceKey(mesh: Mesh, transformChecksum: number) {
@@ -64,16 +85,14 @@ export class ShadowChunkBuilder {
           if (!columns) { columns = new Map(); rows.set(r, columns); }
           bucket = columns.get(u);
           if (!bucket) {
-            bucket = { side, cascade, data: [[], []], zones: new Map() };
+            bucket = { side, cascade, pages: [], pointCount: 0, pageUsed: 0, zones: new Map() };
             columns.set(u, bucket);
             // A string key is needed once per bucket, rather than once per triangle.
             this.buckets.set(`${cascade}:${r},${u},${side}`, bucket);
           }
           lastR = r; lastU = u; lastBucket = bucket;
         }
-        const [points, indices] = bucket.data, base = points.length / 3;
-        points.push(world[a], world[a + 1], world[a + 2], world[b], world[b + 1], world[b + 2], world[c], world[c + 1], world[c + 2]);
-        indices.push(base, base + 1, base + 2);
+        appendTriangle(bucket, world, a, b, c);
         bucket.zones.set(zone, (bucket.zones.get(zone) ?? 0) + 3);
         if ((i + 3) % 1536 === 0) yield 'bin';
       }
