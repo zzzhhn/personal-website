@@ -25,6 +25,14 @@
 2. 轻量页保留帧耗分位和少量最慢帧。每个窗口记录 `performance.timeOrigin + performance.now()` 计算的绝对开始、结束时间，最慢帧也记录相同时间基准下的区间。系统侧用一个有界进程约每秒记录 epoch 毫秒、内存压力、`vm_stat` 的 Swapins/Swapouts 和页大小，窗口前后各留一个样本。由计数差计算窗口与长帧附近的换页量，仅报告时间重合。先不使用 GPU query、逐函数计时或 DevTools trace。
 3. 分开记录冷启动到加载与首批阴影完成的耗时、阴影收敛后的 360 帧稳态窗口、相同起点和输入时长的移动窗口。移动记录起止点、grounded 和遮挡表现，补同机位日夜画面对照。压力升高或资源集合对不齐时标记对应窗口不可作同条件判断，本轮不反复追加采样。
 
+轻量 QA 取证补丁接入已有 `CAMP_PERF_SIMPLE=1` 构建。两臂构建时分别设置 `PUBLIC_CAMP_PERF_BUILD_ID`，建议注明构建提交和阴影覆盖版本，例如 `430d552-shadow-b495d7f`。输出保留 build ID 和模块 URL，记录采样首尾状态和前 24 条超过 50 ms 的帧间隔，并单独计入全部超阈值帧数。比较时用 `clock.frameBoundaryEpochMs`，`clock.epochMs` 和 `clock.performanceMs` 用于核对浏览器时钟与采样边界的对应关系。首尾驻留计数用于发现差异，计数一致也需要另外确认输入资源集合相同。
+
+从工作树根目录启动外部记录，等待首行后点击浏览器采样按钮，采样结束后保留至少一个系统记录。首次计数增量为 `null`，后续为相邻读数的差值。按 Ctrl-C 提前结束，默认最多 180 行。
+
+```sh
+/usr/bin/python3 tools/world/camp-feedback-review/sample-memory.py --seconds 180 > memory-abba.jsonl
+```
+
 ## 有证据支持的冷启动候选
 
 - 最终候选最后一个事务执行 1,901 次校验，总 5,494.9 ms，平均约 2.89 ms。先按事务记录网格、实例元素数及校验分段，再评估移除 `eligibleChunkCaster` 的单材质临时数组和 `assetOf` 的临时对象。保留逐帧和发布前校验，继续读取实时几何、材质、祖先标记及变换。
