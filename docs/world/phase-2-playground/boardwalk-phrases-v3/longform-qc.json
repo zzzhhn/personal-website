@@ -1,0 +1,376 @@
+{
+  "status": "offline score, event and audio verification; full-version listening pending",
+  "score_notes": 1666,
+  "written_melody_notes": 478,
+  "midi_events": 3332,
+  "synth_aux_events": 2126,
+  "synth_aux_sha256": "808120fef646ba20b1689088daa119f4cee7da66996f869baeaefce8622de02a",
+  "pitched_section_handoffs": [
+    {
+      "bar": 9,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 25,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar"
+      ]
+    },
+    {
+      "bar": 41,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar"
+      ]
+    },
+    {
+      "bar": 57,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 73,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar"
+      ]
+    },
+    {
+      "bar": 89,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 96,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 97,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 113,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar"
+      ]
+    },
+    {
+      "bar": 129,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 145,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar"
+      ]
+    },
+    {
+      "bar": 161,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    },
+    {
+      "bar": 167,
+      "sustain_across": [
+        "guitar"
+      ],
+      "next_downbeat": [
+        "bass",
+        "guitar",
+        "marimba"
+      ]
+    }
+  ],
+  "decoded": {
+    "decoded_frames": 22039459,
+    "seconds": 499.76097505668935,
+    "rms_dbfs": -23.27,
+    "sample_peak_dbfs": -4.525,
+    "below_minus_55_dbfs_grid_seconds": 0.05,
+    "longest_quiet_seconds": 1.6609750566893424,
+    "longest_interior_quiet_seconds": 0.1,
+    "tail_quiet_seconds": 1.6609750566893424,
+    "boundaries": [
+      {
+        "at_seconds": 23.414626,
+        "last_to_first": false,
+        "before_rms_dbfs": -27.435,
+        "after_rms_dbfs": -19.151,
+        "sample_jump_dbfs": -86.439
+      },
+      {
+        "at_seconds": 70.2439,
+        "last_to_first": false,
+        "before_rms_dbfs": -41.974,
+        "after_rms_dbfs": -23.042,
+        "sample_jump_dbfs": -69.356
+      },
+      {
+        "at_seconds": 117.073175,
+        "last_to_first": false,
+        "before_rms_dbfs": -44.407,
+        "after_rms_dbfs": -25.868,
+        "sample_jump_dbfs": -69.117
+      },
+      {
+        "at_seconds": 163.902449,
+        "last_to_first": false,
+        "before_rms_dbfs": -39.543,
+        "after_rms_dbfs": -19.958,
+        "sample_jump_dbfs": -70.035
+      },
+      {
+        "at_seconds": 210.731701,
+        "last_to_first": false,
+        "before_rms_dbfs": -44.418,
+        "after_rms_dbfs": -23.06,
+        "sample_jump_dbfs": -69.03
+      },
+      {
+        "at_seconds": 257.560975,
+        "last_to_first": false,
+        "before_rms_dbfs": -44.414,
+        "after_rms_dbfs": -20.267,
+        "sample_jump_dbfs": -83.683
+      },
+      {
+        "at_seconds": 278.048776,
+        "last_to_first": false,
+        "before_rms_dbfs": -27.181,
+        "after_rms_dbfs": -18.393,
+        "sample_jump_dbfs": -66.946
+      },
+      {
+        "at_seconds": 280.975601,
+        "last_to_first": false,
+        "before_rms_dbfs": -27.164,
+        "after_rms_dbfs": -19.132,
+        "sample_jump_dbfs": -64.267
+      },
+      {
+        "at_seconds": 327.804875,
+        "last_to_first": false,
+        "before_rms_dbfs": -41.981,
+        "after_rms_dbfs": -22.318,
+        "sample_jump_dbfs": -69.553
+      },
+      {
+        "at_seconds": 374.63415,
+        "last_to_first": false,
+        "before_rms_dbfs": -56.921,
+        "after_rms_dbfs": -19.877,
+        "sample_jump_dbfs": -69.232
+      },
+      {
+        "at_seconds": 421.463424,
+        "last_to_first": false,
+        "before_rms_dbfs": -44.407,
+        "after_rms_dbfs": -25.202,
+        "sample_jump_dbfs": -69.047
+      },
+      {
+        "at_seconds": 468.292676,
+        "last_to_first": false,
+        "before_rms_dbfs": -39.549,
+        "after_rms_dbfs": -20.293,
+        "sample_jump_dbfs": -71.326
+      },
+      {
+        "at_seconds": 485.853651,
+        "last_to_first": false,
+        "before_rms_dbfs": -27.448,
+        "after_rms_dbfs": -18.434,
+        "sample_jump_dbfs": -88.734
+      },
+      {
+        "at_seconds": 499.760975,
+        "last_to_first": true,
+        "before_rms_dbfs": -143.001,
+        "after_rms_dbfs": -21.039,
+        "sample_jump_dbfs": -59.423
+      }
+    ]
+  },
+  "encoded": {
+    "i": -21.15,
+    "tp": -4.52,
+    "lra": 3.9,
+    "thresh": -31.39
+  },
+  "master_linear_gain_db": 1.02,
+  "decoded_clipped_samples": 0,
+  "excerpt": {
+    "file": "boardwalk-v3-c-to-b.mp3",
+    "start_seconds": 181.46341463414635,
+    "target_seconds": 60,
+    "section_change_bar": 73,
+    "section_change_master_seconds": 210.73170731707316,
+    "method": "packet copy from the one encoded master"
+  },
+  "sources": {
+    "longform-plan.md": "b45e10a2d30a6daae05fb0759b9b6f54e08b4fc5010717e01c7bb3220391097b",
+    "lead-sheet.md": "54adba112cc3c94b827a58a6f822e48530cbdeb20cbfe2db6c41b83618c335da",
+    "theme-b.md": "69d6ce9d87ebd00fe9306ba7df9967b21be7f6c630e365498df5aeff81f20b84",
+    "theme-c.md": "2583b4895d8d2735f9be11439daa8f34576545ac94f741b1f0b5ed76df34ac75",
+    "render_long.py": "3232f34d3f436076893bff49a15012bd27cd43e261b0a10e6d56bc13771c3c73",
+    "long_score.py": "8408eb0b1ac4d542a0179930f4dbbd73193b53e4da7029e6caeec1196824e300",
+    "study_score.py": "f8e6134b8a0f812ce84b2fbe817cec9d505a6e9a109129864fe9705322941688",
+    "render_study.py": "0e30039ea85d38462ea231927288d0125227599ef83b99229c50adae230d1403",
+    "check_phrase.py": "a135c873f8203c1a287f22b44923a3e365fe97e96be17013c4464d46eb1d54fb",
+    "render.py": "50568c1488bc51a42119baecfd35e8a053586920106bd602bf4105ac1f71a572",
+    "aux.c": "948be874e285aff223cefe3c184b97d5ff9d4c952cd608590b22eb1dd9555dcd",
+    "score.py": "05833a537f3c3d2ee4c2eafb855176c0e636eedf9d4d497340bbd06ebbea3b03",
+    "v2-seed.json": "8e784c1f62b39ee521af3bc92367b013dfc47455bf59b8e2749d8cf626af3b4a"
+  },
+  "audio_inputs": {
+    "soundfont_and_header": {
+      "GeneralUser-GS-2.0.3.sf2": "9575028c7a1f589f5770fccc8cff2734566af40cd26ed836944e9a5152688cfe",
+      "tsf.h": "70d55963c98f60ebb81518eaa1f25d46888d5180eb5f5289fd6b74ffc177d197"
+    },
+    "guitar": {
+      "INSGuitarSteel_StringA_Vel01_B2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringA_Vel01_B2_01.ogg",
+        "sha256": "75f33a110301f3be37013a08b3711765f76b2f99e4c48d45e43b61674ecff2a8"
+      },
+      "INSGuitarSteel_StringA_Vel02_A2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringA_Vel02_A2_01.ogg",
+        "sha256": "b60289b81de9f65d5c9c4653d9e76286413bcb0fd8283f62a25a05b574b24d23"
+      },
+      "INSGuitarSteel_StringA_Vel02_C3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringA_Vel02_C3_01.ogg",
+        "sha256": "ac74e2a3ebfedf276a45881f8b16d6deaa35fe50d9db8fa5e9b496423dfb7b68"
+      },
+      "INSGuitarSteel_StringB_Vel01_B3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringB_Vel01_B3_01.ogg",
+        "sha256": "6fbe92f8276fd3df8d7d1a9ac9dcf49dc6148376db818f35458ea7c0607a2acb"
+      },
+      "INSGuitarSteel_StringB_Vel01_C4_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringB_Vel01_C4_01.ogg",
+        "sha256": "c95327e99cac5193b8aeb2f09dd4564bc935de579de5ff400c05b9e4a99e7e78"
+      },
+      "INSGuitarSteel_StringD_Vel01_D3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel01_D3_01.ogg",
+        "sha256": "22f3862521158efbed7954a219a6baf8d9d66b88714ff30216cc2fc43748600c"
+      },
+      "INSGuitarSteel_StringD_Vel01_E3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel01_E3_01.ogg",
+        "sha256": "ac5628457797a4d030f753835068317dd0abc3ef7f83c2589659ce7d28c1a62e"
+      },
+      "INSGuitarSteel_StringD_Vel02_D3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel02_D3_01.ogg",
+        "sha256": "e7a377f4dca632ea11c0faca9b52b1463f7e9ff1325bd3643198774e08d1935b"
+      },
+      "INSGuitarSteel_StringD_Vel02_F3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringD_Vel02_F3_01.ogg",
+        "sha256": "52436f0c7d8f3b073d4d7833c63353eff1a52d9269f2d0394a64902602ee3198"
+      },
+      "INSGuitarSteel_StringG_Vel01_A3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringG_Vel01_A3_01.ogg",
+        "sha256": "802e68243a831d86c404ec558e2c1d806f7b9c92d4dd8bb2584dd7f73dbb9982"
+      },
+      "INSGuitarSteel_StringG_Vel01_G3_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringG_Vel01_G3_01.ogg",
+        "sha256": "ac241e6442693e437242cb6d20aa97fe3cff298938e76fc55e7b56cec627937e"
+      },
+      "INSGuitarSteel_StringHighE_Vel01_E4_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringHighE_Vel01_E4_01.ogg",
+        "sha256": "b2f6a24537c70f22e529b1dba1f41ed1d4a26612a735992bf5b5bbdb304eefed"
+      },
+      "INSGuitarSteel_StringHighE_Vel01_F4_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringHighE_Vel01_F4_01.ogg",
+        "sha256": "2f18fbb38489759aa1aec11b1a362a4413f023e9f52909cabaf1e8943532912e"
+      },
+      "INSGuitarSteel_StringLowE_Vel02_E2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringLowE_Vel02_E2_01.ogg",
+        "sha256": "07643f0430551e6cbba6c9884c0ca8a1ea2f7f23e3daa12fa141d9476d84fd6d"
+      },
+      "INSGuitarSteel_StringLowE_Vel02_G2_01.ogg": {
+        "url": "https://raw.githubusercontent.com/facebookincubator/Meta-open-sound/251c0be57d5d1b3242b91f53e0cde62ab1cb42d9/systems/instruments/meta-steel-guitar/ogg/INSGuitarSteel_StringLowE_Vel02_G2_01.ogg",
+        "sha256": "c641ff5f3b777fac567abce68645aeaaa984ddc8eb37cbdda87faad1895270c4"
+      }
+    }
+  },
+  "files": {
+    "boardwalk-v3-longform.mp3": {
+      "bytes": 9996621,
+      "sha256": "13c4eb149ca8042774cacdf720d55450d80c1b69eaa56ac8cb3c6925146b66bb"
+    },
+    "boardwalk-v3-c-to-b.mp3": {
+      "bytes": 1201202,
+      "sha256": "2526c04ee977e1010b46da7bc8d70be3c858ba599002d317afb8932d0b4f345f"
+    },
+    "longform-score.mid": {
+      "bytes": 16382,
+      "sha256": "11fb18df35db019b1a1507c4d1ffb876f19b24e023c2cc2bee5d79a8733bf06f"
+    },
+    "longform-arrangement.json": {
+      "bytes": 339512,
+      "sha256": "9563f8e463fab4acca7feec90c1f7c01e7a4543016fbcdc9daf9111ceaff4fcb"
+    }
+  },
+  "elapsed_seconds": 35.7
+}

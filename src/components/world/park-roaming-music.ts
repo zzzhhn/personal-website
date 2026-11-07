@@ -1,6 +1,6 @@
 /** The Boardwalk Morning recording streams through the caller's existing mix. */
 export const PARK_ROAMING_TRACK = {
-  url: '/assets/world/park/audio/boardwalk-longform.mp3', seconds: 22_146_482 / 44_100, fileBytes: 10_045_221,
+  url: '/assets/world/park/audio/boardwalk-v3-longform.mp3', seconds: 22_039_459 / 44_100, fileBytes: 9_996_621,
 } as const;
 
 const HANDOFF_SECONDS = .18;
