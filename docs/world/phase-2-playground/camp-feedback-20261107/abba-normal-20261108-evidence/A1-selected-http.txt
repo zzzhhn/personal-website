@@ -1,0 +1,10 @@
+127.0.0.1 - - [08/Nov/2026 01:18:28] "GET /world/?start=tent&shot=camp-batch-tools-day&quality=balanced HTTP/1.1" 200 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/djc-north-bar-lod1-v1.glb HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png HTTP/1.1" 304 -
+127.0.0.1 - - [08/Nov/2026 01:18:45] "GET /assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png HTTP/1.1" 304 -
