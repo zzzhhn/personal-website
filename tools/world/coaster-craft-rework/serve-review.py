@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 import os
+import re
 
 parser = ArgumentParser()
 parser.add_argument('candidate', type=Path)
@@ -25,6 +26,60 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path.split('?', 1)[0].endswith(('/', '.html', '/local-preview-version.json')):
             self.send_header('Cache-Control', 'no-store')
         super().end_headers()
+
+    def send_head(self):
+        self.range_remaining = None
+        # Native long-form audio seeks with byte ranges, including after a Club
+        # hand-off. The stdlib handler otherwise always replies with the full file.
+        value = self.headers.get('Range', '')
+        match = re.fullmatch(r'bytes=(\d*)-(\d*)', value)
+        path = Path(self.translate_path(self.path))
+        if not match or self.headers.get('If-Range') or not path.is_file():
+            return super().send_head()
+        try:
+            source = path.open('rb')
+        except OSError:
+            return super().send_head()
+        stat = os.fstat(source.fileno())
+        size = stat.st_size
+        first, last = match.groups()
+        if first:
+            start, end = int(first), min(int(last), size - 1) if last else size - 1
+        else:
+            suffix = int(last) if last else 0
+            start, end = max(0, size - suffix), size - 1
+        if start > end or start >= size:
+            source.close()
+            self.send_response(416)
+            self.send_header('Content-Range', f'bytes */{size}')
+            self.send_header('Content-Length', '0')
+            self.end_headers()
+            return None
+        self.send_response(206)
+        self.send_header('Content-Type', self.guess_type(str(path)))
+        self.send_header('Content-Range', f'bytes {start}-{end}/{size}')
+        self.send_header('Content-Length', str(end - start + 1))
+        self.send_header('Accept-Ranges', 'bytes')
+        self.send_header('Last-Modified', self.date_time_string(stat.st_mtime))
+        self.end_headers()
+        source.seek(start)
+        self.range_remaining = end - start + 1
+        return source
+
+    def copyfile(self, source, outputfile):
+        try:
+            if self.range_remaining is None:
+                return super().copyfile(source, outputfile)
+            remaining = self.range_remaining
+            while remaining:
+                data = source.read(min(65536, remaining))
+                if not data:
+                    break
+                outputfile.write(data)
+                remaining -= len(data)
+        except (BrokenPipeError, ConnectionResetError):
+            # A native media element may cancel a request on pause or disposal.
+            pass
 
     def translate_path(self, path):
         result = Path(super().translate_path(path))

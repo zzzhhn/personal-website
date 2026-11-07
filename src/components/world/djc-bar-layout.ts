@@ -12,9 +12,9 @@ const barPrefetchBounds = new Sphere(new Vector3(DJC_BAR_ORIGIN[0], DJC_BAR_ORIG
 
 export function createDjcBarPrefetchCheck() {
   const projectionView = new Matrix4(), frustum = new Frustum();
-  return (camera: Camera, horizontalDistance: number) => {
-    if (horizontalDistance <= DJC_BAR_NEAR_PREFETCH) return true;
-    if (horizontalDistance > 90) return false;
+  return (camera: Camera, distance: number) => {
+    if (distance <= DJC_BAR_NEAR_PREFETCH) return true;
+    if (distance > 90) return false;
     // Camera controls may have changed the pose earlier in this frame.
     camera.updateWorldMatrix(true, false);
     projectionView.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);

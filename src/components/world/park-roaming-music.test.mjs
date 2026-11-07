@@ -127,13 +127,14 @@ test('each silence gate pauses the element and restores the phrase on the same s
   e.gesture(); await settle();
   const ctx = Audio.instances[0], [media] = e.media;
   const gain = ctx.mediaSources[0].connections[0].gain;
+  media.advanceOnPause = .008; // A native media clock can advance while pause takes effect.
   const gates = [v => useWorldStore.setState({ paused: v }), v => { e.doc.hidden = v; e.doc.dispatchEvent(new Event('visibilitychange')); },
     v => useWorldStore.setState({ poolInspect: v }), v => useWorldStore.setState({ shot: v ? 'camp' : null }),
     v => e.page(v ? 'pagehide' : 'pageshow'),
     v => setWorldAudioMuted(v), v => setWorldAudioVolume('music', v ? 0 : 1), v => e.audio.setMuted(v)];
   for (const gate of gates) {
-    const phrase = (media.currentTime + 7) % PARK_ROAMING_TRACK.seconds;
-    media.currentTime = phrase;
+    media.advance(7);
+    const phrase = media.currentTime + media.advanceOnPause;
     gate(true);
     assert.equal(media.paused, true);
     assert.equal(gain.value, 0);
@@ -145,6 +146,7 @@ test('each silence gate pauses the element and restores the phrase on the same s
     gate(false); await settle();
     assert.equal(media.paused, false);
     assert.equal(media.currentTime, phrase);
+    assert.deepEqual(media.seekRequests, [], 'resuming a retained element never writes currentTime');
     assert.equal(e.audio.snapshot().roaming.sources, 1);
     assert.equal(ctx.mediaSources.length, 1);
     assert.equal(media.loads, 0);
@@ -170,14 +172,14 @@ test('Club entry reaches zero on the audio clock and restores at the deadline ev
   const gain = ctx.mediaSources[0].connections[0].gain;
   assert.deepEqual(gain.events, [{ from: 0, value: .7, at: 0, tau: .08 }]);
   ctx.currentTime = 2;
-  media.currentTime = 13.375;
+  media.advance(13.375);
   setClubAudible(e.club, true);
   assert.equal(media.paused, false);
   assert.equal(e.audio.snapshot().timer, true);
   assert.equal(e.timers.size, 1);
   assert.deepEqual(gain.events.at(-1), { kind: 'linear', value: 0, at: 2.18 });
   ctx.currentTime = 4;
-  media.currentTime += 2;
+  media.advance(2);
   e.timers.values().next().value();
   await settle();
   assert.equal(ctx.state, 'suspended');
@@ -186,6 +188,7 @@ test('Club entry reaches zero on the audio clock and restores at the deadline ev
   assert.equal(e.audio.snapshot().roaming.offset, 13.555);
   setClubAudible(e.club, false); await settle();
   assert.equal(media.currentTime, 13.555);
+  assert.deepEqual(media.seekRequests, [13.555]);
   assert.deepEqual(gain.events.at(-1), { from: 0, value: .7, at: 4, tau: .08 });
   assert.equal(media.plays, 2);
   assert.equal(ctx.mediaSources.length, 1);
@@ -193,7 +196,7 @@ test('Club entry reaches zero on the audio clock and restores at the deadline ev
   setClubAudible(e.club, true);
   const staleDeadline = e.timers.values().next().value;
   ctx.currentTime += 2;
-  media.currentTime += 2;
+  media.advance(2);
   setClubAudible(e.club, false);
   staleDeadline(); await settle();
   assert.ok(Math.abs(media.currentTime - 13.735) < 1e-8, 'exit wins the late timer without skipping the silent tail');
@@ -353,6 +356,20 @@ test('a hard silence gate aborts native buffering even after metadata has arrive
   useWorldStore.setState({ paused: false }); await settle();
   assert.equal(e.audio.snapshot().roaming.sources, 1);
   assert.equal(e.media.length, 1);
+});
+
+test('a retry after unloading an errored resource restores a nonzero saved phrase', async t => {
+  const e = fixture(t);
+  e.gesture(); await settle();
+  const [media] = e.media;
+  media.advance(14.5);
+  media.onerror(); await settle();
+  assert.equal(media.currentTime, 0);
+  assert.equal(e.audio.snapshot().roaming.offset, 14.5);
+  e.gesture(); await settle();
+  assert.equal(media.currentTime, 14.5);
+  assert.deepEqual(media.seekRequests, [14.5]);
+  assert.equal(e.audio.snapshot().roaming.sources, 1);
 });
 
 test('pending play resolution after final release cannot repopulate the audio graph', async t => {

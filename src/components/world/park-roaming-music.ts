@@ -13,6 +13,7 @@ export class ParkRoamingMusic {
   private fade: { timer: number; at: number; position: number } | null = null;
   private seconds = 0;
   private offset = 0;
+  private seekOnResume = false;
   private level = -1;
   phase: 'idle' | 'loading' | 'ready' | 'error' = 'idle';
   constructor(private changed: () => void) {}
@@ -85,8 +86,12 @@ export class ParkRoamingMusic {
         this.level = volume;
       }
       if (!this.attempt) {
-        if (this.phase === 'idle') this.load(stream);
-        if (media.currentTime !== this.offset) media.currentTime = this.offset;
+        const reloading = this.phase === 'idle';
+        if (reloading) this.load(stream);
+        // A retained, paused element already owns the correct playback position.
+        // Writing currentTime can trigger a byte-range request even for a tiny difference.
+        if ((reloading || this.seekOnResume) && media.currentTime !== this.offset) media.currentTime = this.offset;
+        this.seekOnResume = false;
         const attempt = this.attempt = { pending: true };
         void media.play().then(() => {
           if (this.attempt !== attempt) return;
@@ -146,36 +151,38 @@ export class ParkRoamingMusic {
     this.fade = null;
   }
 
-  private position() {
-    if (!this.stream || this.level < 0) return this.offset;
-    const { ctx, media } = this.stream;
-    const position = media.currentTime;
+  private clampFadePosition(position: number, audioTime: number) {
     if (!this.fade || !this.seconds) return position;
-    const elapsed = (position - this.fade.position + this.seconds) % this.seconds;
-    return (this.fade.position + Math.min(elapsed, ctx.currentTime - this.fade.at, HANDOFF_SECONDS)) % this.seconds;
+    const elapsed = position >= this.fade.position ? position - this.fade.position : position + this.seconds - this.fade.position;
+    const limit = Math.min(audioTime - this.fade.at, HANDOFF_SECONDS);
+    return elapsed <= limit ? position : (this.fade.position + limit) % this.seconds;
   }
 
   stop() {
     const buffering = this.phase === 'loading' || this.attempt?.pending;
-    this.offset = this.position();
-    this.clearFade();
     if (this.stream && this.attempt) {
       const { ctx, gain, media } = this.stream;
       this.attempt = null; // Older play promise results cannot touch a later attempt.
-      this.level = -1;
       gain.gain.cancelScheduledValues(ctx.currentTime);
       gain.gain.setValueAtTime(0, ctx.currentTime);
       media.pause();
+      const pausedAt = media.currentTime;
+      if (this.level >= 0) this.offset = this.clampFadePosition(pausedAt, ctx.currentTime);
+      this.seekOnResume = pausedAt !== this.offset; // Fade overshoot or progress before the gain opened.
+      this.level = -1;
     }
+    this.clearFade();
     if (buffering) { this.unload(); this.phase = 'idle'; }
   }
 
   inspect() {
+    const position = this.stream && this.level >= 0
+      ? this.clampFadePosition(this.stream.media.currentTime, this.stream.ctx.currentTime) : this.offset;
     return {
       phase: this.phase, sources: this.level >= 0 ? 1 : 0, buffers: 0, loading: this.phase === 'loading', decoding: false,
       bytes: 0, // App-owned decoded PCM only. The browser manages its own media buffers.
       streaming: this.stream !== null, playPending: !!this.attempt?.pending,
-      seconds: this.seconds, offset: this.offset, position: this.position(), level: this.level, fading: this.fading,
+      seconds: this.seconds, offset: this.offset, position, level: this.level, fading: this.fading,
     };
   }
 
@@ -186,6 +193,7 @@ export class ParkRoamingMusic {
     this.stream?.gain.disconnect();
     this.stream = null;
     this.offset = 0;
+    this.seekOnResume = false;
     this.phase = 'idle';
   }
 }

@@ -4,12 +4,16 @@ import { PARK_ROAMING_TRACK } from './park-roaming-music.ts';
 /** Native media events are queued, pause aborts outstanding play, and the
  * same element may only be attached to one MediaElementAudioSourceNode. */
 class Media {
-  paused = true; currentTime = 0; duration = NaN; readyState = 0;
+  paused = true; duration = NaN; readyState = 0;
   preload = ''; loop = false; loads = 0; plays = 0; pauses = 0;
+  advanceOnPause = 0; seekRequests = [];
   onloadedmetadata = null; ondurationchange = null; onerror = null;
-  #src = ''; #requests = []; #generation = 0;
+  #src = ''; #requests = []; #generation = 0; #currentTime = 0;
 
   constructor(options) { this.options = options; }
+  get currentTime() { return this.#currentTime; }
+  set currentTime(value) { this.seekRequests.push(value); this.#currentTime = value; }
+  advance(seconds) { this.#currentTime += seconds; }
   get src() { return this.#src; }
   set src(value) {
     this.#src = value;
@@ -40,6 +44,7 @@ class Media {
     });
   }
   pause() {
+    if (!this.paused) this.advance(this.advanceOnPause);
     this.paused = true;
     this.pauses++;
     const requests = this.#requests;
@@ -51,7 +56,7 @@ class Media {
     this.loads++;
     this.readyState = 0;
     this.duration = NaN;
-    this.currentTime = 0;
+    this.#currentTime = 0;
   }
 }
 
