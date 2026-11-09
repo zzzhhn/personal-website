@@ -8,6 +8,7 @@
  * node in their fan (stitching), so both sides share the same edge vertices: watertight, no skirts.
  * Blocks that were already coarse (2 m flat interior, deep shelf) are identical in both levels.
  */
+import { BufferAttribute, type BufferGeometry } from 'three';
 import { buildTerrain, GRID } from './WorldLandform';
 
 export const TILE_BLOCKS = 8, BLOCK = 4, FINE_R = 28;
@@ -115,4 +116,14 @@ export function lodIndices(tiles: LodTile[], x: number, z: number, fineR = FINE_
     out.set(c, arr);
   }
   return { chunks: out, triangles, fineTiles: fine.size };
+}
+
+/** Consume freshly assembled LOD arrays without the Uint32BufferAttribute copy.
+ * lodIndices owns each output array; tile caches and shared vertex attributes stay untouched. */
+export function applyTerrainLodIndices(geometries: readonly BufferGeometry[], chunks: ReadonlyMap<number, Uint32Array>) {
+  geometries.forEach((geometry, chunk) => {
+    const indices = chunks.get(chunk) ?? new Uint32Array(0);
+    geometry.setIndex(new BufferAttribute(indices, 1));
+    geometry.setDrawRange(0, indices.length);
+  });
 }

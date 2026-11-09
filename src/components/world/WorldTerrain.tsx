@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import {
-  BufferGeometry, Color, Float32BufferAttribute, IcosahedronGeometry, InstancedMesh, MeshStandardMaterial, Object3D, RepeatWrapping, Sphere, Uint32BufferAttribute, Vector3,
+  BufferGeometry, Color, Float32BufferAttribute, IcosahedronGeometry, InstancedMesh, MeshStandardMaterial, Object3D, RepeatWrapping, Sphere, Vector3,
   SRGBColorSpace, TextureLoader, type Material, type Texture,
 } from 'three';
 import { BUILDINGS, FOUNDATIONS, GROUND_Y } from './layout';
@@ -10,7 +10,7 @@ import { LAYOUT_V4, keepOutV4 } from './layout-v4';
 import { buildTerrain, createTerrainGeometry, grassCandidateJob, scatterCandidates, SHORE_GLSL, shoreUniforms, terrainColours, type ScatterBlocker } from './WorldLandform';
 import { useWorldStore } from './store';
 import { weatherUniforms } from './WorldNight';
-import { buildLodTiles, lodIndices } from './WorldTerrainLod';
+import { applyTerrainLodIndices, buildLodTiles, lodIndices } from './WorldTerrainLod';
 import { chunkKey, paveClearance } from './WorldTerrainPaving';
 import { useIsClaimed } from './WorldVisualClaims';
 import { windUniforms } from './WorldWind';
@@ -347,7 +347,7 @@ function TerrainLodChunks({ geometry, material }: { geometry: BufferGeometry; ma
   openRef.current = open;
   const apply = (x: number, z: number) => {
     const L = lodIndices(tiles, x, z, undefined, openRef.current);
-    subs.forEach((g, c) => { const idx = L.chunks.get(c) ?? new Uint32Array(0); g.setIndex(new Uint32BufferAttribute(idx, 1)); g.setDrawRange(0, idx.length); });
+    applyTerrainLodIndices(subs, L.chunks);
     terrainLodDebug.triangles = L.triangles; terrainLodDebug.fineTiles = L.fineTiles; terrainLodDebug.updates++;
     last.current = [x, z];
   };
