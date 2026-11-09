@@ -1,0 +1,474 @@
+{
+  "url": "http://127.0.0.1:4356/qa-audio/?qa=1&start=tent&quality=balanced",
+  "readings": {
+    "play1": {
+      "build": "4968fbf",
+      "epochMs": 1794223619179,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -41.99917984008789,
+          5.638693332672119,
+          19.999296188354492
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "loading",
+        "sources": 0,
+        "buffers": 0,
+        "loading": true,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": true,
+        "seconds": 0,
+        "offset": 0,
+        "position": 0,
+        "level": -1,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": null,
+        "currentTime": 0,
+        "paused": false,
+        "readyState": 0,
+        "error": null
+      }
+    },
+    "play2": {
+      "build": "4968fbf",
+      "epochMs": 1794223626938,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -41.99208450317383,
+          5.637662410736084,
+          19.991777420043945
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 0,
+        "position": 7.688707,
+        "level": 1.4,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 7.688707,
+        "paused": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "fresh": {
+      "build": "4968fbf",
+      "epochMs": 1794223667964,
+      "state": null,
+      "roaming": {
+        "phase": "idle",
+        "sources": 0,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": false,
+        "playPending": false,
+        "seconds": 0,
+        "offset": 0,
+        "position": 0,
+        "level": -1,
+        "fading": false
+      },
+      "native": null
+    },
+    "entry": {
+      "build": "4968fbf",
+      "epochMs": 1794223678278,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -41.9974365234375,
+          5.638208389282227,
+          19.997957229614258
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": false
+      },
+      "roaming": {
+        "phase": "idle",
+        "sources": 0,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": false,
+        "playPending": false,
+        "seconds": 0,
+        "offset": 0,
+        "position": 0,
+        "level": -1,
+        "fading": false
+      },
+      "native": null
+    },
+    "movement": {
+      "build": "4968fbf",
+      "epochMs": 1794223686999,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -42.2628288269043,
+          5.636934280395508,
+          19.623910903930664
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 0,
+        "position": 0.402396,
+        "level": 1.4,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 0.402396,
+        "paused": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "beforePause": {
+      "build": "4968fbf",
+      "epochMs": 1794223690742,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -43.52487564086914,
+          5.634715557098389,
+          17.968568801879883
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 0,
+        "position": 4.141859,
+        "level": 1.4,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 4.141859,
+        "paused": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "pause1": {
+      "build": "4968fbf",
+      "epochMs": 1794223694491,
+      "state": {
+        "paused": true,
+        "shot": null,
+        "position": [
+          -43.52487564086914,
+          5.634715557098389,
+          17.968568801879883
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 4.182494,
+        "position": 4.182494,
+        "level": -1,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 4.182494,
+        "paused": true,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "pause2": {
+      "build": "4968fbf",
+      "epochMs": 1794223699739,
+      "state": {
+        "paused": true,
+        "shot": null,
+        "position": [
+          -43.52487564086914,
+          5.634715557098389,
+          17.968568801879883
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 4.182494,
+        "position": 4.182494,
+        "level": -1,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 4.182494,
+        "paused": true,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "resumed": {
+      "build": "4968fbf",
+      "epochMs": 1794223704247,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -43.52487564086914,
+          5.634715557098389,
+          17.970125198364258
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 4.182494,
+        "position": 7.528623,
+        "level": 1.4,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 7.528623,
+        "paused": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "clubProximity": {
+      "build": "4968fbf",
+      "epochMs": 1794223708739,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          41,
+          2.4188268184661865,
+          54.001094818115234
+        ],
+        "clubMode": null,
+        "nearby": "djc-club-dance",
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 4.182494,
+        "position": 12.019229,
+        "level": 1.4,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 12.019229,
+        "paused": false,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "clubAudible": {
+      "build": "4968fbf",
+      "epochMs": 1794223715496,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          41,
+          2.4188268184661865,
+          54.001094818115234
+        ],
+        "clubMode": "dance",
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 12.523648999999999,
+        "position": 12.523648999999999,
+        "level": -1,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 12.524047,
+        "paused": true,
+        "readyState": 4,
+        "error": null
+      }
+    },
+    "campAgain": {
+      "build": "4968fbf",
+      "epochMs": 1794223722989,
+      "state": {
+        "paused": false,
+        "shot": null,
+        "position": [
+          -41.99941635131836,
+          5.619417190551758,
+          35.006927490234375
+        ],
+        "clubMode": null,
+        "nearby": null,
+        "ready": true
+      },
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "streaming": true,
+        "playPending": false,
+        "seconds": 499.760975,
+        "offset": 12.523648999999999,
+        "position": 15.591585,
+        "level": 1.4,
+        "fading": false
+      },
+      "native": {
+        "path": "/assets/world/park/audio/boardwalk-v3-longform.mp3",
+        "duration": 499.760975,
+        "currentTime": 15.591585,
+        "paused": false,
+        "readyState": 4,
+        "error": null
+      }
+    }
+  },
+  "console": [
+    {
+      "level": "warn",
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "timestamp": "2026-11-09T11:26:39.900Z",
+      "url": "http://127.0.0.1:4356/_astro/three.core.DcojAGaB.js"
+    },
+    {
+      "level": "warn",
+      "message": "using deprecated parameters for the initialization function; pass a single object instead",
+      "timestamp": "2026-11-09T11:26:39.902Z",
+      "url": "http://127.0.0.1:4356/_astro/WorldRuntime.C8NNLCDt.js"
+    },
+    {
+      "level": "warn",
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "timestamp": "2026-11-09T11:27:42.528Z",
+      "url": "http://127.0.0.1:4356/_astro/three.core.DcojAGaB.js"
+    },
+    {
+      "level": "warn",
+      "message": "using deprecated parameters for the initialization function; pass a single object instead",
+      "timestamp": "2026-11-09T11:27:42.585Z",
+      "url": "http://127.0.0.1:4356/_astro/WorldRuntime.C8NNLCDt.js"
+    }
+  ]
+}

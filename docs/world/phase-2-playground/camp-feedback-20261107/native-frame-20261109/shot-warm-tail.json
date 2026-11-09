@@ -1,0 +1,523 @@
+{
+  "supported": true,
+  "start": {
+    "epochMs": 1794224143661,
+    "state": {
+      "lang": "en",
+      "light": "noon",
+      "worldMinutes": 720,
+      "timeRevision": 1,
+      "timeRunning": true,
+      "weather": "clear",
+      "paused": false,
+      "poolInspect": false,
+      "campReturnRequest": 0,
+      "activeVehicle": null,
+      "nearbyVehicle": null,
+      "nearbyInteract": null,
+      "card": null,
+      "seat": null,
+      "toast": null,
+      "clubMode": null,
+      "danceStep": 0,
+      "canVault": false,
+      "canRecover": false,
+      "recoverRequest": 0,
+      "speed": 0,
+      "zone": "camp",
+      "position": [
+        -42,
+        5.68,
+        20
+      ],
+      "ready": true,
+      "zoom": 1,
+      "quality": "balanced",
+      "shot": "camp-batch-tools-day",
+      "waypoint": null,
+      "interactPick": null,
+      "loading": {
+        "phase": "ready",
+        "loaded": 294,
+        "total": 294,
+        "active": false,
+        "failed": 0
+      }
+    },
+    "stats": {
+      "calls": 444,
+      "triangles": 1364181,
+      "geometries": 364,
+      "textures": 136,
+      "programs": 168,
+      "camera": [
+        -36.5,
+        7,
+        24.6
+      ]
+    },
+    "loop": {
+      "mode": "demand",
+      "frame": 108,
+      "delta": 0.032799999952316285,
+      "night": 0,
+      "windTime": 0,
+      "frameMs": null
+    }
+  },
+  "end": {
+    "epochMs": 1794224163663,
+    "state": {
+      "lang": "en",
+      "light": "noon",
+      "worldMinutes": 720,
+      "timeRevision": 1,
+      "timeRunning": true,
+      "weather": "clear",
+      "paused": false,
+      "poolInspect": false,
+      "campReturnRequest": 0,
+      "activeVehicle": null,
+      "nearbyVehicle": null,
+      "nearbyInteract": null,
+      "card": null,
+      "seat": null,
+      "toast": null,
+      "clubMode": null,
+      "danceStep": 0,
+      "canVault": false,
+      "canRecover": false,
+      "recoverRequest": 0,
+      "speed": 0,
+      "zone": "camp",
+      "position": [
+        -42,
+        5.68,
+        20
+      ],
+      "ready": true,
+      "zoom": 1,
+      "quality": "balanced",
+      "shot": "camp-batch-tools-day",
+      "waypoint": null,
+      "interactPick": null,
+      "loading": {
+        "phase": "ready",
+        "loaded": 294,
+        "total": 294,
+        "active": false,
+        "failed": 0
+      }
+    },
+    "stats": {
+      "calls": 445,
+      "triangles": 1366206,
+      "geometries": 364,
+      "textures": 136,
+      "programs": 168,
+      "camera": [
+        -36.5,
+        7,
+        24.6
+      ]
+    },
+    "loop": {
+      "mode": "demand",
+      "frame": 198,
+      "delta": 0.02840000009536743,
+      "night": 0,
+      "windTime": 0,
+      "frameMs": null
+    }
+  },
+  "entries": [
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 52428.700000047684,
+      "duration": 95.09999990463257,
+      "navigationId": 3819,
+      "paintTime": 52523.799999952316,
+      "presentationTime": 52724,
+      "renderStart": 52438.700000047684,
+      "styleAndLayoutStart": 52523.5,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 44.1,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 52429,
+          "duration": 8.799999952316284,
+          "navigationId": 3819,
+          "invoker": "MessagePort.onmessage",
+          "invokerType": "event-listener",
+          "windowAttribution": "self",
+          "executionStart": 52429,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "T",
+          "sourceCharPosition": 11313
+        },
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 52438.799999952316,
+          "duration": 84.70000004768372,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 52438.799999952316,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 52524.40000009537,
+      "duration": 57.89999985694885,
+      "navigationId": 3819,
+      "paintTime": 52582.299999952316,
+      "presentationTime": 52744,
+      "renderStart": 52524.40000009537,
+      "styleAndLayoutStart": 52581.299999952316,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 7.9,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 52524.40000009537,
+          "duration": 56.799999952316284,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 52524.40000009537,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 52582.40000009537,
+      "duration": 54.299999952316284,
+      "navigationId": 3819,
+      "paintTime": 52636.700000047684,
+      "presentationTime": 52760,
+      "renderStart": 52583.10000014305,
+      "styleAndLayoutStart": 52636.5,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 3.5,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 52583.10000014305,
+          "duration": 53.39999985694885,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 52583.10000014305,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 52636.90000009537,
+      "duration": 96.89999985694885,
+      "navigationId": 3819,
+      "paintTime": 52733.799999952316,
+      "presentationTime": 52776,
+      "renderStart": 52704.10000014305,
+      "styleAndLayoutStart": 52733.799999952316,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 0,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 52704.10000014305,
+          "duration": 29.699999809265137,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 52704.10000014305,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 53049.5,
+      "duration": 51.299999952316284,
+      "navigationId": 3819,
+      "paintTime": 53100.799999952316,
+      "presentationTime": 53128,
+      "renderStart": 53049.5,
+      "styleAndLayoutStart": 53100.700000047684,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 1.3,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 53049.5,
+          "duration": 51.200000047683716,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 53049.5,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 53203.799999952316,
+      "duration": 54.10000014305115,
+      "navigationId": 3819,
+      "paintTime": 53257.90000009537,
+      "presentationTime": 53292,
+      "renderStart": 53204.10000014305,
+      "styleAndLayoutStart": 53257.799999952316,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 4,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 53204.10000014305,
+          "duration": 53.69999980926514,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 53204.10000014305,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 53629.10000014305,
+      "duration": 64.59999990463257,
+      "navigationId": 3819,
+      "paintTime": 53693.700000047684,
+      "presentationTime": 53728,
+      "renderStart": 53629.200000047684,
+      "styleAndLayoutStart": 53693.60000014305,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 14.6,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 53629.40000009537,
+          "duration": 64.20000004768372,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 53629.40000009537,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 53816.5,
+      "duration": 55.200000047683716,
+      "navigationId": 3819,
+      "paintTime": 53871.700000047684,
+      "presentationTime": 53908,
+      "renderStart": 53816.60000014305,
+      "styleAndLayoutStart": 53871.60000014305,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 5.1,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 53816.60000014305,
+          "duration": 54.89999985694885,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 53816.60000014305,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 53872,
+      "duration": 69.29999995231628,
+      "navigationId": 3819,
+      "paintTime": 53941.299999952316,
+      "presentationTime": 53976,
+      "renderStart": 53872.700000047684,
+      "styleAndLayoutStart": 53941.200000047684,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 18.7,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 53872.90000009537,
+          "duration": 68.09999990463257,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 53872.90000009537,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 54517.700000047684,
+      "duration": 60.700000047683716,
+      "navigationId": 3819,
+      "paintTime": 54578.40000009537,
+      "presentationTime": 54608,
+      "renderStart": 54517.90000009537,
+      "styleAndLayoutStart": 54578.299999952316,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 10.5,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 54517.90000009537,
+          "duration": 60.39999985694885,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 54517.90000009537,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 54828.60000014305,
+      "duration": 59.59999990463257,
+      "navigationId": 3819,
+      "paintTime": 54888.200000047684,
+      "presentationTime": 54924,
+      "renderStart": 54828.799999952316,
+      "styleAndLayoutStart": 54888.10000014305,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 9.5,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 54828.799999952316,
+          "duration": 59.200000047683716,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 54828.799999952316,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 55049.5,
+      "duration": 57.200000047683716,
+      "navigationId": 3819,
+      "paintTime": 55106.700000047684,
+      "presentationTime": 55144,
+      "renderStart": 55049.5,
+      "styleAndLayoutStart": 55106.60000014305,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 7.1,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 55049.5,
+          "duration": 57,
+          "navigationId": 3819,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 55049.5,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    }
+  ]
+}

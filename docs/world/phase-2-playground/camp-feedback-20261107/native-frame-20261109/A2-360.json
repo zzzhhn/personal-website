@@ -1,0 +1,150 @@
+{
+  "variant": "after",
+  "shot": "camp-batch-tools-day",
+  "camera": [
+    -36.5,
+    7,
+    24.6
+  ],
+  "quaternion": [
+    -0.06310534784218876,
+    -0.3773144837755987,
+    -0.025780923859161607,
+    0.9235728663033783
+  ],
+  "fov": 50,
+  "exposure": 1,
+  "canvas": [
+    1951,
+    1062
+  ],
+  "dpr": 1.1412731405118963,
+  "time": 720,
+  "build": {
+    "id": "a23da48-shadow-bar-b495d7f-qa180",
+    "moduleUrl": "http://127.0.0.1:4356/_astro/WorldRuntime.Ba_JKgs6.js"
+  },
+  "start": {
+    "clock": {
+      "epochMs": 1794223401787,
+      "performanceMs": 102340.40000009537,
+      "timeOriginMs": 1794223299447,
+      "frameBoundaryEpochMs": 1794223401771.2
+    },
+    "variant": "after",
+    "shot": "camp-batch-tools-day",
+    "camera": [
+      -36.5,
+      7,
+      24.6
+    ],
+    "quaternion": [
+      -0.06310534784218876,
+      -0.3773144837755987,
+      -0.025780923859161607,
+      0.9235728663033783
+    ],
+    "fov": 50,
+    "exposure": 1,
+    "canvas": [
+      1951,
+      1062
+    ],
+    "dpr": 1.1412731405118963,
+    "time": 720,
+    "quality": "balanced",
+    "loading": false,
+    "shadowPending": false,
+    "memory": {
+      "geometries": 397,
+      "textures": 136
+    },
+    "renderer": {
+      "programs": 168,
+      "calls": 347,
+      "triangles": 1042057
+    }
+  },
+  "end": {
+    "clock": {
+      "epochMs": 1794223409294,
+      "performanceMs": 109847.5,
+      "timeOriginMs": 1794223299447,
+      "frameBoundaryEpochMs": 1794223409294.4
+    },
+    "variant": "after",
+    "shot": "camp-batch-tools-day",
+    "camera": [
+      -36.5,
+      7,
+      24.6
+    ],
+    "quaternion": [
+      -0.06310534784218876,
+      -0.3773144837755987,
+      -0.025780923859161607,
+      0.9235728663033783
+    ],
+    "fov": 50,
+    "exposure": 1,
+    "canvas": [
+      1951,
+      1062
+    ],
+    "dpr": 1.1412731405118963,
+    "time": 720,
+    "quality": "balanced",
+    "loading": false,
+    "shadowPending": false,
+    "memory": {
+      "geometries": 397,
+      "textures": 136
+    },
+    "renderer": {
+      "programs": 168,
+      "calls": 347,
+      "triangles": 1042057
+    }
+  },
+  "restarts": 0,
+  "frameMs": {
+    "n": 360,
+    "p50": 18.5,
+    "p95": 37,
+    "max": 86.39999985694885
+  },
+  "calls": {
+    "n": 360,
+    "p50": 347,
+    "p95": 347,
+    "max": 347
+  },
+  "triangles": {
+    "n": 360,
+    "p50": 1042057,
+    "p95": 1042057,
+    "max": 1042057
+  },
+  "memory": {
+    "geometries": 397,
+    "textures": 136
+  },
+  "slowFrameCount": 3,
+  "slowFrames": [
+    {
+      "startEpochMs": 1794223407328.3,
+      "endEpochMs": 1794223407414.7,
+      "durationMs": 86.39999985694885
+    },
+    {
+      "startEpochMs": 1794223407736,
+      "endEpochMs": 1794223407799.6,
+      "durationMs": 63.60000014305115
+    },
+    {
+      "startEpochMs": 1794223407978.3,
+      "endEpochMs": 1794223408034.4,
+      "durationMs": 56.09999990463257
+    }
+  ]
+}

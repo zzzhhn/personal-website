@@ -233,7 +233,7 @@ function AnimatedWok({ frame, children }: { frame: Matrix4; children: ReactNode 
 /** Five bilingual category labels on the tool wall from UI.about.techCategories (same order as the
  * five icon panels: Programming, Office, AI & Agent, Data & ML, Finance). */
 function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: number; h: number }[]; frame: Matrix4; lang: 'en' | 'zh' }) {
-  const { geometry, material, canvas } = useMemo(() => {
+  const { geometry, material } = useMemo(() => {
     const n = plates.length, pos: number[] = [], uv: number[] = [], nor: number[] = [], idx: number[] = [], v = new Vector3();
     plates.forEach((p, i) => {
       const [x, y, z] = p.centre, hw = p.w / 2, hh = p.h / 2, v0 = 1 - (i + 1) / n, v1 = 1 - i / n;
@@ -251,14 +251,13 @@ function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: numbe
     geometry.setAttribute('uv', new BufferAttribute(new Float32Array(uv), 2));
     geometry.setIndex(idx);
     const canvas = document.createElement('canvas');
+    // Establish the final atlas dimensions before its first GPU upload. Resizing an
+    // already uploaded CanvasTexture can leave immutable WebGL storage incomplete.
+    drawLabels(canvas, UI.about.techCategories[lang].map(c => c.label));
     const map = new CanvasTexture(canvas); map.colorSpace = SRGBColorSpace; map.anisotropy = 8;
     const material = new MeshStandardMaterial({ map, roughness: 0.9, metalness: 0, polygonOffset: true, polygonOffsetFactor: -2 });
-    return { geometry, material, canvas };
-  }, [plates, frame]);
-  useEffect(() => {
-    drawLabels(canvas, UI.about.techCategories[lang].map(c => c.label));
-    (material.map as CanvasTexture).needsUpdate = true;
-  }, [lang, canvas, material]);
+    return { geometry, material };
+  }, [plates, frame, lang]);
   useEffect(() => () => { geometry.dispose(); material.map?.dispose(); material.dispose(); }, [geometry, material]);
   return <mesh name="camp-content-C11-labels" geometry={geometry} material={material} receiveShadow userData={{ noOcclusionFade: true }} />;
 }

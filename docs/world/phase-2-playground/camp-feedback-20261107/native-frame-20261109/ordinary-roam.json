@@ -1,0 +1,244 @@
+{
+  "supported": true,
+  "start": {
+    "epochMs": 1794224306146,
+    "state": {
+      "lang": "zh",
+      "light": "dusk",
+      "worldMinutes": 1066.0114000000945,
+      "timeRevision": 1,
+      "timeRunning": true,
+      "weather": "clear",
+      "paused": false,
+      "poolInspect": false,
+      "campReturnRequest": 0,
+      "activeVehicle": null,
+      "nearbyVehicle": null,
+      "nearbyInteract": null,
+      "card": null,
+      "seat": null,
+      "toast": null,
+      "clubMode": null,
+      "danceStep": 0,
+      "canVault": false,
+      "canRecover": false,
+      "recoverRequest": 0,
+      "speed": 0,
+      "zone": "camp",
+      "position": [
+        -41.99187088012695,
+        5.637662410736084,
+        19.987886428833008
+      ],
+      "ready": true,
+      "zoom": 1,
+      "quality": "balanced",
+      "shot": null,
+      "waypoint": null,
+      "interactPick": null,
+      "loading": {
+        "phase": "ready",
+        "loaded": 294,
+        "total": 294,
+        "active": false,
+        "failed": 0
+      }
+    },
+    "stats": {
+      "calls": 244,
+      "triangles": 1109695,
+      "geometries": 261,
+      "textures": 127,
+      "programs": 202,
+      "camera": [
+        -36.900702055583814,
+        14.772943784974654,
+        26.77611919463275
+      ]
+    },
+    "loop": {
+      "mode": "always",
+      "frame": 291,
+      "delta": 0.0375,
+      "night": 0.060255810578516825,
+      "windTime": 13.516200000286098,
+      "frameMs": null
+    }
+  },
+  "end": {
+    "epochMs": 1794224326151,
+    "state": {
+      "lang": "zh",
+      "light": "dusk",
+      "worldMinutes": 1086.007900000077,
+      "timeRevision": 1,
+      "timeRunning": true,
+      "weather": "clear",
+      "paused": false,
+      "poolInspect": false,
+      "campReturnRequest": 0,
+      "activeVehicle": null,
+      "nearbyVehicle": null,
+      "nearbyInteract": null,
+      "card": null,
+      "seat": null,
+      "toast": null,
+      "clubMode": null,
+      "danceStep": 0,
+      "canVault": false,
+      "canRecover": false,
+      "recoverRequest": 0,
+      "speed": 0,
+      "zone": "camp",
+      "position": [
+        -42.587257385253906,
+        5.636641979217529,
+        19.193668365478516
+      ],
+      "ready": true,
+      "zoom": 1,
+      "quality": "balanced",
+      "shot": null,
+      "waypoint": null,
+      "interactPick": null,
+      "loading": {
+        "phase": "ready",
+        "loaded": 294,
+        "total": 294,
+        "active": false,
+        "failed": 0
+      }
+    },
+    "stats": {
+      "calls": 177,
+      "triangles": 832656,
+      "geometries": 285,
+      "textures": 127,
+      "programs": 205,
+      "camera": [
+        -37.49608856071076,
+        14.7719233534561,
+        25.981893464869373
+      ]
+    },
+    "loop": {
+      "mode": "always",
+      "frame": 1426,
+      "delta": 0.015899999856948854,
+      "night": 0.25371420618273793,
+      "windTime": 33.52860000014302,
+      "frameMs": null
+    }
+  },
+  "entries": [
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 39324.200000047684,
+      "duration": 74.59999990463257,
+      "navigationId": 9903,
+      "paintTime": 39398.799999952316,
+      "presentationTime": 39444,
+      "renderStart": 39337.40000009537,
+      "styleAndLayoutStart": 39398.40000009537,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 11.3,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 39337.40000009537,
+          "duration": 61,
+          "navigationId": 9903,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 39337.40000009537,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 39524.700000047684,
+      "duration": 59.09999990463257,
+      "navigationId": 9903,
+      "paintTime": 39583.799999952316,
+      "presentationTime": 39628,
+      "renderStart": 39537.5,
+      "styleAndLayoutStart": 39583.5,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 3.4,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 39524.700000047684,
+          "duration": 7,
+          "navigationId": 9903,
+          "invoker": "IdleRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 39524.700000047684,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "k",
+          "sourceCharPosition": 2699477
+        },
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 39537.5,
+          "duration": 46,
+          "navigationId": 9903,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 39537.5,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    },
+    {
+      "name": "long-animation-frame",
+      "entryType": "long-animation-frame",
+      "startTime": 49559.10000014305,
+      "duration": 78.79999995231628,
+      "navigationId": 9903,
+      "paintTime": 49637.90000009537,
+      "presentationTime": 49680,
+      "renderStart": 49566.5,
+      "styleAndLayoutStart": 49637.799999952316,
+      "firstUIEventTimestamp": 0,
+      "blockingDuration": 21.4,
+      "scripts": [
+        {
+          "name": "script",
+          "entryType": "script",
+          "startTime": 49566.5,
+          "duration": 71.29999995231628,
+          "navigationId": 9903,
+          "invoker": "FrameRequestCallback",
+          "invokerType": "user-callback",
+          "windowAttribution": "self",
+          "executionStart": 49566.5,
+          "forcedStyleAndLayoutDuration": 0,
+          "pauseDuration": 0,
+          "sourceURL": "http://127.0.0.1:4356/_astro/WorldRuntime.C974FRbs.js",
+          "sourceFunctionName": "lJ",
+          "sourceCharPosition": 179991
+        }
+      ]
+    }
+  ]
+}

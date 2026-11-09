@@ -1,0 +1,9 @@
+HTTP/1.0 206 Partial Content
+Server: SimpleHTTP/0.6 Python/3.9.6
+Date: Mon, 09 Nov 2026 11:30:28 GMT
+Content-Type: audio/mpeg
+Content-Range: bytes 0-15/9996621
+Content-Length: 16
+Accept-Ranges: bytes
+Last-Modified: Sat, 07 Nov 2026 14:39:26 GMT
+
