@@ -2,6 +2,9 @@
   "public/assets/world/alpha-island/transports/cable.glb": "71861542f65eee832cf4fe4f56fc33d2910117467a51deba516fd1f53db54df6",
   "public/assets/world/alpha-island/transports/sled.glb": "bb8e506258f0883fe7e75666de4f0355ff65952bfe6463020d91111a00a59a4f",
   "public/assets/world/alpha-island/transports/ferry.glb": "86cfc03994e440fee2fbbe219899c0715d80e921198c308f6f5e80896fe36d79",
-  "layoutDependencySha256": "d497579c5847a23b971d04f169f29350339b56f160688411576b91f93c1d8702",
-  "terrainDependencySha256": "8eec40d5504f0df7f731ca490149d5538283e756a3289bef8969b20a963fe3a6"
+  "layoutDependencySha256": "3642ead7752aea15cde9d86fab58ed17ae858fd122a55e8661706139ade4f410",
+  "terrainDependencySha256": "57a734f1f47c43b1301b6c3dbf865da5f9d440f1188afd80b4e7e2fd9e2db8f7",
+  "engineeringDimensionsSha256": "1612996c3c64989fc6fdf75fa01cc4f4ea1924af43eb806a5cd13a5d867ab471",
+  "infrastructureSourceSha256": "0bd1ba12b7d809b8c30ae33f924c85e0c9cc584a696ca218a2e28e4d17db9c9c",
+  "generatorSha256": "4da45701892cfd069adee609cb385f256cc6767bfcb619f2d575e4e0559abffb"
 }

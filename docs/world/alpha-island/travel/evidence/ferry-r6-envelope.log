@@ -1,0 +1,27 @@
+TAP version 13
+# (node:19691) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: r4 ferry full runtime hull and fenders clear actual old/new shoreline over sampled sailing path
+ok 1 - r4 ferry full runtime hull and fenders clear actual old/new shoreline over sampled sailing path
+  ---
+  duration_ms: 15856.096958
+  type: 'test'
+  ...
+# {"samples":501,"vertices":1986,"minimum":0.7241827241817547,"worst":{"u":0,"point":[-16.002662971487435,-1.0345324993133544,107.9268035265232],"ground":-1.7587152234951091}}
+# Subtest: ferry clears actual rendered/collided terrain triangles and conservative whole pier solids
+ok 2 - ferry clears actual rendered/collided terrain triangles and conservative whole pier solids
+  ---
+  duration_ms: 356.082459
+  type: 'test'
+  ...
+# {"samples":501,"terrainTriangles":2704,"pierSolids":2,"failures":0,"examples":[]}
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16909.226334

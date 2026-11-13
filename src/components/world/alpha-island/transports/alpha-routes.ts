@@ -36,16 +36,17 @@ export function alphaFerryRoute():TransportRoute {
  const route:TransportRoute={id:'alpha-ferry',kind:'ferry',transform:{origin:[0,0,0],yaw:0},path,duration:64,terminals:[
  terminal('mainland',path[0],[ALPHA_MAINLAND_DOCK.safeExit[0],ALPHA_MAINLAND_DOCK.ground],ALPHA_MAINLAND_DOCK.safeExit[0],'ferry',path,0),
  terminal('island',path.at(-1)!,dock.approach.slice(-2).map(alphaWorld),alphaWorld(dock.safeExit[0]),'ferry',path,1)]};
- for(const index of [0,1] as const[]){
+ for(const index of [0,1] as const){
   const t=route.terminals[index],q=new Vector3(1,0,0).applyAxisAngle(new Vector3(0,1,0),t.yaw),side=new Vector3(0,0,-1).applyAxisAngle(new Vector3(0,1,0),t.yaw);
   const inside:Vec3=[t.vehicle[0]+q.x,.8,t.vehicle[2]+q.z],door:Vec3=[inside[0]+side.x*1.45,.8,inside[2]+side.z*1.45],outline=index===0?ALPHA_MAINLAND_PIER_POLYGON:polygon;
   let edge:Vec3=[...outline[0]],distance=Infinity;
   for(let i=0;i<outline.length;i++){const a=outline[i],b=outline[(i+1)%outline.length],dx=b[0]-a[0],dz=b[2]-a[2],u=Math.max(0,Math.min(1,((door[0]-a[0])*dx+(door[2]-a[2])*dz)/(dx*dx+dz*dz))),p:Vec3=[a[0]+dx*u,a[1],a[2]+dz*u],d=Math.hypot(p[0]-door[0],p[2]-door[2]);if(d<distance){distance=d;edge=p;}}
   const bridge:Vec3[]=[];const count=Math.max(2,Math.ceil(distance/.4));
   for(let i=0;i<=count;i++){const u=i/count,x=door[0]+(edge[0]-door[0])*u,z=door[2]+(edge[2]-door[2])*u,y=.8+(edge[1]-.8)*u,ground=index===1?alphaHeight(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]):-Infinity;bridge.push([x,Math.max(y,Math.min(edge[1],ground+.006)),z]);}
-  t.boarding=[t.safeExit,...bridge.slice().reverse(),inside];t.gangwayStart=0;t.egress=[inside,...bridge,t.safeExit];
+  const simplified:Vec3[]=[];for(const point of bridge){simplified.push(point);while(simplified.length>=3){const n=simplified.length,a=new Vector3(...simplified[n-3]),b=new Vector3(...simplified[n-2]),c=new Vector3(...simplified[n-1]);if(b.clone().sub(a).cross(c.clone().sub(b)).lengthSq()>1e-12)break;simplified.splice(n-2,1);}}
+  t.boarding=[t.safeExit,...simplified.slice().reverse(),inside];t.gangwayStart=0;t.egress=[inside,...simplified,t.safeExit];
  }
  return route;
 }
 
-export function alphaTransportBoardingFootprints(){return ALPHA_TRANSPORT_ROUTES.flatMap(route=>route.terminals.flatMap((t,index)=>{const data=transportBoardingGeometry(route,index as 0|1);return data.segments.map(s=>({...s,halfWidth:.65}));}));}
+export function alphaTransportBoardingFootprints(includeFerry=false){return (includeFerry?[...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()]:ALPHA_TRANSPORT_ROUTES).flatMap(route=>route.terminals.flatMap((t,index)=>{const data=transportBoardingGeometry(route,index as 0|1);return data.segments.map(s=>({...s,halfWidth:.65}));}));}
