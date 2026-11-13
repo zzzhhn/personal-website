@@ -7,7 +7,7 @@ import { WATER_IMPACT_GLSL, waterImpactUniforms } from './WorldWaterInteraction'
 /** quality-v3 sea (spec §2). Four Gerstner waves (GPU Gems ch. 1, technique only) displace a
  * camera-following grid in world space: wavelengths 3.4-13 m, summed amplitude 0.245 m,
  * steepness Q 0.6, directions within +-38 deg of the island wind (0.8, 0.6), deep-water
- * dispersion c = sqrt(g L / 2 pi) (speed scale 1). Flat-shaded facets, shore foam and the
+ * dispersion c = sqrt(g L / 2 pi) (speed scale 1). Smooth wave normals, shore foam and the
  * deep -> near-shore tint come from the baked shore distance field. Waves are visual only:
  * the mean surface stays at WATER_Y, which physics, recovery and the camera still use. One
  * draw call, no extra render pass; time and strength come from the shared wind clock.
@@ -44,7 +44,7 @@ function waveGlsl() {
     const speed = Math.sqrt(g / k) * SEA_SPEED_SCALE, q = SEA_STEEPNESS / (k * w.amplitude * n);
     const f = (v: number) => v.toFixed(5);
     // Fade a wave once the local cell exceeds lambda / 3.4 (fully gone at lambda / 2.4): never undersampled.
-    return `  seaWave(vec2(${f(Math.cos(a))}, ${f(Math.sin(a))}), ${f(k)}, ${f(w.amplitude)}, ${f(q)}, ${f(speed * k)}, p, t, amp * (1.0 - smoothstep(${f(w.lengthM / 3.4)}, ${f(w.lengthM / 2.4)}, cellEff)), disp);`;
+    return `  seaWave(vec2(${f(Math.cos(a))}, ${f(Math.sin(a))}), ${f(k)}, ${f(w.amplitude)}, ${f(q)}, ${f(speed * k)}, p, t, amp * (1.0 - smoothstep(${f(w.lengthM / 3.4)}, ${f(w.lengthM / 2.4)}, cellEff)), ampGrad * (1.0 - smoothstep(${f(w.lengthM / 3.4)}, ${f(w.lengthM / 2.4)}, cellEff)) - amp * seaSmoothDerivative(${f(w.lengthM / 3.4)}, ${f(w.lengthM / 2.4)}, cellEff) * cellGrad, disp, seaTx, seaTz);`;
   }).join('\n');
 }
 
@@ -61,12 +61,42 @@ uniform float uSeaTime; uniform float uSeaMotion;
 attribute vec4 seaPatch;
 varying vec3 vSeaWorld;
 varying float vSeaCrest;
+varying vec3 vSeaNormal;
 ${SHORE_GLSL}
 ${SURF_GLSL}
 ${WATER_IMPACT_GLSL}
-void seaWave(vec2 d, float k, float a, float q, float w, vec2 p, float t, float amp, inout vec3 disp) {
+// Derivative of smoothstep, including its clamped regions.
+float seaSmoothDerivative(float lo, float hi, float x) {
+  float u = clamp((x - lo) / (hi - lo), 0.0, 1.0);
+  return 6.0 * u * (1.0 - u) / (hi - lo);
+}
+void seaWave(vec2 d, float k, float a, float q, float w, vec2 p, float t, float amp, vec2 ampGrad, inout vec3 disp, inout vec3 tx, inout vec3 tz) {
   float ph = k * dot(d, p) - w * t, c = cos(ph), s = sin(ph);
+  // Keep displacement unchanged; reuse the same phase for both parametric tangents.
   disp += vec3(q * a * d.x * c, a * s, q * a * d.y * c) * amp;
+  float vx = q * a * d.x * c, vy = a * s, vz = q * a * d.y * c;
+  float ak = a * k * amp;
+  tx.x += -q * ak * d.x * d.x * s + vx * ampGrad.x;
+  tx.y += ak * d.x * c + vy * ampGrad.x;
+  tx.z += -q * ak * d.x * d.y * s + vz * ampGrad.x;
+  tz.x += -q * ak * d.x * d.y * s + vx * ampGrad.y;
+  tz.y += ak * d.y * c + vy * ampGrad.y;
+  tz.z += -q * ak * d.y * d.y * s + vz * ampGrad.y;
+}
+// Analytic derivative of the SAME surf height (phase, both shore envelopes and LOD fade).
+// Scalar expressions also allow a numerical check of this exact emitted shader body.
+void seaSurfTangent(vec2 p, float shoreD, float phase, float cellEff, float motion, vec2 shoreGrad, vec2 cellGrad, inout vec3 tx, inout vec3 tz) {
+  float u = 0.5 + 0.5 * sin(phase), h = pow(u, 3.0);
+  float fade = 1.0 - smoothstep(${(SEA_SURF.lengthM / 3.4).toFixed(3)}, ${(SEA_SURF.lengthM / 2.4).toFixed(3)}, cellEff);
+  float fadeD = -seaSmoothDerivative(${(SEA_SURF.lengthM / 3.4).toFixed(3)}, ${(SEA_SURF.lengthM / 2.4).toFixed(3)}, cellEff);
+  float inner = smoothstep(0.3, 2.0, shoreD), outer = 1.0 - smoothstep(8.0, 14.0, shoreD);
+  float bandD = seaSmoothDerivative(0.3, 2.0, shoreD) * outer - inner * seaSmoothDerivative(8.0, 14.0, shoreD);
+  float bendA = cos(dot(p, vec2(0.043, 0.067))), bendB = cos(dot(p, vec2(-0.081, 0.029)) + 1.3);
+  float phaseX = ${(2 * Math.PI / SEA_SURF.lengthM).toFixed(5)} * shoreGrad.x + 1.5 * 0.043 * bendA + 0.9 * -0.081 * bendB;
+  float phaseZ = ${(2 * Math.PI / SEA_SURF.lengthM).toFixed(5)} * shoreGrad.y + 1.5 * 0.067 * bendA + 0.9 * 0.029 * bendB;
+  float phaseD = 1.5 * u * u * cos(phase);
+  tx.y += ${SEA_SURF.amplitude.toFixed(3)} * motion * (phaseD * phaseX * inner * outer * fade + h * bandD * shoreGrad.x * fade + h * inner * outer * fadeD * cellGrad.x);
+  tz.y += ${SEA_SURF.amplitude.toFixed(3)} * motion * (phaseD * phaseZ * inner * outer * fade + h * bandD * shoreGrad.y * fade + h * inner * outer * fadeD * cellGrad.y);
 }
 `;
 
@@ -123,20 +153,36 @@ export function createWorldWaterMaterial(color: string) {
         float shoreD = shoreSigned(shoreSample(p));
         // Slightly smaller open swell right at the waterline, full height from 6 m out.
         amp *= mix(0.6, 1.0, smoothstep(0.0, 6.0, shoreD));
+        // Four extra vertex shore samples only inside the active 0–14 m shore band.
+        // Central difference uses the existing field; no new texture or fragment sampling.
+        vec2 shoreGrad = vec2(0.0);
+        if (uSeaMotion > 0.0 && shoreD > 0.0 && shoreD < 14.0) {
+          float e = ${(SHORE_CELL * 0.5).toFixed(3)};
+          shoreGrad = vec2(shoreSigned(shoreSample(p + vec2(e, 0.0))) - shoreSigned(shoreSample(p - vec2(e, 0.0))),
+            shoreSigned(shoreSample(p + vec2(0.0, e))) - shoreSigned(shoreSample(p - vec2(0.0, e)))) / (2.0 * e);
+        }
+        float camDistance = distance(wp, cameraPosition);
+        vec2 cellGrad = camDistance > ${(SEA_LOD.cell * SEA_LOD.r0).toFixed(3)} ?
+          (wp.xz - cameraPosition.xz) / (max(camDistance, 0.001) * ${SEA_LOD.r0.toFixed(1)}) : vec2(0.0);
+        vec2 ampGrad = uSeaMotion * 0.4 * seaSmoothDerivative(0.0, 6.0, shoreD) * shoreGrad;
+        vec3 seaTx = vec3(1.0, 0.0, 0.0), seaTz = vec3(0.0, 0.0, 1.0);
         vec3 disp = vec3(0.0); float t = uSeaTime;
         if (amp > 0.0) {
 ${waveGlsl()}
         }
         // Surf: crests rolling toward the beach (phase falls with shore distance over time), peaked, gone at the waterline.
-        float surf = pow(0.5 + 0.5 * sin(surfPhase(p, shoreD, t * step(0.001, uSeaMotion))), 3.0) * smoothstep(0.3, 2.0, shoreD) * (1.0 - smoothstep(8.0, 14.0, shoreD));
+        float surfPh = surfPhase(p, shoreD, t * step(0.001, uSeaMotion));
+        float surf = pow(0.5 + 0.5 * sin(surfPh), 3.0) * smoothstep(0.3, 2.0, shoreD) * (1.0 - smoothstep(8.0, 14.0, shoreD));
         surf *= 1.0 - smoothstep(${(SEA_SURF.lengthM / 3.4).toFixed(3)}, ${(SEA_SURF.lengthM / 2.4).toFixed(3)}, cellEff);
         disp.y += ${SEA_SURF.amplitude.toFixed(3)} * surf * uSeaMotion;
+        seaSurfTangent(p, shoreD, surfPh, cellEff, uSeaMotion, shoreGrad, cellGrad, seaTx, seaTz);
+        vSeaNormal = normalize(cross(seaTz, seaTx));
         disp.y += waterDisturbance(p, ${WATER_Y.toFixed(3)}, t).z;
         transformed += disp;
         vSeaCrest = disp.y / ${SEA_WAVES.reduce((a, w) => a + w.amplitude, 0).toFixed(3)};
       }`).replace('#include <project_vertex>', `#include <project_vertex>
       vSeaWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;`);
-    shader.fragmentShader = `varying vec3 vSeaWorld;\nvarying float vSeaCrest;\nuniform vec3 uSunDir; uniform vec3 uGlint;\nfloat seaFootprint = 0.0;\nuniform float uSeaTime; uniform float uSeaMotion; uniform vec3 uNearTint; uniform vec3 uFoam; uniform float uDeepLuma; uniform vec4 uSeaSpot[${SEA_SPOTS}];\n${SHORE_GLSL}\n${SURF_GLSL}
+    shader.fragmentShader = `varying vec3 vSeaWorld;\nvarying vec3 vSeaNormal;\nvarying float vSeaCrest;\nuniform vec3 uSunDir; uniform vec3 uGlint;\nfloat seaFootprint = 0.0;\nuniform float uSeaTime; uniform float uSeaMotion; uniform vec3 uNearTint; uniform vec3 uFoam; uniform float uDeepLuma; uniform vec4 uSeaSpot[${SEA_SPOTS}];\n${SHORE_GLSL}\n${SURF_GLSL}
 ${WATER_IMPACT_GLSL}
 float sHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float sNoise(vec2 p) { vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
@@ -191,9 +237,14 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
       diffuseColor.rgb += contactWave.w * uFoam * seaLight * .55;
       float depthAlpha = mix(.62, 1.0, smoothstep(0.0, 5.0, shoreD));
       diffuseColor.a = mix(depthAlpha, ${SEA_SPOT_MIN_ALPHA.toFixed(2)}, clear);`)
+      .replace('#include <normal_fragment_begin>', `#include <normal_fragment_begin>
+      // Override the displaced triangle normal before lighting; do not add it back.
+      // WorldSea has translation only, so the tangents above are already in world axes.
+      normal = normalize((viewMatrix * vec4(normalize(vSeaNormal), 0.0)).xyz);
+      nonPerturbedNormal = normal;`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
       {
-        // Fine ripples on top of the flat facets (keep distant water moving after waves fade).
+        // Fine ripples on top of the smooth wave normal (keep distant water moving after waves fade).
         // Each ripple fades once a pixel covers a quarter of its wavelength (3.5 / 2.9 / 1.8 m): no moire at grazing angles.
         vec2 a = vec2(0.72, 0.36) * 1.6, b = vec2(-0.34, 1.10) * 1.9, c = vec2(1.45, -0.62) * 2.2;
         float px = length(fwidth(sp));
@@ -206,7 +257,7 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
       }`)
       .replace('#include <opaque_fragment>', `{
         // Sun glitter path (spec \u00a72: a narrow warm highlight toward the sun, no mirror reflection): world-space
-        // reflection of the rippled facet normal against the fixed sun; fades with the sun at night and under foam.
+        // reflection of the rippled wave normal against the fixed sun; fades with the sun at night and under foam.
         vec3 nW = normalize((vec4(normal, 0.0) * viewMatrix).xyz), vW = normalize(cameraPosition - vSeaWorld);
         float rs = max(dot(reflect(-vW, nW), uSunDir), 0.0);
         // Far away the sparkles merge into a broader, dimmer path instead of aliasing into streaks.
@@ -234,7 +285,7 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
       roughnessFactor = mix(roughnessFactor, 0.92, foam);`);
     }
   };
-  material.customProgramCacheKey = () => legacy ? 'world-sea-cdlod-contact-v6' : 'world-sea-cdlod-contact-v7-surface';
+  material.customProgramCacheKey = () => legacy ? 'world-sea-cdlod-contact-v8-smooth-legacy' : 'world-sea-cdlod-contact-v8-smooth-surface';
   return material;
 }
 
