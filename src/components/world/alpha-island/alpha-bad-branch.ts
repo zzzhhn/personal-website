@@ -7,7 +7,7 @@ export type BranchPhase='attached'|'waiting'|'fallen'|'reset-wait';
 export const alphaBadBranchProbe={phase:'attached' as BranchPhase,position:[0,0,0] as Vec3,velocity:[0,0,0] as Vec3,home:[0,0,0] as Vec3,worldTime:0,droppedAt:-100,age:0,drops:0,resets:0,playerContacts:0,pathMargin:Infinity,minPathMargin:Infinity,restoreBlocked:false,dropBlocked:false};
 const pointSegment=(p:Vec3,a:Vec3,b:Vec3)=>{const x=b[0]-a[0],z=b[2]-a[2],n=x*x+z*z,t=n?Math.max(0,Math.min(1,((p[0]-a[0])*x+(p[2]-a[2])*z)/n)):0;return Math.hypot(p[0]-a[0]-t*x,p[2]-a[2]-t*z);};
 export function alphaBranchPathMargin(center:Vec3,radius:number){const p=alphaLocal(center);let d=Infinity;for(let i=1;i<ALPHA_MAIN_PATH.length;i++)d=Math.min(d,pointSegment(p,ALPHA_MAIN_PATH[i-1],ALPHA_MAIN_PATH[i]));return d-2.1-radius;}
-type Engine=typeof import('@dimforge/rapier3d-compat');
+type Engine=Pick<typeof import('@dimforge/rapier3d-compat'),'Cuboid'|'RigidBodyType'>;
 type Bound={boundCenter:Vec3;boundRadius:number;travel:number};
 /** One actual rigid body alternates between its source attachment and free physics.
  * Deadlines use the island's pause/visibility-aware world clock, never wall time. */
