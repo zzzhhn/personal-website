@@ -8,6 +8,7 @@ import { alphaHeight,alphaPathDistance } from './alpha-terrain';
 import { createAlphaBoulderField } from './alpha-rocks';
 import { alphaMaterial,alphaMaterialUniforms } from './alpha-materials';
 import AlphaGrammarTree from './AlphaGrammarTree';
+import {ALPHA_VISITOR_PATH,ALPHA_VISITOR_SPURS} from './alpha-visitor-path';
 import AlphaVisitorWayfinding from './AlphaVisitorWayfinding';
 import { alphaMotion,useAlphaStore } from './alpha-state';
 import type { Vec3 } from '../types';
@@ -64,7 +65,17 @@ const lampLocations=ALPHA_MAIN_PATH.filter((_,i)=>i%3===0).slice(0,9).map((p,i)=
 function lampParts(){const b=new AlphaBuilder();for(const p of lampLocations){const y=alphaHeight(p[0],p[2]);b.box('stone',[p[0],y+.12,p[2]],[.38,.24,.38],.04);b.beam('wood',[p[0],y+.2,p[2]],[p[0],y+1.5,p[2]],.09);b.box('roof',[p[0],y+1.68,p[2]],[.4,.08,.4],.025);}return b.finish();}
 function TrailLamps(){const ref=useRef<InstancedMesh>(null),dummy=useMemo(()=>new Object3D(),[]),c=useMemo(()=>new Color(),[]);useFrame(()=>{const m=ref.current;if(!m)return;const age=alphaMotion.time-alphaMotion.bellAt;lampLocations.forEach((p,i)=>{dummy.position.set(p[0],alphaHeight(p[0],p[2])+1.5,p[2]);dummy.scale.set(.25,.28,.25);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix);c.set(age>i*.25&&age<28?'#ffd893':'#5a5544');m.setColorAt(i,c);});m.instanceMatrix.needsUpdate=true;if(m.instanceColor)m.instanceColor.needsUpdate=true;m.computeBoundingSphere();});return <group><Craft build={lampParts} name="alpha-timber-trail-lamps"/><instancedMesh ref={ref} args={[undefined,undefined,lampLocations.length]} name="alpha-trail-lamp-sequence"><boxGeometry args={[1,1,1]}/><meshStandardMaterial emissive="#e0ab64" emissiveIntensity={.5}/></instancedMesh></group>;}
 
-function CairnField(){const built=useMemo(()=>{const g=new SphereGeometry(1,10,6),m=alphaMaterial('stone');m.vertexColors=false;const mesh=new InstancedMesh(g,m,520),d=new Object3D(),color=new Color();let count=0;for(let i=0;i<108;i++){const a=i*2.399,r=4.3+Math.sqrt(i)*1.6,x=2+Math.cos(a)*r,z=39+Math.sin(a)*r,y=alphaHeight(x,z);if(y<70||Math.hypot(x+7,z-43)<4||Math.hypot(x-2,z-39)<3)continue;for(let j=0;j<3+i%3;j++){const radius=.28-j*.035;d.position.set(x+Math.sin(j+i)*.07,y+.12+j*.22,z);d.rotation.set(0,i+j*.3,0);d.scale.set(radius*1.4,radius*.48,radius);d.updateMatrix();mesh.setMatrixAt(count,d.matrix);color.set(i%3?'#dddcd1':'#c4c9c4');mesh.setColorAt(count++,color);}}mesh.count=count;mesh.name='alpha-summit-decorative-cairn-instances';mesh.computeBoundingSphere();mesh.castShadow=mesh.receiveShadow=true;return mesh;},[]);useEffect(()=>()=>{built.geometry.dispose();(built.material as MeshStandardMaterial).dispose();built.dispose();},[built]);return <primitive object={built}/>;}
+/** Decorative cairns stay out of visitor corridors and transport aprons; none
+ * may appear on a boarding walkway whose surface is above the terrain. */
+function cairnClearOfVisitorRoute(x:number,z:number){
+ const wx=x+235,wz=z+190;
+ for(const route of [ALPHA_VISITOR_PATH,...ALPHA_VISITOR_SPURS.map(s=>s.path)])for(let i=1;i<route.length;i++){
+  const a=route[i-1],b=route[i],dx=b[0]-a[0],dz=b[1]-a[1],t=Math.max(0,Math.min(1,((wx-a[0])*dx+(wz-a[1])*dz)/(dx*dx+dz*dz||1)));
+  if(Math.hypot(wx-a[0]-dx*t,wz-a[1]-dz*t)<2.2)return false;
+ }
+ return !Object.values(ALPHA_SOCKETS).some(s=>Math.hypot(x-s.ground[0],z-s.ground[2])<9);
+}
+function CairnField(){const built=useMemo(()=>{const g=new SphereGeometry(1,10,6),m=alphaMaterial('stone');m.vertexColors=false;const mesh=new InstancedMesh(g,m,520),d=new Object3D(),color=new Color();let count=0;for(let i=0;i<108;i++){const a=i*2.399,r=4.3+Math.sqrt(i)*1.6,x=2+Math.cos(a)*r,z=39+Math.sin(a)*r,y=alphaHeight(x,z);if(y<70||Math.hypot(x+7,z-43)<4||Math.hypot(x-2,z-39)<3||!cairnClearOfVisitorRoute(x,z))continue;for(let j=0;j<3+i%3;j++){const radius=.28-j*.035;d.position.set(x+Math.sin(j+i)*.07,y+.12+j*.22,z);d.rotation.set(0,i+j*.3,0);d.scale.set(radius*1.4,radius*.48,radius);d.updateMatrix();mesh.setMatrixAt(count,d.matrix);color.set(i%3?'#dddcd1':'#c4c9c4');mesh.setColorAt(count++,color);}}mesh.count=count;mesh.name='alpha-summit-decorative-cairn-instances';mesh.computeBoundingSphere();mesh.castShadow=mesh.receiveShadow=true;return mesh;},[]);useEffect(()=>()=>{built.geometry.dispose();(built.material as MeshStandardMaterial).dispose();built.dispose();},[built]);return <primitive object={built}/>;}
 
 function handleParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[.6,0,0],.06);b.beam('wood',[.6,0,0],[.6,0,.4],.08);b.cyl('metal',[0,0,0],.1,.12);return b.finish();}
 function WindHandle(){const ref=useRef<Group>(null);useFrame((_,dt)=>{if(ref.current)ref.current.rotation.y+=(useAlphaStore.getState().wind*.7-ref.current.rotation.y)*Math.min(1,dt*8);});return <group ref={ref} position={[16.8,39.05,-44]}><Craft build={handleParts} name="alpha-working-wind-crank"/></group>;}
