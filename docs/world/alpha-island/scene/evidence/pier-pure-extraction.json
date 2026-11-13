@@ -936,5 +936,55 @@
         }
       ]
     }
+  },
+  "dependencyHashes": {
+    "src/components/world/alpha-island/alpha-art.ts": {
+      "before": "cdfe208874ea5e948aef616e43da34184e4d0774a4ca0331772fca7b5d57d7d6",
+      "after": "cdfe208874ea5e948aef616e43da34184e4d0774a4ca0331772fca7b5d57d7d6"
+    },
+    "src/components/world/layout-v4-flag.ts": {
+      "before": "b028963c81b8ef44afe85c02ac2dc444bed4b146b95366e73fa33b994d4aecd2",
+      "after": "b028963c81b8ef44afe85c02ac2dc444bed4b146b95366e73fa33b994d4aecd2"
+    },
+    "src/components/world/layout-v4.ts": {
+      "before": "a1e482136f2e05d79bbc98aca43ffa6bf190a2ed68d16120f615deedece466c1",
+      "after": "a1e482136f2e05d79bbc98aca43ffa6bf190a2ed68d16120f615deedece466c1"
+    },
+    "src/components/world/layout.ts": {
+      "before": "8c3a5edd9f1e318ffe0e16cf618d47579381dba4f48782cabfda582bec415eda",
+      "after": "8c3a5edd9f1e318ffe0e16cf618d47579381dba4f48782cabfda582bec415eda"
+    },
+    "src/components/world/WorldTerrainPaving.ts": {
+      "before": "19e7f7f5ab2925e0e80e1a3de171ad755ab87ba497d0985e4ab644c864de08e2",
+      "after": "19e7f7f5ab2925e0e80e1a3de171ad755ab87ba497d0985e4ab644c864de08e2"
+    },
+    "src/components/world/alpha-mine-layout.ts": {
+      "before": "3f9e747d4fa4be87145cc2c1fc65772298503a4542503dca5147eed79403fea0",
+      "after": "3f9e747d4fa4be87145cc2c1fc65772298503a4542503dca5147eed79403fea0"
+    },
+    "src/components/world/alpha-exchange-play-layout.ts": {
+      "before": "27a72973be4076765d71ca69f69973c3d9897692bb32203266d724ed0010fee5",
+      "after": "27a72973be4076765d71ca69f69973c3d9897692bb32203266d724ed0010fee5"
+    },
+    "src/components/world/alpha-exchange-layout.ts": {
+      "before": "0b5ca9779f9ab8c4a01e41f5d61b515ebe5554be70422854fce6620984174a0e",
+      "after": "0b5ca9779f9ab8c4a01e41f5d61b515ebe5554be70422854fce6620984174a0e"
+    },
+    "src/components/world/djc-club-layout.ts": {
+      "before": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360",
+      "after": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360"
+    },
+    "src/components/world/attractions/coaster-arrival-site.ts": {
+      "before": "bda2a34a285db1c71cd3805ecb484f656cbd59f1e7d311a0504bafe25a00c059",
+      "after": "bda2a34a285db1c71cd3805ecb484f656cbd59f1e7d311a0504bafe25a00c059"
+    },
+    "src/components/world/attractions/attraction-layout.ts": {
+      "before": "ffe23896767d22e0c81d8f3d5b7ed97993b348400f950aecf842da29fbc5a8f7",
+      "after": "ffe23896767d22e0c81d8f3d5b7ed97993b348400f950aecf842da29fbc5a8f7"
+    },
+    "src/components/world/WorldLandform.ts": {
+      "before": "167ade85a4cd5830ffc6025e577582bf7b29060d156f0b58fd05019287690c08",
+      "after": "167ade85a4cd5830ffc6025e577582bf7b29060d156f0b58fd05019287690c08"
+    }
   }
 }
