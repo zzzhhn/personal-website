@@ -7,7 +7,6 @@ import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRIN
 import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
 import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, ATTRACTIONS_CAPE, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
 
-import { alphaShoreline } from './alpha-island/alpha-terrain';
 import { ALPHA_MAIN_PATH,ALPHA_BYPASS_PATH,ALPHA_STATIONS,alphaWorld,alphaContainsWorld,ALPHA_MAINLAND_PIER_POLYGON,ALPHA_MAINLAND_APPROACH } from './alpha-island/alpha-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
@@ -23,7 +22,7 @@ export function loadMapGeometry() {
       .sort((a, b) => b.width - a.width),
     landmarks: LANDMARKS_V4.map(l => ({ id: l.id, p: [l.p[0], l.p[1]] as [number, number], label: l.label })),
   })) : Promise.resolve({ roads: undefined, landmarks: [] as Landmark[] });
-  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4, import('./attractions/coaster-track')]).then(([{ islandShorelines, campRadius }, { roads, landmarks }, {coasterCurve}]) => {
+  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4, import('./attractions/coaster-track'),import('./alpha-island/alpha-terrain')]).then(([{ islandShorelines, campRadius }, { roads, landmarks }, {coasterCurve},{alphaShoreline}]) => {
     const shores = [...islandShorelines(),alphaShoreline()], shore = shores.flat();
     const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
     const xs = [-77, 85, ...shore.map(p => p[0]), ...ATTRACTIONS_CAPE.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];

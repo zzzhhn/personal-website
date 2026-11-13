@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import AlphaTrailHud from './alpha-island/AlphaTrailHud';
-import { AlphaTransportHud } from './alpha-island/transports/AlphaTransports';
+import AlphaTransportHud from './alpha-island/transports/AlphaTransportHud';
 import { alphaContainsWorld } from './alpha-island/alpha-layout';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';

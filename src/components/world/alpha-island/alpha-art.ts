@@ -30,7 +30,7 @@ export function createAlphaLodge(){const b=new AlphaBuilder();
  b.beam('darkwood',[2.7,2.8,2.9],[2.7,2.8,3.7],.13);
  // Sand table on four planted legs and broad rim. Scale route model is an actual raised polyline.
  for(const x of [-1,1])for(const z of [-.65,.65])b.beam('darkwood',[x,.5,z+.1],[x,1.4,z+.1],.12);
- b.box('wood',[0,1.43,.1],[2.45,.2,1.9]);b.box('stone',[0,1.55,.1],[2.1,.07,1.55],.07);
+ b.box('wood',[0,1.43,.1],[2.45,.2,1.9]);b.box('stone',[0,1.55,.1],[2.1,.07,1.55],.07);b.cyl('metal',[0,1.7,1.08],.07,.045);
  for(const x of [-1.17,1.17])b.box('wood',[x,1.64,.1],[.12,.22,1.9]);for(const z of [-.8,1])b.box('wood',[0,1.64,z],[2.45,.22,.12]);
  b.box('wood',[-2.3,1.3,2.95],[1.25,1.4,.15]);for(const x of [-2.65,-2.3,-1.95]){b.cyl('metal',[x,1.95,3.07],.025,.15);b.box('paper',[x,1.65,3.08],[.25,.4,.025],.015);}
  return b.finish();}

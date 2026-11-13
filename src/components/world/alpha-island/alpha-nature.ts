@@ -121,6 +121,50 @@ function needle(root: Point, tip: Point, width: number, arch: Point): BufferGeom
   return geometry;
 }
 
+/** Rounded shrub leaf: six curved longitudinal sections and a six-sided thin
+ * lenticular cross-section. The oval shoulder continues almost to each rounded
+ * end; no long straight arrowhead edges or four-vertex diamond outline.
+ */
+function roundedShrubLeaf(root: Point, tip: Point, width: number, arch: Point): BufferGeometry {
+  const forward = tip.clone().sub(root), side = frame(forward.clone().normalize()).side;
+  const sides = 6, sections = [.055, .18, .37, .59, .80, .945];
+  const surface = (t: number, angle: number) => {
+    const tangent = forward.clone().addScaledVector(arch, Math.cos(t * Math.PI) * Math.PI).normalize();
+    const up = new Vector3().crossVectors(tangent, side).normalize();
+    const center = root.clone().lerp(tip, t).addScaledVector(arch, Math.sin(t * Math.PI));
+    const envelope = Math.pow(Math.sin(Math.PI * t), .56);
+    return center.addScaledVector(side, Math.cos(angle) * width * envelope)
+      .addScaledVector(up, Math.sin(angle) * width * .18 * envelope);
+  };
+  const positions = [...root.toArray()], normals = [...forward.clone().addScaledVector(arch, Math.PI).normalize().negate().toArray()];
+  const uv = [.5, 0], indices: number[] = [];
+  for (const t of sections) for (let corner = 0; corner <= sides; corner++) {
+    const angle = corner / sides * TAU, p = surface(t, angle);
+    const along = surface(t + .0001, angle).sub(surface(t - .0001, angle));
+    const around = surface(t, angle + .0001).sub(surface(t, angle - .0001));
+    const normal = around.cross(along).normalize();
+    positions.push(...p.toArray()); normals.push(...normal.toArray()); uv.push(corner / sides, t);
+  }
+  const terminal = positions.length / 3;
+  positions.push(...tip.toArray()); normals.push(...forward.clone().addScaledVector(arch, -Math.PI).normalize().toArray());
+  uv.push(.5, 1);
+  for (let corner = 0; corner < sides; corner++) {
+    indices.push(0, corner + 2, corner + 1);
+    for (let section = 0; section < sections.length - 1; section++) {
+      const a = 1 + section * (sides + 1) + corner, b = a + sides + 1;
+      indices.push(a, a + 1, b, a + 1, b + 1, b);
+    }
+    const a = 1 + (sections.length - 1) * (sides + 1) + corner;
+    indices.push(a, a + 1, terminal);
+  }
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+  geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+  geometry.setIndex(indices);
+  return geometry;
+}
+
 function merge(parts: BufferGeometry[]) {
   const geometry = mergeGeometries(parts, false);
   for (const part of parts) part.dispose();
@@ -135,7 +179,7 @@ function merge(parts: BufferGeometry[]) {
  * short individual needles, twig direction and supporting branch remain visible.
  */
 function spray(parts: BufferGeometry[], root: Point, direction: Point, length: number,
-  width: number, phase: number, rnd: () => number, far = false, emit = true) {
+  width: number, phase: number, rnd: () => number, far = false, emit = true, leafBuilder: typeof needle = needle) {
   const forward = direction.clone().normalize(), lateral = point(-forward.z, 0, forward.x).normalize();
   const tip = root.clone().addScaledVector(forward, length).add(point(0, -.035 * length, 0));
   const mid = root.clone().lerp(tip, .48).add(point(0, length * .10, 0));
@@ -152,13 +196,70 @@ function spray(parts: BufferGeometry[], root: Point, direction: Point, length: n
         .add(point(0, (.06 * Math.sin(phase + pair) - .13) * needleLength, 0));
       // Consume the same seed samples even when a far mesh omits this needle.
       const leafWidth = width * (.85 + rnd() * .25);
-      if (emit && (!far || pair === 1)) parts.push(needle(anchor, leafTip,
+      if (emit && (!far || pair === 1)) parts.push(leafBuilder(anchor, leafTip,
         leafWidth * (far ? 1.65 : 1), point(0, needleLength * .11, 0)));
     }
   }
   const terminalRoot = root.clone().lerp(tip, .73);
   const terminalTip = tip.clone().addScaledVector(forward, length * .34).add(point(0, length * .04, 0));
-  if (emit) parts.push(needle(terminalRoot, terminalTip, width * .83 * (far ? 1.4 : 1), point(0, length * .06, 0)));
+  if (emit) parts.push(leafBuilder(terminalRoot, terminalTip, width * .83 * (far ? 1.4 : 1), point(0, length * .06, 0)));
+}
+
+/** A closed, flattened crown mass follows one real supporting bough. The broad
+ * interior overlaps neighbouring boughs; scalloped shoulders taper into a drooping
+ * tip. This supplies the visible evergreen mass at 10–30m, while the fine sprays
+ * continue outside its edges. It is not a whole-tree cone or spherical canopy.
+ */
+function foliagePad(a: Point, b: Point, c: Point, d: Point, lateral: Point,
+  halfWidth: number, thickness: number, phase: number, far: boolean): BufferGeometry {
+  const segments = far ? 6 : 10, sides = far ? 4 : 8;
+  const positions: number[] = [], uv: number[] = [], indices: number[] = [], centers: Point[] = [];
+  for (let ring = 0; ring <= segments; ring++) {
+    const t = ring / segments, u = .045 + t * 1.005;
+    const center = curve(a, b, c, d, u);
+    // A raised soft inner shoulder and drooping tip follow the woody structure.
+    center.y += Math.sin(t * Math.PI) * thickness * .18;
+    centers.push(center);
+    const tangent = curve(a, b, c, d, u + .01).sub(curve(a, b, c, d, u - .01)).normalize();
+    const side = lateral.clone().addScaledVector(tangent, -lateral.dot(tangent)).normalize();
+    const up = new Vector3().crossVectors(tangent, side).normalize();
+    const envelope = .075 + .925 * Math.pow(Math.sin(Math.PI * Math.pow(t, .78)), .70);
+    const scallop = .88 + .12 * Math.cos(t * Math.PI * 6 + phase);
+    const width = halfWidth * envelope * scallop;
+    const depth = thickness * (.19 + .81 * Math.pow(Math.sin(t * Math.PI), .65));
+    for (let corner = 0; corner <= sides; corner++) {
+      const angle = corner / sides * TAU;
+      const asymmetric = 1 + .055 * Math.cos(angle * 3 + phase + t * 4);
+      const p = center.clone().addScaledVector(side, Math.cos(angle) * width * asymmetric)
+        .addScaledVector(up, Math.sin(angle) * depth);
+      positions.push(...p.toArray()); uv.push(corner / sides, t);
+      if (ring < segments && corner < sides) {
+        const first = ring * (sides + 1) + corner, next = first + sides + 1;
+        indices.push(first, first + 1, next, first + 1, next + 1, next);
+      }
+    }
+  }
+  for (const ring of [0, segments]) {
+    const center = positions.length / 3;
+    positions.push(...centers[ring].toArray()); uv.push(.5, ring === 0 ? 0 : 1);
+    for (let corner = 0; corner < sides; corner++) {
+      const first = ring * (sides + 1) + corner;
+      indices.push(...(ring === 0 ? [center, first + 1, first] : [center, first, first + 1]));
+    }
+  }
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+  geometry.setIndex(indices); geometry.computeVertexNormals();
+  const normals = geometry.getAttribute('normal');
+  for (let ring = 0; ring <= segments; ring++) {
+    const first = ring * (sides + 1), last = first + sides;
+    const normal = new Vector3().fromBufferAttribute(normals, first)
+      .add(new Vector3().fromBufferAttribute(normals, last)).normalize();
+    normals.setXYZ(first, normal.x, normal.y, normal.z);
+    normals.setXYZ(last, normal.x, normal.y, normal.z);
+  }
+  return geometry;
 }
 
 /** Alpine evergreen, approximately 5.9–7.3 m tall and 4.3–5.7 m broad.
@@ -170,7 +271,7 @@ export function createAlphaPine(seed = 0): { bark: BufferGeometry; needles: Buff
 }
 
 /** Distant counterpart: same seeded trunk, tiers and branch paths, reduced samples.
- * Retains solid scalloped sprays and the bark/needle material contract. 2,694 tris.
+ * Retains solid scalloped bough mass and the bark/needle material contract.
  */
 export function createAlphaPineFar(seed = 0): { bark: BufferGeometry; needles: BufferGeometry } {
   return buildAlphaPine(seed, true);
@@ -212,6 +313,10 @@ function buildAlphaPine(seed: number, far: boolean): { bark: BufferGeometry; nee
       const b = base.clone().addScaledVector(radial, reach * .28).add(point(0, reach * .12, 0));
       const c = base.clone().addScaledVector(radial, reach * .75).addScaledVector(lateral, (rnd() - .5) * .16)
         .add(point(0, -droop * .75, 0));
+      // All 33 crown masses survive in the far variant: twig sampling may reduce,
+      // but the layered outer silhouette and its trunk attachments must remain.
+      needles.push(foliagePad(base, b, c, end, lateral, .14 + reach * .28,
+        .13 + reach * .065, a + tier * .53, far));
       const branchSegments = far ? 2 : 4;
       const branchPath = Array.from({ length: branchSegments + 1 }, (_, i) => curve(base, b, c, end, i / branchSegments));
       const branchRadius = girth * (.36 - tier * .031);
@@ -228,6 +333,14 @@ function buildAlphaPine(seed: number, far: boolean): { bark: BufferGeometry; nee
           far, keepBranch && (!far || twig === 1 || twig === 4));
       }
     }
+  }
+  // Three supported ascending pads fill the crown around the existing leader.
+  for (let i = 0; i < 3; i++) {
+    const a = phase + i * 2.39996, radial = point(Math.cos(a), 0, Math.sin(a));
+    const root = trunk(.865 + i * .02), tip = trunk(.99).addScaledVector(radial, .10);
+    const b = root.clone().lerp(tip, .30).addScaledVector(radial, .12);
+    const c = root.clone().lerp(tip, .72).addScaledVector(radial, .13);
+    needles.push(foliagePad(root, b, c, tip, point(-radial.z, 0, radial.x), .16, .10, a, far));
   }
   // Tight ascending crown closes the leader without a separate pointed canopy.
   for (let i = 0; i < 5; i++) {
@@ -270,7 +383,8 @@ export function createAlphaShrub(seed = 0): BufferGeometry {
       const anchor = curve(root, b, c, end, .42 + twig * .25);
       const direction = radial.clone().multiplyScalar(.7).addScaledVector(lateral, twig % 2 ? -.7 : .7)
         .add(point(0, .48 - twig * .13, 0));
-      spray(parts, anchor, direction, (.27 + rnd() * .09) * scale, .060 * scale, a + twig, rnd);
+      spray(parts, anchor, direction, (.27 + rnd() * .09) * scale, .060 * scale, a + twig, rnd,
+        false, true, roundedShrubLeaf);
     }
   }
   const geometry = merge(parts);
