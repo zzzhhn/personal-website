@@ -16,10 +16,10 @@ function terminal(id:string,p:Vec3,approach:Vec3[],exit:Vec3,kind:TransportRoute
   const inside:Vec3=[p[0]+tangent.x*standingForward,footY,p[2]+tangent.z*standingForward];
   const side=new Vector3(0,0,kind==='cable'?1:-1).applyAxisAngle(new Vector3(0,1,0),yaw);
   const stepHeight=dimensions.sledFootDecks[1].center[1]+dimensions.sledFootDecks[1].size[1]/2;
-  const door:Vec3=[p[0]+tangent.x*standingForward+side.x*2.1,kind==='sled'?p[1]+stepHeight:footY,p[2]+tangent.z*standingForward+side.z*2.1];
+  const door:Vec3=[p[0]+tangent.x*standingForward+side.x*2.1,footY,p[2]+tangent.z*standingForward+side.z*2.1];
   const outside:Vec3=[p[0]+tangent.x*standingForward+side.x*3.2,footY,p[2]+tangent.z*standingForward+side.z*3.2];
   const apron=kind==='sled'&&u===1?[...approach,exit]:approach.slice(0,-1),lastApron=apron.at(-1)!,rampDirection=new Vector3(...door).sub(new Vector3(...lastApron));rampDirection.y=0;rampDirection.normalize();
-  const landing:Vec3[]=kind==='sled'?[[door[0]-rampDirection.x,door[1],door[2]-rampDirection.z]]:[],stepPoints:Vec3[]=kind==='sled'?[.8,.34,.15].map(offset=>[p[0]+tangent.x+side.x*offset,p[1]+stepHeight,p[2]+tangent.z+side.z*offset]):[],boarding=[...apron,...landing,door,...stepPoints,inside];
+  const landing:Vec3[]=kind==='sled'?[[lastApron[0]+rampDirection.x*.85,lastApron[1],lastApron[2]+rampDirection.z*.85],[door[0]-rampDirection.x*.75,door[1],door[2]-rampDirection.z*.75]]:[],stepPoints:Vec3[]=kind==='sled'?[.8,.34,.15].map(offset=>[p[0]+tangent.x+side.x*offset,p[1]+stepHeight,p[2]+tangent.z+side.z*offset]):[],boarding=[...apron,...landing,door,...stepPoints,inside];
   let egress=[inside,door,outside,exit];
   if(kind==='sled'){
    // Upper: return behind the backrest along the known approach. Lower: the scene's
