@@ -54,7 +54,7 @@ export function alphaHeight(x:number,z:number) {
  if(realCable.distance<5){const w=1-smooth(2.3,5,realCable.distance);h=Math.min(h,h*(1-w)+(realCable.y-clear)*w);}
  const realSled=nearestAlphaSegment(x,z,sledSamples),su=(realSled.index+realSled.t)/256;
  const sa=sledSamples[realSled.index],sb=sledSamples[realSled.index+1],sg=Math.abs(sb[1]-sa[1])/Math.max(.01,Math.hypot(sb[0]-sa[0],sb[2]-sa[2]));
- if(realSled.distance<3.7&&su>.06&&su<.96){const w=1-smooth(1.8,3.7,realSled.distance),clear=Math.max(.38,1.8*sg+.22);h=Math.min(h,h*(1-w)+(realSled.y-clear)*w);}
+ if(realSled.distance<3.7&&su>.06&&su<.995){const w=1-smooth(1.8,3.7,realSled.distance),clear=Math.max(.38,1.8*sg+.22);h=Math.min(h,h*(1-w)+(realSled.y-clear)*w);}
  return h;
 }
 export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance);

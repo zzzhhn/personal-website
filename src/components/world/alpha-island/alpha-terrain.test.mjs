@@ -45,7 +45,7 @@ test('interpolated cable hull has clearance through the full upper approach',asy
 test('interpolated pitched sled runner hull clears terrain at side and nose corners',async()=>{
  const {CatmullRomCurve3,Vector3,Quaternion}=await import('three');
  const curve=new CatmullRomCurve3(ALPHA_SLED_PATH.map(p=>new Vector3(p[0],p[1]+.16,p[2])),false,'centripetal');
- for(let i=70;i<=940;i++){const u=i/1000,p=curve.getPointAt(u),t=curve.getTangentAt(u).normalize();p.y=Math.max(3.96,Math.min(76.16,p.y));const q=new Quaternion().setFromUnitVectors(new Vector3(1,0,0),t);
+ for(let i=70;i<=990;i++){const u=i/1000,p=curve.getPointAt(u),t=curve.getTangentAt(u).normalize();p.y=Math.max(3.96,Math.min(76.16,p.y));const q=new Quaternion().setFromUnitVectors(new Vector3(1,0,0),t);
  for(const x of [-1.2,0,1.42])for(const z of [-.545,0,.545]){const v=new Vector3(x,-.16,z).applyQuaternion(q).add(p),gap=v.y-alphaHeight(v.x,v.z);assert.ok(gap>-.03,`sled u=${u} x=${x} z=${z} gap=${gap}`);}
  }
 });

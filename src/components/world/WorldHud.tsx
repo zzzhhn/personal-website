@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import AlphaTrailHud from './alpha-island/AlphaTrailHud';
+import { AlphaTransportHud } from './alpha-island/transports/AlphaTransports';
 import { alphaContainsWorld } from './alpha-island/alpha-layout';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
@@ -18,8 +19,8 @@ export function WorldNotice() {
   useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>{
     if(useWorldStore.getState().toast===toast)useWorldStore.setState({toast:null});
   },4400);return()=>clearTimeout(timer);},[toast]);
-  if(!toast||hidden)return <AlphaTrailHud/>;
-  return <><AlphaTrailHud/><div className="world-notice" role="status" aria-live="polite">{toast[lang]}</div></>;
+  if(!toast||hidden)return <><AlphaTrailHud/><AlphaTransportHud/></>;
+  return <><AlphaTrailHud/><AlphaTransportHud/><div className="world-notice" role="status" aria-live="polite">{toast[lang]}</div></>;
 }
 
 /** The actor publishes position at ~10 Hz even while stopped, so recharge needs no UI timer. */
