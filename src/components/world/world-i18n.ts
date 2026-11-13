@@ -12,7 +12,7 @@ export const worldText = {
     credits: 'Credits', motionCredit: 'Character motion adapted from the CMU Graphics Lab Motion Capture Database.',
     styleCredit: 'Idle motion retargeted and edited from The 100STYLE Dataset - Ian Mason (CC BY 4.0).',
     entryLandmark: 'Stone gate', entryMenu: 'Open map & settings', menu: 'Map & settings', resume: 'Back to the island', back: 'Back to portfolio', light: 'Light', dusk: 'Sunset', night: 'Late night', language: 'Language',
-    camp: 'Camp', town: 'Coastal town', park: 'Boardwalk park', ridge: 'Windmill hill', shore: 'Island shore', offroad: '4×4', coupe: 'Fastback', van: 'Van',
+    alpha: 'Alpha mountain island', camp: 'Camp', town: 'Coastal town', park: 'Boardwalk park', ridge: 'Windmill hill', shore: 'Island shore', offroad: '4×4', coupe: 'Fastback', van: 'Van',
     enter: 'E · Enter', leave: 'E · Leave vehicle', recover: 'R · Flip back', recovering: 'Returning to the road…',
     zoom: 'Drag or double-click to look · Scroll to zoom · V camera view · Gamepad supported', error: 'The island could not be loaded.', retry: 'Try again',
     quality: 'Image quality', balanced: 'Balanced', high: 'High', qualityHint: 'Choose Balanced if movement becomes choppy.',
@@ -21,7 +21,7 @@ export const worldText = {
 
     // HUD, prompts, cards, map (ui session). Facts never live here: only interface words.
     yard:'The Inventory Yard', coaster:'Intent Coaster',
-    zoneSub: { ridge: 'Lookout', shore: 'Open coast',yard:'SDIC · IBD fieldwork',coaster:'ByteDance · AI product experience' }, present: 'Present', close: 'Close', interact: 'Interact', switchTarget: 'Switch',
+    zoneSub: { alpha:'A trail above the clouds', ridge: 'Lookout', shore: 'Open coast',yard:'SDIC · IBD fieldwork',coaster:'ByteDance · AI product experience' }, present: 'Present', close: 'Close', interact: 'Interact', switchTarget: 'Switch',
     hintMove: 'Move', hintLook: 'Look', hintInteract: 'Interact', hintDrive: 'Drive', hintKeysMove: 'WASD', hintKeysLook: 'Drag · Scroll', hintKeysDrive: 'W/S · A/D',
     waypoint: 'Waypoint', waypointSet: 'Click the map to set a waypoint; click it again to clear.', waypointClear: 'Clear waypoint', metres: 'm',
     legendBuildings: 'Internships (oldest → newest)', legendBooths: 'Project booths', legendYou: 'You', legendPlots: 'Plots for later',
@@ -46,7 +46,7 @@ export const worldText = {
     credits: '致谢', motionCredit: '角色动作改编自 CMU Graphics Lab Motion Capture Database。',
     styleCredit: '待机动作重定向并编辑自 The 100STYLE Dataset - Ian Mason（CC BY 4.0）。',
     entryLandmark: '营地石门', entryMenu: '打开地图与设置', menu: '地图与设置', resume: '继续探索', back: '回到简历', light: '光照', dusk: '黄昏', night: '深夜', language: '语言',
-    camp: '营地', town: '海岸城区', park: '栈道园区', ridge: '风车山丘', shore: '环岛海岸', offroad: '越野车', coupe: '轿跑', van: '小货车',
+    alpha: 'Alpha 山岛', camp: '营地', town: '海岸城区', park: '栈道园区', ridge: '风车山丘', shore: '环岛海岸', offroad: '越野车', coupe: '轿跑', van: '小货车',
     enter: 'E · 上车', leave: 'E · 下车', recover: 'R · 翻回来', recovering: '正在返回路面……',
     zoom: '拖拽或双击鼠标转镜头 · 滚轮缩放 · V 切换视角 · 支持手柄', error: '城岛暂时无法加载。', retry: '重试',
     quality: '画面质量', balanced: '流畅', high: '高清', qualityHint: '如果移动时卡顿，可以切换到流畅。',
@@ -54,7 +54,7 @@ export const worldText = {
     future: '建设中', map: '城岛地图', privacy: '不记录移动轨迹。',
 
     yard:'物资清点场', coaster:'意图过山车',
-    zoneSub: { ridge: '远眺', shore: '开阔海岸',yard:'国投证券 · IBD 现场经历',coaster:'字节跳动 · AI 产品经历' }, present: '至今', close: '关闭', interact: '交互', switchTarget: '切换',
+    zoneSub: { alpha:'走向云上的一条路', ridge: '远眺', shore: '开阔海岸',yard:'国投证券 · IBD 现场经历',coaster:'字节跳动 · AI 产品经历' }, present: '至今', close: '关闭', interact: '交互', switchTarget: '切换',
     hintMove: '移动', hintLook: '镜头', hintInteract: '交互', hintDrive: '驾驶', hintKeysMove: 'WASD', hintKeysLook: '拖拽 · 滚轮', hintKeysDrive: 'W/S · A/D',
     waypoint: '航点', waypointSet: '点击地图设置航点，再点一次航点取消。', waypointClear: '清除航点', metres: '米',
     legendBuildings: '实习楼（由旧到新）', legendBooths: '项目展位', legendYou: '你', legendPlots: '预留地块',

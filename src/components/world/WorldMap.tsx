@@ -7,6 +7,9 @@ import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRIN
 import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
 import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, ATTRACTIONS_CAPE, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
 
+import { alphaShoreline } from './alpha-island/alpha-terrain';
+import { ALPHA_MAIN_PATH,ALPHA_BYPASS_PATH,ALPHA_STATIONS,alphaWorld,alphaContainsWorld } from './alpha-island/alpha-layout';
+
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
 type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[]; coaster: number[][] };
@@ -21,7 +24,7 @@ export function loadMapGeometry() {
     landmarks: LANDMARKS_V4.map(l => ({ id: l.id, p: [l.p[0], l.p[1]] as [number, number], label: l.label })),
   })) : Promise.resolve({ roads: undefined, landmarks: [] as Landmark[] });
   return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4, import('./attractions/coaster-track')]).then(([{ islandShorelines, campRadius }, { roads, landmarks }, {coasterCurve}]) => {
-    const shores = islandShorelines(), shore = shores.flat();
+    const shores = [...islandShorelines(),alphaShoreline()], shore = shores.flat();
     const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
     const xs = [-77, 85, ...shore.map(p => p[0]), ...ATTRACTIONS_CAPE.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
     const zs = [-62, 62, ...shore.map(p => p[1]), ...ATTRACTIONS_CAPE.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
@@ -80,13 +83,14 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
   const landmarkName: Record<string, string> = { windmill: t.ridge, lifeguard: t.shore };
   const seaId = `world-sea-${useId().replace(/:/g, '')}`;
   return <svg ref={svg} className={`world-map world-map-${mode}${interactive ? ' world-map-interactive' : ''}`} viewBox={vb.join(' ')} role='img'
-    aria-label={interactive ? `${t.map}. ${t.waypointSet}` : `${t.map} · ${t[zone]}`} onClick={click}>
+    aria-label={interactive ? `${t.map}. ${t.waypointSet}` : `${t.map} · ${alphaContainsWorld(position)?t.alpha:t[zone]}`} onClick={click}>
     <defs>
       <pattern id={seaId} width='5' height='5' patternUnits='userSpaceOnUse' patternTransform='rotate(35)'><rect width='5' height='5' fill='#1E5A5E' /><line x1='0' y1='0' x2='0' y2='5' stroke='#3C8A8A' strokeWidth='.7' opacity='.5' /></pattern>
     </defs>
     <rect x={vb[0] - 300} y={vb[1] - 300} width={vb[2] + 600} height={vb[3] + 600} fill={`url(#${seaId})`} />
     <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
     <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
+    <g data-alpha-island='batch1'><polyline points={path(ALPHA_MAIN_PATH.map(alphaWorld))} fill='none' stroke='#e0d4b4' strokeWidth='2.4' strokeLinejoin='round'/><polyline points={path(ALPHA_BYPASS_PATH.map(alphaWorld))} fill='none' stroke='#d0bd91' strokeWidth='1.7' strokeLinejoin='round'/>{(['dock','tree','wind','summit'] as const).map((id,i)=>{const p=alphaWorld(ALPHA_STATIONS[id]);return <g key={id}><circle cx={p[0]} cy={p[2]} r='2.8' fill='#e7c587'/><text x={p[0]+5} y={p[2]+2} fontSize={full?'4':'5'} fill='#fff4da' paintOrder='stroke' stroke='#23343d' strokeWidth='1'>{lang==='zh'?['渡口','语法树','风口','山顶'][i]:['Ferry','Tree','Wind','Summit'][i]}</text></g>;})}</g>
     <polygon data-quarry-outline='physical' points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#99917C' stroke='#B6AB89' strokeOpacity='.45' strokeWidth={full ? .8 : .6} strokeLinejoin='round' />
     {geometry?.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}

@@ -30,3 +30,22 @@ test('cable middle and sled outer corridors stay above terrain',()=>{
  assert.ok(y-alphaHeight(x,z)>=clearance,`${name} ${i}/${k}: ${y-alphaHeight(x,z)}`);
  }}
 });
+
+test('interpolated cable hull has clearance through the full upper approach',async()=>{
+ const {CatmullRomCurve3,Vector3}=await import('three');
+ const curve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
+ let min=Infinity;
+ for(let i=80;i<=940;i++){const u=i/1000,p=curve.getPointAt(u),t=curve.getTangentAt(u);p.y=Math.max(38,Math.min(73,p.y));const len=Math.hypot(t.x,t.z),nx=-t.z/len,nz=t.x/len;
+ for(const across of [-1.2,0,1.2])for(const along of [-1.6,0,1.6]){const x=p.x+nx*across+t.x/len*along,z=p.z+nz*across+t.z/len*along;
+ const gap=p.y-alphaHeight(x,z);min=Math.min(min,gap);assert.ok(gap>-.06,`hull u=${u} across=${across} along=${along} gap=${gap}`);}
+ }
+ assert.ok(min>-.06);
+});
+
+test('interpolated pitched sled runner hull clears terrain at side and nose corners',async()=>{
+ const {CatmullRomCurve3,Vector3,Quaternion}=await import('three');
+ const curve=new CatmullRomCurve3(ALPHA_SLED_PATH.map(p=>new Vector3(p[0],p[1]+.16,p[2])),false,'centripetal');
+ for(let i=70;i<=940;i++){const u=i/1000,p=curve.getPointAt(u),t=curve.getTangentAt(u).normalize();p.y=Math.max(3.96,Math.min(76.16,p.y));const q=new Quaternion().setFromUnitVectors(new Vector3(1,0,0),t);
+ for(const x of [-1.2,0,1.42])for(const z of [-.545,0,.545]){const v=new Vector3(x,-.16,z).applyQuaternion(q).add(p),gap=v.y-alphaHeight(v.x,v.z);assert.ok(gap>-.03,`sled u=${u} x=${x} z=${z} gap=${gap}`);}
+ }
+});

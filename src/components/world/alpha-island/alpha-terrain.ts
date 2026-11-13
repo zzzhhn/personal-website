@@ -1,5 +1,10 @@
+import { CatmullRomCurve3,Vector3 } from 'three';
 import { ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
 import type { Vec3 } from '../types';
+const cableCurve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
+const cableSamples=Array.from({length:193},(_,i)=>{const p=cableCurve.getPointAt(i/192);return [p.x,Math.max(38,Math.min(73,p.y)),p.z] as Vec3;});
+const sledCurve=new CatmullRomCurve3(ALPHA_SLED_PATH.map(p=>new Vector3(p[0],p[1]+.16,p[2])),false,'centripetal');
+const sledSamples=Array.from({length:257},(_,i)=>{const p=sledCurve.getPointAt(i/256);return [p.x,Math.max(3.96,Math.min(76.16,p.y))-.16,p.z] as Vec3;});
 const clamp = (v:number,a=0,b=1)=>Math.min(b,Math.max(a,v));
 const smooth=(a:number,b:number,v:number)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};
 export const alphaNoise=(x:number,z:number)=>Math.sin(x*.17+Math.sin(z*.11))*Math.cos(z*.14-x*.03);
@@ -16,7 +21,7 @@ export function alphaBaseHeight(x:number,z:number) {
  const r=alphaRadial(x,z),land=1-smooth(.77,1.02,r);
  const peak=Math.exp(-((x-3)**2/2300+(z-30)**2/3100));
  const ridge=Math.exp(-((x-7)**2/4500+(z+27)**2/2300));
- return -4+land*(7+65*peak+20*ridge+alphaNoise(x,z)*2.3);
+ return -4+land*(7+smooth(-82,-25,x)*(65*peak+20*ridge)+alphaNoise(x,z)*1.4);
 }
 export function alphaHeight(x:number,z:number) {
  let h=alphaBaseHeight(x,z);
@@ -43,6 +48,13 @@ export function alphaHeight(x:number,z:number) {
  // Reapply walking datum after broad terraces; approach ramps must not become steps.
  h=h*(1-blend)+n.y*blend;
  if(sled.distance<5&&n.distance>3.5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2)h=Math.min(h,sled.y-.35);
+ const realCable=nearestAlphaSegment(x,z,cableSamples);const u=(realCable.index+realCable.t)/192;
+ const ca=cableSamples[realCable.index],cb=cableSamples[realCable.index+1],grade=Math.abs(cb[1]-ca[1])/Math.max(.01,Math.hypot(cb[0]-ca[0],cb[2]-ca[2]));
+ const clear=Math.max(.3,2.1*grade+.3,7*smooth(.08,.22,u)*(1-smooth(.76,.96,u)));
+ if(realCable.distance<5){const w=1-smooth(2.3,5,realCable.distance);h=Math.min(h,h*(1-w)+(realCable.y-clear)*w);}
+ const realSled=nearestAlphaSegment(x,z,sledSamples),su=(realSled.index+realSled.t)/256;
+ const sa=sledSamples[realSled.index],sb=sledSamples[realSled.index+1],sg=Math.abs(sb[1]-sa[1])/Math.max(.01,Math.hypot(sb[0]-sa[0],sb[2]-sa[2]));
+ if(realSled.distance<3.7&&su>.06&&su<.96){const w=1-smooth(1.8,3.7,realSled.distance),clear=Math.max(.38,1.8*sg+.22);h=Math.min(h,h*(1-w)+(realSled.y-clear)*w);}
  return h;
 }
 export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance);
@@ -54,4 +66,4 @@ export function alphaTerrainData(step=1.5) {
  for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const a=j*(nx+1)+i;tri(a,a+nx+1,a+1);tri(a+1,a+nx+1,a+nx+2);}
  return {positions,surface:new Uint32Array(surface),solid:new Uint32Array(solid),indices:new Uint32Array(indices),nx,nz};
 }
-export function alphaShoreline():[number,number][] {return Array.from({length:96},(_,i)=>{const a=i/96*Math.PI*2,r=alphaShoreRadius(a),p=alphaWorld([Math.cos(a)*88*r,0,Math.sin(a)*107*r]);return [p[0],p[2]];});}
+export function alphaShoreline():[number,number][] {return Array.from({length:128},(_,i)=>{const a=i/128*Math.PI*2;let lo=0,hi=135;for(let k=0;k<14;k++){const r=(lo+hi)/2;if(alphaHeight(Math.cos(a)*r,Math.sin(a)*r)>-.7)lo=r;else hi=r;}const p=alphaWorld([Math.cos(a)*lo,0,Math.sin(a)*lo]);return [p[0],p[2]];});}

@@ -135,11 +135,13 @@ function merge(parts: BufferGeometry[]) {
  * short individual needles, twig direction and supporting branch remain visible.
  */
 function spray(parts: BufferGeometry[], root: Point, direction: Point, length: number,
-  width: number, phase: number, rnd: () => number) {
+  width: number, phase: number, rnd: () => number, far = false, emit = true) {
   const forward = direction.clone().normalize(), lateral = point(-forward.z, 0, forward.x).normalize();
   const tip = root.clone().addScaledVector(forward, length).add(point(0, -.035 * length, 0));
   const mid = root.clone().lerp(tip, .48).add(point(0, length * .10, 0));
-  parts.push(tube([root, mid, tip], [width * .13, width * .09, width * .025], 3));
+  if (emit) parts.push(far
+    ? tube([root, tip], [width * .13, width * .025], 3)
+    : tube([root, mid, tip], [width * .13, width * .09, width * .025], 3));
   for (let pair = 0; pair < 2; pair++) {
     const t = .22 + pair * .38;
     const anchor = curve(root, root.clone().lerp(mid, .7), mid, tip, t);
@@ -148,12 +150,15 @@ function spray(parts: BufferGeometry[], root: Point, direction: Point, length: n
       const leafTip = anchor.clone().addScaledVector(forward, needleLength * .67)
         .addScaledVector(lateral, sign * needleLength * .62)
         .add(point(0, (.06 * Math.sin(phase + pair) - .13) * needleLength, 0));
-      parts.push(needle(anchor, leafTip, width * (.85 + rnd() * .25), point(0, needleLength * .11, 0)));
+      // Consume the same seed samples even when a far mesh omits this needle.
+      const leafWidth = width * (.85 + rnd() * .25);
+      if (emit && (!far || pair === 1)) parts.push(needle(anchor, leafTip,
+        leafWidth * (far ? 1.65 : 1), point(0, needleLength * .11, 0)));
     }
   }
   const terminalRoot = root.clone().lerp(tip, .73);
   const terminalTip = tip.clone().addScaledVector(forward, length * .34).add(point(0, length * .04, 0));
-  parts.push(needle(terminalRoot, terminalTip, width * .83, point(0, length * .06, 0)));
+  if (emit) parts.push(needle(terminalRoot, terminalTip, width * .83 * (far ? 1.4 : 1), point(0, length * .06, 0)));
 }
 
 /** Alpine evergreen, approximately 5.9–7.3 m tall and 4.3–5.7 m broad.
@@ -161,29 +166,42 @@ function spray(parts: BufferGeometry[], root: Point, direction: Point, length: n
  * Bark and needles are material batches. No cone/cylinder canopy primitives.
  */
 export function createAlphaPine(seed = 0): { bark: BufferGeometry; needles: BufferGeometry } {
+  return buildAlphaPine(seed, false);
+}
+
+/** Distant counterpart: same seeded trunk, tiers and branch paths, reduced samples.
+ * Retains solid scalloped sprays and the bark/needle material contract. 2,694 tris.
+ */
+export function createAlphaPineFar(seed = 0): { bark: BufferGeometry; needles: BufferGeometry } {
+  return buildAlphaPine(seed, true);
+}
+
+function buildAlphaPine(seed: number, far: boolean): { bark: BufferGeometry; needles: BufferGeometry } {
   const rnd = random(seed), bark: BufferGeometry[] = [], needles: BufferGeometry[] = [];
   const height = 5.8 + rnd() * 1.35, girth = .16 + rnd() * .035, phase = rnd() * TAU;
   const lean = point((rnd() - .5) * .19, 0, (rnd() - .5) * .19);
   const trunk = (t: number) => point(lean.x * t * t + Math.sin(t * 5 + phase) * .035 * t,
     height * t, lean.z * t * t + Math.cos(t * 4 + phase) * .025 * t);
   const trunkPath: Point[] = [], radii: number[] = [];
-  for (let i = 0; i <= 12; i++) {
-    const t = i / 12;
+  const trunkSegments = far ? 6 : 12;
+  for (let i = 0; i <= trunkSegments; i++) {
+    const t = i / trunkSegments;
     trunkPath.push(trunk(t));
     radii.push(girth * Math.pow(1 - t, .88) + .006 + .12 * Math.exp(-t * 29));
   }
-  bark.push(tube(trunkPath, radii, 10));
+  bark.push(tube(trunkPath, radii, far ? 6 : 10));
   for (let i = 0; i < 5; i++) {
     const a = phase + i * TAU / 5 + (rnd() - .5) * .28;
     const radial = point(Math.cos(a), 0, Math.sin(a));
     const rootLength = .40 + rnd() * .20;
     bark.push(tube([point(0, .29, 0), radial.clone().multiplyScalar(rootLength * .46).add(point(0, .10, 0)),
-      radial.clone().multiplyScalar(rootLength).add(point(0, .018, 0))], [girth * .67, .077, .018], 5));
+      radial.clone().multiplyScalar(rootLength).add(point(0, .018, 0))], [girth * .67, .077, .018], far ? 3 : 5));
   }
   const counts = [6, 6, 5, 5, 4, 4, 3];
   for (let tier = 0; tier < counts.length; tier++) {
     const t = .26 + tier * .104;
     for (let branch = 0; branch < counts[tier]; branch++) {
+      const keepBranch = !far || branch < counts[tier] - 1;
       const a = phase + tier * 1.43 + branch / counts[tier] * TAU + (rnd() - .5) * .22;
       const radial = point(Math.cos(a), 0, Math.sin(a));
       const lateral = point(-Math.sin(a), 0, Math.cos(a));
@@ -194,9 +212,11 @@ export function createAlphaPine(seed = 0): { bark: BufferGeometry; needles: Buff
       const b = base.clone().addScaledVector(radial, reach * .28).add(point(0, reach * .12, 0));
       const c = base.clone().addScaledVector(radial, reach * .75).addScaledVector(lateral, (rnd() - .5) * .16)
         .add(point(0, -droop * .75, 0));
-      const branchPath = Array.from({ length: 5 }, (_, i) => curve(base, b, c, end, i / 4));
+      const branchSegments = far ? 2 : 4;
+      const branchPath = Array.from({ length: branchSegments + 1 }, (_, i) => curve(base, b, c, end, i / branchSegments));
       const branchRadius = girth * (.36 - tier * .031);
-      bark.push(tube(branchPath, [branchRadius, branchRadius * .73, branchRadius * .48, branchRadius * .24, .006], 5));
+      if (keepBranch) bark.push(tube(branchPath, far ? [branchRadius, branchRadius * .48, .006]
+        : [branchRadius, branchRadius * .73, branchRadius * .48, branchRadius * .24, .006], far ? 3 : 5));
       for (let twig = 0; twig < 5; twig++) {
         const u = .28 + twig * .16;
         const anchor = curve(base, b, c, end, u);
@@ -204,7 +224,8 @@ export function createAlphaPine(seed = 0): { bark: BufferGeometry; needles: Buff
         const direction = radial.clone().multiplyScalar(.82).addScaledVector(lateral, sign * .70)
           .add(point(0, -.08 - twig * .035, 0));
         const sprayLength = (.32 + reach * .12) * (.9 + rnd() * .20);
-        spray(needles, anchor, direction, sprayLength, .041 + reach * .007, a + twig, rnd);
+        spray(needles, anchor, direction, sprayLength, .041 + reach * .007, a + twig, rnd,
+          far, keepBranch && (!far || twig === 1 || twig === 4));
       }
     }
   }
@@ -212,7 +233,7 @@ export function createAlphaPine(seed = 0): { bark: BufferGeometry; needles: Buff
   for (let i = 0; i < 5; i++) {
     const a = phase + i * 2.39996;
     spray(needles, trunk(.92 + i * .014), point(Math.cos(a) * .35, .9, Math.sin(a) * .35),
-      .29 - i * .018, .031, a, rnd);
+      .29 - i * .018, .031, a, rnd, far);
   }
   const barkGeometry = merge(bark), needleGeometry = merge(needles);
   // Bent trunk frames can lower one root-ring vertex a millimetre. Preserve one
@@ -257,4 +278,58 @@ export function createAlphaShrub(seed = 0): BufferGeometry {
   geometry.computeBoundingBox();
   geometry.computeBoundingSphere();
   return geometry;
+}
+
+/** Twelve thin, solid curved grass blades; 192 triangles, no alpha texture.
+ * Height about 0.19–0.33 m, grounded at Y=0. Smooth FrontSide material is enough.
+ * Two lenticular sections per blade preserve an arched/tapered silhouette instead
+ * of crossed flat cards. All blade roots stay within a small planted clump.
+ */
+export function createAlphaGrassTuft(seed = 0): BufferGeometry {
+  const rnd = random(seed), parts: BufferGeometry[] = [];
+  const phase = rnd() * TAU, scale = .84 + rnd() * .21;
+  for (let blade = 0; blade < 12; blade++) {
+    const angle = phase + blade * 2.39996 + (rnd() - .5) * .22;
+    const radial = point(Math.cos(angle), 0, Math.sin(angle));
+    const side = point(-radial.z, 0, radial.x);
+    const h = (.20 + rnd() * .11) * scale;
+    const reach = h * (.28 + rnd() * .46);
+    const root = radial.clone().multiplyScalar(.012 + rnd() * .026);
+    const bend = point(-radial.z, 0, radial.x).multiplyScalar((rnd() - .5) * .035);
+    const tip = root.clone().addScaledVector(radial, reach).add(bend).add(point(0, h, 0));
+    const controlA = root.clone().add(point(0, h * .46, 0));
+    const controlB = root.clone().addScaledVector(radial, reach * .42).addScaledVector(bend, .4)
+      .add(point(0, h * .91, 0));
+    const positions = [...root.toArray()], normals = [0, -1, 0], uv = [.5, 0], indices: number[] = [];
+    const width = (.009 + rnd() * .007) * scale;
+    for (const [t, taper] of [[.40, 1], [.77, .52]]) {
+      const center = curve(root, controlA, controlB, tip, t);
+      const tangent = curve(root, controlA, controlB, tip, t + .01)
+        .sub(curve(root, controlA, controlB, tip, t - .01)).normalize();
+      const normal = new Vector3().crossVectors(tangent, side).normalize();
+      for (let corner = 0; corner < 4; corner++) {
+        const a = corner * TAU / 4;
+        positions.push(...center.clone().addScaledVector(side, Math.cos(a) * width * taper)
+          .addScaledVector(normal, Math.sin(a) * .0017 * scale * taper).toArray());
+        // Explicit cross-section normals avoid area weighting pulling the thin
+        // inside-bend tip normal through the opposite side of the curved blade.
+        normals.push(...side.clone().multiplyScalar(Math.cos(a))
+          .addScaledVector(normal, Math.sin(a)).normalize().toArray());
+        uv.push(corner / 4, t);
+      }
+    }
+    positions.push(...tip.toArray()); uv.push(.5, 1);
+    normals.push(...tip.clone().sub(controlB).normalize().toArray());
+    for (let corner = 0; corner < 4; corner++) {
+      const a = 1 + corner, b = 1 + (corner + 1) % 4;
+      indices.push(0, b, a, a, b, a + 4, b, b + 4, a + 4, a + 4, b + 4, 9);
+    }
+    const geometry = new BufferGeometry();
+    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+    geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+    geometry.setIndex(indices);
+    parts.push(geometry);
+  }
+  return merge(parts);
 }
