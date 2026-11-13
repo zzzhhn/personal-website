@@ -16,6 +16,10 @@ export interface RideDriver {
   readonly frame: RideActorFrame;
   capture(root: Vec3, yaw: number): void;
   requestExit(): void;
+  readonly boardingPath?: Vec3[];
+  readonly egressPath?: Vec3[];
+  setExitBlocked?(blocked:boolean):void;
+  setMovementGuard?(guard:(from:Vec3,to:Vec3)=>boolean):void;
   dispose(reason: 'complete' | 'recovery'): void;
 }
 export interface TransportTransform { origin: Vec3; yaw: number }
@@ -30,6 +34,8 @@ export interface TransportTerminal {
   /** Index where transport-owned fixed gangway leaves scene ground. */
   gangwayStart?: number;
   safeExit: Vec3;
+  /** Foot route from standing inside through the opening to safeExit. */
+  egress?: Vec3[];
   /** Passenger seat patch relative to vehicle root. */
   seat: Vec3;
   clearance: Vec3;
@@ -47,6 +53,7 @@ export interface TransportRoute {
 }
 export interface TransportSample {
   vehicle: Vec3; yaw: number; orientation: [number, number, number, number];
+  cablePitch?: number;
   pose: AttractionRidePose;
 }
 

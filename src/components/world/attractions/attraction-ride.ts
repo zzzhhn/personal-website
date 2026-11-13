@@ -13,6 +13,8 @@ export interface AttractionRidePose {
   orientation?: [number,number,number,number];
   cameraPosition: Vec3;
   cameraTarget: Vec3;
+  /** Optional verified open-side view portal for enclosed passenger cabins. */
+  cameraSweepOrigin?: Vec3;
   /** Optional view up axis; full-roll first-person uses the train up, comfort stays world-up. */
   cameraUp?: Vec3;
   firstPerson: boolean;

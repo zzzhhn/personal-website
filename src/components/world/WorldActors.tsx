@@ -1,3 +1,4 @@
+import { rideFootRouteClear } from './rides/ride-clearance';
 import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-hand';
 import { localWindPace } from './rides/local-wind';
 import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
@@ -87,7 +88,7 @@ export type CameraDebug = { yaw: number; pitch: number; distance: number; desire
   fov: number; mode: 'walk'|'drive'; recentering: boolean; position: Vec3; target: Vec3; forwardGround: [number,number]; groundBelowCamera: number|null; clearanceAboveGround: number|null; gamepad: boolean;
   /** Camera near-plane envelope, plus the draw-only self-occlusion guard. */
   nearPlaneRadius: number; guideHidden: boolean; shoulderOffset: number;
-  nearPlaneOverlaps: string[] };
+  nearPlaneOverlaps: string[]; rideSafety?: unknown };
 type ContactMeta = { colliderHandle: number; name: string | null; assetId: string | null; kind: 'surface' | 'solid' | 'vehicle' | 'obstacle' | 'unknown' };
 type LaneObstacle = 'post' | 'trunk' | 'wall' | 'profiles';
 type ActorContact = { self: 'player' | VehicleId; selfPart?: string|null; other: ContactMeta; normal: Vec3; distance: number; points: Vec3[] };
@@ -98,6 +99,7 @@ export interface WorldActorDebug {
   surfaceAudit(): unknown;
   wheelFixture(on:boolean, z?:number, span?:number): boolean;
   collisionLane(kind:LaneObstacle|null, lateral?:number): boolean;
+  rideObstacle(position:Vec3|null,size?:Vec3):boolean;
   actor(): ReturnType<typeof worldGuideDebug>;
   camera(): CameraDebug|null;
   contacts(): ActorContact[];
@@ -124,6 +126,7 @@ export const worldActorDebug: WorldActorDebug = {
   motionProbe: () => debugTarget?.motionProbe() ?? null,
   surfaceAudit: () => debugTarget?.surfaceAudit() ?? [],
   wheelFixture: (on,z,span) => debugTarget?.wheelFixture(on,z,span) ?? false,
+  rideObstacle:(p,size)=>debugTarget?.rideObstacle(p,size)??false,
   collisionLane: (kind,lateral) => debugTarget?.collisionLane(kind,lateral) ?? false,
   contacts: () => debugTarget?.contacts() ?? [],
   inputState: () => debugTarget?.inputState() ?? [],
@@ -308,7 +311,7 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
 
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
-  const rideHeld=useRef(false);
+  const rideHeld=useRef(false),rideExitCheck=useRef({revision:-1,next:0});
   const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
   const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
   const clubArrival=new URLSearchParams(window.location.search).get('start')?.startsWith('club')??false;
@@ -754,7 +757,15 @@ export default function WorldActors() {
       const kind:ContactMeta['kind']=data.surface?'surface':data.vehicle?'vehicle':data.obstacle?'obstacle':data.solid?'solid':'unknown';
       return {colliderHandle:other.handle,name,assetId,kind};
     }
+    let rideObstacle:{body:RapierRigidBody;mesh:Mesh}|null=null;
+    const clearRideObstacle=()=>{if(!rideObstacle)return;world.removeRigidBody(rideObstacle.body);scene.remove(rideObstacle.mesh);rideObstacle.mesh.geometry.dispose();(rideObstacle.mesh.material as MeshStandardMaterial).dispose();rideObstacle=null;};
     const api:WorldActorDebug={
+      rideObstacle:(position,size=[.8,1.8,.8])=>{
+        if(!import.meta.env.DEV||!['qa','transportCapture'].some(k=>new URLSearchParams(window.location.search).get(k)==='1'))return false;
+        clearRideObstacle();if(!position)return true;if([...position,...size].some(v=>!Number.isFinite(v))||size.some(v=>v<=0||v>4))return false;
+        const body=world.createRigidBody(rapier.RigidBodyDesc.fixed().setTranslation(...position));body.userData={solid:true,assetId:'QA-ride-obstacle'};world.createCollider(rapier.ColliderDesc.cuboid(size[0]/2,size[1]/2,size[2]/2),body);
+        const mesh=new Mesh(new BoxGeometry(...size),new MeshStandardMaterial({color:'#cb6247'}));mesh.position.set(...position);mesh.name='QA-ride-obstacle';scene.add(mesh);rideObstacle={body,mesh};return true;
+      },
       actor:worldGuideDebug,
       surfaceAudit:()=>{
         const rows:unknown[]=[];
@@ -831,7 +842,7 @@ export default function WorldActors() {
         const down=world.castRay(new rapier.Ray({x:camera.position.x,y:200,z:camera.position.z},{x:0,y:-1,z:0}),400,true,undefined,undefined,undefined,undefined,
           col=>!col.isSensor()&&identifyCollider(col).kind==='surface');
         const ground=down?200-down.timeOfImpact:null;
-        return {yaw:c.yaw,pitch:c.pitch,distance:c.distance,desiredDistance:c.desiredDistance,driveManualZoom:c.driveManualZoom,actualDistance:c.actual,firstPerson:c.firstPerson,preset:useWorldStore.getState().zoom,collided:c.collided,hitDistance:c.hitDistance,
+        return {rideSafety:attractionObstruction.current.debug(),yaw:c.yaw,pitch:c.pitch,distance:c.distance,desiredDistance:c.desiredDistance,driveManualZoom:c.driveManualZoom,actualDistance:c.actual,firstPerson:c.firstPerson,preset:useWorldStore.getState().zoom,collided:c.collided,hitDistance:c.hitDistance,
           fov:camera instanceof PerspectiveCamera?camera.fov:0,mode:c.mode,recentering:c.recentering,position:camera.position.toArray() as Vec3,target:target.current.toArray() as Vec3,
           forwardGround:(()=>{const m=Math.hypot(dir.x,dir.z)||1;return [dir.x/m,dir.z/m] as [number,number];})(),groundBelowCamera:ground,
           clearanceAboveGround:ground===null?null:camera.position.y-ground,gamepad:pad.current.connected,
@@ -906,7 +917,7 @@ export default function WorldActors() {
       if(document.pointerLockElement===el)document.exitPointerLock?.();
       if(debugTarget===api)debugTarget=null;
       occlusion.current.dispose();
-      clearWheelFixture();
+      clearWheelFixture();clearRideObstacle();
     };
   },[world,rapier,gl,colliderStates]);
 
@@ -922,6 +933,9 @@ export default function WorldActors() {
       if(!rideHeld.current){
         const start=player.current.translation();
         captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
+        const route=attractionRide.driver?.boardingPath;
+        if(route&&!rideFootRouteClear(world,rapier,player.current,route)){endAttractionRide();actorNotice('登乘通道被挡住了，请在站台稍候。','The boarding path is blocked. Please wait on the platform.');return;}
+        attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&rideFootRouteClear(world,rapier,player.current,[from,to]));
         clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
@@ -930,6 +944,8 @@ export default function WorldActors() {
       if(gp.connected&&gp.buttons[9]&&!before[9]){useWorldStore.setState({paused:true});return;}
       if(gp.connected&&gp.buttons[1]&&!before[1])requestAttractionExit();
       stepWorldVehicles(dt);
+      const driver=attractionRide.driver,check=rideExitCheck.current;
+      if(driver?.phase==='stand'&&driver.egressPath){check.next-=dt;if(check.revision!==attractionRide.revision||check.next<=0){const clear=rideFootRouteClear(world,rapier,player.current,driver.egressPath);driver.setExitBlocked?.(!clear);if(!clear&&check.revision!==attractionRide.revision)actorNotice('下车通道被挡住了，留在车内等候，或返回营地。','The exit is blocked. Wait inside, or return to camp.');check.revision=attractionRide.revision;check.next=.5;}}
       const pose=attractionRide.pose,actor=attractionActorFrame(),root=actor?.root??pose.seat;
       const p:Vec3=[root[0],root[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT,root[2]];
       resetBody(player.current,p);guideYaw.current=actor?.yaw??pose.yaw;grounded.current=true;
@@ -1346,6 +1362,7 @@ export default function WorldActors() {
           ?attractionObstruction.current.step(world,rapier,pose,radius,delta,`${attractionRide.revision}:${attractionPhase()}`,player.current??undefined)
           :sweepCamera(world,rapier,attractionCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
         desired.set(swept.position.x,swept.position.y,swept.position.z);
+        if(attractionObstruction.current.debug()?.validOrigin===false&&attractionRide.driver)requestAttractionExit();
         const diff=new Vector3(...pose.cameraPosition).sub(pivot).normalize();
         const safeTarget=cameraLookTarget(desired,pivot,[diff.x,diff.y,diff.z]);
         pivot.set(safeTarget.x,safeTarget.y,safeTarget.z);

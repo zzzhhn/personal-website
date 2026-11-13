@@ -1,27 +1,29 @@
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { CuboidCollider, RigidBody, TrimeshCollider, type RapierRigidBody } from '@react-three/rapier';
-import { BufferGeometry, CylinderGeometry, Float32BufferAttribute, Group, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
-import { create } from 'zustand';
+import { CuboidCollider, CylinderCollider, RigidBody, TrimeshCollider, type RapierRigidBody } from '@react-three/rapier';
+import { BufferGeometry, CylinderGeometry, Float32BufferAttribute, FrontSide, Group, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { useDjcFurnitureEnvironment } from '../../WorldDjcFurnitureEnvironment';
 import { night } from '../../WorldNight';
 import { useInteractable } from '../../WorldInteract';
 import { useWorldStore } from '../../store';
 import { attractionRide, beginDrivenAttractionRide, endAttractionRide, requestAttractionExit, updateAttractionRide } from '../../attractions/attraction-ride';
-import { resetAttractionLook } from '../../attractions/attraction-camera';
+import { alphaFerryRoute } from './alpha-routes';
+import { transportInfrastructure } from './transport-infrastructure';
 import { transportBoardingGeometry } from '../../rides/transport-boarding';
+import { resetAttractionLook } from '../../attractions/attraction-camera';
 import { TransportDriver } from '../../rides/transport-driver';
 import { rideEnvironment, type WeatherLease } from '../../rides/ride-environment';
 import { sampleTransport, transportCurve, transportWorld, tuple } from '../../rides/transport-route';
 import { registerRideGround, type TransportRoute } from '../../rides/ride-contract';
 import type { Vec3 } from '../../types';
-export const useTransportStatus=create<{id:string|null;kind:TransportRoute['kind']|null;phase:string;progress:number;cancelled:boolean}>(()=>({id:null,kind:null,phase:'',progress:0,cancelled:false}));
-const names={cable:{zh:'四季缆车',en:'Seasons cable car'},sled:{zh:'雪橇滑道',en:'Mountain sled'},ferry:{zh:'渡船',en:'Island ferry'}};
+export const transportQaHold={value:false};
+import { useTransportStatus,transportActions,transportNames as names } from './transport-status';
 export interface AlphaTransportsProps { routes:TransportRoute[]; /** local terrain elevation; supports share scene ground */ groundHeight?:(x:number,z:number)=>number }
-export default function AlphaTransports({routes,groundHeight}:AlphaTransportsProps){return <>{routes.map(route=><Transport key={route.id} route={route} groundHeight={groundHeight}/>)}</>;}
+export default function AlphaTransports({routes,groundHeight}:AlphaTransportsProps){const effective=useMemo(()=>import.meta.env.DEV&&new URLSearchParams(window.location.search).get('ferryFixture')==='1'?[...routes,alphaFerryRoute()]:routes,[routes]);useEffect(()=>{transportActions.requestExit=requestAttractionExit;transportActions.resetView=resetAttractionLook;return()=>{if(transportActions.requestExit===requestAttractionExit){transportActions.requestExit=()=>{};transportActions.resetView=()=>{};}};},[]);return <>{effective.map(route=><Transport key={route.id} route={route} groundHeight={groundHeight}/>)}</>;}
 function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:AlphaTransportsProps['groundHeight']}){
+ const cablePitch=useRef(0);
  const floorBody=useRef<RapierRigidBody>(null),environmentLease=useRef<WeatherLease|null>(null);
  const vehicle=useRef<Group>(null),driver=useRef<TransportDriver|null>(null),parked=useRef<0|1>(0),empty=useRef<number|null>(null),emptyTarget=useRef<0|1>(0),lastPublish=useRef(0);
  const samples=useMemo(()=>{const curve=transportCurve(route);return {curve,parked:[sampleTransport(route,0,curve),sampleTransport(route,1,curve)]};},[route]);
@@ -32,7 +34,7 @@ function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:Alp
   let release=()=>{};
   if(route.kind==='cable'){const lease=rideEnvironment.acquire(route.id,w.weather);environmentLease.current=lease;release=lease.release;}
   const d=new TransportDriver(route,source,release),sample=d.sample();
-  if(beginDrivenAttractionRide(d,sample.pose,transportWorld(route.terminals[source].safeExit,route.transform))){driver.current=d;useTransportStatus.setState({id:route.id,kind:route.kind,phase:d.phase,progress:0,cancelled:false});}
+  if(beginDrivenAttractionRide(d,sample.pose,transportWorld(route.terminals[source].safeExit,route.transform))){driver.current=d;useTransportStatus.setState({id:route.id,kind:route.kind,phase:d.phase,progress:0,cancelled:false,blocked:false});}
   else d.dispose('recovery');
  };
  const boardOrCall=(source:0|1)=>{
@@ -48,12 +50,12 @@ function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:Alp
   const d=driver.current;
   let sample=samples.parked[parked.current];
   if(d&&attractionRide.active&&attractionRide.driver===d){
-   sample=d.step(dt,frozen);updateAttractionRide(sample.pose);
+   sample=d.step(dt,frozen||(import.meta.env.DEV&&(new URLSearchParams(window.location.search).get('qa')==='1'||new URLSearchParams(window.location.search).get('transportCapture')==='1')&&transportQaHold.value));updateAttractionRide(sample.pose);
    attractionRide.exit=transportWorld(route.terminals[d.phase==='stand'||d.phase==='turn-out'||d.phase==='walk-out'||d.phase==='complete'?d.destination:d.source].safeExit,route.transform);
    if(route.kind==='cable'){
     const u=d.u;environmentLease.current?.publish({rain:Math.max(0,1-Math.abs(u-.36)/.22),snow:Math.max(0,Math.min(1,(u-.55)/.28))});
    }
-   lastPublish.current+=dt;if(lastPublish.current>.1){lastPublish.current=0;useTransportStatus.setState({phase:d.phase,progress:d.u,cancelled:d.exitRequested});}
+   lastPublish.current+=dt;if(lastPublish.current>.1){lastPublish.current=0;useTransportStatus.setState({phase:d.phase,progress:d.u,cancelled:d.exitRequested,blocked:d.blockedMotion||d.exitBlocked});}
   }else if(d){
    parked.current=d.u<.5?0:1;
    // An empty tow returns the sled visibly up its actual runner route. No rider teleports.
@@ -65,62 +67,57 @@ function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:Alp
    sample=sampleTransport(route,empty.current,samples.curve);
    if(empty.current===emptyTarget.current){parked.current=emptyTarget.current;empty.current=null;}
   }
+  cablePitch.current=sample.cablePitch??0;
   if(floorBody.current){floorBody.current.setTranslation({x:sample.vehicle[0],y:sample.vehicle[1],z:sample.vehicle[2]},true);floorBody.current.setRotation(new Quaternion(...sample.orientation),true);}
   if(vehicle.current){vehicle.current.position.set(...sample.vehicle);vehicle.current.quaternion.set(...sample.orientation);}
  },-60);
  return <group name={route.id} userData={{noOcclusionFade:true}}>
   <TransportInfrastructure route={route} groundHeight={groundHeight}/>
-  <RigidBody ref={floorBody} type="kinematicPosition" colliders={false} position={initial.vehicle} quaternion={initial.orientation} userData={{surface:true,solid:true,assetId:route.id+'-vehicle-floor'}}>{route.kind==='sled'?<CuboidCollider position={[.51,.11,0]} args={[.2,.02,.34]}/>:<CuboidCollider position={[0,-.1,0]} args={[route.kind==='ferry'?3.5:1.6,.1,route.kind==='ferry'?1.45:1.2]}/>}{route.kind!=='sled'&&<CuboidCollider position={[0,2.25,0]} args={[route.kind==='ferry'?2.9:1.725,.1,route.kind==='ferry'?1.625:1.325]}/>}</RigidBody>
+  <RigidBody ref={floorBody} type="kinematicPosition" colliders={false} position={initial.vehicle} quaternion={initial.orientation} userData={{surface:true,solid:true,assetId:route.id+'-vehicle-floor'}}>{route.kind==='sled'?<CuboidCollider position={[.51,.11,0]} args={[.2,.02,.34]}/>:<CuboidCollider position={[0,-.1,0]} args={[route.kind==='ferry'?3.5:1.6,.1,route.kind==='ferry'?1.45:1.2]}/>}{route.kind==='cable'&&<><CuboidCollider position={[1.5,1.1,0]} args={[.06,1.1,1.1]}/><CuboidCollider position={[-1.5,1.1,0]} args={[.06,1.1,1.1]}/><CuboidCollider position={[0,1.1,-1.12]} args={[1.5,1.1,.05]}/></>}{route.kind!=='sled'&&<CuboidCollider position={[0,2.25,0]} args={[route.kind==='ferry'?2.9:1.725,.1,route.kind==='ferry'?1.625:1.325]}/>}</RigidBody>
   <group ref={vehicle} position={initial.vehicle} quaternion={initial.orientation} userData={{shadowDynamic:true}}>
-   <Suspense fallback={null}><TransportModel kind={route.kind}/></Suspense>
+   <Suspense fallback={null}><TransportModel kind={route.kind} cablePitch={cablePitch}/></Suspense>
   </group>
  </group>;
 }
-function TransportModel({kind}:{kind:TransportRoute['kind']}){
+function TransportModel({kind,cablePitch}:{kind:TransportRoute['kind'];cablePitch:{current:number}}){
  const gltf=useGLTF(`/assets/world/alpha-island/transports/${kind}.glb`),env=useDjcFurnitureEnvironment();
  const pack=useMemo(()=>{
-  const root=new Group(),materials=new Map<MeshStandardMaterial,MeshStandardMaterial>(),parts=new Map<MeshStandardMaterial,BufferGeometry[]>(),owned:BufferGeometry[]=[];
+  const root=new Group(),grip=new Group(),materials=new Map<MeshStandardMaterial,MeshStandardMaterial>(),parts=new Map<string,{material:MeshStandardMaterial;grip:boolean;geometries:BufferGeometry[]}>(),owned:BufferGeometry[]=[];
   gltf.scene.updateMatrixWorld(true);
-  gltf.scene.traverse(o=>{if(!(o instanceof Mesh))return;const source=o.material as MeshStandardMaterial;let material=materials.get(source);if(!material){material=source.clone();materials.set(source,material);parts.set(material,[]);}parts.get(material)!.push(o.geometry.clone().applyMatrix4(o.matrixWorld));});
-  for(const [material,geometries] of parts){const geometry=mergeGeometries(geometries,false)!;geometries.forEach(g=>g.dispose());owned.push(geometry);const mesh=new Mesh(geometry,material);mesh.castShadow=!material.transparent;mesh.receiveShadow=true;root.add(mesh);}
-  return{root,materials,owned};
+  gltf.scene.traverse(o=>{if(!(o instanceof Mesh))return;const source=o.material as MeshStandardMaterial;let material=materials.get(source);if(!material){material=source.clone();if(material.transparent){material.depthWrite=false;material.side=FrontSide;material.forceSinglePass=true;}materials.set(source,material);}const articulated=kind==='cable'&&o.name.startsWith('grip'),key=material.uuid+':'+articulated;let part=parts.get(key);if(!part){part={material,grip:articulated,geometries:[]};parts.set(key,part);}const g=o.geometry.clone().applyMatrix4(o.matrixWorld);if(articulated)g.translate(0,-3.5,0);part.geometries.push(g);});
+  for(const {material,grip:articulated,geometries} of parts.values()){const geometry=mergeGeometries(geometries,false)!;geometries.forEach(g=>g.dispose());owned.push(geometry);const mesh=new Mesh(geometry,material);mesh.castShadow=!material.transparent;mesh.receiveShadow=true;(articulated?grip:root).add(mesh);}
+  grip.position.y=3.5;root.add(grip);return{root,grip,materials,owned};
  },[gltf]);
  useEffect(()=>{for(const m of pack.materials.values()){m.envMap=env;m.needsUpdate=true;}},[pack,env]);
  useEffect(()=>()=>{for(const m of pack.materials.values())m.dispose();pack.owned.forEach(g=>g.dispose());},[pack]);
- useFrame(()=>{for(const m of pack.materials.values())m.envMapIntensity=.85*(1-night.value)+.5*night.value;});
+ useFrame(()=>{pack.grip.rotation.z=cablePitch.current;for(const m of pack.materials.values())m.envMapIntensity=.85*(1-night.value)+.5*night.value;});
  return <primitive object={pack.root} dispose={null}/>;
 }
 /** Shared curve samples generate the visible trough and its exact walkable/support triangles. */
 function TransportInfrastructure({route,groundHeight}:{route:TransportRoute;groundHeight?:AlphaTransportsProps['groundHeight']}){
  const pack=useMemo(()=>{
-  const curve=transportCurve(route),count=Math.ceil(curve.getLength()/1.4),p:number[]=[],ix:number[]=[],supports:{a:Vec3;b:Vec3}[]=[];
-  const width=route.kind==='sled'?.73:.04;
-  for(let i=0;i<=count;i++){
-   const t=i/count,v=curve.getPointAt(t),forward=curve.getTangentAt(t),side=new Vector3(-forward.z,0,forward.x).normalize();
-   const yOffset=route.kind==='cable'?3.5:route.kind==='sled'?-.16:0;
-   for(const sign of [-1,1]){const point=v.clone().addScaledVector(side,width*sign);point.y+=yOffset;p.push(...transportWorld(tuple(point),route.transform));}
-   if(i<count){const a=i*2;ix.push(a,a+2,a+1,a+1,a+2,a+3);}
-   if(route.kind!=='ferry'&&i>0&&i<count&&i%(route.kind==='cable'?Math.max(1,Math.round(count/4)):7)===0){
-    const h=groundHeight?.(v.x,v.z)??Math.min(route.terminals[0].vehicle[1],route.terminals[1].vehicle[1])-.3;
-    supports.push({a:transportWorld([v.x,h,v.z],route.transform),b:transportWorld([v.x,v.y+yOffset,v.z],route.transform)});
-   }
-  }
-  const geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(p,3));geometry.setIndex(ix);geometry.computeVertexNormals();
-  return{geometry,vertices:new Float32Array(p),indices:new Uint32Array(ix),curve,supports};
+  const data=transportInfrastructure(route,groundHeight),geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(data.vertices,3));geometry.setAttribute('color',new Float32BufferAttribute(data.colors,3));geometry.setIndex(Array.from(data.indices));geometry.computeVertexNormals();
+  return{...data,geometry};
  },[route,groundHeight]);
  useEffect(()=>()=>pack.geometry.dispose(),[pack]);
  return <>
-  {route.kind!=='ferry'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial color={route.kind==='sled'?'#b08352':'#606b72'} roughness={.78} metalness={route.kind==='cable'?.75:0}/></mesh>}
+  {route.kind!=='ferry'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color={route.kind==='sled'?'#ffffff':'#606b72'} roughness={.78} metalness={route.kind==='cable'?.75:0}/></mesh>}
   {route.kind==='sled'&&<RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:route.id+'-trough'}}><TrimeshCollider args={[pack.vertices,pack.indices]} friction={.5}/></RigidBody>}
   {route.kind==='sled'&&[-.77,.77].map(side=><PathRail key={side} route={route} offset={side} elevation={.08}/>)}
   {route.kind==='cable'&&<PathRail route={route} offset={0} elevation={3.5}/>}
-  <BeamBatch segments={pack.supports} radius={route.kind==='cable'?.16:.1} color={route.kind==='cable'?'#54666c':'#775231'}/>
+  <BeamBatch segments={pack.supports} radius={route.kind==='cable'?.09:.12} color={route.kind==='cable'?'#54666c':'#775231'}/>
+  <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:route.id+'-supports'}}>
+   {pack.supports.map((s,i)=>{const a=new Vector3(...s.a),b=new Vector3(...s.b),d=b.clone().sub(a),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize());return <CylinderCollider key={i} position={tuple(a.add(b).multiplyScalar(.5))} quaternion={q} args={[d.length()/2,route.kind==='cable'?.09:.12]}/>;})}
+   {pack.rollers.map((r,i)=><CylinderCollider key={'roller-'+i} position={r.center} quaternion={new Quaternion().setFromUnitVectors(new Vector3(0,1,0),new Vector3(...r.axis))} args={[r.halfWidth,r.radius]}/>)}
+  </RigidBody>
+  {pack.rollers.map((r,i)=><mesh key={'roller-'+i} position={r.center} quaternion={new Quaternion().setFromUnitVectors(new Vector3(0,1,0),new Vector3(...r.axis))} castShadow><cylinderGeometry args={[r.radius,r.radius,r.halfWidth*2,20]}/><meshStandardMaterial color="#434d51" metalness={.65} roughness={.45}/></mesh>)}
   {route.terminals.map((terminal,i)=><BoardingWalkway key={terminal.id+'-walk'} route={route} index={i as 0|1} groundHeight={groundHeight}/>)}
   {route.terminals.map((terminal)=>{
    const root=transportWorld(terminal.vehicle,route.transform),yaw=terminal.yaw+route.transform.yaw;
    return <group key={terminal.id} position={root} rotation={[0,yaw,0]}>
 
     {route.kind==='cable'&&<>
+     <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:terminal.id+'-canopy'}}><CuboidCollider position={[0,3.85,0]} args={[2.5,.125,2.5]}/>{[-2.1,2.1].flatMap(x=>[-2.1,2.1].map(z=><CylinderCollider key={x+','+z} position={[x,1.85,z]} args={[1.85,.17]}/>))}</RigidBody>
      <mesh position={[0,3.85,0]} castShadow><boxGeometry args={[5,.25,5]}/><meshStandardMaterial color="#536267" roughness={.55} metalness={.25}/></mesh>
      {[-2.1,2.1].flatMap(x=>[-2.1,2.1].map(z=><mesh key={x+','+z} position={[x,1.85,z]} castShadow><cylinderGeometry args={[.13,.17,3.7,12]}/><meshStandardMaterial color="#86603c" roughness={.85}/></mesh>))}
     </>}
@@ -155,16 +152,4 @@ function BeamBatch({segments,radius,color}:{segments:{a:Vec3;b:Vec3}[];radius:nu
  return geometry?<mesh geometry={geometry} castShadow receiveShadow><meshStandardMaterial color={color} roughness={.75}/></mesh>:null;
 }
 
-export function AlphaTransportHud(){
- const s=useTransportStatus(),lang=useWorldStore(w=>w.lang),paused=useWorldStore(w=>w.paused);
- useEffect(()=>{
-  const key=(e:KeyboardEvent)=>{if(s.id&&!paused&&e.code==='KeyE'&&!e.repeat&&!/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement)?.tagName??'')){e.preventDefault();requestAttractionExit();}};
-  window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);
- },[s.id,paused]);
- if(!s.id||!s.kind||paused)return null;
- const zh=lang==='zh';return <div style={{position:'absolute',left:'50%',bottom:78,transform:'translateX(-50%)',background:'rgba(21,30,34,.92)',color:'#fff4de',padding:'12px 18px',borderRadius:12,pointerEvents:'auto',maxWidth:'90vw',textAlign:'center'}}>
-  <strong>{names[s.kind][lang]}</strong> · {zh?({approach:'走向座位','turn-in':'转身入座',sit:'坐下',riding:s.cancelled?'前往安全站台':'沿途观景',stand:'起身','turn-out':'转向出口','walk-out':'走下站台',complete:'到站'}[s.phase]??s.phase):s.phase}
-  <div style={{display:'flex',gap:12,marginTop:8,justifyContent:'center'}}><button onClick={resetAttractionLook}>{zh?'视角归位':'Reset view'}</button><button onClick={requestAttractionExit} disabled={s.cancelled}>{zh?(s.cancelled?'已请求安全退乘':'E 安全退乘'):'E · Leave safely'}</button></div>
-  <small>{zh?'拖动观察 · 滚轮缩放 · Esc 暂停':'Drag to look · Scroll to zoom · Esc pause'}</small>
- </div>;
-}
+export { default as AlphaTransportHud } from './AlphaTransportHud';
