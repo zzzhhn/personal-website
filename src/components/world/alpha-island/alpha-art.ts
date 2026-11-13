@@ -34,4 +34,4 @@ export function createAlphaLodge(){const b=new AlphaBuilder();
  for(const x of [-1.17,1.17])b.box('wood',[x,1.64,.1],[.12,.22,1.9]);for(const z of [-.8,1])b.box('wood',[0,1.64,z],[2.45,.22,.12]);
  b.box('wood',[-2.3,1.3,2.95],[1.25,1.4,.15]);for(const x of [-2.65,-2.3,-1.95]){b.cyl('metal',[x,1.95,3.07],.025,.15);b.box('paper',[x,1.65,3.08],[.25,.4,.025],.015);}
  return b.finish();}
-export function createAlphaRack(){const b=new AlphaBuilder();for(const x of [-1.25,1.25]){b.box('stone',[x,.17,0],[.6,.34,.7],.07);b.beam('wood',[x,.25,0],[x,2.55,0],.18);b.beam('wood',[x,.5,0],[x*.6,.5,.65],.14);b.beam('wood',[x,2,0],[x*.7,2.5,0],.12);}b.beam('wood',[-1.5,2.55,0],[1.5,2.55,0],.2);b.box('wood',[0,.6,0],[2.9,.16,.85]);return b.finish();}
+export function createAlphaRack(){const b=new AlphaBuilder();for(const x of [-1.25,1.25]){b.box('stone',[x,.17,0],[.6,.34,.7],.07);b.beam('wood',[x,.25,0],[x,2.55,0],.18);b.beam('wood',[x,.5,0],[x*.6,.5,.65],.14);b.beam('wood',[x,2,0],[x*.7,2.5,0],.12);}b.beam('wood',[-1.5,2.55,0],[1.5,2.55,0],.2);b.box('wood',[0,.32,0],[2.9,.16,.85]);return b.finish();}

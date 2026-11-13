@@ -49,3 +49,10 @@ test('interpolated pitched sled runner hull clears terrain at side and nose corn
  for(const x of [-1.2,0,1.42])for(const z of [-.545,0,.545]){const v=new Vector3(x,-.16,z).applyQuaternion(q).add(p),gap=v.y-alphaHeight(v.x,v.z);assert.ok(gap>-.03,`sled u=${u} x=${x} z=${z} gap=${gap}`);}
  }
 });
+
+test('r6 side berth retains the full-hull failure witness as open underwater space',()=>{
+ const x=144.3103-235,z=146.6558-190,oldHullY=-.75665;
+ assert.ok(oldHullY-alphaHeight(x,z)>.8,'known low fender/keel witness still intersects west shore');
+ assert.ok(Math.abs(alphaHeight(-82,-44)-1.3)<.05,'dry island dock must remain supported');
+ for(let wz=128;wz<=154;wz+=2)for(let wx=139;wx<=145.5;wx+=1.3)assert.ok(alphaHeight(wx-235,wz-190)<=-2.39,'basin is shallower than its surveyed floor');
+});
