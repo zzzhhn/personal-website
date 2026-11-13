@@ -2,7 +2,7 @@ import type { Vec3 } from '../types';
 
 /** Alpha batch 1 survey r1. Metres; +X east, -Z north. All route datums are surface/rail
  * points, NOT standing capsule centres. Transport author owns seat offsets and timing. */
-export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r4-20261113';
+export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r5-20261113';
 export const ALPHA_ORIGIN: Vec3 = [235, 0, 190];
 export const ALPHA_YAW = 0;
 export const alphaWorld = (p: readonly number[]): Vec3 => [p[0] + ALPHA_ORIGIN[0], p[1], p[2] + ALPHA_ORIGIN[2]];
@@ -17,7 +17,7 @@ export const ALPHA_STATIONS = {
 export const ALPHA_MAIN_PATH: Vec3[] = [
  [-82,1.3,-44],[-74,1.3,-44],[-66,3.8,-44],[-59,3.8,-44],[-54,6,-40],[-36,12,-54],[-22,16,-40],[-42,18,-29],
  [-55,20,-11],[-27,25,2],[4,30,-10],[11,34,-28],[19,38,-42],[30,38,-43],
- [27,38,-34],[25,38,-20],[55,40,-12],[60,46,8],[38,51,5],[13,57,-10],[-9,63,6],[8,69,23],[25,73,28],
+ [27,38,-34],[25,38,-20],[55,40,-12],[60,46,8],[65,52,30],[60,58,53],[40,64,68],[10,68,76],[-20,72,65],[-22,73,35],[-2,73,20],[25,73,28],
  [25,73,33],[29,76,42],[26,76,46],[19,76,46],[7,80,58],[2,83,48],[2,83,39],[-7,83,43],
 ];
 export const ALPHA_BYPASS_PATH: Vec3[] = [[-42,18,-29],[-27,20,-17],[-9,23,-29],[-4,26,-45],[10,32,-56],[25,35,-54],[19,38,-42]];
@@ -27,7 +27,7 @@ export interface AlphaSocket {
  clearance: Vec3; approach: Vec3[]; safeExit: Vec3[];
 }
 const socket = (id: string, ground: Vec3, yaw: number, size: Vec3, approach: Vec3[], safeExit: Vec3[]): AlphaSocket =>
- ({ id, ground, yaw, size, clearance: [size[0], 5, size[2]], approach, safeExit });
+ ({ id, ground, yaw, size, clearance: [size[0], id.includes('cable')?6.5:5, size[2]], approach, safeExit });
 export const ALPHA_SOCKETS = {
  dock: socket('alpha-dock',[-82,1.3,-44],-Math.PI/2,[7,0.35,11],[[-66,3.8,-44],[-74,1.3,-44],[-82,1.3,-44]],[[-79,1.3,-42],[-80,1.3,-47]]),
  cableLower: socket('alpha-cable-lower',[35,38,-43],0,[9,0.4,12],[[25,38,-42],[30,38,-43] ],[[31,38,-40],[38,38,-40]]),

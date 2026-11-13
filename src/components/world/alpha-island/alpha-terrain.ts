@@ -17,12 +17,18 @@ export function nearestAlphaSegment(x:number,z:number,path:readonly Vec3[]) {
 /** Coast contracts toward old Club; grid footprint is not the coastline. */
 export function alphaShoreRadius(a:number) {return 1+.055*Math.sin(a*3+.5)+.035*Math.sin(a*7-1);}
 export function alphaRadial(x:number,z:number) {const a=Math.atan2(z/107,x/88);return Math.hypot(x/88,z/107)/alphaShoreRadius(a);}
+/** Fit the broad landform to the actual traversable contours BEFORE cutting the path.
+ * Smooth distance weights follow elevations throughout the hill; no high Gaussian mountain
+ * is excavated into narrow artificial trenches. Sled underside also supplies ridge contours. */
+const contourSegments=[...ALPHA_MAIN_PATH.slice(1).map((p,i)=>[ALPHA_MAIN_PATH[i],p]),...ALPHA_BYPASS_PATH.slice(1).map((p,i)=>[ALPHA_BYPASS_PATH[i],p]),...ALPHA_SLED_PATH.slice(1).map((p,i)=>[ALPHA_SLED_PATH[i].map((v,k)=>k===1?v-.6:v) as Vec3,p.map((v,k)=>k===1?v-.6:v) as Vec3])];
 export function alphaBaseHeight(x:number,z:number) {
- const r=alphaRadial(x,z),land=1-smooth(.77,1.02,r);
- const peak=Math.exp(-((x-3)**2/2300+(z-30)**2/3100));
- const ridge=Math.exp(-((x-7)**2/4500+(z+27)**2/2300));
- return -4+land*(7+smooth(-82,-25,x)*(65*peak+20*ridge)+alphaNoise(x,z)*1.4);
+ let sum=0,weights=0,near=Infinity;
+ for(const [a,b] of contourSegments){const dx=b[0]-a[0],dz=b[2]-a[2],t=clamp(((x-a[0])*dx+(z-a[2])*dz)/(dx*dx+dz*dz)),d=Math.hypot(x-a[0]-dx*t,z-a[2]-dz*t),w=1/((d*d+4)**2);sum+=(a[1]+(b[1]-a[1])*t)*w;weights+=w;near=Math.min(near,d);}
+ const r=alphaRadial(x,z),land=Math.max(1-smooth(.8,1.055,r),1-smooth(4,14,near));
+ const fit=sum/weights,shoulder=(2.7*alphaNoise(x*.85,z*.85)+.85*Math.sin(fit*.62+alphaNoise(x,z)*.5))*smooth(4,13,near);
+ return -4+land*(sum/weights+4+shoulder);
 }
+export function alphaSurfaceNormalY(x:number,z:number){const e=.65,dx=(alphaHeight(x+e,z)-alphaHeight(x-e,z))/(2*e),dz=(alphaHeight(x,z+e)-alphaHeight(x,z-e))/(2*e);return 1/Math.hypot(dx,1,dz);}
 export function alphaHeight(x:number,z:number) {
  let h=alphaBaseHeight(x,z);
  const p=nearestAlphaSegment(x,z,ALPHA_MAIN_PATH),b=nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH);
@@ -33,10 +39,10 @@ export function alphaHeight(x:number,z:number) {
    const dx=x-s.ground[0],dz=z-s.ground[2],c=Math.cos(s.yaw),sn=Math.sin(s.yaw);
    const rx=c*dx-sn*dz,rz=sn*dx+c*dz;
    const d=Math.hypot(Math.max(0,Math.abs(rx)-s.size[0]/2-1.5),Math.max(0,Math.abs(rz)-s.size[2]/2-1.5));
-   const w=1-smooth(0,3,d);h=h*(1-w)+s.ground[1]*w;
+   const w=1-smooth(0,9,d);h=h*(1-w)+s.ground[1]*w;
  }
- for(const [cx,cy,cz,r] of [[-64,3.8,-40,6],[-42,18,-29,8],[19,38,-42,9],[2,83,39,10],[-7,83,43,7]]) {
-   const w=1-smooth(r,r+3,Math.hypot(x-cx,z-cz));h=h*(1-w)+cy*w;
+ for(const [cx,cy,cz,r] of [[-64,3.8,-40,5],[-42,18,-29,5.5],[19,38,-42,7],[2,83,39,6],[-7,83,43,4]]) {
+   const w=1-smooth(r,r+10,Math.hypot(x-cx,z-cz));h=h*(1-w)+cy*w;
  }
  const cable=nearestAlphaSegment(x,z,ALPHA_CABLE_PATH);
  if(cable.index>0&&cable.index<4&&cable.distance<7) {
