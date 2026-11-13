@@ -8,6 +8,7 @@ import { alphaHeight,alphaPathDistance } from './alpha-terrain';
 import { createAlphaBoulderField } from './alpha-rocks';
 import { alphaMaterial,alphaMaterialUniforms } from './alpha-materials';
 import AlphaGrammarTree from './AlphaGrammarTree';
+import AlphaVisitorWayfinding from './AlphaVisitorWayfinding';
 import { alphaMotion,useAlphaStore } from './alpha-state';
 import type { Vec3 } from '../types';
 function Craft({build,name,position=[0,0,0]}:{build:()=>{finish:AlphaFinish;geometry:BufferGeometry}[];name:string;position?:Vec3}){
@@ -43,7 +44,7 @@ export default function AlphaScenery(){const [lx,ly,lz]=ALPHA_STATIONS.lodge;ret
  {[-2.25,2.25].map(x=><CuboidCollider key={x} args={[.85,1.4,.12]} position={[x,1.9,2.65]}/>)}
  <CuboidCollider args={[1.22,.1,.95]} position={[0,1.43,.1]}/>
  </RigidBody>
- <LodgeRamp/><BellMechanism/><WindHandle/><SandMiniature/><TrailLamps/>
+ <AlphaVisitorWayfinding/><LodgeRamp/><BellMechanism/><WindHandle/><SandMiniature/><TrailLamps/>
  <Craft name="alpha-path-fence" build={routeRails}/><PathRailColliders/><BoulderField/>
  <AlphaGrammarTree/><Craft name="alpha-grammar-tree-pull-rope" build={treeRope} position={ALPHA_STATIONS.tree}/>
  <Craft name="alpha-wind-gate" build={windGate} position={[16,38,-44]}/>
