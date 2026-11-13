@@ -1,17 +1,13 @@
 import { Vector3 } from 'three';
+import { registerRideGround } from '../rides/ride-contract.ts';
+registerRideGround('coaster-boarding',coasterBoardingGround);
 import type { Vec3 } from '../types';
 import type { AttractionRidePose } from './attraction-ride.ts';
 import { coasterFrame, coasterWorld } from './coaster-track.ts';
 
 export type CoasterBoardingPhase = 'approach' | 'step-in' | 'turn-in' | 'sit' | 'settle' | 'riding' | 'stand' | 'turn-out' | 'step-out' | 'walk-out' | 'complete';
-export interface CoasterActorFrame {
-  stairs?: boolean; root: Vec3; yaw: number; speed: number;
-  clip: 'Idle' | 'Walk' | 'Run' | 'TurnL' | 'TurnR' | 'SitDown' | 'SitIdle' | 'StandUp';
-  clipPhase?: number;
-  seatWeight: number;
-  seat: Vec3;
-  orientation?: [number, number, number, number];
-}
+export type CoasterActorFrame = import('../rides/ride-contract').RideActorFrame;
+
 const smooth = (t: number) => { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
 const mix = (a: Vec3, b: Vec3, t: number): Vec3 => a.map((v, i) => v + (b[i] - v) * t) as Vec3;
 const distance = (a: Vec3, b: Vec3) => Math.hypot(...a.map((v, i) => v - b[i]));
@@ -143,6 +139,6 @@ export function advanceCoasterTransition(t: CoasterTransition, dt: number, froze
   }
   // Use the full station orientation throughout seat contact, including the tiny track pitch.
   if (seatWeight > 0 && !orientation) orientation = pose.orientation;
-  t.frame = { stairs: t.phase === 'step-in' || t.phase === 'step-out', root, yaw, speed, clip, clipPhase, seatWeight, seat: [...pose.seat], orientation };
+  t.frame = { groundId: 'coaster-boarding', stairs: t.phase === 'step-in' || t.phase === 'step-out', root, yaw, speed, clip, clipPhase, seatWeight, seat: [...pose.seat], orientation };
   return t.frame;
 }

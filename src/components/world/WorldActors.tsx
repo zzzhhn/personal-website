@@ -1,3 +1,6 @@
+import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-hand';
+import { localWindPace } from './rides/local-wind';
+import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -18,8 +21,7 @@ import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
 import { CLUB, CLUB_POOL } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES } from './attractions/attraction-layout';
-import { captureCoasterStart } from './attractions/coaster-transition';
-import { attractionRide, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
+import { attractionRide, attractionActorFrame, captureAttractionStart, attractionPhase, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
 import { attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
 import { AttractionCameraObstruction } from './attractions/attraction-camera-obstruction';
 import { clubAudio } from './WorldClubAudio';
@@ -298,7 +300,7 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
     if(tr){const car=cars.current.get(tr.id);vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:car?cabinAnchor(car,tr.side):tr.cabin,yaw:tr.yaw,approach:tr.approach,frame:car?{...cabinFrame(car,tr.side),groundY:tr.door[1]}:undefined};}
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
     const ride=attractionRide.active?attractionRide.pose:null;
-    return {attraction:ride?attractionRide.transition?.frame:null,seat:ride&&!attractionRide.transition?{position:ride.seat,yaw:ride.yaw,orientation:ride.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
+    return {attraction:ride?attractionActorFrame():null,seat:ride&&!attractionRide.transition&&!attractionRide.driver?{position:ride.seat,yaw:ride.yaw,orientation:ride.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
       dance:st.clubMode==='dance'&&clubAudio.energy()>0?st.danceStep:null,danceBeat:clubAudio.beat()};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
@@ -432,7 +434,7 @@ export default function WorldActors() {
   }
   function relocatePlayer(position:Vec3) {
     if(!player.current)return;
-    endAttractionRide();rideHeld.current=false;
+    releaseGuideActionHand();endAttractionRide();rideHeld.current=false;
     clearPlayerMotion(true);clearInput();grounded.current=false;
     player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
     portalTravel.current.previous=position;
@@ -465,7 +467,7 @@ export default function WorldActors() {
     return true;
   }
   function returnToCamp() {
-    endAttractionRide();rideHeld.current=false;
+    releaseGuideActionHand();endAttractionRide();rideHeld.current=false;
     const vehicle=useWorldStore.getState().activeVehicle;
     return returnPlayerToCamp(player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
@@ -657,6 +659,10 @@ export default function WorldActors() {
     else c.pitch=.12;
   }
   useEffect(() => {
+    const releaseAction=()=>releaseGuideActionHand();
+    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.activeVehicle||s.seat||s.card)releaseAction();});
+    const hiddenAction=()=>{if(document.hidden)releaseAction();};
+    document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
       if(attractionRide.active)return;
@@ -892,6 +898,7 @@ export default function WorldActors() {
     };
     debugTarget=api;
     return ()=>{
+      unsubscribeAction();releaseAction();document.removeEventListener('visibilitychange',hiddenAction);window.removeEventListener('blur',releaseAction);
       window.removeEventListener('keydown',down);window.removeEventListener('keyup',up);window.removeEventListener('blur',clearInput);
       document.removeEventListener('visibilitychange',hidden);gl.domElement.removeEventListener('wheel',wheel);unsubscribe();clearInput();
       el.removeEventListener('pointerdown',pointerDown);el.removeEventListener('pointermove',pointerMove);el.removeEventListener('pointerup',pointerUp);
@@ -911,10 +918,10 @@ export default function WorldActors() {
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(attractionRide.active){
       campPropActor.available=false;
-      cancelCampPropInteraction();
+      releaseGuideActionHand();cancelCampPropInteraction();
       if(!rideHeld.current){
         const start=player.current.translation();
-        if(attractionRide.transition)captureCoasterStart(attractionRide.transition,[start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
+        captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
         clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
@@ -923,11 +930,11 @@ export default function WorldActors() {
       if(gp.connected&&gp.buttons[9]&&!before[9]){useWorldStore.setState({paused:true});return;}
       if(gp.connected&&gp.buttons[1]&&!before[1])requestAttractionExit();
       stepWorldVehicles(dt);
-      const pose=attractionRide.pose,actor=attractionRide.transition?.frame,root=actor?.root??pose.seat;
+      const pose=attractionRide.pose,actor=attractionActorFrame(),root=actor?.root??pose.seat;
       const p:Vec3=[root[0],root[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT,root[2]];
       resetBody(player.current,p);guideYaw.current=actor?.yaw??pose.yaw;grounded.current=true;
       guideTargetSpeed.current=actor?.speed??0;moveIntent.current=actor&&actor.speed>.05?'walk':'idle';mineActor.available=false;
-      if(attractionRide.transition?.phase==='complete'){
+      if(attractionPhase()==='complete'){
         // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
         // it never selects a different platform position or silently sends them to camp.
         const landing=findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y);
@@ -939,7 +946,7 @@ export default function WorldActors() {
         return;
       }
       publishedTime.current+=dt;
-      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:'coaster'});}
+      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:attractionRide.driver?'ridge':'coaster'});}
       return;
     }
     if(rideHeld.current){
@@ -1160,8 +1167,9 @@ export default function WorldActors() {
       const inspecting=ibdInspectionBody.action;
       const trading=exchangeBody.action??inspecting;
       const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried;
-      if (campPropHand.facing && campPropActor.available && magnitude <= .05) {
-        const focus=campPropHand.facing;
+      const handFacing=guideActionHand.facing??campPropHand.facing;
+      if (handFacing && campPropActor.available && magnitude <= .05) {
+        const focus=handFacing;
         const desired=Math.atan2(-(focus[2]-p.z),focus[0]-p.x);
         guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*8,dt*8);
       }
@@ -1169,7 +1177,8 @@ export default function WorldActors() {
         const desired = Math.atan2(-(mining.target[2] - p.z), mining.target[0] - p.x);
         guideYaw.current += clamp(Math.atan2(Math.sin(desired - guideYaw.current), Math.cos(desired - guideYaw.current)), -dt * 10, dt * 10);
       }
-      let vx=locked?0:wx*speed,vz=locked?0:wz*speed;
+      const windPace=localWindPace([p.x,p.y,p.z],[wx,wz],running);
+      let vx=locked?0:wx*speed*windPace,vz=locked?0:wz*speed*windPace;
       if(trading){
         actions.current.jump=false;
         const dx=trading.anchor.stand[0]-p.x,dz=trading.anchor.stand[2]-p.z,distance=Math.hypot(dx,dz);
@@ -1262,7 +1271,7 @@ export default function WorldActors() {
       if((wet.shouldRescue||p.y< -80)&&!(rescueRetry.current.get('player')??0)){
         rescueRetry.current.set('player',1);
         const dry=nearestDryPoint(p.x,p.z);
-        const candidates:Vec3[]=[...(dry?[dry]:[]),...allRoadLandingCandidates(asTuple(p)).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
+        const candidates:Vec3[]=[...(alphaContainsWorld([p.x,p.y,p.z],25)?ALPHA_SAFE_GROUND.map(alphaWorld).sort((a,b)=>Math.hypot(a[0]-p.x,a[2]-p.z)-Math.hypot(b[0]-p.x,b[2]-p.z)):[]),...(dry?[dry]:[]),...allRoadLandingCandidates(asTuple(p)).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
         const landing=findSafePlayerLanding(world,rapier,player.current,candidates,WATER_Y);
         if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
       }
@@ -1334,7 +1343,7 @@ export default function WorldActors() {
       if(!pose.firstPerson&&(pose.orientation||attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
         const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
         const swept=pose.orientation
-          ?attractionObstruction.current.step(world,rapier,pose,radius,delta,`${attractionRide.revision}:${attractionRide.transition?.phase??'riding'}`,player.current??undefined)
+          ?attractionObstruction.current.step(world,rapier,pose,radius,delta,`${attractionRide.revision}:${attractionPhase()}`,player.current??undefined)
           :sweepCamera(world,rapier,attractionCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
         desired.set(swept.position.x,swept.position.y,swept.position.z);
         const diff=new Vector3(...pose.cameraPosition).sub(pivot).normalize();
