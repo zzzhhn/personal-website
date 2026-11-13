@@ -1,0 +1,30 @@
+TAP version 13
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: ferry walking stance boots can lower onto the actual tread during a descending step
+not ok 1 - ferry walking stance boots can lower onto the actual tread during a descending step
+  ---
+  duration_ms: 27.172625
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/ferry-boarding.test.mjs:66:1'
+  failureType: 'testCodeFailure'
+  error: '{"index":0,"phase":0,"gap":0.23160769686331606,"point":[-15.425423510199911,1.0550000000000002,113.00024339906295]}'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/ferry-boarding.test.mjs:73:477)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# {"index":0,"phase":0,"gap":0.23160769686331606,"point":[-15.425423510199911,1.0550000000000002,113.00024339906295],"ankle":[-15.610972319377826,1.161144327316355,113.0927252935288],"supports":[{"v":[-15.676306886310476,1.1127160228043091,113.17651072692054],"ground":0.8},{"v":[-15.676306886310476,1.1127160228043091,113.17651072692054],"ground":0.8},{"v":[-15.679011367415377,1.1042824859017462,113.01675605113876],"ground":0.8},{"v":[-15.679011367415377,1.1042824859017462,113.01675605113876],"ground":0.8},{"v":[-15.607137549247387,1.067934562605034,113.00967764679832],"ground":0.8}]}
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 529.849208

@@ -1,0 +1,179 @@
+TAP version 13
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: ferry boarding, steps, canopy and exact safe exits clear actual boat and pier geometry at both ends
+not ok 1 - ferry boarding, steps, canopy and exact safe exits clear actual boat and pier geometry at both ends
+  ---
+  duration_ms: 7900.104541
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/ferry-boarding.test.mjs:21:1'
+  failureType: 'testCodeFailure'
+  error: 'IK ground uses actual world-space pier/terrain surface'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/ferry-boarding.test.mjs:54:10)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# {"index":0,"segments":14,"landing":[-10,2.019999976158142,109],"delta":-2.3841857599293803e-8}
+# Subtest: actual G24 helmet clears the ferry canopy from the highest boarding tread
+ok 2 - actual G24 helmet clears the ferry canopy from the highest boarding tread
+  ---
+  duration_ms: 69.682083
+  type: 'test'
+  ...
+# {"actualWalkMaximumHeight":1.7012591626331177,"canopyBottom":2.1600000113248825,"highestTread":0.34,"clearance":0.11874084869176471}
+# Subtest: ferry walking stance boots can lower onto the actual tread during a descending step
+ok 3 - ferry walking stance boots can lower onto the actual tread during a descending step
+  ---
+  duration_ms: 15.654666
+  type: 'test'
+  ...
+# {"stanceSamples":16,"maximumStanceGap":0.030521901568385412}
+# Subtest: actual route interpolation remains within terminal elevations and transform endpoints
+ok 4 - actual route interpolation remains within terminal elevations and transform endpoints
+  ---
+  duration_ms: 2.043792
+  type: 'test'
+  ...
+# Subtest: fixed gangway visible top, collision triangles and foot sampler share the same sloping surface
+ok 5 - fixed gangway visible top, collision triangles and foot sampler share the same sloping surface
+  ---
+  duration_ms: 2.426958
+  type: 'test'
+  ...
+# Subtest: fresh runtime GLBs support actual G24 buttock patch and both boots through full route orientation
+ok 6 - fresh runtime GLBs support actual G24 buttock patch and both boots through full route orientation
+  ---
+  duration_ms: 92.30375
+  type: 'test'
+  ...
+# 1060 boot/physical-footrest samples; minimum=-0.0005282592365473127m
+# Subtest: SitDown and StandUp boots remain above their real boarding/footrest supports
+ok 7 - SitDown and StandUp boots remain above their real boarding/footrest supports
+  ---
+  duration_ms: 76.414959
+  type: 'test'
+  ...
+# 68688 SitDown/StandUp boot/support samples, minimum=0.0029997945860992248m
+# Subtest: the same drag delta has the walking camera direction in orbit and first person
+ok 8 - the same drag delta has the walking camera direction in orbit and first person
+  ---
+  duration_ms: 0.805292
+  type: 'test'
+  ...
+# Subtest: full orbit during a real inversion changes the view without moving the rider or train
+ok 9 - full orbit during a real inversion changes the view without moving the rider or train
+  ---
+  duration_ms: 0.525125
+  type: 'test'
+  ...
+# Subtest: first-person head turn preserves its eye point even when inverted
+ok 10 - first-person head turn preserves its eye point even when inverted
+  ---
+  duration_ms: 0.058334
+  type: 'test'
+  ...
+# Subtest: close third-person orbit stays on the train passenger side through inversions
+ok 11 - close third-person orbit stays on the train passenger side through inversions
+  ---
+  duration_ms: 0.186375
+  type: 'test'
+  ...
+# Subtest: tiny drags, pitch changes and the yaw wrap are continuous throughout the complete loop
+ok 12 - tiny drags, pitch changes and the yaw wrap are continuous throughout the complete loop
+  ---
+  duration_ms: 85.4405
+  type: 'test'
+  ...
+# Subtest: first-person head look and explicit reset/view switching preserve their original contracts for a whole ride
+ok 13 - first-person head look and explicit reset/view switching preserve their original contracts for a whole ride
+  ---
+  duration_ms: 5.570917
+  type: 'test'
+  ...
+# Subtest: an authored view passing through world vertical does not flip its third-person pitch axis
+ok 14 - an authored view passing through world vertical does not flip its third-person pitch axis
+  ---
+  duration_ms: 37.622334
+  type: 'test'
+  ...
+# Subtest: manual view remains bounded, ignores invalid input and resets explicitly
+ok 15 - manual view remains bounded, ignores invalid input and resets explicitly
+  ---
+  duration_ms: 0.100375
+  type: 'test'
+  ...
+# Subtest: click waits for the exact physics pose; boarding approaches, jogs, turns, sits and settles before dispatch
+ok 16 - click waits for the exact physics pose; boarding approaches, jogs, turns, sits and settles before dispatch
+  ---
+  duration_ms: 1.708958
+  type: 'test'
+  ...
+# Subtest: the stair jog traverses every tread in about two seconds and eases into the stationary turns
+ok 17 - the stair jog traverses every tread in about two seconds and eases into the stationary turns
+  ---
+  duration_ms: 1.754667
+  type: 'test'
+  ...
+# Subtest: pause, tab hiding and stale-frame gaps freeze every boarding and exit phase
+ok 18 - pause, tab hiding and stale-frame gaps freeze every boarding and exit phase
+  ---
+  duration_ms: 0.651209
+  type: 'test'
+  ...
+# Subtest: boarding cancellation never dispatches; moving exits do not jump to the station
+ok 19 - boarding cancellation never dispatches; moving exits do not jump to the station
+  ---
+  duration_ms: 3.876708
+  type: 'test'
+  ...
+# Subtest: bridge exit requests retain ownership; explicit camp recovery invalidates it
+ok 20 - bridge exit requests retain ownership; explicit camp recovery invalidates it
+  ---
+  duration_ms: 0.107584
+  type: 'test'
+  ...
+# Subtest: the entry apron, six real tread tops and clear car opening agree with the animated route
+ok 21 - the entry apron, six real tread tops and clear car opening agree with the animated route
+  ---
+  duration_ms: 1078.378792
+  type: 'test'
+  ...
+# Subtest: both shipped carriage LODs have a real rider-right doorway aligned with the new stairs
+ok 22 - both shipped carriage LODs have a real rider-right doorway aligned with the new stairs
+  ---
+  duration_ms: 23.423
+  type: 'test'
+  ...
+# Subtest: actual running boot soles clear all six treads going up and down
+ok 23 - actual running boot soles clear all six treads going up and down
+  ---
+  duration_ms: 136.178083
+  type: 'test'
+  ...
+# 301464 sole/tread samples; minimum clearance 0.003000 m
+# Subtest: actual G24 seat patch follows full train rotation despite an interpolated parent; tread IK restores bones
+ok 24 - actual G24 seat patch follows full train rotation despite an interpolated parent; tread IK restores bones
+  ---
+  duration_ms: 15.810875
+  type: 'test'
+  ...
+# Subtest: the changed React integration files have no TypeScript syntax diagnostics
+ok 25 - the changed React integration files have no TypeScript syntax diagnostics
+  ---
+  duration_ms: 183.852666
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 24
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8582.441583

@@ -1,6 +1,9 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
 import { transportBoardingGeometry } from '../../rides/transport-boarding';
-import { alphaHeight } from '../alpha-terrain';
+import { alphaHeight,alphaTerrainData } from '../alpha-terrain';
+import { alphaPierDecks } from '../alpha-mainland-pier';
+import {meshHeight} from '../../WorldLandform';
+import {WATER_Y} from '../../layout';
 import { Vector3 } from 'three';
 import { ALPHA_CABLE_PATH, ALPHA_SLED_PATH, ALPHA_ORIGIN, ALPHA_YAW, ALPHA_SOCKETS, ALPHA_FERRY_WATER_PATH, ALPHA_MAINLAND_DOCK, ALPHA_MAINLAND_PIER_POLYGON, alphaWorld } from '../alpha-layout';
 import type { Vec3 } from '../../types';
@@ -45,20 +48,32 @@ export function alphaFerryRoute():TransportRoute {
  const polygon=([-1,1].flatMap(x=>[-1,1].map(z=>{const v=new Vector3(x*dock.size[0]/2,0,z*dock.size[2]/2).applyAxisAngle(new Vector3(0,1,0),dock.yaw);return alphaWorld([dock.ground[0]+v.x,dock.ground[1],dock.ground[2]+v.z]);})));
  // Sort the four source rectangle corners into their perimeter, never invent a second berth.
  const center=alphaWorld(dock.ground);polygon.sort((a,b)=>Math.atan2(a[2]-center[2],a[0]-center[0])-Math.atan2(b[2]-center[2],b[0]-center[0]));
- const route:TransportRoute={id:'alpha-ferry',kind:'ferry',transform:{origin:[0,0,0],yaw:0},path,duration:64,terminals:[
+ const route:TransportRoute={id:'alpha-ferry',kind:'ferry',footLowering:dimensions.ferryBoardingSteps[0].center[1]+dimensions.ferryBoardingSteps[0].size[1]/2,transform:{origin:[0,0,0],yaw:0},path,duration:64,terminals:[
  terminal('mainland',path[0],[ALPHA_MAINLAND_DOCK.safeExit[0],ALPHA_MAINLAND_DOCK.ground],ALPHA_MAINLAND_DOCK.safeExit[0],'ferry',path,0),
  terminal('island',path.at(-1)!,dock.approach.slice(-2).map(alphaWorld),alphaWorld(dock.safeExit[0]),'ferry',path,1)]};
  for(const index of [0,1] as const){
   const t=route.terminals[index],q=new Vector3(1,0,0).applyAxisAngle(new Vector3(0,1,0),t.yaw),side=new Vector3(0,0,-1).applyAxisAngle(new Vector3(0,1,0),t.yaw);
-  const inside:Vec3=[t.vehicle[0]+q.x,.8,t.vehicle[2]+q.z],door:Vec3=[inside[0]+side.x*1.45,.8,inside[2]+side.z*1.45],outline=index===0?ALPHA_MAINLAND_PIER_POLYGON:polygon;
+  const inside:Vec3=[t.vehicle[0]+q.x,.8,t.vehicle[2]+q.z],outer=dimensions.ferryBoardingSteps[0],inner=dimensions.ferryBoardingSteps[1],outerTop=outer.center[1]+outer.size[1]/2,innerTop=inner.center[1]+inner.size[1]/2,outerSide=-(outer.center[2]-outer.size[2]/2),outerEnd=-(outer.center[2]+outer.size[2]/2),innerEnd=-(inner.center[2]+inner.size[2]/2),stepPoint=(offset:number,top:number):Vec3=>[inside[0]+side.x*offset,.8+top,inside[2]+side.z*offset],door=stepPoint(outerSide,outerTop),stair=[stepPoint(outerEnd,outerTop),stepPoint(outerEnd-.3,outerTop),stepPoint(innerEnd-.1,innerTop),stepPoint(innerEnd-.3,innerTop)],outline=index===0?ALPHA_MAINLAND_PIER_POLYGON:polygon;
   let edge:Vec3=[...outline[0]],distance=Infinity;
   for(let i=0;i<outline.length;i++){const a=outline[i],b=outline[(i+1)%outline.length],dx=b[0]-a[0],dz=b[2]-a[2],u=Math.max(0,Math.min(1,((door[0]-a[0])*dx+(door[2]-a[2])*dz)/(dx*dx+dz*dz))),p:Vec3=[a[0]+dx*u,a[1],a[2]+dz*u],d=Math.hypot(p[0]-door[0],p[2]-door[2]);if(d<distance){distance=d;edge=p;}}
   const bridge:Vec3[]=[];const count=Math.max(2,Math.ceil(distance/.4));
-  for(let i=0;i<=count;i++){const u=i/count,x=door[0]+(edge[0]-door[0])*u,z=door[2]+(edge[2]-door[2])*u,y=.8+(edge[1]-.8)*u,ground=index===1?alphaHeight(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]):-Infinity;bridge.push([x,Math.max(y,Math.min(edge[1],ground+.006)),z]);}
+  for(let i=0;i<=count;i++){const u=i/count,x=door[0]+(edge[0]-door[0])*u,z=door[2]+(edge[2]-door[2])*u,y=door[1]+(edge[1]-door[1])*u,ground=index===1?alphaHeight(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]):-Infinity;bridge.push([x,Math.max(y,Math.min(edge[1],ground+.006)),z]);}
   const simplified:Vec3[]=[];for(const point of bridge){simplified.push(point);while(simplified.length>=3){const n=simplified.length,a=new Vector3(...simplified[n-3]),b=new Vector3(...simplified[n-2]),c=new Vector3(...simplified[n-1]);if(b.clone().sub(a).cross(c.clone().sub(b)).lengthSq()>1e-12)break;simplified.splice(n-2,1);}}
-  t.boarding=[t.safeExit,...simplified.slice().reverse(),inside];t.gangwayStart=0;t.egress=[inside,...simplified,t.safeExit];
+  t.boarding=[t.safeExit,...simplified.slice().reverse(),...stair,inside];t.gangwayStart=1;t.gangwayEnd=simplified.length;t.egress=[inside,...stair.slice().reverse(),...simplified,t.safeExit];
  }
  return route;
 }
 
 export function alphaTransportBoardingFootprints(includeFerry=false){return (includeFerry?[...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()]:ALPHA_TRANSPORT_ROUTES).flatMap(route=>route.terminals.flatMap((t,index)=>{const data=transportBoardingGeometry(route,index as 0|1);return data.segments.map(s=>({...s,halfWidth:.65}));}));}
+
+/** Actual source mesh interpolation and physical pier tops, in world coordinates.
+ * The ferry has identity transform; passing scene-local alphaHeight directly would sample
+ * a different mountain and plant boots through/above its real mainland platform. */
+let ferryTerrain:ReturnType<typeof alphaTerrainData>|null=null;
+export function alphaFerryGroundHeight(x:number,z:number):number|null {
+ let y=meshHeight(x,z)??-Infinity;
+ const d=ferryTerrain??=alphaTerrainData(),p=d.positions,lx=x-ALPHA_ORIGIN[0],lz=z-ALPHA_ORIGIN[2],x0=p[0],x1=p[d.nx*3],z0=p[2],z1=p[d.nz*(d.nx+1)*3+2],gx=(lx-x0)/(x1-x0)*d.nx,gz=(lz-z0)/(z1-z0)*d.nz;
+ if(gx>=0&&gx<d.nx&&gz>=0&&gz<d.nz){const i=Math.floor(gx),j=Math.floor(gz),u=gx-i,v=gz-j,a=j*(d.nx+1)+i,h00=p[a*3+1],h10=p[(a+1)*3+1],h01=p[(a+d.nx+1)*3+1],h11=p[(a+d.nx+2)*3+1];y=Math.max(y,u+v<=1?h00+(h10-h00)*u+(h01-h00)*v:h11+(h01-h11)*(1-u)+(h10-h11)*(1-v));}
+ for(const deck of alphaPierDecks)if(Math.abs(x-deck.p[0])<=deck.size[0]/2&&Math.abs(z-deck.p[2])<=deck.size[2]/2)y=Math.max(y,deck.p[1]+deck.size[1]/2);
+ return y>=WATER_Y+.18?y:null;
+}

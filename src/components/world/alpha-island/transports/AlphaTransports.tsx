@@ -10,7 +10,7 @@ import { night } from '../../WorldNight';
 import { useInteractable } from '../../WorldInteract';
 import { useWorldStore } from '../../store';
 import { attractionRide, beginDrivenAttractionRide, endAttractionRide, requestAttractionExit, updateAttractionRide } from '../../attractions/attraction-ride';
-import { alphaFerryRoute } from './alpha-routes';
+import { alphaFerryRoute,alphaFerryGroundHeight } from './alpha-routes';
 import { transportInfrastructure } from './transport-infrastructure';
 import { transportBoardingGeometry } from '../../rides/transport-boarding';
 import { resetAttractionLook } from '../../attractions/attraction-camera';
@@ -21,8 +21,8 @@ import { registerRideGround, type TransportRoute } from '../../rides/ride-contra
 import type { Vec3 } from '../../types';
 export const transportQaHold={value:false};
 import { useTransportStatus,transportActions,transportNames as names } from './transport-status';
-export interface AlphaTransportsProps { routes:TransportRoute[]; /** local terrain elevation; supports share scene ground */ groundHeight?:(x:number,z:number)=>number }
-export default function AlphaTransports({routes,groundHeight}:AlphaTransportsProps){const effective=useMemo(()=>import.meta.env.DEV&&new URLSearchParams(window.location.search).get('ferryFixture')==='1'?[...routes,alphaFerryRoute()]:routes,[routes]);useEffect(()=>{transportActions.requestExit=requestAttractionExit;transportActions.resetView=resetAttractionLook;return()=>{if(transportActions.requestExit===requestAttractionExit){transportActions.requestExit=()=>{};transportActions.resetView=()=>{};}};},[]);return <>{effective.map(route=><Transport key={route.id} route={route} groundHeight={groundHeight}/>)}</>;}
+export interface AlphaTransportsProps { routes:TransportRoute[]; /** local terrain elevation; supports share scene ground */ groundHeight?:(x:number,z:number)=>number|null }
+export default function AlphaTransports({routes,groundHeight}:AlphaTransportsProps){const effective=useMemo(()=>import.meta.env.DEV&&new URLSearchParams(window.location.search).get('ferryFixture')==='1'?[...routes,alphaFerryRoute()]:routes,[routes]);useEffect(()=>{transportActions.requestExit=requestAttractionExit;transportActions.resetView=resetAttractionLook;return()=>{if(transportActions.requestExit===requestAttractionExit){transportActions.requestExit=()=>{};transportActions.resetView=()=>{};}};},[]);return <>{effective.map(route=><Transport key={route.id} route={route} groundHeight={route.kind==='ferry'?alphaFerryGroundHeight:groundHeight}/>)}</>;}
 function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:AlphaTransportsProps['groundHeight']}){
  const cablePitch=useRef(0);
  const floorBody=useRef<RapierRigidBody>(null),environmentLease=useRef<WeatherLease|null>(null);
@@ -73,8 +73,8 @@ function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:Alp
   if(vehicle.current){vehicle.current.position.set(...sample.vehicle);vehicle.current.quaternion.set(...sample.orientation);}
  },-60);
  return <group name={route.id} userData={{noOcclusionFade:true}}>
-  <TransportInfrastructure route={route} groundHeight={groundHeight}/>
-  <RigidBody ref={floorBody} type="kinematicPosition" colliders={false} position={initial.vehicle} quaternion={initial.orientation} userData={{surface:true,solid:true,assetId:route.id+'-vehicle-floor'}}>{route.kind==='sled'?<>{dimensions.sledFootDecks.map((deck,i)=><CuboidCollider key={i} position={deck.center as Vec3} args={deck.size.map(v=>v/2) as Vec3}/>)}</>:<CuboidCollider position={[0,-.1,0]} args={[route.kind==='ferry'?3.5:1.6,.1,route.kind==='ferry'?1.45:1.2]}/>}{route.kind==='cable'&&<><CuboidCollider position={[1.5,1.1,0]} args={[.06,1.1,1.1]}/><CuboidCollider position={[-1.5,1.1,0]} args={[.06,1.1,1.1]}/><CuboidCollider position={[0,1.1,-1.12]} args={[1.5,1.1,.05]}/></>}{route.kind!=='sled'&&<CuboidCollider position={[0,2.25,0]} args={[route.kind==='ferry'?2.9:1.725,.1,route.kind==='ferry'?1.625:1.325]}/>}</RigidBody>
+  <TransportInfrastructure route={route} groundHeight={route.kind==='ferry'?alphaFerryGroundHeight:groundHeight}/>
+  <RigidBody ref={floorBody} type="kinematicPosition" colliders={false} position={initial.vehicle} quaternion={initial.orientation} userData={{surface:true,solid:true,assetId:route.id+'-vehicle-floor'}}>{route.kind==='sled'?<>{dimensions.sledFootDecks.map((deck,i)=><CuboidCollider key={i} position={deck.center as Vec3} args={deck.size.map(v=>v/2) as Vec3}/>)}</>:<CuboidCollider position={[0,-.1,0]} args={[route.kind==='ferry'?3.5:1.6,.1,route.kind==='ferry'?1.45:1.2]}/>}{route.kind==='ferry'&&dimensions.ferryBoardingSteps.map((step,i)=><CuboidCollider key={'step-'+i} position={step.center as Vec3} args={step.size.map(v=>v/2) as Vec3}/>)}{route.kind==='cable'&&<><CuboidCollider position={[1.5,1.1,0]} args={[.06,1.1,1.1]}/><CuboidCollider position={[-1.5,1.1,0]} args={[.06,1.1,1.1]}/><CuboidCollider position={[0,1.1,-1.12]} args={[1.5,1.1,.05]}/></>}{route.kind!=='sled'&&<CuboidCollider position={[0,2.25,0]} args={[route.kind==='ferry'?2.9:1.725,.1,route.kind==='ferry'?1.625:1.325]}/>}</RigidBody>
   <group ref={vehicle} position={initial.vehicle} quaternion={initial.orientation} userData={{shadowDynamic:true}}>
    <Suspense fallback={null}><TransportModel kind={route.kind} cablePitch={cablePitch}/></Suspense>
   </group>

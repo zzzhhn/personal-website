@@ -4,7 +4,7 @@ import { BoxGeometry,BufferGeometry,DoubleSide,Ray,CylinderGeometry,Float32Buffe
 import{mergeGeometries}from'three/addons/utils/BufferGeometryUtils.js';import{MeshBVH}from'three-mesh-bvh';
 import{ALPHA_TRANSPORT_ROUTES,alphaFerryRoute}from'./alpha-routes.ts';import{transportInfrastructure}from'./transport-infrastructure.ts';import{sampleTransport,transportCurve,transportWorld}from'../../rides/transport-route.ts';import{readWorldCraftGltf,disposeWorldCraftGltf}from'../../world-craft-gltf-test.mjs';import{alphaHeight,alphaTerrainData}from'../alpha-terrain.ts';import{ALPHA_ORIGIN}from'../alpha-layout.ts';import{meshHeight,buildTerrain}from'../../WorldLandform.ts';
 import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';
-import{alphaPierDecks}from'../AlphaMainlandPier.tsx';
+import{alphaPierDecks,alphaMainlandPierStructure}from'../alpha-mainland-pier.ts';
 const one=new Vector3(1,1,1),up=new Vector3(0,1,0),matrix=(p,q)=>new Matrix4().compose(new Vector3(...p),q,one);
 function onlyPosition(source){const g=new BufferGeometry(),a=source.getAttribute('position');g.setAttribute('position',new Float32BufferAttribute(Array.from(a.array),3));if(source.index)g.setIndex(Array.from(source.index.array));return g;}
 function beam(a,b,r){const v=new Vector3(...b).sub(new Vector3(...a));return new CylinderGeometry(r,r,v.length(),8).applyMatrix4(matrix(new Vector3(...a).add(new Vector3(...b)).multiplyScalar(.5).toArray(),new Quaternion().setFromUnitVectors(up,v.normalize())));}
@@ -35,4 +35,18 @@ test('ferry clears actual rendered/collided terrain triangles and conservative w
  for(let i=0;i<samples.length;i++){const s=samples[i],m=matrix(s.vehicle,new Quaternion(...s.orientation));if(tree.intersectsGeometry(parts.base,m))bad.push({u:i/500,kind:'terrain triangles'});if(pierTree.intersectsGeometry(parts.base,m))bad.push({u:i/500,kind:'pier solid envelope'});
  const inverse=m.clone().invert();for(let k=0;k<vertices.length;k+=3){const p=new Vector3().fromArray(vertices,k).applyMatrix4(inverse);if(!hullBox.containsPoint(p))continue;ray.set(p,direction);const hits=parts.hull.boundsTree.raycast(ray,DoubleSide).map(h=>h.distance).sort((a,b)=>a-b).filter((d,i,a)=>i===0||d-a[i-1]>1e-5);if(hits.length%2){bad.push({u:i/500,kind:'terrain contained inside displacement hull'});break;}}}
  context.diagnostic(JSON.stringify({samples:501,terrainTriangles:vertices.length/9,pierSolids:piers.length,failures:bad.length,examples:bad.slice(0,12)}));assert.deepEqual(bad,[]);parts.base.dispose();parts.hull.dispose();parts.release();land.dispose();piers.forEach(g=>g.dispose());
+});
+
+test('ferry complete runtime clears actual pier boards, rails, posts, fixed bridges and both terrain meshes',async context=>{
+ const route=alphaFerryRoute(),curve=transportCurve(route),parts=await carParts('ferry'),pier=alphaMainlandPierStructure(),obstacles=pier.parts.map(p=>({name:'actual mainland pier '+p.finish,g:onlyPosition(p.geometry)}));
+ for(const index of[0,1]){const d=transportBoardingGeometry(route,index),g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(d.positions,3));g.setIndex(Array.from(d.indices));obstacles.push({name:'fixed ferry gangway '+index,g});}
+ const old=buildTerrain(),alpha=alphaTerrainData(),landPositions=[];
+ for(const[data,origin]of[[old,[0,0,0]],[alpha,ALPHA_ORIGIN]])for(let i=0;i<data.indices.length;i+=3){const ps=[0,1,2].map(k=>new Vector3().fromArray(data.positions,data.indices[i+k]*3).add(new Vector3(...origin)));if(Math.max(...ps.map(p=>p.x))<-23||Math.min(...ps.map(p=>p.x))>150||Math.max(...ps.map(p=>p.z))<105||Math.min(...ps.map(p=>p.z))>153)continue;ps.forEach(p=>landPositions.push(...p.toArray()));}
+ const land=new BufferGeometry();land.setAttribute('position',new Float32BufferAttribute(landPositions,3));obstacles.push({name:'actual old and Alpha terrain',g:land});
+ for(const o of obstacles)o.tree=new MeshBVH(o.g);const combined=mergeGeometries(obstacles.map(o=>o.g),false),tree=new MeshBVH(combined),times=new Set();
+ for(let i=0;i<=500;i++)times.add(i/500);for(let i=0;i<=300;i++){times.add(i*.0002);times.add(1-i*.0002);}const bad=[];
+ for(const u of [...times].sort((a,b)=>a-b)){const s=sampleTransport(route,u,curve),m=matrix(s.vehicle,new Quaternion(...s.orientation));if(tree.intersectsGeometry(parts.base,m))bad.push({u,hits:obstacles.filter(o=>o.tree.intersectsGeometry(parts.base,m)).map(o=>o.name)});}
+ if(bad.length){const asset=await readWorldCraftGltf(['public/assets/world/alpha-island/transports/ferry.glb']);asset.scene.updateMatrixWorld(true);const first=bad[0],pose=sampleTransport(route,first.u,curve),m=matrix(pose.vehicle,new Quaternion(...pose.orientation)),hits=[];asset.scene.traverse(o=>{if(!o.isMesh)return;const g=onlyPosition(o.geometry).applyMatrix4(o.matrixWorld);if(obstacles.filter(o=>first.hits.includes(o.name)).some(o=>o.tree.intersectsGeometry(g,m)))hits.push(o.name);g.dispose();});context.diagnostic(JSON.stringify({first,vehicle:pose.vehicle,orientation:pose.orientation,actualMovingParts:hits}));disposeWorldCraftGltf(asset.scene);}
+ context.diagnostic(JSON.stringify({samples:times.size,obstacles:obstacles.length,terrainTriangles:landPositions.length/9,collisions:bad.length,examples:bad.slice(0,16)}));assert.deepEqual(bad,[]);
+ parts.base.dispose();parts.hull?.dispose();parts.release();combined.dispose();obstacles.forEach(o=>o.g.dispose());pier.parts.forEach(p=>p.geometry.dispose());
 });

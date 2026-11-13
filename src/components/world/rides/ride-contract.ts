@@ -3,6 +3,9 @@ import type { AttractionRidePose } from '../attractions/attraction-ride';
 
 export interface RideActorFrame {
   stairs?: boolean;
+  /** Explicit ferry stair adaptation; legacy rides retain their original lift-only solve. */
+  footLowering?: number;
+  footContactHold?: boolean;
   /** Ground sampler belongs to the current boarding route, never to another ride. */
   groundId?: string;
   root: Vec3; yaw: number; speed: number;
@@ -43,6 +46,8 @@ export interface TransportTerminal {
   clearance: Vec3;
 }
 export interface TransportRoute {
+  /** Maximum visual pelvis descent for physical ferry stair contact, metres; opt-in. */
+  footLowering?:number;
   id: string;
   kind: 'cable' | 'sled' | 'ferry';
   transform: TransportTransform;

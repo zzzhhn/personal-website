@@ -4,7 +4,7 @@ import type { Vec3 } from '../types';
 import type { TransportRoute } from './ride-contract';
 import { sampleTransport, transportWorld,tuple } from './transport-route.ts';
 /** Final fixed gangway ends at the doorway; the vehicle owns its interior floor. */
-export function transportBoardingGeometry(route:TransportRoute,index:0|1,groundHeight?:(x:number,z:number)=>number){
+export function transportBoardingGeometry(route:TransportRoute,index:0|1,groundHeight?:(x:number,z:number)=>number|null){
  const terminal=route.terminals[index],full=terminal.boarding;
  const path=full.slice(terminal.gangwayStart??Math.max(0,full.length-2),terminal.gangwayEnd===undefined?undefined:terminal.gangwayEnd+1).map(p=>[...p] as Vec3);
  const inside=path.at(-1)!,from=path.at(-2)!,direction=new Vector3(...inside).sub(new Vector3(...from)).normalize();
@@ -39,10 +39,11 @@ export function transportBoardingGeometry(route:TransportRoute,index:0|1,groundH
    for(const deck of dimensions.sledFootDecks)if(Math.abs(v.x-deck.center[0])<=deck.size[0]/2&&Math.abs(v.z-deck.center[2])<=deck.size[2]/2)top=Math.max(top??-Infinity,sample.vehicle[1]+deck.center[1]+deck.size[1]/2);
   }else{
    const halfX=route.kind==='ferry'?3.5:1.6,halfZ=route.kind==='ferry'?1.45:1.2;
+   if(route.kind==='ferry')for(const step of dimensions.ferryBoardingSteps)if(Math.abs(v.x-step.center[0])<=step.size[0]/2&&Math.abs(v.z-step.center[2])<=step.size[2]/2)top=Math.max(top??-Infinity,sample.vehicle[1]+step.center[1]+step.size[1]/2);
    if(Math.abs(v.x)<=halfX&&Math.abs(v.z)<=halfZ){const deck=sample.vehicle[1]+(v.x>=.31&&v.x<=.71&&Math.abs(v.z)<=.34?.13:0);top=Math.max(top??-Infinity,deck);}
   }
   if(top!==null)return top;
-  return groundHeight?groundHeight(lx,lz)+route.transform.origin[1]:null;
+  const base=groundHeight?.(lx,lz);return base===null||base===undefined?null:base+route.transform.origin[1];
  };
  return {positions:new Float32Array(positions),indices:new Uint32Array(indices),support,path:path.map(p=>transportWorld(p,route.transform)),segments:segments.map(s=>({a:transportWorld(s.a,route.transform),b:transportWorld(s.b,route.transform)}))};
 }
