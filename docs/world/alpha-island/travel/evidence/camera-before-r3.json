@@ -1,0 +1,45 @@
+{
+  "status": "WIP before r3; camera position/ride pose measured via live renderer, quaternion reconstructed from measured position+published look target/world-up",
+  "source": "bf83f07 + pre-freeze camera portal WIP, old cable GLB d7b35b6663e307865a79e3b7e7eaba25098a9e0a37c53cad89d6ced579a8d39e",
+  "u": 0.22950739423914132,
+  "position": [
+    276.06757671363874,
+    46.51865321092759,
+    153.65379496969908
+  ],
+  "target": [
+    272.4873916227204,
+    45.19865321092758,
+    161.63328585037348
+  ],
+  "up": [
+    0,
+    1,
+    0
+  ],
+  "reconstructedQuaternion": [
+    -0.015662881522888517,
+    0.975106607747411,
+    0.07317139267950007,
+    0.2087288311735571
+  ],
+  "fov": 55,
+  "viewport": [
+    1440,
+    900
+  ],
+  "deviceScaleFactor": 1,
+  "quality": "high",
+  "playerWeather": "clear",
+  "effectiveRideWeather": {
+    "rain": 0.406851791996097,
+    "snow": 0
+  },
+  "dayMinutes": 720,
+  "nightMinutes": 0,
+  "images": [
+    "cable-external-player-day.png",
+    "cable-external-player-night.png"
+  ],
+  "exposure": "not captured directly; unchanged renderer setting"
+}

@@ -1,4 +1,4 @@
-import dimensions from './transport-dimensions.json';
+import dimensions from './transport-dimensions.json' with {type:'json'};
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -97,12 +97,12 @@ function TransportModel({kind,cablePitch}:{kind:TransportRoute['kind'];cablePitc
 /** Shared curve samples generate the visible trough and its exact walkable/support triangles. */
 function TransportInfrastructure({route,groundHeight}:{route:TransportRoute;groundHeight?:AlphaTransportsProps['groundHeight']}){
  const pack=useMemo(()=>{
-  const data=transportInfrastructure(route,groundHeight),geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(data.vertices,3));geometry.setAttribute('color',new Float32BufferAttribute(data.colors,3));geometry.setIndex(Array.from(data.indices));geometry.computeVertexNormals();
+  const data=transportInfrastructure(route,groundHeight),geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(data.renderVertices,3));geometry.setAttribute('color',new Float32BufferAttribute(data.renderColors,3));geometry.setIndex(Array.from(data.renderIndices));geometry.computeVertexNormals();
   return{...data,geometry};
  },[route,groundHeight]);
  useEffect(()=>()=>pack.geometry.dispose(),[pack]);
  return <>
-  {route.kind!=='ferry'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color={route.kind==='sled'?'#ffffff':'#606b72'} roughness={.78} metalness={route.kind==='cable'?.75:0}/></mesh>}
+  {route.kind==='sled'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color={route.kind==='sled'?'#ffffff':'#606b72'} roughness={.78} metalness={route.kind==='cable'?.75:0}/></mesh>}
   {route.kind==='sled'&&<RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:route.id+'-trough'}}><TrimeshCollider args={[pack.vertices,pack.indices]} friction={.5}/></RigidBody>}
   {route.kind==='sled'&&[-.77,.77].map(side=><PathRail key={side} route={route} offset={side} elevation={.08}/>)}
   {route.kind==='cable'&&<PathRail route={route} offset={0} elevation={dimensions.cable.cableHeight}/>}

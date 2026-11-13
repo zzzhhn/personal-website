@@ -1,4 +1,4 @@
-import dimensions from './transport-dimensions.json';
+import dimensions from './transport-dimensions.json' with {type:'json'};
 import { transportBoardingGeometry } from '../../rides/transport-boarding';
 import { alphaHeight } from '../alpha-terrain';
 import { Vector3 } from 'three';
