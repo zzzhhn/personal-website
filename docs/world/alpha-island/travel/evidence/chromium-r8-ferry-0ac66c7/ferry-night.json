@@ -1,0 +1,82 @@
+{
+  "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+  "engine": "chromium",
+  "fixture": "arrival via development probe; ordinary E and camera unless hold explicitly recorded",
+  "state": {
+    "held": true,
+    "active": true,
+    "completed": false,
+    "phase": "riding",
+    "id": "alpha-ferry",
+    "u": 0.10013034171875299,
+    "blocked": false,
+    "exitBlocked": false,
+    "exitRequested": false,
+    "p": [
+      -10.79572868347168,
+      2.0999999046325684,
+      127.90211486816406
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "grounded": true,
+    "animation": "SitIdle",
+    "footContact": {
+      "drop": 0,
+      "held": false,
+      "budget": 0,
+      "pelvisWorldY": null
+    },
+    "weather": "clear",
+    "paused": false,
+    "light": "night",
+    "worldMinutes": 0,
+    "night": 1,
+    "climate": {
+      "rain": 0,
+      "snow": 0
+    },
+    "camera": {
+      "position": [
+        -8.977662412908497,
+        2.60015546806566,
+        122.50864706553027
+      ],
+      "quaternion": [
+        -0.007372514531523818,
+        0.9857914485782285,
+        0.04495170245395915,
+        0.16167934433937753
+      ],
+      "fov": 55,
+      "near": 0.1,
+      "far": 600,
+      "exposure": 1,
+      "canvas": {
+        "width": 1728,
+        "height": 1080
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "safety": {
+      "firstLegHit": null,
+      "firstLegDegenerate": false,
+      "eyeOverlapping": false,
+      "validOrigin": true,
+      "origin": [
+        -10.189360826420966,
+        2.3,
+        126.1014716761714
+      ],
+      "visibilityHit": null,
+      "visibilityLimited": false
+    },
+    "release": null
+  }
+}
