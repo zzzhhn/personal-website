@@ -145,6 +145,8 @@ function PathRail({route,offset,elevation}:{route:TransportRoute;offset:number;e
 }
 function BeamBatch({segments,radius,color}:{segments:{a:Vec3;b:Vec3}[];radius:number;color:string}){
  const geometry=useMemo(()=>{
+  // Ferry infrastructure has no fixed beams. Three's merger requires a first geometry.
+  if(segments.length===0)return null;
   const parts=segments.map(({a,b})=>{const from=new Vector3(...a),to=new Vector3(...b),d=to.clone().sub(from),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize());
    return new CylinderGeometry(radius,radius,d.length(),8).applyMatrix4(new Matrix4().compose(from.add(to).multiplyScalar(.5),q,new Vector3(1,1,1)));});
   const merged=mergeGeometries(parts,false);parts.forEach(p=>p.dispose());return merged;
