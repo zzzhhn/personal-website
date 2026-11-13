@@ -1,7 +1,42 @@
-import { DoubleSide, MeshStandardMaterial,Vector2,type Texture } from 'three';
+import { Color,DoubleSide, MeshStandardMaterial,Vector2,type Texture } from 'three';
 import { facilitySurfaceUniforms,registerFacilityMaterial } from '../WorldFacilitySurface';
 import { alphaBoardUniforms,alphaBoardMaskHead,alphaBoardMaskFragment } from './alpha-boarding-mask';
 import { ALPHA_COLORS, isAlphaWood, type AlphaFinish } from './alpha-art';
+/** Geological fields are metric3D coordinates, not XZ UVs stretched over a cliff.
+ * Non-periodic tilted units + interrupted joints: no repeated horizontal sine bands.
+ * Arithmetic hash avoids adding trig-heavy noise or texture fetches to the ground pass. */
+const ALPHA_ROCK_FIELDS=/* glsl */`
+float aRockHash(vec3 p){p=fract(p*.1031);p+=dot(p,p.zyx+31.32);return fract((p.x+p.y)*p.z);}
+float aRockNoise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+ return mix(mix(mix(aRockHash(i),aRockHash(i+vec3(1,0,0)),f.x),mix(aRockHash(i+vec3(0,1,0)),aRockHash(i+vec3(1,1,0)),f.x),f.y),mix(mix(aRockHash(i+vec3(0,0,1)),aRockHash(i+vec3(1,0,1)),f.x),mix(aRockHash(i+vec3(0,1,1)),aRockHash(i+vec3(1,1,1)),f.x),f.y),f.z);
+}`;
+const rockRGB=(hex:string)=>new Color(hex).toArray().map(v=>v.toFixed(5)).join(',');
+const ALPHA_ROCK_SURFACE=/* glsl */`
+float aRockMask=(1.-smoothstep(.78,.94,normalize(vAlphaN).y))
+ *(1.-clamp(vAlphaGround.x,0.,1.))*(1.-clamp(vAlphaGround.y,0.,1.))*smoothstep(3.,7.,ap.y);
+//18m parent masses and2–4m weathered blocks carry the ordinary-distance read.
+float aRockMass=aRockNoise(ap*vec3(.065,.09,.065));
+float aRockBlocks=aRockNoise(ap*vec3(.35,.5,.35)+vec3(7.,2.,11.));
+// Slightly tilted,5.3m geological units. Warping and patch coverage break the
+// beds into exposed lenses rather than wrapping an unbroken stripe around the hill.
+float aBed=dot(ap,vec3(.09,1.,-.045))*.19+(aRockMass-.5)*.8;
+float aBedEdge=min(fract(aBed),1.-fract(aBed));
+float aBedAA=max(.004,fwidth(aBed));
+float aBedCut=(1.-smoothstep(.012+aBedAA,.055+aBedAA,aBedEdge))*smoothstep(.43,.7,aRockBlocks);
+// Gravity-biased fractures cut across the bedding; they are neither an XZ scan
+// nor another height-only band. Their medium-scale shape survives distant mips.
+float aJointField=aRockNoise(ap*vec3(.62,.18,.47)+vec3(aRockMass*.7,5.,aRockBlocks*.4));
+float aJointAA=max(.004,fwidth(aJointField));
+float aJoint=(1.-smoothstep(.012+aJointAA,.055+aJointAA,abs(aJointField-.51)))*smoothstep(.35,.7,aRockBlocks);
+float aMineral=smoothstep(.38,.76,aRockMass*.7+aRockBlocks*.3);
+vec3 aStone=mix(vec3(${rockRGB('#7e827c')}),vec3(${rockRGB('#a29580')}),aMineral*.72);
+aStone*=mix(.88,1.09,aRockMass)*(.94+.12*aRockBlocks);
+aStone=mix(aStone,vec3(${rockRGB('#626c68')}),aJoint*.23+aBedCut*.12);
+diffuseColor.rgb=mix(diffuseColor.rgb,aStone,aRockMask);
+float aRockRoughness=clamp(.86+.13*aRockBlocks+.035*aJoint,.86,1.);
+float aRockMeterFade=1.-smoothstep(.18,.75,length(fwidth(ap)));
+float aRockRelief=aRockMask*(.045*(aRockBlocks-.5)-.025*aJoint-.018*aBedCut)*aRockMeterFade;
+`;
 export const alphaMaterialUniforms={night:{value:0},time:{value:0}};
 /** Native authored coordinates remain on the actual merged runtime geometry. This adapter
  * supplies wood fibres / stone bedding / paper fibres and bounded night bounce, no new lights. */
@@ -14,7 +49,7 @@ export function alphaMaterial(finish:AlphaFinish|'ground'|'bark'|'needles',groun
  if(finish==='glass'){m.emissive.set('#ffc976');m.emissiveIntensity=.16;}
  if(finish==='paper'){m.emissive.set('#ffa949');m.emissiveIntensity=.5;}
  m.onBeforeCompile=s=>{if(groundTextures||clipBoarding)Object.assign(s.uniforms,alphaBoardUniforms);if(groundTextures){for(const [i,k] of ['uAlphaGrass','uAlphaDirt','uAlphaGrassNr','uAlphaDirtNr'].entries())s.uniforms[k]={value:groundTextures[i]};}s.uniforms.uAlphaNight=alphaMaterialUniforms.night;s.vertexShader=(finish==='ground'?'attribute vec3 alphaGround;varying vec3 vAlphaGround;\n':'')+(wood?'attribute float alphaEnd;varying float vAlphaEnd;\n':'')+'varying vec2 vAlphaUv;\nvarying vec3 vAlphaP;\nvarying vec3 vAlphaW;\nvarying vec3 vAlphaN;\n'+s.vertexShader.replace('#include <begin_vertex>',`#include <begin_vertex>\n${finish==='ground'?'vAlphaGround=alphaGround;':''}vAlphaUv=uv;${wood?'vAlphaEnd=alphaEnd;':''}vAlphaP=position;vAlphaN=normalize(mat3(modelMatrix)*normal); vAlphaW=(modelMatrix*vec4(position,1.0)).xyz;`);
- s.fragmentShader=((groundTextures||clipBoarding)?alphaBoardMaskHead:'')+(groundTextures?'uniform sampler2D uAlphaGrass;uniform sampler2D uAlphaDirt;uniform sampler2D uAlphaGrassNr;uniform sampler2D uAlphaDirtNr;varying vec3 vAlphaGround;\n':'')+(wood?'varying float vAlphaEnd;\n':'')+`varying vec2 vAlphaUv; varying vec3 vAlphaP; varying vec3 vAlphaW; varying vec3 vAlphaN; uniform float uAlphaNight;
+ s.fragmentShader=((groundTextures||clipBoarding)?alphaBoardMaskHead:'')+(groundTextures?'uniform sampler2D uAlphaGrass;uniform sampler2D uAlphaDirt;uniform sampler2D uAlphaGrassNr;uniform sampler2D uAlphaDirtNr;\n':'')+(finish==='ground'?'varying vec3 vAlphaGround;\n'+ALPHA_ROCK_FIELDS:'')+(wood?'varying float vAlphaEnd;\n':'')+`varying vec2 vAlphaUv; varying vec3 vAlphaP; varying vec3 vAlphaW; varying vec3 vAlphaN; uniform float uAlphaNight;
  float aHash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
  float aNoise(vec3 p){vec3 i=floor(p),f=fract(p); f=f*f*(3.-2.*f);return mix(mix(mix(aHash(i),aHash(i+vec3(1,0,0)),f.x),mix(aHash(i+vec3(0,1,0)),aHash(i+vec3(1,1,0)),f.x),f.y),mix(mix(aHash(i+vec3(0,0,1)),aHash(i+vec3(1,0,1)),f.x),mix(aHash(i+vec3(0,1,1)),aHash(i+vec3(1,1,1)),f.x),f.y),f.z);}
  `+s.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
@@ -25,11 +60,11 @@ export function alphaMaterial(finish:AlphaFinish|'ground'|'bark'|'needles',groun
  ${wood?`float endRings=.5+.5*sin(length(vAlphaUv*vec2(1.,1.15))*31.+aNoise(vec3(vAlphaUv*3.,0.))*1.3);diffuseColor.rgb*=mix(1.,.82+endRings*.16,vAlphaEnd);`:''}
  ${finish==='grammarBark'?`vec2 barkUv=vAlphaUv;float barkFlake=aNoise(vec3(barkUv.x*5.5,barkUv.y*2.7,0.));float barkBreak=aNoise(vec3(barkUv.x*3.2+8.,barkUv.y*1.8,0.));float barkEdge=smoothstep(.46,.55,barkFlake)*(1.-smoothstep(.56,.66,barkFlake))*smoothstep(.33,.58,barkBreak);diffuseColor.rgb*=.89+barkFlake*.2-barkEdge*.075;float alphaBarkHeight=(barkFlake*.008-barkEdge*.006)*detail;`:''}
  ${groundTextures?`vec2 guv=ap.xz/2.1;vec3 scan=mix(texture2D(uAlphaGrass,guv).rgb/vec3(.118,.152,.03),texture2D(uAlphaDirt,guv*1.2).rgb/vec3(.315,.291,.096),vAlphaGround.x);diffuseColor.rgb*=mix(vec3(1.),clamp(scan,vec3(.5),vec3(1.5)),.48*(1.-vAlphaGround.y)*smoothstep(.62,.87,vAlphaN.y));vec3 aGroundNr=mix(texture2D(uAlphaGrassNr,guv).rgb,texture2D(uAlphaDirtNr,guv*1.2).rgb,vAlphaGround.x);`:''}
- ${finish==='ground'?`float rockWeight=1.-smoothstep(.62,.87,vAlphaN.y);float bedPhase=ap.y*2.3+aNoise(ap*.075)*2.;float bedFilter=1.-smoothstep(.1,.7,fwidth(bedPhase));float seam=smoothstep(.86,.98,.5+.5*sin(bedPhase))*bedFilter;float rockMass=aNoise(ap*vec3(.13,.09,.13));diffuseColor.rgb*=1.+rockWeight*((rockMass-.5)*.18-seam*.07);diffuseColor.rgb=mix(diffuseColor.rgb,diffuseColor.rgb*vec3(1.06,1.01,.94),rockWeight*smoothstep(.62,.8,rockMass)*.45);float aRockRelief=rockWeight*(aNoise(ap*.55)*.018-seam*.009);`:''}
- `).replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=clamp(roughnessFactor+(alphaPatch-.5)*.1,.16,1.);').replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>\n${groundTextures?'vec3 bW=vec3(aGroundNr.r*2.-1.,0.,-(aGroundNr.g*2.-1.))*.35*(1.-vAlphaGround.y)*smoothstep(.62,.87,vAlphaN.y)*detail;normal=normalize(normal+mat3(viewMatrix)*bW);':''}`).replace('#include <lights_physical_fragment>',` ${finish==='grammarBark'?'vec3 abd=-vViewPosition,absx=dFdx(abd),absy=dFdy(abd),abrx=cross(absy,normal),abry=cross(normal,absx);float abdet=dot(absx,abrx);normal=normalize(abs(abdet)*normal-sign(abdet)*(dFdx(alphaBarkHeight)*abrx+dFdy(alphaBarkHeight)*abry));':''} ${groundTextures?'vec3 adp=-vViewPosition,asx=dFdx(adp),asy=dFdy(adp),arx=cross(asy,normal),ary=cross(normal,asx);float adet=dot(asx,arx);normal=normalize(abs(adet)*normal-sign(adet)*(dFdx(aRockRelief)*arx+dFdy(aRockRelief)*ary));':''}\n#include <lights_physical_fragment>`).replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
+ ${finish==='ground'?ALPHA_ROCK_SURFACE:''}
+ `).replace('#include <roughnessmap_fragment>',`#include <roughnessmap_fragment>\nroughnessFactor=clamp(roughnessFactor+(alphaPatch-.5)*.1,.16,1.);${finish==='ground'?'roughnessFactor=mix(roughnessFactor,aRockRoughness,aRockMask);':''}`).replace('#include <normal_fragment_maps>',`#include <normal_fragment_maps>\n${groundTextures?'vec3 bW=vec3(aGroundNr.r*2.-1.,0.,-(aGroundNr.g*2.-1.))*.35*(1.-vAlphaGround.y)*smoothstep(.62,.87,vAlphaN.y)*detail;normal=normalize(normal+mat3(viewMatrix)*bW);':''}`).replace('#include <lights_physical_fragment>',` ${finish==='grammarBark'?'vec3 abd=-vViewPosition,absx=dFdx(abd),absy=dFdy(abd),abrx=cross(absy,normal),abry=cross(normal,absx);float abdet=dot(absx,abrx);normal=normalize(abs(abdet)*normal-sign(abdet)*(dFdx(alphaBarkHeight)*abrx+dFdy(alphaBarkHeight)*abry));':''} ${groundTextures?'vec3 adp=-vViewPosition,asx=dFdx(adp),asy=dFdy(adp),arx=cross(asy,normal),ary=cross(normal,asx);float adet=dot(asx,arx);normal=normalize(abs(adet)*normal-sign(adet)*(dFdx(aRockRelief)*arx+dFdy(aRockRelief)*ary));':''}\n#include <lights_physical_fragment>${finish==='ground'?'\nmaterial.specularColor=mix(material.specularColor,vec3(.022),aRockMask);material.specularColorBlended=mix(material.specularColorBlended,vec3(.022),aRockMask);material.specularF90=mix(material.specularF90,.45,aRockMask);':''}`).replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
  // Bounded diffuse bounce around physical lamp anchors; no global exposure changes.
  float spill=exp(-distance(vAlphaW,vec3(173.7,6.2,153.65))*.3)+exp(-distance(vAlphaW,vec3(227.,85.,232.))*.36);
  totalEmissiveRadiance+=diffuseColor.rgb*uAlphaNight*(vec3(.025,.038,.065)+vec3(.22,.12,.035)*spill);
  `);};
- m.customProgramCacheKey=()=>`alpha-craft-${finish}-v5-${clipBoarding}`;return m;
+ m.customProgramCacheKey=()=>`alpha-craft-${finish}-v5-${clipBoarding}${finish==='ground'?'-rock-units-r1':''}`;return m;
 }
