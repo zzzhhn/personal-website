@@ -7,7 +7,11 @@ export function transportWorld(p: Vec3, t: TransportTransform): Vec3 {
 }
 export function transportCurve(route: TransportRoute) {
   if (route.path.length < 2 || !(route.duration > 0) || route.path.some(p=>p.some(v=>!Number.isFinite(v)))) throw new Error(`Invalid transport route ${route.id}`);
-  return new CatmullRomCurve3(route.path.map(p=>new Vector3(...p)),false,'centripetal');
+  const minY=Math.min(...route.path.map(p=>p[1])),maxY=Math.max(...route.path.map(p=>p[1]));
+  class BoundedRouteCurve extends CatmullRomCurve3 {
+    override getPoint(t:number,target=new Vector3()){const p=super.getPoint(t,target);p.y=Math.max(minY,Math.min(maxY,p.y));return p;}
+  }
+  return new BoundedRouteCurve(route.path.map(p=>new Vector3(...p)),false,'centripetal');
 }
 export function sampleTransport(route: TransportRoute, u: number, curve = transportCurve(route), direction = 1): TransportSample {
   u = Math.max(0,Math.min(1,u));
