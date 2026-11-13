@@ -440,6 +440,7 @@ function ToolAction({ id, position, index, play, enabled, onInteract }: {
     return returning ? { en: `Return ${tool.en.toLowerCase()}`, zh: `归位${tool.zh}` }
       : { en: `Take ${tool.en.toLowerCase()}`, zh: `取用${tool.zh}` };
   } });
+  return null;
 }
 
 const BOOK_KEY = 'camp-prop-journal';

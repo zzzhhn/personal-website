@@ -8,7 +8,7 @@ export function addIbdPlant(b: Builder, at: V3, seed: number, scale = 1) {
     for (let stem=0;stem<7;stem++) {
       const angle=stem*2.399+seed, radius=(stem===0?.06:.48)*scale;
       const top: V3=[Math.cos(angle)*radius,(.75+.12*(stem%3))*scale,Math.sin(angle)*radius];
-      bar(b,[0,0,0],top,.013*scale,{color:'#596140',rough:.95},5);
+      bar(b,[0,0,0],top,.013*scale,{color:'#596140',rough:.95,metal:0},5);
       for (let level=0;level<4;level++) for (const side of [-1,1]) {
         const t=.4+level*.19;
         const pos=top.map(v=>v*t) as V3;

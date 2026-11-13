@@ -13,7 +13,7 @@ type Frame = ReturnType<typeof thrillFrame>;
 type Ring = { u: number; frame: Frame };
 type Profile = (ring: Ring) => number[][];
 const at = (f: Frame, side: number, up: number) => f.point.clone().addScaledVector(f.side, side).addScaledVector(f.up, up);
-export function coasterSpineProfile({ u, frame }: Ring) {
+export function coasterSpineProfile({ u, frame }: Ring): [number, number][] {
   const edge = Math.min(u - COASTER_STRUCTURE_SAMPLE.start, COASTER_STRUCTURE_SAMPLE.end - u) * THRILL_LENGTH / 12;
   const t = Math.max(0, Math.min(1, edge)), blend = t * t * (3 - 2 * t);
   const depth = Math.min(.42, Math.max(.15, frame.point.y - 1.45));
