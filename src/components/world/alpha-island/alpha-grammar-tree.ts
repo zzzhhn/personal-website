@@ -1,5 +1,6 @@
 import { BufferGeometry, CatmullRomCurve3, Float32BufferAttribute, Triangle, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { ALPHA_MAIN_PATH,ALPHA_STATIONS } from './alpha-layout';
 import { alphaHeight } from './alpha-terrain';
 import type { Vec3 } from '../types';
 
@@ -11,7 +12,7 @@ type Bone = {
 };
 type Collider = { a: Vec3; b: Vec3; radius: number };
 const TAU = Math.PI * 2;
-const ORIGIN: Vec3 = [-42, 18, -29];
+const ORIGIN: Vec3 = ALPHA_STATIONS.tree;
 const PULL: Vec3 = [-.7, 1.2, 1.3];
 const ANCHOR: Vec3 = [-.7, 3.2, 1.3];
 const APPROACH: Vec3 = [-1.15, .88, 1.15];
@@ -60,11 +61,14 @@ function makeBone(id: string, kind: Kind, parent: Bone | null, attach: number, c
   return { id, kind, parent, attach, curve, length, travel, points, side, up, radii, sides };
 }
 
-/** The same low-amplitude grooves supply both the bark and the pulse surface. */
+/** Interrupted bark plates, shared by the wood and sap traces. Broad/short axial
+ * cells interrupt the former continuous vertical grooves; no high-frequency shell. */
+function barkCell(x:number,y:number){const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);const h=(a:number,b:number)=>{const n=Math.sin(a*127.1+b*311.7)*43758.5453;return n-Math.floor(n);};return(h(ix,iy)*(1-sx)+h(ix+1,iy)*sx)*(1-sy)+(h(ix,iy+1)*(1-sx)+h(ix+1,iy+1)*sx)*sy;}
+
 function surface(bone: Bone, ring: number, angle: number) {
   const distance = ring / (bone.points.length - 1) * bone.length;
-  const groove = 1 + .025 * Math.cos(angle * 9 + distance * .30)
-    + .012 * Math.cos(angle * 17 - distance * .45);
+  const cell=barkCell(angle*2.1,distance/ .52),interrupt=barkCell(angle*1.3+4,distance/.78);
+  const groove = 1 + (cell-.5)*.023 + Math.cos(angle*8+cell*3)*.004*(interrupt>.43?1:.15);
   const radial = bone.side[ring].clone().multiplyScalar(Math.cos(angle))
     .addScaledVector(bone.up[ring], Math.sin(angle));
   return { position: bone.points[ring].clone().addScaledVector(radial, bone.radii[ring] * groove), radial };
@@ -295,7 +299,7 @@ function segmentDistance2D(a: Vec3, b: Vec3, c: Vec3, d: Vec3) {
 export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
   const verify = options.verify === true;
   const bones: Bone[] = [], bark: BufferGeometry[] = [], leaves: BufferGeometry[] = [], pulses: BufferGeometry[] = [];
-  const colliders: Collider[] = [], colliderBones: string[] = [];
+  const colliders: Collider[] = [], colliderBones: string[] = [];let badBone:Bone|null=null,badLeaf:BufferGeometry|null=null;
   const leafAttachments: { branch: string; position: Vec3; alphaTravel: number; error: number | null; thickness: number | null; sag: number | null }[] = [];
   const footSupports: { position: Vec3; terrainY: number; tipY: number; burial: number; terminalMaxGap: number }[] = [];
   const pulseSurface = verify ? { samples: 0, maxDistance: 0, maxOutside: 0 } : null;
@@ -345,7 +349,7 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
       const leafRoot = twigBone.points.at(-1)!.clone(), travel = twigBone.travel + twigBone.length;
       const plate = leafPlate(leafRoot, axis, .23 + (twig % 2) * .025, .68 + (twig % 3) * .055,
         travel, i * 1.7 + twig * .41, verify);
-      leaves.push(plate.geometry);
+      if(i===2&&twig===5){badBone=twigBone;badLeaf=plate.geometry;}else leaves.push(plate.geometry);
       leafAttachments.push({ branch: twigBone.id, position: tuple(leafRoot), alphaTravel: travel,
         error: verify ? leafRoot.distanceTo(twigBone.curve.getPointAt(1)) : null, thickness: plate.thickness, sag: plate.sag });
     }
@@ -355,6 +359,7 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
 
   for (const bone of bones) {
     const barkGeometry = barkTube(bone);
+    if(bone===badBone){barkGeometry.dispose();continue;}
     bark.push(barkGeometry);
     const edges = bone.kind === 'trunk' ? [2, 8, 14] : bone.kind === 'bough' ? [3, 9] : [Math.floor(bone.sides * .6)];
     edges.forEach(edge => {
@@ -382,6 +387,14 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
       colliderBones.push(bone.id);
     }
   }
+  if(!badBone||!badLeaf)throw new Error('One attached bad twig is required');
+  const bad:Bone=badBone,anchor=bad.points[0].clone(),badBark=barkTube(bad);badBark.translate(-anchor.x,-anchor.y,-anchor.z);badLeaf.translate(-anchor.x,-anchor.y,-anchor.z);
+  const badColliders:Collider[]=[];for(let i=2;i<bad.points.length;i+=2){badColliders.push({a:tuple(bad.points[i-2].clone().sub(anchor)),b:tuple(bad.points[i].clone().sub(anchor)),radius:Math.max(bad.radii[i-2],bad.radii[i])*1.02});}
+  badLeaf.computeBoundingBox();const leafBox=badLeaf.boundingBox!,leafHalf=leafBox.getSize(new Vector3()).multiplyScalar(.5),leafCenter=leafBox.getCenter(new Vector3());
+  let projectionDistance=Infinity,radiusBound=0;for(const g of [badBark,badLeaf]){const p=g.getAttribute('position');for(let i=0;i<p.count;i++){const q=new Vector3().fromBufferAttribute(p,i);radiusBound=Math.max(radiusBound,q.length());const projected:Vec3=[ORIGIN[0]+anchor.x+q.x,0,ORIGIN[2]+anchor.z+q.z];for(let j=1;j<ALPHA_MAIN_PATH.length;j++)projectionDistance=Math.min(projectionDistance,segmentDistance2D(projected,projected,ALPHA_MAIN_PATH[j-1],ALPHA_MAIN_PATH[j]));}}
+  const union=badBark.boundingBox??(badBark.computeBoundingBox(),badBark.boundingBox!);const center=union.clone().union(leafBox).getCenter(new Vector3());let centeredRadius=0;for(const g of [badBark,badLeaf]){const p=g.getAttribute('position');for(let i=0;i<p.count;i++)centeredRadius=Math.max(centeredRadius,new Vector3().fromBufferAttribute(p,i).distanceTo(center));}
+  for(const c of badColliders)for(const point of [c.a,c.b])centeredRadius=Math.max(centeredRadius,new Vector3(...point).distanceTo(center)+c.radius);for(const x of [-1,1])for(const y of [-1,1])for(const z of [-1,1])centeredRadius=Math.max(centeredRadius,leafCenter.clone().add(new Vector3(leafHalf.x*x,leafHalf.y*y,leafHalf.z*z)).distanceTo(center));
+  const breakaway={id:bad.id,anchor:tuple(anchor),parts:[{finish:'bark' as const,geometry:badBark},{finish:'leafplate' as const,geometry:badLeaf}],colliders:badColliders,leafCollider:{position:tuple(leafCenter),halfExtents:tuple(leafHalf)},travel:bad.travel,radiusBound,boundCenter:tuple(center),boundRadius:centeredRadius};
   const barkGeometry = merge(bark), leafGeometry = merge(leaves), pulse = merge(pulses);
   const min = barkGeometry.boundingBox!.min.clone().min(leafGeometry.boundingBox!.min);
   const max = barkGeometry.boundingBox!.max.clone().max(leafGeometry.boundingBox!.max);
@@ -391,7 +404,7 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
   const corridorClearance = verify ? Math.min(...colliders.map(c => segmentDistance2D(c.a, c.b, APPROACH, PULL) - c.radius)) : null;
   return {
     parts: [{ finish: 'bark' as const, geometry: barkGeometry }, { finish: 'leafplate' as const, geometry: leafGeometry }],
-    pulse, colliders,
+    pulse, colliders,breakaway,
     report: {
       measured: verify, supportAdjustmentMeasured: true,
       origin: [...ORIGIN] as Vec3, ropePull: [...PULL] as Vec3, ropeAnchor: [...ANCHOR] as Vec3, approach: [...APPROACH] as Vec3,
@@ -405,7 +418,7 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
       leafPlateThickness: verify ? Math.max(...leafAttachments.map(p => p.thickness!)) : null, leafPlateDesignThickness: .07,
       leafPlateThicknessRange: verify ? [Math.min(...leafAttachments.map(p => p.thickness!)), Math.max(...leafAttachments.map(p => p.thickness!))] : null,
       leafPlateMaxSag: verify ? Math.max(...leafAttachments.map(p => p.sag!)) : null,
-      pulseLineCount: 43, travelUnits: 'metres along the root-connected skeleton',
+      pulseLineCount: 42,staticLeafCount:23,breakaway:{id:bad.id,anchor:tuple(anchor),initialAttachmentError:verify?anchor.distanceTo(bad.parent!.curve.getPointAt(bad.attach)):null,projectionDistance,mainPathHalfWidth:2.1,projectionMargin:projectionDistance-2.1,radiusBound,boundCenter:tuple(center),boundRadius:centeredRadius,neverIlluminated:true}, travelUnits: 'metres along the root-connected skeleton',
       attributes: ['position', 'normal', 'uv', 'color', 'alphaTravel'],
     },
   };

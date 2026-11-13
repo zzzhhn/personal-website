@@ -2,6 +2,7 @@ import {useEffect,useMemo} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {CapsuleCollider,RigidBody} from '@react-three/rapier';
 import {MeshStandardMaterial,Quaternion,Vector3} from 'three';
+import AlphaBadBranch from './AlphaBadBranch';
 import {createAlphaGrammarTree} from './alpha-grammar-tree';
 import {alphaMaterial} from './alpha-materials';
 import {alphaMotion} from './alpha-state';
@@ -34,10 +35,11 @@ export default function AlphaGrammarTree(){
    totalEmissiveRadiance+=vec3(1.,.53,.12)*lit;`);
  };m.customProgramCacheKey=()=> 'alpha-tree-surface-flow-v1';return m;},[age]);
  useFrame(()=>{age.value=alphaMotion.time-alphaMotion.treeAt;});
- useEffect(()=>()=>{built.parts.forEach(p=>p.geometry.dispose());built.pulse.dispose();materials.forEach(m=>m.dispose());pulse.dispose();},[built,materials,pulse]);
+ useEffect(()=>()=>{built.parts.forEach(p=>p.geometry.dispose());built.pulse.dispose();built.breakaway.parts.forEach(p=>p.geometry.dispose());materials.forEach(m=>m.dispose());pulse.dispose();},[built,materials,pulse]);
  return <group name="alpha-connected-grammar-tree" position={ALPHA_STATIONS.tree}>
   {built.parts.map((part,i)=><mesh key={part.finish} name={'alpha-grammar-'+part.finish} geometry={part.geometry} material={materials[i]} castShadow receiveShadow/>)}
   <mesh name="alpha-grammar-surface-propagation" geometry={built.pulse} material={pulse} receiveShadow/>
+  <AlphaBadBranch source={built.breakaway}/>
   <RigidBody type="fixed" colliders={false} userData={{solid:true}}>{built.colliders.map((segment,i)=>{
    const a=new Vector3(...segment.a),b=new Vector3(...segment.b),d=b.clone().sub(a),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()),p=a.add(b).multiplyScalar(.5).toArray() as Vec3;
    return <CapsuleCollider key={i} position={p} quaternion={q.toArray()} args={[d.length()/2,segment.radius]}/>;
