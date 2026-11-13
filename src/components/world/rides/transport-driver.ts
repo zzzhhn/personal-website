@@ -66,7 +66,7 @@ export class TransportDriver implements RideDriver {
       case'walk-out':root=alongPath(this.leave,k);yaw=heading(this.leave[0],this.leave[1]);speed=pathLength(this.leave)*6*q*(1-q)/this.duration();clip='Walk';break;
       case'complete':root=this.safeExit;yaw=this.frame.yaw;break;
     }
-    this.frame={groundId:this.route.id+'-boarding-'+(this.phase==='approach'?this.source:this.destination),stairs:this.phase==='approach'||this.phase==='walk-out',root,yaw,speed,clip,clipPhase,seatWeight,seat:[...sample.pose.seat],orientation:sample.orientation};
+    this.frame={groundId:this.route.id+'-boarding-'+(this.phase==='approach'?this.source:this.destination),stairs:this.phase!=='riding'&&this.phase!=='complete',root,yaw,speed,clip,clipPhase,seatWeight,seat:[...sample.pose.seat],orientation:sample.orientation};
     if(this.phase!=='riding')sample.pose.cameraTarget=[root[0],root[1]+.9,root[2]];
     return sample;
   }
