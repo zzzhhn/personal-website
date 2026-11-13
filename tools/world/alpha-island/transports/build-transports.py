@@ -30,25 +30,28 @@ def beam(name,a,b,r,material,vertices=16):
  return o
 
 def cabin():
- box('floor structural tray',(0,-.1,0),(3.2,.2,2.4),paint,.07)
- for j in range(10):box('floor ash slat', (0,.012,-1.08+j*.24),(3,.024,.22),wood,.008)
+ box('floor structural tray',(0,-.126,0),(3.2,.2,2.4),paint,.07)
+ for j in range(10):box('floor ash slat', (0,-.012,-1.08+j*.24),(3,.024,.22),wood,.008)
  for x in [-1.5,1.5]:
   for z in [-1.1,1.1]:box('corner post',(x,1.1,z),(.1,2.2,.1),cream)
  box('roof weather cap',(0,2.25,0),(3.45,.2,2.65),cream,.09)
- # Port side opening is clear; no fake closed door crossing the boarding path.
+ # Positive-Z opening faces both scene aprons and is clear; no fake closed door crossing the boarding path.
  for x in [-1.5,1.5]:
   box('end sill',(x,.38,0),(.12,.7,2.2),paint)
   box('end windscreen',(x,1.35,0),(.025,1.15,2.08),glass,.004)
- box('starboard sill',(0,.36,1.12),(3,.66,.1),paint)
- box('starboard glazing',(0,1.35,1.12),(2.92,1.15,.025),glass,.004)
+ box('starboard sill',(0,.36,-1.12),(3,.66,.1),paint)
+ box('starboard glazing',(0,1.35,-1.12),(2.92,1.15,.025),glass,.004)
  box('seat cushion',(0,.42,0),(.72,.12,1.05),cloth,.06)
  box('seat back',(-.4,.76,0),(.12,.7,1.06),cloth,.05)
  box('measured boot support',(.51,.11,0),(.4,.04,.68),steel,.01)
  for z in [-.6,.6]:beam('seat leg',[-.12,.02,z],[-.12,.37,z],.035,steel)
- for z in [-.75,.75]:beam('suspension yoke',[0,2.35,z],[0,3.25,0],.055,steel)
- beam('grip hanger',[0,3.25,0],[0,3.52,0],.09,steel)
- for x in [-.22,.22]:beam('cable sheave',[x,3.49,-.12],[x,3.49,.12],.13,rubber)
- for x in [-1.35,1.35]:beam('open-side grab rail',[x,.5,-1.1],[x,1.5,-1.1],.035,steel)
+ for z in [-.75,.75]:beam('suspension yoke',[0,2.35,z],[0,3.25,.35],.055,steel)
+ beam('hinge hanger',[0,3.25,.35],[0,3.5,.17],.055,steel)
+ beam('hinge axle',[0,3.5,.1],[0,3.5,.21],.035,steel)
+ for z in [-.075,.075]:box('grip cable jaw',(0,3.5,z),(.5,.12,.08),steel,.008)
+ box('grip upper bridge',(0,3.59,0),(.12,.05,.23),steel,.008)
+ box('grip lower bridge',(0,3.4,0),(.12,.06,.23),steel,.008)
+ for x in [-1.35,1.35]:beam('open-side grab rail',[x,.5,1.1],[x,1.5,1.1],.035,steel)
 
 def sled():
  for z in [-.43,.43]:
@@ -72,14 +75,14 @@ def ferry():
   for j in range(4):a=i*5+j;faces.append((a,a+1,a+6,a+5))
  faces.extend([tuple(range(4,-1,-1)),tuple(range((len(rings)-1)*5,len(rings)*5))]);faces.append(tuple([i*5 for i in range(len(rings))]+[i*5+4 for i in reversed(range(len(rings)))]))
  me=bpy.data.meshes.new('closed displacement hull');me.from_pydata(verts,[],faces);me.update();o=bpy.data.objects.new('closed petrol hull',me);bpy.context.collection.objects.link(o);o.data.materials.append(paint);m=o.modifiers.new('hull softened chines','BEVEL');m.width=.04;m.segments=3
- box('deck',(0,-.07,0),(7.2,.14,2.9),cream,.07)
- for j in range(13):box('deck boards',(-.25,.012,-1.32+j*.22),(6.45,.024,.2),wood,.008)
+ box('deck',(0,-.094,0),(7.2,.14,2.9),cream,.07)
+ for j in range(13):box('deck boards',(-.25,-.012,-1.32+j*.22),(6.45,.024,.2),wood,.008)
  for x in [-2.5,2.5]:
   for z in [-1.3,1.3]:beam('canopy stanchion',[x,0,z],[x,2.15,z],.05,cream)
  box('passenger canopy',(0,2.24,0),(5.8,.16,3.25),cream,.09)
  # Mid-port gangway opening remains 1.6m clear.
  for z in [-1.38,1.38]:
-  for a,b in ([(-3.25,-1),(1,3.25)] if z<0 else [(-3.25,3.25)]):
+  for a,b in ([(-3.25,-1.4),(1.4,3.25)] if z<0 else [(-3.25,3.25)]):
    for x in [a,b]:beam('rail post',[x,0,z],[x,.95,z],.035,steel)
    beam('handrail',[a,.95,z],[b,.95,z],.032,steel)
  box('passenger seat cushion',(0,.42,0),(.75,.12,1.2),cloth,.045);box('passenger back',(-.44,.8,0),(.12,.8,1.2),wood)

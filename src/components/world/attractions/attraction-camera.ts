@@ -26,6 +26,7 @@ function seatUp(pose: AttractionRidePose) {
 /** The sweep must start on the passenger side too: shortening a safe orbit from
  * a low look-at point can otherwise put the camera back behind the seat shell. */
 export function attractionCameraSweepOrigin(pose: AttractionRidePose) {
+  if(pose.cameraSweepOrigin)return new Vector3(...pose.cameraSweepOrigin);
   const origin = new Vector3(...pose.cameraTarget), up = seatUp(pose);
   if (up && !pose.firstPerson) origin.addScaledVector(up, Math.max(0,
     SEAT_EYE + FOLD_WIDTH / 2 - origin.clone().sub(new Vector3(...pose.seat)).dot(up)));

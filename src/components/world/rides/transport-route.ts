@@ -16,6 +16,7 @@ export function transportCurve(route: TransportRoute) {
 export function sampleTransport(route: TransportRoute, u: number, curve = transportCurve(route), direction = 1): TransportSample {
   u = Math.max(0,Math.min(1,u));
   const local = curve.getPointAt(u), tangent = curve.getTangentAt(u).multiplyScalar(direction);
+  const cablePitch=Math.atan2(tangent.y,Math.hypot(tangent.x,tangent.z));
   // Gondola floor and ferry deck stay level; sled pitches along its actual runner support, never rolls.
   if (route.kind !== 'sled') tangent.y = 0;
   tangent.normalize().applyAxisAngle(new Vector3(0,1,0),route.transform.yaw);
@@ -28,9 +29,12 @@ export function sampleTransport(route: TransportRoute, u: number, curve = transp
   const seatOffset = new Vector3(...route.terminals[0].seat).applyQuaternion(orientation);
   const seat = tuple(new Vector3(...vehicle).add(seatOffset));
   const target = new Vector3(...seat).add(new Vector3(0,.8,0));
-  const camera = new Vector3(...vehicle).addScaledVector(tangent,-6.8).add(new Vector3(0,3.8,0));
-  return { vehicle, yaw, orientation: orientation.toArray() as [number,number,number,number],
-    pose: {seat,yaw,orientation:orientation.toArray() as [number,number,number,number],cameraPosition:tuple(camera),cameraTarget:tuple(target),cameraUp:[0,1,0],firstPerson:false,fov:55} };
+  const camera = new Vector3(...vehicle).addScaledVector(tangent,-6.8).add(new Vector3(0,route.kind==='sled'?3.8:2.6,0));
+  // The sweep starts above the passenger eye. Leave through the open port side before
+  // climbing above a cabin roof, rather than shortening the camera onto the helmet.
+  if(route.kind!=='sled')camera.addScaledVector(side,route.kind==='cable'?5.5:-5.5);
+  return { vehicle, yaw, cablePitch, orientation: orientation.toArray() as [number,number,number,number],
+    pose: {seat,yaw,orientation:orientation.toArray() as [number,number,number,number],cameraPosition:tuple(camera),cameraTarget:tuple(target),cameraSweepOrigin:route.kind==='sled'?undefined:tuple(new Vector3(...vehicle).addScaledVector(side,route.kind==='ferry'?-1.9:1.7).add(new Vector3(0,1.5,0))),cameraUp:[0,1,0],firstPerson:false,fov:55} };
 }
 export function pathLength(path: Vec3[]) { return path.slice(1).reduce((sum,p,i)=>sum+new Vector3(...p).distanceTo(new Vector3(...path[i])),0); }
 export function alongPath(path: Vec3[], u: number): Vec3 {
