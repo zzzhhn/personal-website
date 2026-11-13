@@ -29,7 +29,7 @@ export class TransportDriver implements RideDriver {
     this.frame={root:[...this.from],yaw:sample.yaw,speed:0,clip:'Idle',seatWeight:0,seat:sample.pose.seat};
   }
   get terminal(){return this.route.terminals[this.destination];}
-  get safeExit(){if(this.cancelledAt)return [...this.cancelledAt];return transportWorld(this.terminal.safeExit,this.route.transform);}
+  get safeExit():Vec3{if(this.cancelledAt)return [...this.cancelledAt] as Vec3;return transportWorld(this.terminal.safeExit,this.route.transform);}
   sample(){return sampleTransport(this.route,this.u,this.curve,1);}
   capture(root:Vec3,yaw:number){if(this.captured)return;this.captured=true;this.from=[...root];this.fromYaw=yaw;
     this.frame={...this.frame,root:[...root],yaw};

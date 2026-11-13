@@ -102,7 +102,7 @@ function TransportInfrastructure({route,groundHeight}:{route:TransportRoute;grou
  },[route,groundHeight]);
  useEffect(()=>()=>pack.geometry.dispose(),[pack]);
  return <>
-  {route.kind==='sled'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color={route.kind==='sled'?'#ffffff':'#606b72'} roughness={.78} metalness={route.kind==='cable'?.75:0}/></mesh>}
+  {route.kind==='sled'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color="#ffffff" roughness={.78} metalness={0}/></mesh>}
   {route.kind==='sled'&&<RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:route.id+'-trough'}}><TrimeshCollider args={[pack.vertices,pack.indices]} friction={.5}/></RigidBody>}
   {route.kind==='sled'&&[-.77,.77].map(side=><PathRail key={side} route={route} offset={side} elevation={.08}/>)}
   {route.kind==='cable'&&<PathRail route={route} offset={0} elevation={dimensions.cable.cableHeight}/>}
