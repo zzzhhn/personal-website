@@ -4,6 +4,7 @@
  * Switch: `?layout=v4`. The main thread flips DEFAULT_V4 after the parallel sessions deliver.
  */
 import type { Vec3, VehicleId } from './types';
+import { inFactory } from './factory/factory-layout';
 
 const DEFAULT_V4 = true;
 const query = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('layout') : null;
@@ -61,6 +62,8 @@ export const WORLD_SHOTS_V4 = [
   { id: 'ridge', position: [10, 40, -40] as Vec3, target: [-30, 4, -84] as Vec3 },
   // Paired evidence cameras share geometry, projection and time presets across revisions.
   ...(['day', 'night'] as const).flatMap(time => [
+    { id: `djc-daybed-front-${time}`, position: [65.5, 3.45, 37.8] as Vec3, target: [62, 1.65, 42] as Vec3 },
+    { id: `djc-daybed-close-${time}`, position: [60.3, 2.75, 39.6] as Vec3, target: [61.65, 1.85, 42.2] as Vec3 },
     { id: `exchange-v2-hall-${time}`, position: [71, 9, -60.5] as Vec3, target: [59, 4, -79] as Vec3 },
     { id: `exchange-v2-exterior-${time}`, position: [103, 36, -26] as Vec3, target: [60, 6, -74] as Vec3 },
     { id: `exchange-craft-desk-${time}`, position: [65, 5.2, -65.5] as Vec3, target: [59, 2.35, -71.2] as Vec3 },
@@ -99,9 +102,10 @@ export function insidePolygon(p: P2, poly: P2[]) {
   }
   return c;
 }
-export type ZoneV4 = 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster';
+export type ZoneV4 = 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster' | 'factory';
 const TOWN_POLY: P2[] = [[-36, -50], [31, -50], [31, 27], [-1, 27], [-1, 8], [-17, 8], [-24, -24], [-36, -31]];
 export function zoneAtV4(x: number, z: number): ZoneV4 {
+  if(inFactory(x,z))return 'factory';
   if(z<-132&&x<-50)return 'yard';
   if(z<-110&&x>8)return 'coaster';
   if (x > 35) return 'park';

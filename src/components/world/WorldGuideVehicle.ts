@@ -3,7 +3,8 @@ import { skinnedWorldPoint } from './WorldGuideStop';
 import { VEHICLE_DOORS, VEHICLE_PASSAGE, VEHICLE_SEAT_ADJUSTMENT, vehicleDoorContact, vehicleDoorCloseContact, type DoorSide } from './WorldVehicleDoors';
 import type { VehicleId } from './types';
 
-export const GUIDE_VEHICLE_TRANSITION_S = 5.2;
+// Preserve the authored contact windows while making the door transfer take 1.96 s.
+export const GUIDE_VEHICLE_TRANSITION_S = 2.8;
 export interface GuideVehicleFrame { position: [number, number, number]; rotation: [number, number, number, number]; id: VehicleId; side: DoorSide; groundY?:number }
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 const smooth = (n: number) => { const t = clamp(n); return t * t * (3 - 2 * t); };
@@ -24,6 +25,11 @@ export function guideVehicleSample(phase: 'enter' | 'exit', t: number) {
 
 export function guideVehicleProgress(phase: 'enter'|'exit', elapsed: number, approachSeconds = GUIDE_VEHICLE_TRANSITION_S * .3) {
   return clamp(phase === 'enter' ? (elapsed < approachSeconds ? .3 * elapsed / approachSeconds : .3 + (elapsed - approachSeconds) / GUIDE_VEHICLE_TRANSITION_S) : elapsed / GUIDE_VEHICLE_TRANSITION_S);
+}
+
+/** Travel still follows the collision-checked route; being at the door needs no walk-in wait. */
+export function guideVehicleApproachSeconds(distance: number) {
+  return Math.max(.08, distance / 2.4);
 }
 
 /** Establish actual cushion contact early in the source sit, after crossing the sill. */

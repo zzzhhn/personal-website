@@ -1,0 +1,62 @@
+--- a/src/components/world/factory/factory-carrier.test.mjs
++++ b/src/components/world/factory/factory-carrier.test.mjs
+@@ -1,7 +1,7 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import { Box3, DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Triangle, Vector3 } from 'three';
+-import { buildFactoryCarrier } from './factory-carrier.ts';
++import { buildFactoryCarrier, FACTORY_CARRIER_HANDHOLDS } from './factory-carrier.ts';
+ import { buildFactoryCompanion } from './factory-companion.ts';
+ import { FACTORY_PALETTE } from './factory-geometry.ts';
+ 
+@@ -144,3 +144,50 @@
+     assert.ok(carrier.supportPads.every(pad => pad.at[1] === .32 && Math.abs(pad.at[0]) === .2325));
+   } finally { carrier.geometry.dispose(); }
+ });
++
++test('both handholds are truly open through every deck and have a recessed metal wall', () => {
++  const material = new MeshBasicMaterial({ side: DoubleSide });
++  try {
++    for (const module of modules) {
++      const carrier = buildFactoryCarrier(module, FACTORY_PALETTE), mesh = new Mesh(carrier.geometry, material);
++      try {
++        for (const h of FACTORY_CARRIER_HANDHOLDS) {
++          // Interior grid, from both sides: a black patch or hidden cap fails.
++          for (const dx of [-.06, 0, .06]) for (const z of [-.11, 0, .11]) {
++            assert.equal(ray(mesh, [h.x + dx, .1, z], [0, -1, 0], .3), undefined);
++            assert.equal(ray(mesh, [h.x + dx, -.15, z], [0, 1, 0], .3), undefined);
++          }
++          const wall = ray(mesh, [h.x, -.03, 0], [Math.sign(h.x), 0, 0], .2);
++          assert.ok(wall, 'a real sidewall surrounds each handle');
++          near(Math.abs(wall.point.x - h.x), h.halfX);
++          const mouth = ray(mesh, [h.x, .1, .154], [0, -1, 0], .3);
++          assert.ok(mouth && mouth.point.y < -.001 && mouth.point.y > -.008, 'chamfer is recessed, not a coplanar decal');
++          const aMat = carrier.geometry.attributes.aMat;
++          const corner = carrier.geometry.index.getX(mouth.faceIndex * 3);
++          near(aMat.getY(corner), FACTORY_PALETTE.silver.metal);
++        }
++      } finally { carrier.geometry.dispose(); }
++    }
++  } finally { material.dispose(); }
++});
++
++test('deck and support topology remains closed with no duplicate coplanar triangles', () => {
++  for (const module of modules) {
++    const carrier = buildFactoryCarrier(module, FACTORY_PALETTE);
++    try {
++      const g = carrier.geometry, p = g.attributes.position, edges = new Map(), triangles = new Set();
++      const vertex = i => [p.getX(i), p.getY(i), p.getZ(i)].map(v => Math.round(v * 1e6)).join(',');
++      for (let i = 0; i < g.index.count; i += 3) {
++        const points = [0, 1, 2].map(j => vertex(g.index.getX(i + j)));
++        const triangle = [...points].sort().join('|');
++        assert.ok(!triangles.has(triangle), 'duplicate coplanar triangle'); triangles.add(triangle);
++        for (let j = 0; j < 3; j++) {
++          const edge = [points[j], points[(j + 1) % 3]].sort().join('|');
++          edges.set(edge, (edges.get(edge) ?? 0) + 1);
++        }
++      }
++      for (const [edge, count] of edges) assert.equal(count, 2, `closed shell edge ${edge}`);
++      assert.ok(carrier.triangles < 800, 'small prop remains below 800 triangles');
++    } finally { carrier.geometry.dispose(); }
++  }
++});

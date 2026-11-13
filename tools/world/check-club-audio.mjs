@@ -1,5 +1,6 @@
 import { readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import './check-club-assets.mjs';
 
 // Sparse checkouts can build successfully while omitting runtime-only public assets.
 const source = readFileSync(new URL('../../src/components/world/WorldClubAudio.ts', import.meta.url), 'utf8');

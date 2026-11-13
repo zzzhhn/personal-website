@@ -1,0 +1,44 @@
+{
+ "A": {
+  "logTail": [
+   "01:45:45 \u2713 Completed in 164ms.",
+   "",
+   "01:45:45 [build] \u2713 Completed in 6.51s.",
+   "01:45:45 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-factory-perf-20261031.ZC3IP1/A`",
+   "01:45:45 [build] 3 page(s) built in 7.05s",
+   "01:45:45 [build] Complete!"
+  ],
+  "sha256": {
+   "world/index.html": "edd3f9b872575350a8cdba1aeb927d5a422d412a5f06cbf88dfcbbeb43c2fd8e",
+   "factory-bench/index.html": "4fab8e408011d269838819ba9c96feeb0252ffef3b5f3443ac8385a837d8cebc",
+   "_astro/WorldFactory.C3wHZVCr.js": "3458d88b83b2edf30ff17b8aec83ba45b52fa7f904900fe353766cb0504ebfb5"
+  },
+  "normalEntryHasProbe": false,
+  "allJsFileBytes": 6448070,
+  "factoryChunk": {
+   "bytes": 80837,
+   "gzipBytes": 31238
+  }
+ },
+ "B": {
+  "logTail": [
+   "01:48:03 \u2713 Completed in 1.08s.",
+   "",
+   "01:48:03 [build] \u2713 Completed in 9.11s.",
+   "01:48:03 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-factory-perf-20261031.ZC3IP1/B`",
+   "01:48:03 [build] 3 page(s) built in 9.56s",
+   "01:48:03 [build] Complete!"
+  ],
+  "sha256": {
+   "world/index.html": "1d035e1deee4ccef79a9c987982e5747c1f339de04a3eb06828bf61d9c0d089b",
+   "factory-bench/index.html": "054deea33085b05d1f455183c9e8c851d1a7a9490a35a1bd049a9263227e3ff3",
+   "_astro/WorldFactory.DzMga7_O.js": "1a6990a1d6e219357ebc2ab95073811e795e28616331dcec7520f07ba549b681"
+  },
+  "normalEntryHasProbe": false,
+  "allJsFileBytes": 6489999,
+  "factoryChunk": {
+   "bytes": 122766,
+   "gzipBytes": 44694
+  }
+ }
+}

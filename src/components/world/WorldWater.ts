@@ -82,6 +82,7 @@ export const seaGlintUniforms = { uSunDir: { value: new Vector3(-90, 40, 65).nor
   uWaterSkyTop: { value: new Color('#6F86A8') }, uWaterSkyHorizon: { value: new Color('#F2B98A') } };
 
 export function createWorldWaterMaterial(color: string) {
+  const legacy = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('natureCraft') === 'legacy';
   // Transparent only for the clear spots (alpha is 1 elsewhere); it still writes depth, and every
   // opaque body and the seabed are drawn before it.
   const material = new MeshStandardMaterial({ color, emissive: '#17424A', emissiveIntensity: 0, roughness: .5, metalness: 0, flatShading: true, transparent: true, depthWrite: true });
@@ -213,8 +214,27 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
         outgoingLight += uGlint * (pow(rs, sharp) * mix(2.4, 0.5, far) + pow(rs, 28.0) * 0.12) * (1.0 - foam) * (1.0 - clear);
       }
       #include <opaque_fragment>`);
+    if (!legacy) {
+      // Reuse the existing foam fields and three ripple evaluations. Geometry, clock,
+      // shore lookup count, actor disturbance and clear-spot alpha remain identical.
+      shader.fragmentShader = shader.fragmentShader
+        .replace('band * mix(0.55, 1.0, breakup)', 'band * mix(0.12, 1.0, breakup)')
+        .replace('sFbm(sp * vec2(0.9, 1.4) + vec2(tt * 0.12, -tt * 0.05))', `sFbm(vec2(dot(sp, vec2(0.8, 0.6)) * 0.65,
+        dot(sp, vec2(-0.6, 0.8)) * 1.75) + vec2(tt * 0.12, -tt * 0.05))`)
+        .replace('c = vec2(1.45, -0.62) * 2.2;', 'c = vec2(1.45, -0.62) * 9.9;')
+        .replace('Each ripple fades once a pixel covers a quarter of its wavelength (3.5 / 2.9 / 1.8 m)', 'Each ripple fades once a pixel covers a quarter of its wavelength (3.5 / 2.9 / 0.4 m)')
+        .replace('c * (0.03 * (1.0 - smoothstep(0.22, 0.45, px)) * cos(dot(sp, c) - uSeaTime * 2.3 + 0.7))', `// A 0.40 m capillary scale replaces the former 1.8 m third ripple.
+                   // Fade before a pixel covers a quarter wavelength; no added sine/noise calls.
+                   c * (0.0035 * (1.0 - smoothstep(0.045, 0.09, px)) * cos(dot(sp, c) - uSeaTime * 7.4 + 0.7))`)
+        .replace('slope = slope * uSeaMotion + contactWave.xy;', `// Broken surf damps the short ripples; calm shallows meet the wet-sand swash.
+        slope *= mix(0.64, 1.0, smoothstep(0.1, 4.0, shoreD)) * mix(1.0, 0.65, foam);
+        slope = slope * uSeaMotion + contactWave.xy;`)
+        .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+      // Foam scatters the existing light instead of inheriting the water's glossy response.
+      roughnessFactor = mix(roughnessFactor, 0.92, foam);`);
+    }
   };
-  material.customProgramCacheKey = () => 'world-sea-cdlod-contact-v6';
+  material.customProgramCacheKey = () => legacy ? 'world-sea-cdlod-contact-v6' : 'world-sea-cdlod-contact-v7-surface';
   return material;
 }
 

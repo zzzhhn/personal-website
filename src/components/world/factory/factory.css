@@ -1,0 +1,15 @@
+.factory-console{position:absolute;right:22px;top:126px;width:min(318px,calc(100vw - 32px));max-height:calc(100dvh - 150px);overflow:auto;box-sizing:border-box;padding:20px;background:#263b3ceF;color:#f4ead5;border:1px solid #879b8b;border-radius:12px;box-shadow:0 10px 32px #0003;pointer-events:auto;font-size:14px;line-height:1.55}
+.factory-console header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.factory-console h2{font:400 24px/1.2 'Songti SC',Georgia,serif;margin:0}
+.factory-console p{margin:10px 0}.factory-action-name{font-size:17px;color:#e9bd6e}
+.factory-console button{font:inherit;color:inherit;background:#ffffff0a;border:1px solid #95a59a77;padding:9px 12px;border-radius:5px;cursor:pointer;touch-action:none}
+.factory-console button:hover{background:#ffffff1c}.factory-console button:focus-visible{outline:2px solid #eec16e;outline-offset:3px}
+.factory-actions{display:grid;gap:8px}.factory-console .factory-primary{width:100%;margin-top:12px;color:#203536;background:#e1b76b;border-color:#e1b76b}
+.factory-direction-pad{display:flex;justify-content:center;gap:8px}.factory-direction-pad button{font-size:20px;min-width:46px}
+.factory-readings{border-top:1px solid #ffffff25;margin-top:18px;padding-top:14px;display:flex;flex-wrap:wrap;gap:10px}.factory-readings p{flex-basis:100%;margin:0}
+.factory-console small{display:block;margin-top:14px;color:#cad4ca}
+.factory-console button:disabled{cursor:default;opacity:.55}.factory-console .factory-next{width:100%;margin-top:14px;border-color:#dfb66d;color:#f0cf94}
+@media(max-width:640px){.factory-console{right:12px;top:auto;bottom:18px;max-height:52vh;overflow:auto;padding:16px}}
+.factory-readings p+p{margin-top:8px}.factory-readings .factory-result-summary{font-size:15px;color:#fff3d9}
+.factory-result-difference{color:#f0cf94}.factory-console .factory-experiment-advice{margin:12px 0}
+.factory-samples{margin-top:10px}.factory-console summary{cursor:pointer}.factory-console summary:focus-visible{outline:2px solid #eec16e;outline-offset:3px}

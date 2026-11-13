@@ -1,0 +1,36 @@
+---
+import World from './world.astro';
+---
+<World />
+<script>
+  import { WORLD_SHOTS } from '../components/world/layout';
+  import { useWorldStore, selectWorldTime } from '../components/world/store';
+  import { worldActorDebug } from '../components/world/WorldActors';
+  import { factoryWorld } from '../components/world/factory/factory-layout';
+  import { useFactoryStore } from '../components/world/factory/factory-store';
+  import { FACTORY_MODULES, createFactoryGame } from '../components/world/factory/factory-game';
+  const controls = document.createElement('nav');
+  controls.setAttribute('aria-label', 'Carrier model review');
+  controls.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:10000;display:flex;gap:6px;padding:8px;background:#20363e;color:white;border-radius:8px;flex-wrap:wrap;max-width:520px;font:13px sans-serif';
+  let moduleIndex = 0, night = false;
+  const game = createFactoryGame('carrier-review-fixture');
+  for (const module of FACTORY_MODULES) game.parts[module] = {id:`review-${module}`,module,materialId:`review-${module}`,manufacturedFor:'nimble'};
+  const label = document.createElement('output');
+  label.textContent = 'QA fixture · no save writes';
+  controls.append(label);
+  function show() {
+    const z = [-11, 2, 15][moduleIndex], id = `carrier-review-${moduleIndex}-${night?'night':'day'}`;
+    if (!WORLD_SHOTS.some(shot => shot.id === id)) WORLD_SHOTS.push({id,position:factoryWorld([22.3,2.9,z+2.5]),target:factoryWorld([20,1.44,z])});
+    const p = factoryWorld([20,.95,z+3]);
+    worldActorDebug.teleportPlayer(p);
+    useFactoryStore.setState({game,active:true});
+    selectWorldTime(night?'night':'noon');
+    useWorldStore.setState({position:p,shot:id,paused:false,factoryStation:null,timeRunning:false});
+    label.textContent = `QA fixture · ${FACTORY_MODULES[moduleIndex]} · ${night?'midnight':'noon'}`;
+  }
+  function button(text:string, action:()=>void) { const b=document.createElement('button'); b.textContent=text; b.style.cssText='padding:7px 12px;cursor:pointer'; b.onclick=action; controls.append(b); }
+  FACTORY_MODULES.forEach((m,i)=>button(m,()=>{moduleIndex=i;show();}));
+  button('Noon / midnight',()=>{night=!night;show();});
+  button('Play / pause',()=>{useWorldStore.setState({shot:null,paused:!useWorldStore.getState().paused});});
+  document.body.append(controls);
+</script>

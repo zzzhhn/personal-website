@@ -1,0 +1,14 @@
+[
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-10-30T17:31:49.888Z",
+    "url": "http://127.0.0.1:4343/.astro/node_modules/.vite/deps/chunk-NPZSTR2C.js?v=b5a98b83"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-10-30T17:31:49.953Z",
+    "url": "http://127.0.0.1:4343/.astro/node_modules/.vite/deps/chunk-HP2EFJ7V.js?v=b5a98b83"
+  }
+]

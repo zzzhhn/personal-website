@@ -220,14 +220,33 @@ export function roadblockGeometry(lod: 0 | 1) {
     const z = side * (spread * (1 - (y + h / 2) / legH) + .045);
     const tilt = Math.atan2(spread, legH) * side;
     B.tr([0, y + h / 2, z], [tilt, 0, 0], () => {
-      box(B, [-W / 2, -h / 2, -.012], [W / 2, h / 2, .012], S.creamPaint, hi ? .006 : 0);
-      // Diagonal orange stripes as raised strips (parallelograms clipped to the board).
-      const n = hi ? 5 : 3, step = W / n;
-      for (let i = 0; i < n; i++) {
-        const x0 = -W / 2 + i * step, sw = step * .5;
-        const pts: [number, number][] = [[x0, -h / 2], [x0 + sw, -h / 2], [Math.min(W / 2, x0 + sw + h * .6), h / 2], [Math.min(W / 2, x0 + h * .6), h / 2]];
-        const q = pts.map(p => [Math.max(-W / 2, Math.min(W / 2, p[0])), p[1]] as [number, number]);
-        B.face(q.map(p => [p[0], p[1], side * .0135] as V3), S.orange, [0, 0, side]);
+      const bevel=hi?.006:0;
+      box(B, [-W / 2, -h / 2, -.012], [W / 2, h / 2, .012], S.creamPaint, bevel, side>0?{pz:null}:{nz:null});
+      // Paint partitions the original face. White and orange never submit the same pixel-depth
+      // surface; the board's thickness, bevel and rear face remain the same closed shell.
+      type P2=[number,number];
+      const face:P2[]=[[-W/2+bevel,-h/2+bevel],[W/2-bevel,-h/2+bevel],[W/2-bevel,h/2-bevel],[-W/2+bevel,h/2-bevel]];
+      const stripe=(p:P2)=>p[0]-.6*(p[1]+h/2),n=hi?5:3,step=W/n;
+      const cuts=[Math.min(...face.map(stripe)),Math.max(...face.map(stripe)),
+        ...Array.from({length:n},(_,i)=>[-W/2+i*step,-W/2+(i+.5)*step]).flat()].sort((a,b)=>a-b);
+      const clip=(points:P2[],bound:number,above:boolean)=>{
+        const out:P2[]=[];
+        const append=(p:P2)=>{const last=out[out.length-1];if(!last||Math.hypot(p[0]-last[0],p[1]-last[1])>1e-10)out.push(p);};
+        for(let i=0;i<points.length;i++){
+          const a=points[i],b=points[(i+1)%points.length],da=stripe(a)-bound,db=stripe(b)-bound,ia=above?da>=0:da<=0,ib=above?db>=0:db<=0;
+          if(ia)append(a);
+          if(ia!==ib){const t=da/(da-db);append([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]);}
+        }
+        if(out.length>1&&Math.hypot(out[0][0]-out[out.length-1][0],out[0][1]-out[out.length-1][1])<1e-10)out.pop();
+        return out;
+      };
+      for(let i=0;i<cuts.length-1;i++){
+        if(cuts[i+1]-cuts[i]<1e-10)continue;
+        const polygon=clip(clip(face,cuts[i],true),cuts[i+1],false);
+        const area=polygon.reduce((sum,a,j)=>{const b=polygon[(j+1)%polygon.length];return sum+a[0]*b[1]-a[1]*b[0];},0);
+        if(polygon.length<3||Math.abs(area)<1e-10)continue;
+        const u=((cuts[i]+cuts[i+1])/2+W/2)/step,orange=u>=0&&u<n&&u-Math.floor(u)<.5;
+        B.face(polygon.map(p=>[p[0],p[1],side*.012] as V3),orange?S.orange:S.creamPaint,[0,0,side]);
       }
       if (hi) for (const x of [-W / 2 + .08, W / 2 - .08]) B.tr([x, 0, side * .016], [Math.PI / 2, 0, 0], () => cyl(B, .028, .028, -.004, .006, S.reflectOrange, 8));
     });
@@ -290,8 +309,17 @@ export function shelterGeometry(lod: 0 | 1, posterCell: Cell) {
   box(B, [-D / 2 - .1, 0, -L / 2 - .1], [D / 2 + .1, .04, L / 2 + .1], S.stoneCream, hi ? .015 : 0);
   for (const z of [-L / 2 + .06, L / 2 - .06]) for (const x of [-D / 2 + .08, D / 2 - .06]) { B.part('post'); box(B, [x - .04, .04, z - .04], [x + .04, H - .1, z + .04], S.slate, hi ? .01 : 0); }
   B.part('roof');
-  box(B, [-D / 2 - .25, H - .12, -L / 2 - .12], [D / 2 + .08, H - .02, L / 2 + .12], S.slateDark, hi ? .02 : 0);
-  box(B, [-D / 2 - .28, H - .2, -L / 2 - .12], [-D / 2 - .22, H - .02, L / 2 + .12], S.slate, hi ? .01 : 0);
+  if(hi){
+    box(B, [-D / 2 - .25, H - .12, -L / 2 - .12], [D / 2 + .08, H - .02, L / 2 + .12], S.slateDark, .02);
+    box(B, [-D / 2 - .28, H - .2, -L / 2 - .12], [-D / 2 - .22, H - .02, L / 2 + .12], S.slate, .01);
+  }else{
+    // Same union silhouette as the original roof/fascia boxes. Their shared strip and
+    // internal wall now have one owner instead of two differently coloured coplanar caps.
+    const seam=-D/2-.22,z0=-L/2-.12,z1=L/2+.12;
+    box(B,[seam,H-.12,z0],[D/2+.08,H-.02,z1],S.slateDark,0,{nx:null});
+    box(B,[-D/2-.28,H-.2,z0],[seam,H-.02,z1],S.slate,0,{px:null});
+    B.face([[seam,H-.2,z0],[seam,H-.12,z0],[seam,H-.12,z1],[seam,H-.2,z1]],S.slate,[1,0,0]);
+  }
   if (hi) box(B, [-D / 2 - .29, H - .17, -L / 2], [-D / 2 - .282, H - .15, L / 2], S.cyan, 0);
   B.part('rear');
   // Rear wall: frosted glass panes between mullions, kick rail.

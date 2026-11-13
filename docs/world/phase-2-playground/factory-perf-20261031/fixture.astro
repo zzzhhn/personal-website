@@ -1,0 +1,16 @@
+---
+import World from '../../../../src/pages/world.astro';
+---
+<World/>
+<style is:global>.world-app{width:1280px!important;height:720px!important}</style>
+<script>
+  import { _roots, addEffect } from '@react-three/fiber';
+  import { useWorldStore, selectWorldTime } from '../../../../src/components/world/store';
+  import { worldActorDebug } from '../../../../src/components/world/WorldActors';
+  import { factoryWorld } from '../../../../src/components/world/factory/factory-layout';
+  import { factoryControl, useFactoryStore } from '../../../../src/components/world/factory/factory-store';
+  import { createFactoryGame, FACTORY_MODULES } from '../../../../src/components/world/factory/factory-game';
+  import { createFactoryOperation, stepFactoryOperation } from '../../../../src/components/world/factory/factory-operation';
+  const src='/bench-probe.mjs';
+  import(/* @vite-ignore */src).then(m=>m.run({_roots,addEffect,useWorldStore,selectWorldTime,worldActorDebug,factoryWorld,factoryControl,useFactoryStore,createFactoryGame,FACTORY_MODULES,createFactoryOperation,stepFactoryOperation}));
+</script>

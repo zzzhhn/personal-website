@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useWorldStore } from '../store';
-import { COASTER_DURATION, COASTER_DISPLAY_SECONDS, coasterPhase, type CoasterView } from './coaster-track';
+import { COASTER_DURATION, COASTER_DISPLAY_SECONDS, coasterPhase, coasterVisibleView, type CoasterView } from './coaster-track';
 import { INTENT_TARGETS, intentInReach, type IntentTarget } from './intent-stations';
 import { findIntentTask, type IntentText } from './intent-tasks';
 import { activateIntentTarget, intentContact, resetIntentVisit, stopIntentRide, useIntentStore } from './intent-state';
@@ -32,8 +32,8 @@ const BOARDING_TEXT: Record<CoasterBoardingPhase, IntentText> = {
   complete: { zh: '正在确认站台出口畅通', en: 'Checking the platform exit is clear' },
 };
 const VIEWS: { id: CoasterView; label: IntentText }[] = [
-  { id: 'chase', label: { zh: '追尾', en: 'Chase' } }, { id: 'first-person', label: { zh: '第一人称', en: 'First person' } },
-  { id: 'comfort', label: { zh: '舒适观景', en: 'Comfort' } },
+  { id: 'first-person', label: { zh: '座舱观景', en: 'Cabin view' } },
+  { id: 'chase', label: { zh: '外部追随', en: 'Exterior view' } },
 ];
 /** Mount beside the world's other DOM overlays, outside Canvas. */
 function WorldIntentHud() {
@@ -59,7 +59,7 @@ function WorldIntentHud() {
   const contact = target ? intentContact(target) : false;
   const theme = ['night', 'evening'].includes(w.light) ? 'dark' : 'light';
   const viewControls = <div className="intent-views" role="group" aria-label={t('乘坐视角', 'Ride view')}>
-    {VIEWS.map(view => <button key={view.id} type="button" aria-pressed={s.view === view.id} onClick={() => { resetAttractionLook(); useIntentStore.setState({ view: view.id }); }}>{view.label[lang]}</button>)}
+    {VIEWS.map(view => <button key={view.id} type="button" aria-pressed={coasterVisibleView(s.view) === view.id} onClick={() => useIntentStore.setState({ view: view.id })}>{view.label[lang]}</button>)}
   </div>;
   if (s.riding) return <aside className="intent-hud intent-riding" data-theme={theme} aria-label={t('过山车乘坐控制', 'Coaster ride controls')}>
     <div className="intent-ride-heading"><strong>{s.ridePhase && s.ridePhase !== 'riding' ? BOARDING_TEXT[s.ridePhase][lang] : PHASE_TEXT[coasterPhase(s.rideSecond)][lang]}</strong><span>{Math.ceil(s.rideSecond)} / {COASTER_DISPLAY_SECONDS} s</span></div>
@@ -71,9 +71,11 @@ function WorldIntentHud() {
   </aside>;
   const primaryText = target === 'chest' ? s.progress.keyTaken ? t('钥匙已在身上', 'You have the key') : s.progress.chestOpen ? t('拿起钥匙', 'Take the key') : t('掀开宝箱', 'Open the chest')
     : target === 'gate' ? t('用钥匙开门', 'Unlock the gate') : t('沿踏步登车', 'Board using the steps');
-  const request = task?.clarification && s.progress.clarified.includes(task.id) ? task.clarification.reply[lang] : task?.request[lang];
-  const guidance = s.progress.gateOpen ? t('大门已开，左侧踏步登车。', 'Gate open. Board via the steps on the left.')
-    : s.progress.keyTaken ? t('把钥匙插入大门。', 'Take the key to the gate.') : s.progress.passed.length >= 6 ? t('六道锁已解开，掀箱拿钥匙。', 'Six locks open. Take the key from the chest.')
+  const clarified = workshop.practice ? workshop.practiceClarified : !!task && s.progress.clarified.includes(task.id);
+  const request = task?.clarification && clarified ? task.clarification.reply[lang] : task?.request[lang];
+  const busy = ['ready', 'processing', 'returning'].includes(workshop.phase);
+  const guidance = !busy && s.progress.gateOpen ? t('大门已开，可从列车右侧登车；工坊仍可继续接件。', 'Gate open. Board on the train’s right, or keep experimenting in the workshop.')
+    : !busy && s.progress.keyTaken ? t('把钥匙插入大门。', 'Take the key to the gate.') : !busy && s.progress.passed.length >= 6 ? t('六道锁已解开，掀箱拿钥匙；也可继续接件。', 'Six locks open. Take the key, or keep experimenting.')
     : workshop.phase === 'idle' ? t('接件台在入口左侧，绕到文字牌正面，拉杆接收请求。', 'Find the intake on the left. Walk to the front of its sign and pull the lever.')
     : workshop.phase === 'processing' ? t('看请求沿轨道进入机器。', 'Watch the request reach the machine.')
     : workshop.phase === 'returning' ? t('原件正在退回，机器未执行。稍后可直接换一台机器。', 'The original is returning without making changes. Then try another machine.')

@@ -1,0 +1,14 @@
+{
+ "size": [
+  1920,
+  1080
+ ],
+ "mean_absolute_8bit_RGB": [
+  0.03550829475308642,
+  0.034307002314814816,
+  0.03796489197530864
+ ],
+ "fraction_pixels_any_channel_over_12": 0.0006182484567901235,
+ "images": "pair-cross-visual-{stock,index}.jpg",
+ "frozenAnimation": false
+}

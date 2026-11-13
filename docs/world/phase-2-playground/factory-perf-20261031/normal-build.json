@@ -1,0 +1,19 @@
+{
+ "exit": 0,
+ "seconds": 10.018,
+ "world": true,
+ "fixture": false,
+ "tail": [
+  "01:54:11   \u251c\u2500 /index.html (+198ms) ",
+  "01:54:11 \u2713 Completed in 349ms.",
+  "",
+  "01:54:11 [build] \u2713 Completed in 8.41s.",
+  "01:54:11 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-factory-perf-20261031.ZC3IP1/normal`",
+  "01:54:11 [build] 2 page(s) built in 8.74s",
+  "01:54:11 [build] Complete!"
+ ],
+ "strictTypecheck": {
+  "exit": 0,
+  "output": ""
+ }
+}

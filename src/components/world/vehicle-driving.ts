@@ -61,11 +61,15 @@ export function stepCoupeDrive(body:Body, tyres:Tyres, state:DrivingState, input
   // Smooth torque falloff avoids the former on/off limiter at exactly 29 m/s.
   const taper=clamp((limit-abs)/5,0,1),power=state.power*(state.power<0?.55:1);
   const engine=mass*6.8*power*taper*(boosting?1.65:1);
+  // Rapier's brake is an impulse cap per update, not a force. Budget 15.6 m/s²
+  // across four tyres (60% front), independent of step rate. The contact solver
+  // still limits traction and rolls to zero without driving through into reverse.
+  const serviceBrakeImpulse=mass*dt*15.6;
   for(let i=0;i<4;i++){
     const rear=i>=2;
     tyres.setWheelSteering(i,rear?0:state.steering);
     tyres.setWheelEngineForce(i,engine*(rear?.32:.18));
-    tyres.setWheelBrake(i,!driven?mass*.035:braking?mass*(rear?.034:.046):handbrake&&rear?mass*.045:abs>.15&&Math.abs(throttle)<.02?mass*.0018:0);
+    tyres.setWheelBrake(i,!driven?mass*.035:braking?serviceBrakeImpulse*(rear?.20:.30):handbrake&&rear?mass*.045:abs>.15&&Math.abs(throttle)<.02?mass*.0018:0);
     tyres.setWheelFrictionSlip(i,(rear?1.65:1.6)*(rear?state.rearGrip:1));
     tyres.setWheelSideFrictionStiffness(i,rear?state.rearGrip:1);
   }

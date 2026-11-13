@@ -38,7 +38,7 @@ function heightAt(x,z) {
   }
   return highest;
 }
-test('geometry remains within one medium venue and the 68k triangle / 12 static draw budget',()=>{
+test('procedural venue remainder stays under 68k triangles / 12 draws; streamed bar is measured separately',()=>{
   assert.ok(total<68000,`triangles=${total}`);assert.ok(Object.keys(club.batches).length+1<=12);
   for(const g of all)for(const attr of Object.values(g.attributes))for(const v of attr.array)assert.ok(Number.isFinite(v));
   for(const g of Object.values(club.batches)) {
@@ -218,6 +218,6 @@ test('camera rays hit the roof underside and outer face with front-face culling'
   }
 });
 after(()=>{
-  console.log(JSON.stringify({triangles:total,staticDraws:9,dynamicDraws:5,realLights:CLUB_LIGHTS.length,supportTriangles:club.colliders.surface.indices.length/3,solidTriangles:club.colliders.solid.indices.length/3,seats:club.seats.length}));
+  console.log(JSON.stringify({scope:'procedural venue remainder; streamed north bar excluded',triangles:total,staticDraws:9,dynamicDraws:5,realLights:CLUB_LIGHTS.length,supportTriangles:club.colliders.surface.indices.length/3,solidTriangles:club.colliders.solid.indices.length/3,seats:club.seats.length}));
   all.forEach(g=>g.dispose());
 });

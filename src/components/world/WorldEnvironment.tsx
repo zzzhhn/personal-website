@@ -10,6 +10,7 @@ import {
   FOUNDATIONS, GROUND_TREES, GROUND_Y, LAYOUT_V4, PALETTE, ROAD_POINTS, ROAD_WIDTH, WATER_Y,
 } from './layout';
 import { useWorldStore } from './store';
+import { FACTORY } from './factory/factory-layout';
 import { climate, night } from './WorldNight';
 import { sampleTimeLight, TIME_LIGHT, TIME_PRESETS, type TimePreset } from './world-climate';
 import type { Vec3, WorldContent } from './types';
@@ -358,6 +359,9 @@ function createLayout() {
 const receiverBand = (focus: readonly number[]): [number, number] => [WATER_Y, Math.max(focus[1], GROUND_Y) + 7];
 const TALL_RECEIVERS = BUILDINGS.map(({ position: [x, y, z], size: [w, h, d] }) =>
   new Box3(new Vector3(x - w / 2, y, z - d / 2), new Vector3(x + w / 2, y + h, z + d / 2)));
+if(LAYOUT_V4)TALL_RECEIVERS.push(new Box3(
+  new Vector3(FACTORY.building.minX,FACTORY.origin[1],FACTORY.building.minZ),
+  new Vector3(FACTORY.building.maxX,FACTORY.origin[1]+FACTORY.height,FACTORY.building.maxZ+4)));
 
 function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStandardMaterial }) {
   const { scene, camera } = useThree();

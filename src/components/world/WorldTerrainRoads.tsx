@@ -10,7 +10,7 @@
 import { memo, useEffect, useMemo } from 'react';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferGeometry, Float32BufferAttribute, MeshStandardMaterial } from 'three';
-import { PAVE_STRIDE, pavingMesh, parkPlazaPavingVisual, type PaveChunk } from './WorldTerrainPaving';
+import { PAVE_STRIDE, pavingMesh, createPavingSurfaceVisual, type PaveChunk } from './WorldTerrainPaving';
 import { useGreyboxClaim, useIsClaimed } from './WorldVisualClaims';
 
 const NOISE = /* glsl */`
@@ -190,26 +190,33 @@ function ChunkColliders({ name, pos, top, walls }: { name: string; pos: Float32A
   </>;
 }
 
-function Chunk({ c, material }: { c: PaveChunk; material: MeshStandardMaterial }) {
+function Chunk({ c, material, visual }: { c: PaveChunk; material: MeshStandardMaterial; visual: ReturnType<typeof createPavingSurfaceVisual> }) {
   // Town replaces pillars and boards; v4 paving owns their walkable forecourt throughout handover.
-  const main = useMemo(() => geometryOf([...c.v, ...c.fv]), [c]);
+  const main = useMemo(() => geometryOf([...visual(c), ...c.fv]), [c, visual]);
+  // Visual seam ownership must never change the original support/collision mesh.
+  const collisionPos = useMemo(() => {
+    const pos=new Float32Array(c.v.length/PAVE_STRIDE*3);
+    for(let i=0;i<c.v.length/PAVE_STRIDE;i++)for(let axis=0;axis<3;axis++)pos[i*3+axis]=c.v[i*PAVE_STRIDE+axis];
+    return pos;
+  }, [c]);
   const fore = useMemo(() => c.fv.length ? geometryOf(c.fv) : null, [c]);
-  const parkReady = useMemo(() => c.parkSpurTriangles.length ? geometryOf([...parkPlazaPavingVisual(c), ...c.fv]) : null, [c]);
+  const parkReady = useMemo(() => c.parkSpurTriangles.length ? geometryOf([...visual(c,true), ...c.fv]) : null, [c, visual]);
   const plazaClaimed = useIsClaimed('park-plaza');
   useEffect(() => () => { main.g.dispose(); fore?.g.dispose(); parkReady?.g.dispose(); }, [main, fore, parkReady]);
   return <group name={`paving-v4-${c.key}`}>
     <mesh name={`paving-v4-chunk-${c.key}`} geometry={plazaClaimed && parkReady ? parkReady.g : main.g} material={material} receiveShadow userData={{ surface: true }} />
-    <ChunkColliders name={`paving-v4-${c.key}`} pos={main.pos} top={c.top} walls={c.walls} />
+    <ChunkColliders name={`paving-v4-${c.key}`} pos={collisionPos} top={c.top} walls={c.walls} />
     {fore && <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />}
   </group>;
 }
 
 export default memo(function WorldTerrainRoads() {
   const mesh = useMemo(pavingMesh, []);
+  const visual = useMemo(() => createPavingSurfaceVisual(mesh.chunks), [mesh]);
   const material = useMemo(pavingMaterial, []);
   useEffect(() => () => material.dispose(), [material]);
   useGreyboxClaim('paved');
   return <group name="world-paving-v4">
-    {mesh.chunks.map(c => <Chunk key={c.key} c={c} material={material} />)}
+    {mesh.chunks.map(c => <Chunk key={c.key} c={c} material={material} visual={visual} />)}
   </group>;
 });

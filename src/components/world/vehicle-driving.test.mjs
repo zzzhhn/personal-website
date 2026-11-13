@@ -11,7 +11,7 @@ await R.init();
 const spec=VEHICLES.find(v=>v.id==='coupe'), hull=JSON.parse(readFileSync(new URL('./WorldVehicleHulls.json',import.meta.url))).G26;
 const dt=1/60;
 // Same mass carriers, COM, hulls, damping and ray filtering as the normal live coupe.
-function fixture({legacy=false,bump=false,support=null}={}) {
+function fixture({legacy=false,previousBrake=false,bump=false,support=null}={}) {
   const world=new R.World({x:0,y:-9.81,z:0});world.timestep=dt;
   world.createCollider(R.ColliderDesc.cuboid(1000,.5,1000).setTranslation(0,-.5,0).setFriction(1));
   if(bump)world.createCollider(R.ColliderDesc.cuboid(.6,.06,10).setTranslation(12,.06,0));
@@ -21,7 +21,9 @@ function fixture({legacy=false,bump=false,support=null}={}) {
     world.createCollider(R.ColliderDesc.cuboid(4,.08,4).setSensor(support==='sensor'),prop);
   }
   const geometry=wheelGeometry(spec.size),body=world.createRigidBody(R.RigidBodyDesc.dynamic()
-    .setTranslation(0,geometry.height,0).setLinearDamping(legacy?.12:.025).setAngularDamping(.65).setCcdEnabled(true));
+    .setTranslation(0,geometry.height,0).setLinearDamping(legacy?.12:.025).setAngularDamping(.65).setCcdEnabled(true)
+    // Match WorldActors' canSleep={false}: raycast impulses alone do not wake a settled chassis.
+    .setCanSleep(false));
   function massBox(mass,x,y,z,offset=0){
     world.createCollider(R.ColliderDesc.cuboid(x/2,y/2,z/2).setTranslation(offset,spec.size[1]*(offset?.42:0),0)
       .setSensor(true).setCollisionGroups(0).setMassProperties(mass,{x:0,y:-.2,z:0},
@@ -46,7 +48,10 @@ function fixture({legacy=false,bump=false,support=null}={}) {
           tyres.setWheelBrake(i,braking?spec.mass*.028:Math.abs(throttle)<.02?spec.mass*.0015:0);
           tyres.setWheelFrictionSlip(i,spec.grip*(i>=2&&Math.abs(steer)>.45&&Math.abs(speed)>7?.68:1));
         }
-      }else stepCoupeDrive(body,tyres,state,{...input,throttle,steer},spec.mass,l*.68,dt);
+      }else {
+        stepCoupeDrive(body,tyres,state,{...input,throttle,steer},spec.mass,l*.68,dt);
+        if(previousBrake&&state.braking)for(let i=0;i<4;i++)tyres.setWheelBrake(i,spec.mass*(i>=2?.034:.046));
+      }
       tyres.updateVehicle(dt,R.QueryFilterFlags.EXCLUDE_SENSORS|R.QueryFilterFlags.EXCLUDE_DYNAMIC|R.QueryFilterFlags.EXCLUDE_KINEMATIC,undefined,c=>c.parent()?.handle!==body.handle);
       world.step();frames++;
       const v=body.linvel(),q=body.rotation(),p=body.translation();
@@ -83,6 +88,42 @@ test('coupe: comparable baseline and candidate measurements at 60 km/h',()=>{
     }finally{f.free();}
   }
   console.log('coupe measurements '+JSON.stringify(result));
+});
+
+test('coupe: service braking shortens high-speed stops without rear-grip loss or reversing',()=>{
+  const measurements=[];
+  for(const kph of [60,100,120]){
+    const results=[];
+    for(const previousBrake of [true,false]){
+      const f=fixture({previousBrake});try{
+        f.body.setLinvel({x:kph/3.6,y:0,z:0},true);
+        const start=f.body.translation().x;let seconds=0;
+        while(Math.abs(f.body.linvel().x)>.2&&seconds<8){f.step(dt,{throttle:0,steer:0,brake:true});seconds+=dt;}
+        const metres=f.body.translation().x-start;
+        assert.ok(seconds<8,'stops before timeout');
+        assert.ok(f.rows.every(r=>r.up>.85&&Math.abs(r.slip)<.05),'straight service stop stays upright');
+        assert.equal(f.state.handbrake,false);assert.equal(f.state.rearGrip,1);
+        f.step(.75,{throttle:0,steer:0,brake:true});
+        assert.ok(Math.abs(f.body.linvel().x)<.1,'held service brake remains stopped');
+        results.push({handling:previousBrake?'previous':'candidate',seconds:+seconds.toFixed(3),metres:+metres.toFixed(3)});
+      }finally{f.free();}
+    }
+    assert.ok(results[1].metres<results[0].metres*.8,JSON.stringify({kph,results}));
+    assert.ok(results[1].seconds<results[0].seconds*.85,JSON.stringify({kph,results}));
+    measurements.push({kph,results});
+  }
+  console.log('coupe high-speed service stops '+JSON.stringify(measurements));
+});
+
+test('coupe: reverse service stop remains still, then forward throttle engages deliberately',()=>{
+  const f=fixture();try{
+    const start=f.body.translation().x;
+    f.step(3,{throttle:-1,steer:0});assert.ok(f.body.linvel().x< -2);
+    assert.ok(f.body.translation().x<start-2,'reverse must move the chassis, not just update a sleeping velocity');
+    f.step(2,{throttle:0,steer:0,brake:true});assert.ok(Math.abs(f.body.linvel().x)<.1);
+    f.step(1,{throttle:0,steer:0,brake:true});assert.ok(Math.abs(f.body.linvel().x)<.1);
+    f.step(1,{throttle:1,steer:0});assert.ok(f.body.linvel().x>2);
+  }finally{f.free();}
 });
 
 test('coupe: boost is finite, improves acceleration, cannot auto-cycle while held',()=>{

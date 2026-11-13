@@ -82,7 +82,7 @@ test('first-person head look and explicit reset/view switching preserve their or
     }
     for(const view of ['chase','first-person','comfort','chase']) {
       turnAttractionLook(1.43,-1.15); zoomAttractionLook(3);
-      resetAttractionLook(); // Same action used by the view buttons and reset.
+      resetAttractionLook(); // Explicit reset only; switching a view preserves the offsets.
       const pose=coasterRidePose(u,view);
       assert.deepEqual(attractionCameraPose(pose),attractionCameraPose(pose,{yaw:0,pitch:0,zoom:1}));
       assert.deepEqual(attractionLook,{yaw:0,pitch:0,zoom:1});

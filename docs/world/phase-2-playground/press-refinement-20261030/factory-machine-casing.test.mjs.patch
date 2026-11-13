@@ -1,0 +1,70 @@
+--- a/src/components/world/factory/factory-machine-casing.test.mjs
++++ b/src/components/world/factory/factory-machine-casing.test.mjs
+@@ -154,3 +154,67 @@
+     assert.throws(() => buildFactoryMachineCasing('unknown', palette), TypeError);
+   } finally { b.geometry.dispose(); }
+ });
++
++test('each I column is one connected section with a continuous web and both full-width flanges', () => {
++  const material = new MeshBasicMaterial();
++  try {
++    for (const module of FACTORY_MODULES) {
++      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material);
++      try {
++        // Inspect the exposed post above the gate guides and shell cheeks;
++        // those legitimate overlapping fixtures are not part of its section.
++        for (const x of [-2.4, 2.4]) for (const z of [-2.02, 2.02]) for (const height of [4.21, 4.29, 4.37]) {
++          for (const offsetZ of [-.19, 0, .19]) {
++            const hits = new Raycaster(new Vector3(x - .5, height, z + offsetZ), new Vector3(1, 0, 0), 0, 1)
++              .intersectObject(mesh).filter(h => h.point.x >= x - .24 && h.point.x <= x + .24);
++            assert.equal(hits.length, 1, 'front-side material sees one connected entry, never three detached bars');
++            near(hits[0].point.x, x - (offsetZ === 0 ? .05 : .23));
++            const reverse = new Raycaster(new Vector3(x + .5, height, z + offsetZ), new Vector3(-1, 0, 0), 0, 1)
++              .intersectObject(mesh).filter(h => h.point.x >= x - .24 && h.point.x <= x + .24);
++            assert.equal(reverse.length, 1); near(reverse[0].point.x, x + (offsetZ === 0 ? .05 : .23));
++          }
++        }
++      } finally { casing.geometry.dispose(); }
++    }
++  } finally { material.dispose(); }
++});
++
++test('the deep crown has real sloping haunches, a supported centre and matching centre colliders', () => {
++  const material = new MeshBasicMaterial({ side: DoubleSide });
++  try {
++    for (const module of FACTORY_MODULES) {
++      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material);
++      try {
++        for (const z of [-2.05, 2.05]) {
++          for (const x of [0, .9, 1.75, -1.75]) {
++            const hit = new Raycaster(new Vector3(x, 3.95, z), new Vector3(0, 1, 0), 0, .5).intersectObject(mesh)[0];
++            assert.ok(hit); const expected = Math.abs(x) <= 1.45 ? 4.06 : 4.06 + (Math.abs(x) - 1.45) * .34 / .7;
++            near(hit.point.y, expected);
++          }
++          const solid = casing.solids.find(s => s.at[0] === 0 && s.at[2] === z && s.at[1] < 4.4 && s.at[1] > 4);
++          assert.ok(solid); near(solid.at[1] - solid.size[1] / 2, 4.06);
++        }
++      } finally { casing.geometry.dispose(); }
++    }
++  } finally { material.dispose(); }
++});
++
++test('both hard lines use actual steel unions seated into the reservoir and annular receiver', () => {
++  const material = new MeshBasicMaterial({ side: DoubleSide });
++  try {
++    for (const module of FACTORY_MODULES) {
++      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material);
++      try {
++        for (const [sourceX, x, y] of [[.25, .18, 4.16], [-.25, -.18, 4.29]]) {
++          const inlet = new Raycaster(new Vector3(sourceX, .9, 2.5), new Vector3(0, 0, -1), 0, .4).intersectObject(mesh);
++          near(inlet[0].point.z, 2.39);
++          assert.ok(inlet.some(h => Math.abs(h.point.z - 2.31) < 1e-5), 'reservoir face behind the union');
++          const sleeve = new Raycaster(new Vector3(x + .04, y, .6), new Vector3(0, 0, -1), 0, .4).intersectObject(mesh)[0];
++          assert.ok(sleeve); near(sleeve.point.z, .44);
++          const receiver = new Raycaster(new Vector3(x, y, .6), new Vector3(0, 0, -1), 0, .4).intersectObject(mesh);
++          assert.ok(receiver.some(h => h.point.z < .33 && h.point.z > .27), 'union enters the actual annular body');
++        }
++      } finally { casing.geometry.dispose(); }
++    }
++  } finally { material.dispose(); }
++});

@@ -1,0 +1,138 @@
+{
+  "after-shell-lowered-day.jpg": {
+    "bytes": 103755,
+    "sha256": "212427307b3b934f63e6288ae132523b7c38c9353cf2ec460ce0d995f0fac13c"
+  },
+  "factory-machine-casing.test.mjs.after": {
+    "bytes": 13838,
+    "sha256": "85452b213ddcc6c9e16fb1b22feb9fea029e7ec71ef9aef91b54b3b0df970e01"
+  },
+  "factory-press-rod.ts.after": {
+    "bytes": 753,
+    "sha256": "038154ab6af7b49597182f0122fd9ca402ce766a8afcf66cee38bf73cb4d8057"
+  },
+  "after-wheels-work-day.jpg": {
+    "bytes": 102132,
+    "sha256": "063085379e64c197c1258cffec1794d1cb62dda402b5f14c940858bd75a89e05"
+  },
+  "factory-press-rod.test.mjs.patch": {
+    "bytes": 3940,
+    "sha256": "bbef821d5f93e72e8f13764facba94901e284c7fe448cc515d568db014f9a26c"
+  },
+  "factory-machine-casing.ts.after": {
+    "bytes": 8733,
+    "sha256": "ea0fce254ef5aca1a7a045c84448e3c350dd9e531ed2a628054f3f5f722936bf"
+  },
+  "before-rod-lowered-day.jpg": {
+    "bytes": 94023,
+    "sha256": "57e7a1b135bca5ac6a49a129e820bb8412043619664d22be162d2bb65194496e"
+  },
+  "targeted-tests.log": {
+    "bytes": 5626,
+    "sha256": "24dc17048edb33080c5327a3f7a84c3fd918ba08871fa8f6f2f2fbcb5dc85d65"
+  },
+  "before-frame-detail-day.jpg": {
+    "bytes": 107364,
+    "sha256": "91b366ae0378a32ff2c1666ef2b6cc7a46702780f48a8595f4c4f379bdc26645"
+  },
+  "factory-machine-casing.test.mjs.patch": {
+    "bytes": 4045,
+    "sha256": "2fd39b9adf9ecda0c467e163917c72e2cb77406c1d60cb9870eb7a71b50b71cd"
+  },
+  "factory-press-rod.ts.patch": {
+    "bytes": 855,
+    "sha256": "716d7a0bf6533ad87df0e5084ca9a5c8b9cd9eebe518c4278e3c4aface7b9762"
+  },
+  "before-frame-work-day.jpg": {
+    "bytes": 92580,
+    "sha256": "2e7fe789bfc8baa5496d3a321083db0d0e415e8c7cc2c0eacfc5fa1eb106db37"
+  },
+  "WorldFactoryMechanisms.before.tsx": {
+    "bytes": 13088,
+    "sha256": "429052c281033759d970d83def29c889dc83ba30fbbd99cac66826cf82351d31"
+  },
+  "typecheck.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "after-wheels-lowered-day.jpg": {
+    "bytes": 102921,
+    "sha256": "f57482e3d6847578f54451f533ee336ef0c17727c8b87f3305e03254d6d9599b"
+  },
+  "after-frame-work-day.jpg": {
+    "bytes": 93449,
+    "sha256": "be5c9a6f0ae70a84bfc19a2a19453dc0460ad4bbcce51126d67d71b4b7e6c914"
+  },
+  "before-metrics.json": {
+    "bytes": 398,
+    "sha256": "5e8c207232b99e701a7c554d1cb33d86e9c426fdbd1e1876472e78c6c16bdf0a"
+  },
+  "factory-machine-casing.before.test.mjs": {
+    "bytes": 10140,
+    "sha256": "efc6b38d67f6534dfb3be45b05ff35c47ee3ee3ccd313728929763ea27cbff4f"
+  },
+  "cold-live-cycle-complete.jpg": {
+    "bytes": 129979,
+    "sha256": "9c19555f2f6bdd7a1b668ca4a284da45499ef5a01de3314032223e1686fa6c2a"
+  },
+  "cold-console.json": {
+    "bytes": 546,
+    "sha256": "be55b16394533eb16fbf07180c3635f1eabe520e252fe773b81a890e30bb5c7a"
+  },
+  "before-frame-work-night.jpg": {
+    "bytes": 86397,
+    "sha256": "900fce5416f63a3689c44c1c5eb0400fcd6c84db3d0a46a312f5818ecec32df4"
+  },
+  "factory-press-rod.test.mjs.after": {
+    "bytes": 3775,
+    "sha256": "29a51af9cbde4bf6b44f6acdd6d41d0a31fead90dbdb43e55cbc9ad9e0bacac0"
+  },
+  "after-metrics.json": {
+    "bytes": 398,
+    "sha256": "be73be3043f16b654127595f5e8bfd2be9a022d8d6d15e7f796a4284c6c64f8f"
+  },
+  "factory-machine-casing.ts.patch": {
+    "bytes": 4438,
+    "sha256": "9ef8e9390f8151180412e9050b9608b67c98d98e47b1e7c585eab1661f5e2e67"
+  },
+  "README.md": {
+    "bytes": 7099,
+    "sha256": "6ea616d97dd6d27491f5897e1515ea7fdc13f6da89ca8bc48c46c6f0251691c9"
+  },
+  "WorldFactoryMechanisms.tsx.patch": {
+    "bytes": 3500,
+    "sha256": "83a650b2406e47f68b249d0b6978d485c99b388357b6140b42f202503168daa1"
+  },
+  "after-frame-detail-day.jpg": {
+    "bytes": 105052,
+    "sha256": "dac0d5553958f336303777de6324e9d24519ef936da89efdb7a7db9d852eb3b7"
+  },
+  "after-frame-work-night.jpg": {
+    "bytes": 87559,
+    "sha256": "a133148777f68b319f690adac71694424bc9e6d60090ae632384269414ec6b45"
+  },
+  "factory-machine-casing.before.ts": {
+    "bytes": 6648,
+    "sha256": "1f44ae9f5c2a47a304bc712145983f1a538afbcdb110847dc39647c1825f01d6"
+  },
+  "WorldFactoryMechanisms.tsx.after": {
+    "bytes": 13394,
+    "sha256": "07bdc233932135385b4a476d9eef4d70c7f341998adba804be03306d70deaade"
+  },
+  "review-fixture.astro": {
+    "bytes": 3645,
+    "sha256": "89f1194023d855267d75a2d67d7847690bc50da8036c44ab967f9586f2738c6a"
+  },
+  "after-rod-lowered-day.jpg": {
+    "bytes": 94057,
+    "sha256": "6964108778ab55735378f8d921834a4643eb42ab9f6bd8b6e7bb429bf9421e15"
+  },
+  "runtime-sample.json": {
+    "bytes": 9538,
+    "sha256": "469bdb52b8e7dbe404eae2196a100a620e27dee314a39c090140021d433f5bd4"
+  },
+  "build.log": {
+    "bytes": 3495,
+    "sha256": "63b4b4be3df9ee8937db5f7bab1e12cd46e2417affce628297dc1bda8ebbaf76"
+  }
+}

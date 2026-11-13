@@ -11,10 +11,13 @@ export { thrillSupports as coasterSupports } from './coaster-thrill-supports.ts'
 export const COASTER_DURATION = THRILL_DURATION;
 export const COASTER_DISPLAY_SECONDS = Math.ceil(THRILL_DURATION);
 export type CoasterView = 'chase' | 'first-person' | 'comfort';
+/** Keep legacy view tokens for callers/saves; only two distinct choices are shown. */
+export const COASTER_DEFAULT_VIEW: CoasterView = 'first-person';
+export const coasterVisibleView = (view: CoasterView) => view === 'first-person' ? 'first-person' : 'chase';
 export const coasterWorld = ([x,y,z]:Vec3):Vec3 => [x+INTENT_COASTER.center[0],y+INTENT_COASTER.center[1],z+INTENT_COASTER.center[2]];
 export const COASTER_GATE_Z = 56;
-export const COASTER_EXIT = coasterWorld([-4.2,.08,43]);
-export const COASTER_BOARD = coasterWorld([-2.8,.65,43]);
+export const COASTER_EXIT = coasterWorld([4.2,.08,43]);
+export const COASTER_BOARD = coasterWorld([2.8,.65,43]);
 export const COASTER_CANOPY_BOUNDS = {min:coasterWorld([-11,6.2,30]),max:coasterWorld([7,7.4,53])};
 export const COASTER_POINTS = THRILL_POINTS;
 export const coasterCurve = thrillCurve;
@@ -38,7 +41,7 @@ export function coasterPhase(seconds:number) {
   return 'bank';
 }
 const smooth=(v:number)=>{const t=Math.max(0,Math.min(1,v));return t*t*t*(t*(t*6-15)+10);};
-export function coasterRidePose(u:number,view:CoasterView):AttractionRidePose & {orientation:[number,number,number,number];cameraUp:Vec3} {
+export function coasterRidePose(u:number,view:CoasterView=COASTER_DEFAULT_VIEW):AttractionRidePose & {orientation:[number,number,number,number];cameraUp:Vec3} {
   const pose=thrillRidePose(u,view==='first-person') as AttractionRidePose & {orientation:[number,number,number,number];cameraUp:Vec3};
   if(view==='first-person')return pose;
   // Blend inside the retained return corridor without changing the player's look input.

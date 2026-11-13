@@ -1,0 +1,35 @@
+{
+ "production": true,
+ "tag": "diag",
+ "frame": 94,
+ "buffer": [
+  1920,
+  1080
+ ],
+ "css": [
+  1280,
+  720
+ ],
+ "camera": [
+  -236.49999999999983,
+  6.200000000000006,
+  5.0000000000000275
+ ],
+ "actor": [
+  -229.5,
+  1.9388232231140137,
+  1.5000001192092896
+ ],
+ "station": "frame",
+ "quality": "balanced",
+ "light": "noon",
+ "weather": "clear",
+ "minutes": 720,
+ "paused": false,
+ "hidden": false,
+ "frameloop": "always",
+ "msaa": 4,
+ "gpuTimer": true,
+ "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+ "renderer": "WebKit WebGL"
+}

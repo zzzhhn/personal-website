@@ -1,0 +1,20 @@
+[
+  {
+    "module": "frame",
+    "triangles": 596,
+    "vertices": 1308,
+    "bytes": 85632
+  },
+  {
+    "module": "wheels",
+    "triangles": 548,
+    "vertices": 1212,
+    "bytes": 79296
+  },
+  {
+    "module": "shell",
+    "triangles": 508,
+    "vertices": 1116,
+    "bytes": 73056
+  }
+]

@@ -12,6 +12,8 @@ import { cancelExchangePlay } from './alpha-exchange-play';
 import { ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_INSPECTION_STAND_TOLERANCE } from './attractions/ibd-inspection-motion';
 import { cancelIbdPack, tickIbdPackInspection, useIbdPackPlay } from './attractions/ibd-pack-play';
 import { tickIbdCoilInspection } from './attractions/ibd-yard-store';
+import { factoryActor, closeFactoryStation, clearFactoryInput, useFactoryStore } from './factory/factory-store';
+import { FACTORY, FACTORY_STATIONS, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS, factoryStation, factoryWorld } from './factory/factory-layout';
 import { ibdPackHome, ibdWorld } from './attractions/ibd-yard-layout';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
@@ -20,8 +22,9 @@ import { CLUB, CLUB_POOL } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROADS } from './attractions/attraction-layout';
 import { captureCoasterStart } from './attractions/coaster-transition';
 import { attractionRide, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
-import { attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
+import { AttractionCameraOrientation, attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
 import { AttractionCameraObstruction } from './attractions/attraction-camera-obstruction';
+import { AttractionCabinCamera } from './attractions/attraction-camera-cabin';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
@@ -35,7 +38,7 @@ import { roadLandingCandidates, portalRearmed } from './world-travel';
 import { WORLD_PORTALS, portalCrossing } from './world-portals';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
-import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
+import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, guideVehicleApproachSeconds, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
@@ -355,6 +358,11 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
+    if(LAYOUT_V4&&start==='factory')return [FACTORY.entrance[0],FACTORY.entrance[1]+PLAYER_CENTER_HEIGHT,FACTORY.entrance[2]];
+    if(LAYOUT_V4&&import.meta.env.DEV&&start?.startsWith('factory-')){
+      const station=FACTORY_STATIONS.find(s=>s.id===start.slice(8));
+      if(station){const p=factoryWorld(station.at);return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
+    }
     if(start==='ibd'||start==='coaster'){
       const p=(start==='ibd'?IBD_YARD:INTENT_COASTER).entrance;
       return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];
@@ -388,6 +396,8 @@ export default function WorldActors() {
   const cameraReady = useRef(false);
   const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
   const attractionObstruction = useRef(new AttractionCameraObstruction());
+  const attractionOrientation = useRef(new AttractionCameraOrientation());
+  const attractionCabin = useRef(new AttractionCabinCamera());
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
   const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attractionArrival?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
@@ -423,6 +433,7 @@ export default function WorldActors() {
     cars.current.forEach(car=>{car.doors.openness=0;});
     seatHeld.current=null;seatFrom.current=null;seatBody.current=null;
     useWorldStore.setState({seat:null});
+    closeFactoryStation();
     // Recovery is a cut: rebuild only the guide state from the cached GLTF, so old Sit/Air
     // phases, root offsets and IK anchors cannot re-arm the movement lock at the new position.
     setGuideResetId(id=>id+1);
@@ -505,7 +516,7 @@ export default function WorldActors() {
           if(!clear)continue;
         }
         let distance=0,previous=p;for(const point of route){distance+=Math.hypot(point.x-previous.x,point.z-previous.z);previous=point;}
-        const approachSeconds=Math.max(VEHICLE_TRANSITION_S*.3,distance/1.7);
+        const approachSeconds=guideVehicleApproachSeconds(distance);
         car.driverSide=sg;car.doors.side=sg;
         guideTransition.current={id,side:sg,phase:'enter',elapsed:0,door:[door.x,p.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,sg),yaw:heading(r),approach:route.slice(0,-1).map(v=>[v.x,v.y-PLAYER_CENTER_HEIGHT,v.z]),approachSeconds,duration:approachSeconds+VEHICLE_TRANSITION_S*.7};
         break;
@@ -659,6 +670,7 @@ export default function WorldActors() {
       if(attractionRide.active)return;
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
       releasedKeys.current.delete(event.code);
+      if(state.factoryStation){if(['KeyW','KeyA','KeyS','KeyD','KeyE','Space'].includes(event.code))event.preventDefault();return;}
       if(state.clubMode==='dance'&&['Digit1','Digit2'].includes(event.code)){
         event.preventDefault();useWorldStore.setState({danceStep:event.code==='Digit1'?0:1});return;
       }
@@ -726,6 +738,7 @@ export default function WorldActors() {
     document.addEventListener('visibilitychange',hidden); gl.domElement.addEventListener('wheel',wheel,{passive:false});
     const unsubscribe=useWorldStore.subscribe((state,previous)=>{
       if(state.campReturnRequest!==previous.campReturnRequest){returnToCamp();return;}
+      if(state.factoryStation!==previous.factoryStation){clearInput();clearFactoryInput();}
       if(state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot || state.clubMode!==previous.clubMode){
         clearInput();drag=null;if((state.paused||state.poolInspect||state.clubMode==='dj')&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
       }
@@ -979,6 +992,9 @@ export default function WorldActors() {
     Object.assign(ibdInspectionActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:exchangeActor.available&&!exchangeBody.action&&!exchangeBody.carried,mode:active?'vehicle':'guide'});
     if(ibdInspectionBodyBusy()||ibdInspectionBody.carried)exchangeActor.available=false;
+    Object.assign(factoryActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],grounded:grounded.current,
+      available:exchangeActor.available&&!guideTransition.current&&!attractionRide.active});
+    if(state.factoryStation){mineActor.available=false;exchangeActor.available=false;ibdInspectionActor.available=false;}
     if(!exchangeActor.available)cancelExchangeBodyAction();
     if(exchangeBody.carried && (playerPosition.x<ALPHA_EXCHANGE_FOOTPRINT.minX-8 || playerPosition.x>ALPHA_EXCHANGE_FOOTPRINT.maxX+8
       || playerPosition.z<ALPHA_EXCHANGE_FOOTPRINT.minZ-8 || playerPosition.z>ALPHA_EXCHANGE_FOOTPRINT.maxZ+8))cancelExchangePlay('left-hall');
@@ -996,12 +1012,13 @@ export default function WorldActors() {
         c=>!c.isSensor()&&!(c.parent()?.userData as {interactable?:string}|undefined)?.interactable&&!(c.parent()?.userData as {vehicle?:string}|undefined)?.vehicle);
       return !hit;
     };
-    const reach=active||seated||carded||state.clubMode?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight,state.interactPick);
+    const reach=active||seated||carded||state.clubMode||state.factoryStation?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight,state.interactPick);
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
-    if(seated||carded)nearby=null;
+    if(seated||carded||state.factoryStation)nearby=null;
     const interactNow=(item:Interactable|null)=>{
       const now=useWorldStore.getState();
+      if(now.factoryStation)return;
       if(now.clubMode){useWorldStore.setState({clubMode:null});return;}
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
@@ -1077,6 +1094,8 @@ export default function WorldActors() {
         const consoleYaw=Math.atan2(p.z-CLUB.console[2],CLUB.console[0]-p.x);
         guideYaw.current+=clamp(angleDelta(guideYaw.current,consoleYaw),-dt*WALK_TURN,dt*WALK_TURN);
       }
+      const operating=useWorldStore.getState().factoryStation;
+      if(operating){rx=0;rz=0;actions.current.jump=false;}
       if(useWorldStore.getState().clubMode==='dance'&&(Math.hypot(rx,rz)>.05||actions.current.jump))useWorldStore.setState({clubMode:null});
       let rm=Math.hypot(rx,rz);if(rm>1){rx/=rm;rz/=rm;rm=1;}
       // Direction smoothing: from rest the input applies at once (A3 turn-before-move still sees the full
@@ -1143,12 +1162,19 @@ export default function WorldActors() {
       if (mining && !mining.contact && magnitude > .05) cancelMineAction();
       const inspecting=ibdInspectionBody.action;
       const trading=exchangeBody.action??inspecting;
-      const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried;
+      const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried || !!operating;
       if (mining && mineBusy()) {
         const desired = Math.atan2(-(mining.target[2] - p.z), mining.target[0] - p.x);
         guideYaw.current += clamp(Math.atan2(Math.sin(desired - guideYaw.current), Math.cos(desired - guideYaw.current)), -dt * 10, dt * 10);
       }
       let vx=locked?0:wx*speed,vz=locked?0:wz*speed;
+      if(operating){
+        const station=factoryStation(operating),stand=factoryWorld(station.at),dx=stand[0]-p.x,dz=stand[2]-p.z,d=Math.hypot(dx,dz);
+        if(d>.04){const pace=Math.min(1.4,d*4);vx=dx/d*pace;vz=dz/d*pace;}
+        const desired=d>.24?Math.atan2(-dz,dx):station.yaw-Math.PI/2;
+        guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*10,dt*10);
+        moveIntent.current=d>.04?'walk':'idle';
+      }
       if(trading){
         actions.current.jump=false;
         const dx=trading.anchor.stand[0]-p.x,dz=trading.anchor.stand[2]-p.z,distance=Math.hypot(dx,dz);
@@ -1281,7 +1307,9 @@ export default function WorldActors() {
 
   useFrame((_,delta)=>{
     const state=useWorldStore.getState();
-    if(!attractionRide.active||state.shot||state.poolInspect)attractionObstruction.current.clear();
+    if(!attractionRide.active||state.shot||state.poolInspect){
+      attractionObstruction.current.clear();attractionOrientation.current.clear();attractionCabin.current.clear();
+    }
     if (state.shot) {
       if(guideView.current)guideView.current.visible=true;
       // Fixed evidence cameras retain their original projection.
@@ -1291,6 +1319,32 @@ export default function WorldActors() {
       return;
     }
     if (state.paused || state.poolInspect) return;
+    if(state.factoryStation&&!state.activeVehicle){
+      const station=factoryStation(state.factoryStation),home=factoryWorld(station.machine);
+      let pivot=new Vector3(home[0],home[1]+1.15,home[2]),desired=new Vector3(home[0],home[1]+5.8,home[2]+9.5);
+      const workView=FACTORY_WORK_VIEWS[station.id];
+      if(workView){pivot.set(...factoryWorld(workView.target));desired.set(...factoryWorld(workView.eye));}
+      if(station.id==='assembly'||station.id==='finish'){
+        pivot.set(home[0]+.6,home[1]+.6,home[2]);
+        desired.set(home[0]+4.2,home[1]+3.8,home[2]+6);
+      }
+      if(station.id==='release'){
+        const view=FACTORY_DISPATCH_VIEWS[useFactoryStore.getState().dispatchView];
+        pivot.set(...factoryWorld(view.target));
+        desired.set(...factoryWorld(view.eye));
+      }
+      if(station.id==='test'||station.id==='compare'){
+        const x=FACTORY.origin[0]+(station.id==='compare'?68.5:59);
+        pivot=new Vector3(x,FACTORY.origin[1]+1.8,FACTORY.origin[2]+3);
+        desired=new Vector3(x,FACTORY.origin[1]+(station.id==='compare'?19:11),FACTORY.origin[2]+(station.id==='compare'?29:20));
+      }
+      const swept=sweepCamera(world,rapier,pivot,desired,.18,player.current??undefined,col=>!col.isSensor());
+      camera.position.lerp(new Vector3(swept.position.x,swept.position.y,swept.position.z),1-Math.exp(-delta*6));
+      target.current.lerp(pivot,1-Math.exp(-delta*6));camera.up.set(0,1,0);camera.lookAt(target.current);
+      if(camera instanceof PerspectiveCamera&&camera.fov!==50){camera.fov=50;camera.updateProjectionMatrix();}
+      if(guideView.current)guideView.current.visible=true;
+      occlusion.current.update(scene,camera,target.current,delta);cameraReady.current=false;return;
+    }
     const inspectionPack=useIbdPackPlay.getState().pack;
     if(inspectionPack&&!state.activeVehicle){
       // Frame the actual tray, hands and jaws. The same scene and collision sweep remain active.
@@ -1308,6 +1362,18 @@ export default function WorldActors() {
       if(pad.current.connected)turnAttractionLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
       const pose=attractionCameraPose(attractionRide.pose);
       const desired=new Vector3(...pose.cameraPosition),pivot=new Vector3(...pose.cameraTarget);
+      if(pose.firstPerson&&pose.orientation){
+        const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
+        const placement=attractionCabin.current.step(world,rapier,pose,radius,delta,
+          `${attractionRide.revision}:${attractionRide.transition?.phase??'riding'}`,player.current??undefined);
+        if(!placement.safe){
+          // Keep the last verified view; never hide a clearance fault by moving the eye through scenery.
+          if(!state.paused)console.warn('Coaster cabin clearance failed',placement);
+          useWorldStore.setState({paused:true});
+          return;
+        }
+        desired.copy(placement.position);
+      }else attractionCabin.current.clear();
       if(!pose.orientation)attractionObstruction.current.clear();
       if(!pose.firstPerson&&(pose.orientation||attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
         const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
@@ -1319,7 +1385,9 @@ export default function WorldActors() {
         const safeTarget=cameraLookTarget(desired,pivot,[diff.x,diff.y,diff.z]);
         pivot.set(safeTarget.x,safeTarget.y,safeTarget.z);
       }else attractionObstruction.current.clear();
-      camera.position.copy(desired);camera.up.set(...(pose.cameraUp??[0,1,0]));camera.lookAt(pivot);
+      camera.position.copy(desired);
+      camera.up.copy(attractionOrientation.current.step(pose,desired,pivot,delta,String(attractionRide.revision)));
+      camera.lookAt(pivot);
       if(camera instanceof PerspectiveCamera&&camera.fov!==pose.fov){camera.fov=pose.fov;camera.updateProjectionMatrix();}
       if(guideView.current)guideView.current.visible=!pose.firstPerson;
       cameraReady.current=false;

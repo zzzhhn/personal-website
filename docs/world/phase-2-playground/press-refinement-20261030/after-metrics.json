@@ -1,0 +1,26 @@
+{
+  "models": [
+    {
+      "module": "frame",
+      "triangles": 1732,
+      "solids": 27,
+      "bytes": 237264
+    },
+    {
+      "module": "wheels",
+      "triangles": 1908,
+      "solids": 27,
+      "bytes": 258096
+    },
+    {
+      "module": "shell",
+      "triangles": 1760,
+      "solids": 24,
+      "bytes": 240480
+    }
+  ],
+  "factory": {
+    "triangles": 64972,
+    "solids": 894
+  }
+}

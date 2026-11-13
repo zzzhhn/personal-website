@@ -1,0 +1,49 @@
+--- a/src/components/world/factory/WorldFactoryMechanisms.tsx
++++ b/src/components/world/factory/WorldFactoryMechanisms.tsx
+@@ -18,6 +18,7 @@
+ import { factoryBatchPosition, factoryRoutingPath, factoryIntakePath, sampleFactoryRoute } from './factory-routing';
+ import type { FactoryPoint } from './factory-layout';
+ import { createFactoryFollower, stepFactoryFollower, type FactoryFollowerInput } from './factory-follower';
++import { FACTORY_PRESS_ROD_BASE_LENGTH, syncFactoryPressRod } from './factory-press-rod';
+ 
+ const LINE=FACTORY_LINE_Z;
+ /** Moving tools and actual separable companion modules, limited to the active facility. */
+@@ -26,7 +27,7 @@
+   const kind=useFactoryStore(s=>s.game.configuration?.kind??'nimble');
+   const configId=useFactoryStore(s=>s.game.configuration?.id??null);
+   const geometry=useMemo(()=>({raw:[new BoxGeometry(.62,.2,.72),new BoxGeometry(.52,.3,.52),new BoxGeometry(.58,.12,.7)],
+-    press:new BoxGeometry(3.8,.32,3.2),piston:new CylinderGeometry(.15,.15,1.4,12),guard:new BoxGeometry(3.9,.14,.12),
++    press:new BoxGeometry(3.8,.32,3.2),piston:new CylinderGeometry(.15,.15,FACTORY_PRESS_ROD_BASE_LENGTH,12),guard:new BoxGeometry(3.9,.14,.12),
+     magnet:new CylinderGeometry(.34,.42,.22,12),ring:new RingGeometry(.7,.78,32)}),[]);
+   useEffect(()=>()=>{geometry.raw.forEach(g=>g.dispose());Object.values(geometry).forEach(g=>{if(!Array.isArray(g))g.dispose();});},[geometry]);
+   const gantry=useMemo(()=>buildFactoryGantry(FACTORY_PALETTE),[]);
+@@ -48,6 +49,7 @@
+     intake:Object.fromEntries(FACTORY_MODULES.map(module=>[module,factoryIntakePath(module)])) as Record<FactoryModule,FactoryPoint[]>,
+     batch:Object.fromEntries(FACTORY_MODULES.map(module=>[module,factoryBatchPosition(module)])) as Record<FactoryModule,FactoryPoint>}),[]);
+   const raw=useRef<Array<Mesh|null>>([]),press=useRef<Array<Group|null>>([]),guard=useRef<Array<Mesh|null>>([]);
++  const pistons=useRef<Array<Mesh|null>>([]);
+   const carriers=useMemo(()=>{
+     const material=createFactoryMaterial(false,night);
+     const meshes=FACTORY_MODULES.map(module=>{
+@@ -118,7 +120,11 @@
+       }
+       // The ram underside meets the actual raw top, independently for each blank.
+       const ramContact=FACTORY_CONVEYOR_TOP+FACTORY_RAW_HALF_HEIGHT[module]*2+.16;
+-      if(press.current[i])press.current[i]!.position.y=3.6-(processing?.stroke??0)*(3.6-ramContact);
++      if(press.current[i]){
++        const y=3.6-(processing?.stroke??0)*(3.6-ramContact);
++        press.current[i]!.position.y=y;
++        if(pistons.current[i])syncFactoryPressRod(pistons.current[i]!,y);
++      }
+       if(guard.current[i])guard.current[i]!.position.y=3.8-(processing?.guard??0)*1.9;
+       const produced=!!game.parts[module]||processing?.phase==='outfeed';
+       const carrier=carriers.meshes[i];
+@@ -166,7 +172,7 @@
+       <mesh ref={m=>{raw.current[i]=m;}} material={data.steel} geometry={geometry.raw[i]} castShadow/>
+       <group ref={g=>{press.current[i]=g;}} position={[-27,3.6,LINE[module]]}>
+         <mesh material={data.steel} geometry={geometry.press} castShadow/>
+-        <mesh position={[0,.8,0]} material={data.steel} geometry={geometry.piston}/>
++        <mesh ref={m=>{pistons.current[i]=m;}} position={[0,.8,0]} material={data.steel} geometry={geometry.piston}/>
+       </group>
+       <mesh ref={m=>{guard.current[i]=m;}} position={[-27,3.8,LINE[module]-2.15]} material={data.amber} geometry={geometry.guard} castShadow/>
+       <primitive object={data.parts[module]}/>

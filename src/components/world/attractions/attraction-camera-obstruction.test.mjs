@@ -5,6 +5,7 @@ import { Vector3, Quaternion } from 'three';
 import { AttractionCameraObstruction, ATTRACTION_CAMERA_RECOVERY_SPEED } from './attraction-camera-obstruction.ts';
 import { attractionCameraPose, attractionCameraSweepOrigin, resetAttractionLook } from './attraction-camera.ts';
 import { coasterRidePose, coasterDistanceAt, COASTER_DURATION, coasterFrame } from './coaster-track.ts';
+import { thrillRideTimeAt, thrillSourceTimeAt } from './coaster-thrill-motion.ts';
 import { createCoasterStructure } from './coaster-geometry.ts';
 import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { sweepCamera, cameraCollisionRadius } from '../camera-collision.ts';
@@ -102,6 +103,16 @@ test('real complete rides keep every recovered near plane safe and quantify rele
     for(const c of structure.colliders)world.createCollider(coasterColliderDescriptor(R,c));
     world.createCollider(R.ColliderDesc.trimesh(structure.track.vertices,structure.track.indices));
     world.createCollider(R.ColliderDesc.trimesh(structure.relief.vertices,structure.relief.indices));world.step();
+    // Preserve the historical physical obstruction at its source-track time.
+    // 79.82 elapsed seconds points somewhere else after the speed remapping.
+    const sourceSeconds=4789/60,rideSeconds=thrillRideTimeAt(sourceSeconds);
+    const historicPose=attractionCameraPose(coasterRidePose(coasterDistanceAt(rideSeconds),'chase'),looks[1]);
+    const historicRadius=cameraCollisionRadius(.1,historicPose.fov,1710/931),historicOrigin=attractionCameraSweepOrigin(historicPose);
+    const historicRaw=sweepCamera(world,R,historicOrigin,new Vector3(...historicPose.cameraPosition),historicRadius,undefined,solid);
+    assert.ok(historicRaw.hit!==null,'original source 79.8167 s must still encounter the real static obstacle');
+    const historicResult=new AttractionCameraObstruction().step(world,R,historicPose,historicRadius,1/60,'historical-probe');
+    assert.equal(world.intersectionWithShape(historicResult.position,identity,new R.Ball(historicRadius)),null);
+    events.push({sourceSeconds,rideSeconds,historicalHit:historicRaw.hit!==null,distance:historicResult.distance});
     for(const view of ['chase','comfort'])for(const look of looks){
       const camera=new AttractionCameraObstruction();
       let previous=null,oldPrevious=null,maxStep=0,maxStepAt=0,maxRelease=0,maxRawRelease=0,forced=0,recovery=0,samples=0,minHeight=Infinity;
@@ -127,16 +138,12 @@ test('real complete rides keep every recovered near plane safe and quantify rele
             assert.ok(oldJump>10);assert.ok(jump<.5);assert.equal(result.recovering,true);
             events.push({seconds,look,before:oldJump,after:jump,limit:result.limit,distance:result.distance,forced:result.forcedCompression});
           }
-          if(view==='chase'&&look.yaw===1.43&&seconds>79.81&&seconds<79.83){
-            assert.equal(result.forcedCompression,true);assert.ok(Math.abs(result.distance-result.limit)<1e-6);
-            assert.ok(raw.hit!==null,'79.82 s is an actual obstruction, not a smoothing artefact');
-            events.push({seconds,look,before:oldJump,after:jump,limit:result.limit,distance:result.distance,forced:result.forcedCompression});
-          }
+          if(result.forcedCompression)assert.ok(Math.abs(result.distance-result.limit)<1e-6);
         }
         forced+=+result.forcedCompression;recovery+=+result.recovering;samples++;
         previous=point;oldPrevious=vector(raw.position);
       }
-      reports.push({view,look,samples,forced,recovery,maxStep,maxStepAt,maxRelease,maxRawRelease,minHeight});
+      reports.push({view,look,samples,forced,recovery,maxStep,maxStepAt,maxStepSourceTime:thrillSourceTimeAt(maxStepAt),maxRelease,maxRawRelease,minHeight});
     }
     t.diagnostic(JSON.stringify({events,reports}));
   } finally {world.free();structure.steel.dispose();structure.glow.dispose();}

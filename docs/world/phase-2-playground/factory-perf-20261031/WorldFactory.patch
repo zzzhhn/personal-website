@@ -1,0 +1,32 @@
+--- a/src/components/world/factory/WorldFactory.tsx
++++ b/src/components/world/factory/WorldFactory.tsx
+@@ -2,6 +2,8 @@
+ import { useFrame } from '@react-three/fiber';
+ import { RigidBody, CuboidCollider, TrimeshCollider } from '@react-three/rapier';
+ import { Mesh, type PointLight } from 'three';
++import { acceleratedRaycast } from 'three-mesh-bvh';
++import { indexFactoryStructure } from './factory-structure-raycast';
+ import { useWorldStore } from '../store';
+ import { useInteractable } from '../WorldInteract';
+ import { night } from '../WorldNight';
+@@ -68,9 +70,11 @@
+     return ()=>{useFactoryStore.setState({active:false});closeFactoryStation();};
+   },[active]);
+   useEffect(()=>{
++    indexFactoryStructure(data.geometry);
+     const unsubscribe=connectFactoryWorld();
+     const clear=()=>clearFactoryInput();window.addEventListener('blur',clear);document.addEventListener('visibilitychange',clear);
+     return ()=>{unsubscribe();window.removeEventListener('blur',clear);document.removeEventListener('visibilitychange',clear);
++      delete data.geometry.boundsTree;
+       data.conveyors.dispose();data.worklife.dispose();data.geometry.dispose();data.surface.dispose();data.roofs.dispose();data.material.dispose();data.roofMaterial.dispose();};
+   },[data]);
+   useFrame(({clock},dt)=>{
+@@ -83,7 +87,7 @@
+     data.worklife.update(clock.elapsedTime,active,w.paused||w.poolInspect||document.hidden);
+   });
+   return <group name="world-factory" position={FACTORY.origin} dispose={null}>
+-    <mesh name="factory-structure" geometry={data.geometry} material={data.material} castShadow receiveShadow userData={{solid:true,assetId:'factory-architecture'}}/>
++    <mesh name="factory-structure" geometry={data.geometry} material={data.material} raycast={acceleratedRaycast} castShadow receiveShadow userData={{solid:true,assetId:'factory-architecture'}}/>
+     <mesh name="factory-walks" geometry={data.surface} material={data.material} receiveShadow/>
+     <mesh ref={roof} name="factory-roofs" geometry={data.roofs} material={data.roofMaterial} castShadow receiveShadow userData={{solid:true,assetId:'factory-roof'}}/>
+     <primitive object={data.conveyors.group}/>

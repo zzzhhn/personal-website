@@ -377,8 +377,10 @@ export interface PaveChunk {
   fv: number[]; ftop: number[]; fwalls: number[];
   /** Visual handover only. Original vertices / collider indices remain intact. */
   parkSpurTriangles: number[];
+  /** Visual seam ownership only: original triangle start vertices in v, never collider remapping. */
+  interiorTriangles?: number[]; asphaltStripTriangles?: number[];
 }
-const newChunk = (key: number): PaveChunk => ({ key, v: [], top: [], walls: [], fv: [], ftop: [], fwalls: [], parkSpurTriangles: [] });
+const newChunk = (key: number): PaveChunk => ({ key, v: [], top: [], walls: [], fv: [], ftop: [], fwalls: [], parkSpurTriangles: [], interiorTriangles: [], asphaltStripTriangles: [] });
 
 function clipPolygon(poly: number[][], keep: (p: number[]) => number) {
   // Sutherland-Hodgman against keep(p) >= 0 (linear along edges).
@@ -403,6 +405,69 @@ export function parkPlazaPavingVisual(c: PaveChunk) {
     for (let k = 1; k < poly.length - 1; k++) out.push(...poly[0], ...poly[k], ...poly[k + 1]);
   }
   return out;
+}
+
+/** Build once for ALL chunks: a strip may cross a chunk seam while its interior belongs to its
+ * neighbour. Returned arrays are transient render data; v/top/walls remain the exact original physics.
+ * The upper inner strip owns its footprint, so the 2 mm lower interior no longer draws beneath it. */
+export function createPavingSurfaceVisual(chunks: readonly PaveChunk[]) {
+  type Triangle = number[][];
+  const cell=4,grid=new Map<string,Triangle[]>();
+  const cross=(a:number[],b:number[],p:number[])=>(b[0]-a[0])*(p[2]-a[2])-(b[2]-a[2])*(p[0]-a[0]);
+  const area=(poly:number[][])=>poly.reduce((sum,a,i)=>{const b=poly[(i+1)%poly.length];return sum+a[0]*b[2]-a[2]*b[0];},0)/2;
+  // Both shapes are convex. A separating edge proves there is no positive-area overlap;
+  // do not cut along a distant triangle's infinite edge lines merely because it shares a grid cell.
+  const overlaps=(poly:number[][],cover:Triangle)=>{
+    for(const [shape,target]of [[poly,cover],[cover,poly]]){
+      const sign=area(shape)>0?1:-1;
+      for(let edge=0;edge<shape.length;edge++){
+        const a=shape[edge],b=shape[(edge+1)%shape.length];
+        if(Math.hypot(b[0]-a[0],b[2]-a[2])<1e-10)continue;
+        if(target.every(p=>sign*cross(a,b,p)<=1e-10))return false;
+      }
+    }
+    return true;
+  };
+  const triangle=(c:PaveChunk,start:number):Triangle=>[0,1,2].map(k=>c.v.slice((start+k)*PAVE_STRIDE,(start+k+1)*PAVE_STRIDE));
+  const cells=(poly:number[][],visit:(key:string)=>void)=>{
+    const xs=poly.map(p=>p[0]),zs=poly.map(p=>p[2]);
+    for(let x=Math.floor(Math.min(...xs)/cell);x<=Math.floor(Math.max(...xs)/cell);x++)for(let z=Math.floor(Math.min(...zs)/cell);z<=Math.floor(Math.max(...zs)/cell);z++)visit(`${x},${z}`);
+  };
+  for(const c of chunks)for(const start of c.asphaltStripTriangles??[]){
+    const t=triangle(c,start);if(Math.abs(area(t))<1e-10)continue;if(area(t)<0)t.reverse();
+    cells(t,key=>{const list=grid.get(key)??[];list.push(t);grid.set(key,list);});
+  }
+  return (c:PaveChunk,parkReady=false)=>{
+    const interior=new Set(c.interiorTriangles),handover=new Set(parkReady?c.parkSpurTriangles:[]),out:number[]=[];
+    const emit=(poly:number[][])=>{
+      for(let k=1;k<poly.length-1;k++){
+        const a=poly[0],b=poly[k],d=poly[k+1],u=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],v=[d[0]-a[0],d[1]-a[1],d[2]-a[2]];
+        if(Math.hypot(u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0])>1e-10)out.push(...a,...b,...d);
+      }
+    };
+    for(let start=0;start<c.v.length/PAVE_STRIDE;start+=3){
+      if(!interior.has(start)&&!handover.has(start)){out.push(...c.v.slice(start*PAVE_STRIDE,(start+3)*PAVE_STRIDE));continue;}
+      let fragments=[triangle(c,start)];
+      if(interior.has(start)){
+        const candidates=new Set<Triangle>();cells(fragments[0],key=>grid.get(key)?.forEach(t=>candidates.add(t)));
+        for(const cover of candidates){
+          fragments=fragments.flatMap(poly=>{
+            if(!overlaps(poly,cover))return [poly];
+            const outside:number[][][]=[];let remainder=poly;
+            for(let edge=0;edge<3&&remainder.length>=3;edge++){
+              const a=cover[edge],b=cover[(edge+1)%3],piece=clipPolygon(remainder,p=>-cross(a,b,p));
+              if(piece.length>=3&&Math.abs(area(piece))>1e-10)outside.push(piece);
+              remainder=clipPolygon(remainder,p=>cross(a,b,p));
+            }
+            return outside;
+          });
+          if(!fragments.length)break;
+        }
+      }
+      for(let poly of fragments){if(handover.has(start))poly=clipPolygon(poly,p=>43.6-p[0]);emit(poly);}
+    }
+    return out;
+  };
 }
 
 /** Douglas-Peucker on an open/closed point chain (xz). */
@@ -476,7 +541,7 @@ export const pavingMesh = lazy(() => {
   const chunk = (x: number, z: number) => { const k = chunkKey(x, z); return chunks.get(k) ?? chunks.set(k, newChunk(k)).get(k)!; };
   /** Vertex = [x, y, z, nx, ny, nz, o, s, lat] (mode is per triangle). */
   type V = number[];
-  const pushTri = (c: PaveChunk, a: V, b: V, d: V, mode: number, collide: 'top' | 'walls' | null, fore = false) => {
+  const pushTri = (c: PaveChunk, a: V, b: V, d: V, mode: number, collide: 'top' | 'walls' | null, fore = false, role?:'interior'|'strip') => {
     // Wind every triangle so its geometric normal agrees with the supplied vertex normals (front face
     // = visible side; also the side Rapier's one-sided queries expect).
     const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2], vx = d[0] - a[0], vy = d[1] - a[1], vz = d[2] - a[2];
@@ -486,10 +551,11 @@ export const pavingMesh = lazy(() => {
     for (const q of [a, b, d]) arr.push(q[0], q[1], q[2], q[3], q[4], q[5], mode, q[6], q[7], q[8]);
     const list = collide === 'top' ? (fore ? c.ftop : c.top) : collide === 'walls' ? (fore ? c.fwalls : c.walls) : null;
     if (list) list.push(base, base + 1, base + 2);
+    if(role==='interior')c.interiorTriangles!.push(base);else if(role==='strip')c.asphaltStripTriangles!.push(base);
   };
   const fieldV = (x: number, z: number): V => [x, ROAD_Y - .002, z, 0, 1, 0, sampleField(F.D, x, z) + GUTTER_W, 0, sampleField(F.LAT, x, z, 0)];
-  // 1) Carriageway interior: 0.5 m cells whose corners all lie at D <= -0.25 (row runs merged); the
-  // kerb strips start 0.6 m inside the gutter line, so the coplanar overlap hides the staircase.
+  // 1) Original collision interior. Rendering subtracts the inner strip footprint via
+  // createPavingSurfaceVisual; do not move these vertices or alter the existing contact soup.
   const step = Math.round(MESH_CELL / F.cell), Dn = (i: number, j: number) => F.D[j * NX + i];
   let cellTris = 0;
   for (let j = 0; j + step <= F.nz; j += step) {
@@ -501,7 +567,7 @@ export const pavingMesh = lazy(() => {
       for (let i0 = runStart; i0 < iEnd; i0 += step * 8) {
         const i1 = Math.min(iEnd, i0 + step * 8), xa = F.minX + i0 * F.cell, xb = F.minX + i1 * F.cell, c = chunk((xa + xb) / 2, (za + zb) / 2);
         const A = fieldV(xa, za), B = fieldV(xa, zb), C = fieldV(xb, zb), D = fieldV(xb, za);
-        pushTri(c, A, B, C, M.asphalt, 'top'); pushTri(c, A, C, D, M.asphalt, 'top'); cellTris += 2;
+        pushTri(c, A, B, C, M.asphalt, 'top',false,'interior'); pushTri(c, A, C, D, M.asphalt, 'top',false,'interior'); cellTris += 2;
       }
       runStart = -1;
     };
@@ -514,7 +580,7 @@ export const pavingMesh = lazy(() => {
       if (!ok || clipped || boundary) flush(i);
       if (ok && clipped) {
         const poly = clipPolygon(corners, keepClip);
-        if (poly.length >= 3) { const c = chunk(xc, zc); for (let t = 1; t < poly.length - 1; t++) { pushTri(c, poly[0], poly[t + 1], poly[t], M.asphalt, 'top'); cellTris++; } }
+        if (poly.length >= 3) { const c = chunk(xc, zc); for (let t = 1; t < poly.length - 1; t++) { pushTri(c, poly[0], poly[t + 1], poly[t], M.asphalt, 'top',false,'interior'); cellTris++; } }
         continue;
       }
       if (ok && runStart < 0) runStart = i;
@@ -579,7 +645,7 @@ export const pavingMesh = lazy(() => {
         if (poly.length < 3) return;
       }
       const cx = poly.reduce((s, p) => s + p[0], 0) / poly.length, cz = poly.reduce((s, p) => s + p[2], 0) / poly.length, c = chunk(cx, cz);
-      for (let t = 1; t < poly.length - 1; t++) { pushTri(c, poly[0], poly[t + 1], poly[t], mode, kind); stripTris++; }
+      for (let t = 1; t < poly.length - 1; t++) { pushTri(c, poly[0], poly[t + 1], poly[t], mode, kind,false,mode===M.asphalt?'strip':undefined); stripTris++; }
     }
   }
   // 3) Prisms (frozen decks, boardwalk, windmill pad, forecourts): top + outward walls, joint walls skipped.

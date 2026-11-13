@@ -1,0 +1,1325 @@
+{
+ "meta": {
+  "production": true,
+  "tag": "diag",
+  "frame": 263,
+  "buffer": [
+   1920,
+   1080
+  ],
+  "css": [
+   1280,
+   720
+  ],
+  "camera": [
+   -236.49999999999997,
+   6.200000000000001,
+   5.000000000000001
+  ],
+  "actor": [
+   -229.5,
+   1.9388232231140137,
+   1.5000001192092896
+  ],
+  "station": "frame",
+  "quality": "balanced",
+  "light": "noon",
+  "weather": "clear",
+  "minutes": 720,
+  "paused": false,
+  "hidden": false,
+  "frameloop": "always",
+  "msaa": 4,
+  "gpuTimer": true,
+  "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "renderer": "WebKit WebGL"
+ },
+ "samples": [
+  {
+   "dt": null,
+   "pre": 21.100000023841858,
+   "phase": "ready",
+   "gpu": null,
+   "submit": 6.199999988079071,
+   "draws": 365,
+   "tri": 1153075,
+   "rays": {
+    "factory-structure": [
+     4,
+     18.299999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 27.69999998807907,
+   "pre": 21.30000001192093,
+   "phase": "ready",
+   "gpu": null,
+   "submit": 5.600000023841858,
+   "draws": 365,
+   "tri": 1153075,
+   "rays": {
+    "factory-structure": [
+     4,
+     18.199999928474426
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.19999998807907,
+   "pre": 21.69999998807907,
+   "phase": "ready",
+   "gpu": null,
+   "submit": 5.599999964237213,
+   "draws": 365,
+   "tri": 1153075,
+   "rays": {
+    "factory-structure": [
+     4,
+     18.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.19999998807907,
+   "pre": 23.899999976158142,
+   "phase": "ready",
+   "gpu": 35.035458,
+   "submit": 5.400000035762787,
+   "draws": 365,
+   "tri": 1153075,
+   "rays": {
+    "factory-structure": [
+     4,
+     18.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  }
+ ],
+ "drawParts": {
+  "shadow:island:G24_mesh_5": [
+   4,
+   4088
+  ],
+  "shadow:island:G24_mesh_6": [
+   4,
+   2624
+  ],
+  "shadow:island:G24_mesh_7": [
+   4,
+   128
+  ],
+  "shadow:island:G24_cloth": [
+   4,
+   5584
+  ],
+  "shadow:factory:factory-structure": [
+   12,
+   776328
+  ],
+  "shadow:factory:factory-roofs": [
+   12,
+   312
+  ],
+  "shadow:factory:worklife-benches-workers-and-racks": [
+   12,
+   37680
+  ],
+  "shadow:factory:gantry-twin-bridge-and-end-trucks": [
+   12,
+   8736
+  ],
+  "shadow:factory:factory-live-mechanisms": [
+   40,
+   624
+  ],
+  "shadow:island:street-knock": [
+   4,
+   2304
+  ],
+  "shadow:factory:gantry-trolley-deck": [
+   4,
+   1680
+  ],
+  "shadow:factory:gantry-winch-and-rope-guides": [
+   4,
+   1280
+  ],
+  "shadow:factory:gantry-rope-left": [
+   4,
+   80
+  ],
+  "shadow:factory:gantry-rope-right": [
+   4,
+   80
+  ],
+  "shadow:factory:gantry-magnet-rope-sockets": [
+   4,
+   448
+  ],
+  "shadow:island:street-rail": [
+   0,
+   0
+  ],
+  "shadow:island:AM_batch_glow": [
+   4,
+   432
+  ],
+  "shadow:island:AM_batch_ground": [
+   4,
+   11936
+  ],
+  "shadow:island:AM_batch_metal": [
+   4,
+   34384
+  ],
+  "shadow:island:AM_batch_stone": [
+   4,
+   95904
+  ],
+  "shadow:island:AM_batch_wood": [
+   4,
+   164560
+  ],
+  "shadow:island:ibd-three-sheds-static": [
+   4,
+   190676
+  ],
+  "shadow:factory:assembly-moving-bridge": [
+   4,
+   2464
+  ],
+  "shadow:factory:assembly-trolley": [
+   4,
+   1632
+  ],
+  "shadow:factory:assembly-module-gripper": [
+   12,
+   448
+  ],
+  "shadow:factory:factory-carrier-frame": [
+   4,
+   2384
+  ],
+  "shadow:factory:factory-carrier-wheels": [
+   4,
+   2192
+  ],
+  "shadow:factory:factory-carrier-shell": [
+   4,
+   2032
+  ],
+  "shadow:island:street-foundation-slabs": [
+   0,
+   0
+  ],
+  "shadow:island:street-billboard": [
+   0,
+   0
+  ],
+  "color:island:world-sky": [
+   4,
+   2880
+  ],
+  "color:island:town-shadow-proxy": [
+   4,
+   3888
+  ],
+  "color:island:camp-content-static": [
+   4,
+   27376
+  ],
+  "color:island:camp-content-C14-wok": [
+   4,
+   3568
+  ],
+  "color:island:camp-content-C11-tools": [
+   4,
+   3152
+  ],
+  "color:island:world-greybox-environment": [
+   4,
+   0
+  ],
+  "color:island:island-terrain-v4-chunk-2": [
+   4,
+   86448
+  ],
+  "color:island:island-terrain-v4-chunk-0": [
+   4,
+   240824
+  ],
+  "color:island:island-terrain-v4-chunk-3": [
+   4,
+   88416
+  ],
+  "color:island:island-terrain-v4-chunk-1": [
+   4,
+   267640
+  ],
+  "color:island:ground-pebbles": [
+   4,
+   400
+  ],
+  "color:island:ground-grass-blades": [
+   0,
+   0
+  ],
+  "color:island:camp-fire-tongues": [
+   4,
+   500
+  ],
+  "color:island:paving-v4-chunk-2": [
+   4,
+   19572
+  ],
+  "color:island:paving-v4-chunk-0": [
+   4,
+   17644
+  ],
+  "color:island:paving-v4-chunk-3": [
+   4,
+   36412
+  ],
+  "color:island:paving-v4-chunk-1": [
+   4,
+   16976
+  ],
+  "color:island:camp-mesh-C04-C04_mesh_1": [
+   4,
+   2304
+  ],
+  "color:island:camp-mesh-C04-C04_mesh_2": [
+   4,
+   928
+  ],
+  "color:island:camp-mesh-C04-C04_mesh_3": [
+   4,
+   96
+  ],
+  "color:island:camp-mesh-C04-C04_mesh_4": [
+   4,
+   3072
+  ],
+  "color:island:camp-mesh-C03-C03_mesh_1": [
+   4,
+   1152
+  ],
+  "color:island:camp-mesh-C03-C03_mesh_2": [
+   4,
+   464
+  ],
+  "color:island:camp-mesh-C03-C03_mesh_3": [
+   4,
+   48
+  ],
+  "color:island:camp-mesh-C03-C03_mesh_4": [
+   4,
+   1536
+  ],
+  "color:island:camp-mesh-C05-C05_mesh_2": [
+   4,
+   176
+  ],
+  "color:island:flag_04": [
+   4,
+   320
+  ],
+  "color:island:camp-mesh-C07-C07_desk_1": [
+   4,
+   352
+  ],
+  "color:island:camp-mesh-C07-C07_stool_1": [
+   4,
+   464
+  ],
+  "color:island:camp-mesh-C07-C07_desk_2": [
+   4,
+   2016
+  ],
+  "color:island:camp-mesh-C07-C07_stool_2": [
+   4,
+   480
+  ],
+  "color:island:camp-mesh-C08-C08_books_1": [
+   4,
+   168
+  ],
+  "color:island:camp-mesh-C08-C08_books_2": [
+   4,
+   368
+  ],
+  "color:island:camp-mesh-C08-C08_books_3": [
+   4,
+   368
+  ],
+  "color:island:camp-mesh-C08-C08_books_4": [
+   4,
+   368
+  ],
+  "color:island:camp-mesh-C08-C08_books_5": [
+   4,
+   184
+  ],
+  "color:island:camp-mesh-C09-C09_books_1": [
+   4,
+   48
+  ],
+  "color:island:camp-mesh-C09-C09_books_2": [
+   4,
+   184
+  ],
+  "color:island:camp-mesh-C09-C09_books_3": [
+   4,
+   184
+  ],
+  "color:island:C10_pole_1": [
+   4,
+   432
+  ],
+  "color:island:C10_pole_2": [
+   4,
+   368
+  ],
+  "color:island:C10_pole_3": [
+   4,
+   880
+  ],
+  "color:island:C10_pole_4": [
+   4,
+   2048
+  ],
+  "color:island:camp-mesh-C09-C09_shelf_1": [
+   4,
+   528
+  ],
+  "color:island:camp-mesh-C09-C09_trophies_3": [
+   4,
+   352
+  ],
+  "color:island:camp-mesh-C09-C09_shelf_2": [
+   4,
+   528
+  ],
+  "color:island:camp-mesh-C09-C09_trophies_1": [
+   4,
+   704
+  ],
+  "color:island:camp-mesh-C09-C09_shelf_3": [
+   4,
+   224
+  ],
+  "color:island:flag_01": [
+   4,
+   288
+  ],
+  "color:island:flag_02": [
+   4,
+   320
+  ],
+  "color:island:camp-mesh-C09-C09_trophies_2": [
+   4,
+   4576
+  ],
+  "color:island:camp-mesh-G21-rock_1": [
+   4,
+   8864
+  ],
+  "color:island:camp-mesh-G21-rock_2": [
+   4,
+   6496
+  ],
+  "color:island:camp-mesh-G21-rock_3": [
+   4,
+   2848
+  ],
+  "color:island:camp-mesh-G21-rock_4": [
+   4,
+   1632
+  ],
+  "color:island:camp-mesh-G22-rock_1": [
+   4,
+   6636
+  ],
+  "color:island:camp-mesh-G22-rock_2": [
+   4,
+   3892
+  ],
+  "color:island:camp-mesh-G22-rock_3": [
+   4,
+   1568
+  ],
+  "color:island:camp-mesh-G22-rock_4": [
+   4,
+   1792
+  ],
+  "color:island:camp-mesh-G23-rock_1": [
+   4,
+   5724
+  ],
+  "color:island:camp-mesh-G23-rock_2": [
+   4,
+   4500
+  ],
+  "color:island:camp-mesh-G23-rock_3": [
+   4,
+   1872
+  ],
+  "color:island:camp-mesh-G23-rock_4": [
+   4,
+   1440
+  ],
+  "color:island:vehicle-offroad-right-door": [
+   4,
+   720
+  ],
+  "color:island:vehicle-offroad-body": [
+   4,
+   11376
+  ],
+  "color:island:vehicle-offroad-left-door": [
+   4,
+   720
+  ],
+  "color:island:vehicle-offroad-wheels": [
+   4,
+   6464
+  ],
+  "color:island:G24_mesh_5": [
+   4,
+   4088
+  ],
+  "color:island:G24_mesh_6": [
+   4,
+   2624
+  ],
+  "color:island:G24_mesh_7": [
+   4,
+   128
+  ],
+  "color:island:vehicle-coupe-left-door": [
+   4,
+   848
+  ],
+  "color:island:vehicle-coupe-body": [
+   4,
+   13576
+  ],
+  "color:island:vehicle-coupe-right-door": [
+   4,
+   848
+  ],
+  "color:island:vehicle-coupe-wheels": [
+   4,
+   3200
+  ],
+  "color:island:vehicle-van-body": [
+   4,
+   10112
+  ],
+  "color:island:vehicle-van-right-door": [
+   4,
+   720
+  ],
+  "color:island:vehicle-van-left-door": [
+   4,
+   720
+  ],
+  "color:island:vehicle-van-wheels": [
+   4,
+   6272
+  ],
+  "color:island:town-town-south-lod1": [
+   4,
+   1248
+  ],
+  "color:island:town-town-north-lod1": [
+   4,
+   3936
+  ],
+  "color:island:town-west-lod1": [
+   4,
+   1440
+  ],
+  "color:island:town-beach-lod1": [
+   4,
+   816
+  ],
+  "color:island:town-building-0-lod1": [
+   4,
+   2848
+  ],
+  "color:island:town-building-1-lod1": [
+   4,
+   7008
+  ],
+  "color:island:town-building-2-lod1": [
+   4,
+   2432
+  ],
+  "color:island:town-building-3-lod1": [
+   4,
+   2960
+  ],
+  "color:island:town-building-4-lod1": [
+   4,
+   3216
+  ],
+  "color:island:town-building-5-lod1": [
+   4,
+   6576
+  ],
+  "color:island:town-signs": [
+   4,
+   48
+  ],
+  "color:island:town-boards": [
+   4,
+   48
+  ],
+  "color:island:brain-quarry-approach": [
+   4,
+   16596
+  ],
+  "color:island:park-hut-interactive-learning-far-solid": [
+   4,
+   1344
+  ],
+  "color:island:park-hut-interactive-learning-far-deck": [
+   4,
+   96
+  ],
+  "color:island:park-plaza-far-deck": [
+   4,
+   280
+  ],
+  "color:island:park-plaza-far-solid": [
+   4,
+   160
+  ],
+  "color:island:park-hut-accompany-far-deck": [
+   4,
+   96
+  ],
+  "color:island:park-hut-accompany-far-solid": [
+   4,
+   1344
+  ],
+  "color:island:park-walk-2-far-deck": [
+   4,
+   40
+  ],
+  "color:island:park-walk-2-far-solid": [
+   4,
+   2032
+  ],
+  "color:island:park-walk-0-far-solid": [
+   4,
+   1408
+  ],
+  "color:island:park-walk-0-far-deck": [
+   4,
+   40
+  ],
+  "color:island:park-walk-1-far-deck": [
+   4,
+   40
+  ],
+  "color:island:park-walk-1-far-solid": [
+   4,
+   1856
+  ],
+  "color:island:park-hut-hepai-far-deck": [
+   4,
+   96
+  ],
+  "color:island:park-hut-hepai-far-solid": [
+   4,
+   1344
+  ],
+  "color:island:park-hut-evalforge-far-deck": [
+   4,
+   96
+  ],
+  "color:island:park-hut-djc-far-deck": [
+   4,
+   96
+  ],
+  "color:island:park-hut-evalforge-far-solid": [
+   4,
+   1344
+  ],
+  "color:island:park-hut-djc-far-solid": [
+   4,
+   1344
+  ],
+  "color:island:street-construction-signs-F04": [
+   0,
+   0
+  ],
+  "color:island:park-rail": [
+   0,
+   0
+  ],
+  "color:island:park-rail-far": [
+   4,
+   4032
+  ],
+  "color:island:park-lamp": [
+   0,
+   0
+  ],
+  "color:island:park-lamp-far": [
+   4,
+   5256
+  ],
+  "color:island:alpha-exchange-architecture": [
+   4,
+   149888
+  ],
+  "color:island:exchange-archive-ticket": [
+   8,
+   56
+  ],
+  "color:island:alpha-exchange-displays": [
+   4,
+   192
+  ],
+  "color:island:exchange-position-grip": [
+   4,
+   176
+  ],
+  "color:island:exchange-detent-0": [
+   4,
+   48
+  ],
+  "color:island:exchange-detent-10": [
+   4,
+   48
+  ],
+  "color:island:exchange-detent-20": [
+   4,
+   48
+  ],
+  "color:island:exchange-detent-30": [
+   4,
+   48
+  ],
+  "color:island:exchange-detent-40": [
+   4,
+   48
+  ],
+  "color:island:exchange-detent-50": [
+   4,
+   48
+  ],
+  "color:island:exchange-review-selector": [
+   8,
+   240
+  ],
+  "color:island:exchange-opening-bell": [
+   4,
+   512
+  ],
+  "color:island:exchange-bell-pull": [
+   4,
+   176
+  ],
+  "color:island:exchange-clearing-stamp": [
+   4,
+   176
+  ],
+  "color:island:exchange-bell-cord": [
+   4,
+   96
+  ],
+  "color:island:exchange-archive-catalog": [
+   4,
+   32
+  ],
+  "color:island:north-attractions-approach": [
+   28,
+   6400
+  ],
+  "color:island:street-knock": [
+   4,
+   3840
+  ],
+  "color:island:street-roadblock": [
+   0,
+   0
+  ],
+  "color:island:street-fixed": [
+   0,
+   0
+  ],
+  "color:island:street-rails": [
+   0,
+   0
+  ],
+  "color:island:street-rail": [
+   0,
+   0
+  ],
+  "color:island:street-windmill-rotor": [
+   0,
+   0
+  ],
+  "color:island:street-windmill-tower": [
+   0,
+   0
+  ],
+  "color:island:street-year": [
+   0,
+   0
+  ],
+  "color:island:street-billboard": [
+   0,
+   0
+  ],
+  "color:island:greybox-seabed": [
+   4,
+   48
+  ],
+  "color:island:world-surface-visuals": [
+   0,
+   0
+  ],
+  "color:island:world-solid-visuals": [
+   0,
+   0
+  ],
+  "color:island:camp-C02-flagstones": [
+   4,
+   2688
+  ],
+  "color:island:alpha-exchange-play-props": [
+   8,
+   96
+  ],
+  "color:island:town-palms-palm_leaf_dark": [
+   4,
+   2904
+  ],
+  "color:island:town-palms-palm_leaf": [
+   4,
+   2640
+  ],
+  "color:island:town-palms-palm_trunk": [
+   4,
+   11232
+  ],
+  "color:island:G24_cloth": [
+   4,
+   5584
+  ],
+  "color:island:camp-mesh-C03-C03_mesh": [
+   4,
+   16160
+  ],
+  "color:island:camp-mesh-C04-C04_mesh": [
+   4,
+   19760
+  ],
+  "color:island:camp-mesh-C05-C05_mesh": [
+   4,
+   640
+  ],
+  "color:island:camp-mesh-C05-C05_mesh_1": [
+   4,
+   320
+  ],
+  "color:island:camp-mesh-C05-C05_mesh_3": [
+   4,
+   840
+  ],
+  "color:island:camp-mesh-C05-C05_mesh_4": [
+   4,
+   328
+  ],
+  "color:island:camp-mesh-C06-C06_mesh": [
+   4,
+   3040
+  ],
+  "color:island:camp-mesh-C06-C06_mesh_1": [
+   4,
+   800
+  ],
+  "color:island:ibd-three-sheds-static": [
+   4,
+   190676
+  ],
+  "color:island:ibd-mechanisms": [
+   32,
+   27936
+  ],
+  "color:island:ibd-cargo-coil-front": [
+   4,
+   18192
+  ],
+  "color:island:ibd-cargo-coil-rear": [
+   4,
+   18368
+  ],
+  "color:island:ibd-crane-levers": [
+   8,
+   576
+  ],
+  "color:island:ibd-inspection-stock-a": [
+   16,
+   2688
+  ],
+  "color:island:ibd-inspection-parts-a": [
+   16,
+   5568
+  ],
+  "color:island:ibd-cargo-parts-a": [
+   8,
+   5248
+  ],
+  "color:island:ibd-inspection-parts-b": [
+   16,
+   5568
+  ],
+  "color:island:ibd-cargo-parts-b": [
+   8,
+   5248
+  ],
+  "color:island:ibd-inspection-stock-b": [
+   16,
+   5568
+  ],
+  "color:factory:factory-walks": [
+   4,
+   1008
+  ],
+  "color:factory:factory-roofs": [
+   4,
+   104
+  ],
+  "color:factory:factory-state-driven-belt-chains": [
+   4,
+   18144
+  ],
+  "color:factory:factory-driven-rollers": [
+   4,
+   89408
+  ],
+  "color:factory:worklife-benches-workers-and-racks": [
+   4,
+   12560
+  ],
+  "color:factory:worklife-working-arms-and-cleat": [
+   4,
+   1568
+  ],
+  "color:factory:gantry-twin-bridge-and-end-trucks": [
+   4,
+   2912
+  ],
+  "color:factory:assembly-moving-bridge": [
+   4,
+   2464
+  ],
+  "color:factory:assembly-trolley": [
+   4,
+   1632
+  ],
+  "color:factory:assembly-module-gripper": [
+   12,
+   448
+  ],
+  "color:factory:factory-assembly-hoist": [
+   8,
+   192
+  ],
+  "color:factory:factory-carrier-shell": [
+   4,
+   2032
+  ],
+  "color:factory:factory-carrier-wheels": [
+   4,
+   2192
+  ],
+  "color:factory:factory-carrier-frame": [
+   4,
+   2384
+  ],
+  "color:factory:companion-wheel-hub": [
+   16,
+   3968
+  ],
+  "color:factory:companion-running-gear": [
+   4,
+   4992
+  ],
+  "color:factory:companion-chassis": [
+   4,
+   1936
+  ],
+  "color:factory:companion-enamel-panels": [
+   4,
+   3248
+  ],
+  "color:factory:companion-tyre": [
+   16,
+   5376
+  ],
+  "color:factory:companion-bumpers": [
+   4,
+   352
+  ],
+  "color:factory:companion-front-optic": [
+   4,
+   192
+  ],
+  "color:factory:companion-rear-lamp": [
+   4,
+   176
+  ],
+  "color:factory:factory-live-mechanisms": [
+   12,
+   288
+  ],
+  "color:factory:printer-open-throat-chassis": [
+   4,
+   5216
+  ],
+  "color:factory:printer-upper-feed-roller": [
+   4,
+   192
+  ],
+  "color:factory:printer-lower-feed-roller": [
+   4,
+   192
+  ],
+  "color:island:street-foundation-slabs": [
+   0,
+   0
+  ],
+  "color:island:street-construction-sign-text": [
+   0,
+   0
+  ],
+  "color:island:camp-content-glow": [
+   4,
+   832
+  ],
+  "color:island:camp-content-C11-labels": [
+   4,
+   40
+  ],
+  "color:island:camp-content-C12-strings": [
+   4,
+   480
+  ],
+  "color:island:camp-content-C12": [
+   4,
+   9056
+  ],
+  "color:island:camp-content-C13-0": [
+   4,
+   3344
+  ],
+  "color:island:camp-content-C13-1": [
+   4,
+   3344
+  ],
+  "color:island:camp-content-C15": [
+   4,
+   7856
+  ],
+  "color:island:intent-coaster": [
+   8,
+   546640
+  ],
+  "color:island:intent-train": [
+   12,
+   3024
+  ],
+  "color:island:camp-mesh-G16-crown_1": [
+   4,
+   25872
+  ],
+  "color:island:camp-mesh-G16-crown_2": [
+   4,
+   15120
+  ],
+  "color:island:camp-mesh-G16-crown_3": [
+   4,
+   22848
+  ],
+  "color:island:camp-mesh-G16-trunk": [
+   4,
+   5232
+  ],
+  "color:island:camp-mesh-G17-crown_1": [
+   4,
+   8688
+  ],
+  "color:island:camp-mesh-G17-crown_2": [
+   4,
+   6168
+  ],
+  "color:island:camp-mesh-G17-crown_3": [
+   4,
+   8568
+  ],
+  "color:island:camp-mesh-G17-trunk": [
+   4,
+   2304
+  ],
+  "color:island:camp-mesh-G18-crown_1": [
+   4,
+   9000
+  ],
+  "color:island:camp-mesh-G18-crown_2": [
+   4,
+   7952
+  ],
+  "color:island:camp-mesh-G18-crown_3": [
+   4,
+   10584
+  ],
+  "color:island:camp-mesh-G18-trunk": [
+   4,
+   3400
+  ],
+  "color:island:camp-mesh-G19-crown_1": [
+   4,
+   18240
+  ],
+  "color:island:camp-mesh-G19-crown_2": [
+   4,
+   6000
+  ],
+  "color:island:camp-mesh-G19-crown_3": [
+   4,
+   16800
+  ],
+  "color:island:camp-mesh-G20-crown_1": [
+   4,
+   27296
+  ],
+  "color:island:camp-mesh-G20-crown_2": [
+   4,
+   11232
+  ],
+  "color:island:camp-mesh-G20-crown_3": [
+   4,
+   16608
+  ],
+  "color:island:flag_03": [
+   4,
+   288
+  ],
+  "color:island:case_screw": [
+   4,
+   448
+  ],
+  "color:island:case_screw_1": [
+   4,
+   368
+  ],
+  "color:island:case_screw_2": [
+   4,
+   976
+  ],
+  "color:island:case_screw_3": [
+   4,
+   2256
+  ],
+  "color:island:case_screw_4": [
+   4,
+   624
+  ],
+  "color:island:case_screw_5": [
+   4,
+   624
+  ],
+  "color:island:case_screw_6": [
+   4,
+   1072
+  ],
+  "color:island:case_screw_7": [
+   4,
+   2000
+  ],
+  "color:island:case_screw_8": [
+   4,
+   2928
+  ],
+  "color:island:ash_handle": [
+   4,
+   552
+  ],
+  "color:island:ash_handle_1": [
+   4,
+   312
+  ],
+  "color:island:ash_handle_2": [
+   4,
+   4672
+  ],
+  "color:island:ash_handle_3": [
+   4,
+   528
+  ],
+  "color:island:ash_handle_4": [
+   4,
+   176
+  ],
+  "color:island:ash_handle_5": [
+   4,
+   456
+  ],
+  "color:island:ash_handle_6": [
+   4,
+   216
+  ],
+  "color:island:ash_handle_7": [
+   4,
+   288
+  ],
+  "color:island:AM_batch_canvas": [
+   4,
+   208
+  ],
+  "color:island:AM_batch_glow": [
+   4,
+   432
+  ],
+  "color:island:AM_batch_metal": [
+   4,
+   34384
+  ],
+  "color:island:AM_batch_ground": [
+   4,
+   11936
+  ],
+  "color:island:AM_batch_stone": [
+   4,
+   95904
+  ],
+  "color:island:AM_batch_wood": [
+   4,
+   164560
+  ],
+  "color:island:vein-lower_intact_shell": [
+   4,
+   1728
+  ],
+  "color:island:vein-lower_intact_shell_1": [
+   4,
+   240
+  ],
+  "color:island:vein-middle_intact_shell": [
+   4,
+   1728
+  ],
+  "color:island:vein-middle_intact_shell_1": [
+   4,
+   240
+  ],
+  "color:island:vein-upper_intact_shell": [
+   4,
+   1572
+  ],
+  "color:island:vein-upper_intact_shell_1": [
+   4,
+   396
+  ],
+  "color:island:alpha-mine-pool-marker-0": [
+   12,
+   104
+  ],
+  "color:island:alpha-mine-pool-marker-1": [
+   12,
+   104
+  ],
+  "color:island:alpha-mine-attraction": [
+   56,
+   2656
+  ],
+  "color:island:world-sea-gerstner": [
+   4,
+   168960
+  ],
+  "color:factory:factory-structure": [
+   4,
+   258776
+  ],
+  "color:island:alpha-exchange-window-10": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-11": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-9": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-8": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-7": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-6": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-4": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-5": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-3": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-2": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-1": [
+   4,
+   48
+  ],
+  "color:island:alpha-exchange-window-0": [
+   4,
+   48
+  ],
+  "color:island:camp-content-light-pools": [
+   8,
+   80
+  ],
+  "color:island:camp-fire-embers": [
+   4,
+   0
+  ]
+ }
+}

@@ -102,7 +102,7 @@ test('the entry apron, six real tread tops and clear car opening agree with the 
   assert.ok((B.floorY - B.platformY) / 6 < .21);
   const carGeometry = createCoasterCar(), car = new Mesh(carGeometry, material); car.updateMatrixWorld(true);
   for (const x of [.6, .82, 1.05]) for (const y of [.5, .85, 1.05]) {
-    const ray = new Raycaster(new Vector3(x, y, -1.2), new Vector3(0, 0, 1), 0, 1.2);
+    const ray = new Raycaster(new Vector3(x, y, 1.2), new Vector3(0, 0, -1), 0, 1.2);
     assert.equal(ray.intersectObject(car).length, 0, `clear side passage at ${x}, ${y}`);
   }
   assert.ok(new Vector3(...B.exit).distanceTo(new Vector3(...B.stairs[0].position)) > 1.2, 'exit has clearance from the bottom stair');

@@ -1,0 +1,3877 @@
+{
+ "meta": {
+  "production": true,
+  "tag": "a2",
+  "frame": 521,
+  "buffer": [
+   1920,
+   1080
+  ],
+  "css": [
+   1280,
+   720
+  ],
+  "camera": [
+   -236.49999999999997,
+   6.200000000000001,
+   5.000000000000001
+  ],
+  "actor": [
+   -229.5,
+   1.9388232231140137,
+   1.5000001192092896
+  ],
+  "station": "frame",
+  "quality": "balanced",
+  "light": "noon",
+  "weather": "clear",
+  "minutes": 720,
+  "paused": false,
+  "hidden": false,
+  "frameloop": "always",
+  "msaa": 4,
+  "gpuTimer": true,
+  "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "renderer": "WebKit WebGL"
+ },
+ "samples": [
+  {
+   "dt": null,
+   "pre": 31.80000001192093,
+   "phase": "ready",
+   "gpu": null,
+   "submit": 5.400000035762787,
+   "draws": 366,
+   "tri": 1154047,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 48.10000002384186,
+   "pre": 35.10000002384186,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.599999964237213,
+   "draws": 366,
+   "tri": 1154047,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 55.80000001192093,
+   "pre": 39.30000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.599999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.60000002384186
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 66.89999997615814,
+   "pre": 52.89999997615814,
+   "phase": "cycle",
+   "gpu": 17.227375,
+   "submit": 6.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     40.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 61.39999997615814,
+   "pre": 43.799999952316284,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     35.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 54.30000001192093,
+   "pre": 41.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.600000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.39999997615814
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 64.5,
+   "pre": 44.39999997615814,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 7.699999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     36.000000059604645
+    ],
+    "factory-roofs": [
+     4,
+     0.09999996423721313
+    ]
+   }
+  },
+  {
+   "dt": 47.19999998807907,
+   "pre": 31.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.700000047683716,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.700000047683716,
+   "pre": 35.30000001192093,
+   "phase": "cycle",
+   "gpu": 27.565666,
+   "submit": 5.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     30.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 48.09999996423721,
+   "pre": 41.80000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     35.799999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.30000001192093,
+   "pre": 40.89999997615814,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 7.100000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.59999996423721
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.60000002384186,
+   "pre": 37.60000002384186,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.299999952316284,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     32.299999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.69999998807907,
+   "pre": 29,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.899999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 53.59999996423721,
+   "pre": 38.09999996423721,
+   "phase": "cycle",
+   "gpu": 14.449,
+   "submit": 6.200000047683716,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     30
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.200000047683716,
+   "pre": 37.40000003576279,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     30.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.69999998807907,
+   "pre": 28.69999998807907,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.099999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41,
+   "pre": 29.900000035762787,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 4.899999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.69999998807907,
+   "pre": 30.600000023841858,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.10000002384186,
+   "pre": 33.60000002384186,
+   "phase": "cycle",
+   "gpu": 20.496124,
+   "submit": 26.19999998807907,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 59.799999952316284,
+   "pre": 33.19999998807907,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.400000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     27.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 47.80000001192093,
+   "pre": 29.899999976158142,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 4.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0.09999996423721313
+    ]
+   }
+  },
+  {
+   "dt": 38.80000001192093,
+   "pre": 33.60000002384186,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 44.39999997615814,
+   "pre": 28.799999952316284,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 4.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.90000003576279,
+   "pre": 28.30000001192093,
+   "phase": "cycle",
+   "gpu": 19.266916,
+   "submit": 5.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.89999997615814,
+   "pre": 36.39999997615814,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     31.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 49.90000003576279,
+   "pre": 37,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 7.299999952316284,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     32.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 75.89999997615814,
+   "pre": 48.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 25.69999998807907,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     39.39999997615814
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 75.10000002384186,
+   "pre": 40.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     32.90000003576279
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 66.39999997615814,
+   "pre": 44.5,
+   "phase": "cycle",
+   "gpu": 17.97225,
+   "submit": 8.699999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     36.90000003576279
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 60.69999998807907,
+   "pre": 51.39999997615814,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 10.400000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     42.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 69.10000002384186,
+   "pre": 39.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 7.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     31.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.59999996423721,
+   "pre": 35.69999998807907,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.400000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 54.10000002384186,
+   "pre": 36.10000002384186,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.899999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 47.19999998807907,
+   "pre": 33.19999998807907,
+   "phase": "cycle",
+   "gpu": 18.208458,
+   "submit": 5.899999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 52.90000003576279,
+   "pre": 35,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.69999998807907,
+   "pre": 31,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.19999998807907,
+   "pre": 29.600000023841858,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 54.80000001192093,
+   "pre": 32.30000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.400000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.89999997615814,
+   "pre": 30.599999964237213,
+   "phase": "cycle",
+   "gpu": 26.256041,
+   "submit": 5.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 53.60000002384186,
+   "pre": 30.80000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.30000001192093,
+   "pre": 31,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.89999997615814,
+   "pre": 31.600000023841858,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 53.39999997615814,
+   "pre": 31.299999952316284,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.600000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.499999940395355
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 39.10000002384186,
+   "pre": 33.19999998807907,
+   "phase": "cycle",
+   "gpu": 42.204375,
+   "submit": 5.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.89999997615814,
+   "pre": 31.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.200000047683716,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.40000003576279,
+   "pre": 30.69999998807907,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.699999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.09999996423721,
+   "pre": 29,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 34.40000003576279,
+   "pre": 28.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.700000047683716
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 47.5,
+   "pre": 30.600000023841858,
+   "phase": "cycle",
+   "gpu": 43.189916,
+   "submit": 7.099999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0.09999996423721313
+    ]
+   }
+  },
+  {
+   "dt": 56.30000001192093,
+   "pre": 41.30000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 8,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 50.09999996423721,
+   "pre": 41.80000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 7.600000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 66.60000002384186,
+   "pre": 37.69999998807907,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     30.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45,
+   "pre": 31.30000001192093,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.39999997615814,
+   "pre": 30.19999998807907,
+   "phase": "cycle",
+   "gpu": 32.196666,
+   "submit": 5.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.80000001192093,
+   "pre": 30,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.30000001192093,
+   "pre": 31.5,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.39999997615814,
+   "pre": 29.599999964237213,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 47.19999998807907,
+   "pre": 34.59999996423721,
+   "phase": "cycle",
+   "gpu": null,
+   "submit": 7,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 54.200000047683716,
+   "pre": 40.90000003576279,
+   "phase": "cycle",
+   "gpu": 26.836749,
+   "submit": 7,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.40000003576279
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 57.09999996423721,
+   "pre": 41.39999997615814,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 63,
+   "pre": 42.69999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.199999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     36
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 52.80000001192093,
+   "pre": 38.60000002384186,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.899999976158142,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.299999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.5,
+   "pre": 31,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 44.19999998807907,
+   "pre": 31.599999964237213,
+   "phase": "outfeed",
+   "gpu": 52.009999,
+   "submit": 6.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.599999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 40.69999998807907,
+   "pre": 33.39999997615814,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.400000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.700000047683716
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 61,
+   "pre": 35.799999952316284,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.800000071525574
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 48.200000047683716,
+   "pre": 40.700000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 8.199999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.10000002384186
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.299999952316284,
+   "pre": 34.59999996423721,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.799999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.10000002384186,
+   "pre": 37.60000002384186,
+   "phase": "outfeed",
+   "gpu": 55.713999,
+   "submit": 7.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     31.399999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.10000002384186,
+   "pre": 34.60000002384186,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 55.69999998807907,
+   "pre": 36.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     31.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.69999998807907,
+   "pre": 32.89999997615814,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.199999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     27.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.5,
+   "pre": 30.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.30000001192093,
+   "pre": 29.5,
+   "phase": "outfeed",
+   "gpu": 55.642333,
+   "submit": 5.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43,
+   "pre": 36.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     32
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 63.89999997615814,
+   "pre": 40.39999997615814,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7.400000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     33
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43,
+   "pre": 35.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     29.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 54.5,
+   "pre": 31.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.80000001192093,
+   "pre": 30.80000001192093,
+   "phase": "outfeed",
+   "gpu": 59.178416,
+   "submit": 6.599999964237213,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.19999998807907,
+   "pre": 31.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.19999998807907,
+   "pre": 32,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.10000002384186,
+   "pre": 30.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 38.30000001192093,
+   "pre": 32.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.599999964237213,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     27
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 54.19999998807907,
+   "pre": 34.5,
+   "phase": "outfeed",
+   "gpu": 26.820958,
+   "submit": 6.299999952316284,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 44,
+   "pre": 37.39999997615814,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.100000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     31.500000059604645
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.60000002384186,
+   "pre": 31.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.199999988079071,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 51.799999952316284,
+   "pre": 29.599999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     24
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.60000002384186,
+   "pre": 30.100000023841858,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.699999988079071,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.39999997615814,
+   "pre": 29.299999952316284,
+   "phase": "outfeed",
+   "gpu": 42.811125,
+   "submit": 5.700000047683716,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.80000001192093,
+   "pre": 28.599999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7.400000035762787,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.299999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.40000003576279,
+   "pre": 29.100000023841858,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.5,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.19999998807907,
+   "pre": 31.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.899999976158142,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.5,
+   "pre": 31.100000023841858,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.099999964237213,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.19999998807907,
+   "pre": 31.100000023841858,
+   "phase": "outfeed",
+   "gpu": 40.768708,
+   "submit": 6.199999988079071,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.10000002384186,
+   "pre": 30.200000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.599999964237213,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.39999997615814,
+   "pre": 29.600000023841858,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 32.30000001192093,
+   "pre": 27,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.099999964237213,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.5,
+   "pre": 26.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 373,
+   "tri": 1164085,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.80000001192093,
+   "pre": 29.700000047683716,
+   "phase": "outfeed",
+   "gpu": 63.198041,
+   "submit": 6.099999964237213,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.69999998807907,
+   "pre": 30.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.399999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.39999997615814,
+   "pre": 34.59999996423721,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.80000001192093,
+   "pre": 32.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.799999952316284,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 50.10000002384186,
+   "pre": 30.700000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.199999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.299999952316284,
+   "pre": 30,
+   "phase": "outfeed",
+   "gpu": 56.041041,
+   "submit": 5.899999976158142,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42,
+   "pre": 29.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.200000047683716,
+   "pre": 29.900000035762787,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.799999952316284,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.69999998807907,
+   "pre": 30.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.89999997615814,
+   "pre": 30.099999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 48.69999998807907,
+   "pre": 33.299999952316284,
+   "phase": "outfeed",
+   "gpu": 33.537583,
+   "submit": 6.900000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.500000059604645
+    ],
+    "factory-roofs": [
+     4,
+     0.09999996423721313
+    ]
+   }
+  },
+  {
+   "dt": 49.40000003576279,
+   "pre": 35.10000002384186,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.900000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.5,
+   "pre": 34.40000003576279,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     29
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.39999997615814,
+   "pre": 34.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.900000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.40000003576279,
+   "pre": 31.200000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.5,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.399999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.5,
+   "pre": 29.900000035762787,
+   "phase": "outfeed",
+   "gpu": 49.423958,
+   "submit": 5.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45,
+   "pre": 32.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.899999976158142,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.799999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.799999952316284,
+   "pre": 36.59999996423721,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.400000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     30.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 57.80000001192093,
+   "pre": 36.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.900000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     30.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.69999998807907,
+   "pre": 31.599999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     26
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.30000001192093,
+   "pre": 28.399999976158142,
+   "phase": "outfeed",
+   "gpu": 44.167833,
+   "submit": 4.900000035762787,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.90000003576279,
+   "pre": 26.700000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.39999997615814,
+   "pre": 27.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.199999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.199999928474426
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.80000001192093,
+   "pre": 33.40000003576279,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.399999976158142,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.700000047683716
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.30000001192093,
+   "pre": 32.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.09999996423721,
+   "pre": 31.399999976158142,
+   "phase": "outfeed",
+   "gpu": 66.51775,
+   "submit": 5.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.700000047683716
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.60000002384186,
+   "pre": 30.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.5,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.30000001192093,
+   "pre": 27.400000035762787,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.099999964237213,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 30.899999976158142,
+   "pre": 25.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.899999976158142,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     21
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 31,
+   "pre": 25.80000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     21.5
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 46.39999997615814,
+   "pre": 27.899999976158142,
+   "phase": "outfeed",
+   "gpu": 44.732249,
+   "submit": 6,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 34.5,
+   "pre": 28.299999952316284,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.299999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.60000002384186,
+   "pre": 25.80000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.600000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     20.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 39.39999997615814,
+   "pre": 28,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.800000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 32.200000047683716,
+   "pre": 27.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.09999996423721,
+   "pre": 26.899999976158142,
+   "phase": "outfeed",
+   "gpu": 30.536916,
+   "submit": 4.600000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     21
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 32,
+   "pre": 27.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.699999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 33.5,
+   "pre": 28.599999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.100000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.80000001192093,
+   "pre": 33.89999997615814,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     27.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.19999998807907,
+   "pre": 35,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.900000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.19999998807907,
+   "pre": 30.399999976158142,
+   "phase": "outfeed",
+   "gpu": 25.885374,
+   "submit": 5.199999988079071,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.5,
+   "pre": 29.099999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 32,
+   "pre": 27,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.200000047683716,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.400000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.40000003576279,
+   "pre": 26.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 370,
+   "tri": 1162917,
+   "rays": {
+    "factory-structure": [
+     4,
+     21.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0.09999996423721313
+    ]
+   }
+  },
+  {
+   "dt": 38.30000001192093,
+   "pre": 26.200000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.5,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 39.69999998807907,
+   "pre": 28.600000023841858,
+   "phase": "outfeed",
+   "gpu": 38.385333,
+   "submit": 5.400000035762787,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.39999997615814,
+   "pre": 29.80000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.300000011920929,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.90000003576279,
+   "pre": 34,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 8.399999976158142,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     28.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 50.799999952316284,
+   "pre": 34.09999996423721,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.600000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     29
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.200000047683716,
+   "pre": 28.400000035762787,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.799999952316284,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     23.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.09999996423721,
+   "pre": 26.69999998807907,
+   "phase": "outfeed",
+   "gpu": 27.490999,
+   "submit": 4.900000035762787,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 30.19999998807907,
+   "pre": 25.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.900000035762787,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     20.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37,
+   "pre": 25.69999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     20.899999976158142
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.90000003576279,
+   "pre": 26.69999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     20.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 40.19999998807907,
+   "pre": 28.69999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.600000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     24
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.39999997615814,
+   "pre": 30.19999998807907,
+   "phase": "outfeed",
+   "gpu": 25.572083,
+   "submit": 6.400000035762787,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.600000083446503
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 45.80000001192093,
+   "pre": 39.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.10000002384186
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 49.30000001192093,
+   "pre": 34.80000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.600000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     29
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42,
+   "pre": 30.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.699999988079071,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.599999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.39999997615814,
+   "pre": 29.299999952316284,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.600000023841858,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 47.80000001192093,
+   "pre": 30.19999998807907,
+   "phase": "outfeed",
+   "gpu": 25.832874,
+   "submit": 5.900000035762787,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.5,
+   "pre": 31.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.899999976158142,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.80000001192093,
+   "pre": 31.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.800000011920929,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.800000071525574
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.39999997615814,
+   "pre": 31.099999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.200000047683716,
+   "draws": 371,
+   "tri": 1163513,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.90000003576279,
+   "pre": 33.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.099999964237213,
+   "draws": 369,
+   "tri": 1162941,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.799999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 44.69999998807907,
+   "pre": 32.10000002384186,
+   "phase": "outfeed",
+   "gpu": 28.730208,
+   "submit": 5.800000011920929,
+   "draws": 369,
+   "tri": 1162941,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.89999997615814,
+   "pre": 31.69999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.700000047683716,
+   "draws": 369,
+   "tri": 1162941,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.80000001192093,
+   "pre": 31.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.100000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.60000002384186,
+   "pre": 30.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46.30000001192093,
+   "pre": 33.10000002384186,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 7,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     27.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 47.89999997615814,
+   "pre": 33.19999998807907,
+   "phase": "outfeed",
+   "gpu": 26.370374,
+   "submit": 5.600000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     26.799999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.30000001192093,
+   "pre": 30.600000023841858,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 50.59999996423721,
+   "pre": 31.799999952316284,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.400000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.80000001192093,
+   "pre": 30.30000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 40.60000002384186,
+   "pre": 28.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.30000001192093,
+   "pre": 30.5,
+   "phase": "outfeed",
+   "gpu": 27.862499,
+   "submit": 5.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 36.19999998807907,
+   "pre": 30.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.30000001192093,
+   "pre": 30.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.30000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.59999996423721,
+   "pre": 30.099999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.100000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000083446503
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43,
+   "pre": 30,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.099999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0.10000002384185791
+    ]
+   }
+  },
+  {
+   "dt": 38.30000001192093,
+   "pre": 32.30000001192093,
+   "phase": "outfeed",
+   "gpu": 47.914666,
+   "submit": 6.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     26
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.30000001192093,
+   "pre": 31.400000035762787,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.199999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37,
+   "pre": 31.400000035762787,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.700000047683716,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.19999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 46,
+   "pre": 33.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.099999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 42.39999997615814,
+   "pre": 30.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.200000047683716
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.40000003576279,
+   "pre": 31.200000047683716,
+   "phase": "outfeed",
+   "gpu": 75.333958,
+   "submit": 5.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.09999996423721,
+   "pre": 31.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.200000047683716
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.30000001192093,
+   "pre": 30.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.599999964237213
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 49.5,
+   "pre": 30.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.599999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.69999998807907,
+   "pre": 37.80000001192093,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     32.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 43.5,
+   "pre": 36.5,
+   "phase": "outfeed",
+   "gpu": 28.832999,
+   "submit": 5.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     31.80000001192093
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 50.19999998807907,
+   "pre": 30,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.800000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 35.5,
+   "pre": 29.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.100000023841858,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 39.90000003576279,
+   "pre": 28.600000023841858,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.699999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     24
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 38.30000001192093,
+   "pre": 26.200000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 4.699999988079071,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.500000059604645
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 39.19999998807907,
+   "pre": 27.30000001192093,
+   "phase": "outfeed",
+   "gpu": 46.291458,
+   "submit": 5.599999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.500000059604645
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 32.80000001192093,
+   "pre": 27,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.099999964237213,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.600000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 39.39999997615814,
+   "pre": 27.399999976158142,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.900000035762787
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 41.5,
+   "pre": 29.19999998807907,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 5.399999976158142,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.100000023841858
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 37.10000002384186,
+   "pre": 31.5,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     27.799999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 56.59999996423721,
+   "pre": 41.59999996423721,
+   "phase": "outfeed",
+   "gpu": 31.296375,
+   "submit": 6.300000011920929,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     34.09999996423721
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 51.40000003576279,
+   "pre": 38.700000047683716,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     33.69999998807907
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 44.299999952316284,
+   "pre": 30.099999964237213,
+   "phase": "outfeed",
+   "gpu": null,
+   "submit": 6.5,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     25.299999952316284
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  },
+  {
+   "dt": 40.80000001192093,
+   "pre": 27.19999998807907,
+   "phase": "done",
+   "gpu": null,
+   "submit": 4.900000035762787,
+   "draws": 368,
+   "tri": 1162345,
+   "rays": {
+    "factory-structure": [
+     4,
+     22.5
+    ],
+    "factory-roofs": [
+     4,
+     0
+    ]
+   }
+  }
+ ]
+}

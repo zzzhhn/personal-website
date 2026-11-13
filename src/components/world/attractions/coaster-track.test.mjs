@@ -5,6 +5,8 @@ import { advanceCoaster, coasterCurve, coasterDistanceAt, coasterFrame, coasterR
 import { attractionRide, beginAttractionRide, endAttractionRide, updateAttractionRide } from './attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
 import { THRILL_CREST, THRILL_DROP_END, THRILL_ELEMENTS } from './coaster-thrill-layout.ts';
+import { THRILL_SPEED_WINDOW as W, thrillSpeedMultiplierAt } from './coaster-thrill-motion.ts';
+import { COASTER_BOARDING as B } from './coaster-transition.ts';
 import { INTENT_COASTER } from './attraction-layout.ts';
 import { INTENT_STATIONS, INTENT_TARGETS, intentInReach } from './intent-stations.ts';
 
@@ -27,7 +29,7 @@ test('the continuous closed track fits its surveyed site and stays above ground'
 });
 
 test('expanded ride preserves a top hold, carries momentum and brakes smoothly', () => {
-  assert.ok(COASTER_DURATION > 100 && COASTER_DURATION < 120);
+  assert.ok(COASTER_DURATION > 80 && COASTER_DURATION < 120);
   assert.equal(coasterDistanceAt(0), 0); assert.equal(coasterDistanceAt(COASTER_DURATION), 1);
   let previous = 0;
   for (let t = 0; t <= COASTER_DURATION; t += .025) {
@@ -47,13 +49,17 @@ test('the first drop carries its speed through the low run without the former ar
   const timeAt = u => { let low=29, high=COASTER_DURATION; for(let i=0;i<50;i++){const mid=(low+high)/2;if(coasterDistanceAt(mid)<u)low=mid;else high=mid;} return (low+high)/2; };
   const speed = t => (coasterDistanceAt(t+.001)-coasterDistanceAt(t-.001))/.002*COASTER_LENGTH;
   const lowStart=timeAt(THRILL_DROP_END),lowEnd=timeAt(THRILL_ELEMENTS[0].start);
-  const speeds=Array.from({length:101},(_,i)=>speed(lowStart+(lowEnd-lowStart)*i/100));
+  const speeds=Array.from({length:101},(_,i)=>speed(lowStart+.005+(lowEnd-lowStart-.01)*i/100));
+  const sourceSpeeds=speeds.map((v,i)=>v/thrillSpeedMultiplierAt(lowStart+.005+(lowEnd-lowStart-.01)*i/100));
   const previousLowRunSpeed = 7.64;
   assert.ok(Math.min(...speeds) >= previousLowRunSpeed * 3, 'the entire low run must sustain at least three times the original speed');
-  assert.ok(Math.max(...speeds)/Math.min(...speeds)<1.12, 'near-level track should retain momentum');
+  assert.ok(Math.max(...sourceSpeeds)/Math.min(...sourceSpeeds)<1.12, 'near-level source momentum is preserved through the intentional boost ramp');
   for(let t=29.3;t<lowEnd-.02;t+=.02) {
     const acceleration=(speed(t+.01)-speed(t-.01))/.02;
-    assert.ok(Math.abs(acceleration)<12, `unmotivated acceleration at ${t}: ${acceleration}`);
+    // d(v_source * rate)/dt = a_source * rate² + v_source * rate'.
+    const ramp=t+.012>=W.start&&t-.012<=W.plateauStart;
+    const bound=ramp?7.5*W.factor**2+44*(W.factor-1)*1.5/W.transitionSeconds+.1:12;
+    assert.ok(Math.abs(acceleration)<bound, `unmotivated acceleration at ${t}: ${acceleration}`);
   }
 });
 
@@ -104,8 +110,24 @@ test('all seven tasks and chest stay outside the locked gate; station exit lies 
     assert.equal(intentInReach([0, 80, 0], id), false);
   }
   assert.equal(COASTER_EXIT[1], 1.08);
-  assert.ok(COASTER_EXIT[0] >= 41.5 && COASTER_EXIT[0] <= 52.5);
-  assert.ok(COASTER_EXIT[2] >= -165 && COASTER_EXIT[2] <= -142);
+  // Derive support from the actual authored floor, not the old left-side range.
+  const structure=createCoasterStructure(false),material=new MeshBasicMaterial({side:DoubleSide});
+  const mesh=new Mesh(structure.steel,material);mesh.updateMatrixWorld(true);
+  const points=[COASTER_EXIT,...Array.from({length:11},(_,i)=>new Vector3(...B.approach).lerp(new Vector3(...B.exit),i/10).toArray())];
+  try {
+    for(const foot of points){
+      const supported=structure.colliders.some(c=>{
+        if(!c.surface||c.hull)return false;
+        const rotation=new Quaternion().setFromEuler(new Euler(...(c.rotation??[0,0,0])));
+        const local=new Vector3(...foot).sub(new Vector3(...c.position)).applyQuaternion(rotation.invert());
+        return Math.abs(local.y-c.half[1])<1e-6&&Math.abs(local.x)+.34<=c.half[0]&&Math.abs(local.z)+.34<=c.half[2];
+      });
+      assert.ok(supported,`actual surface collider must support the .34 m capsule footprint at ${foot}`);
+      const ray=new Raycaster(new Vector3(foot[0],foot[1]+.1,foot[2]),new Vector3(0,-1,0),0,.2);
+      const hit=ray.intersectObject(mesh)[0];
+      assert.ok(hit&&Math.abs(hit.point.y-foot[1])<1e-5,`visible apron must agree with collision height at ${foot}`);
+    }
+  } finally {structure.steel.dispose();structure.glow.dispose();material.dispose();}
 });
 
 test('merged static structure and three cars stay below the authored geometry budget', () => {

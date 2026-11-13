@@ -17,9 +17,12 @@ import { useIsClaimed } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import { night as worldNight } from './WorldNight';
 import { campCraftMaterial } from './WorldCraftMaterials';
+import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
+import WorldCampCraftProps from './WorldCampCraftProps';
+import type { CampCraftFamily } from './camp-craft-visual';
 import type { Vec3 } from './types';
 
-/** Camp visuals and fitted physics share the same GLB and placement matrices. */
+/** Camp uses fixed source GLBs for fitted physics; craft visuals reuse placement matrices. */
 export type CampBlock = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 export interface CampLayout { pads: CampBlock[]; padObjects: CampBlock[]; tents: CampBlock[]; benches: CampBlock[]; trees: CampBlock[]; lampHeads: CampBlock[] }
 /** tilt rotates about the asset's local X before yaw (re-grounded by bounds); sink buries it. */
@@ -43,7 +46,9 @@ function withDraco(loader: GLTFLoader) {
   if (!draco) { draco = new DRACOLoader(); draco.setDecoderPath('/assets/world/draco/'); }
   loader.setDRACOLoader(draco);
 }
-const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco) as GLTF;
+const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy';
+const CRAFT_IDS = new Set(['G16', 'G17', 'G18', 'G21', 'G22', 'G23', 'C09']);
+const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/${NATURE_CRAFT && CRAFT_IDS.has(id) ? 'nature-craft' : 'camp'}/${id}.glb`, withDraco) as GLTF;
 
 const BOX = new BoxGeometry(1, 1, 1);
 const BUNDLE = new RoundedBoxGeometry(1, 1, 1, 2, 0.16);
@@ -164,18 +169,21 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
 /** Repeated static assets: one instanced draw per GLB primitive, shared materials. */
 function InstancedAsset({ id, placements, materialMap, label = "instances" }: { id: string; placements: Placement[]; materialMap?: MaterialMap; label?: string }) {
   const gltf = useCampGltf(id);
+  // Batch4 is visual refinement. Keep the exact old geometry as the placement/collider source.
+  const physics = useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco) as GLTF;
   const { parts, copies } = useMemo(() => collectParts(gltf, id, materialMap), [gltf, id, materialMap]);
   useRegisteredCopies(copies);
   const matrices = useMemo(() => {
-    const bounds = new Box3();
-    parts.forEach(part => { part.geometry.computeBoundingBox(); bounds.union(part.geometry.boundingBox!.clone().applyMatrix4(part.matrix)); });
+    const bounds = new Box3().setFromObject(physics.scene);
     return placements.map(p => toMatrix(p, bounds));
-  }, [parts, placements]);
-  const shapes = useMemo(() => campShapes(id, gltf), [id, gltf]);
+  }, [physics, placements]);
+  const shapes = useMemo(() => campShapes(id, physics), [id, physics]);
   useEffect(() => () => parts.forEach(p => { if (p.ownedGeometry) p.geometry.dispose(); p.depth?.dispose(); }), [parts]);
   if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
+  const visuals = parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} id={id} />);
+  const crafted = id === 'C05' || id === 'C06' || id === 'C07';
   return <group name={`camp-asset-${id}-${label}`}>
-    {parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} id={id} />)}
+    {crafted ? <WorldCampCraftProps family={id as CampCraftFamily} matrices={matrices} fallback={visuals} /> : visuals}
     <CampColliders id={id} label={label} shapes={shapes} matrices={matrices} />
   </group>;
 }
@@ -199,6 +207,19 @@ function useCampScene(id: string, materialMap?: MaterialMap) {
 function SingleAsset({ id, label, placement, materialMap }: { id: string; label: string; placement: Placement; materialMap?: MaterialMap }) {
   const placements = useMemo(() => [placement], [placement]);
   return <InstancedAsset id={id} label={label} placements={placements} materialMap={materialMap} />;
+}
+function CabinetCraft({ placement }: { placement: Placement }) {
+  const environment = useDjcFurnitureEnvironment();
+  const mapped = useMemo(() => {
+    const copies: MeshStandardMaterial[] = [];
+    return { copies, map: (source: Material) => {
+      if (!(source instanceof MeshStandardMaterial)) return source;
+      const copy = source.clone(); copy.envMap = environment; copy.envMapIntensity = 1.5;
+      copies.push(copy); return copy;
+    } };
+  }, [environment]);
+  useFrame(() => { for (const m of mapped.copies) m.envMapIntensity = 1.5 - worldNight.value; });
+  return <SingleAsset id="C09" label="pad2" placement={placement} materialMap={mapped.map} />;
 }
 const isRunning = isWorldRunning;
 
@@ -572,7 +593,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
       <SingleAsset id="C08" label="pad1" placement={data.bookStack} />
     </AssetGuard>
     <AssetGuard id="C09" fallback={<Boxes collisionId="C09" items={padObject(1)} />}>
-      <SingleAsset id="C09" label="pad2" placement={data.onPad(1)} />
+      {NATURE_CRAFT ? <CabinetCraft placement={data.onPad(1)} /> : <SingleAsset id="C09" label="pad2" placement={data.onPad(1)} />}
     </AssetGuard>
     <AssetGuard id="C10" fallback={<Boxes collisionId="C10" items={padObject(2)} />}>
       {/* West pad, centred: yaw 2.6 turns the cloth plane (local X normal) to the default follow camera. */}

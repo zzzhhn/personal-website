@@ -1,0 +1,61 @@
+✔ all three nests are finite single-draw geometry with a shared roller-contact base (15.259333ms)
+✔ the bevel-inset underside spans at least two roller tangencies throughout a .8 m travel period (12.690125ms)
+✔ real pad tops meet real module undersides in both configurations, without empty floating supports (64.85925ms)
+✔ wheel tread approximation stays within the declared 2 mm contact tolerance through a revolution (243.380334ms)
+✔ shell nest leaves the existing hoist jaw corridor above .36 m clear (0.768166ms)
+✔ both handholds are truly open through every deck and have a recessed metal wall (4.145208ms)
+✔ deck and support topology remains closed with no duplicate coplanar triangles (3.822584ms)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ flat test lanes have one visible courtyard surface rather than coplanar overlays (108.714209ms)
+✔ factory three-level architecture stays finite and bounded; stations have physical standing space (196.559541ms)
+✔ production capsule walks from entrance to both galleries and returns without jumping (393.92725ms)
+✔ two test lanes derive from identical translated surface sections (64.573667ms)
+✔ finished modules can leave all three press beds through a real opening (55.280584ms)
+✔ every signed ground-floor walking edge clears the full standing capsule in both directions (63.46425ms)
+✔ released companion clears the real dispatch ramp and display lane, including overhead galleries (63.938583ms)
+✔ dispatch camera has a full clearance sweep below the gallery and outside the printer (57.005209ms)
+✔ operator views reach the real work area without the collision camera collapsing into equipment (67.133875ms)
+{"module":"frame","triangles":1732,"colliders":27,"vertices":3608}
+{"module":"wheels","triangles":1908,"colliders":27,"vertices":3920}
+{"module":"shell","triangles":1760,"colliders":24,"vertices":3656}
+✔ each casing is a finite single batch inside the existing machine survey and budget (24.180709ms)
+✔ both lower saddles meet the retained press bed, without building a duplicate bed (18.578375ms)
+✔ actual blanks, carriers and both configurations pass along the full X material opening (33.161958ms)
+✔ full moving platen/guard envelopes and axial rod probes clear the actual fixed casing (39.1805ms)
+✔ the wheel line has real through-bores and each fixed rear construction is distinct (8.435459ms)
+✔ operator approach and front aisle remain outside the new fixed envelope (6.461958ms)
+✔ palette and per-instance geometry ownership are preserved without allocated materials or textures (3.887ms)
+✔ each I column is one connected section with a continuous web and both full-width flanges (23.36125ms)
+✔ the deep crown has real sloping haunches, a supported centre and matching centre colliders (7.140333ms)
+✔ both hard lines use actual steel unions seated into the reservoir and annular receiver (5.884917ms)
+✔ raw material needs actual alignment, pickup, carry and drop; idle time cannot complete it (3.3175ms)
+✔ magnet underside reaches each raw top without pulling its centre through the pickup plane (0.844ms)
+✔ press interlock requires a held lever; early release safely retracts and output travels before committing (0.390958ms)
+✔ assembly fetches real outfeeds and waits for pickup confirmation before attaching any part (1.0755ms)
+✔ assembly samples continuous tool and module contact through every pickup, seating and idle return (12.7185ms)
+✔ assembly pause freezes mid-fetch and retract; long frames remain bounded (0.442625ms)
+✔ inspection rejects gapped mounts, missing wheels, a never-running motor and wrong serial plate (0.405833ms)
+✔ reworking wheels does not lift the retained chassis again (2.959167ms)
+✔ world console rejects remote use; pause clears held controls, Esc and camp recovery return pending material (1.197375ms)
+✔ actual cylinder endpoints stay joined through every material cycle at 30, 60 and 120 Hz (10.18875ms)
+✔ early release, return and pause preserve sleeve/platen contact without changing operation time (2.543333ms)
+✔ pose synchronization changes only local Y and never changes mesh or geometry ownership (0.315625ms)
+{"triangles":5542,"colliders":186,"addedColorDrawsAfterMerge":0,"realtimeLights":0}
+✔ production details merge as one finite static batch with bounded exact boxes and seven fixtures (10.015375ms)
+✔ reserve stock supports each live source blank at its real underside, below the extraction sweep (7.928208ms)
+✔ all stations, signed walking edges and real operating camera rays retain clearance (357.92125ms)
+✔ intake, every routing destination and all manufactured carrier paths stay free of new details (752.801791ms)
+✔ fixture and unassembled sources stay exact until clamped, return to their own blank pocket, and park before completion (22.269334ms)
+✔ final assembly obstructions clear sequentially to real carriers; shell stays there and frame restores after wheel return (45.829916ms)
+✔ the return runways, bogie wheels and trolley wheels have actual contact, and the roof clears their full travel (263.86425ms)
+✔ return column footprints leave every surveyed pedestrian edge clear (2.73475ms)
+✔ the selected module is gripped on real surfaces in both configurations, clear of its retained neighbours (33.468042ms)
+✔ raised module travel clears the actual fixed factory solids and stays within material-only pedestrian space (3368.243541ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10502.843834

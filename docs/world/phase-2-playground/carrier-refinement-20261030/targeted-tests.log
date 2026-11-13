@@ -1,0 +1,40 @@
+✔ all three nests are finite single-draw geometry with a shared roller-contact base (14.541709ms)
+✔ the bevel-inset underside spans at least two roller tangencies throughout a .8 m travel period (13.703542ms)
+✔ real pad tops meet real module undersides in both configurations, without empty floating supports (71.609584ms)
+✔ wheel tread approximation stays within the declared 2 mm contact tolerance through a revolution (265.247125ms)
+✔ shell nest leaves the existing hoist jaw corridor above .36 m clear (0.751167ms)
+✔ both handholds are truly open through every deck and have a recessed metal wall (4.351708ms)
+✔ deck and support topology remains closed with no duplicate coplanar triangles (4.5885ms)
+{"module":"frame","triangles":1636,"colliders":25,"vertices":3384}
+{"module":"wheels","triangles":1812,"colliders":25,"vertices":3696}
+{"module":"shell","triangles":1664,"colliders":22,"vertices":3432}
+✔ each casing is a finite single batch inside the existing machine survey and budget (23.404041ms)
+✔ both lower saddles meet the retained press bed, without building a duplicate bed (15.678ms)
+✔ actual blanks, carriers and both configurations pass along the full X material opening (40.176083ms)
+✔ full moving platen/guard envelopes and axial rod probes clear the actual fixed casing (38.19075ms)
+✔ the wheel line has real through-bores and each fixed rear construction is distinct (9.989875ms)
+✔ operator approach and front aisle remain outside the new fixed envelope (6.287625ms)
+✔ palette and per-instance geometry ownership are preserved without allocated materials or textures (4.569042ms)
+✔ raw material needs actual alignment, pickup, carry and drop; idle time cannot complete it (2.473375ms)
+✔ magnet underside reaches each raw top without pulling its centre through the pickup plane (0.996833ms)
+✔ press interlock requires a held lever; early release safely retracts and output travels before committing (0.625166ms)
+✔ assembly fetches real outfeeds and waits for pickup confirmation before attaching any part (1.070292ms)
+✔ assembly samples continuous tool and module contact through every pickup, seating and idle return (10.526625ms)
+✔ assembly pause freezes mid-fetch and retract; long frames remain bounded (0.333625ms)
+✔ inspection rejects gapped mounts, missing wheels, a never-running motor and wrong serial plate (0.19925ms)
+✔ reworking wheels does not lift the retained chassis again (2.792583ms)
+✔ world console rejects remote use; pause clears held controls, Esc and camp recovery return pending material (1.138125ms)
+✔ fixture and unassembled sources stay exact until clamped, return to their own blank pocket, and park before completion (26.20575ms)
+✔ final assembly obstructions clear sequentially to real carriers; shell stays there and frame restores after wheel return (46.249875ms)
+✔ the return runways, bogie wheels and trolley wheels have actual contact, and the roof clears their full travel (287.421833ms)
+✔ return column footprints leave every surveyed pedestrian edge clear (2.754875ms)
+✔ the selected module is gripped on real surfaces in both configurations, clear of its retained neighbours (33.913083ms)
+✔ raised module travel clears the actual fixed factory solids and stays within material-only pedestrian space (3627.187875ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6811.816584

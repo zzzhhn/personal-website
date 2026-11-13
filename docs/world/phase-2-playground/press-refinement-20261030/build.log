@@ -1,0 +1,39 @@
+
+> personal-website@0.0.1 prebuild
+> node tools/world/check-club-audio.mjs
+
+Club audio: 2 runtime assets present in public.
+
+> personal-website@0.0.1 build
+> astro build
+
+01:35:38 [content] Syncing content
+01:35:38 [content] Synced content
+01:35:38 [types] Generated 472ms
+01:35:38 [build] output: "static"
+01:35:38 [build] mode: "static"
+01:35:38 [build] directory: /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/dist/
+01:35:38 [build] Collecting build info...
+01:35:38 [build] ✓ Completed in 493ms.
+01:35:38 [build] Building static entrypoints...
+01:35:40 [vite] ✓ built in 1.51s
+01:35:45 [WARN] [vite] [plugin vite:reporter] 
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+01:35:45 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+01:35:45 [vite] ✓ built in 5.28s
+01:35:45 [build] Rearranging server assets...
+
+ generating static routes 
+01:35:45   ├─ /world/index.html (+30ms) 
+01:35:45   ├─ /index.html (+247ms) 
+01:35:46 ✓ Completed in 416ms.
+
+01:35:46 [build] ✓ Completed in 7.24s.
+01:35:46 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+01:35:46 [build] 2 page(s) built in 7.77s
+01:35:46 [build] Complete!

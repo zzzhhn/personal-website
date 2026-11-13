@@ -10,7 +10,7 @@ import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, beginAttractionRide, endAttractionRide, requestAttractionExit } from './attraction-ride.ts';
 import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
 import { COASTER_BOARDING, coasterAtBoardingEntrance, type CoasterBoardingPhase } from './coaster-transition.ts';
-import { coasterRidePose, coasterWorld, COASTER_GATE_Z, type CoasterView, type CoasterClock } from './coaster-track.ts';
+import { coasterRidePose, coasterWorld, COASTER_GATE_Z, COASTER_DEFAULT_VIEW, type CoasterView, type CoasterClock } from './coaster-track.ts';
 
 interface IntentState {
   progress: IntentProgress; loaded: boolean; saveIssue: IntentText | null;
@@ -21,7 +21,7 @@ interface IntentState {
 export const useIntentStore = create<IntentState>(() => ({
   progress: createIntentProgress(), loaded: false, saveIssue: null,
   tasks: { route: 0, press: 0, visitor: 0 }, tools: { route: 'lookup', press: 'rewrite', visitor: 'rewrite' },
-  notice: null, effect: null, ridePhase: null, exitRequested: false, riding: false, view: 'chase', rideSecond: 0, active: false,
+  notice: null, effect: null, ridePhase: null, exitRequested: false, riding: false, view: COASTER_DEFAULT_VIEW, rideSecond: 0, active: false,
 }));
 export const intentRideClock: CoasterClock = { elapsed: 0, riding: false, revision: -1 };
 /** Explicit development UI only; never persisted or used by a production frame. */

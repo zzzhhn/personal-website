@@ -16,7 +16,7 @@ import { skinnedWorldPoint } from './WorldGuideStop.ts';
 import { glb, loadGuide, motionDigest } from '../../../tools/world/guide/boot-analysis.mjs';
 
 test('vehicle windows open, cross a foot and body, then sit inside; exit reverses the chain', () => {
-  assert.equal(GUIDE_VEHICLE_TRANSITION_S, 5.2);
+  assert.equal(GUIDE_VEHICLE_TRANSITION_S, 2.8);
   assert.equal(guideVehicleSample('enter', .20).stage, 'approach');
   assert.equal(guideVehicleSample('enter', .33).stage, 'reach');
   assert.equal(guideVehicleSample('enter', .40).stage, 'open');

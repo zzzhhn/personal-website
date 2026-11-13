@@ -1,0 +1,78 @@
+{
+  "after-frame-day.jpg": {
+    "bytes": 68848,
+    "sha256": "b9d9cbba3949129d5d719e11f59e844000e8b695e339c0767cd79c5450205644"
+  },
+  "after-wheels-day.jpg": {
+    "bytes": 90926,
+    "sha256": "c3fac87207067ac993463a599accadcc741d6bf5a1fb7710d2135c38e7e097df"
+  },
+  "factory-carrier.before.test.mjs": {
+    "bytes": 7584,
+    "sha256": "3840046c2a468cefb97821a474055206a26f518de48f4299fc2412faa92c3c66"
+  },
+  "factory-carrier.ts.patch": {
+    "bytes": 3662,
+    "sha256": "e0089549b4a192b1ba0b05f895618e9c0b688bc50bc968d269627f8a695552ef"
+  },
+  "mobile-fallback.jpg": {
+    "bytes": 30450,
+    "sha256": "7e25141200ec113f62d476f3eed6633abd4d3174c9b6ec61f50d63cc2b3054fc"
+  },
+  "targeted-tests.log": {
+    "bytes": 3451,
+    "sha256": "fe70dcea2f927562da61daaeb635c0e6be2a5c38735775a73ba0676f72a664bb"
+  },
+  "after-shell-day.jpg": {
+    "bytes": 94262,
+    "sha256": "dd6769d67e63d06a8c5fbfd032462fd7878f6e7065bc3a22b5e5bc9510155ff1"
+  },
+  "before-metrics.json": {
+    "bytes": 285,
+    "sha256": "e46055fdbdc433fbccd8632dba586eb1eca805fbb71e2e5e27c378519395161f"
+  },
+  "factory-carrier.ts.after": {
+    "bytes": 6366,
+    "sha256": "c14e1311d1724376b6b6878a9368047d2ebb59436667c1f860696f732cabd07e"
+  },
+  "after-metrics.json": {
+    "bytes": 288,
+    "sha256": "0ba5b4bb1b8e634de0bddd403208c4cda48623ac0f88ec038e2c5539c0f9c885"
+  },
+  "before-frame-day.jpg": {
+    "bytes": 65981,
+    "sha256": "a9fd0e65dde6dea70ca2eab46e1472427de5d5154b76396ba2581c688d8cdc9f"
+  },
+  "factory-carrier.before.ts": {
+    "bytes": 3938,
+    "sha256": "4ff6384748c84da5a2171cb91c8cebd73c9acad554399c2b302a43ba5a2372f5"
+  },
+  "README.md": {
+    "bytes": 5492,
+    "sha256": "1f035d9c39887f6d4c5f60284dcb69520f32ea5cc259bb720eac6fbd2e9d7393"
+  },
+  "after-frame-night.jpg": {
+    "bytes": 59141,
+    "sha256": "a7562537df5a1eec274549bef9d634b207f441322c2ef1ee6910f1fff023654e"
+  },
+  "factory-carrier.test.mjs.after": {
+    "bytes": 10128,
+    "sha256": "5a15ed69444a436290a7fbb8c49517546b1177679dc9c7c831a250de0e86abd3"
+  },
+  "after-shell-night.jpg": {
+    "bytes": 78393,
+    "sha256": "9212b0688519d741a48f5e6f6558443103403f6eea795951e01df3b623887c6d"
+  },
+  "review-fixture.astro": {
+    "bytes": 2364,
+    "sha256": "bf883f28245b945717bc09d7dacc0ac2c5629fb1de4a2275dc6ebcb2eefd6e81"
+  },
+  "factory-carrier.test.mjs.patch": {
+    "bytes": 3318,
+    "sha256": "5d6c58577022b257c3baa634a53289fd6b72571edf529e3e47372f755b91a53f"
+  },
+  "build.log": {
+    "bytes": 3571,
+    "sha256": "c211f640d8d3466d7c179dc07c91ede4eb6d48d27f555fbb2bece6704af82218"
+  }
+}
