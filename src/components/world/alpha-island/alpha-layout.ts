@@ -2,7 +2,7 @@ import type { Vec3 } from '../types';
 
 /** Alpha batch 1 survey r1. Metres; +X east, -Z north. All route datums are surface/rail
  * points, NOT standing capsule centres. Transport author owns seat offsets and timing. */
-export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r5-20261113';
+export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r6-20261113';
 export const ALPHA_ORIGIN: Vec3 = [235, 0, 190];
 export const ALPHA_YAW = 0;
 export const alphaWorld = (p: readonly number[]): Vec3 => [p[0] + ALPHA_ORIGIN[0], p[1], p[2] + ALPHA_ORIGIN[2]];
@@ -51,6 +51,7 @@ export const ALPHA_MAINLAND_APPROACH: Vec3[] = [[-10,1,65],[-10,1.14,70],[-10,1.
 /** These are WATERLINE points, traffic maps them to floor y=.8. Island berth
  * keeps vessel axis parallel +Z outside the dock west edge x147.5. */
 export const ALPHA_FERRY_WATER_PATH: Vec3[] = [[-16,-.7,112],[-16,-.7,125],[61,-.7,132],[126,-.7,128],[143,-.7,126],[143,-.7,136],[143,-.7,146]];
+export const ALPHA_BERTH_BASIN={innerMaxX:145.5,bankMaxX:147,innerMinZ:128,innerMaxZ:154,fadeMinZ:123,fadeMaxZ:159,floorY:-2.4} as const;
 export const ALPHA_SAFE_GROUND: Vec3[] = [ALPHA_STATIONS.lodge, ALPHA_STATIONS.tree, ALPHA_STATIONS.wind, ALPHA_STATIONS.summit,
  ...Object.values(ALPHA_SOCKETS).flatMap(s=>s.safeExit)];
 export function alphaContainsWorld(p: readonly number[], margin = 0) {

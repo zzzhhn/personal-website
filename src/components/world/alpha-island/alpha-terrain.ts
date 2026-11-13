@@ -1,5 +1,5 @@
 import { CatmullRomCurve3,Vector3 } from 'three';
-import { ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
+import { ALPHA_BERTH_BASIN, ALPHA_ORIGIN, ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
 import type { Vec3 } from '../types';
 const cableCurve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
 const cableSamples=Array.from({length:193},(_,i)=>{const p=cableCurve.getPointAt(i/192);return [p.x,Math.max(38,Math.min(73,p.y)),p.z] as Vec3;});
@@ -61,6 +61,10 @@ export function alphaHeight(x:number,z:number) {
  const realSled=nearestAlphaSegment(x,z,sledSamples),su=(realSled.index+realSled.t)/256;
  const sa=sledSamples[realSled.index],sb=sledSamples[realSled.index+1],sg=Math.abs(sb[1]-sa[1])/Math.max(.01,Math.hypot(sb[0]-sa[0],sb[2]-sa[2]));
  if(realSled.distance<3.7&&su>.06&&su<.995){const w=1-smooth(1.8,3.7,realSled.distance),clear=Math.max(.38,1.8*sg+.22);h=Math.min(h,h*(1-w)+(realSled.y-clear)*w);}
+ // R6 surveyed underwater side-berth basin. Keep dry pier footprint x>=147.5
+ // intact; the complete hull/fenders occupy x<=145.5. Smooth bank is underwater.
+ const bay=ALPHA_BERTH_BASIN,wx=x+ALPHA_ORIGIN[0],wz=z+ALPHA_ORIGIN[2],berth=(1-smooth(bay.innerMaxX,bay.bankMaxX,wx))*smooth(bay.fadeMinZ,bay.innerMinZ,wz)*(1-smooth(bay.innerMaxZ,bay.fadeMaxZ,wz));
+ if(berth>0)h=Math.min(h,h*(1-berth)+bay.floorY*berth);
  return h;
 }
 export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance);
