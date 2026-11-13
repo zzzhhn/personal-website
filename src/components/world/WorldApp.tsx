@@ -1,6 +1,7 @@
 import { Component, lazy, memo, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { handleWorldEscape, requestCampReturn, selectWorldTime, useWorldStore } from './store';
 import { TIME_PRESETS, formatWorldTime } from './world-climate';
+import { rideEnvironment } from './rides/ride-environment';
 import { worldText } from './world-i18n';
 import { CAMP_CENTER, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
@@ -151,7 +152,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
         <fieldset className="world-time-presets"><legend>{t.timeOfDay} <span className="world-clock" aria-label={t.islandTime}>{formatWorldTime(s.worldMinutes)}</span></legend>{TIME_PRESETS.map(p => <button key={p.id} aria-pressed={s.light === p.id} onClick={() => selectWorldTime(p.id)}><span>{t[p.id]}</span><small>{formatWorldTime(p.minutes)}</small></button>)}</fieldset>
         <label className="world-time-flow"><input type="checkbox" checked={s.timeRunning} onChange={e => useWorldStore.setState({timeRunning:e.target.checked})}/><span>{t.timeFlow}</span></label>
         <p className="world-setting-hint world-clock-hint">{t.timeRate}</p>
-        <fieldset><legend>{t.weather}</legend>{(['clear','rain','snow'] as const).map(weather => <button key={weather} aria-pressed={s.weather===weather} onClick={()=>useWorldStore.setState({weather})}>{t[weather]}</button>)}</fieldset>
+        <fieldset><legend>{t.weather}</legend>{(['clear','rain','snow'] as const).map(weather => <button key={weather} aria-pressed={s.weather===weather} onClick={()=>{rideEnvironment.yieldToPlayer();useWorldStore.setState({weather});}}>{t[weather]}</button>)}</fieldset>
         <fieldset aria-describedby="world-quality-hint"><legend>{t.quality}</legend>{(['balanced', 'high'] as const).map(quality => <button key={quality} aria-pressed={s.quality === quality} onClick={() => useWorldStore.setState({ quality })}>{t[quality]}</button>)}</fieldset>
         <p id="world-quality-hint" className="world-setting-hint">{t.qualityHint}</p>
         <WorldAudioSettings lang={s.lang} />
