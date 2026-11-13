@@ -27,7 +27,7 @@ export function createAlphaLodge(){const b=new AlphaBuilder();
  b.beam('darkwood',[0,5.2,-3.2],[0,5.2,3.2],.27);
  for(const side of [-1,1])for(let row=0;row<7;row++){const x=side*(.25+row*.57),y=5.27-Math.abs(x)*.56;for(let z=-3.15;z<=3.2;z+=.64)b.box('roof',[x,y,z],[.7,.105,.68],.035,new Quaternion().setFromAxisAngle(new Vector3(0,0,1),-side*.51));}
  // Rope-bell and bronze suspension bracket, reachable from path.
- b.beam('darkwood',[2.7,2.8,2.9],[2.7,2.8,3.7],.13);b.cyl('metal',[2.7,2.45,3.65],.27,.42,.16);b.beam('rope',[2.7,2.3,3.65],[2.7,1.1,3.65],.025);b.cyl('wood',[2.7,1.1,3.65],.085,.2);
+ b.beam('darkwood',[2.7,2.8,2.9],[2.7,2.8,3.7],.13);
  // Sand table on four planted legs and broad rim. Scale route model is an actual raised polyline.
  for(const x of [-1,1])for(const z of [-.65,.65])b.beam('darkwood',[x,.5,z+.1],[x,1.4,z+.1],.12);
  b.box('wood',[0,1.43,.1],[2.45,.2,1.9]);b.box('stone',[0,1.55,.1],[2.1,.07,1.55],.07);
