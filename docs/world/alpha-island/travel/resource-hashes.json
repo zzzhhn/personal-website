@@ -13,5 +13,8 @@
   "driverSourceSha256": "3b789a47cb366601283415f0fff14aea734e135adae10a9bcfed013130d32c61",
   "pierPureSourceSha256": "8e06f1970f1cadec6276e4cbb8102524473afe67fc83ed4813d379f300425488",
   "pierBuilderSourceSha256": "1c3820432da23724f687536300afeee41966d15f30dcc571620b04f96e6bc744",
-  "worldLandformSourceSha256": "167ade85a4cd5830ffc6025e577582bf7b29060d156f0b58fd05019287690c08"
+  "worldLandformSourceSha256": "167ade85a4cd5830ffc6025e577582bf7b29060d156f0b58fd05019287690c08",
+  "plankGeometrySourceSha256": "8bd3b21713e7b66efc2d2bad6c1724d4279a36a3c27788577375751c5de64b99",
+  "plankMaterialSourceSha256": "1f2d04f30391742589ad84dbac8aa220da78adfabc9e77dfe58dd2e9af1a6f7d",
+  "transportComponentSourceSha256": "c533dfb1e3eb5ae1c42eee35def5746237671a96cef412c647849a6327853d6b"
 }

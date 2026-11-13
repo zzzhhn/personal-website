@@ -1,0 +1,37 @@
+/** Paired visual fixture. Run with the repository's existing TS loader; no gameplay pass claimed. */
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {execFileSync} from 'node:child_process';
+import {resolve} from 'node:path';
+import assert from 'node:assert/strict';
+import {ALPHA_TRANSPORT_ROUTES,alphaFerryRoute} from '../../../../src/components/world/alpha-island/transports/alpha-routes.ts';
+import {transportInfrastructure} from '../../../../src/components/world/alpha-island/transports/transport-infrastructure.ts';
+import {transportBoardingGeometry} from '../../../../src/components/world/rides/transport-boarding.ts';
+import {alphaHeight} from '../../../../src/components/world/alpha-island/alpha-terrain.ts';
+const {chromium}=createRequire(process.env.WORLD_PLAYWRIGHT_PACKAGE??'/tmp/alpha-scene-browser/package.json')('playwright');
+const candidate=process.argv.includes('--candidate'),label=process.env.WORLD_CAPTURE_NAME??(candidate?'planks-candidate':'planks-baseline'),out=resolve('docs/world/alpha-island/travel/evidence',label),source=execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim();
+const sha=data=>createHash('sha256').update(data).digest('hex');
+async function sourceHashes(){const paths=execFileSync('git',['ls-files','-z','--','src','public'],{encoding:'utf8'}).split('\0').filter(Boolean),h={};for(const p of paths)h[p]=sha(await readFile(p));return h;}
+const typed=a=>sha(Buffer.from(a.buffer,a.byteOffset,a.byteLength));
+async function physicsFacts(){const routes=[...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()],actorSource=await readFile('src/components/world/alpha-island/transports/AlphaTransports.tsx','utf8'),start=actorSource.indexOf('<RigidBody ref={floorBody}'),end=actorSource.indexOf('</RigidBody>',start);return {vehicleColliderJsx:sha(actorSource.slice(start,end+12)),routes:routes.map(r=>{const d=transportInfrastructure(r,alphaHeight);return {id:r.id,route:sha(JSON.stringify(r)),floor:typed(d.vertices),floorIndices:typed(d.indices),supports:sha(JSON.stringify(d.supports)),rollers:sha(JSON.stringify(d.rollers)),originalRenderSurface:typed(d.renderVertices),originalRenderIndices:typed(d.renderIndices),boarding:[0,1].map(i=>{const b=transportBoardingGeometry(r,i);return {vertices:typed(b.positions),indices:typed(b.indices)};})};})};}
+const camera={position:[173.6950056181824,7.467927011108555,160.59234391669108],quaternion:[-.214152537627394,.30806541344110616,.07138417920913179,.9241962403233128],fov:50};
+await mkdir(out,{recursive:true});const before=await sourceHashes(),physicsBefore=await physicsFacts(),results=[],errors=[];let browser,page;
+try{
+ assert.equal(execFileSync('git',['status','--porcelain','--','src','public'],{encoding:'utf8'}),'','commit runtime before capture');if(candidate){const baseline=JSON.parse(await readFile('docs/world/alpha-island/travel/evidence/planks-baseline-0ac66c7/manifest.json','utf8'));assert.deepEqual(physicsBefore,baseline.physicsBefore,'original routes, floor, fixed gangways, supports and vehicle collider JSX remain byte-identical');}
+ browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+ page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!m.location().url.endsWith('/api/events'))errors.push(m.text());});
+ await page.goto('http://127.0.0.1:4352/world?layout=v4&qa=1&ferryFixture=1',{waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>!!window.__alphaIsland?.camera&&window.__worldDebug?.state().ready,null,{timeout:60000});
+ await page.evaluate(()=>{window.__worldDebug.set({timeRunning:false,quality:'high',light:'noon',worldMinutes:720,timeRevision:10,weather:'clear',paused:false,lang:'zh'});document.querySelector('[data-world-playtest]')?.style.setProperty('display','none');[...document.querySelectorAll('aside')].filter(e=>e.querySelector('button')?.textContent?.startsWith('QA')).forEach(e=>e.style.display='none');window.__worldDebug.teleportPlayer([171,4.7,157]);});await page.waitForTimeout(1000);
+ assert.equal(await page.evaluate(c=>window.__alphaIsland.setCameraFixture(c),camera),true);
+ if(candidate)await page.evaluate(async()=>{window.__plankCraft=(await import('/src/components/world/alpha-island/transports/TransportWoodCraft.tsx')).transportCraftDebug;});
+ for(const [name,minutes]of [['day',720],['night',0]]){
+  await page.evaluate(minutes=>{const s=window.__worldDebug.state();window.__worldDebug.set({timeRunning:false,weather:'clear',light:minutes===0?'night':'noon',worldMinutes:minutes,timeRevision:s.timeRevision+1});},minutes);await page.waitForTimeout(2400);
+  const state=await page.evaluate(()=>({camera:window.__alphaIsland.camera(),light:window.__worldDebug.state().light,minutes:window.__worldDebug.state().worldMinutes,weather:window.__worldDebug.state().weather,stats:window.__worldDebug.stats(),craft:window.__plankCraft?.resources()??null}));assert.deepEqual(state.camera.position,camera.position);assert.deepEqual(state.camera.quaternion,camera.quaternion);assert.equal(state.camera.exposure,1);assert.deepEqual(state.camera.canvas,{width:1728,height:1080});
+  await page.screenshot({path:resolve(out,'lodge-'+name+'.png')});results.push({name,...state});
+ }
+ if(candidate){const lifetime=await page.evaluate(async()=>{const c=window.__plankCraft,before=c.resources();c.setEnabled(false);await new Promise(r=>setTimeout(r,600));const disabled=c.resources();c.setEnabled(true);await new Promise(r=>setTimeout(r,600));return {before,disabled,restored:c.resources()};});assert.ok(lifetime.before.geometries>0,'live renderer owns craft geometry');assert.equal(lifetime.before.materials,1,'renderer shares one existing PBR material');assert.equal(lifetime.disabled.geometries,0);assert.equal(lifetime.disabled.materials,0);assert.equal(lifetime.before.geometries,lifetime.restored.geometries);assert.equal(lifetime.before.materials,lifetime.restored.materials);results.push({lifetime});}
+ assert.deepEqual(errors,[]);
+}catch(error){errors.push(error.stack);process.exitCode=1;if(page)await page.screenshot({path:resolve(out,'failure.png')}).catch(()=>{});}
+finally{const after=await sourceHashes(),physicsAfter=await physicsFacts();const sourceUnchanged=JSON.stringify(before)===JSON.stringify(after),physicsUnchanged=JSON.stringify(physicsBefore)===JSON.stringify(physicsAfter);if(!sourceUnchanged||!physicsUnchanged)process.exitCode=1;await writeFile(resolve(out,'manifest.json'),JSON.stringify({source,candidate,toolSha256:sha(await readFile('tools/world/alpha-island/transports/capture-planks.mjs')),cameraReference:'scene evidence/0c3e657-views/manifest.json lodge-day; matrix only, current source captured afresh',conditions:{browser:'system Chrome headless',viewport:[1440,900],canvas:[1728,1080],quality:'high',exposure:1,weather:'clear',fixture:'QA arrival and directly frozen camera; ordinary HUD retained; QA panels hidden. World minutes fixed, dynamic sea/cloud phase not pixel-locked. Not gameplay or performance evidence.'},before,after,sourceUnchanged,physicsBefore,physicsAfter,physicsUnchanged,results,errors},null,2));if(browser)await browser.close();console.log(JSON.stringify({out,passed:!process.exitCode,sourceUnchanged,physicsUnchanged,browserClosed:true,errors}));}
