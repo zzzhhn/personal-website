@@ -1,0 +1,36 @@
+TAP version 13
+# Subtest: actual route interpolation remains within terminal elevations and transform endpoints
+ok 1 - actual route interpolation remains within terminal elevations and transform endpoints
+  ---
+  duration_ms: 3.798791
+  type: 'test'
+  ...
+# Subtest: fixed gangway visible top, collision triangles and foot sampler share the same sloping surface
+ok 2 - fixed gangway visible top, collision triangles and foot sampler share the same sloping surface
+  ---
+  duration_ms: 2.387584
+  type: 'test'
+  ...
+# Subtest: fresh runtime GLBs support actual G24 buttock patch and both boots through full route orientation
+ok 3 - fresh runtime GLBs support actual G24 buttock patch and both boots through full route orientation
+  ---
+  duration_ms: 126.225542
+  type: 'test'
+  ...
+# 3180 boot/physical-footrest samples; minimum=-0.0005286943639788433m
+# Subtest: SitDown and StandUp boots remain above their real boarding/footrest supports
+ok 4 - SitDown and StandUp boots remain above their real boarding/footrest supports
+  ---
+  duration_ms: 149.51275
+  type: 'test'
+  ...
+# 206064 SitDown/StandUp boot/support samples, minimum=0.002999788198971065m
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 603.88925

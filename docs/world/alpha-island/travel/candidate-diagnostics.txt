@@ -1,0 +1,41 @@
+18:08:36 [content] Syncing content
+18:08:36 [content] Synced content
+18:08:36 [types] Generated 319ms
+18:08:36 [check] Getting diagnostics for Astro files in /Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel...
+src/components/world/WorldCamp.tsx:186:53 - error ts(2339): Property 'height' does not exist on type '{}'.
+
+186         size: [map.image?.width ?? null, map.image?.height ?? null],
+                                                        ~~~~~~
+src/components/world/WorldCamp.tsx:186:27 - error ts(2339): Property 'width' does not exist on type '{}'.
+
+186         size: [map.image?.width ?? null, map.image?.height ?? null],
+                              ~~~~~
+
+src/components/world/WorldCampPropInteractions.tsx:430:42 - error ts(2786): 'ToolAction' cannot be used as a JSX component.
+  Its type '({ id, position, index, play, enabled, onInteract }: { id: string; position: Vec3; index: number; play: RefObject<ToolPlay | null>; enabled: () => boolean; onInteract: () => void; }) => void' is not a valid JSX element type.
+    Type '({ id, position, index, play, enabled, onInteract }: { id: string; position: Vec3; index: number; play: RefObject<ToolPlay | null>; enabled: () => boolean; onInteract: () => void; }) => void' is not assignable to type '(props: any) => ReactNode | Promise<ReactNode>'.
+      Type 'void' is not assignable to type 'ReactNode | Promise<ReactNode>'.
+
+430     {positions.map((position, index) => <ToolAction key={index} id={actionId(index)} position={position} index={index} play={play}
+                                             ~~~~~~~~~~
+
+src/components/world/park-roaming-music.ts:98:11 - error ts(2322): Type 'false' is not assignable to type 'true'.
+
+98           attempt.pending = false;
+             ~~~~~~~~~~~~~~~
+
+src/components/world/attractions/coaster-rail-visual-craft.ts:237:50 - error ts(2352): Conversion of type 'number[][]' to type 'Point2[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'number[]' is not comparable to type 'Point2'.
+    Target requires 2 element(s) but source may have fewer.
+
+237   const spineProfile = (r: Ring) => insetCorners(coasterSpineProfile(r) as Point2[], .018);
+                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/world/attractions/ibd-site-craft.ts:11:36 - error ts(2345): Argument of type '{ color: string; rough: number; }' is not assignable to parameter of type 'Surf'.
+  Property 'metal' is missing in type '{ color: string; rough: number; }' but required in type 'Surf'.
+
+11       bar(b,[0,0,0],top,.013*scale,{color:'#596140',rough:.95},5);
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Result (648 files): 
+- 6 errors

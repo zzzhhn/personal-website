@@ -1,0 +1,143 @@
+TAP version 13
+# Subtest: the same drag delta has the walking camera direction in orbit and first person
+ok 1 - the same drag delta has the walking camera direction in orbit and first person
+  ---
+  duration_ms: 0.802042
+  type: 'test'
+  ...
+# Subtest: full orbit during a real inversion changes the view without moving the rider or train
+ok 2 - full orbit during a real inversion changes the view without moving the rider or train
+  ---
+  duration_ms: 0.614959
+  type: 'test'
+  ...
+# Subtest: first-person head turn preserves its eye point even when inverted
+ok 3 - first-person head turn preserves its eye point even when inverted
+  ---
+  duration_ms: 0.064709
+  type: 'test'
+  ...
+# Subtest: close third-person orbit stays on the train passenger side through inversions
+ok 4 - close third-person orbit stays on the train passenger side through inversions
+  ---
+  duration_ms: 0.188625
+  type: 'test'
+  ...
+# Subtest: tiny drags, pitch changes and the yaw wrap are continuous throughout the complete loop
+ok 5 - tiny drags, pitch changes and the yaw wrap are continuous throughout the complete loop
+  ---
+  duration_ms: 73.867375
+  type: 'test'
+  ...
+# Subtest: first-person head look and explicit reset/view switching preserve their original contracts for a whole ride
+ok 6 - first-person head look and explicit reset/view switching preserve their original contracts for a whole ride
+  ---
+  duration_ms: 5.262958
+  type: 'test'
+  ...
+# Subtest: an authored view passing through world vertical does not flip its third-person pitch axis
+ok 7 - an authored view passing through world vertical does not flip its third-person pitch axis
+  ---
+  duration_ms: 36.689625
+  type: 'test'
+  ...
+# Subtest: manual view remains bounded, ignores invalid input and resets explicitly
+ok 8 - manual view remains bounded, ignores invalid input and resets explicitly
+  ---
+  duration_ms: 0.220875
+  type: 'test'
+  ...
+# Subtest: click waits for the exact physics pose; boarding approaches, jogs, turns, sits and settles before dispatch
+ok 9 - click waits for the exact physics pose; boarding approaches, jogs, turns, sits and settles before dispatch
+  ---
+  duration_ms: 1.708208
+  type: 'test'
+  ...
+# Subtest: the stair jog traverses every tread in about two seconds and eases into the stationary turns
+ok 10 - the stair jog traverses every tread in about two seconds and eases into the stationary turns
+  ---
+  duration_ms: 1.708667
+  type: 'test'
+  ...
+# Subtest: pause, tab hiding and stale-frame gaps freeze every boarding and exit phase
+ok 11 - pause, tab hiding and stale-frame gaps freeze every boarding and exit phase
+  ---
+  duration_ms: 0.598584
+  type: 'test'
+  ...
+# Subtest: boarding cancellation never dispatches; moving exits do not jump to the station
+ok 12 - boarding cancellation never dispatches; moving exits do not jump to the station
+  ---
+  duration_ms: 4.6335
+  type: 'test'
+  ...
+# Subtest: bridge exit requests retain ownership; explicit camp recovery invalidates it
+ok 13 - bridge exit requests retain ownership; explicit camp recovery invalidates it
+  ---
+  duration_ms: 0.125667
+  type: 'test'
+  ...
+# Subtest: the entry apron, six real tread tops and clear car opening agree with the animated route
+ok 14 - the entry apron, six real tread tops and clear car opening agree with the animated route
+  ---
+  duration_ms: 1093.246667
+  type: 'test'
+  ...
+# Subtest: both shipped carriage LODs have a real rider-right doorway aligned with the new stairs
+ok 15 - both shipped carriage LODs have a real rider-right doorway aligned with the new stairs
+  ---
+  duration_ms: 21.250917
+  type: 'test'
+  ...
+# Subtest: actual running boot soles clear all six treads going up and down
+ok 16 - actual running boot soles clear all six treads going up and down
+  ---
+  duration_ms: 131.541291
+  type: 'test'
+  ...
+# 301464 sole/tread samples; minimum clearance 0.003000 m
+# Subtest: actual G24 seat patch follows full train rotation despite an interpolated parent; tread IK restores bones
+ok 17 - actual G24 seat patch follows full train rotation despite an interpolated parent; tread IK restores bones
+  ---
+  duration_ms: 19.503084
+  type: 'test'
+  ...
+# Subtest: the changed React integration files have no TypeScript syntax diagnostics
+ok 18 - the changed React integration files have no TypeScript syntax diagnostics
+  ---
+  duration_ms: 207.3345
+  type: 'test'
+  ...
+# Subtest: shared sampled seat follows vehicle through a transformed route; every phase reaches its own safe terminal
+ok 19 - shared sampled seat follows vehicle through a transformed route; every phase reaches its own safe terminal
+  ---
+  duration_ms: 19.83075
+  type: 'test'
+  ...
+# Subtest: uncaptured, paused, hidden and stale frames freeze both actor and vehicle without catch-up
+ok 20 - uncaptured, paused, hidden and stale frames freeze both actor and vehicle without catch-up
+  ---
+  duration_ms: 0.201542
+  type: 'test'
+  ...
+# Subtest: cancel before dispatch walks back; moving ferry/cable physically reverse, sled reaches lower station
+ok 21 - cancel before dispatch walks back; moving ferry/cable physically reverse, sled reaches lower station
+  ---
+  duration_ms: 9.009458
+  type: 'test'
+  ...
+# Subtest: weather lease suspends and yields permanently to player edit; stale owner cannot release a new owner
+ok 22 - weather lease suspends and yields permanently to player edit; stale owner cannot release a new owner
+  ---
+  duration_ms: 0.131084
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3023.2715
