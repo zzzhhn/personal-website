@@ -1,0 +1,6 @@
+{
+  "cable": { "cableHeight": 5.2, "canopyHeight": 6.2, "crossarmHeight": 6.3, "clearanceHeight": 6.5 },
+  "seatHeight": 0.48,
+  "footrestHeight": 0.13,
+  "sledRunnerBelowFloor": 0.16
+}

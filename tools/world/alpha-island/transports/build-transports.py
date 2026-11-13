@@ -7,6 +7,8 @@ from mathutils import Vector
 ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),'../../../..'))
 OUT=os.path.join(ROOT,'public/assets/world/alpha-island/transports')
 SRC=os.path.dirname(__file__)
+DIM=json.load(open(os.path.join(ROOT,'src/components/world/alpha-island/transports/transport-dimensions.json')))
+CABLE_HEIGHT=DIM['cable']['cableHeight']
 bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
 def mat(name,color,rough=.5,metal=0):
  m=bpy.data.materials.new(name);m.diffuse_color=(*color,1);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF');p.inputs['Base Color'].default_value=(*color,1);p.inputs['Roughness'].default_value=rough;p.inputs['Metallic'].default_value=metal;return m
@@ -30,6 +32,7 @@ def beam(name,a,b,r,material,vertices=16):
  return o
 
 def cabin():
+ h=CABLE_HEIGHT
  box('floor structural tray',(0,-.126,0),(3.2,.2,2.4),paint,.07)
  for j in range(10):box('floor ash slat', (0,-.012,-1.08+j*.24),(3,.024,.22),wood,.008)
  for x in [-1.5,1.5]:
@@ -45,12 +48,11 @@ def cabin():
  box('seat back',(-.4,.76,0),(.12,.7,1.06),cloth,.05)
  box('measured boot support',(.51,.11,0),(.4,.04,.68),steel,.01)
  for z in [-.6,.6]:beam('seat leg',[-.12,.02,z],[-.12,.37,z],.035,steel)
- for z in [-.75,.75]:beam('suspension yoke',[0,2.35,z],[0,3.25,.35],.055,steel)
- beam('hinge hanger',[0,3.25,.35],[0,3.5,.17],.055,steel)
- beam('hinge axle',[0,3.5,.1],[0,3.5,.21],.035,steel)
- for z in [-.075,.075]:box('grip cable jaw',(0,3.5,z),(.5,.12,.08),steel,.008)
- box('grip upper bridge',(0,3.59,0),(.12,.05,.23),steel,.008)
- box('grip lower bridge',(0,3.4,0),(.12,.06,.23),steel,.008)
+ for z in [-.75,.75]:beam('suspension yoke',[0,2.35,z],[0,h-.55,.35],.055,steel)
+ beam('hinge hanger',[0,h-.55,.35],[0,h,.17],.055,steel)
+ beam('hinge axle',[0,h,.1],[0,h,.21],.035,steel)
+ for z in [-.075,.075]:box('grip cable jaw',(0,h,z),(.5,.12,.08),steel,.008)
+ box('grip upper bridge',(0,h+.09,0),(.12,.05,.23),steel,.008)
  for x in [-1.35,1.35]:beam('open-side grab rail',[x,.5,1.1],[x,1.5,1.1],.035,steel)
 
 def sled():
@@ -93,8 +95,12 @@ def ferry():
    beam('rope fender', [x,-.1,z],[x,-.65,z],.13,rope)
  for z in [-1.46,1.46]:beam('rubber rubbing strake',[-2.9,-.23,z],[2.9,-.23,z],.07,rubber)
 
-reports=[]
+report_path=os.path.join(SRC,'export-report.json')
+reports=json.load(open(report_path)) if os.path.exists(report_path) else []
+selected=set(sys.argv[sys.argv.index('--')+1:]) if '--' in sys.argv else {'cable','sled','ferry'}
 for name,build in [('cable',cabin),('sled',sled),('ferry',ferry)]:
+ if name not in selected:continue
+ reports=[r for r in reports if r['name']!=name]
  bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False);build()
  # Editable native source retains bevel modifiers and named construction parts.
  bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SRC,name+'.blend'))

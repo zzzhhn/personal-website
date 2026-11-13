@@ -1,7 +1,7 @@
 {
-  "public/assets/world/alpha-island/transports/cable.glb": "55f8f9996a73e0c9032adb5aab87ab90f30beff4db6232c0ceb15871c3dd3425",
+  "public/assets/world/alpha-island/transports/cable.glb": "71861542f65eee832cf4fe4f56fc33d2910117467a51deba516fd1f53db54df6",
   "public/assets/world/alpha-island/transports/sled.glb": "bb8e506258f0883fe7e75666de4f0355ff65952bfe6463020d91111a00a59a4f",
   "public/assets/world/alpha-island/transports/ferry.glb": "86cfc03994e440fee2fbbe219899c0715d80e921198c308f6f5e80896fe36d79",
-  "layoutDependencySha256": "94ea27a04e94c9dba5a19c52ac142a2421f940fc300b1665904d3ccec098d178",
-  "terrainDependencySha256": "549c463e018dcea6e2a9e6b7d70e13fcaabde080c3dfbf9c15213c06679600ab"
+  "layoutDependencySha256": "d497579c5847a23b971d04f169f29350339b56f160688411576b91f93c1d8702",
+  "terrainDependencySha256": "8eec40d5504f0df7f731ca490149d5538283e756a3289bef8969b20a963fe3a6"
 }
