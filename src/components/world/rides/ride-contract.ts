@@ -3,6 +3,9 @@ import type { AttractionRidePose } from '../attractions/attraction-ride';
 
 export interface RideActorFrame {
   stairs?: boolean;
+  /** Explicit ferry stair adaptation; legacy rides retain their original lift-only solve. */
+  footLowering?: number;
+  footContactHold?: boolean;
   /** Ground sampler belongs to the current boarding route, never to another ride. */
   groundId?: string;
   root: Vec3; yaw: number; speed: number;
@@ -33,6 +36,8 @@ export interface TransportTerminal {
   boarding: Vec3[];
   /** Index where transport-owned fixed gangway leaves scene ground. */
   gangwayStart?: number;
+  /** Last fixed gangway point; later points are supported by the vehicle's boarding step. */
+  gangwayEnd?: number;
   safeExit: Vec3;
   /** Foot route from standing inside through the opening to safeExit. */
   egress?: Vec3[];
@@ -41,6 +46,8 @@ export interface TransportTerminal {
   clearance: Vec3;
 }
 export interface TransportRoute {
+  /** Maximum visual pelvis descent for physical ferry stair contact, metres; opt-in. */
+  footLowering?:number;
   id: string;
   kind: 'cable' | 'sled' | 'ferry';
   transform: TransportTransform;

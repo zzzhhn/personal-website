@@ -76,8 +76,8 @@ export class TransportDriver implements RideDriver {
       case'walk-out':root=alongPath(this.leave,k);yaw=heading(this.leave[0],this.leave[1]);speed=pathLength(this.leave)*6*q*(1-q)/this.duration();clip='Walk';break;
       case'complete':root=this.safeExit;yaw=this.frame.yaw;break;
     }
-    this.frame={groundId:this.route.id+'-boarding-'+(['approach','turn-in','sit'].includes(this.phase)?this.source:this.destination),stairs:this.phase!=='riding'&&this.phase!=='complete',root,yaw,speed,clip,clipPhase,seatWeight,seat:[...sample.pose.seat],orientation:sample.orientation};
-    if(this.movementGuard&&(this.phase==='approach'||this.phase==='walk-out'||before.phase==='approach'||before.phase==='walk-out')&&!this.movementGuard(before.frame.root,this.frame.root)){this.phase=before.phase;this.elapsed=before.elapsed;this.frame={...before.frame,speed:0,clip:'Idle',clipPhase:undefined};this.blockedMotion=true;}
+    this.frame={groundId:this.route.id+'-boarding-'+(['approach','turn-in','sit'].includes(this.phase)?this.source:this.destination),stairs:this.phase!=='riding'&&this.phase!=='complete',footLowering:this.route.kind==='ferry'&&clip==='Walk'?this.route.footLowering:undefined,root,yaw,speed,clip,clipPhase,seatWeight,seat:[...sample.pose.seat],orientation:sample.orientation};
+    if(this.movementGuard&&(this.phase==='approach'||this.phase==='walk-out'||before.phase==='approach'||before.phase==='walk-out')&&!this.movementGuard(before.frame.root,this.frame.root)){this.phase=before.phase;this.elapsed=before.elapsed;this.frame={...before.frame,speed:0,clip:this.route.kind==='ferry'&&before.frame.footLowering?'Walk':'Idle',footContactHold:this.route.kind==='ferry'&&!!before.frame.footLowering,clipPhase:undefined};this.blockedMotion=true;}
     if(this.phase!=='riding')sample.pose.cameraTarget=[this.frame.root[0],this.frame.root[1]+.9,this.frame.root[2]];
     return sample;
   }

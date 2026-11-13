@@ -6,7 +6,7 @@ import { transportCurve,transportWorld,tuple } from '../../rides/transport-route
 export interface SupportBeam {a:Vec3;b:Vec3}
 export interface GuideRoller {center:Vec3;axis:Vec3;radius:number;halfWidth:number}
 /** Engineering data shared by rendered deck/structure and clearance fixtures. */
-export function transportInfrastructure(route:TransportRoute,groundHeight?:(x:number,z:number)=>number){
+export function transportInfrastructure(route:TransportRoute,groundHeight?:(x:number,z:number)=>number|null){
  const curve=transportCurve(route),count=Math.ceil(curve.getLength()/1.4),p:number[]=[],ix:number[]=[],colors:number[]=[],supports:SupportBeam[]=[],rollers:GuideRoller[]=[];
  const width=route.kind==='sled'?.73:.04,wood=new Color('#ad8050'),snow=new Color('#d7e2dc');let previousBent:Vec3[]|null=null;
  const world=(v:Vector3)=>transportWorld(tuple(v),route.transform);

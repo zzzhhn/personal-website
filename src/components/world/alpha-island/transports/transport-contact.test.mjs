@@ -9,7 +9,7 @@ import { GuideSeatContact,holdGuideSeatIdle } from '../../WorldGuideSeat.ts';
 import { GuideSlopeFit,skinnedWorldPoint } from '../../WorldGuideStop.ts';
 import { loadGuide } from '../../../../../tools/world/guide/boot-analysis.mjs';
 import { readWorldCraftGltf,disposeWorldCraftGltf } from '../../world-craft-gltf-test.mjs';
-const routes=[...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()];
+const routes=[...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()].filter(r=>!process.env.WORLD_TRANSPORT_KIND||r.kind===process.env.WORLD_TRANSPORT_KIND);
 test('actual route interpolation remains within terminal elevations and transform endpoints',()=>{
  for(const route of routes){const c=transportCurve(route),lo=Math.min(...route.path.map(p=>p[1])),hi=Math.max(...route.path.map(p=>p[1]));for(let i=0;i<=1000;i++){const p=c.getPointAt(i/1000);assert.ok(p.y>=lo-1e-8&&p.y<=hi+1e-8);}
  for(const endpoint of [0,1])assert.deepEqual(sampleTransport(route,endpoint,c).vehicle,transportWorld(route.path[endpoint?route.path.length-1:0],route.transform));}

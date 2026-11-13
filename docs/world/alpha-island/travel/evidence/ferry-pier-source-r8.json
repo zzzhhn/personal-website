@@ -1,0 +1,13 @@
+{
+  "producer": "Actual shared pure pier constructor consumed by runtime renderer and this physics/BVH fixture; not a browser geometry dump",
+  "dependencies": {
+    "src/components/world/alpha-island/alpha-mainland-pier.ts": "8e06f1970f1cadec6276e4cbb8102524473afe67fc83ed4813d379f300425488",
+    "src/components/world/alpha-island/alpha-art.ts": "1c3820432da23724f687536300afeee41966d15f30dcc571620b04f96e6bc744",
+    "src/components/world/WorldLandform.ts": "167ade85a4cd5830ffc6025e577582bf7b29060d156f0b58fd05019287690c08"
+  },
+  "geometrySha256": "7ddba445c89e76ddb0e5de473d8751147c1d9af8f48f4a16b8cc968fec945cf5",
+  "colliderRecordsSha256": "7fa8b315928e531255522ac32b3fcbeb43908974dd4513383799766b63b40eab",
+  "decks": 2,
+  "posts": 26,
+  "rails": 5
+}

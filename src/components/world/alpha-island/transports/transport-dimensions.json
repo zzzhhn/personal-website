@@ -1,6 +1,63 @@
 {
-  "cable": { "cableHeight": 5.2, "canopyHeight": 6.2, "crossarmHeight": 6.3, "clearanceHeight": 6.5 },
+  "cable": {
+    "cableHeight": 5.2,
+    "canopyHeight": 6.2,
+    "crossarmHeight": 6.3,
+    "clearanceHeight": 6.5
+  },
   "seatHeight": 0.48,
   "footrestHeight": 0.13,
-  "sledRunnerBelowFloor": 0.16
+  "sledRunnerBelowFloor": 0.16,
+  "sledFootDecks": [
+    {
+      "center": [
+        0.78,
+        0.11,
+        0
+      ],
+      "size": [
+        0.94,
+        0.04,
+        0.68
+      ]
+    },
+    {
+      "center": [
+        1.025,
+        0.2,
+        -0.57
+      ],
+      "size": [
+        0.45,
+        0.04,
+        0.46
+      ]
+    }
+  ],
+  "ferryBoardingSteps": [
+    {
+      "center": [
+        1,
+        0.32,
+        -1.375
+      ],
+      "size": [
+        0.64,
+        0.04,
+        0.75
+      ]
+    },
+    {
+      "center": [
+        1,
+        0.15,
+        -0.775
+      ],
+      "size": [
+        0.64,
+        0.04,
+        0.45
+      ]
+    }
+  ]
 }

@@ -47,6 +47,9 @@ def cabin():
  box('seat cushion',(0,.42,0),(.72,.12,1.05),cloth,.06)
  box('seat back',(-.4,.76,0),(.12,.7,1.06),cloth,.05)
  box('measured boot support',(.51,.11,0),(.4,.04,.68),steel,.01)
+ for i,step in enumerate(DIM['ferryBoardingSteps']):
+  box('port boarding tread '+str(i),step['center'],step['size'],wood,.012)
+  for x in [.76,1.24]:beam('boarding tread bracket',[x,.015,step['center'][2]],[x,step['center'][1]-.025,step['center'][2]],.022,steel)
  for z in [-.6,.6]:beam('seat leg',[-.12,.02,z],[-.12,.37,z],.035,steel)
  for z in [-.75,.75]:beam('suspension yoke',[0,2.35,z],[0,h-.55,.35],.055,steel)
  beam('hinge hanger',[0,h-.55,.35],[0,h,.17],.055,steel)
@@ -62,7 +65,8 @@ def sled():
   for x in [-.75,.55]:beam('runner stanchion',[x,-.12,z],[x,.37,z],.045,paint)
  for i in range(6):box('flexed seat plank',(-.62+i*.23,.42,0),(.21,.12,1.0),wood,.025)
  box('rear backrest',(-.93,.75,0),(.13,.66,1.05),wood,.035)
- box('measured boot support',(.51,.11,0),(.4,.04,.68),lightwood,.01)
+ for i,part in enumerate(DIM['sledFootDecks']):box('measured boot support' if i==0 else 'side boarding step',part['center'],part['size'],lightwood,.01)
+ for x in [.85,1.15]:beam('side step bracket',[x,-.08,-.43],[x,.16,-.57],.025,steel)
  for z in [-.51,.51]:beam('hand grip',[-.7,.64,z],[.35,.64,z],.035,steel)
  beam('brake lever',[.25,.48,.4],[.5,.85,.4],.024,steel)
 
@@ -89,6 +93,9 @@ def ferry():
    beam('handrail',[a,.95,z],[b,.95,z],.032,steel)
  box('passenger seat cushion',(0,.42,0),(.75,.12,1.2),cloth,.045);box('passenger back',(-.44,.8,0),(.12,.8,1.2),wood)
  box('measured boot support',(.51,.11,0),(.4,.04,.68),steel,.01)
+ for i,step in enumerate(DIM['ferryBoardingSteps']):
+  box('port boarding tread '+str(i),step['center'],step['size'],wood,.012)
+  for x in [.76,1.24]:beam('boarding tread bracket',[x,.015,step['center'][2]],[x,step['center'][1]-.025,step['center'][2]],.022,steel)
  box('helm console',(2.4,.52,0),(.65,1.04,1.1),cream,.07)
  for x in [-2.6,2.6]:
   for z in [-1.65,1.65]:

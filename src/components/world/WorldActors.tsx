@@ -100,6 +100,7 @@ export interface WorldActorDebug {
   wheelFixture(on:boolean, z?:number, span?:number): boolean;
   collisionLane(kind:LaneObstacle|null, lateral?:number): boolean;
   rideObstacle(position:Vec3|null,size?:Vec3):boolean;
+  rideLandingProbe():unknown;
   actor(): ReturnType<typeof worldGuideDebug>;
   camera(): CameraDebug|null;
   contacts(): ActorContact[];
@@ -127,6 +128,7 @@ export const worldActorDebug: WorldActorDebug = {
   surfaceAudit: () => debugTarget?.surfaceAudit() ?? [],
   wheelFixture: (on,z,span) => debugTarget?.wheelFixture(on,z,span) ?? false,
   rideObstacle:(p,size)=>debugTarget?.rideObstacle(p,size)??false,
+  rideLandingProbe:()=>debugTarget?.rideLandingProbe()??null,
   collisionLane: (kind,lateral) => debugTarget?.collisionLane(kind,lateral) ?? false,
   contacts: () => debugTarget?.contacts() ?? [],
   inputState: () => debugTarget?.inputState() ?? [],
@@ -311,7 +313,7 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
 
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
-  const rideHeld=useRef(false),rideExitCheck=useRef({revision:-1,next:0});
+  const rideHeld=useRef(false),rideExitCheck=useRef({revision:-1,next:0}),rideLandingProbe=useRef<{foot:Vec3;landing:Vec3|null;delta:number|null}|null>(null);
   const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
   const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
   const clubArrival=new URLSearchParams(window.location.search).get('start')?.startsWith('club')??false;
@@ -760,6 +762,7 @@ export default function WorldActors() {
     let rideObstacle:{body:RapierRigidBody;mesh:Mesh}|null=null;
     const clearRideObstacle=()=>{if(!rideObstacle)return;world.removeRigidBody(rideObstacle.body);scene.remove(rideObstacle.mesh);rideObstacle.mesh.geometry.dispose();(rideObstacle.mesh.material as MeshStandardMaterial).dispose();rideObstacle=null;};
     const api:WorldActorDebug={
+      rideLandingProbe:()=>rideLandingProbe.current,
       rideObstacle:(position,size=[.8,1.8,.8])=>{
         if(!import.meta.env.DEV||!['qa','transportCapture'].some(k=>new URLSearchParams(window.location.search).get(k)==='1'))return false;
         clearRideObstacle();if(!position)return true;if([...position,...size].some(v=>!Number.isFinite(v))||size.some(v=>v<=0||v>4))return false;
@@ -954,6 +957,7 @@ export default function WorldActors() {
         // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
         // it never selects a different platform position or silently sends them to camp.
         const landing=findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y);
+        rideLandingProbe.current={foot:[...root],landing,delta:landing?landing[1]-PLAYER_CENTER_HEIGHT-root[1]:null};
         if(landing&&Math.abs(landing[1]-PLAYER_CENTER_HEIGHT-root[1])<.12){
           completeAttractionRide();rideHeld.current=false;player.current.setEnabled(true);
           clearInput();guideMovementLock.current=false;portalTravel.current.previous=p;

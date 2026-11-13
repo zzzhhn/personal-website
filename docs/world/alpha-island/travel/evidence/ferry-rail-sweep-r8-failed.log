@@ -1,0 +1,260 @@
+TAP version 13
+# (node:87578) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: ferry complete runtime clears actual pier boards, rails, posts, fixed bridges and both terrain meshes
+not ok 1 - ferry complete runtime clears actual pier boards, rails, posts, fixed bridges and both terrain meshes
+  ---
+  duration_ms: 7562.301041
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:40:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.016800000000000002
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.017
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0172
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.017400000000000002
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0176
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0178
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.018
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.018000000000000002
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0182
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0184
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.018600000000000002
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0188
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.019
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.019200000000000002
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0194
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0196
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0198
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.02
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.020200000000000003
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0204
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.0206
+    +   },
+    +   {
+    +     hits: [
+    +       'fixed ferry gangway 0'
+    +     ],
+    +     u: 0.020800000000000003
+    +   }
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      u: 0.016800000000000002
+      hits:
+        0: 'fixed ferry gangway 0'
+    1:
+      u: 0.017
+      hits:
+        0: 'fixed ferry gangway 0'
+    2:
+      u: 0.0172
+      hits:
+        0: 'fixed ferry gangway 0'
+    3:
+      u: 0.017400000000000002
+      hits:
+        0: 'fixed ferry gangway 0'
+    4:
+      u: 0.0176
+      hits:
+        0: 'fixed ferry gangway 0'
+    5:
+      u: 0.0178
+      hits:
+        0: 'fixed ferry gangway 0'
+    6:
+      u: 0.018
+      hits:
+        0: 'fixed ferry gangway 0'
+    7:
+      u: 0.018000000000000002
+      hits:
+        0: 'fixed ferry gangway 0'
+    8:
+      u: 0.0182
+      hits:
+        0: 'fixed ferry gangway 0'
+    9:
+      u: 0.0184
+      hits:
+        0: 'fixed ferry gangway 0'
+    10:
+      u: 0.018600000000000002
+      hits:
+        0: 'fixed ferry gangway 0'
+    11:
+      u: 0.0188
+      hits:
+        0: 'fixed ferry gangway 0'
+    12:
+      u: 0.019
+      hits:
+        0: 'fixed ferry gangway 0'
+    13:
+      u: 0.019200000000000002
+      hits:
+        0: 'fixed ferry gangway 0'
+    14:
+      u: 0.0194
+      hits:
+        0: 'fixed ferry gangway 0'
+    15:
+      u: 0.0196
+      hits:
+        0: 'fixed ferry gangway 0'
+    16:
+      u: 0.0198
+      hits:
+        0: 'fixed ferry gangway 0'
+    17:
+      u: 0.02
+      hits:
+        0: 'fixed ferry gangway 0'
+    18:
+      u: 0.020200000000000003
+      hits:
+        0: 'fixed ferry gangway 0'
+    19:
+      u: 0.0204
+      hits:
+        0: 'fixed ferry gangway 0'
+    20:
+      u: 0.0206
+      hits:
+        0: 'fixed ferry gangway 0'
+    21:
+      u: 0.020800000000000003
+      hits:
+        0: 'fixed ferry gangway 0'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:50:180)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# {"first":{"u":0.016800000000000002,"hits":["fixed ferry gangway 0"]},"vehicle":[-16.399381961004355,0.8,115.23634331965123],"orientation":[0,-0.7741137880025968,0,0.6330464779337064],"actualMovingParts":["rail_post"]}
+# {"samples":1049,"obstacles":7,"terrainTriangles":2998,"collisions":22,"examples":[{"u":0.016800000000000002,"hits":["fixed ferry gangway 0"]},{"u":0.017,"hits":["fixed ferry gangway 0"]},{"u":0.0172,"hits":["fixed ferry gangway 0"]},{"u":0.017400000000000002,"hits":["fixed ferry gangway 0"]},{"u":0.0176,"hits":["fixed ferry gangway 0"]},{"u":0.0178,"hits":["fixed ferry gangway 0"]},{"u":0.018,"hits":["fixed ferry gangway 0"]},{"u":0.018000000000000002,"hits":["fixed ferry gangway 0"]},{"u":0.0182,"hits":["fixed ferry gangway 0"]},{"u":0.0184,"hits":["fixed ferry gangway 0"]},{"u":0.018600000000000002,"hits":["fixed ferry gangway 0"]},{"u":0.0188,"hits":["fixed ferry gangway 0"]},{"u":0.019,"hits":["fixed ferry gangway 0"]},{"u":0.019200000000000002,"hits":["fixed ferry gangway 0"]},{"u":0.0194,"hits":["fixed ferry gangway 0"]},{"u":0.0196,"hits":["fixed ferry gangway 0"]}]}
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7964.504834

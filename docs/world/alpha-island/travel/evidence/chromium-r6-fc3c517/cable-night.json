@@ -1,0 +1,74 @@
+{
+  "source": "fc3c5173c7d6081894df1f2f553c1c329584ce7d",
+  "engine": "chromium",
+  "fixture": "arrival via development probe; ordinary E and camera unless hold explicitly recorded",
+  "state": {
+    "active": true,
+    "completed": false,
+    "phase": "riding",
+    "id": "alpha-cable",
+    "u": 0.2001704400000358,
+    "blocked": false,
+    "exitBlocked": false,
+    "exitRequested": false,
+    "p": [
+      271.9167785644531,
+      43.781490325927734,
+      159.5205535888672
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "grounded": true,
+    "animation": "SitIdle",
+    "weather": "clear",
+    "paused": false,
+    "light": "night",
+    "worldMinutes": 0,
+    "night": 1,
+    "climate": {
+      "rain": 0.2735020000001628,
+      "snow": 0
+    },
+    "camera": {
+      "position": [
+        264.81766000764037,
+        45.08149198450683,
+        154.41246545404897
+      ],
+      "quaternion": [
+        0.034124884560478,
+        0.8874650633574832,
+        0.06659482575990193,
+        -0.45475969781373604
+      ],
+      "fov": 55,
+      "near": 0.1,
+      "far": 600,
+      "exposure": 1,
+      "canvas": {
+        "width": 1728,
+        "height": 1080
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "safety": {
+      "firstLegHit": null,
+      "firstLegDegenerate": false,
+      "eyeOverlapping": false,
+      "validOrigin": true,
+      "origin": [
+        270.27700147329557,
+        43.98149198450683,
+        159.96904630573982
+      ],
+      "visibilityHit": null,
+      "visibilityLimited": false
+    }
+  }
+}

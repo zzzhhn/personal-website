@@ -4,7 +4,7 @@ Scene-owned f750f56 (travel cherry68be548) adds the underwater berth basin witho
 
 R6 ferry geometry checks passed:
 -501 poses ×1986 unique lower-hull/fender vertices:minimum ground clearance+.724183m (mainland stern; same vertex is no longer the island failure).
--The complete runtime GLB against2704 actual old+Alpha terrain triangles and2 conservative whole-pier solid envelopes:501 poses,0 mesh intersections.
+-The complete runtime GLB against2704 actual old+Alpha terrain triangles and2 conservative solid envelopes for the mainland boardwalk and mainland pier platform:501 poses,0 mesh intersections.
 -Actual terrain vertices inside the ship's closed displacement hull were separately rejected, catching containment that surface intersection alone can miss;0 containment failures.
 
 These are discrete samples and conservative structural fixtures. They do not establish a continuous swept-volume proof, loading/runtime appearance, ordinary-entry accessibility or boat acceptance. The old r5 failure remains recorded. The next browser window will exercise the actual scene with E and physics release.

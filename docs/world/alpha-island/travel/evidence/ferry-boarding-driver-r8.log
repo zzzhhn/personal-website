@@ -1,0 +1,82 @@
+TAP version 13
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: ferry boarding, steps, canopy and exact safe exits clear actual boat and pier geometry at both ends
+ok 1 - ferry boarding, steps, canopy and exact safe exits clear actual boat and pier geometry at both ends
+  ---
+  duration_ms: 8020.543209
+  type: 'test'
+  ...
+# {"index":0,"segments":14,"landing":[-10,2.019999976158142,109],"delta":-2.3841857599293803e-8}
+# {"index":1,"segments":18,"landing":[156,2.2239412951469424,148],"delta":0.04394129514694245}
+# Subtest: actual G24 helmet clears the ferry canopy from the highest boarding tread
+ok 2 - actual G24 helmet clears the ferry canopy from the highest boarding tread
+  ---
+  duration_ms: 75.06625
+  type: 'test'
+  ...
+# {"actualWalkMaximumHeight":1.7012591626331177,"canopyBottom":2.1600000113248825,"highestTread":0.34,"clearance":0.11874084869176471}
+# Subtest: ferry walking stance boots can lower onto the actual tread during a descending step
+ok 3 - ferry walking stance boots can lower onto the actual tread during a descending step
+  ---
+  duration_ms: 17.687917
+  type: 'test'
+  ...
+# {"stanceSamples":16,"maximumStanceGap":0.030521901568385412}
+# Subtest: one ferry foot solver holds its contact on obstruction and restores after continuous recovery
+ok 4 - one ferry foot solver holds its contact on obstruction and restores after continuous recovery
+  ---
+  duration_ms: 27.722583
+  type: 'test'
+  ...
+# {"heldFrames":60,"recoveryFrames":150,"heldDrop":0.2603540372132568,"finalDrop":0.005354026945793166,"maximumDrop":0.2603540372132568}
+# Subtest: shared sampled seat follows vehicle through a transformed route; every phase reaches its own safe terminal
+ok 5 - shared sampled seat follows vehicle through a transformed route; every phase reaches its own safe terminal
+  ---
+  duration_ms: 31.445042
+  type: 'test'
+  ...
+# Subtest: uncaptured, paused, hidden and stale frames freeze both actor and vehicle without catch-up
+ok 6 - uncaptured, paused, hidden and stale frames freeze both actor and vehicle without catch-up
+  ---
+  duration_ms: 0.467791
+  type: 'test'
+  ...
+# Subtest: cancel before dispatch walks back; moving ferry/cable physically reverse, sled reaches lower station
+ok 7 - cancel before dispatch walks back; moving ferry/cable physically reverse, sled reaches lower station
+  ---
+  duration_ms: 9.899334
+  type: 'test'
+  ...
+# Subtest: weather lease suspends and yields permanently to player edit; stale owner cannot release a new owner
+ok 8 - weather lease suspends and yields permanently to player edit; stale owner cannot release a new owner
+  ---
+  duration_ms: 0.197625
+  type: 'test'
+  ...
+# Subtest: same ride id has independent weather generations and reset values
+ok 9 - same ride id has independent weather generations and reset values
+  ---
+  duration_ms: 0.066916
+  type: 'test'
+  ...
+# Subtest: ground registrations release by identity across replacement and unmount
+ok 10 - ground registrations release by identity across replacement and unmount
+  ---
+  duration_ms: 0.049125
+  type: 'test'
+  ...
+# Subtest: explicit menu selection of the already-selected weather ends the temporary overlay
+ok 11 - explicit menu selection of the already-selected weather ends the temporary overlay
+  ---
+  duration_ms: 0.089625
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8644.706

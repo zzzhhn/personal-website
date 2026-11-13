@@ -365,7 +365,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       return { loaded: true, moving: s.speed > .12, running: s.current === 'Run' || s.current === 'Sprint', airborne: !s.grounded,
         jumpKind: s.jumpKind, vault: !!observedMotion?.vault, movementLocked: !!(observedMotion?.seat || s.sat || observedMotion?.vehicle), vehicle: observedMotion?.vehicle ?? null, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
         designSpeedMps: rig.design, slope: rig.slope.debug(), slopeOn: s.slopeOn, mine: { ...rig.mine.sockets },
-        vehicleContacts:{...rig.vehicleContacts.errors},vehicleRotation:observedMotion?.vehicle?group.current?.getWorldQuaternion(new Quaternion()).toArray():null,
+        attractionFeet:rig.attractionFeet.debug(),vehicleContacts:{...rig.vehicleContacts.errors},vehicleRotation:observedMotion?.vehicle?group.current?.getWorldQuaternion(new Quaternion()).toArray():null,
         animation: s.current, idleGesture: rig.idle.gesture, idleWaiting: rig.idle.waiting, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
