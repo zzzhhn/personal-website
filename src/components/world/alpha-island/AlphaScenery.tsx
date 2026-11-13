@@ -43,7 +43,7 @@ export default function AlphaScenery(){const [lx,ly,lz]=ALPHA_STATIONS.lodge;ret
  <RigidBody type="fixed" colliders={false} position={ALPHA_STATIONS.tree} userData={{solid:true}}><CuboidCollider args={[.5,3,.5]} position={[0,3,0]}/></RigidBody>
  <Craft name="alpha-wind-gate" build={windGate} position={[16,38,-44]}/>
  <CairnField/>
- <Craft name="alpha-lantern-rack" build={createAlphaRack} position={[-8,83,42]}/><RigidBody type="fixed" colliders={false} position={[-8,83,42]} userData={{solid:true}}>{[-1.25,1.25].map(x=><group key={x}><CuboidCollider position={[x,.17,0]} args={[.3,.17,.35]}/><CuboidCollider position={[x,1.35,0]} args={[.09,1.2,.09]}/></group>)}<CuboidCollider position={[0,.32,0]} args={[1.45,.08,.425]}/></RigidBody>
+ <Craft name="alpha-lantern-rack" build={createAlphaRack} position={[-8,83,42]}/><RigidBody type="fixed" colliders={false} position={[-8,83,42]} userData={{solid:true}}>{[-1.25,1.25].map(x=><group key={x}><CuboidCollider position={[x,.17,0]} args={[.3,.17,.35]}/><CuboidCollider position={[x,1.35,0]} args={[.09,1.2,.09]}/></group>)}<CuboidCollider position={[0,.24,0]} args={[1.45,.08,.425]}/></RigidBody>
  <AlphaSign position={[-66,3.8,-36]} text="一切，从一个想法开始。"/>
  <AlphaSign position={[-46,18,-26]} text="先看清枝干，再向上生长。"/>
  <AlphaSign position={[16,38,-38]} text="在风里，还站得住吗？"/>
