@@ -31,3 +31,5 @@ test('same ride id has independent weather generations and reset values',()=>{
  const e=new RideEnvironment(),old=e.acquire('cable','clear');old.publish({rain:1,snow:0});const fresh=e.acquire('cable','clear');assert.deepEqual(e.sample('clear',false),{rain:0,snow:0});old.publish({rain:1,snow:1});old.release();assert.ok(e.active);assert.deepEqual(e.sample('clear',false),{rain:0,snow:0});fresh.publish({rain:0,snow:1});assert.deepEqual(e.sample('clear',false),{rain:0,snow:1});fresh.release();assert.equal(e.active,false);
 });
 test('ground registrations release by identity across replacement and unmount',()=>{const a=()=>1,b=()=>2,old=registerRideGround('test',a),fresh=registerRideGround('test',b);old();assert.equal(rideGround('test'),b);fresh();assert.equal(rideGround('test'),undefined);});
+
+test('explicit menu selection of the already-selected weather ends the temporary overlay',()=>{const e=new RideEnvironment(),lease=e.acquire('cable','clear');lease.publish({rain:1,snow:0});e.yieldToPlayer();assert.equal(e.sample('clear',false),null);lease.publish({rain:1,snow:1});assert.equal(e.sample('clear',false),null);});

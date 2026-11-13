@@ -14,6 +14,8 @@ export class RideEnvironment {
   if(preference!==this.preference)this.yielded=true;
   return this.owner&&!this.yielded&&!suspended?this.value:null;
  }
+ /** Explicit menu selection wins even when its value equals the saved preference. */
+ yieldToPlayer(){this.yielded=true;}
  get active(){return this.owner!==null;}
 }
 export const rideEnvironment=new RideEnvironment();
