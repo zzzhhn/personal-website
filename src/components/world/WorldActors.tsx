@@ -390,7 +390,7 @@ export default function WorldActors() {
   },[]);
   useEffect(() => {
     // Paused arrivals and fixed shots have no physics publication to activate nearby facilities.
-    useWorldStore.setState({ position: [...arrival], zone: LAYOUT_V4 ? zoneAtV4(arrival[0], arrival[2]) : 'camp' });
+    useWorldStore.setState({ position: [...arrival], zone: alphaContainsWorld(arrival)?'alpha':LAYOUT_V4 ? zoneAtV4(arrival[0], arrival[2]) : 'camp' });
   }, [arrival]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
@@ -962,7 +962,7 @@ export default function WorldActors() {
         return;
       }
       publishedTime.current+=dt;
-      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:attractionRide.driver?'ridge':'coaster'});}
+      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:alphaContainsWorld(p)?'alpha':attractionRide.driver?'shore':'coaster'});}
       return;
     }
     if(rideHeld.current){
@@ -1304,7 +1304,7 @@ export default function WorldActors() {
             const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates,WATER_Y);
             if(!landing)continue;
             relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
-            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:LAYOUT_V4?zoneAtV4(landing[0],landing[2]):destination.id==='camp'?'camp':'park'});
+            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:alphaContainsWorld(landing)?'alpha':LAYOUT_V4?zoneAtV4(landing[0],landing[2]):destination.id==='camp'?'camp':'park'});
             const zh={camp:'营地',mine:'WorldQuant 矿场',park:'项目广场',yard:'物资清点场',coaster:'意图过山车'},en={camp:'camp',mine:'WorldQuant quarry',park:'project plaza',yard:'Inventory yard',coaster:'Intent coaster'};
             actorNotice(`已抵达${zh[destination.id]}。离开门口后可再次穿行。`,`Arrived at ${en[destination.id]}. Walk away to rearm the gate.`);
             transferred=true;
@@ -1322,7 +1322,7 @@ export default function WorldActors() {
       publishedTime.current=0;
       const item=nearbyItem.current,prev=useWorldStore.getState().nearbyInteract;
       const nearbyInteract:NearbyInteract|null=item&&!active?(prev?.id===item.id&&prev.label.zh===item.label.zh&&prev.label.en===item.label.en&&prev.kind===item.kind?prev:{id:item.id,label:item.label,kind:item.kind}):null;
-      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:LAYOUT_V4?zoneAtV4(p.x,p.z):p.x>35?'park':p.x< -15?'camp':'town'});
+      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:alphaContainsWorld([p.x,p.y,p.z])?'alpha':LAYOUT_V4?zoneAtV4(p.x,p.z):p.x>35?'park':p.x< -15?'camp':'town'});
     }
   });
 

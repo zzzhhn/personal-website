@@ -1,3 +1,4 @@
+import dimensions from './transport-dimensions.json';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -84,9 +85,9 @@ function TransportModel({kind,cablePitch}:{kind:TransportRoute['kind'];cablePitc
  const pack=useMemo(()=>{
   const root=new Group(),grip=new Group(),materials=new Map<MeshStandardMaterial,MeshStandardMaterial>(),parts=new Map<string,{material:MeshStandardMaterial;grip:boolean;geometries:BufferGeometry[]}>(),owned:BufferGeometry[]=[];
   gltf.scene.updateMatrixWorld(true);
-  gltf.scene.traverse(o=>{if(!(o instanceof Mesh))return;const source=o.material as MeshStandardMaterial;let material=materials.get(source);if(!material){material=source.clone();if(material.transparent){material.depthWrite=false;material.side=FrontSide;material.forceSinglePass=true;}materials.set(source,material);}const articulated=kind==='cable'&&o.name.startsWith('grip'),key=material.uuid+':'+articulated;let part=parts.get(key);if(!part){part={material,grip:articulated,geometries:[]};parts.set(key,part);}const g=o.geometry.clone().applyMatrix4(o.matrixWorld);if(articulated)g.translate(0,-3.5,0);part.geometries.push(g);});
+  gltf.scene.traverse(o=>{if(!(o instanceof Mesh))return;const source=o.material as MeshStandardMaterial;let material=materials.get(source);if(!material){material=source.clone();if(material.transparent){material.depthWrite=false;material.side=FrontSide;material.forceSinglePass=true;}materials.set(source,material);}const articulated=kind==='cable'&&o.name.startsWith('grip'),key=material.uuid+':'+articulated;let part=parts.get(key);if(!part){part={material,grip:articulated,geometries:[]};parts.set(key,part);}const g=o.geometry.clone().applyMatrix4(o.matrixWorld);if(articulated)g.translate(0,-dimensions.cable.cableHeight,0);part.geometries.push(g);});
   for(const {material,grip:articulated,geometries} of parts.values()){const geometry=mergeGeometries(geometries,false)!;geometries.forEach(g=>g.dispose());owned.push(geometry);const mesh=new Mesh(geometry,material);mesh.castShadow=!material.transparent;mesh.receiveShadow=true;(articulated?grip:root).add(mesh);}
-  grip.position.y=3.5;root.add(grip);return{root,grip,materials,owned};
+  grip.position.y=dimensions.cable.cableHeight;root.add(grip);return{root,grip,materials,owned};
  },[gltf]);
  useEffect(()=>{for(const m of pack.materials.values()){m.envMap=env;m.needsUpdate=true;}},[pack,env]);
  useEffect(()=>()=>{for(const m of pack.materials.values())m.dispose();pack.owned.forEach(g=>g.dispose());},[pack]);
@@ -104,7 +105,7 @@ function TransportInfrastructure({route,groundHeight}:{route:TransportRoute;grou
   {route.kind!=='ferry'&&<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color={route.kind==='sled'?'#ffffff':'#606b72'} roughness={.78} metalness={route.kind==='cable'?.75:0}/></mesh>}
   {route.kind==='sled'&&<RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:route.id+'-trough'}}><TrimeshCollider args={[pack.vertices,pack.indices]} friction={.5}/></RigidBody>}
   {route.kind==='sled'&&[-.77,.77].map(side=><PathRail key={side} route={route} offset={side} elevation={.08}/>)}
-  {route.kind==='cable'&&<PathRail route={route} offset={0} elevation={3.5}/>}
+  {route.kind==='cable'&&<PathRail route={route} offset={0} elevation={dimensions.cable.cableHeight}/>}
   <BeamBatch segments={pack.supports} radius={route.kind==='cable'?.09:.12} color={route.kind==='cable'?'#54666c':'#775231'}/>
   <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:route.id+'-supports'}}>
    {pack.supports.map((s,i)=>{const a=new Vector3(...s.a),b=new Vector3(...s.b),d=b.clone().sub(a),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize());return <CylinderCollider key={i} position={tuple(a.add(b).multiplyScalar(.5))} quaternion={q} args={[d.length()/2,route.kind==='cable'?.09:.12]}/>;})}
@@ -117,9 +118,9 @@ function TransportInfrastructure({route,groundHeight}:{route:TransportRoute;grou
    return <group key={terminal.id} position={root} rotation={[0,yaw,0]}>
 
     {route.kind==='cable'&&<>
-     <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:terminal.id+'-canopy'}}><CuboidCollider position={[0,3.85,0]} args={[2.5,.125,2.5]}/>{[-2.1,2.1].flatMap(x=>[-2.1,2.1].map(z=><CylinderCollider key={x+','+z} position={[x,1.85,z]} args={[1.85,.17]}/>))}</RigidBody>
-     <mesh position={[0,3.85,0]} castShadow><boxGeometry args={[5,.25,5]}/><meshStandardMaterial color="#536267" roughness={.55} metalness={.25}/></mesh>
-     {[-2.1,2.1].flatMap(x=>[-2.1,2.1].map(z=><mesh key={x+','+z} position={[x,1.85,z]} castShadow><cylinderGeometry args={[.13,.17,3.7,12]}/><meshStandardMaterial color="#86603c" roughness={.85}/></mesh>))}
+     <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:terminal.id+'-canopy'}}><CuboidCollider position={[0,dimensions.cable.canopyHeight,0]} args={[2.5,.125,2.5]}/>{[-2.1,2.1].flatMap(x=>[-2.1,2.1].map(z=><CylinderCollider key={x+','+z} position={[x,(dimensions.cable.canopyHeight-.125)/2,z]} args={[(dimensions.cable.canopyHeight-.125)/2,.17]}/>))}</RigidBody>
+     <mesh position={[0,dimensions.cable.canopyHeight,0]} castShadow><boxGeometry args={[5,.25,5]}/><meshStandardMaterial color="#536267" roughness={.55} metalness={.25}/></mesh>
+     {[-2.1,2.1].flatMap(x=>[-2.1,2.1].map(z=><mesh key={x+','+z} position={[x,(dimensions.cable.canopyHeight-.125)/2,z]} castShadow><cylinderGeometry args={[.13,.17,dimensions.cable.canopyHeight-.125,12]}/><meshStandardMaterial color="#86603c" roughness={.85}/></mesh>))}
     </>}
    </group>;
   })}
