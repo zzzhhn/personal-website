@@ -12,8 +12,9 @@ import AlphaInteractions from './AlphaInteractions';
 import AlphaNature from './AlphaNature';
 import AlphaCloudSea from './AlphaCloudSea';
 import AlphaTransports from './transports/AlphaTransports';
-import { ALPHA_TRANSPORT_ROUTES } from './transports/alpha-routes';
+import { ALPHA_TRANSPORT_ROUTES, alphaFerryRoute } from './transports/alpha-routes';
 import AlphaMainlandPier from './AlphaMainlandPier';
 import AlphaDebug from './AlphaDebug';
 import { alphaHeight } from './alpha-terrain';
-export default function WorldAlphaIsland(){useFrame(()=>{Object.assign(localWind,{center:[254,38,148],radius:14,strength:useAlphaStore.getState().wind,direction:[1,.15]});alphaMaterialUniforms.night.value=night.value;alphaMaterialUniforms.time.value=alphaMotion.time;});useEffect(()=>()=>{cancelAlphaHand();localWind.strength=0;localWind.radius=0;},[]);return <><group name="alpha-island-batch1" position={ALPHA_ORIGIN}><AlphaTerrain/><AlphaScenery/><AlphaNature/><AlphaInteractions/><AlphaCloudSea/></group><AlphaMainlandPier/><AlphaTransports routes={ALPHA_TRANSPORT_ROUTES} groundHeight={alphaHeight}/><AlphaDebug/></>;}
+const islandTransports = [...ALPHA_TRANSPORT_ROUTES, alphaFerryRoute()];
+export default function WorldAlphaIsland(){useFrame(()=>{Object.assign(localWind,{center:[254,38,148],radius:14,strength:useAlphaStore.getState().wind,direction:[1,.15]});alphaMaterialUniforms.night.value=night.value;alphaMaterialUniforms.time.value=alphaMotion.time;});useEffect(()=>()=>{cancelAlphaHand();localWind.strength=0;localWind.radius=0;},[]);return <><group name="alpha-island-batch1" position={ALPHA_ORIGIN}><AlphaTerrain/><AlphaScenery/><AlphaNature/><AlphaInteractions/><AlphaCloudSea/></group><AlphaMainlandPier/><AlphaTransports routes={islandTransports} groundHeight={alphaHeight}/><AlphaDebug/></>;}
