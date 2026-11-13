@@ -1,0 +1,678 @@
+TAP version 13
+# (node:78958) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: fresh GLB cabin, moving grip and sled clear complete towers, guide rollers and terminal canopies
+not ok 1 - fresh GLB cabin, moving grip and sled clear complete towers, guide rollers and terminal canopies
+  ---
+  duration_ms: 74.051833
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.248
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.249
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.25
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.251
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.252
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.252
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.253
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.254
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.255
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.266
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.267
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-4',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.268
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'beam-4',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.269
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'beam-4',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.27
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.271
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'beam-4',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.272
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'beam-4',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.273
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'beam-4',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.274
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-3',
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.275
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-0'
+    +     ],
+    +     part: 'body',
+    +     u: 0.276
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.498
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.499
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.5
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.501
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.502
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.502
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.503
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.504
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.505
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.515
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.516
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.517
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.518
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.519
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.52
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.521
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.522
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.523
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'beam-9',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.524
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8',
+    +       'roller-1'
+    +     ],
+    +     part: 'body',
+    +     u: 0.525
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-8'
+    +     ],
+    +     part: 'body',
+    +     u: 0.526
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.748
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.749
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.75
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.751
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'body',
+    +     u: 0.752
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'grip',
+    +     u: 0.752
+    +   },
+    +   {
+    +     hits: [
+    +       'roller-2'
+    +     ],
+    +     part: 'body',
+    +     u: 0.753
+    +   }
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      u: 0.248
+      part: 'grip'
+      hits:
+        0: 'roller-0'
+    1:
+      u: 0.249
+      part: 'grip'
+      hits:
+        0: 'roller-0'
+    2:
+      u: 0.25
+      part: 'grip'
+      hits:
+        0: 'roller-0'
+    3:
+      u: 0.251
+      part: 'grip'
+      hits:
+        0: 'roller-0'
+    4:
+      u: 0.252
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    5:
+      u: 0.252
+      part: 'grip'
+      hits:
+        0: 'roller-0'
+    6:
+      u: 0.253
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    7:
+      u: 0.254
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    8:
+      u: 0.255
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    9:
+      u: 0.266
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    10:
+      u: 0.267
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    11:
+      u: 0.268
+      part: 'body'
+      hits:
+        0: 'beam-4'
+        1: 'roller-0'
+    12:
+      u: 0.269
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'beam-4'
+        2: 'roller-0'
+    13:
+      u: 0.27
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'beam-4'
+        2: 'roller-0'
+    14:
+      u: 0.271
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'roller-0'
+    15:
+      u: 0.272
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'beam-4'
+        2: 'roller-0'
+    16:
+      u: 0.273
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'beam-4'
+        2: 'roller-0'
+    17:
+      u: 0.274
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'beam-4'
+        2: 'roller-0'
+    18:
+      u: 0.275
+      part: 'body'
+      hits:
+        0: 'beam-3'
+        1: 'roller-0'
+    19:
+      u: 0.276
+      part: 'body'
+      hits:
+        0: 'roller-0'
+    20:
+      u: 0.498
+      part: 'grip'
+      hits:
+        0: 'roller-1'
+    21:
+      u: 0.499
+      part: 'grip'
+      hits:
+        0: 'roller-1'
+    22:
+      u: 0.5
+      part: 'grip'
+      hits:
+        0: 'roller-1'
+    23:
+      u: 0.501
+      part: 'grip'
+      hits:
+        0: 'roller-1'
+    24:
+      u: 0.502
+      part: 'body'
+      hits:
+        0: 'roller-1'
+    25:
+      u: 0.502
+      part: 'grip'
+      hits:
+        0: 'roller-1'
+    26:
+      u: 0.503
+      part: 'body'
+      hits:
+        0: 'roller-1'
+    27:
+      u: 0.504
+      part: 'body'
+      hits:
+        0: 'roller-1'
+    28:
+      u: 0.505
+      part: 'body'
+      hits:
+        0: 'roller-1'
+    29:
+      u: 0.515
+      part: 'body'
+      hits:
+        0: 'roller-1'
+    30:
+      u: 0.516
+      part: 'body'
+      hits:
+        0: 'roller-1'
+    31:
+      u: 0.517
+      part: 'body'
+      hits:
+        0: 'beam-9'
+        1: 'roller-1'
+    32:
+      u: 0.518
+      part: 'body'
+      hits:
+        0: 'beam-9'
+        1: 'roller-1'
+    33:
+      u: 0.519
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'beam-9'
+        2: 'roller-1'
+    34:
+      u: 0.52
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'beam-9'
+        2: 'roller-1'
+    35:
+      u: 0.521
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'beam-9'
+        2: 'roller-1'
+    36:
+      u: 0.522
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'beam-9'
+        2: 'roller-1'
+    37:
+      u: 0.523
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'beam-9'
+        2: 'roller-1'
+    38:
+      u: 0.524
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'beam-9'
+        2: 'roller-1'
+    39:
+      u: 0.525
+      part: 'body'
+      hits:
+        0: 'beam-8'
+        1: 'roller-1'
+    40:
+      u: 0.526
+      part: 'body'
+      hits:
+        0: 'beam-8'
+    41:
+      u: 0.748
+      part: 'grip'
+      hits:
+        0: 'roller-2'
+    42:
+      u: 0.749
+      part: 'grip'
+      hits:
+        0: 'roller-2'
+    43:
+      u: 0.75
+      part: 'grip'
+      hits:
+        0: 'roller-2'
+    44:
+      u: 0.751
+      part: 'grip'
+      hits:
+        0: 'roller-2'
+    45:
+      u: 0.752
+      part: 'body'
+      hits:
+        0: 'roller-2'
+    46:
+      u: 0.752
+      part: 'grip'
+      hits:
+        0: 'roller-2'
+    47:
+      u: 0.753
+      part: 'body'
+      hits:
+        0: 'roller-2'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:14:149)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# {"route":"alpha-cable","samples":1001,"obstacles":28,"collisions":48,"examples":[{"u":0.248,"part":"grip","hits":["roller-0"]},{"u":0.249,"part":"grip","hits":["roller-0"]},{"u":0.25,"part":"grip","hits":["roller-0"]},{"u":0.251,"part":"grip","hits":["roller-0"]},{"u":0.252,"part":"body","hits":["roller-0"]},{"u":0.252,"part":"grip","hits":["roller-0"]},{"u":0.253,"part":"body","hits":["roller-0"]},{"u":0.254,"part":"body","hits":["roller-0"]},{"u":0.255,"part":"body","hits":["roller-0"]},{"u":0.266,"part":"body","hits":["roller-0"]},{"u":0.267,"part":"body","hits":["roller-0"]},{"u":0.268,"part":"body","hits":["beam-4","roller-0"]}]}
+# Subtest: r4 ferry full runtime hull and fenders clear actual old/new shoreline over sampled sailing path
+ok 2 - r4 ferry full runtime hull and fenders clear actual old/new shoreline over sampled sailing path
+  ---
+  duration_ms: 16263.604625
+  type: 'test'
+  ...
+# {"samples":501,"vertices":1986,"minimum":0.7241827241817547,"worst":{"u":0,"point":[-16.002662971487435,-1.0345324993133544,107.9268035265232],"ground":-1.7587152234951091}}
+1..2
+# tests 2
+# suites 0
+# pass 1
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16887.360542

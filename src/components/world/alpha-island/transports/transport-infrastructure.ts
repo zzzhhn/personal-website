@@ -1,4 +1,4 @@
-import dimensions from './transport-dimensions.json';
+import dimensions from './transport-dimensions.json' with {type:'json'};
 import { Color,Vector3 } from 'three';
 import type { TransportRoute } from '../../rides/ride-contract';
 import type { Vec3 } from '../../types';
@@ -27,11 +27,15 @@ export function transportInfrastructure(route:TransportRoute,groundHeight?:(x:nu
    rollers.push({center:world(center),axis:tuple(axis),radius:.2,halfWidth:.02});
   }else{
    const bases:Vec3[]=[],tops:Vec3[]=[];
-   for(const sign of [-1,1]){const x=v.clone().addScaledVector(side,sign*.9),ground=groundHeight?.(x.x,x.z)??-4;const a=transportWorld([x.x,ground,x.z],route.transform),b=transportWorld([x.x,v.y-.3,x.z],route.transform);supports.push({a,b});bases.push(a);tops.push(b);}
+   for(const sign of [-1,1]){const x=v.clone().addScaledVector(side,sign*.9),ground=groundHeight?.(x.x,x.z)??-4;const a=transportWorld([x.x,ground,x.z],route.transform),b=transportWorld([x.x,v.y-.4,x.z],route.transform);supports.push({a,b});bases.push(a);tops.push(b);}
    supports.push({a:tops[0],b:tops[1]});
    if(previousBent)for(let k=0;k<2;k++){const bottom=[...bases[k]] as Vec3;bottom[1]=Math.max(bottom[1],tops[k][1]-4);supports.push({a:previousBent[k],b:bottom});}
    previousBent=tops;
   }
  }
- return {vertices:new Float32Array(p),indices:new Uint32Array(ix),colors:new Float32Array(colors),curve,supports,rollers};
+ const renderVertices=[...p,...p.map((v,i)=>i%3===1?v-.12:v)],renderColors=[...colors,...colors.map(v=>v*.88)],renderIndices=[...ix],n=p.length/3;
+ for(let i=0;i<ix.length;i+=3)renderIndices.push(ix[i]+n,ix[i+2]+n,ix[i+1]+n);
+ for(let i=0;i<count;i++){const a=i*2,b=a+2;renderIndices.push(a,b,b+n,a,b+n,a+n,a+1,b+1+n,b+1,a+1,a+1+n,b+1+n);}
+ renderIndices.push(0,n,1,1,n,n+1,n-2,n-1,2*n-2,n-1,2*n-1,2*n-2);
+ return {vertices:new Float32Array(p),indices:new Uint32Array(ix),colors:new Float32Array(colors),renderVertices:new Float32Array(renderVertices),renderIndices:new Uint32Array(renderIndices),renderColors:new Float32Array(renderColors),curve,supports,rollers};
 }
