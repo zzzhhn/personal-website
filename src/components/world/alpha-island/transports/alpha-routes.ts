@@ -11,12 +11,24 @@ function terminal(id:string,p:Vec3,approach:Vec3[],exit:Vec3,kind:TransportRoute
   const tangent=transportCurve({path,duration:1,id} as TransportRoute).getTangentAt(u);tangent.y=0;tangent.normalize();
   const yaw=Math.atan2(-tangent.z,tangent.x);
   // Interior standing point is ahead of the seat. Physical floor and doorway share this path.
-  const footY=p[1]-(kind==='sled'?.16:0);
-  const inside:Vec3=[p[0]+tangent.x*1.0,footY,p[2]+tangent.z*1.0];
+  const footY=p[1]+(kind==='sled'?dimensions.footrestHeight:0);
+  const standingForward=1.0;
+  const inside:Vec3=[p[0]+tangent.x*standingForward,footY,p[2]+tangent.z*standingForward];
   const side=new Vector3(0,0,kind==='cable'?1:-1).applyAxisAngle(new Vector3(0,1,0),yaw);
-  const door:Vec3=[p[0]+tangent.x*1.0+side.x*2.1,footY,p[2]+tangent.z*1.0+side.z*2.1];
-  const outside:Vec3=[p[0]+tangent.x*1.0+side.x*3.2,footY,p[2]+tangent.z*1.0+side.z*3.2];
-  return {id,vehicle:p,yaw,boarding:[...approach.slice(0,-1),door,inside],gangwayStart:Math.max(0,approach.length-2),safeExit:exit,egress:[inside,door,outside,exit],seat:[0,.48,0],clearance:kind==='ferry'?[5,4,8]:[3,kind==='cable'?dimensions.cable.clearanceHeight:3,4]};
+  const stepHeight=dimensions.sledFootDecks[1].center[1]+dimensions.sledFootDecks[1].size[1]/2;
+  const door:Vec3=[p[0]+tangent.x*standingForward+side.x*2.1,kind==='sled'?p[1]+stepHeight:footY,p[2]+tangent.z*standingForward+side.z*2.1];
+  const outside:Vec3=[p[0]+tangent.x*standingForward+side.x*3.2,footY,p[2]+tangent.z*standingForward+side.z*3.2];
+  const apron=kind==='sled'&&u===1?[...approach,exit]:approach.slice(0,-1),lastApron=apron.at(-1)!,rampDirection=new Vector3(...door).sub(new Vector3(...lastApron));rampDirection.y=0;rampDirection.normalize();
+  const landing:Vec3[]=kind==='sled'?[[door[0]-rampDirection.x,door[1],door[2]-rampDirection.z]]:[],stepPoints:Vec3[]=kind==='sled'?[.8,.34,.15].map(offset=>[p[0]+tangent.x+side.x*offset,p[1]+stepHeight,p[2]+tangent.z+side.z*offset]):[],boarding=[...apron,...landing,door,...stepPoints,inside];
+  let egress=[inside,door,outside,exit];
+  if(kind==='sled'){
+   // Upper: return behind the backrest along the known approach. Lower: the scene's
+   // last approach is already its safe exit, so use that junction before the ramp.
+   const exitAt=apron.findLastIndex(p=>Math.hypot(...p.map((v,i)=>v-exit[i]))<.01);
+   egress=[inside,...stepPoints.slice().reverse(),door,...landing.slice().reverse(),...(exitAt>=0?apron.slice(exitAt):apron).slice().reverse()];
+   if(exitAt<0){const a=apron[0],b=door,dx=a[0]-b[0],dz=a[2]-b[2],n=Math.hypot(dx,dz);egress.push([a[0]+dx/n,a[1],a[2]+dz/n],exit);}
+  }
+  return {id,vehicle:p,yaw,boarding,gangwayStart:kind==='sled'?Math.max(0,apron.length-1):Math.max(0,approach.length-2),gangwayEnd:kind==='sled'?apron.length+landing.length+1:undefined,safeExit:exit,egress,seat:[0,.48,0],clearance:kind==='ferry'?[5,4,8]:[3,kind==='cable'?dimensions.cable.clearanceHeight:3,4]};
 }
 const cablePath=ALPHA_CABLE_PATH.map(p=>[...p] as Vec3),sledPath=ALPHA_SLED_PATH.map(p=>[p[0],p[1]+.16,p[2]] as Vec3);
 export const ALPHA_TRANSPORT_ROUTES: TransportRoute[]=[

@@ -33,6 +33,8 @@ export interface TransportTerminal {
   boarding: Vec3[];
   /** Index where transport-owned fixed gangway leaves scene ground. */
   gangwayStart?: number;
+  /** Last fixed gangway point; later points are supported by the vehicle's boarding step. */
+  gangwayEnd?: number;
   safeExit: Vec3;
   /** Foot route from standing inside through the opening to safeExit. */
   egress?: Vec3[];
