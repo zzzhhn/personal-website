@@ -1,0 +1,188 @@
+{
+  "date": "2026-11-14",
+  "scene": "064856c5ae9b389b501faba09d6932d0db100dff",
+  "traffic": "0ac66c796d691669f6b7098730c0a41d8080967c",
+  "conflicts": [
+    {
+      "path": "docs/world/alpha-island/scene/WORKING-REVIEW.md",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "4deb66fd29dcdad05117af3e599ebff697e939affec0ab70d1452e91ed536b73"
+    },
+    {
+      "path": "docs/world/alpha-island/scene/evidence/pier-pure-extraction.json",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "99e493844baca671985b060d02f277092dc8f46d76adeb0e29f5d8fe18508479"
+    },
+    {
+      "path": "docs/world/alpha-island/travel/INTEGRATION-R6.md",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "eb7c4b8e17b471c6dfb8f058a57a413b52548567080d25006a7bb4055354b8d7"
+    },
+    {
+      "path": "docs/world/alpha-island/travel/resource-hashes.json",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "50e14cee5eac99610fbb7a3ea952beff64b7a69b8e14bee53d22eb8c5c3b4300"
+    },
+    {
+      "path": "public/assets/world/alpha-island/transports/ferry.glb",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "0d4209c5ae42990b22f3f2436c1cc6ef426a39fca15cac1d76ba8dafd6d87b0d"
+    },
+    {
+      "path": "public/assets/world/alpha-island/transports/sled.glb",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "954951b324cd062ab28c1b0147583fab913fbf37f407df9de5053feeca39c0ec"
+    },
+    {
+      "path": "src/components/world/WorldActors.tsx",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "a6ee5df7f0a1ad1db5e4305f451f9ed60e8ceb77681b5aaee136d97bdee8cf17"
+    },
+    {
+      "path": "src/components/world/WorldGuideAttraction.ts",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "e03a3963cf08d7f81f44efc89f03d2047e24a19afe14cd098f70412f4166798f"
+    },
+    {
+      "path": "src/components/world/alpha-island/AlphaDebug.tsx",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "e3071430b2869e29f5739fbbc304ae93c22e5fef2c171894b325d664aee21dc5"
+    },
+    {
+      "path": "src/components/world/alpha-island/AlphaInteractions.tsx",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "c130add14311baaf0c978ae08c9c8f6a7cf3a8b65fe84f86c69c6aaff89f873c"
+    },
+    {
+      "path": "src/components/world/alpha-island/AlphaScenery.tsx",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "fef220fb4e6baa976eadf6cd0a05b83442bea1abb51713571eba1df94b34d6e0"
+    },
+    {
+      "path": "src/components/world/alpha-island/alpha-art.ts",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "cdfe208874ea5e948aef616e43da34184e4d0774a4ca0331772fca7b5d57d7d6"
+    },
+    {
+      "path": "src/components/world/alpha-island/alpha-materials.ts",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "4e1b622a13c5ac6f237a6e5741dfa24c5ed083eb4ed283e11d198fce527eba24"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/AlphaTransports.tsx",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "4d6326e002e33d22073da4ac6a8b962663df6bf34dfde6183bfaf7a7fa61a00d"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/alpha-routes.ts",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "dc8c8512354517ec8f3786c510b1969e279e2535185db33a99fc3887e34adf4b"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/transport-contact.test.mjs",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "188466ad28c0ee1f69c3f8dcb891543f3643a61ae2c45fdbe48173ce1ae50a49"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/transport-dimensions.json",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "1a6b67f5bca51d312b00d6d362e724790e9afc54490d240eb9680995db3a1c46"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/transport-envelope.test.mjs",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "47e9ba7e0528b82e321f8a90c48902e26c5f225ed8bc4b1c9ed4e1acb2a41dbd"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/transport-infrastructure.ts",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "e598c5059f77817a1084b7d3b92ebc9d6fd071ddd75dd6b7abff1362d06df189"
+    },
+    {
+      "path": "src/components/world/alpha-island/transports/transport-structure.test.mjs",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "9930e17d0210d961ac9a9e1378921138c19eb6e356f7aab7330e89926126b9c3"
+    },
+    {
+      "path": "src/components/world/rides/ride-contract.ts",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "7ed2292a6e2fdd1e733092cfea4518429013c42734b39f4ef4530d0cf1f7b910"
+    },
+    {
+      "path": "src/components/world/rides/transport-boarding.ts",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "3ceafe78292fb3bf918fc1110ae6f26d59d2ca79f3e453215bd4b881e73e71be"
+    },
+    {
+      "path": "src/components/world/rides/transport-driver.ts",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "3b789a47cb366601283415f0fff14aea734e135adae10a9bcfed013130d32c61"
+    },
+    {
+      "path": "tools/world/alpha-island/capture-contacts.mjs",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "f57483fe9b1ad475a3be1d9ef0a12afc6c8bf845dfe356a5c8024398c8ec7245"
+    },
+    {
+      "path": "tools/world/alpha-island/capture-views.mjs",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "1dc498ac2ecb87389bb73590cdebcb881d7b74d8eb838d9a16d0fb4989daa917"
+    },
+    {
+      "path": "tools/world/alpha-island/transports/build-transports.py",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "81628e5c8436c6f0375fc6aca507edc350e8049b7bbd9d5db6e2db719d61a9d7"
+    },
+    {
+      "path": "tools/world/alpha-island/transports/export-report.json",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "600f7194fb02b2afbcc72c4e07bc9b84abb0e0a73c3f3ddf8d76c31befdf74e0"
+    },
+    {
+      "path": "tools/world/alpha-island/transports/ferry.blend",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "8c57c855ca36f539595e43a2679501ca90090ab4faa6ffdcd276282c78164a69"
+    },
+    {
+      "path": "tools/world/alpha-island/transports/sled.blend",
+      "owner": "traffic",
+      "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+      "sha256": "e97d5d2381419eb19eddd9002e1fa71decc8b487c9a99a07b6e34803046deb3a"
+    },
+    {
+      "path": "tools/world/alpha-island/verify-pier-extraction.mjs",
+      "owner": "scene",
+      "source": "064856c5ae9b389b501faba09d6932d0db100dff",
+      "sha256": "704b84f569715e580c6da1b306c1cfe14e749faf78b8bb063802563e9c70a0b2"
+    }
+  ],
+  "policy": "Resolve known cherry-pick duplication using declared module ownership; then verify every owner file against its frozen commit. Not acceptance evidence."
+}

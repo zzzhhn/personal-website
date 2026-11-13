@@ -1,0 +1,249 @@
+{
+  "baseline": "064856c5ae9b389b501faba09d6932d0db100dff",
+  "navigationOnly": true,
+  "existingModifiedWorldFiles": [
+    "src/components/world/alpha-island/AlphaScenery.tsx"
+  ],
+  "markers": 28,
+  "triangles": 491,
+  "drawMeshes": 1,
+  "textures": 0,
+  "lights": 0,
+  "rigidBodies": 0,
+  "colliders": 0,
+  "paintTerrainGap": {
+    "min": 0.005995586170911338,
+    "max": 0.006004020879530003
+  },
+  "protectedHashes": {
+    "src/components/world/alpha-island/alpha-layout.ts": "3642ead7752aea15cde9d86fab58ed17ae858fd122a55e8661706139ade4f410",
+    "src/components/world/alpha-island/alpha-terrain.ts": "57a734f1f47c43b1301b6c3dbf865da5f9d440f1188afd80b4e7e2fd9e2db8f7",
+    "src/components/world/alpha-island/AlphaTerrain.tsx": "d0c6db51e6640d3a1bf72d2edb8b0c96b8118c9b98c63aed09df01bd1aab1f7a",
+    "src/components/world/alpha-island/alpha-materials.ts": "4e1b622a13c5ac6f237a6e5741dfa24c5ed083eb4ed283e11d198fce527eba24",
+    "src/components/world/alpha-island/alpha-mainland-pier.ts": "8e06f1970f1cadec6276e4cbb8102524473afe67fc83ed4813d379f300425488",
+    "src/components/world/alpha-island/AlphaInteractions.tsx": "c130add14311baaf0c978ae08c9c8f6a7cf3a8b65fe84f86c69c6aaff89f873c",
+    "src/components/world/alpha-island/AlphaNature.tsx": "8044a0f2f0959aedea0a535cab00cad6a1328d2b6136345daa92bd1688d2d0a9",
+    "src/components/world/alpha-island/alpha-grammar-tree.ts": "d4a5ed6769eeea080b086fa18ae2cdee772e716df81c7fa191bcfff7355d2033",
+    "src/components/world/alpha-island/alpha-bad-branch.ts": "fc2c35e6a31119787d3e3960795481f28b18418969a2ea73b0cd27f1b33f2f98",
+    "src/components/world/alpha-island/transports/alpha-routes.ts": "340c96e3008d082ba55bb3dfcb39a4086e577b21c05fcdd56fff3256d66b8480",
+    "src/components/world/alpha-island/transports/transport-dimensions.json": "1612996c3c64989fc6fdf75fa01cc4f4ea1924af43eb806a5cd13a5d867ab471"
+  },
+  "visitorPath": [
+    [
+      156,
+      148
+    ],
+    [
+      161,
+      146
+    ],
+    [
+      164.5,
+      146
+    ],
+    [
+      164.5,
+      167
+    ],
+    [
+      174,
+      167
+    ],
+    [
+      174,
+      156
+    ],
+    [
+      177,
+      155.5
+    ],
+    [
+      177,
+      146
+    ],
+    [
+      176,
+      146
+    ],
+    [
+      181,
+      150
+    ],
+    [
+      199,
+      136
+    ],
+    [
+      213,
+      150
+    ],
+    [
+      193,
+      161
+    ],
+    [
+      180,
+      179
+    ],
+    [
+      208,
+      192
+    ],
+    [
+      239,
+      180
+    ],
+    [
+      246,
+      162
+    ],
+    [
+      254,
+      148
+    ],
+    [
+      265,
+      147
+    ],
+    [
+      262,
+      156
+    ],
+    [
+      260,
+      170
+    ],
+    [
+      290,
+      178
+    ],
+    [
+      295,
+      198
+    ],
+    [
+      300,
+      220
+    ],
+    [
+      295,
+      243
+    ],
+    [
+      275,
+      258
+    ],
+    [
+      245,
+      266
+    ],
+    [
+      215,
+      255
+    ],
+    [
+      213,
+      225
+    ],
+    [
+      233,
+      210
+    ],
+    [
+      260,
+      218
+    ],
+    [
+      260,
+      223
+    ],
+    [
+      264,
+      232
+    ],
+    [
+      264,
+      230.5
+    ],
+    [
+      254,
+      230.5
+    ],
+    [
+      254,
+      236
+    ],
+    [
+      243,
+      247
+    ],
+    [
+      241,
+      247
+    ],
+    [
+      237,
+      238
+    ],
+    [
+      237,
+      229
+    ],
+    [
+      228,
+      233
+    ]
+  ],
+  "spurs": [
+    {
+      "id": "lodge",
+      "label": {
+        "zh": "\u5c0f\u5c4b",
+        "en": "Lodge"
+      },
+      "path": [
+        [
+          174,
+          156
+        ],
+        [
+          171,
+          155.3
+        ],
+        [
+          171,
+          154.2
+        ],
+        [
+          171,
+          151.6
+        ]
+      ]
+    },
+    {
+      "id": "sled",
+      "label": {
+        "zh": "\u96ea\u6a47",
+        "en": "Sled"
+      },
+      "path": [
+        [
+          254,
+          230.5
+        ],
+        [
+          256,
+          232
+        ]
+      ]
+    }
+  ],
+  "scope": "Source/geometry lightweight checks; no browser/build/visual acceptance. Physical diagnostic is against integration465ceee, separately attributed.",
+  "navigationSourceHashes": {
+    "AlphaScenery.tsx": "bf3c79da14310fef290bb891e54a8d2b7e8a7431f917605f742855ba2646f58c",
+    "AlphaVisitorWayfinding.tsx": "9c99457496ffc192e9d8946269f36cc9ab72464fe20104d304d752753e4653fd",
+    "alpha-visitor-path.ts": "e48721466c7d303d19eac20c0894d9de5ba5ca57739833fd67d15764903136a2",
+    "alpha-visitor-markings.ts": "3d6519d668274e29f4a5292d904cc1830c5ac87fb7cf870268c4ddbd5f57a717"
+  },
+  "capsuleFixtureSourceSha256": "e3abcd56c46d6dddfd05278b2d456037ce791b3da6cf971fe879b7a2a7fca217"
+}

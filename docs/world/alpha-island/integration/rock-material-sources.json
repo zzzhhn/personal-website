@@ -1,0 +1,31 @@
+{
+  "source": {
+    "file": "../personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+    "sha256": "ea48e0e47ad42c8bd312476178b1248ec66f0eb19156a26a1c222f2a40caaf2d",
+    "asset": "https://polyhaven.com/a/rock_face_03",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license"
+  },
+  "sourceEvidence": "handoff package website/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-material-r10.json and manifest-rocks.json",
+  "textures": [
+    {
+      "role": "color-srgb",
+      "path": "public/assets/world/nature-camp-craft/textures/6f361f0d505ca603a6f05e5a.png",
+      "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec"
+    },
+    {
+      "role": "normal-linear",
+      "path": "public/assets/world/nature-camp-craft/textures/bcf66369ea932720bda81136.jpg",
+      "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f"
+    },
+    {
+      "role": "orm-linear",
+      "path": "public/assets/world/nature-camp-craft/textures/345303abbf4a10e5bd821ac7.png",
+      "sha256": "345303abbf4a10e5bd821ac7148f22eda1f5d830c08ee3dfdc863471cd4a46d8"
+    }
+  ]
+}

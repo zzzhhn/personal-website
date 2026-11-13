@@ -181,10 +181,14 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
     const read = () => {
       const mesh = ref.current;
       if (!mesh) return null;
-      const texture = (map: MeshStandardMaterial['map']) => map ? {
-        uuid: map.uuid, sourceUUID: map.source.uuid, name: map.name, channel: map.channel, colorSpace: map.colorSpace,
-        size: [map.image?.width ?? null, map.image?.height ?? null],
-      } : null;
+      const texture = (map: MeshStandardMaterial['map']) => {
+        if (!map) return null;
+        const image = map.image as { width?: number; height?: number } | null | undefined;
+        return {
+          uuid: map.uuid, sourceUUID: map.source.uuid, name: map.name, channel: map.channel, colorSpace: map.colorSpace,
+          size: [image?.width ?? null, image?.height ?? null],
+        };
+      };
       const geometry = mesh.geometry, color = geometry.getAttribute('color');
       return { id: 'G21', candidate: G21_CRAFT, instances: mesh.count, night: worldNight.value,
         trianglesPerInstance: (geometry.index?.count ?? geometry.getAttribute('position').count) / 3,

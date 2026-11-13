@@ -1,0 +1,44 @@
+import { CatmullRomCurve3, Matrix4, Quaternion, Vector3 } from 'three';
+import type { Vec3 } from '../types';
+import type { TransportRoute, TransportTransform, TransportSample } from './ride-contract';
+export const tuple = (v: Vector3): Vec3 => v.toArray() as Vec3;
+export function transportWorld(p: Vec3, t: TransportTransform): Vec3 {
+  return tuple(new Vector3(...p).applyAxisAngle(new Vector3(0,1,0),t.yaw).add(new Vector3(...t.origin)));
+}
+export function transportCurve(route: TransportRoute) {
+  if (route.path.length < 2 || !(route.duration > 0) || route.path.some(p=>p.some(v=>!Number.isFinite(v)))) throw new Error(`Invalid transport route ${route.id}`);
+  const minY=Math.min(...route.path.map(p=>p[1])),maxY=Math.max(...route.path.map(p=>p[1]));
+  class BoundedRouteCurve extends CatmullRomCurve3 {
+    override getPoint(t:number,target=new Vector3()){const p=super.getPoint(t,target);p.y=Math.max(minY,Math.min(maxY,p.y));return p;}
+  }
+  return new BoundedRouteCurve(route.path.map(p=>new Vector3(...p)),false,'centripetal');
+}
+export function sampleTransport(route: TransportRoute, u: number, curve = transportCurve(route), direction = 1): TransportSample {
+  u = Math.max(0,Math.min(1,u));
+  const local = curve.getPointAt(u), tangent = curve.getTangentAt(u).multiplyScalar(direction);
+  const cablePitch=Math.atan2(tangent.y,Math.hypot(tangent.x,tangent.z));
+  // Gondola floor and ferry deck stay level; sled pitches along its actual runner support, never rolls.
+  if (route.kind !== 'sled') tangent.y = 0;
+  tangent.normalize().applyAxisAngle(new Vector3(0,1,0),route.transform.yaw);
+  const yaw = Math.atan2(-tangent.z,tangent.x);
+  const side=new Vector3().crossVectors(tangent,new Vector3(0,1,0)).normalize(),up=new Vector3().crossVectors(side,tangent).normalize();
+  const orientation = route.kind === 'sled'
+    ? new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(tangent,up,side))
+    : new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw);
+  const vehicle = transportWorld(tuple(local),route.transform);
+  const seatOffset = new Vector3(...route.terminals[0].seat).applyQuaternion(orientation);
+  const seat = tuple(new Vector3(...vehicle).add(seatOffset));
+  const target = new Vector3(...seat).add(new Vector3(0,.8,0));
+  const camera = new Vector3(...vehicle).addScaledVector(tangent,-6.8).add(new Vector3(0,route.kind==='sled'?3.8:2.6,0));
+  // The sweep starts above the passenger eye. Leave through the open port side before
+  // climbing above a cabin roof, rather than shortening the camera onto the helmet.
+  if(route.kind!=='sled')camera.addScaledVector(side,route.kind==='cable'?5.5:-5.5);
+  return { vehicle, yaw, cablePitch, orientation: orientation.toArray() as [number,number,number,number],
+    pose: {seat,yaw,orientation:orientation.toArray() as [number,number,number,number],cameraPosition:tuple(camera),cameraTarget:tuple(target),cameraSweepOrigin:route.kind==='sled'?undefined:tuple(new Vector3(...vehicle).addScaledVector(side,route.kind==='ferry'?-1.9:1.7).add(new Vector3(0,1.5,0))),cameraUp:[0,1,0],firstPerson:false,fov:55} };
+}
+export function pathLength(path: Vec3[]) { return path.slice(1).reduce((sum,p,i)=>sum+new Vector3(...p).distanceTo(new Vector3(...path[i])),0); }
+export function alongPath(path: Vec3[], u: number): Vec3 {
+  let d = Math.max(0,Math.min(1,u))*pathLength(path);
+  for(let i=1;i<path.length;i++){const a=new Vector3(...path[i-1]),b=new Vector3(...path[i]),n=a.distanceTo(b);if(d<=n)return tuple(a.lerp(b,n?d/n:1));d-=n;}
+  return [...path[path.length-1]];
+}

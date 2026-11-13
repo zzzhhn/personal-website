@@ -1,0 +1,90 @@
+TAP version 13
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: main walk has traversable gradient and rendered/collision support along full width
+ok 1 - main walk has traversable gradient and rendered/collision support along full width
+  ---
+  duration_ms: 19.945625
+  type: 'test'
+  ...
+# Subtest: every island terminal has a real dry clear capsule exit and escape route
+ok 2 - every island terminal has a real dry clear capsule exit and escape route
+  ---
+  duration_ms: 209.441291
+  type: 'test'
+  ...
+# Subtest: cable middle and sled outer corridors stay above terrain
+ok 3 - cable middle and sled outer corridors stay above terrain
+  ---
+  duration_ms: 2.747541
+  type: 'test'
+  ...
+# Subtest: interpolated cable hull has clearance through the full upper approach
+ok 4 - interpolated cable hull has clearance through the full upper approach
+  ---
+  duration_ms: 98.011708
+  type: 'test'
+  ...
+# Subtest: interpolated pitched sled runner hull clears terrain at side and nose corners
+ok 5 - interpolated pitched sled runner hull clears terrain at side and nose corners
+  ---
+  duration_ms: 85.482333
+  type: 'test'
+  ...
+# Subtest: r6 side berth retains the full-hull failure witness as open underwater space
+ok 6 - r6 side berth retains the full-hull failure witness as open underwater space
+  ---
+  duration_ms: 1.294417
+  type: 'test'
+  ...
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: actual dynamic terrain capsule walking-up, full route and stop
+ok 7 - actual dynamic terrain capsule walking-up, full route and stop
+  ---
+  duration_ms: 730.994167
+  type: 'test'
+  ...
+# {"steps":9989,"maxGap":0.190769364493233,"maxRayGap":0.05218761444091802,"worst":{"segment":6,"p":[-35.81159973144531,12.741156578063965,-53.4049186706543],"expected":12.111925942557198},"drift":0,"end":[-6.710821628570557,83.81890869140625,42.881160736083984]}
+# Subtest: actual dynamic terrain capsule running-down, full route and stop
+ok 8 - actual dynamic terrain capsule running-down, full route and stop
+  ---
+  duration_ms: 540.257083
+  type: 'test'
+  ...
+# {"steps":5891,"maxGap":0.24759519111819406,"maxRayGap":0.2475953626632691,"worst":{"segment":30,"p":[-55.27046585083008,6.45446252822876,-41.268558502197266],"expected":5.386867337110566},"drift":0,"end":[-81.70987701416016,2.118825674057007,-43.999759674072266]}
+# Subtest: jump on upper apron remains ballistic and returns to actual terrain
+ok 9 - jump on upper apron remains ballistic and returns to actual terrain
+  ---
+  duration_ms: 206.675541
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1589.593375
+TAP version 13
+# Subtest: paper lantern release pool stays bounded and a cancelled hold returns to rack
+ok 1 - paper lantern release pool stays bounded and a cancelled hold returns to rack
+  ---
+  duration_ms: 0.725375
+  type: 'test'
+  ...
+# Subtest: alpha cancellation cannot clear a later owners hand target; visits are idempotent
+ok 2 - alpha cancellation cannot clear a later owners hand target; visits are idempotent
+  ---
+  duration_ms: 0.103041
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 37.483166

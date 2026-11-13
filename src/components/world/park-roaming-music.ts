@@ -92,7 +92,8 @@ export class ParkRoamingMusic {
         // Writing currentTime can trigger a byte-range request even for a tiny difference.
         if ((reloading || this.seekOnResume) && media.currentTime !== this.offset) media.currentTime = this.offset;
         this.seekOnResume = false;
-        const attempt = this.attempt = { pending: true };
+        const attempt: { pending: boolean } = { pending: true };
+        this.attempt = attempt;
         void media.play().then(() => {
           if (this.attempt !== attempt) return;
           attempt.pending = false;

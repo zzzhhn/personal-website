@@ -34,8 +34,10 @@ import { INTENT_COASTER } from './attractions/attraction-layout';
 import { StaticShotFrames, worldRenderMode } from './performance-render-policy';
 import { worldResumeProbe } from './world-resume-probe';
 import { createResumeTimeBoundary } from './world-resume-time';
+import AlphaLocalLights from './alpha-island/AlphaLocalLights';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
+const WorldAlphaIsland = lazy(() => import('./alpha-island/WorldAlphaIsland'));
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
 
 function usePageVisible() {
@@ -272,6 +274,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
   }, []);
   return <Canvas frameloop={renderMode} shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
     <ResumeTimeBoundary />
+    <AlphaLocalLights />
     <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={renderMode !== 'always'} colliders={false}>
       {import.meta.env.DEV && <ResumeProbeBridge />}
       <NightClock />
@@ -281,6 +284,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>
       <WorldAlphaMine content={content} />
+      <Suspense fallback={null}><WorldAlphaIsland /></Suspense>
       {LAYOUT_V4&&<WorldAttractions/>}
       <Suspense fallback={null}><WorldStreet experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldCampContent /></Suspense>

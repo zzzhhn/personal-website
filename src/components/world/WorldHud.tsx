@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import AlphaTrailHud from './alpha-island/AlphaTrailHud';
+import AlphaTransportHud from './alpha-island/transports/AlphaTransportHud';
+import { alphaContainsWorld } from './alpha-island/alpha-layout';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import type { WorldContent } from './types';
@@ -6,7 +9,7 @@ import { readDrivingTelemetry } from './vehicle-telemetry';
 import { drivingReadout } from './vehicle-driving-display';
 import { watchUiGamepads } from './WorldUiGamepad';
 
-type Zone = ReturnType<typeof useWorldStore.getState>['zone'];
+type Zone = ReturnType<typeof useWorldStore.getState>['zone'] | 'alpha';
 const ZONE_HOLD_MS = 3400, ZONE_REPEAT_MS = 20000;
 
 /** Event-driven feedback for travel and blocked actions; one cancellable expiry, no polling. */
@@ -16,8 +19,8 @@ export function WorldNotice() {
   useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>{
     if(useWorldStore.getState().toast===toast)useWorldStore.setState({toast:null});
   },4400);return()=>clearTimeout(timer);},[toast]);
-  if(!toast||hidden)return null;
-  return <div className="world-notice" role="status" aria-live="polite">{toast[lang]}</div>;
+  if(!toast||hidden)return <><AlphaTrailHud/><AlphaTransportHud/></>;
+  return <><AlphaTrailHud/><AlphaTransportHud/><div className="world-notice" role="status" aria-live="polite">{toast[lang]}</div></>;
 }
 
 /** The actor publishes position at ~10 Hz even while stopped, so recharge needs no UI timer. */
@@ -52,7 +55,7 @@ export function WorldDrivingHud() {
 /** Place name on entering a zone (GTA: area + street, Genshin: top-centre banner). The subtitle is the
  * portfolio section that zone stands for, read from the same UI.sections labels as the homepage. */
 export function WorldZoneTitle({ about }: { about?: WorldContent['about'] }) {
-  const zone = useWorldStore(s => s.zone), ready = useWorldStore(s => s.ready), lang = useWorldStore(s => s.lang);
+  const zone = useWorldStore(s => alphaContainsWorld(s.position)?'alpha':s.zone), ready = useWorldStore(s => s.ready), lang = useWorldStore(s => s.lang);
   const card = useWorldStore(s => s.card), paused = useWorldStore(s => s.paused);
   const [shown, setShown] = useState<{ zone: Zone; key: number } | null>(null);
   const seen = useRef(new Map<Zone, number>());
@@ -62,7 +65,7 @@ export function WorldZoneTitle({ about }: { about?: WorldContent['about'] }) {
     if (last !== undefined && now - last < ZONE_REPEAT_MS) return;
     seen.current.set(zone, now);
     // A short settle avoids flashing a name while the player is skimming along a zone border.
-    const enter = setTimeout(() => { if (useWorldStore.getState().zone === zone) setShown({ zone, key: now }); }, 450);
+    const enter = setTimeout(() => { if ((alphaContainsWorld(useWorldStore.getState().position)?'alpha':useWorldStore.getState().zone) === zone) setShown({ zone, key: now }); }, 450);
     return () => clearTimeout(enter);
   }, [zone, ready]);
   useEffect(() => { if (!shown) return; const out = setTimeout(() => setShown(null), ZONE_HOLD_MS); return () => clearTimeout(out); }, [shown]);

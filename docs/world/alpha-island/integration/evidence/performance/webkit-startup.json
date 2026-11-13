@@ -1,0 +1,157 @@
+{
+  "conditions": "Playwright WebKit 2336 on M5 Pro, production pages 1080p High, default camp. Baseline then candidate. Not real Safari/M3; first turn costs retained.",
+  "runs": [
+    {
+      "variant": "baseline",
+      "readyMs": 17142,
+      "firstTurnMs": 464,
+      "keyMs": 1916,
+      "before": {
+        "p": [
+          -41.999481201171875,
+          5.620180606842041,
+          35.004127502441406
+        ],
+        "render": {
+          "drawingBuffer": [
+            1920,
+            1080
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": [],
+          "coasterVegetation": []
+        },
+        "stats": {
+          "calls": 114,
+          "triangles": 252605,
+          "geometries": 163,
+          "textures": 66,
+          "programs": 77,
+          "camera": [
+            -36.908312376628736,
+            14.75546198108061,
+            41.79235260183226
+          ]
+        }
+      },
+      "after": {
+        "p": [
+          -41.98638153076172,
+          5.622310638427734,
+          33.89594268798828
+        ],
+        "stats": {
+          "calls": 130,
+          "triangles": 335100,
+          "geometries": 163,
+          "textures": 66,
+          "programs": 79,
+          "camera": [
+            -42.128038533283664,
+            14.756964757931895,
+            42.54034701272015
+          ]
+        }
+      },
+      "displacement": 1.1082622362732395,
+      "perf": {
+        "samples": 165,
+        "p50": 20,
+        "p95": 62,
+        "max": 1241
+      },
+      "errors": []
+    },
+    {
+      "variant": "candidate",
+      "readyMs": 17233,
+      "firstTurnMs": 225,
+      "keyMs": 1548,
+      "before": {
+        "p": [
+          -41.999481201171875,
+          5.620180606842041,
+          35.004127502441406
+        ],
+        "render": {
+          "drawingBuffer": [
+            1920,
+            1080
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": [],
+          "coasterVegetation": []
+        },
+        "stats": {
+          "calls": 114,
+          "triangles": 252605,
+          "geometries": 163,
+          "textures": 66,
+          "programs": 77,
+          "camera": [
+            -36.908312376628736,
+            14.75546198108061,
+            41.79235260183226
+          ]
+        }
+      },
+      "after": {
+        "p": [
+          -41.87812805175781,
+          5.619183540344238,
+          31.9287052154541
+        ],
+        "stats": {
+          "calls": 137,
+          "triangles": 331760,
+          "geometries": 165,
+          "textures": 66,
+          "programs": 79,
+          "camera": [
+            -42.02299407415909,
+            14.75462115469589,
+            40.41970959289608
+          ]
+        }
+      },
+      "displacement": 3.0778155939189946,
+      "perf": {
+        "samples": 21,
+        "p50": 33,
+        "p95": 3372,
+        "max": 3850
+      },
+      "errors": []
+    }
+  ]
+}

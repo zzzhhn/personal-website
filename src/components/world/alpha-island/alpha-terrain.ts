@@ -1,0 +1,79 @@
+import { CatmullRomCurve3,Vector3 } from 'three';
+import { ALPHA_BERTH_BASIN, ALPHA_ORIGIN, ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
+import type { Vec3 } from '../types';
+const cableCurve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
+const cableSamples=Array.from({length:193},(_,i)=>{const p=cableCurve.getPointAt(i/192);return [p.x,Math.max(38,Math.min(73,p.y)),p.z] as Vec3;});
+const sledCurve=new CatmullRomCurve3(ALPHA_SLED_PATH.map(p=>new Vector3(p[0],p[1]+.16,p[2])),false,'centripetal');
+const sledSamples=Array.from({length:257},(_,i)=>{const p=sledCurve.getPointAt(i/256);return [p.x,Math.max(3.96,Math.min(76.16,p.y))-.16,p.z] as Vec3;});
+const clamp = (v:number,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const smooth=(a:number,b:number,v:number)=>{const t=clamp((v-a)/(b-a));return t*t*(3-2*t);};
+export const alphaNoise=(x:number,z:number)=>Math.sin(x*.17+Math.sin(z*.11))*Math.cos(z*.14-x*.03);
+export function nearestAlphaSegment(x:number,z:number,path:readonly Vec3[]) {
+ let distance=Infinity,y=0,index=0,t=0;
+ for(let i=1;i<path.length;i++) {const a=path[i-1],b=path[i],dx=b[0]-a[0],dz=b[2]-a[2],q=clamp(((x-a[0])*dx+(z-a[2])*dz)/(dx*dx+dz*dz));
+ const d=Math.hypot(x-a[0]-dx*q,z-a[2]-dz*q);if(d<distance){distance=d;y=a[1]+(b[1]-a[1])*q;index=i-1;t=q;}}
+ return {distance,y,index,t};
+}
+/** Coast contracts toward old Club; grid footprint is not the coastline. */
+export function alphaShoreRadius(a:number) {return 1+.055*Math.sin(a*3+.5)+.035*Math.sin(a*7-1);}
+export function alphaRadial(x:number,z:number) {const a=Math.atan2(z/107,x/88);return Math.hypot(x/88,z/107)/alphaShoreRadius(a);}
+/** Fit the broad landform to the actual traversable contours BEFORE cutting the path.
+ * Smooth distance weights follow elevations throughout the hill; no high Gaussian mountain
+ * is excavated into narrow artificial trenches. Sled underside also supplies ridge contours. */
+const contourSegments=[...ALPHA_MAIN_PATH.slice(1).map((p,i)=>[ALPHA_MAIN_PATH[i],p]),...ALPHA_BYPASS_PATH.slice(1).map((p,i)=>[ALPHA_BYPASS_PATH[i],p]),...ALPHA_SLED_PATH.slice(1).map((p,i)=>[ALPHA_SLED_PATH[i].map((v,k)=>k===1?v-.6:v) as Vec3,p.map((v,k)=>k===1?v-.6:v) as Vec3])];
+export function alphaBaseHeight(x:number,z:number) {
+ let sum=0,weights=0,near=Infinity;
+ for(const [a,b] of contourSegments){const dx=b[0]-a[0],dz=b[2]-a[2],t=clamp(((x-a[0])*dx+(z-a[2])*dz)/(dx*dx+dz*dz)),d=Math.hypot(x-a[0]-dx*t,z-a[2]-dz*t),w=1/((d*d+4)**2);sum+=(a[1]+(b[1]-a[1])*t)*w;weights+=w;near=Math.min(near,d);}
+ const r=alphaRadial(x,z),land=Math.max(1-smooth(.8,1.055,r),1-smooth(4,14,near));
+ const fit=sum/weights,shoulder=(2.7*alphaNoise(x*.85,z*.85)+.85*Math.sin(fit*.62+alphaNoise(x,z)*.5))*smooth(4,13,near);
+ return -4+land*(sum/weights+4+shoulder);
+}
+export function alphaSurfaceNormalY(x:number,z:number){const e=.65,dx=(alphaHeight(x+e,z)-alphaHeight(x-e,z))/(2*e),dz=(alphaHeight(x,z+e)-alphaHeight(x,z-e))/(2*e);return 1/Math.hypot(dx,1,dz);}
+export function alphaHeight(x:number,z:number) {
+ let h=alphaBaseHeight(x,z);
+ const p=nearestAlphaSegment(x,z,ALPHA_MAIN_PATH),b=nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH);
+ const n=p.distance<b.distance?p:b;
+ const blend=1-smooth(2.3,6,n.distance);h=h*(1-blend)+n.y*blend;
+ // Broad dry terminal aprons. Same geometric extent supports safe-exit rings.
+ for(const s of Object.values(ALPHA_SOCKETS)) {
+   const dx=x-s.ground[0],dz=z-s.ground[2],c=Math.cos(s.yaw),sn=Math.sin(s.yaw);
+   const rx=c*dx-sn*dz,rz=sn*dx+c*dz;
+   const d=Math.hypot(Math.max(0,Math.abs(rx)-s.size[0]/2-1.5),Math.max(0,Math.abs(rz)-s.size[2]/2-1.5));
+   const w=1-smooth(0,9,d);h=h*(1-w)+s.ground[1]*w;
+ }
+ for(const [cx,cy,cz,r] of [[-64,3.8,-40,5],[-42,18,-29,5.5],[19,38,-42,7],[2,83,39,6],[-7,83,43,4]]) {
+   const w=1-smooth(r,r+10,Math.hypot(x-cx,z-cz));h=h*(1-w)+cy*w;
+ }
+ const cable=nearestAlphaSegment(x,z,ALPHA_CABLE_PATH);
+ if(cable.index>0&&cable.index<4&&cable.distance<7) {
+   const terminal=Math.min(Math.hypot(x-35,z+39),Math.hypot(x-29,z-22));
+   const w=(1-smooth(5,8,cable.distance))*smooth(5,14,terminal);h=Math.min(h,h*(1-w)+(cable.y-7)*w);
+ }
+ const sled=nearestAlphaSegment(x,z,ALPHA_SLED_PATH);
+ if(sled.distance<5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2) h=Math.min(h,sled.y-.35);
+ // Reapply walking datum after broad terraces; approach ramps must not become steps.
+ h=h*(1-blend)+n.y*blend;
+ if(sled.distance<5&&n.distance>3.5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2)h=Math.min(h,sled.y-.35);
+ const realCable=nearestAlphaSegment(x,z,cableSamples);const u=(realCable.index+realCable.t)/192;
+ const ca=cableSamples[realCable.index],cb=cableSamples[realCable.index+1],grade=Math.abs(cb[1]-ca[1])/Math.max(.01,Math.hypot(cb[0]-ca[0],cb[2]-ca[2]));
+ const clear=Math.max(.3,2.1*grade+.3,7*smooth(.08,.22,u)*(1-smooth(.76,.96,u)));
+ if(realCable.distance<5){const w=1-smooth(2.3,5,realCable.distance);h=Math.min(h,h*(1-w)+(realCable.y-clear)*w);}
+ const realSled=nearestAlphaSegment(x,z,sledSamples),su=(realSled.index+realSled.t)/256;
+ const sa=sledSamples[realSled.index],sb=sledSamples[realSled.index+1],sg=Math.abs(sb[1]-sa[1])/Math.max(.01,Math.hypot(sb[0]-sa[0],sb[2]-sa[2]));
+ if(realSled.distance<3.7&&su>.06&&su<.995){const w=1-smooth(1.8,3.7,realSled.distance),clear=Math.max(.38,1.8*sg+.22);h=Math.min(h,h*(1-w)+(realSled.y-clear)*w);}
+ // R6 surveyed underwater side-berth basin. Keep dry pier footprint x>=147.5
+ // intact; the complete hull/fenders occupy x<=145.5. Smooth bank is underwater.
+ const bay=ALPHA_BERTH_BASIN,wx=x+ALPHA_ORIGIN[0],wz=z+ALPHA_ORIGIN[2],berth=(1-smooth(bay.innerMaxX,bay.bankMaxX,wx))*smooth(bay.fadeMinZ,bay.innerMinZ,wz)*(1-smooth(bay.innerMaxZ,bay.fadeMaxZ,wz));
+ if(berth>0)h=Math.min(h,h*(1-berth)+bay.floorY*berth);
+ return h;
+}
+export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance);
+export function alphaTerrainData(step=1.5) {
+ const nx=Math.ceil(196/step),nz=Math.ceil(228/step),positions=new Float32Array((nx+1)*(nz+1)*3),surface:number[]=[],solid:number[]=[],indices:number[]=[];
+ for(let j=0;j<=nz;j++)for(let i=0;i<=nx;i++){const x=-98+i*196/nx,z=-114+j*228/nz,k=(j*(nx+1)+i)*3;positions.set([x,alphaHeight(x,z),z],k);}
+ const tri=(a:number,b:number,c:number)=>{const ax=positions[b*3]-positions[a*3],ay=positions[b*3+1]-positions[a*3+1],az=positions[b*3+2]-positions[a*3+2],bx=positions[c*3]-positions[a*3],by=positions[c*3+1]-positions[a*3+1],bz=positions[c*3+2]-positions[a*3+2];
+ const ny=az*bx-ax*bz,len=Math.hypot(ay*bz-az*by,ny,ax*by-ay*bx);(ny/len>.64?surface:solid).push(a,b,c);indices.push(a,b,c);};
+ for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const a=j*(nx+1)+i;tri(a,a+nx+1,a+1);tri(a+1,a+nx+1,a+nx+2);}
+ return {positions,surface:new Uint32Array(surface),solid:new Uint32Array(solid),indices:new Uint32Array(indices),nx,nz};
+}
+export function alphaShoreline():[number,number][] {return Array.from({length:128},(_,i)=>{const a=i/128*Math.PI*2;let lo=0,hi=135;for(let k=0;k<14;k++){const r=(lo+hi)/2;if(alphaHeight(Math.cos(a)*r,Math.sin(a)*r)>-.7)lo=r;else hi=r;}const p=alphaWorld([Math.cos(a)*lo,0,Math.sin(a)*lo]);return [p[0],p[2]];});}

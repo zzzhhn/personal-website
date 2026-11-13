@@ -1,0 +1,124 @@
+{
+  "baseline": "7a476c43d9179a494d80771bcbfed3495f8a28cd",
+  "check": "esbuild TS/Node bundling + onBeforeCompile shader-string generation; no GPU compilation or visual/performance acceptance",
+  "nonGround": [
+    {
+      "finish": "wood",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "darkwood",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "lodgeWall",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "lodgeFrame",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "lodgeFloor",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "grammarBark",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "bark",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "needles",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "paper",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "stone",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "glass",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "metal",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "rope",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "leafplate",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    },
+    {
+      "finish": "roof",
+      "vertexIdentical": true,
+      "fragmentIdentical": true,
+      "keyIdentical": true
+    }
+  ],
+  "ground": {
+    "vertexIdentical": true,
+    "uniformNamesIdentical": true,
+    "before": {
+      "aNoiseCalls": 5,
+      "aRockNoiseCalls": 0,
+      "texture2DCalls": 4,
+      "explicitSinSites": 2,
+      "fwidthSites": 2
+    },
+    "after": {
+      "aNoiseCalls": 2,
+      "aRockNoiseCalls": 3,
+      "texture2DCalls": 4,
+      "explicitSinSites": 1,
+      "fwidthSites": 4
+    },
+    "newRockNoiseCalls": 3,
+    "newRockHashEvaluations": 24,
+    "newRockTrig": 0,
+    "newTextureSamples": 0,
+    "oldRockNoiseEvaluationsRemoved": 3,
+    "oldRockHashSinEvaluationsRemoved": 24,
+    "oldBeddingSinRemoved": 1
+  },
+  "changedRuntimeFiles": [
+    "src/components/world/alpha-island/alpha-materials.ts"
+  ]
+}

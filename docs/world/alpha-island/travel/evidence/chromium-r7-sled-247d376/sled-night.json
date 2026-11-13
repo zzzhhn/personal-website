@@ -1,0 +1,63 @@
+{
+  "source": "247d376dd2574224420a4cade2a450ac9b9bebb7",
+  "engine": "chromium",
+  "fixture": "arrival via development probe; ordinary E and camera unless hold explicitly recorded",
+  "state": {
+    "held": true,
+    "active": true,
+    "completed": false,
+    "phase": "riding",
+    "id": "alpha-sled",
+    "u": 0.24011931237598683,
+    "blocked": false,
+    "exitBlocked": false,
+    "exitRequested": false,
+    "p": [
+      310.23638916015625,
+      55.58921813964844,
+      200.38558959960938
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "grounded": true,
+    "animation": "SitIdle",
+    "weather": "clear",
+    "paused": false,
+    "light": "night",
+    "worldMinutes": 0,
+    "night": 1,
+    "climate": {
+      "rain": 0,
+      "snow": 0
+    },
+    "camera": {
+      "position": [
+        308.69682684628134,
+        60.13688965660434,
+        206.8386930351282
+      ],
+      "quaternion": [
+        -0.29490389457242316,
+        -0.11156259806231461,
+        -0.034691816618914975,
+        0.9483575051315212
+      ],
+      "fov": 55,
+      "near": 0.1,
+      "far": 600,
+      "exposure": 1,
+      "canvas": {
+        "width": 1728,
+        "height": 1080
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    "safety": null
+  }
+}

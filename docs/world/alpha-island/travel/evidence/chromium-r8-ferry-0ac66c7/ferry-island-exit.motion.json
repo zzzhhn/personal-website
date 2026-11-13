@@ -1,0 +1,5921 @@
+{
+  "source": "0ac66c796d691669f6b7098730c0a41d8080967c",
+  "engine": "chromium",
+  "note": "Canvas-only contact clip and 10Hz diagnostic trace; held-clock sections included, not performance evidence",
+  "name": "ferry-island-exit",
+  "trace": [
+    {
+      "at": 96889.59999990463,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        140.52081765990258
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            140.95177193235656
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            140.94988967154637
+          ]
+        }
+      }
+    },
+    {
+      "at": 96987.19999980927,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        140.8185236722228
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            141.24947794124054
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            141.24759568043035
+          ]
+        }
+      }
+    },
+    {
+      "at": 97086.2999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        141.12230531744754
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            141.55325958295896
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            141.55137732214877
+          ]
+        }
+      }
+    },
+    {
+      "at": 97186.5,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        141.42578318131677
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            141.85673744332536
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            141.85485518251517
+          ]
+        }
+      }
+    },
+    {
+      "at": 97286.59999990463,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        141.72986860789703
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            142.16082286639576
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            142.15894060558557
+          ]
+        }
+      }
+    },
+    {
+      "at": 97386.19999980927,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        142.0339540344773
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            142.46490828946617
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            142.46302602865597
+          ]
+        }
+      }
+    },
+    {
+      "at": 97487,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        142.3374318983465
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            142.76838614983254
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            142.76650388902235
+          ]
+        }
+      }
+    },
+    {
+      "at": 97586.7999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        142.64090976221576
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            143.07186401019896
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            143.06998174938877
+          ]
+        }
+      }
+    },
+    {
+      "at": 97687,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        142.94651409702217
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            143.377468341478
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            143.3755860806678
+          ]
+        }
+      }
+    },
+    {
+      "at": 97786.5,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        143.2431648691242
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            143.67411911015597
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            143.67223684934578
+          ]
+        }
+      }
+    },
+    {
+      "at": 97886.7999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        143.52629306624175
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            143.9572473040056
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            143.9553650431954
+          ]
+        }
+      }
+    },
+    {
+      "at": 97986.2999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        143.79526817267984
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            144.2262224073391
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            144.2243401465289
+          ]
+        }
+      }
+    },
+    {
+      "at": 98086.19999980927,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        144.04673796469058
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            144.47769219644726
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            144.47580993563707
+          ]
+        }
+      }
+    },
+    {
+      "at": 98186.2999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        144.28454281467782
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            144.7154970436897
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            144.71361478287952
+          ]
+        }
+      }
+    },
+    {
+      "at": 98286.90000009537,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        144.50670117642176
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            144.9376554028694
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            144.93577314205922
+          ]
+        }
+      }
+    },
+    {
+      "at": 98386.69999980927,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        144.71409748375095
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            145.14505170780478
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            145.1431694469946
+          ]
+        }
+      }
+    },
+    {
+      "at": 98486.90000009537,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        144.90590755786798
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            145.33686177970787
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            145.33497951889768
+          ]
+        }
+      }
+    },
+    {
+      "at": 98587.2999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.08289532253914
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            145.51384954233617
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            145.51196728152598
+          ]
+        }
+      }
+    },
+    {
+      "at": 98686.5,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.2443581115092
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            145.6753123294426
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            145.6734300686324
+          ]
+        }
+      }
+    },
+    {
+      "at": 98786.40000009537,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.39093734871147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            145.821891564953
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            145.82000930414281
+          ]
+        }
+      }
+    },
+    {
+      "at": 98886.09999990463,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.5221747080275
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            145.95312892275427
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            145.95124666194408
+          ]
+        }
+      }
+    },
+    {
+      "at": 98986.69999980927,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.6382230002714
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            146.0691772136587
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            146.0672949528485
+          ]
+        }
+      }
+    },
+    {
+      "at": 99087,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.7390822102541
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            146.17003642247727
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            146.16815416166708
+          ]
+        }
+      }
+    },
+    {
+      "at": 99186.7999997139,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.82475233797564
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            146.25570654920995
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            146.25382428839976
+          ]
+        }
+      }
+    },
+    {
+      "at": 99286.09999990463,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.89529496870875
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            146.32624917912887
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            146.32436691831867
+          ]
+        }
+      }
+    },
+    {
+      "at": 99386.09999990463,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.9504788289174
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            146.38143303870052
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            146.37955077789033
+          ]
+        }
+      }
+    },
+    {
+      "at": 99486.09999990463,
+      "phase": "riding",
+      "root": [
+        143,
+        1.28,
+        145.99062815162745
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "SitIdle",
+      "animationTime": 0.5333333611488342,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 0.932662969174902,
+          "position": [
+            143.19453806673883,
+            0.932662969174902,
+            146.42158236094718
+          ]
+        },
+        "right": {
+          "minY": 0.9336934078255611,
+          "position": [
+            142.81873982640445,
+            0.9336934078255611,
+            146.419700100137
+          ]
+        }
+      }
+    },
+    {
+      "at": 99586.7999997139,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.02309135818893527,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3514883464512675
+      },
+      "soles": {
+        "left": {
+          "minY": 1.0695606373374378,
+          "position": [
+            143.19257125595675,
+            1.0695606373374378,
+            146.43772431587308
+          ]
+        },
+        "right": {
+          "minY": 1.0683392241300063,
+          "position": [
+            142.81636039311925,
+            1.0683392241300063,
+            146.43745557635026
+          ]
+        }
+      }
+    },
+    {
+      "at": 99687.19999980927,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.05762469170225991,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3410150850015565
+      },
+      "soles": {
+        "left": {
+          "minY": 1.0578971728469733,
+          "position": [
+            143.19125350021116,
+            1.0578971728469733,
+            146.45503456611797
+          ]
+        },
+        "right": {
+          "minY": 1.0563754486035548,
+          "position": [
+            142.81455616256306,
+            1.0563754486035548,
+            146.45437601777695
+          ]
+        }
+      }
+    },
+    {
+      "at": 99786.5,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.09219259308399978,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3288054544644194
+      },
+      "soles": {
+        "left": {
+          "minY": 1.0330890383373492,
+          "position": [
+            143.1896723303579,
+            1.0330890383373492,
+            146.49149330016832
+          ]
+        },
+        "right": {
+          "minY": 1.0319087091788661,
+          "position": [
+            142.81298182398385,
+            1.0319087091788661,
+            146.49090166564872
+          ]
+        }
+      }
+    },
+    {
+      "at": 99886.40000009537,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.12676049446573964,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.326224317579503
+      },
+      "soles": {
+        "left": {
+          "minY": 0.9867380775164224,
+          "position": [
+            143.18906008938305,
+            0.9867380775164224,
+            146.51485244250114
+          ]
+        },
+        "right": {
+          "minY": 0.9859349959880641,
+          "position": [
+            142.8122201632458,
+            0.9859349959880641,
+            146.51441959798024
+          ]
+        }
+      }
+    },
+    {
+      "at": 99987.2999997139,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.16132839584747952,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.334895553370748
+      },
+      "soles": {
+        "left": {
+          "minY": 0.9518861467694382,
+          "position": [
+            143.18837581024619,
+            0.9518861467694382,
+            146.5375811740697
+          ]
+        },
+        "right": {
+          "minY": 0.9515115735620393,
+          "position": [
+            142.81150199220963,
+            0.9515115735620393,
+            146.5372928534864
+          ]
+        }
+      }
+    },
+    {
+      "at": 100087.40000009537,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.19610370460454332,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3525184639579904
+      },
+      "soles": {
+        "left": {
+          "minY": 0.9329998604133171,
+          "position": [
+            143.1883070348,
+            0.9329998604133171,
+            146.60380785356872
+          ]
+        },
+        "right": {
+          "minY": 0.9329998530528344,
+          "position": [
+            142.81140847462683,
+            0.9329998530528344,
+            146.60356408458566
+          ]
+        }
+      }
+    },
+    {
+      "at": 100186.7999997139,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": true,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.22472592684972442,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3692740855379197
+      },
+      "soles": {
+        "left": {
+          "minY": 0.933000812324315,
+          "position": [
+            143.18825289620253,
+            0.933000812324315,
+            146.68958732950514
+          ]
+        },
+        "right": {
+          "minY": 0.9330025721566689,
+          "position": [
+            142.81129989006556,
+            0.9330025721566689,
+            146.68942204250465
+          ]
+        }
+      }
+    },
+    {
+      "at": 100286.19999980927,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": true,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.22472592684972442,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3692702583516905
+      },
+      "soles": {
+        "left": {
+          "minY": 0.9330013231748231,
+          "position": [
+            143.18823988869778,
+            0.9330013231748231,
+            146.6894524818984
+          ]
+        },
+        "right": {
+          "minY": 0.9330039678956455,
+          "position": [
+            142.81128712667046,
+            0.9330039678956455,
+            146.68928992831619
+          ]
+        }
+      }
+    },
+    {
+      "at": 100386.69999980927,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.2592938282314643,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.3903568212998703
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8331414400732139,
+          "position": [
+            143.1882100360551,
+            0.8331414400732139,
+            146.80367817662398
+          ]
+        },
+        "right": {
+          "minY": 0.8462089712945389,
+          "position": [
+            142.81135171815654,
+            0.8462089712945389,
+            146.8033585179003
+          ]
+        }
+      }
+    },
+    {
+      "at": 100487.09999990463,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.29382716157995636,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4082803633706518
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8079316128414783,
+          "position": [
+            143.18842106930555,
+            0.8079316128414783,
+            146.90261202060034
+          ]
+        },
+        "right": {
+          "minY": 0.8093708333259029,
+          "position": [
+            142.81162409013263,
+            0.8093708333259029,
+            146.90214218382079
+          ]
+        }
+      }
+    },
+    {
+      "at": 100587,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.3284296309949441,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4193254676997817
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8054950637901073,
+          "position": [
+            143.1885089211375,
+            0.8054950637901073,
+            146.96397481862746
+          ]
+        },
+        "right": {
+          "minY": 0.8057310589435661,
+          "position": [
+            142.81179941957427,
+            0.8057310589435661,
+            146.96343167997924
+          ]
+        }
+      }
+    },
+    {
+      "at": 100686.59999990463,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.36299753237668386,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4230801083018896
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8054047206260178,
+          "position": [
+            143.18846214667704,
+            0.8054047206260178,
+            146.9756565518302
+          ]
+        },
+        "right": {
+          "minY": 0.8056698716726582,
+          "position": [
+            142.81191232983034,
+            0.8056698716726582,
+            146.97494073605517
+          ]
+        }
+      }
+    },
+    {
+      "at": 100787.09999990463,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.3975654337584236,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4248372532342044
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8051725068161067,
+          "position": [
+            143.1883857231639,
+            0.8051725068161067,
+            146.97560302548766
+          ]
+        },
+        "right": {
+          "minY": 0.8056339489606162,
+          "position": [
+            142.81181759581085,
+            0.8056339489606162,
+            146.97508121299919
+          ]
+        }
+      }
+    },
+    {
+      "at": 100886.7999997139,
+      "phase": "stand",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "StandUp",
+      "animationTime": 0.4321333351401634,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4255680170013936
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8049674441805111,
+          "position": [
+            143.1883619252948,
+            0.8049674441805111,
+            146.9756740280373
+          ]
+        },
+        "right": {
+          "minY": 0.8059082852470238,
+          "position": [
+            142.81186825579945,
+            0.8059082852470238,
+            146.97479625642075
+          ]
+        }
+      }
+    },
+    {
+      "at": 100986.69999980927,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 0,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4262975020637838
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8039936409728347,
+          "position": [
+            143.18540578884682,
+            0.8039936409728347,
+            146.97433869051483
+          ]
+        },
+        "right": {
+          "minY": 0.8044283877540463,
+          "position": [
+            142.81325042753554,
+            0.8044283877540463,
+            146.97440520775424
+          ]
+        }
+      }
+    },
+    {
+      "at": 101086.7999997139,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 0.17363571898823693,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4280213607702728
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8029999788280993,
+          "position": [
+            143.1802040296756,
+            0.8029999788280993,
+            146.9427283166267
+          ]
+        },
+        "right": {
+          "minY": 0.802999963315233,
+          "position": [
+            142.83881237181853,
+            0.802999963315233,
+            146.9716292012193
+          ]
+        }
+      }
+    },
+    {
+      "at": 101186.19999980927,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 0.347445247339067,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4223475485023094
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8046765725936206,
+          "position": [
+            143.14065047177723,
+            0.8046765725936206,
+            146.93508291482686
+          ]
+        },
+        "right": {
+          "minY": 0.805029733579545,
+          "position": [
+            142.81643667702966,
+            0.805029733579545,
+            146.9851225978856
+          ]
+        }
+      }
+    },
+    {
+      "at": 101287,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 0.5214285850524902,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4213065702817722
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8058860212600769,
+          "position": [
+            143.10439923121834,
+            0.8058860212600769,
+            146.86750583824386
+          ]
+        },
+        "right": {
+          "minY": 0.8044987534034787,
+          "position": [
+            142.81997260939096,
+            0.8044987534034787,
+            147.0188176652002
+          ]
+        }
+      }
+    },
+    {
+      "at": 101386.69999980927,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 0.6950643040407273,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4219363083170014
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8063642279692118,
+          "position": [
+            143.0318502029046,
+            0.8063642279692118,
+            146.8418414888518
+          ]
+        },
+        "right": {
+          "minY": 0.8040645934441736,
+          "position": [
+            142.82620119955828,
+            0.8040645934441736,
+            147.04447578858355
+          ]
+        }
+      }
+    },
+    {
+      "at": 101486.09999990463,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 0.8688738323915572,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4236559153546577
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8133414593754547,
+          "position": [
+            142.96087997517418,
+            0.8133414593754547,
+            146.85320007616684
+          ]
+        },
+        "right": {
+          "minY": 0.8297635073083284,
+          "position": [
+            142.80097743512542,
+            0.8297635073083284,
+            147.06285576161213
+          ]
+        }
+      }
+    },
+    {
+      "at": 101586.59999990463,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 1.0426833607423875,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.420824422193206
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8069411922434465,
+          "position": [
+            142.92942732004477,
+            0.8069411922434465,
+            146.8754464385303
+          ]
+        },
+        "right": {
+          "minY": 0.8043857378037733,
+          "position": [
+            142.83536100579033,
+            0.8043857378037733,
+            147.10457277822132
+          ]
+        }
+      }
+    },
+    {
+      "at": 101686.5,
+      "phase": "turn-out",
+      "root": [
+        143,
+        0.8,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "TurnR",
+      "animationTime": 1.2164928890932178,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": 1.4237128735368105
+      },
+      "soles": {
+        "left": {
+          "minY": 0.805180743906628,
+          "position": [
+            142.90242590121844,
+            0.805180743906628,
+            146.88386818851475
+          ]
+        },
+        "right": {
+          "minY": 0.8051472855806192,
+          "position": [
+            142.86607084489114,
+            0.8051472855806192,
+            147.13664675978129
+          ]
+        }
+      }
+    },
+    {
+      "at": 101786.7999997139,
+      "phase": "walk-out",
+      "root": [
+        143.0023686750493,
+        0.8016106990335304,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.022924163491328014,
+      "feet": {
+        "drop": 0.013517841930358142,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4053712159128664
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8097917812619005,
+          "position": [
+            143.2005668040738,
+            0.8097917812619005,
+            146.9023055320441
+          ]
+        },
+        "right": {
+          "minY": 0.8210364838543307,
+          "position": [
+            142.86826915809294,
+            0.8210364838543307,
+            147.16984981772225
+          ]
+        }
+      }
+    },
+    {
+      "at": 101887.19999980927,
+      "phase": "walk-out",
+      "root": [
+        143.01139056058227,
+        0.8077455811959409,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.029046679774447793,
+      "feet": {
+        "drop": 0.011048357944252978,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.410928592143259
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8114759303256333,
+          "position": [
+            143.20133894268895,
+            0.8114759303256333,
+            146.92446318521928
+          ]
+        },
+        "right": {
+          "minY": 0.8428668600519932,
+          "position": [
+            142.8246891677417,
+            0.8428668600519932,
+            147.16123008118768
+          ]
+        }
+      }
+    },
+    {
+      "at": 101986.40000009537,
+      "phase": "walk-out",
+      "root": [
+        143.0270585254023,
+        0.8183997972735761,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.03924452681070444,
+      "feet": {
+        "drop": 0.014553250536463691,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4175753080381235
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8077049950576914,
+          "position": [
+            143.2020351214419,
+            0.8077049950576914,
+            146.93234101031712
+          ]
+        },
+        "right": {
+          "minY": 0.8428145442999945,
+          "position": [
+            142.83513346241563,
+            0.8428145442999945,
+            147.06304844549948
+          ]
+        }
+      }
+    },
+    {
+      "at": 102086.09999990463,
+      "phase": "walk-out",
+      "root": [
+        143.04914371833894,
+        0.8334177284704797,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.05338410832549739,
+      "feet": {
+        "drop": 0.027709019380256328,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4201354015150978
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8102204444324462,
+          "position": [
+            143.20075958462257,
+            0.8102204444324462,
+            146.9345424372622
+          ]
+        },
+        "right": {
+          "minY": 0.8421977160745516,
+          "position": [
+            142.83126410248298,
+            0.8421977160745516,
+            147.0635554974327
+          ]
+        }
+      }
+    },
+    {
+      "at": 102186.19999980927,
+      "phase": "walk-out",
+      "root": [
+        143.0775744076677,
+        0.8527505972140386,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.07148366476169517,
+      "feet": {
+        "drop": 0.04675070457200448,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4219521785088793
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8119162544631563,
+          "position": [
+            143.20065977882615,
+            0.8119162544631563,
+            146.9353000698518
+          ]
+        },
+        "right": {
+          "minY": 0.8425413232632971,
+          "position": [
+            142.82576706966768,
+            0.8425413232632971,
+            147.0635175295065
+          ]
+        }
+      }
+    },
+    {
+      "at": 102286.40000009537,
+      "phase": "walk-out",
+      "root": [
+        143.1121909205549,
+        0.8762898259773203,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.09420062541313769,
+      "feet": {
+        "drop": 0.06851210942641342,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4257748515401383
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8124653847251035,
+          "position": [
+            143.2006189580795,
+            0.8124653847251035,
+            146.93802714040774
+          ]
+        },
+        "right": {
+          "minY": 0.8461840025790136,
+          "position": [
+            142.84270242988046,
+            0.8461840025790136,
+            147.06741214154448
+          ]
+        }
+      }
+    },
+    {
+      "at": 102386.69999980927,
+      "phase": "walk-out",
+      "root": [
+        143.15280884708193,
+        0.9039100160157111,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.12066206988817335,
+      "feet": {
+        "drop": 0.09324010600281236,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4321667236763682
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8142610694980766,
+          "position": [
+            143.20092220243828,
+            0.8142610694980766,
+            146.94016066825614
+          ]
+        },
+        "right": {
+          "minY": 0.8490474025965735,
+          "position": [
+            142.86276461564822,
+            0.8490474025965735,
+            147.07146211679458
+          ]
+        }
+      }
+    },
+    {
+      "at": 102486,
+      "phase": "walk-out",
+      "root": [
+        143.19946778787065,
+        0.9356380957520422,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.15079467537205116,
+      "feet": {
+        "drop": 0.12949919610057484,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4314052092620573
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8123678972014798,
+          "position": [
+            143.25431885029064,
+            0.8123678972014798,
+            146.97979608736267
+          ]
+        },
+        "right": {
+          "minY": 0.8651999138847132,
+          "position": [
+            142.940133058636,
+            0.8651999138847132,
+            147.0876884648513
+          ]
+        }
+      }
+    },
+    {
+      "at": 102586.69999980927,
+      "phase": "walk-out",
+      "root": [
+        143.25211342003527,
+        0.97,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.18475978063797216,
+      "feet": {
+        "drop": 0.1681503017412684,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4300656261677058
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8166102491753506,
+          "position": [
+            143.40991834570977,
+            0.8166102491753506,
+            146.83565327710227
+          ]
+        },
+        "right": {
+          "minY": 0.8722288295421647,
+          "position": [
+            143.07851358424912,
+            0.8722288295421647,
+            147.1022354894386
+          ]
+        }
+      }
+    },
+    {
+      "at": 102686.69999980927,
+      "phase": "walk-out",
+      "root": [
+        143.32219467809878,
+        0.97,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.22997373684713854,
+      "feet": {
+        "drop": 0.1848151180198006,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4136067791257352
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8197301895130111,
+          "position": [
+            143.41008116875716,
+            0.8197301895130111,
+            146.8327553782549
+          ]
+        },
+        "right": {
+          "minY": 0.8584283008526001,
+          "position": [
+            143.27442325795076,
+            0.8584283008526001,
+            147.09795471572832
+          ]
+        }
+      }
+    },
+    {
+      "at": 102786.2999997139,
+      "phase": "walk-out",
+      "root": [
+        143.39890523729105,
+        0.97,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.27946468435490923,
+      "feet": {
+        "drop": 0.19169815743098087,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.4031563861920668
+      },
+      "soles": {
+        "left": {
+          "minY": 0.8272711366385838,
+          "position": [
+            143.42630958612784,
+            0.8272711366385838,
+            146.9279126515354
+          ]
+        },
+        "right": {
+          "minY": 0.9265873075546162,
+          "position": [
+            143.53148315106927,
+            0.9265873075546162,
+            147.0982336750802
+          ]
+        }
+      }
+    },
+    {
+      "at": 102886.40000009537,
+      "phase": "walk-out",
+      "root": [
+        143.47645215386981,
+        0.9879874646314855,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.32949522015338006,
+      "feet": {
+        "drop": 0.07641284985860115,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.5337150882131312
+      },
+      "soles": {
+        "left": {
+          "minY": 0.9295106092435806,
+          "position": [
+            143.43844521831267,
+            0.9295106092435806,
+            146.92504575135126
+          ]
+        },
+        "right": {
+          "minY": 1.0512509724486934,
+          "position": [
+            143.5799277869857,
+            1.0512509724486934,
+            147.06134000678054
+          ]
+        }
+      }
+    },
+    {
+      "at": 102986.09999990463,
+      "phase": "walk-out",
+      "root": [
+        143.5504225805117,
+        1.0382873547479754,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.377218330773469,
+      "feet": {
+        "drop": 0.0669470677894957,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.588794621918109
+      },
+      "soles": {
+        "left": {
+          "minY": 0.9871214334835633,
+          "position": [
+            143.47245284704593,
+            0.9871214334835633,
+            146.92792114393396
+          ]
+        },
+        "right": {
+          "minY": 1.0049522835103315,
+          "position": [
+            143.77040588158783,
+            1.0049522835103315,
+            147.0656976835968
+          ]
+        }
+      }
+    },
+    {
+      "at": 103086.5,
+      "phase": "walk-out",
+      "root": [
+        143.62945276546384,
+        1.0920278805154273,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4290007879159263,
+      "feet": {
+        "drop": 0.03521164717959889,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.6706625497396457
+      },
+      "soles": {
+        "left": {
+          "minY": 1.0575486272636672,
+          "position": [
+            143.49162694201257,
+            1.0575486272636672,
+            146.9311754739936
+          ]
+        },
+        "right": {
+          "minY": 1.136723513595927,
+          "position": [
+            143.79731494268202,
+            1.136723513595927,
+            147.06398655581253
+          ]
+        }
+      }
+    },
+    {
+      "at": 103186,
+      "phase": "walk-out",
+      "root": [
+        143.71620692158217,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4850662251123897,
+      "feet": {
+        "drop": 0.011005780139960382,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7479088934516513
+      },
+      "soles": {
+        "left": {
+          "minY": 1.1067612505311035,
+          "position": [
+            143.50691029302595,
+            1.1067612505311035,
+            146.9304921898674
+          ]
+        },
+        "right": {
+          "minY": 1.1637521857976811,
+          "position": [
+            143.7975836310035,
+            1.1637521857976811,
+            147.06195016331645
+          ]
+        }
+      }
+    },
+    {
+      "at": 103286.5,
+      "phase": "walk-out",
+      "root": [
+        143.82350469725102,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5545957495937484,
+      "feet": {
+        "drop": 0.008651199563123192,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7587101068487094
+      },
+      "soles": {
+        "left": {
+          "minY": 1.0927757223404428,
+          "position": [
+            143.630993924811,
+            1.0927757223404428,
+            146.89890676302772
+          ]
+        },
+        "right": {
+          "minY": 1.1580332234495314,
+          "position": [
+            143.99636826154205,
+            1.1580332234495314,
+            147.17001260973277
+          ]
+        }
+      }
+    },
+    {
+      "at": 103386.7999997139,
+      "phase": "walk-out",
+      "root": [
+        143.93652616153332,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6275132125212066,
+      "feet": {
+        "drop": 0.016781504072424742,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7506816095792879
+      },
+      "soles": {
+        "left": {
+          "minY": 1.0753495509521855,
+          "position": [
+            143.93339075743103,
+            1.0753495509521855,
+            146.89627387225573
+          ]
+        },
+        "right": {
+          "minY": 1.163382631853686,
+          "position": [
+            144.00770908718644,
+            1.163382631853686,
+            147.1673310134544
+          ]
+        }
+      }
+    },
+    {
+      "at": 103505.59999990463,
+      "phase": "walk-out",
+      "root": [
+        144.026583340216,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6856149282408344,
+      "feet": {
+        "drop": 0.02335913025456703,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7407514408219786
+      },
+      "soles": {
+        "left": {
+          "minY": 1.1712072414492776,
+          "position": [
+            144.2326160801397,
+            1.1712072414492776,
+            146.90969488963404
+          ]
+        },
+        "right": {
+          "minY": 1.1692604957004733,
+          "position": [
+            144.00894223722761,
+            1.1692604957004733,
+            147.17353764709557
+          ]
+        }
+      }
+    },
+    {
+      "at": 103585.7999997139,
+      "phase": "walk-out",
+      "root": [
+        144.18114263593972,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.01906917460544901,
+      "feet": {
+        "drop": 0.0077980913684678205,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7466604563357422
+      },
+      "soles": {
+        "left": {
+          "minY": 1.1509429504569517,
+          "position": [
+            144.38652627419393,
+            1.1509429504569517,
+            146.93332454428693
+          ]
+        },
+        "right": {
+          "minY": 1.1836254012795986,
+          "position": [
+            144.02295272909348,
+            1.1836254012795986,
+            147.06554143877648
+          ]
+        }
+      }
+    },
+    {
+      "at": 103687.5,
+      "phase": "walk-out",
+      "root": [
+        144.31206290161163,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.10440830645708188,
+      "feet": {
+        "drop": 0.0013581732286210898,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.757773511169712
+      },
+      "soles": {
+        "left": {
+          "minY": 1.1472707375412838,
+          "position": [
+            144.38659518547297,
+            1.1472707375412838,
+            146.93924535955716
+          ]
+        },
+        "right": {
+          "minY": 1.1873283478475276,
+          "position": [
+            144.03084059461912,
+            1.1873283478475276,
+            147.06797970377403
+          ]
+        }
+      }
+    },
+    {
+      "at": 103797.09999990463,
+      "phase": "walk-out",
+      "root": [
+        144.44343107249074,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.18924052326071542,
+      "feet": {
+        "drop": 0.008880024789586174,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7595977093345907
+      },
+      "soles": {
+        "left": {
+          "minY": 1.1560557583600082,
+          "position": [
+            144.5942544674787,
+            1.1560557583600082,
+            146.83526518074385
+          ]
+        },
+        "right": {
+          "minY": 1.2105712232342776,
+          "position": [
+            144.2828399747954,
+            1.2105712232342776,
+            147.10301172616195
+          ]
+        }
+      }
+    },
+    {
+      "at": 103886.40000009537,
+      "phase": "walk-out",
+      "root": [
+        144.57966454415205,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.27713355475189155,
+      "feet": {
+        "drop": 0.019769376162349046,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7452587725040205
+      },
+      "soles": {
+        "left": {
+          "minY": 1.165728383910362,
+          "position": [
+            144.61044671937861,
+            1.165728383910362,
+            146.92816905637196
+          ]
+        },
+        "right": {
+          "minY": 1.1870942197640282,
+          "position": [
+            144.70364361529028,
+            1.1870942197640282,
+            147.09824138120692
+          ]
+        }
+      }
+    },
+    {
+      "at": 103986.5,
+      "phase": "walk-out",
+      "root": [
+        144.72237106301432,
+        1.1400000000000001,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.36920276801792506,
+      "feet": {
+        "drop": 0.008704800456846339,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.749774971563379
+      },
+      "soles": {
+        "left": {
+          "minY": 1.1826249911399112,
+          "position": [
+            144.61389519359238,
+            1.1826249911399112,
+            146.93163065631958
+          ]
+        },
+        "right": {
+          "minY": 1.1767489416408687,
+          "position": [
+            144.9344616422452,
+            1.1767489416408687,
+            147.0650142613007
+          ]
+        }
+      }
+    },
+    {
+      "at": 104086.5,
+      "phase": "walk-out",
+      "root": [
+        144.87017008311417,
+        1.1469917139266437,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4649689134886955,
+      "feet": {
+        "drop": 0.0009349740883299064,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7629707710277285
+      },
+      "soles": {
+        "left": {
+          "minY": 1.188916939789346,
+          "position": [
+            144.59383802626544,
+            1.188916939789346,
+            146.93611945975942
+          ]
+        },
+        "right": {
+          "minY": 1.1798067532348833,
+          "position": [
+            144.981593479093,
+            1.1798067532348833,
+            147.06465417362358
+          ]
+        }
+      }
+    },
+    {
+      "at": 104187.40000009537,
+      "phase": "walk-out",
+      "root": [
+        145.02035278108335,
+        1.1557296163539397,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.562644531504033,
+      "feet": {
+        "drop": 0.0006561871392664084,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7831247628060827
+      },
+      "soles": {
+        "left": {
+          "minY": 1.226521450061193,
+          "position": [
+            144.8270162777979,
+            1.226521450061193,
+            146.89377173010678
+          ]
+        },
+        "right": {
+          "minY": 1.188001442231919,
+          "position": [
+            145.19070088565633,
+            1.188001442231919,
+            147.16220798413457
+          ]
+        }
+      }
+    },
+    {
+      "at": 104287.19999980927,
+      "phase": "walk-out",
+      "root": [
+        145.17627152662115,
+        1.1648012524579583,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6632378074772706,
+      "feet": {
+        "drop": 0.016054768394856887,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7738053419966975
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2148119533954074,
+          "position": [
+            145.30542577015603,
+            1.2148119533954074,
+            146.89538466169708
+          ]
+        },
+        "right": {
+          "minY": 1.1958096355088301,
+          "position": [
+            145.1930033887455,
+            1.1958096355088301,
+            147.17200024959712
+          ]
+        }
+      }
+    },
+    {
+      "at": 104386.5,
+      "phase": "walk-out",
+      "root": [
+        145.33595131227074,
+        1.1740917127139339,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.7662575738933735,
+      "feet": {
+        "drop": 0.004995362721061827,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.7858007817209485
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2129725685703223,
+          "position": [
+            145.5604121375979,
+            1.2129725685703223,
+            146.93175853751472
+          ]
+        },
+        "right": {
+          "minY": 1.2148638021134974,
+          "position": [
+            145.21138950094135,
+            1.2148638021134974,
+            147.0663571268978
+          ]
+        }
+      }
+    },
+    {
+      "at": 104486.90000009537,
+      "phase": "walk-out",
+      "root": [
+        145.49871500281455,
+        1.183561600163755,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.10589043299681815,
+      "feet": {
+        "drop": 0.0005437488803416845,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8023755648124475
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2101588483249939,
+          "position": [
+            145.5709804645808,
+            1.2101588483249939,
+            146.93939828875457
+          ]
+        },
+        "right": {
+          "minY": 1.2222455735450473,
+          "position": [
+            145.21634963308688,
+            1.2222455735450473,
+            147.06814935379683
+          ]
+        }
+      }
+    },
+    {
+      "at": 104586.69999980927,
+      "phase": "walk-out",
+      "root": [
+        145.66552853728672,
+        1.1932671148966825,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.2135793153212858,
+      "feet": {
+        "drop": 0.004303809086891288,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8182085024275756
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2252510604151274,
+          "position": [
+            145.77817363093445,
+            1.2252510604151274,
+            146.83348838384345
+          ]
+        },
+        "right": {
+          "minY": 1.2583423473584863,
+          "position": [
+            145.56215698498545,
+            1.2583423473584863,
+            147.09806286096725
+          ]
+        }
+      }
+    },
+    {
+      "at": 104685.90000009537,
+      "phase": "walk-out",
+      "root": [
+        145.8353943474869,
+        1.2031502165810564,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.32317074555596137,
+      "feet": {
+        "drop": 0.013743302770045632,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8120116682678213
+      },
+      "soles": {
+        "left": {
+          "minY": 1.240121844188481,
+          "position": [
+            145.7973876720391,
+            1.240121844188481,
+            146.92538390558437
+          ]
+        },
+        "right": {
+          "minY": 1.2492765475492924,
+          "position": [
+            145.91671555681526,
+            1.2492765475492924,
+            147.06063377589584
+          ]
+        }
+      }
+    },
+    {
+      "at": 104787.19999980927,
+      "phase": "walk-out",
+      "root": [
+        146.0082979830345,
+        1.2132100644674628,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4354035398439714,
+      "feet": {
+        "drop": 0.0017930065748469675,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.82562421613945
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2522964061419652,
+          "position": [
+            145.78558664919808,
+            1.2522964061419652,
+            146.93468440112085
+          ]
+        },
+        "right": {
+          "minY": 1.24533858514698,
+          "position": [
+            146.1660614600262,
+            1.24533858514698,
+            147.06427768199464
+          ]
+        }
+      }
+    },
+    {
+      "at": 104886.09999990463,
+      "phase": "walk-out",
+      "root": [
+        146.18494994201032,
+        1.2234879966260546,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5498861553204073,
+      "feet": {
+        "drop": 0.00019344291722497636,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8502503339969714
+      },
+      "soles": {
+        "left": {
+          "minY": 1.291941071865186,
+          "position": [
+            145.9564214030812,
+            1.291941071865186,
+            146.89920911652587
+          ]
+        },
+        "right": {
+          "minY": 1.2560561770091359,
+          "position": [
+            146.36517515315882,
+            1.2560561770091359,
+            147.16972383252227
+          ]
+        }
+      }
+    },
+    {
+      "at": 104986.2999997139,
+      "phase": "walk-out",
+      "root": [
+        146.36413145214493,
+        1.2339131026702501,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.665487746624272,
+      "feet": {
+        "drop": 0.015692659436688277,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8431596030945856
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2834176628137308,
+          "position": [
+            146.50173873872455,
+            1.2834176628137308,
+            146.8954307674246
+          ]
+        },
+        "right": {
+          "minY": 1.2651440204908981,
+          "position": [
+            146.3774680508941,
+            1.2651440204908981,
+            147.17221024400038
+          ]
+        }
+      }
+    },
+    {
+      "at": 105086.69999980927,
+      "phase": "walk-out",
+      "root": [
+        146.5456557949763,
+        1.2444745189804396,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.01593420018939984,
+      "feet": {
+        "drop": 0.003788264107806422,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8554138524971848
+      },
+      "soles": {
+        "left": {
+          "minY": 1.2872061964683303,
+          "position": [
+            146.75523848570887,
+            1.2872061964683303,
+            146.93298972567158
+          ]
+        },
+        "right": {
+          "minY": 1.2851569731394525,
+          "position": [
+            146.39276928503034,
+            1.2851569731394525,
+            147.065760183359
+          ]
+        }
+      }
+    },
+    {
+      "at": 105186.7999997139,
+      "phase": "walk-out",
+      "root": [
+        146.73129452352845,
+        1.2562649211794148,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.13705855062189504,
+      "feet": {
+        "drop": 0.0004041901315775272,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8794014063280817
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3017412289895025,
+          "position": [
+            146.75582780320042,
+            1.3017412289895025,
+            146.93909628494026
+          ]
+        },
+        "right": {
+          "minY": 1.3078312946491257,
+          "position": [
+            146.4494100107657,
+            1.3078312946491257,
+            147.08051160343473
+          ]
+        }
+      }
+    },
+    {
+      "at": 105286.69999980927,
+      "phase": "walk-out",
+      "root": [
+        146.91623201848975,
+        1.277784920593094,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.2563737003447436,
+      "feet": {
+        "drop": 0.006810009996312104,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.8973903322785093
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3189775213006079,
+          "position": [
+            146.9639339691631,
+            1.3189775213006079,
+            146.83065833426835
+          ]
+        },
+        "right": {
+          "minY": 1.33552827681208,
+          "position": [
+            146.9639869326092,
+            1.33552827681208,
+            147.09761567488556
+          ]
+        }
+      }
+    },
+    {
+      "at": 105386.7999997139,
+      "phase": "walk-out",
+      "root": [
+        147.10409231208564,
+        1.2996450274842515,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.37757453667088736,
+      "feet": {
+        "drop": 0.008818738548449018,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9082350542030995
+      },
+      "soles": {
+        "left": {
+          "minY": 1.336188084225712,
+          "position": [
+            146.982451097373,
+            1.336188084225712,
+            146.9316536030799
+          ]
+        },
+        "right": {
+          "minY": 1.3206931820007768,
+          "position": [
+            147.324420557966,
+            1.3206931820007768,
+            147.0657295480307
+          ]
+        }
+      }
+    },
+    {
+      "at": 105486.2999997139,
+      "phase": "walk-out",
+      "root": [
+        147.29619009827599,
+        1.3,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5025889300234367,
+      "feet": {
+        "drop": 0.0022929983235049326,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.919216035753202
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3455089781615837,
+          "position": [
+            146.9993158660154,
+            1.3455089781615837,
+            146.92760713963196
+          ]
+        },
+        "right": {
+          "minY": 1.3090406853832783,
+          "position": [
+            147.3509027214825,
+            1.3090406853832783,
+            147.0604023730476
+          ]
+        }
+      }
+    },
+    {
+      "at": 105586.59999990463,
+      "phase": "walk-out",
+      "root": [
+        147.4888268144668,
+        1.3,
+        147
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6269861371618762,
+      "feet": {
+        "drop": 0.01448589204352639,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9130150454196457
+      },
+      "soles": {
+        "left": {
+          "minY": 1.352746055994323,
+          "position": [
+            147.4837669589595,
+            1.352746055994323,
+            146.89627889473203
+          ]
+        },
+        "right": {
+          "minY": 1.321739526258601,
+          "position": [
+            147.56079909689953,
+            1.321739526258601,
+            147.16725663917498
+          ]
+        }
+      }
+    },
+    {
+      "at": 105686.2999997139,
+      "phase": "walk-out",
+      "root": [
+        147.68325179300086,
+        1.3,
+        147.0215590344707
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.7532051562710179,
+      "feet": {
+        "drop": 0.016175133103547828,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.902386334352553
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3172188457642235,
+          "position": [
+            147.89440300541068,
+            1.3172188457642235,
+            146.95416158451968
+          ]
+        },
+        "right": {
+          "minY": 1.3391221279772798,
+          "position": [
+            147.56080659348964,
+            1.3391221279772798,
+            147.18708656256254
+          ]
+        }
+      }
+    },
+    {
+      "at": 105786.19999980927,
+      "phase": "walk-out",
+      "root": [
+        147.87755706050763,
+        1.3,
+        147.04441847770678
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.11403660747365058,
+      "feet": {
+        "drop": 0.0023903067289991085,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.918209724973399
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3087675635659268,
+          "position": [
+            147.93732335982997,
+            1.3087675635659268,
+            146.9846305040279
+          ]
+        },
+        "right": {
+          "minY": 1.3496054167816365,
+          "position": [
+            147.5889455680197,
+            1.3496054167816365,
+            147.11331836642375
+          ]
+        }
+      }
+    },
+    {
+      "at": 105886,
+      "phase": "walk-out",
+      "root": [
+        148.07398237013211,
+        1.3,
+        147.0675273376626
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.24171942574652064,
+      "feet": {
+        "drop": 0.01417950950786049,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9133149382393622
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3216503169529878,
+          "position": [
+            148.14411633169846,
+            1.3216503169529878,
+            146.8995063120335
+          ]
+        },
+        "right": {
+          "minY": 1.354716385246677,
+          "position": [
+            148.06822589874412,
+            1.354716385246677,
+            147.16513477601086
+          ]
+        }
+      }
+    },
+    {
+      "at": 105986.59999990463,
+      "phase": "walk-out",
+      "root": [
+        148.2713830871831,
+        1.3,
+        147.0907509514333
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.3699537343512766,
+      "feet": {
+        "drop": 0.016167642795168555,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9022160575289098
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3391201462836464,
+          "position": [
+            148.1617249000302,
+            1.3391201462836464,
+            147.02238144547752
+          ]
+        },
+        "right": {
+          "minY": 1.3172396031459102,
+          "position": [
+            148.484223622024,
+            1.3172396031459102,
+            147.15582653700642
+          ]
+        }
+      }
+    },
+    {
+      "at": 106087,
+      "phase": "walk-out",
+      "root": [
+        148.46998547507945,
+        1.3,
+        147.11411593824465
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5000189239314382,
+      "feet": {
+        "drop": 0.003154412175614107,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9179611890966648
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3501343979425273,
+          "position": [
+            148.17343804412434,
+            1.3501343979425273,
+            147.04296986365605
+          ]
+        },
+        "right": {
+          "minY": 1.3097955616348844,
+          "position": [
+            148.52854446978267,
+            1.3097955616348844,
+            147.174456907653
+          ]
+        }
+      }
+    },
+    {
+      "at": 106186.19999980927,
+      "phase": "walk-out",
+      "root": [
+        148.66962322014757,
+        1.3,
+        147.13760273178207
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6298506468107404,
+      "feet": {
+        "drop": 0.014773416252722726,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9125219591955218
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3526561323993525,
+          "position": [
+            148.67502593915142,
+            1.3526561323993525,
+            147.03386478818615
+          ]
+        },
+        "right": {
+          "minY": 1.322291625350034,
+          "position": [
+            148.73730680240968,
+            1.322291625350034,
+            147.3052620498012
+          ]
+        }
+      }
+    },
+    {
+      "at": 106286.2999997139,
+      "phase": "walk-out",
+      "root": [
+        148.8697282315301,
+        1.3,
+        147.16114449782708
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.75984170341039,
+      "feet": {
+        "drop": 0.015122746925635693,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9024945042553576
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3167866909068389,
+          "position": [
+            149.0877161408925,
+            1.3167866909068389,
+            147.09333674295226
+          ]
+        },
+        "right": {
+          "minY": 1.3400421063676906,
+          "position": [
+            148.73679575580877,
+            1.3400421063676906,
+            147.32664666529135
+          ]
+        }
+      }
+    },
+    {
+      "at": 106386.7999997139,
+      "phase": "walk-out",
+      "root": [
+        149.06972810164848,
+        1.3,
+        147.18467389431157
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.12444405060987929,
+      "feet": {
+        "drop": 0.002438494422961317,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9195275003901173
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3102391043495258,
+          "position": [
+            149.1136905796036,
+            1.3102391043495258,
+            147.12486015719776
+          ]
+        },
+        "right": {
+          "minY": 1.3532568392974371,
+          "position": [
+            148.78029083564022,
+            1.3532568392974371,
+            147.2583196966996
+          ]
+        }
+      }
+    },
+    {
+      "at": 106486.7999997139,
+      "phase": "walk-out",
+      "root": [
+        149.27126090415544,
+        1.3,
+        147.20838363578298
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.2553731674931886,
+      "feet": {
+        "drop": 0.01564758941747506,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9108269116161314
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3228822990258928,
+          "position": [
+            149.3205135836453,
+            1.3228822990258928,
+            147.03915207290424
+          ]
+        },
+        "right": {
+          "minY": 1.3504655773773002,
+          "position": [
+            149.31535185521162,
+            1.3504655773773002,
+            147.30593433075833
+          ]
+        }
+      }
+    },
+    {
+      "at": 106586.7999997139,
+      "phase": "walk-out",
+      "root": [
+        149.47235041799627,
+        1.3,
+        147.2320412256466
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.3860037708682775,
+      "feet": {
+        "drop": 0.011395788793945545,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9049203888489084
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3406547980154855,
+          "position": [
+            149.33683966784028,
+            1.3406547980154855,
+            147.16386069721665
+          ]
+        },
+        "right": {
+          "minY": 1.3157455157990499,
+          "position": [
+            149.69587971412957,
+            1.3157455157990499,
+            147.29809776804916
+          ]
+        }
+      }
+    },
+    {
+      "at": 106686.59999990463,
+      "phase": "walk-out",
+      "root": [
+        149.67342995192124,
+        1.3,
+        147.2556976414025
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5178223587925755,
+      "feet": {
+        "drop": 0.003831936794014661,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9199442115438838
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3596043966953557,
+          "position": [
+            149.3775902632686,
+            1.3596043966953557,
+            147.17648768453117
+          ]
+        },
+        "right": {
+          "minY": 1.3129676681130122,
+          "position": [
+            149.70484793685398,
+            1.3129676681130122,
+            147.31673741103018
+          ]
+        }
+      }
+    },
+    {
+      "at": 106786.40000009537,
+      "phase": "walk-out",
+      "root": [
+        149.87473194034118,
+        1.3,
+        147.27938022827544
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.648590988671092,
+      "feet": {
+        "drop": 0.016902443780113484,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.908969082171648
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3470818526829929,
+          "position": [
+            149.94929729514965,
+            1.3470818526829929,
+            147.1747599580529
+          ]
+        },
+        "right": {
+          "minY": 1.3239456667573806,
+          "position": [
+            149.91363161173058,
+            1.3239456667573806,
+            147.44988320465265
+          ]
+        }
+      }
+    },
+    {
+      "at": 106886.59999990463,
+      "phase": "walk-out",
+      "root": [
+        150.0748827852197,
+        1.3,
+        147.30292738649644
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.011945168588409771,
+      "feet": {
+        "drop": 0.01196431867438048,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9032435971315753
+      },
+      "soles": {
+        "left": {
+          "minY": 1.313691599717114,
+          "position": [
+            150.2883006581077,
+            1.313691599717114,
+            147.23560155491987
+          ]
+        },
+        "right": {
+          "minY": 1.3427619718006025,
+          "position": [
+            149.92891257576844,
+            1.3427619718006025,
+            147.36882486260694
+          ]
+        }
+      }
+    },
+    {
+      "at": 106985.7999997139,
+      "phase": "walk-out",
+      "root": [
+        150.27531737582464,
+        1.3,
+        147.32650792656761
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.1435071140571157,
+      "feet": {
+        "drop": 0.00362594732151145,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9207315560257707
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3140726787778385,
+          "position": [
+            150.29005102522302,
+            1.3140726787778385,
+            147.26443363222626
+          ]
+        },
+        "right": {
+          "minY": 1.3632420241203749,
+          "position": [
+            150.0036844425699,
+            1.3632420241203749,
+            147.41048890652704
+          ]
+        }
+      }
+    },
+    {
+      "at": 107086.59999990463,
+      "phase": "walk-out",
+      "root": [
+        150.47426681444298,
+        1.3,
+        147.34991374287566
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.2727474941816635,
+      "feet": {
+        "drop": 0.01766598090514848,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9076888086499786
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3244814751752212,
+          "position": [
+            150.5114081306003,
+            1.3244814751752212,
+            147.27857221357837
+          ]
+        },
+        "right": {
+          "minY": 1.3468075133436606,
+          "position": [
+            150.58211472350877,
+            1.3468075133436606,
+            147.44814333927167
+          ]
+        }
+      }
+    },
+    {
+      "at": 107186.5,
+      "phase": "walk-out",
+      "root": [
+        150.67177028298866,
+        1.3,
+        147.3731494450575
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4010485516162963,
+      "feet": {
+        "drop": 0.00921643574282275,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.905165965686731
+      },
+      "soles": {
+        "left": {
+          "minY": 1.342672864662058,
+          "position": [
+            150.50923248965657,
+            1.342672864662058,
+            147.30563903467169
+          ]
+        },
+        "right": {
+          "minY": 1.3120611440575225,
+          "position": [
+            150.88168384088794,
+            1.3120611440575225,
+            147.43806306137685
+          ]
+        }
+      }
+    },
+    {
+      "at": 107286.59999990463,
+      "phase": "walk-out",
+      "root": [
+        150.87022944998333,
+        1.3,
+        147.39649758235097
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5311649119771992,
+      "feet": {
+        "drop": 0.004540530733549423,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9205287364734733
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3667531489342877,
+          "position": [
+            150.5981122156015,
+            1.3667531489342877,
+            147.30785790047884
+          ]
+        },
+        "right": {
+          "minY": 1.3140621762040294,
+          "position": [
+            151.09004806539178,
+            1.3140621762040294,
+            147.5541795236517
+          ]
+        }
+      }
+    },
+    {
+      "at": 107386.2999997139,
+      "phase": "walk-out",
+      "root": [
+        151.06650506086993,
+        1.3,
+        147.41958883069057
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6586683356426694,
+      "feet": {
+        "drop": 0.018117559557314818,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9071843969383044
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3447805275596387,
+          "position": [
+            151.17853943866456,
+            1.3447805275596387,
+            147.31491132492175
+          ]
+        },
+        "right": {
+          "minY": 1.3248281106778235,
+          "position": [
+            151.09013540075688,
+            1.3248281106778235,
+            147.59115474282743
+          ]
+        }
+      }
+    },
+    {
+      "at": 107486.69999980927,
+      "phase": "walk-out",
+      "root": [
+        151.26141810223288,
+        1.3,
+        147.4425197767333
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.01901796214700191,
+      "feet": {
+        "drop": 0.008589369196432932,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9058730336324232
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3111990892146472,
+          "position": [
+            151.46687623772453,
+            1.3111990892146472,
+            147.37583840476202
+          ]
+        },
+        "right": {
+          "minY": 1.3429715361802625,
+          "position": [
+            151.1033142462261,
+            1.3429715361802625,
+            147.50806534383136
+          ]
+        }
+      }
+    },
+    {
+      "at": 107586.90000009537,
+      "phase": "walk-out",
+      "root": [
+        151.45691754866152,
+        1.3,
+        147.46551971160724
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.1469759697667173,
+      "feet": {
+        "drop": 0.0037579815674394805,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9210389155661596
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3136749343968919,
+          "position": [
+            151.4663794796747,
+            1.3136749343968919,
+            147.4028178520548
+          ]
+        },
+        "right": {
+          "minY": 1.3647202668844827,
+          "position": [
+            151.190866130334,
+            1.3647202668844827,
+            147.55127193480845
+          ]
+        }
+      }
+    },
+    {
+      "at": 107686.90000009537,
+      "phase": "walk-out",
+      "root": [
+        151.64628940686603,
+        1.3,
+        147.48779875374893
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.269994617666466,
+      "feet": {
+        "drop": 0.017534398468588643,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.908025404678386
+      },
+      "soles": {
+        "left": {
+          "minY": 1.324220692375323,
+          "position": [
+            151.68742409438696,
+            1.324220692375323,
+            147.41676901177524
+          ]
+        },
+        "right": {
+          "minY": 1.3473898304464063,
+          "position": [
+            151.7440516747403,
+            1.3473898304464063,
+            147.5860028547804
+          ]
+        }
+      }
+    },
+    {
+      "at": 107787.5,
+      "phase": "walk-out",
+      "root": [
+        151.83629107216987,
+        1.3,
+        147.5101518908435
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.3934223972003032,
+      "feet": {
+        "drop": 0.012385455492650948,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9029421220497669
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3425543411236398,
+          "position": [
+            151.68736609388029,
+            1.3425543411236398,
+            147.44229241985298
+          ]
+        },
+        "right": {
+          "minY": 1.3149001671079699,
+          "position": [
+            152.05340942502832,
+            1.3149001671079699,
+            147.57564132694472
+          ]
+        }
+      }
+    },
+    {
+      "at": 107886,
+      "phase": "walk-out",
+      "root": [
+        152.0235029994287,
+        1.3,
+        147.5321768234622
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.516232390934057,
+      "feet": {
+        "drop": 0.0037469044577280747,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9198507569980647
+      },
+      "soles": {
+        "left": {
+          "minY": 1.359088659740577,
+          "position": [
+            151.72565584920164,
+            1.359088659740577,
+            147.45397782109447
+          ]
+        },
+        "right": {
+          "minY": 1.3130481112062007,
+          "position": [
+            152.05733060189903,
+            1.3130481112062007,
+            147.5930008145159
+          ]
+        }
+      }
+    },
+    {
+      "at": 107986.7999997139,
+      "phase": "walk-out",
+      "root": [
+        152.20962718665828,
+        1.3,
+        147.55407378666567
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6371413056561981,
+      "feet": {
+        "drop": 0.01595680918012489,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9107956569060418
+      },
+      "soles": {
+        "left": {
+          "minY": 1.350160741848079,
+          "position": [
+            152.24177347524073,
+            1.350160741848079,
+            147.45007159925945
+          ]
+        },
+        "right": {
+          "minY": 1.322972172857208,
+          "position": [
+            152.26621492140265,
+            1.322972172857208,
+            147.72282000697254
+          ]
+        }
+      }
+    },
+    {
+      "at": 108086.69999980927,
+      "phase": "walk-out",
+      "root": [
+        152.39281426315867,
+        1.3,
+        147.57562520743042
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.756142231545877,
+      "feet": {
+        "drop": 0.01285301322274504,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9052905811711296
+      },
+      "soles": {
+        "left": {
+          "minY": 1.316765435222817,
+          "position": [
+            152.60700847921493,
+            1.316765435222817,
+            147.50805086034148
+          ]
+        },
+        "right": {
+          "minY": 1.3392686914954586,
+          "position": [
+            152.26572457553775,
+            1.3392686914954586,
+            147.741145308306
+          ]
+        }
+      }
+    },
+    {
+      "at": 108186.19999980927,
+      "phase": "walk-out",
+      "root": [
+        152.57345525422855,
+        1.3,
+        147.59687708873278
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.10811383831292726,
+      "feet": {
+        "drop": 0.0021176390194037904,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.917579151071127
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3081569274910967,
+          "position": [
+            152.64231577923883,
+            1.3081569274910967,
+            147.53650199612522
+          ]
+        },
+        "right": {
+          "minY": 1.3482421180909883,
+          "position": [
+            152.2893775641548,
+            1.3482421180909883,
+            147.66526237012081
+          ]
+        }
+      }
+    },
+    {
+      "at": 108287.09999990463,
+      "phase": "walk-out",
+      "root": [
+        152.75120457299872,
+        1.3,
+        147.61778877329397
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.22364780420337863,
+      "feet": {
+        "drop": 0.012341205807148163,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9164870736450903
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3197420491528105,
+          "position": [
+            152.848533408531,
+            1.3197420491528105,
+            147.4508015090439
+          ]
+        },
+        "right": {
+          "minY": 1.3611669032886828,
+          "position": [
+            152.68174949909994,
+            1.3611669032886828,
+            147.71584939918347
+          ]
+        }
+      }
+    },
+    {
+      "at": 108386.40000009537,
+      "phase": "walk-out",
+      "root": [
+        152.92572848818355,
+        1.3,
+        147.63832099860983
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.33702101749794966,
+      "feet": {
+        "drop": 0.015590857653953637,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.905940264379961
+      },
+      "soles": {
+        "left": {
+          "minY": 1.335442470713713,
+          "position": [
+            152.8666974336824,
+            1.335442470713713,
+            147.5653478119396
+          ]
+        },
+        "right": {
+          "minY": 1.3234502032610629,
+          "position": [
+            153.05469703032028,
+            1.3234502032610629,
+            147.70026517879538
+          ]
+        }
+      }
+    },
+    {
+      "at": 108486.2999997139,
+      "phase": "walk-out",
+      "root": [
+        153.09841097784533,
+        1.3,
+        147.65863658562887
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4496094446260919,
+      "feet": {
+        "drop": 0.004543410552258613,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9109673358170436
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3464239204404742,
+          "position": [
+            152.84895221525954,
+            1.3464239204404742,
+            147.5943225408314
+          ]
+        },
+        "right": {
+          "minY": 1.312360429021152,
+          "position": [
+            153.23367431236164,
+            1.312360429021152,
+            147.7241168270037
+          ]
+        }
+      }
+    },
+    {
+      "at": 108587,
+      "phase": "walk-out",
+      "root": [
+        153.26751107981022,
+        1.3,
+        147.6785307152718
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.560242309487869,
+      "feet": {
+        "drop": 0.00717183867336489,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9206735509005515
+      },
+      "soles": {
+        "left": {
+          "minY": 1.372511198523723,
+          "position": [
+            153.06754996369295,
+            1.372511198523723,
+            147.57328772463856
+          ]
+        },
+        "right": {
+          "minY": 1.31561096635147,
+          "position": [
+            153.44158888788888,
+            1.31561096635147,
+            147.84057841456107
+          ]
+        }
+      }
+    },
+    {
+      "at": 108686.40000009537,
+      "phase": "walk-out",
+      "root": [
+        153.4325513485861,
+        1.3,
+        147.69794721748073
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6674548114209321,
+      "feet": {
+        "drop": 0.019912842411786397,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.904935462324416
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3448235766166008,
+          "position": [
+            153.57751682096028,
+            1.3448235766166008,
+            147.59351379634526
+          ]
+        },
+        "right": {
+          "minY": 1.3260782738571144,
+          "position": [
+            153.44289503400262,
+            1.3260782738571144,
+            147.87032004597444
+          ]
+        }
+      }
+    },
+    {
+      "at": 108787.09999990463,
+      "phase": "walk-out",
+      "root": [
+        153.59420530033114,
+        1.3,
+        147.71696532945072
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.005800862957810238,
+      "feet": {
+        "drop": 0.010683303684587756,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9052644462469612
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3149223960036103,
+          "position": [
+            153.8135200113653,
+            1.3149223960036103,
+            147.6491535541921
+          ]
+        },
+        "right": {
+          "minY": 1.3414331061092302,
+          "position": [
+            153.45890739234895,
+            1.3414331061092302,
+            147.7830888689643
+          ]
+        }
+      }
+    },
+    {
+      "at": 108886.90000009537,
+      "phase": "walk-out",
+      "root": [
+        153.75135637063062,
+        1.3,
+        147.73545369066244
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.10917880345735745,
+      "feet": {
+        "drop": 0.0016189674328612868,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9182402333151736
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3077181958577273,
+          "position": [
+            153.81858416363215,
+            1.3077181958577273,
+            147.6751859354929
+          ]
+        },
+        "right": {
+          "minY": 1.347887410391763,
+          "position": [
+            153.4664600466667,
+            1.347887410391763,
+            147.8039439039073
+          ]
+        }
+      }
+    },
+    {
+      "at": 108986.90000009537,
+      "phase": "walk-out",
+      "root": [
+        153.90693961466397,
+        1.3,
+        147.75375760172517
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.21031430345594493,
+      "feet": {
+        "drop": 0.011137030503685367,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9180747944111871
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3183379652175935,
+          "position": [
+            154.0247345848999,
+            1.3183379652175935,
+            147.58744331497925
+          ]
+        },
+        "right": {
+          "minY": 1.36596118994937,
+          "position": [
+            153.7929741910797,
+            1.36596118994937,
+            147.8518418710041
+          ]
+        }
+      }
+    },
+    {
+      "at": 109086.40000009537,
+      "phase": "walk-out",
+      "root": [
+        154.05675316882335,
+        1.3,
+        147.77138272574393
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.307635315376523,
+      "feet": {
+        "drop": 0.02273453481691994,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9008378822835392
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3285236409403525,
+          "position": [
+            154.0423389517571,
+            1.3285236409403525,
+            147.697252244478
+          ]
+        },
+        "right": {
+          "minY": 1.3436130254885952,
+          "position": [
+            154.1409900510321,
+            1.3436130254885952,
+            147.7969281979462
+          ]
+        }
+      }
+    },
+    {
+      "at": 109186.2999997139,
+      "phase": "walk-out",
+      "root": [
+        154.20263425203441,
+        1.3,
+        147.78854520612168
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.40240173833359905,
+      "feet": {
+        "drop": 0.008465848048057863,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9058279588988636
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3433897982021406,
+          "position": [
+            154.0378337946358,
+            1.3433897982021406,
+            147.72113028282004
+          ]
+        },
+        "right": {
+          "minY": 1.3123982070797897,
+          "position": [
+            154.4105943189315,
+            1.3123982070797897,
+            147.85335612018721
+          ]
+        }
+      }
+    },
+    {
+      "at": 109286.69999980927,
+      "phase": "walk-out",
+      "root": [
+        154.34410943910422,
+        1.3,
+        147.80518934577697
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4953378101195725,
+      "feet": {
+        "drop": 0.002307446919203962,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9181190519947842
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3477071597190238,
+          "position": [
+            154.05148924317783,
+            1.3477071597190238,
+            147.734550273522
+          ]
+        },
+        "right": {
+          "minY": 1.3084089619282209,
+          "position": [
+            154.40983439355728,
+            1.3084089619282209,
+            147.8660183310719
+          ]
+        }
+      }
+    },
+    {
+      "at": 109385.7999997139,
+      "phase": "walk-out",
+      "root": [
+        154.4810096563318,
+        1.3,
+        147.8212952536861
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5844328211428513,
+      "feet": {
+        "drop": 0.010552632725682102,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9188554286154236
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3707088194442545,
+          "position": [
+            154.3329918494401,
+            1.3707088194442545,
+            147.71777144974658
+          ]
+        },
+        "right": {
+          "minY": 1.3176756547491837,
+          "position": [
+            154.61836346619555,
+            1.3176756547491837,
+            147.98477571111138
+          ]
+        }
+      }
+    },
+    {
+      "at": 109487,
+      "phase": "walk-out",
+      "root": [
+        154.61316583001616,
+        1.3,
+        147.83684303882544
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6702833479972576,
+      "feet": {
+        "drop": 0.021093776131305784,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9036535542393116
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3450150496460576,
+          "position": [
+            154.7686512318407,
+            1.3450150496460576,
+            147.7328052747145
+          ]
+        },
+        "right": {
+          "minY": 1.3269673717181223,
+          "position": [
+            154.61915022903514,
+            1.3269673717181223,
+            148.00940455543233
+          ]
+        }
+      }
+    },
+    {
+      "at": 109586.59999990463,
+      "phase": "walk-out",
+      "root": [
+        154.73966041426246,
+        1.3,
+        147.8517247546191
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.752456025966208,
+      "feet": {
+        "drop": 0.013308813682804923,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9053592364602148
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3181024634673912,
+          "position": [
+            154.95003113936522,
+            1.3181024634673912,
+            147.7843712530942
+          ]
+        },
+        "right": {
+          "minY": 1.3397751761527616,
+          "position": [
+            154.61840059497428,
+            1.3397751761527616,
+            148.01725321483872
+          ]
+        }
+      }
+    },
+    {
+      "at": 109686.2999997139,
+      "phase": "walk-out",
+      "root": [
+        154.86197186925347,
+        1.3,
+        147.86611433755922
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.06593440493845949,
+      "feet": {
+        "drop": 0.002614963094329825,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.912798628452345
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3106564205692186,
+          "position": [
+            154.99516194100212,
+            1.3106564205692186,
+            147.80108437165342
+          ]
+        },
+        "right": {
+          "minY": 1.345828223016534,
+          "position": [
+            154.62007889068954,
+            1.345828223016534,
+            147.9296596525753
+          ]
+        }
+      }
+    },
+    {
+      "at": 109786.40000009537,
+      "phase": "walk-out",
+      "root": [
+        154.9790223988879,
+        1.3,
+        147.87988498810446
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.14263910853197323,
+      "feet": {
+        "drop": 0.0032113275828696657,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9210362270475545
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3117854923344203,
+          "position": [
+            154.99507523647816,
+            1.3117854923344203,
+            147.8179679698538
+          ]
+        },
+        "right": {
+          "minY": 1.3605023899719146,
+          "position": [
+            154.70599984403387,
+            1.3605023899719146,
+            147.9634122789489
+          ]
+        }
+      }
+    },
+    {
+      "at": 109886.40000009537,
+      "phase": "walk-out",
+      "root": [
+        155.09096861530205,
+        1.3,
+        147.893055131212
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.215360960191093,
+      "feet": {
+        "drop": 0.012936354698386275,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9163270521206905
+      },
+      "soles": {
+        "left": {
+          "minY": 1.319231436419132,
+          "position": [
+            155.20080605800607,
+            1.319231436419132,
+            147.7264377866558
+          ]
+        },
+        "right": {
+          "minY": 1.364942725721558,
+          "position": [
+            154.99337563432326,
+            1.364942725721558,
+            147.9910882710046
+          ]
+        }
+      }
+    },
+    {
+      "at": 109986.09999990463,
+      "phase": "walk-out",
+      "root": [
+        155.19645622444523,
+        1.3,
+        147.90546543817004
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.2838872088639949,
+      "feet": {
+        "drop": 0.021492380919003285,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9030547934137858
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3273201363665872,
+          "position": [
+            155.21743900882979,
+            1.3273201363665872,
+            147.83293238790029
+          ]
+        },
+        "right": {
+          "minY": 1.347986663142718,
+          "position": [
+            155.34535491726487,
+            1.347986663142718,
+            148.0036236713768
+          ]
+        }
+      }
+    },
+    {
+      "at": 110086.7999997139,
+      "phase": "walk-out",
+      "root": [
+        155.29652372754973,
+        1.3,
+        147.91723808559408
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.34889247969639553,
+      "feet": {
+        "drop": 0.016106422861878866,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9043700996404953
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3379253858992242,
+          "position": [
+            155.21965000729045,
+            1.3379253858992242,
+            147.84665847497135
+          ]
+        },
+        "right": {
+          "minY": 1.3200621454919677,
+          "position": [
+            155.4641559463182,
+            1.3200621454919677,
+            147.97977391885536
+          ]
+        }
+      }
+    },
+    {
+      "at": 110186.09999990463,
+      "phase": "walk-out",
+      "root": [
+        155.39113243908596,
+        1.3,
+        147.92836852224542
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4109482929116031,
+      "feet": {
+        "drop": 0.0056117567188838135,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9081224987844372
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3441055735778744,
+          "position": [
+            155.21200778572913,
+            1.3441055735778744,
+            147.86154085226642
+          ]
+        },
+        "right": {
+          "minY": 1.3106869662859335,
+          "position": [
+            155.58677987688884,
+            1.3106869662859335,
+            147.99251730524418
+          ]
+        }
+      }
+    },
+    {
+      "at": 110287.09999990463,
+      "phase": "walk-out",
+      "root": [
+        155.47934080781846,
+        1.3,
+        147.9387459773904
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.4680644807795347,
+      "feet": {
+        "drop": 0.003045352761936531,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9141571649418687
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3450253340362672,
+          "position": [
+            155.19822599318036,
+            1.3450253340362672,
+            147.87487193154598
+          ]
+        },
+        "right": {
+          "minY": 1.3100939377250533,
+          "position": [
+            155.58606494833552,
+            1.3100939377250533,
+            148.0030893599822
+          ]
+        }
+      }
+    },
+    {
+      "at": 110386.19999980927,
+      "phase": "walk-out",
+      "root": [
+        155.56134958455806,
+        1.3,
+        147.94839406877153
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5221215842024514,
+      "feet": {
+        "drop": 0.0034339398750540167,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.920758876054362
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3596278081890936,
+          "position": [
+            155.27306970515156,
+            1.3596278081890936,
+            147.86606562686939
+          ]
+        },
+        "right": {
+          "minY": 1.3112686105793163,
+          "position": [
+            155.5863118326996,
+            1.3112686105793163,
+            148.01017389711208
+          ]
+        }
+      }
+    },
+    {
+      "at": 110486.69999980927,
+      "phase": "walk-out",
+      "root": [
+        155.6366089577686,
+        1.3,
+        147.95724811267866
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.5710111416157029,
+      "feet": {
+        "drop": 0.010347024633661644,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9183132902877882
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3725317230575134,
+          "position": [
+            155.4670628747111,
+            1.3725317230575134,
+            147.8486219782941
+          ]
+        },
+        "right": {
+          "minY": 1.316494783100719,
+          "position": [
+            155.79418641685655,
+            1.316494783100719,
+            148.11997228023301
+          ]
+        }
+      }
+    },
+    {
+      "at": 110587.2999997139,
+      "phase": "walk-out",
+      "root": [
+        155.70535633034382,
+        1.3,
+        147.96533603886397
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6156704109551321,
+      "feet": {
+        "drop": 0.01652207422832012,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9117878773628896
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3599382993597724,
+          "position": [
+            155.6593253988376,
+            1.3599382993597724,
+            147.8618452303595
+          ]
+        },
+        "right": {
+          "minY": 1.3224449298302428,
+          "position": [
+            155.79431227864265,
+            1.3224449298302428,
+            148.13103474371508
+          ]
+        }
+      }
+    },
+    {
+      "at": 110686.7999997139,
+      "phase": "walk-out",
+      "root": [
+        155.76746169070293,
+        1.3,
+        147.9726425518474
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6560149348518873,
+      "feet": {
+        "drop": 0.021547265913883295,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9038958530486596
+      },
+      "soles": {
+        "left": {
+          "minY": 1.347997078177032,
+          "position": [
+            155.86959158197803,
+            1.347997078177032,
+            147.86794884513748
+          ]
+        },
+        "right": {
+          "minY": 1.32736107564182,
+          "position": [
+            155.7950993007141,
+            1.32736107564182,
+            148.1439514611827
+          ]
+        }
+      }
+    },
+    {
+      "at": 110786.59999990463,
+      "phase": "walk-out",
+      "root": [
+        155.82255959153673,
+        1.3,
+        147.97912465782784
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.6918073135450753,
+      "feet": {
+        "drop": 0.025432203648477775,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.898214547537459
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3440041372172018,
+          "position": [
+            155.90580370804236,
+            1.3440041372172018,
+            147.9488002985177
+          ]
+        },
+        "right": {
+          "minY": 1.3312643528502013,
+          "position": [
+            155.79542954186127,
+            1.3312643528502013,
+            148.15313686343617
+          ]
+        }
+      }
+    },
+    {
+      "at": 110886.59999990463,
+      "phase": "walk-out",
+      "root": [
+        155.87054641701366,
+        1.3,
+        147.98477016670748
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.7229802367193173,
+      "feet": {
+        "drop": 0.017551361988602833,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9039983085033585
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3221628153539788,
+          "position": [
+            156.00420890121694,
+            1.3221628153539788,
+            147.9188807069823
+          ]
+        },
+        "right": {
+          "minY": 1.335679808573073,
+          "position": [
+            155.79523873340176,
+            1.335679808573073,
+            148.15577733599065
+          ]
+        }
+      }
+    },
+    {
+      "at": 110986.69999980927,
+      "phase": "walk-out",
+      "root": [
+        155.91121607949944,
+        1.3,
+        147.98955483288228
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.7493998269212425,
+      "feet": {
+        "drop": 0.011358338036277636,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9077189442902802
+      },
+      "soles": {
+        "left": {
+          "minY": 1.317929819894353,
+          "position": [
+            156.1175753873779,
+            1.317929819894353,
+            147.92240510798135
+          ]
+        },
+        "right": {
+          "minY": 1.3389773759789723,
+          "position": [
+            155.79478504514609,
+            1.3389773759789723,
+            148.1551797638574
+          ]
+        }
+      }
+    },
+    {
+      "at": 111087,
+      "phase": "walk-out",
+      "root": [
+        155.94430402497917,
+        1.3,
+        147.9934475323505
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.0042275753343857525,
+      "feet": {
+        "drop": 0.008113558287750748,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.908023630767299
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3138934029851117,
+          "position": [
+            156.16512644112618,
+            1.3138934029851117,
+            147.9255113494438
+          ]
+        },
+        "right": {
+          "minY": 1.339772517272829,
+          "position": [
+            155.81174210269833,
+            1.339772517272829,
+            148.05963176966006
+          ]
+        }
+      }
+    },
+    {
+      "at": 111186.09999990463,
+      "phase": "walk-out",
+      "root": [
+        155.9700625473711,
+        1.3,
+        147.99647794674954
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.021522539986930378,
+      "feet": {
+        "drop": 0.002898415865128646,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9113754496419104
+      },
+      "soles": {
+        "left": {
+          "minY": 1.308977693567973,
+          "position": [
+            156.17187680794493,
+            1.308977693567973,
+            147.93008677130643
+          ]
+        },
+        "right": {
+          "minY": 1.341419247178103,
+          "position": [
+            155.8077479663416,
+            1.341419247178103,
+            148.0618223436823
+          ]
+        }
+      }
+    },
+    {
+      "at": 111287,
+      "phase": "walk-out",
+      "root": [
+        155.98800149133297,
+        1.3,
+        147.99858841074504
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.03369683925480253,
+      "feet": {
+        "drop": 0.00035350869753927503,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.91304793527226
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3058187043532574,
+          "position": [
+            156.17205563099782,
+            1.3058187043532574,
+            147.9335915241816
+          ]
+        },
+        "right": {
+          "minY": 1.3413276527611755,
+          "position": [
+            155.80514439872738,
+            1.3413276527611755,
+            148.06299461972088
+          ]
+        }
+      }
+    },
+    {
+      "at": 111386.59999990463,
+      "phase": "walk-out",
+      "root": [
+        155.99787332644948,
+        1.3,
+        147.9997498031117
+      ],
+      "held": false,
+      "blocked": false,
+      "animation": "Walk",
+      "animationTime": 0.040055988540678614,
+      "feet": {
+        "drop": 0.000038651081552592675,
+        "held": false,
+        "budget": 0.34,
+        "pelvisWorldY": 1.9136542555317706
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3052189169696409,
+          "position": [
+            156.171898303154,
+            1.3052189169696409,
+            147.9348980624613
+          ]
+        },
+        "right": {
+          "minY": 1.3408721731241855,
+          "position": [
+            155.8038976998158,
+            1.3408721731241855,
+            148.06398905469064
+          ]
+        }
+      }
+    },
+    {
+      "at": 111495.09999990463,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.016599999904632567,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3014999809265135,
+          "position": [
+            156.04021658849197,
+            1.3014999809265135,
+            147.89707284817842
+          ]
+        },
+        "right": {
+          "minY": 1.3162514175755953,
+          "position": [
+            155.99495766008454,
+            1.3162514175755953,
+            148.0962967854181
+          ]
+        }
+      }
+    },
+    {
+      "at": 111589.69999980927,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.1335,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3014998831733409,
+          "position": [
+            155.98491837547672,
+            1.3014998831733409,
+            147.8435954290238
+          ]
+        },
+        "right": {
+          "minY": 1.3110558127928515,
+          "position": [
+            155.9774411796333,
+            1.3110558127928515,
+            148.0590836263753
+          ]
+        }
+      }
+    },
+    {
+      "at": 111688.40000009537,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.23350000000000004,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3014999113068315,
+          "position": [
+            155.97898983432523,
+            1.3014999113068315,
+            147.8279055882639
+          ]
+        },
+        "right": {
+          "minY": 1.3059282268268662,
+          "position": [
+            155.97557689342784,
+            1.3059282268268662,
+            148.04388131679647
+          ]
+        }
+      }
+    },
+    {
+      "at": 111788.5,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.3334000000953675,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3027035713046824,
+          "position": [
+            155.97574143438095,
+            1.3027035713046824,
+            147.82144728039745
+          ]
+        },
+        "right": {
+          "minY": 1.3047108250131099,
+          "position": [
+            155.97433177513898,
+            1.3047108250131099,
+            148.03759028760373
+          ]
+        }
+      }
+    },
+    {
+      "at": 111889,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.43350000000000016,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3043939901661668,
+          "position": [
+            155.97389165990634,
+            1.3043939901661668,
+            147.8192883489979
+          ]
+        },
+        "right": {
+          "minY": 1.3053658057953972,
+          "position": [
+            155.97334273683234,
+            1.3053658057953972,
+            148.0354883956839
+          ]
+        }
+      }
+    },
+    {
+      "at": 111988.19999980927,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.5334000000953676,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.305077377380528,
+          "position": [
+            155.97309219920115,
+            1.305077377380528,
+            147.81920158098504
+          ]
+        },
+        "right": {
+          "minY": 1.3056458453807551,
+          "position": [
+            155.97288593397965,
+            1.3056458453807551,
+            148.03542187511226
+          ]
+        }
+      }
+    },
+    {
+      "at": 112088.40000009537,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.6334000000953677,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.305348028605498,
+          "position": [
+            155.97286060341165,
+            1.305348028605498,
+            147.8199566547524
+          ]
+        },
+        "right": {
+          "minY": 1.3057717008914356,
+          "position": [
+            155.972785124129,
+            1.3057717008914356,
+            148.03618420440512
+          ]
+        }
+      }
+    },
+    {
+      "at": 112189.40000009537,
+      "held": false,
+      "animation": "Run",
+      "animationTime": 0.06150816724911407,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.303576036120417,
+          "position": [
+            155.81242001758218,
+            1.303576036120417,
+            148.0387116028655
+          ]
+        },
+        "right": {
+          "minY": 1.303616238142971,
+          "position": [
+            156.0283286987345,
+            1.303616238142971,
+            148.03243598790158
+          ]
+        }
+      }
+    },
+    {
+      "at": 112289,
+      "held": false,
+      "animation": "Run",
+      "animationTime": 0.07618749683106239,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.298780903747999,
+          "position": [
+            155.9099484492258,
+            1.298780903747999,
+            147.88812443551916
+          ]
+        },
+        "right": {
+          "minY": 1.3906816731306055,
+          "position": [
+            156.1188754164487,
+            1.3906816731306055,
+            147.99898454486004
+          ]
+        }
+      }
+    },
+    {
+      "at": 112388.7999997139,
+      "held": false,
+      "animation": "Run",
+      "animationTime": 0.11276414779502032,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3114758891760407,
+          "position": [
+            155.90893606123493,
+            1.3114758891760407,
+            147.8880796566246
+          ]
+        },
+        "right": {
+          "minY": 1.511351584587948,
+          "position": [
+            156.12353195300895,
+            1.511351584587948,
+            148.04279518526988
+          ]
+        }
+      }
+    },
+    {
+      "at": 112488.59999990463,
+      "held": false,
+      "animation": "Run",
+      "animationTime": 0.17073436263961708,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.333596132996767,
+          "position": [
+            155.76721911547088,
+            1.333596132996767,
+            147.95553897475617
+          ]
+        },
+        "right": {
+          "minY": 1.4254415422931241,
+          "position": [
+            155.86679168621623,
+            1.4254415422931241,
+            147.70655804250362
+          ]
+        }
+      }
+    },
+    {
+      "at": 112587.69999980927,
+      "held": false,
+      "animation": "Run",
+      "animationTime": 0.24261038652367947,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.4265083527901503,
+          "position": [
+            155.7494787321821,
+            1.4265083527901503,
+            147.89048954119028
+          ]
+        },
+        "right": {
+          "minY": 1.3627714371007573,
+          "position": [
+            155.48597811895434,
+            1.3627714371007573,
+            147.26026857555493
+          ]
+        }
+      }
+    },
+    {
+      "at": 112689.09999990463,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.017600000381469725,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.4402701988268019,
+          "position": [
+            155.71562954168465,
+            1.4402701988268019,
+            147.84318228346373
+          ]
+        },
+        "right": {
+          "minY": 1.3105670609077695,
+          "position": [
+            155.529868442282,
+            1.3105670609077695,
+            147.25231470506887
+          ]
+        }
+      }
+    },
+    {
+      "at": 112789.2999997139,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.11760000038146973,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.4797590510384486,
+          "position": [
+            155.66407191985314,
+            1.4797590510384486,
+            147.77772907434044
+          ]
+        },
+        "right": {
+          "minY": 1.301499986646644,
+          "position": [
+            155.52986843159496,
+            1.301499986646644,
+            147.2523146935522
+          ]
+        }
+      }
+    },
+    {
+      "at": 112888.69999980927,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.2173000001907349,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.4214655402631362,
+          "position": [
+            155.47515152460824,
+            1.4214655402631362,
+            147.55322131663812
+          ]
+        },
+        "right": {
+          "minY": 1.30149992942654,
+          "position": [
+            155.52986842066397,
+            1.30149992942654,
+            147.2523146792696
+          ]
+        }
+      }
+    },
+    {
+      "at": 112988.90000009537,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.3176000003814698,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.355547615161262,
+          "position": [
+            155.33939284940195,
+            1.355547615161262,
+            147.39712674019597
+          ]
+        },
+        "right": {
+          "minY": 1.3014999599438337,
+          "position": [
+            155.52986842735928,
+            1.3014999599438337,
+            147.2523146889496
+          ]
+        }
+      }
+    },
+    {
+      "at": 113088.69999980927,
+      "held": false,
+      "animation": "Idle",
+      "animationTime": 0.4177000002861023,
+      "feet": {
+        "drop": 0,
+        "held": false,
+        "budget": 0,
+        "pelvisWorldY": null
+      },
+      "soles": {
+        "left": {
+          "minY": 1.3202607674878228,
+          "position": [
+            155.47270845878492,
+            1.3202607674878228,
+            147.5472918503604
+          ]
+        },
+        "right": {
+          "minY": 1.301499930380072,
+          "position": [
+            155.52986842797515,
+            1.301499930380072,
+            147.25231469070218
+          ]
+        }
+      }
+    }
+  ],
+  "mime": "video/webm;codecs=vp9"
+}

@@ -1,0 +1,20 @@
+TAP version 13
+# (node:98327) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: ferry complete runtime clears actual pier boards, rails, posts, fixed bridges and both terrain meshes
+ok 1 - ferry complete runtime clears actual pier boards, rails, posts, fixed bridges and both terrain meshes
+  ---
+  duration_ms: 8307.601708
+  type: 'test'
+  ...
+# {"samples":1049,"obstacles":7,"terrainTriangles":2998,"collisions":0,"examples":[]}
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8764.817083

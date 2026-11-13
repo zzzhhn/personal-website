@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import { rideEnvironment } from './rides/ride-environment';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useWorldStore } from './store';
 import { advanceWorldMinutes, sampleTimeLight, timePresetAt, TIME_PRESETS } from './world-climate';
@@ -12,6 +13,11 @@ export function NightClock() {
   const invalidate = useThree(s => s.invalidate);
   const state = useRef({ revision: -1, light: useWorldStore.getState().light, weather: useWorldStore.getState().weather,
     published: -1, transition: 2, sample: sampleTimeLight(1050) });
+  useEffect(() => {
+    // Browser backgrounding can stop frame callbacks; restore visible uniforms synchronously.
+    const restore = () => { if (document.hidden) { const s=useWorldStore.getState(); climate.rain=s.weather==='rain'?1:0; climate.snow=s.weather==='snow'?1:0; weatherUniforms.uRain.value=climate.rain;weatherUniforms.uSnow.value=climate.snow; } };
+    document.addEventListener('visibilitychange',restore); return()=>document.removeEventListener('visibilitychange',restore);
+  }, []);
   useFrame((_, delta) => {
     const s = useWorldStore.getState(), r = state.current;
     if (r.revision !== s.timeRevision || r.light !== s.light) {
@@ -29,8 +35,9 @@ export function NightClock() {
     r.transition = Math.min(2, r.transition + Math.min(delta, .1));
     climate.blend = r.transition >= 2 ? 1 : 1 - Math.exp(-Math.min(delta, .1) * 5);
     night.value += (sampleTimeLight(climate.minutes, r.sample).night - night.value) * climate.blend;
-    climate.rain += ((s.weather === 'rain' ? 1 : 0) - climate.rain) * climate.blend;
-    climate.snow += ((s.weather === 'snow' ? 1 : 0) - climate.snow) * climate.blend;
+    const overlay=rideEnvironment.sample(s.weather,!running);
+    climate.rain += ((overlay?.rain ?? (s.weather === 'rain' ? 1 : 0)) - climate.rain) * climate.blend;
+    climate.snow += ((overlay?.snow ?? (s.weather === 'snow' ? 1 : 0)) - climate.snow) * climate.blend;
     weatherUniforms.uRain.value = climate.rain; weatherUniforms.uSnow.value = climate.snow;
     // A menu edit gets a finite transition, then demand rendering sleeps again.
     if (r.transition < 2 && !document.hidden) invalidate();

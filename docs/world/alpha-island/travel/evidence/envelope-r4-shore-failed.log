@@ -1,0 +1,179 @@
+TAP version 13
+# (node:88542) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: fresh GLB cabin, moving grip and sled clear complete towers, guide rollers and terminal canopies
+not ok 1 - fresh GLB cabin, moving grip and sled clear complete towers, guide rollers and terminal canopies
+  ---
+  duration_ms: 4089.45725
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+    + [
+    +   {
+    +     hits: [
+    +       'beam-5'
+    +     ],
+    +     part: 'body',
+    +     u: 0.062
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-5'
+    +     ],
+    +     part: 'body',
+    +     u: 0.063
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-5'
+    +     ],
+    +     part: 'body',
+    +     u: 0.064
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.088
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.089
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.09
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.092
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.093
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.094
+    +   },
+    +   {
+    +     hits: [
+    +       'beam-10'
+    +     ],
+    +     part: 'body',
+    +     u: 0.095
+    +   }
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0:
+      u: 0.062
+      part: 'body'
+      hits:
+        0: 'beam-5'
+    1:
+      u: 0.063
+      part: 'body'
+      hits:
+        0: 'beam-5'
+    2:
+      u: 0.064
+      part: 'body'
+      hits:
+        0: 'beam-5'
+    3:
+      u: 0.088
+      part: 'body'
+      hits:
+        0: 'beam-10'
+    4:
+      u: 0.089
+      part: 'body'
+      hits:
+        0: 'beam-10'
+    5:
+      u: 0.09
+      part: 'body'
+      hits:
+        0: 'beam-10'
+    6:
+      u: 0.092
+      part: 'body'
+      hits:
+        0: 'beam-10'
+    7:
+      u: 0.093
+      part: 'body'
+      hits:
+        0: 'beam-10'
+    8:
+      u: 0.094
+      part: 'body'
+      hits:
+        0: 'beam-10'
+    9:
+      u: 0.095
+      part: 'body'
+      hits:
+        0: 'beam-10'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:15:149)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# {"route":"alpha-cable","samples":1001,"obstacles":28,"collisions":0,"examples":[]}
+# {"route":"alpha-sled","samples":1001,"obstacles":158,"collisions":10,"examples":[{"u":0.062,"part":"body","hits":["beam-5"]},{"u":0.063,"part":"body","hits":["beam-5"]},{"u":0.064,"part":"body","hits":["beam-5"]},{"u":0.088,"part":"body","hits":["beam-10"]},{"u":0.089,"part":"body","hits":["beam-10"]},{"u":0.09,"part":"body","hits":["beam-10"]},{"u":0.092,"part":"body","hits":["beam-10"]},{"u":0.093,"part":"body","hits":["beam-10"]},{"u":0.094,"part":"body","hits":["beam-10"]},{"u":0.095,"part":"body","hits":["beam-10"]}]}
+# Subtest: r4 ferry full runtime hull and fenders clear actual old/new shoreline over sampled sailing path
+not ok 2 - r4 ferry full runtime hull and fenders clear actual old/new shoreline over sampled sailing path
+  ---
+  duration_ms: 15850.088333
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:17:1'
+  failureType: 'testCodeFailure'
+  error: 'full hull ground clearance'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///Users/bobby/Desktop/3D-personal-world/wt/alpha-batch1-travel/src/components/world/alpha-island/transports/transport-envelope.test.mjs:20:98)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# {"samples":501,"vertices":1986,"minimum":-1.850963629479923,"worst":{"u":0.99,"point":[144.31030452251434,-0.7566482543945312,146.6557973751942],"ground":1.0943153750853918}}
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 20361.964

@@ -1,0 +1,73 @@
+TAP version 13
+# Subtest: actual route interpolation remains within terminal elevations and transform endpoints
+ok 1 - actual route interpolation remains within terminal elevations and transform endpoints
+  ---
+  duration_ms: 3.720208
+  type: 'test'
+  ...
+# Subtest: fixed gangway visible top, collision triangles and foot sampler share the same sloping surface
+ok 2 - fixed gangway visible top, collision triangles and foot sampler share the same sloping surface
+  ---
+  duration_ms: 3.994875
+  type: 'test'
+  ...
+# Subtest: fresh runtime GLBs support actual G24 buttock patch and both boots through full route orientation
+ok 3 - fresh runtime GLBs support actual G24 buttock patch and both boots through full route orientation
+  ---
+  duration_ms: 127.608083
+  type: 'test'
+  ...
+# 3180 boot/physical-footrest samples; minimum=-0.0005286943639788433m
+# Subtest: SitDown and StandUp boots remain above their real boarding/footrest supports
+ok 4 - SitDown and StandUp boots remain above their real boarding/footrest supports
+  ---
+  duration_ms: 151.593542
+  type: 'test'
+  ...
+# 206064 SitDown/StandUp boot/support samples, minimum=0.0029997945860992248m
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: visible sled deck has upward front faces and exactly matching Rapier support
+ok 5 - visible sled deck has upward front faces and exactly matching Rapier support
+  ---
+  duration_ms: 8.189292
+  type: 'test'
+  ...
+# Subtest: cable entry and short independent exit clear their canopy posts and closed panels
+ok 6 - cable entry and short independent exit clear their canopy posts and closed panels
+  ---
+  duration_ms: 3.755708
+  type: 'test'
+  ...
+# Subtest: blocked station egress holds a standing rider until route is clear
+ok 7 - blocked station egress holds a standing rider until route is clear
+  ---
+  duration_ms: 17.588917
+  type: 'test'
+  ...
+# Subtest: an obstacle entering after walk-out starts stops the current segment and removal resumes
+ok 8 - an obstacle entering after walk-out starts stops the current segment and removal resumes
+  ---
+  duration_ms: 11.205917
+  type: 'test'
+  ...
+# Subtest: obstacle inserted on final approach step holds actor and camera until removed
+ok 9 - obstacle inserted on final approach step holds actor and camera until removed
+  ---
+  duration_ms: 0.658459
+  type: 'test'
+  ...
+# Subtest: sled walking paths clear the actual runtime footrest, runners, seat and backrest at both ends
+ok 10 - sled walking paths clear the actual runtime footrest, runners, seat and backrest at both ends
+  ---
+  duration_ms: 443.615041
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 825.968625

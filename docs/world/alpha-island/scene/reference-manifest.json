@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "scene": "Alpha mountain island batch 1",
+  "references": [
+    {
+      "role": "day",
+      "path": "docs/world/alpha-island/scene/references/day.png",
+      "sha256": "c0284bf802a9158680d003bcf04e06fe67ac146e231f4b549f8e0cfa1e8376b8"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/alpha-island/scene/references/night.png",
+      "sha256": "8497d9a4c78e0283309f9ae6864914b8bb7ec204c931a16483db2ab52264e4d4"
+    }
+  ],
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "quote": "1. 用雪橇滑道。2. 可以，放纸灯。3. 可以。",
+      "date": "2026-11-13",
+      "scope": "Approved first batch 1/3/7/8/11/12 and reference direction per ALPHA-BATCH1-KICKOFF. Night is implementation derivative, not separate user acceptance. Detailed engineering layout authored by scene owner under this scope."
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "quote": "1. 用雪橇滑道。2. 可以，放纸灯。3. 可以。",
+      "date": "2026-11-13",
+      "scope": "Approved first batch 1/3/7/8/11/12 and reference direction per ALPHA-BATCH1-KICKOFF. Night is implementation derivative, not separate user acceptance. Detailed engineering layout authored by scene owner under this scope."
+    }
+  },
+  "reviewViews": [
+    "dock encounter third person 12:00/00:00",
+    "tree rope contact 12:00/00:00",
+    "wind slope route and flags 12:00/00:00",
+    "summit rack, hand and release 12:00/00:00"
+  ],
+  "failureConditions": [
+    "Pure color ground or column trees dominate ordinary view",
+    "Night path, supports or character unreadable",
+    "Terrain or terminal collider disagrees with visible ground",
+    "Lantern floats before pickup or disappears on cancel",
+    "Terrain blocks cable or sled corridor",
+    "Routes cross old facilities or lack safe exit"
+  ],
+  "provenance": "Generated concept reference, never runtime evidence. Day supplied via approved kickoff; night derived 2026-11-13 using built-in imagegen."
+}

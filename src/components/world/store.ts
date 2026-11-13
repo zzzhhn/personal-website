@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { cancelAlphaHand } from './alpha-island/alpha-state';
 import type { Lang, Vec3, VehicleId } from './types';
 import { TIME_PRESETS, type TimePreset, type Weather } from './world-climate.ts';
 import { cancelCampPropInteraction } from './camp-prop-interactions';
@@ -34,7 +35,7 @@ interface WorldState {
   recoverRequest: number;
   speed: number;
   /** v4 adds the north ridge and the open shore (west / south beach). */
-  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster';
+  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster' | 'alpha';
   position: Vec3;
   ready: boolean;
   /** Actual discovered loader items; the core scene still determines when play can begin. */
@@ -58,6 +59,7 @@ export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturn
 export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
+  if (cancelAlphaHand()) return;
   if (cancelCampPropInteraction()) return;
   const state=useWorldStore.getState();
   if(state.clubMode)useWorldStore.setState({clubMode:null});
