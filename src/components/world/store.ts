@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { cancelAlphaHand } from './alpha-island/alpha-state';
 import type { Lang, Vec3, VehicleId } from './types';
 import { TIME_PRESETS, type TimePreset, type Weather } from './world-climate.ts';
 import { cancelCampPropInteraction } from './camp-prop-interactions';
@@ -58,6 +59,7 @@ export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturn
 export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
+  if (cancelAlphaHand()) return;
   if (cancelCampPropInteraction()) return;
   const state=useWorldStore.getState();
   if(state.clubMode)useWorldStore.setState({clubMode:null});
