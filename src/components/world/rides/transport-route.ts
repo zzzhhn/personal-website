@@ -1,4 +1,4 @@
-import { CatmullRomCurve3, Quaternion, Vector3 } from 'three';
+import { CatmullRomCurve3, Matrix4, Quaternion, Vector3 } from 'three';
 import type { Vec3 } from '../types';
 import type { TransportRoute, TransportTransform, TransportSample } from './ride-contract';
 export const tuple = (v: Vector3): Vec3 => v.toArray() as Vec3;
@@ -20,8 +20,9 @@ export function sampleTransport(route: TransportRoute, u: number, curve = transp
   if (route.kind !== 'sled') tangent.y = 0;
   tangent.normalize().applyAxisAngle(new Vector3(0,1,0),route.transform.yaw);
   const yaw = Math.atan2(-tangent.z,tangent.x);
+  const side=new Vector3().crossVectors(tangent,new Vector3(0,1,0)).normalize(),up=new Vector3().crossVectors(side,tangent).normalize();
   const orientation = route.kind === 'sled'
-    ? new Quaternion().setFromUnitVectors(new Vector3(1,0,0),tangent)
+    ? new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(tangent,up,side))
     : new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw);
   const vehicle = transportWorld(tuple(local),route.transform);
   const seatOffset = new Vector3(...route.terminals[0].seat).applyQuaternion(orientation);
