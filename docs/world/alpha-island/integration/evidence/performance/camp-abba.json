@@ -1,0 +1,395 @@
+{
+  "machine": "Apple M5 Pro",
+  "note": "Production pages, same browser/version and 1080p Balanced camp noon. 10s includes unresolved loading work; not all-island acceptance or M3 certification.",
+  "runs": [
+    {
+      "variant": "baseline",
+      "base": "http://127.0.0.1:4354",
+      "readyMs": 13149,
+      "errors": [],
+      "n": 600,
+      "p50": 16.700000000000728,
+      "p95": 16.799999999999272,
+      "p99": 16.80000000000291,
+      "max": 16.80000000000291,
+      "over50": 0,
+      "slow": [],
+      "stats": {
+        "calls": 249,
+        "triangles": 842075,
+        "geometries": 240,
+        "textures": 121,
+        "programs": 145,
+        "camera": [
+          -36.90824752677522,
+          14.754698564790326,
+          41.79515258962523
+        ]
+      },
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          1.5
+        ],
+        "quality": "balanced",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 1254,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "state": {
+        "ready": true,
+        "loading": {
+          "phase": "ready",
+          "loaded": 288,
+          "total": 288,
+          "active": false,
+          "failed": 0
+        }
+      },
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "variant": "candidate",
+      "base": "http://127.0.0.1:4355",
+      "readyMs": 13651,
+      "errors": [],
+      "n": 600,
+      "p50": 16.700000000000728,
+      "p95": 16.799999999999272,
+      "p99": 16.80000000000291,
+      "max": 16.80000000000291,
+      "over50": 0,
+      "slow": [],
+      "stats": {
+        "calls": 249,
+        "triangles": 842075,
+        "geometries": 238,
+        "textures": 120,
+        "programs": 141,
+        "camera": [
+          -36.90824752677522,
+          14.754698564790328,
+          41.79515258962523
+        ]
+      },
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          1.5
+        ],
+        "quality": "balanced",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 1254,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "state": {
+        "ready": true,
+        "loading": {
+          "phase": "ready",
+          "loaded": 300,
+          "total": 300,
+          "active": false,
+          "failed": 0
+        }
+      },
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "variant": "candidate",
+      "base": "http://127.0.0.1:4355",
+      "readyMs": 13668,
+      "errors": [],
+      "n": 600,
+      "p50": 16.69999999999709,
+      "p95": 16.799999999999272,
+      "p99": 16.799999999999272,
+      "max": 16.80000000000291,
+      "over50": 0,
+      "slow": [],
+      "stats": {
+        "calls": 249,
+        "triangles": 842075,
+        "geometries": 235,
+        "textures": 120,
+        "programs": 161,
+        "camera": [
+          -36.90824752677522,
+          14.754698564790328,
+          41.79515258962523
+        ]
+      },
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          1.5
+        ],
+        "quality": "balanced",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 1254,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "state": {
+        "ready": true,
+        "loading": {
+          "phase": "ready",
+          "loaded": 298,
+          "total": 298,
+          "active": false,
+          "failed": 0
+        }
+      },
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+    },
+    {
+      "variant": "baseline",
+      "base": "http://127.0.0.1:4354",
+      "readyMs": 13007,
+      "errors": [],
+      "n": 598,
+      "p50": 16.700000000000728,
+      "p95": 16.700000000000728,
+      "p99": 16.80000000000291,
+      "max": 50.099999999998545,
+      "over50": 1,
+      "slow": [
+        {
+          "at": 1319.1999998092651,
+          "ms": 50.099999999998545
+        }
+      ],
+      "stats": {
+        "calls": 249,
+        "triangles": 842075,
+        "geometries": 242,
+        "textures": 121,
+        "programs": 146,
+        "camera": [
+          -36.90824752677522,
+          14.754698564790326,
+          41.79515258962523
+        ]
+      },
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          1.5
+        ],
+        "quality": "balanced",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 1254,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "state": {
+        "ready": true,
+        "loading": {
+          "phase": "ready",
+          "loaded": 288,
+          "total": 288,
+          "active": false,
+          "failed": 0
+        }
+      },
+      "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36"
+    }
+  ]
+}

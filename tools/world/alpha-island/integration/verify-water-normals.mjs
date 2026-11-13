@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
-const file = process.argv[2] ?? '/tmp/alpha-water-normal-work/src/components/world/WorldWater.ts';
+const file = process.argv[2] ?? 'src/components/world/WorldWater.ts';
 const source = fs.readFileSync(file, 'utf8');
 const SEA_SURF={lengthM:6,amplitude:.07};
 const vec2=(x,y)=>({x,y}), dot=(a,b)=>a.x*b.x+a.y*b.y;

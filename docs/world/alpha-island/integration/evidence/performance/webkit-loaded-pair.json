@@ -1,0 +1,207 @@
+{
+  "conditions": "Playwright WebKit 2336 on M5 Pro, production pages 1080p High, default camp. Baseline then candidate. Not real Safari/M3; first turn costs retained.",
+  "runs": [
+    {
+      "variant": "candidate",
+      "warm": {
+        "samples": 479,
+        "p50": 17,
+        "p95": 19,
+        "max": 31,
+        "stats": {
+          "calls": 305,
+          "triangles": 1117805,
+          "geometries": 264,
+          "textures": 141,
+          "programs": 224,
+          "camera": [
+            -42.14024315281444,
+            14.754683306001265,
+            43.48832647843283
+          ]
+        },
+        "loading": {
+          "phase": "scene",
+          "loaded": 300,
+          "total": 300,
+          "active": false,
+          "failed": 0
+        }
+      },
+      "readyMs": 17364,
+      "firstTurnMs": 253,
+      "keyMs": 1347,
+      "before": {
+        "p": [
+          -41.999481201171875,
+          5.620180606842041,
+          35.004127502441406
+        ],
+        "render": {
+          "drawingBuffer": [
+            1920,
+            1080
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": [],
+          "coasterVegetation": []
+        },
+        "stats": {
+          "calls": 114,
+          "triangles": 252605,
+          "geometries": 163,
+          "textures": 66,
+          "programs": 77,
+          "camera": [
+            -36.908312376628736,
+            14.75546198108061,
+            41.79235260183226
+          ]
+        }
+      },
+      "after": {
+        "p": [
+          -41.94953536987305,
+          5.619924068450928,
+          31.986812591552734
+        ],
+        "stats": {
+          "calls": 137,
+          "triangles": 331724,
+          "geometries": 165,
+          "textures": 66,
+          "programs": 79,
+          "camera": [
+            -42.090071396304246,
+            14.755246437396808,
+            40.504813939320414
+          ]
+        }
+      },
+      "displacement": 3.017728261049236,
+      "perf": {
+        "samples": 78,
+        "p50": 29,
+        "p95": 447,
+        "max": 862
+      },
+      "errors": []
+    },
+    {
+      "variant": "baseline",
+      "warm": {
+        "samples": 479,
+        "p50": 17,
+        "p95": 18,
+        "max": 30,
+        "stats": {
+          "calls": 212,
+          "triangles": 942411,
+          "geometries": 313,
+          "textures": 143,
+          "programs": 242,
+          "camera": [
+            -42.14024315281444,
+            14.754683306001265,
+            43.48832647843283
+          ]
+        },
+        "loading": {
+          "phase": "scene",
+          "loaded": 290,
+          "total": 290,
+          "active": false,
+          "failed": 0
+        }
+      },
+      "readyMs": 17350,
+      "firstTurnMs": 248,
+      "keyMs": 1528,
+      "before": {
+        "p": [
+          -41.999481201171875,
+          5.620180606842041,
+          35.004127502441406
+        ],
+        "render": {
+          "drawingBuffer": [
+            1920,
+            1080
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": [],
+          "coasterVegetation": []
+        },
+        "stats": {
+          "calls": 114,
+          "triangles": 252605,
+          "geometries": 163,
+          "textures": 66,
+          "programs": 77,
+          "camera": [
+            -36.908312376628736,
+            14.75546198108061,
+            41.79235260183226
+          ]
+        }
+      },
+      "after": {
+        "p": [
+          -41.965084075927734,
+          5.620049953460693,
+          32.86532211303711
+        ],
+        "stats": {
+          "calls": 131,
+          "triangles": 335090,
+          "geometries": 165,
+          "textures": 66,
+          "programs": 79,
+          "camera": [
+            -42.110707910950694,
+            14.756154308275756,
+            41.57639494641617
+          ]
+        }
+      },
+      "displacement": 2.13908196569695,
+      "perf": {
+        "samples": 125,
+        "p50": 21,
+        "p95": 81,
+        "max": 877
+      },
+      "errors": []
+    }
+  ]
+}
