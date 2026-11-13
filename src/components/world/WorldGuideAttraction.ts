@@ -1,11 +1,11 @@
 import { Quaternion, Vector3, type Bone, type Object3D } from 'three';
 import type { GuideSeatContact } from './WorldGuideSeat.ts';
 import { skinnedWorldPoint, type GuideSlopeFit } from './WorldGuideStop.ts';
-import { coasterBoardingGround, type CoasterActorFrame } from './attractions/coaster-transition.ts';
+import { rideGround, type RideActorFrame } from './rides/ride-contract';
 
 /** Solve from this frame's actual skinned buttock patch, including train pitch and roll.
  * Converting the final world target through the parent also removes Rapier interpolation lag. */
-export function settleGuideAttraction(group: Object3D, contact: GuideSeatContact, frame?: CoasterActorFrame | null) {
+export function settleGuideAttraction(group: Object3D, contact: GuideSeatContact, frame?: RideActorFrame | null) {
   if (!frame || !group.parent) return;
   const parent = group.parent, world = new Vector3(...frame.root);
   const yaw = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), frame.yaw);
@@ -30,8 +30,9 @@ export class GuideAttractionFeet {
     for (const [bone, rotation] of this.saved) bone.quaternion.copy(rotation);
     this.saved.clear();
   }
-  apply(slope: GuideSlopeFit, frame: CoasterActorFrame | null | undefined, dt: number) {
-    if (!frame?.stairs) { this.shifts.clear(); return; }
+  apply(slope: GuideSlopeFit, frame: RideActorFrame | null | undefined, dt: number) {
+    const groundAt=rideGround(frame?.groundId);
+    if (!frame?.stairs || !groundAt) { this.shifts.clear(); return; }
     const direction = new Vector3(Math.cos(frame.yaw), 0, -Math.sin(frame.yaw));
     for (const leg of Object.values(slope.legs)) {
       const { thigh, shin, foot } = leg;
@@ -41,9 +42,9 @@ export class GuideAttractionFeet {
       for (const p of points) low = Math.min(low, p.y);
       // A boot can straddle two treads while its ankle is over the lower one.
       // Sample the whole rigid sole so the toe/heel cannot cut through a riser.
-      let ground = coasterBoardingGround(ankle.x, ankle.z), requiredLift = 0;
+      let ground = groundAt(ankle.x, ankle.z), requiredLift = 0;
       for (const p of points) {
-        const support = coasterBoardingGround(p.x, p.z);
+        const support = groundAt(p.x, p.z);
         if (support !== null) {
           ground = Math.max(ground ?? support, support);
           requiredLift = Math.max(requiredLift, support + .003 - p.y);
@@ -52,7 +53,7 @@ export class GuideAttractionFeet {
       if (ground === null || !Number.isFinite(low)) continue;
       const clearance = Math.max(0, low - frame.root[1]);
       // Anticipate the next riser only while the recorded boot is swinging.
-      const ahead = coasterBoardingGround(ankle.x + direction.x * .18, ankle.z + direction.z * .18) ?? ground;
+      const ahead = groundAt(ankle.x + direction.x * .18, ankle.z + direction.z * .18) ?? ground;
       const swing = Math.min(1, clearance / .055);
       const targetGround = ground + Math.max(0, ahead - ground) * swing;
       const wanted = Math.max(-.28, Math.min(.28, targetGround + clearance + .003 - low));

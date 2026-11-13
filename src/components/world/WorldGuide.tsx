@@ -13,6 +13,7 @@ import { GuideMineLayer } from './WorldGuideMine';
 import { GuideExchangeLayer } from './WorldGuideExchange';
 import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection';
 import { GuideCampLayer } from './WorldGuideCamp';
+import { guideActionHand } from './rides/guide-action-hand';
 import { campPropActor, campPropHand } from './camp-prop-interactions';
 import { ibdInspectionBody, ibdInspectionVisualSockets } from './attractions/ibd-inspection-motion';
 import { ibdInspectionHands } from './attractions/ibd-inspection-hands';
@@ -24,13 +25,13 @@ import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
 import { createClubDanceClips, clubDanceSampleTime } from './WorldGuideDance';
 import { GuideAttractionFeet, settleGuideAttraction } from './WorldGuideAttraction';
-import type { CoasterActorFrame } from './attractions/coaster-transition';
+import type { RideActorFrame } from './rides/ride-contract';
 import { GuideSeatContact, GuideSeatedIdle, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
 import { GuideVaultLayer, type GuideRailVault } from './WorldGuideVault';
 import { GUIDE_VEHICLE_TRANSITION_S, GuideDrivingPose, GuideVehicleUpperBody, GuideVehicleContacts, GuideVehicleSitPose, guideVehicleApproach, guideVehicleRoot, guideVehicleSample, guideVehicleOrientation, guideVehicleSeatBlend, guideVehicleDrivingBlend, settleGuideVehicle, type GuideVehicleFrame } from './WorldGuideVehicle';
 
 export interface WorldGuideMotion {
-  attraction?: CoasterActorFrame | null;
+  attraction?: RideActorFrame | null;
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
   /** Movement intent from input (WorldActors): no keys / WASD / WASD+Shift. */
   intent?: 'idle' | 'walk' | 'run';
@@ -390,10 +391,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const shown = visible && !motion.hidden;
     const resumed = shown && !s.visible;
     const frozen = world.paused || world.poolInspect || !!world.shot;
+    const actionHand = guideActionHand.owner ? guideActionHand : campPropHand;
     const campTarget = shown && motion.grounded && !motion.attraction && !motion.seat && !motion.vehicle &&
       !motion.vault && !motion.railVault && motion.dance == null && !world.card && (frozen || campPropActor.available)
-      ? campPropHand.target : null;
-    if (!campTarget) { rig.camp.reset(); campPropHand.palm = null; }
+      ? actionHand.target : null;
+    if (!campTarget) { rig.camp.reset(); actionHand.palm = null; }
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
@@ -938,8 +940,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       rig.vault.apply(motion.railVault);
       settleGuideAttraction(group.current, rig.seatContact, attraction);
       rig.attractionFeet.apply(rig.slope, attraction, dt);
-      if (campActive) campPropHand.palm = rig.camp.apply(campTarget, campPropHand.mode, dt);
-      else if (campTarget) { rig.camp.reset(); campPropHand.palm = null; }
+      if (campActive) actionHand.palm = rig.camp.apply(campTarget, actionHand.mode, dt);
+      else if (campTarget) { rig.camp.reset(); actionHand.palm = null; }
       mineVisualSockets.valid = mine.valid && !world.card;
       Object.assign(mineVisualSockets, { assetsReady: mine.assetsReady, contactError: mine.contactError,
         rightReachError: mine.rightReachError, leftReachError: mine.leftReachError,
