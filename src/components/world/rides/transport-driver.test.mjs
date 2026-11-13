@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TransportDriver } from './transport-driver.ts';
+import { registerRideGround,rideGround } from './ride-contract.ts';
 import { RideEnvironment } from './ride-environment.ts';
 import { sampleTransport,transportWorld } from './transport-route.ts';
 const make=(kind='cable')=>({id:kind,kind,transform:{origin:[50,2,-80],yaw:.7},path:[[0,0,0],[10,5,0],[20,0,0]],duration:8,terminals:[0,20].map((x,i)=>({id:String(i),vehicle:[x,0,0],yaw:0,boarding:[[x,0,-3],[x+.6,0,0]],safeExit:[x,0,-4],seat:[0,.48,0],clearance:[3,3,4]}))});
@@ -23,5 +24,10 @@ test('cancel before dispatch walks back; moving ferry/cable physically reverse, 
  }
 });
 test('weather lease suspends and yields permanently to player edit; stale owner cannot release a new owner',()=>{
- const e=new RideEnvironment(),release=e.acquire('a','clear');e.publish('a',{rain:.5,snow:.5});assert.deepEqual(e.sample('clear',false),{rain:.5,snow:.5});assert.equal(e.sample('clear',true),null);assert.equal(e.sample('rain',false),null);assert.equal(e.sample('clear',false),null);e.acquire('b','snow');release();assert.ok(e.active);
+ const e=new RideEnvironment(),release=e.acquire('a','clear');release.publish({rain:.5,snow:.5});assert.deepEqual(e.sample('clear',false),{rain:.5,snow:.5});assert.equal(e.sample('clear',true),null);assert.equal(e.sample('rain',false),null);assert.equal(e.sample('clear',false),null);e.acquire('b','snow');release.release();assert.ok(e.active);
 });
+
+test('same ride id has independent weather generations and reset values',()=>{
+ const e=new RideEnvironment(),old=e.acquire('cable','clear');old.publish({rain:1,snow:0});const fresh=e.acquire('cable','clear');assert.deepEqual(e.sample('clear',false),{rain:0,snow:0});old.publish({rain:1,snow:1});old.release();assert.ok(e.active);assert.deepEqual(e.sample('clear',false),{rain:0,snow:0});fresh.publish({rain:0,snow:1});assert.deepEqual(e.sample('clear',false),{rain:0,snow:1});fresh.release();assert.equal(e.active,false);
+});
+test('ground registrations release by identity across replacement and unmount',()=>{const a=()=>1,b=()=>2,old=registerRideGround('test',a),fresh=registerRideGround('test',b);old();assert.equal(rideGround('test'),b);fresh();assert.equal(rideGround('test'),undefined);});

@@ -27,6 +27,8 @@ export interface TransportTerminal {
   yaw: number;
   /** Foot route from interaction apron to standing inside vehicle; actual support required. */
   boarding: Vec3[];
+  /** Index where transport-owned fixed gangway leaves scene ground. */
+  gangwayStart?: number;
   safeExit: Vec3;
   /** Passenger seat patch relative to vehicle root. */
   seat: Vec3;
@@ -49,5 +51,5 @@ export interface TransportSample {
 }
 
 const supportSamplers=new Map<string,(x:number,z:number)=>number|null>();
-export function registerRideGround(id:string,sample:(x:number,z:number)=>number|null){supportSamplers.set(id,sample);}
+export function registerRideGround(id:string,sample:(x:number,z:number)=>number|null){supportSamplers.set(id,sample);return()=>{if(supportSamplers.get(id)===sample)supportSamplers.delete(id);};}
 export const rideGround=(id?:string)=>id?supportSamplers.get(id):undefined;

@@ -10,7 +10,7 @@ export class TransportDriver implements RideDriver {
   readonly id: string;
   phase: TransportPhase='approach';
   frame: RideActorFrame;
-  u: number; elapsed=0; captured=false; exitRequested=false; disposed=false;
+  u: number; velocity=0; elapsed=0; captured=false; exitRequested=false; disposed=false;
   source: 0|1; destination: 0|1; direction: number;
   private from: Vec3; private fromYaw=0; private startYaw=0;
   private curve; private enter:Vec3[]=[]; private leave:Vec3[]=[];
@@ -47,8 +47,11 @@ export class TransportDriver implements RideDriver {
   step(dt:number,frozen:boolean){
     if(!this.captured||this.disposed||frozen||!Number.isFinite(dt)||dt<=0||dt>.25)return this.sample();
     if(this.phase==='riding'){
-      this.u=Math.max(0,Math.min(1,this.u+this.direction*dt/this.route.duration));
-      if((this.direction>0&&this.u>=this.destination)||(this.direction<0&&this.u<=this.destination)){this.u=this.destination;this.next();}
+      const acceleration=1/(this.route.duration*2),distance=Math.abs(this.destination-this.u);
+      const wanted=this.direction*Math.min(1/this.route.duration,Math.sqrt(2*acceleration*distance));
+      this.velocity+=Math.max(-acceleration*dt,Math.min(acceleration*dt,wanted-this.velocity));
+      this.u=Math.max(0,Math.min(1,this.u+this.velocity*dt));
+      if((this.direction>0&&this.u>=this.destination)||(this.direction<0&&this.u<=this.destination)){this.u=this.destination;this.velocity=0;this.next();}
     }else if(this.phase!=='complete'){this.elapsed+=dt;if(this.elapsed>=this.duration())this.next();}
     const sample=this.sample(),q=Math.min(1,this.elapsed/this.duration()),k=smooth(q);
     let root=transportWorld(this.route.terminals[this.phase==='approach'||this.phase==='turn-in'||this.phase==='sit'?this.source:this.destination].boarding.at(-1)!,this.route.transform);
