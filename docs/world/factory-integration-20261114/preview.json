@@ -1,0 +1,16 @@
+{
+  "url": "http://127.0.0.1:4341/world/",
+  "runtimeCommit": "4fb09e441b28345511e9510f50da34c1ad00aa8a",
+  "headlessSystemChrome": true,
+  "ordinaryEntry": true,
+  "htmlMatchesDist": true,
+  "htmlSHA256": "53dd4760fbf4d9cd66cfebc3eba88cb387862d74e71e914133d450c7ab7d7737",
+  "errors": [],
+  "canvas": [
+    1920,
+    1080
+  ],
+  "backupUrl": "http://127.0.0.1:4363/world/",
+  "candidateUrl": "http://127.0.0.1:4362/world/",
+  "time": "2026-11-14T03:19:42.554Z"
+}

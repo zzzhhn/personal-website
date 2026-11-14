@@ -1,0 +1,1542 @@
+{
+  "source": "4fb09e441b28345511e9510f50da34c1ad00aa8a",
+  "conditions": "Production Playwright WebKit2336, M5 Pro, 1920x1080 DPR1 High. Wait for asset loading then QA placement at tree/wind/cable/lantern; real E/W/Esc, complete cable ride. Representative compatibility, not ordinary full tour or real M3 Safari.",
+  "errors": [],
+  "steps": [
+    {
+      "name": "00-loaded",
+      "state": {
+        "visits": [],
+        "card": false,
+        "stones": 0,
+        "wind": 0,
+        "carried": false,
+        "action": null,
+        "revision": 0
+      },
+      "motion": {
+        "time": 0.9020000000000001,
+        "bellAt": -100,
+        "treeAt": -100,
+        "sandAt": -100,
+        "windAt": -100,
+        "lanternCount": 0,
+        "lanterns": []
+      },
+      "ride": {
+        "active": false,
+        "pose": {
+          "seat": [
+            50,
+            1.6,
+            -145
+          ],
+          "yaw": 1.5707963267948966,
+          "cameraPosition": [
+            50,
+            6,
+            -136
+          ],
+          "cameraTarget": [
+            50,
+            2,
+            -145
+          ],
+          "firstPerson": false,
+          "fov": 55
+        }
+      },
+      "actor": {
+        "player": [
+          -41.99941635131836,
+          5.619417190551758,
+          35.006927490234375
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00014307753008324653,
+          0.0000031632739592168946,
+          0.00029523175908252597
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 349,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -8.153578257008576e-9,
+              -0.061188675463199615,
+              1.2196463217151177e-7
+            ],
+            "yaw": -1.1474108552051596e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.2438984242635343e-7,
+              -0.061287060379981995,
+              -1.0470425415576301e-8
+            ],
+            "yaw": 1.5708059555868588,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003608644438626087,
+              "speed": -0.00014320775434957248,
+              "lateralSpeed": -0.00007217288880385034,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.36778804659843445,
+                0.3611038625240326,
+                0.3609553277492523
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.416372807475722e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      },
+      "loading": {
+        "phase": "scene",
+        "loaded": 305,
+        "total": 305,
+        "active": false,
+        "failed": 0
+      },
+      "stats": {
+        "calls": 714,
+        "triangles": 2365979,
+        "geometries": 319,
+        "textures": 120,
+        "programs": 225,
+        "camera": [
+          -36.90824752677522,
+          14.754698564790326,
+          41.79515258962523
+        ]
+      }
+    },
+    {
+      "name": "01-tree",
+      "state": {
+        "visits": [
+          3
+        ],
+        "card": false,
+        "stones": 0,
+        "wind": 0,
+        "carried": false,
+        "action": null,
+        "revision": 1
+      },
+      "motion": {
+        "time": 5.265999999999996,
+        "bellAt": -100,
+        "treeAt": 5.265999999999996,
+        "sandAt": -100,
+        "windAt": -100,
+        "lanternCount": 0,
+        "lanterns": []
+      },
+      "ride": {
+        "active": false,
+        "pose": {
+          "seat": [
+            50,
+            1.6,
+            -145
+          ],
+          "yaw": 1.5707963267948966,
+          "cameraPosition": [
+            50,
+            6,
+            -136
+          ],
+          "cameraTarget": [
+            50,
+            2,
+            -145
+          ],
+          "firstPerson": false,
+          "fov": 55
+        }
+      },
+      "actor": {
+        "player": [
+          191.85450744628906,
+          18.9641056060791,
+          162.14369201660156
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00003226377157261595,
+          -0.000005879820037080208,
+          -0.000103823869721964
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": -0.3374456895487684,
+        "physicsStep": 653,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -8.381577099036974e-10,
+              -0.061188653111457825,
+              -1.1545504463583711e-7
+            ],
+            "yaw": 7.69253247442482e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              8.086967540066325e-8,
+              -0.061286233365535736,
+              1.665221560642749e-8
+            ],
+            "yaw": 1.5708059555938023,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003615389199476597,
+              "speed": -0.00014322150486085992,
+              "lateralSpeed": -0.00007230778402103654,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.416372807475722e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      },
+      "loading": {
+        "phase": "scene",
+        "loaded": 305,
+        "total": 305,
+        "active": false,
+        "failed": 0
+      },
+      "stats": {
+        "calls": 157,
+        "triangles": 1170390,
+        "geometries": 318,
+        "textures": 134,
+        "programs": 255,
+        "camera": [
+          196.9456762708322,
+          28.09938698031766,
+          168.9319171159924
+        ]
+      }
+    },
+    {
+      "name": "02-wind",
+      "state": {
+        "visits": [
+          3,
+          7
+        ],
+        "card": false,
+        "stones": 0,
+        "wind": 1,
+        "carried": false,
+        "action": null,
+        "revision": 2
+      },
+      "motion": {
+        "time": 6.950999999999998,
+        "bellAt": -100,
+        "treeAt": 5.265999999999996,
+        "sandAt": -100,
+        "windAt": 6.950999999999998,
+        "lanternCount": 0,
+        "lanterns": []
+      },
+      "ride": {
+        "active": false,
+        "pose": {
+          "seat": [
+            50,
+            1.6,
+            -145
+          ],
+          "yaw": 1.5707963267948966,
+          "cameraPosition": [
+            50,
+            6,
+            -136
+          ],
+          "cameraTarget": [
+            50,
+            2,
+            -145
+          ],
+          "firstPerson": false,
+          "fov": 55
+        }
+      },
+      "actor": {
+        "player": [
+          252.87188720703125,
+          38.62308883666992,
+          146.6645965576172
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00010151108290301636,
+          0.000006544010830111802,
+          0.00005401338421506807
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 2.6305564476863283,
+        "physicsStep": 759,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              1.756305212374798e-9,
+              -0.06118866056203842,
+              -2.2330512194912444e-7
+            ],
+            "yaw": 1.5735673835657446e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              8.010167817928959e-8,
+              -0.061286233365535736,
+              9.952944246549578e-9
+            ],
+            "yaw": 1.5708059555984315,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036155730794466,
+              "speed": -0.00014321407746725054,
+              "lateralSpeed": -0.00007231146162044141,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.4163723026047425e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      },
+      "loading": {
+        "phase": "scene",
+        "loaded": 305,
+        "total": 305,
+        "active": false,
+        "failed": 0
+      },
+      "stats": {
+        "calls": 148,
+        "triangles": 1224470,
+        "geometries": 346,
+        "textures": 136,
+        "programs": 256,
+        "camera": [
+          257.9630559407502,
+          47.75837033126255,
+          153.4528215987517
+        ]
+      }
+    },
+    {
+      "name": "03-cable-release",
+      "state": {
+        "visits": [
+          3,
+          7,
+          8
+        ],
+        "card": false,
+        "stones": 0,
+        "wind": 1,
+        "carried": false,
+        "action": null,
+        "revision": 2
+      },
+      "motion": {
+        "time": 72.82200000000127,
+        "bellAt": -100,
+        "treeAt": 5.265999999999996,
+        "sandAt": -100,
+        "windAt": 6.950999999999998,
+        "lanternCount": 0,
+        "lanterns": []
+      },
+      "ride": {
+        "active": false,
+        "pose": {
+          "seat": [
+            264,
+            73.48,
+            220
+          ],
+          "yaw": -1.5706764619431355,
+          "orientation": [
+            0,
+            -0.7070644012918929,
+            0,
+            0.7071491585413484
+          ],
+          "cameraPosition": [
+            258.4991849585208,
+            75.6,
+            213.2006593055329
+          ],
+          "cameraTarget": [
+            260,
+            73.9,
+            218
+          ],
+          "cameraSweepOrigin": [
+            262.3000000122124,
+            74.5,
+            220.0002037702475
+          ],
+          "cameraUp": [
+            0,
+            1,
+            0
+          ],
+          "firstPerson": false,
+          "fov": 55
+        }
+      },
+      "actor": {
+        "player": [
+          260,
+          73.81997680664062,
+          218
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0,
+          8.12199918431844e-10,
+          0
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": -3.1414727887380285,
+        "physicsStep": 4714,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -8.451054966940319e-9,
+              -0.06118857115507126,
+              1.6057735763297387e-7
+            ],
+            "yaw": -1.7094541601164854e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -2.7877355535110837e-8,
+              -0.06128712743520737,
+              7.3886714524462604e-9
+            ],
+            "yaw": 1.5708059555845444,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003609778397993895,
+              "speed": -0.00014320334972987525,
+              "lateralSpeed": -0.00007219556799123604,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.3677879869937897,
+                0.3611038625240326,
+                0.36095544695854187
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.4163316604909055e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      },
+      "loading": {
+        "phase": "scene",
+        "loaded": 305,
+        "total": 305,
+        "active": false,
+        "failed": 0
+      },
+      "stats": {
+        "calls": 171,
+        "triangles": 1014614,
+        "geometries": 414,
+        "textures": 137,
+        "programs": 268,
+        "camera": [
+          262.6097978805807,
+          78.81963994094178,
+          221.47973050744093
+        ]
+      }
+    },
+    {
+      "name": "04-lantern-release",
+      "state": {
+        "visits": [
+          3,
+          7,
+          8,
+          11
+        ],
+        "card": false,
+        "stones": 0,
+        "wind": 1,
+        "carried": false,
+        "action": null,
+        "revision": 3
+      },
+      "motion": {
+        "time": 77.84800000000149,
+        "bellAt": -100,
+        "treeAt": 5.265999999999996,
+        "sandAt": -100,
+        "windAt": 6.950999999999998,
+        "lanternCount": 1,
+        "lanterns": [
+          {
+            "id": 0,
+            "age": 2.9989999999999974,
+            "position": [
+              -8.853437309116742,
+              83.26887814204768,
+              41.542899356485094
+            ]
+          }
+        ]
+      },
+      "ride": {
+        "active": false,
+        "pose": {
+          "seat": [
+            264,
+            73.48,
+            220
+          ],
+          "yaw": -1.5706764619431355,
+          "orientation": [
+            0,
+            -0.7070644012918929,
+            0,
+            0.7071491585413484
+          ],
+          "cameraPosition": [
+            258.4991849585208,
+            75.6,
+            213.2006593055329
+          ],
+          "cameraTarget": [
+            260,
+            73.9,
+            218
+          ],
+          "cameraSweepOrigin": [
+            262.3000000122124,
+            74.5,
+            220.0002037702475
+          ],
+          "cameraUp": [
+            0,
+            1,
+            0
+          ],
+          "firstPerson": false,
+          "fov": 55
+        }
+      },
+      "actor": {
+        "player": [
+          226.5,
+          83.81887817382812,
+          231.1999969482422
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0.000026226145564578474,
+          0,
+          -1.9787235316925944e-7
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": -1.8622514414155011,
+        "physicsStep": 5023,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              2.978739921388751e-9,
+              -0.061188749969005585,
+              1.6592018425853894e-7
+            ],
+            "yaw": -1.8445458220631514e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -1.2099954460609297e-7,
+              -0.06128649413585663,
+              1.1343207262370925e-8
+            ],
+            "yaw": 1.5708059555938023,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003614353226091217,
+              "speed": -0.00014322603356821073,
+              "lateralSpeed": -0.00007228706455330187,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.4163723026047425e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      },
+      "loading": {
+        "phase": "scene",
+        "loaded": 305,
+        "total": 305,
+        "active": false,
+        "failed": 0
+      },
+      "stats": {
+        "calls": 155,
+        "triangles": 1039109,
+        "geometries": 435,
+        "textures": 140,
+        "programs": 271,
+        "camera": [
+          231.5911687974337,
+          92.95415950288435,
+          237.98822201148715
+        ]
+      }
+    },
+    {
+      "name": "05-night",
+      "state": {
+        "visits": [
+          3,
+          7,
+          8,
+          11
+        ],
+        "card": false,
+        "stones": 0,
+        "wind": 1,
+        "carried": false,
+        "action": null,
+        "revision": 3
+      },
+      "motion": {
+        "time": 80.35500000000155,
+        "bellAt": -100,
+        "treeAt": 5.265999999999996,
+        "sandAt": -100,
+        "windAt": 6.950999999999998,
+        "lanternCount": 1,
+        "lanterns": [
+          {
+            "id": 0,
+            "age": 5.505999999999994,
+            "position": [
+              -8.853437309116742,
+              83.26887814204768,
+              41.542899356485094
+            ]
+          }
+        ]
+      },
+      "ride": {
+        "active": false,
+        "pose": {
+          "seat": [
+            264,
+            73.48,
+            220
+          ],
+          "yaw": -1.5706764619431355,
+          "orientation": [
+            0,
+            -0.7070644012918929,
+            0,
+            0.7071491585413484
+          ],
+          "cameraPosition": [
+            258.4991849585208,
+            75.6,
+            213.2006593055329
+          ],
+          "cameraTarget": [
+            260,
+            73.9,
+            218
+          ],
+          "cameraSweepOrigin": [
+            262.3000000122124,
+            74.5,
+            220.0002037702475
+          ],
+          "cameraUp": [
+            0,
+            1,
+            0
+          ],
+          "firstPerson": false,
+          "fov": 55
+        }
+      },
+      "actor": {
+        "player": [
+          226.5,
+          83.81887817382812,
+          231.1999969482422
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0.000026226145564578474,
+          0,
+          -1.9787235316925944e-7
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": -1.8622514414155011,
+        "physicsStep": 5173,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -6.4839649205339356e-9,
+              -0.06118860840797424,
+              -1.733249064272968e-7
+            ],
+            "yaw": 1.0036140947350809e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              4.519215224263462e-9,
+              -0.061287589371204376,
+              -1.6945900682685533e-8
+            ],
+            "yaw": 1.5708059555799152,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003605768664632689,
+              "speed": -0.0001431921497838619,
+              "lateralSpeed": -0.00007211537332390755,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.36778804659843445,
+                0.3611038625240326,
+                0.3609553277492523
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.416372807475722e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      },
+      "loading": {
+        "phase": "scene",
+        "loaded": 305,
+        "total": 305,
+        "active": false,
+        "failed": 0
+      },
+      "stats": {
+        "calls": 156,
+        "triangles": 1039921,
+        "geometries": 435,
+        "textures": 140,
+        "programs": 271,
+        "camera": [
+          231.59116882454194,
+          92.9541595480647,
+          237.98822204763144
+        ]
+      }
+    }
+  ],
+  "firstReadyMs": 25621,
+  "assetsLoadedMs": 29084,
+  "pause": {
+    "before": 0.20019518478260864,
+    "after": 0.20019518478260864
+  },
+  "releaseWalk": 0.6671104640451457,
+  "complete": true
+}

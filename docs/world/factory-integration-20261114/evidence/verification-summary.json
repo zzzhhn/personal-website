@@ -1,0 +1,60 @@
+{
+  "tests.log": {
+    "sha256": "ff6770fa9b1b3b3a736a3fc75c55f2b44e1e3924a76547c79d637b3aa52f8e8c",
+    "rawLogRetainedLocally": "docs/world/factory-integration-20261114/evidence/tests.log",
+    "relevantOutput": [
+      "# tests 198",
+      "# pass 196",
+      "# fail 1",
+      "# skipped 1",
+      "# duration_ms 35273.873583"
+    ]
+  },
+  "mine-recheck.log": {
+    "sha256": "807598a39de976cec1eec8e4c86c913dea56d4ffcd94f1d8de05f5c7ae7f9d8c",
+    "rawLogRetainedLocally": "docs/world/factory-integration-20261114/evidence/mine-recheck.log",
+    "relevantOutput": [
+      "# tests 11",
+      "# pass 11",
+      "# fail 0",
+      "# skipped 0",
+      "# duration_ms 1230.8815"
+    ]
+  },
+  "check.log": {
+    "sha256": "57a3e2a921aeecfb6f0f0983efdce44b98f5536096274defab18f15cad2a22e3",
+    "rawLogRetainedLocally": "docs/world/factory-integration-20261114/evidence/check.log",
+    "relevantOutput": [
+      "src/components/world/WorldMap.tsx:98:5 - error ts(1005): '}' expected.",
+      "Result (769 files): ",
+      "- 0 warnings",
+      "- 175 hints"
+    ]
+  },
+  "check-corrected.log": {
+    "sha256": "b191575fdab580b5b4506d59471ae0837f58dc9161563b860d44aafd65f64544",
+    "rawLogRetainedLocally": "docs/world/factory-integration-20261114/evidence/check-corrected.log",
+    "relevantOutput": [
+      "Result (769 files): ",
+      "- 0 errors",
+      "- 0 warnings",
+      "- 175 hints"
+    ]
+  },
+  "build.log": {
+    "sha256": "7dccb7d57b37dfdd1dac05c0af61adbe231c834f25a91f19cac53a06624d2115",
+    "rawLogRetainedLocally": "docs/world/factory-integration-20261114/evidence/build.log",
+    "relevantOutput": [
+      "10:40:21 [build] output: \"static\"",
+      "10:40:21 [build] mode: \"static\"",
+      "10:40:21 [build] directory: /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/dist/",
+      "10:40:21 [build] Collecting build info...",
+      "10:40:21 [build] ✓ Completed in 204ms.",
+      "10:40:21 [build] Building static entrypoints...",
+      "10:40:27 [build] Rearranging server assets...",
+      "10:40:27 [build] ✓ Completed in 6.07s.",
+      "10:40:27 [build] 8 page(s) built in 6.28s",
+      "10:40:27 [build] Complete!"
+    ]
+  }
+}

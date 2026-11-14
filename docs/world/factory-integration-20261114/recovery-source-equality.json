@@ -1,0 +1,289 @@
+{
+  "recovery": "ce1743a",
+  "factory": {
+    "src/components/world/factory/WorldFactory.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "6194d80df09104e3a8b3bcc9af4fe8b44c61a91624222d231fc4386f5c073f46"
+    },
+    "src/components/world/factory/WorldFactoryArchive.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "67cb5aaf034256749aef5b8ccfdd279dee2abdc4e82957e2434d1a10df5c6a35"
+    },
+    "src/components/world/factory/WorldFactoryGuide.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "b5a96c5d78112f89188b7ca531cd3082d03a1ac24383e485d26d969f18fef134"
+    },
+    "src/components/world/factory/WorldFactoryHud.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "4967b3d49305b332fc91475554f08f558c824736a318ced8141390d26e8ebe04"
+    },
+    "src/components/world/factory/WorldFactoryMechanisms.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "07bdc233932135385b4a476d9eef4d70c7f341998adba804be03306d70deaade"
+    },
+    "src/components/world/factory/WorldFactoryPrinter.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "f9b9e250ab9543551f61087de04f0e98f8028e437744d8913a6c17f90860eb90"
+    },
+    "src/components/world/factory/WorldFactoryReadings.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "d6cf68f7bdb0369f342f22a193a610ee333c0e77ffb4d85af4753fdfada6bcfb"
+    },
+    "src/components/world/factory/WorldFactoryTrial.tsx": {
+      "matchesRecoveredSource": true,
+      "sha256": "fecedde25ea89b3ce81f941dd5adf791b1bff80e099cd9e6b136fd44dec3f015"
+    },
+    "src/components/world/factory/factory-assembly-hoist.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "67f7feb02bc9449ad87f0fe245c70fc40a1fa078f4bc05de6d7c98f52a9a8d7d"
+    },
+    "src/components/world/factory/factory-batch.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "cd71c6270f97522f5ccd1856ea6a0c595dde7ed4dd8b0bbeba9f3d81a52c8ea7"
+    },
+    "src/components/world/factory/factory-carrier.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "5a15ed69444a436290a7fbb8c49517546b1177679dc9c7c831a250de0e86abd3"
+    },
+    "src/components/world/factory/factory-carrier.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "c14e1311d1724376b6b6878a9368047d2ebb59436667c1f860696f732cabd07e"
+    },
+    "src/components/world/factory/factory-companion.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "a84b62fa6c1df882210c0e567705d4431722e924b0107927edc2e7ecb8a6a460"
+    },
+    "src/components/world/factory/factory-companion.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "733bc7b4ace6933614b69afc364541cc685687bd0e9346f4f0a0c3f0937c5658"
+    },
+    "src/components/world/factory/factory-conveyor.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "b0286701728e8aadb3ec809b44c318f4fe42b0a3a595f693883ca59bbee6b2ad"
+    },
+    "src/components/world/factory/factory-conveyor.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "676347eac79623660a388bc2d802f32faafe56abc1ce3c70a128a1c3201e3969"
+    },
+    "src/components/world/factory/factory-copy.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "b3490b40c2bd9889c29b7c1d53c7f8bd5940d863866b60307ae1b42e75f433d0"
+    },
+    "src/components/world/factory/factory-experiment-feedback.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "c8f4b428b2f65bff103570b2740c26489457e7cf5ee7e9ef1eb94e81c6cae101"
+    },
+    "src/components/world/factory/factory-experiment-feedback.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "53c2414a739b3be18f42fbc297b31acf8e5394864e0a211daf7ad03ce75c5049"
+    },
+    "src/components/world/factory/factory-facade.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "e817d2d8d85c25a34e054f25f960cb1d81f3cfd646cc03a8803a6bd05ec90cae"
+    },
+    "src/components/world/factory/factory-facade.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "45ecaf446144c05874b1e9e66fc20dfb915f08e2fcdaf24f66e9030ac33544c1"
+    },
+    "src/components/world/factory/factory-fixture.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "bd0a86dc5fefa3c6f18755c3839911c5e88e54972117b6701c6e26c002c3b90d"
+    },
+    "src/components/world/factory/factory-fixture.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "a0d05910835357a869b7ba9b39d6b738601c39aaeb56d7e0fde5f8a160ef1d60"
+    },
+    "src/components/world/factory/factory-follower.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "d5410a87db5e39594bac5be78cd39457cbedbf36d93730673462755b3fd7d13e"
+    },
+    "src/components/world/factory/factory-follower.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "8fa9aee80f43cf3bc3d5d3c9f40f0d61b3b5b9efb4e33422bc938f59ff34d6c6"
+    },
+    "src/components/world/factory/factory-game.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "b3a18800663a0fe5b62e571b85105035e7088cf1f59d35128af4ae398496b090"
+    },
+    "src/components/world/factory/factory-game.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "0eab8cb86f341704f95593e82060e231cef3c4326b26fe770a90d3f2a31b25aa"
+    },
+    "src/components/world/factory/factory-gantry.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "e7565680007cb935afc7ead3f71f7003fedeba9e12e4dfffa580ba973d7b1514"
+    },
+    "src/components/world/factory/factory-gantry.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "8c8eb6ccdc15084ce050cfc772ac8e5503bb5c4ba2c73fef46303cf61973948b"
+    },
+    "src/components/world/factory/factory-geometry.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "5a343d4650d73235a33a21f6fdbd2d4a27afc18b88675c3792438eef2ba587a3"
+    },
+    "src/components/world/factory/factory-geometry.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "8f3532bf870a788e43f5251e2e8ad91d08102294e4e878c6062b63768ebe96d9"
+    },
+    "src/components/world/factory/factory-guidance.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "bfcde81999d540ae5e0a8016de6a5d25277d61cf6e0ab98f4d943c288f2017df"
+    },
+    "src/components/world/factory/factory-guidance.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "353ec9055edde62121a159659e0dcd89f78d2d0766df9b4134feda1c14fe61cd"
+    },
+    "src/components/world/factory/factory-inspection.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "aaccb4da2d5d3b3760f81793d04727b224faf6e3aef972285bb7d9882cb9cc80"
+    },
+    "src/components/world/factory/factory-layout.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "4a8eeed2778aa8ef126291d49c592c9a99ea90cae9cdec86ede52bd313b8f786"
+    },
+    "src/components/world/factory/factory-lighting.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "8699a225d6313f948a86fdb54fe3cfc18e27c221025af990d29433d893f0f23b"
+    },
+    "src/components/world/factory/factory-lighting.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "893a4fddfed73464705be1b47b50ab75285b667303dad849bca7cbbc56b3ed52"
+    },
+    "src/components/world/factory/factory-machine-casing.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "85452b213ddcc6c9e16fb1b22feb9fea029e7ec71ef9aef91b54b3b0df970e01"
+    },
+    "src/components/world/factory/factory-machine-casing.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "ea0fce254ef5aca1a7a045c84448e3c350dd9e531ed2a628054f3f5f722936bf"
+    },
+    "src/components/world/factory/factory-navigation.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "a7566d2f7e1abe26d26847c732ec5b5a1899c03f923061ce51e4976b3561e283"
+    },
+    "src/components/world/factory/factory-operation.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "d9d2688f56c91efceacfd1e47cf0e2e458eafcd6dd40e4eeae93a013defcff72"
+    },
+    "src/components/world/factory/factory-operation.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "c394d6d989026e7089152bd2a5978dcbf6a14f88dfc4230cc25b8972401c3d0a"
+    },
+    "src/components/world/factory/factory-press-rod.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "29a51af9cbde4bf6b44f6acdd6d41d0a31fead90dbdb43e55cbc9ad9e0bacac0"
+    },
+    "src/components/world/factory/factory-press-rod.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "038154ab6af7b49597182f0122fd9ca402ce766a8afcf66cee38bf73cb4d8057"
+    },
+    "src/components/world/factory/factory-printer.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "2fd45a652da0430072278ea6437c3ffdb6cafc5b95fe167cf9c9783f65507a06"
+    },
+    "src/components/world/factory/factory-printer.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "506a9e099e383e28861f98abd6429b66f89e1d82642eaf03603ef6c81cc6a5c7"
+    },
+    "src/components/world/factory/factory-production-detail.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "689d94fc4604efc6777454a4d03c8a72cf3e6cbff1c54945008d636e8c883578"
+    },
+    "src/components/world/factory/factory-production-detail.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "00d238f28c6be9a0dc057026ab75ed72d89c9959fba0b83cd2d75589ad93d897"
+    },
+    "src/components/world/factory/factory-readings.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "5b8e4616d687095d15eed28def7c136ba6405dcf7031041f42c659047476a17c"
+    },
+    "src/components/world/factory/factory-readings.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "f2689f630111a3deeeb3a66f67ac1b543c24b68bc1519cae72e340367516ea7e"
+    },
+    "src/components/world/factory/factory-return.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "616828e11104e27a89c1e6134c8b36553023ccc4036be07a835bff69b6c71857"
+    },
+    "src/components/world/factory/factory-return.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "a965a8d9ab29842dc24dec8274e9419bf43fe8efda677bda0b270f70d894e400"
+    },
+    "src/components/world/factory/factory-routing-geometry.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "6a58a788694eafd8b6b65bb6a7c19e3823b9057cc7382196f57372db75ca5992"
+    },
+    "src/components/world/factory/factory-routing.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "669088acd4ffd41eae5c4c9e2f3cdf802730aabfe6e2d6afd62201db3e9a9e15"
+    },
+    "src/components/world/factory/factory-routing.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "c19b4807aeca0400945d90113425feeb065dc437c4bb1380ec3d73c4a3d0e177"
+    },
+    "src/components/world/factory/factory-store.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "13cab590cb99b54778bf14ad7f7befeb2af146943eae4c244952ce73ae817f80"
+    },
+    "src/components/world/factory/factory-structure-raycast.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "df5d259e64899a93e9f5d56a73d5e2887bff7d590159fcc171672289f9ccd585"
+    },
+    "src/components/world/factory/factory-terrain.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "a5e6fb698710ff4d08117a692531306cd94896bc1aa20d9c9b9cb7554f50311b"
+    },
+    "src/components/world/factory/factory-trial-physics.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "ae5439ba3dd41295814521ce24f2bd461126fdf76a59324cad8bed0a8bd2bd93"
+    },
+    "src/components/world/factory/factory-trial-physics.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "1998225009e1dfa03fffc555251397fd506f978069472bc912c1fc10a9e03843"
+    },
+    "src/components/world/factory/factory-worklife.test.mjs": {
+      "matchesRecoveredSource": true,
+      "sha256": "8351583ede1f0796bef49ea13778fcfb73be3167fd5d637ab1d3105ef92d9776"
+    },
+    "src/components/world/factory/factory-worklife.ts": {
+      "matchesRecoveredSource": true,
+      "sha256": "b4de61cdf64e174a05ed20c17a3d9fb0be58990503c25e69440aae5316c8141b"
+    },
+    "src/components/world/factory/factory.css": {
+      "matchesRecoveredSource": true,
+      "sha256": "6177cb5e37fe5c910bff4e14789b64ff8302447b69f695bdd491c9a53f187155"
+    }
+  },
+  "newModules": {
+    "src/components/world/attractions/attraction-camera-cabin.ts": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/attractions/attraction-camera-cabin.test.mjs": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/attractions/intent-workshop-arcade.ts": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/attractions/intent-workshop-arcade.test.mjs": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/club-basin-mask.ts": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/club-basin-mask.test.mjs": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/exchange-glass-bays.ts": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/exchange-glass-bays.test.mjs": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/mine-floor-coverage.ts": {
+      "matchesRecoveredSource": true
+    },
+    "src/components/world/mine-floor-coverage.test.mjs": {
+      "matchesRecoveredSource": true
+    }
+  }
+}

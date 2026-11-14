@@ -1,0 +1,1253 @@
+TAP version 13
+# {"rays":126,"hits":110,"miss":16,"structureTris":64694,"buildMs":20.062874999999963,"treeBufferBytes":743564}
+# (node:33959) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: static factory acceleration preserves authored faces and exact finite-range occlusion
+ok 1 - static factory acceleration preserves authored faces and exact finite-range occlusion
+  ---
+  duration_ms: 349.098208
+  type: 'test'
+  ...
+# node:internal/modules/run_main:123
+#     triggerUncaughtException(
+#     ^
+# Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/tools/world/alpha-mine-tests/quarry-walk.mjs' imported from /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/alpha-mine-foundation.test.mjs
+#     at finalizeResolution (node:internal/modules/esm/resolve:275:11)
+#     at moduleResolve (node:internal/modules/esm/resolve:861:10)
+#     at defaultResolve (node:internal/modules/esm/resolve:985:11)
+#     at nextResolve (node:internal/modules/esm/hooks:748:28)
+#     at resolve (file:///Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/tools/world/alpha-mine-tests/loader.mjs:10:18)
+#     at nextResolve (node:internal/modules/esm/hooks:748:28)
+#     at Hooks.resolve (node:internal/modules/esm/hooks:240:30)
+#     at handleMessage (node:internal/modules/esm/worker:199:24)
+#     at Immediate.checkForMessages (node:internal/modules/esm/worker:141:28)
+#     at process.processImmediate (node:internal/timers:484:21) {
+#   code: 'ERR_MODULE_NOT_FOUND',
+#   url: 'file:///Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/tools/world/alpha-mine-tests/quarry-walk.mjs'
+# }
+# Node.js v22.22.2
+# Subtest: src/components/world/alpha-mine-foundation.test.mjs
+not ok 2 - src/components/world/alpha-mine-foundation.test.mjs
+  ---
+  duration_ms: 175.049125
+  type: 'test'
+  location: '/Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/alpha-mine-foundation.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: cabin guard checks the actual eye, inter-frame path and widened near plane without retracting it
+ok 3 - cabin guard checks the actual eye, inter-frame path and widened near plane without retracting it
+  ---
+  duration_ms: 6.018333
+  type: 'test'
+  ...
+# Subtest: default cabin keeps free head look and optical zoom at a fixed eye; legacy view tokens still work
+ok 4 - default cabin keeps free head look and optical zoom at a fixed eye; legacy view tokens still work
+  ---
+  duration_ms: 0.727792
+  type: 'test'
+  ...
+# Subtest: real full-loop cabin eye and near plane clear visible structures, production colliders and all three actual cars
+ok 5 - real full-loop cabin eye and near plane clear visible structures, production colliders and all three actual cars
+  ---
+  duration_ms: 1514.777458
+  type: 'test'
+  ...
+# {"near":0.1,"aspects":[0.5625,1.7777777777777777,1.836734693877551,3.5555555555555554],"fov":{"min":45,"max":75},"reports":[{"fps":30,"samples":3406,"envelope":0.32553732346864683,"maxWorldStep":1.1082700294602168,"maxSeatResidual":6.394884621840902e-14,"maxAngle":0.12725504091391024,"collisionCorrections":0},{"fps":60,"samples":6811,"envelope":0.32553732346864683,"maxWorldStep":0.554232184076917,"maxSeatResidual":6.394884621840902e-14,"maxAngle":0.06531771374805505,"collisionCorrections":0},{"fps":120,"samples":13621,"envelope":0.32553732346864683,"maxWorldStep":0.2771686492302465,"maxSeatResidual":6.394884621840902e-14,"maxAngle":0.03271001447772326,"collisionCorrections":0}]}
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: recovery follows the current train-relative ray at a bounded rate; new walls compress immediately
+ok 6 - recovery follows the current train-relative ray at a bounded rate; new walls compress immediately
+  ---
+  duration_ms: 6.310083
+  type: 'test'
+  ...
+# Subtest: new ride/phase, reset, first person, view mode, exit, seek and stale frames cannot reuse old obstruction state
+ok 7 - new ride/phase, reset, first person, view mode, exit, seek and stale frames cannot reuse old obstruction state
+  ---
+  duration_ms: 0.978416
+  type: 'test'
+  ...
+# Subtest: half-second release is frame-rate independent and live zoom remains collision checked
+ok 8 - half-second release is frame-rate independent and live zoom remains collision checked
+  ---
+  duration_ms: 1.000625
+  type: 'test'
+  ...
+# Subtest: real complete rides keep every recovered near plane safe and quantify release versus forced compression
+ok 9 - real complete rides keep every recovered near plane safe and quantify release versus forced compression
+  ---
+  duration_ms: 1450.396791
+  type: 'test'
+  ...
+# {"events":[{"seconds":79.81666666666342,"look":{"yaw":1.43,"pitch":0,"zoom":1},"before":5.727261191580338,"after":5.727261191580338,"limit":2.0799445629119875,"distance":2.0799445629119844,"forced":true},{"seconds":3.983333333333324,"look":{"yaw":-1.43,"pitch":1.15,"zoom":1.8},"before":10.338135612231666,"after":0.16076275413113958,"limit":13.203541429100817,"distance":2.980915683734114,"forced":false}],"reports":[{"view":"chase","look":{"yaw":0,"pitch":0,"zoom":1},"samples":6810,"forced":5,"recovery":1,"maxStep":0.8017515113126211,"maxStepAt":46.74999999999863,"maxRelease":0.19001898942787443,"maxRawRelease":0.19169989734697684,"minHeight":2.0793669558388443},{"view":"chase","look":{"yaw":1.43,"pitch":0,"zoom":1},"samples":6810,"forced":32,"recovery":247,"maxStep":5.727261191580338,"maxStepAt":79.81666666666342,"maxRelease":0.4211610489611166,"maxRawRelease":5.553877624444187,"minHeight":1.320001615608768},{"view":"chase","look":{"yaw":-1.43,"pitch":1.15,"zoom":1.8},"samples":6810,"forced":191,"recovery":189,"maxStep":8.153421415164367,"maxStepAt":110.96666666666165,"maxRelease":0.7239332200580149,"maxRawRelease":10.338135612231666,"minHeight":1.3202223606612593},{"view":"chase","look":{"yaw":3.141592653589793,"pitch":-1.15,"zoom":0.45},"samples":6810,"forced":52,"recovery":64,"maxStep":2.186278750411359,"maxStepAt":54.316666666664865,"maxRelease":0.662740035627722,"maxRawRelease":2.4289773565693533,"minHeight":1.3200010209338169},{"view":"comfort","look":{"yaw":0,"pitch":0,"zoom":1},"samples":6810,"forced":5,"recovery":1,"maxStep":0.8017515113126211,"maxStepAt":46.74999999999863,"maxRelease":0.19001898942787443,"maxRawRelease":0.19169989734697684,"minHeight":2.0793669558388443},{"view":"comfort","look":{"yaw":1.43,"pitch":0,"zoom":1},"samples":6810,"forced":32,"recovery":247,"maxStep":5.727261191580338,"maxStepAt":79.81666666666342,"maxRelease":0.4211610489611166,"maxRawRelease":5.553877624444187,"minHeight":1.320001615608768},{"view":"comfort","look":{"yaw":-1.43,"pitch":1.15,"zoom":1.8},"samples":6810,"forced":191,"recovery":189,"maxStep":8.153421415164367,"maxStepAt":110.96666666666165,"maxRelease":0.7239332200580149,"maxRawRelease":10.338135612231666,"minHeight":1.3202223606612593},{"view":"comfort","look":{"yaw":3.141592653589793,"pitch":-1.15,"zoom":0.45},"samples":6810,"forced":52,"recovery":64,"maxStep":2.186278750411359,"maxStepAt":54.316666666664865,"maxRelease":0.662740035627722,"maxRawRelease":2.4289773565693533,"minHeight":1.3200010209338169}]}
+# Subtest: the same drag delta has the walking camera direction in orbit and first person
+ok 10 - the same drag delta has the walking camera direction in orbit and first person
+  ---
+  duration_ms: 0.755833
+  type: 'test'
+  ...
+# Subtest: full orbit during a real inversion changes the view without moving the rider or train
+ok 11 - full orbit during a real inversion changes the view without moving the rider or train
+  ---
+  duration_ms: 0.499833
+  type: 'test'
+  ...
+# Subtest: first-person head turn preserves its eye point even when inverted
+ok 12 - first-person head turn preserves its eye point even when inverted
+  ---
+  duration_ms: 0.060458
+  type: 'test'
+  ...
+# Subtest: close third-person orbit stays on the train passenger side through inversions
+ok 13 - close third-person orbit stays on the train passenger side through inversions
+  ---
+  duration_ms: 0.206458
+  type: 'test'
+  ...
+# Subtest: tiny drags, pitch changes and the yaw wrap are continuous throughout the complete loop
+ok 14 - tiny drags, pitch changes and the yaw wrap are continuous throughout the complete loop
+  ---
+  duration_ms: 68.61425
+  type: 'test'
+  ...
+# Subtest: first-person head look and explicit reset/view switching preserve their original contracts for a whole ride
+ok 15 - first-person head look and explicit reset/view switching preserve their original contracts for a whole ride
+  ---
+  duration_ms: 5.300167
+  type: 'test'
+  ...
+# Subtest: an authored view passing through world vertical does not flip its third-person pitch axis
+ok 16 - an authored view passing through world vertical does not flip its third-person pitch axis
+  ---
+  duration_ms: 31.743292
+  type: 'test'
+  ...
+# Subtest: manual view remains bounded, ignores invalid input and resets explicitly
+ok 17 - manual view remains bounded, ignores invalid input and resets explicitly
+  ---
+  duration_ms: 0.1075
+  type: 'test'
+  ...
+# {"triangles":3076,"colliders":173,"colorDraws":2}
+# {"carrierSamples":722,"clearance":0.1}
+# Subtest: two world-space batches stay within the 9000-triangle budget and own their resources
+ok 18 - two world-space batches stay within the 9000-triangle budget and own their resources
+  ---
+  duration_ms: 13.43075
+  type: 'test'
+  ...
+# Subtest: all collider corners coincide with authored solid-box vertices, without an enclosing hull
+ok 19 - all collider corners coincide with authored solid-box vertices, without an enclosing hull
+  ---
+  duration_ms: 26.795375
+  type: 'test'
+  ...
+# Subtest: every actual workshopTarget and device operating volume remains open
+ok 20 - every actual workshopTarget and device operating volume remains open
+  ---
+  duration_ms: 11.361667
+  type: 'test'
+  ...
+# Subtest: actual capsule geometry clears every intake, hub, branch and lowering segment
+ok 21 - actual capsule geometry clears every intake, hub, branch and lowering segment
+  ---
+  duration_ms: 85.904125
+  type: 'test'
+  ...
+# Subtest: front entrance, target approaches and a larger camera envelope remain clear
+ok 22 - front entrance, target approaches and a larger camera envelope remain clear
+  ---
+  duration_ms: 77.162708
+  type: 'test'
+  ...
+# Subtest: central sky opening stays empty above the existing carrier and toward the coaster
+ok 23 - central sky opening stays empty above the existing carrier and toward the coaster
+  ---
+  duration_ms: 0.302959
+  type: 'test'
+  ...
+# Subtest: the six physical machines finish six distinct requests and unlock the existing chest without DOM answer buttons
+ok 24 - the six physical machines finish six distinct requests and unlock the existing chest without DOM answer buttons
+  ---
+  duration_ms: 1.296041
+  type: 'test'
+  ...
+# Subtest: a wrong route preserves the original task and produces no credit; repeating a completed clock cannot double-count
+ok 25 - a wrong route preserves the original task and produces no credit; repeating a completed clock cannot double-count
+  ---
+  duration_ms: 0.41575
+  type: 'test'
+  ...
+# Subtest: the rejected carrier reverses continuously and arrives at intake before retry
+ok 26 - the rejected carrier reverses continuously and arrives at intake before retry
+  ---
+  duration_ms: 0.065875
+  type: 'test'
+  ...
+# Subtest: machine outputs survive the next request and a scene reset, but follow a cleared saved progression
+ok 27 - machine outputs survive the next request and a scene reset, but follow a cleared saved progression
+  ---
+  duration_ms: 0.128666
+  type: 'test'
+  ...
+# Subtest: paused, hidden and abnormal frames do not advance a request, and recovery cancels the unsettled cycle
+ok 28 - paused, hidden and abnormal frames do not advance a request, and recovery cancels the unsettled cycle
+  ---
+  duration_ms: 0.068208
+  type: 'test'
+  ...
+# Subtest: spatial controls require actual line of sight and cannot submit while other actor modes are active
+ok 29 - spatial controls require actual line of sight and cannot submit while other actor modes are active
+  ---
+  duration_ms: 0.068916
+  type: 'test'
+  ...
+# Subtest: the ambiguous seventh request needs the physical bell before a route can earn credit
+ok 30 - the ambiguous seventh request needs the physical bell before a route can earn credit
+  ---
+  duration_ms: 0.163542
+  type: 'test'
+  ...
+# Subtest: unlocked workshop keeps playing, validates wrong replays, and preserves all unlocks
+ok 31 - unlocked workshop keeps playing, validates wrong replays, and preserves all unlocks
+  ---
+  duration_ms: 0.15175
+  type: 'test'
+  ...
+# Subtest: practice clarification must be rediscovered without changing saved progress
+ok 32 - practice clarification must be rediscovered without changing saved progress
+  ---
+  duration_ms: 0.198792
+  type: 'test'
+  ...
+# Subtest: physical actions dispatch distinct sounds once, and machine sound stops before the actual result
+ok 33 - physical actions dispatch distinct sounds once, and machine sound stops before the actual result
+  ---
+  duration_ms: 0.837375
+  type: 'test'
+  ...
+# Subtest: pause or reset cancels machine audio without replaying elapsed sound on resumed frames
+ok 34 - pause or reset cancels machine audio without replaying elapsed sound on resumed frames
+  ---
+  duration_ms: 0.167958
+  type: 'test'
+  ...
+# Subtest: clarification bell is distinct and gate unlock sounds only on a successful false-to-true transition
+ok 35 - clarification bell is distinct and gate unlock sounds only on a successful false-to-true transition
+  ---
+  duration_ms: 0.423583
+  type: 'test'
+  ...
+# Subtest: constant-time mask follows the rendered basin polygon, including concave bays
+ok 36 - constant-time mask follows the rendered basin polygon, including concave bays
+  ---
+  duration_ms: 14.086125
+  type: 'test'
+  ...
+# Subtest: basin mask starts inactive, retaining fallback terrain until the basin mounts
+ok 37 - basin mask starts inactive, retaining fallback terrain until the basin mounts
+  ---
+  duration_ms: 0.055417
+  type: 'test'
+  ...
+# (node:34188) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+# Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+# (Use `node --trace-deprecation ...` to show where the warning was created)
+# Subtest: real window bays have independent depth bounds without copying vertex buffers
+ok 38 - real window bays have independent depth bounds without copying vertex buffers
+  ---
+  duration_ms: 78.52875
+  type: 'test'
+  ...
+# Subtest: next batch requires completed inspection and committed dispatch with no pending action
+ok 39 - next batch requires completed inspection and committed dispatch with no pending action
+  ---
+  duration_ms: 4.670459
+  type: 'test'
+  ...
+# Subtest: next batch archives exact product evidence and rework while clearing all current production
+ok 40 - next batch archives exact product evidence and rework while clearing all current production
+  ---
+  duration_ms: 1.468459
+  type: 'test'
+  ...
+# Subtest: bounded archives survive repeated batches and restore without reusing physical or trial identities
+ok 41 - bounded archives survive repeated batches and restore without reusing physical or trial identities
+  ---
+  duration_ms: 3.33925
+  type: 'test'
+  ...
+# Subtest: second batch samples and state transitions share immutable archives without cloning or changing their contents
+ok 42 - second batch samples and state transitions share immutable archives without cloning or changing their contents
+  ---
+  duration_ms: 1.755
+  type: 'test'
+  ...
+# Subtest: legacy v1 saves retain their exact committed state and raw runtime saves interrupt safely
+ok 43 - legacy v1 saves retain their exact committed state and raw runtime saves interrupt safely
+  ---
+  duration_ms: 1.289541
+  type: 'test'
+  ...
+# Subtest: previous batch callbacks cannot finish, cancel or sample a new batch operation
+ok 44 - previous batch callbacks cannot finish, cancel or sample a new batch operation
+  ---
+  duration_ms: 0.439792
+  type: 'test'
+  ...
+# Subtest: restore rejects fabricated archive evidence, duplicate batches and unbounded or nested archives
+ok 45 - restore rejects fabricated archive evidence, duplicate batches and unbounded or nested archives
+  ---
+  duration_ms: 1.015041
+  type: 'test'
+  ...
+# Subtest: dispatch store authorizes location and world state, clears temporary controls and persists the new run
+ok 46 - dispatch store authorizes location and world state, clears temporary controls and persists the new run
+  ---
+  duration_ms: 1.631583
+  type: 'test'
+  ...
+# Subtest: all three nests are finite single-draw geometry with a shared roller-contact base
+ok 47 - all three nests are finite single-draw geometry with a shared roller-contact base
+  ---
+  duration_ms: 12.922
+  type: 'test'
+  ...
+# Subtest: the bevel-inset underside spans at least two roller tangencies throughout a .8 m travel period
+ok 48 - the bevel-inset underside spans at least two roller tangencies throughout a .8 m travel period
+  ---
+  duration_ms: 10.707458
+  type: 'test'
+  ...
+# Subtest: real pad tops meet real module undersides in both configurations, without empty floating supports
+ok 49 - real pad tops meet real module undersides in both configurations, without empty floating supports
+  ---
+  duration_ms: 50.772625
+  type: 'test'
+  ...
+# Subtest: wheel tread approximation stays within the declared 2 mm contact tolerance through a revolution
+ok 50 - wheel tread approximation stays within the declared 2 mm contact tolerance through a revolution
+  ---
+  duration_ms: 182.847291
+  type: 'test'
+  ...
+# Subtest: shell nest leaves the existing hoist jaw corridor above .36 m clear
+ok 51 - shell nest leaves the existing hoist jaw corridor above .36 m clear
+  ---
+  duration_ms: 0.545166
+  type: 'test'
+  ...
+# Subtest: both handholds are truly open through every deck and have a recessed metal wall
+ok 52 - both handholds are truly open through every deck and have a recessed metal wall
+  ---
+  duration_ms: 3.766042
+  type: 'test'
+  ...
+# Subtest: deck and support topology remains closed with no duplicate coplanar triangles
+ok 53 - deck and support topology remains closed with no duplicate coplanar triangles
+  ---
+  duration_ms: 4.102208
+  type: 'test'
+  ...
+# {"configuration":"nimble","meshes":14,"triangles":5060,"geometries":8,"materials":5,"uniqueTriangles":3308}
+# {"configuration":"steady","meshes":14,"triangles":5320,"geometries":8,"materials":5,"uniqueTriangles":3424}
+# Subtest: both knee-high configurations have a centred contact-plane origin and metre-scale envelope
+ok 54 - both knee-high configurations have a centred contact-plane origin and metre-scale envelope
+  ---
+  duration_ms: 18.534541
+  type: 'test'
+  ...
+# Subtest: four independently detachable wheels spin inside the complete wheel module
+ok 55 - four independently detachable wheels spin inside the complete wheel module
+  ---
+  duration_ms: 4.0385
+  type: 'test'
+  ...
+# Subtest: wheel-only rework preserves every retained frame vertex and transform
+ok 56 - wheel-only rework preserves every retained frame vertex and transform
+  ---
+  duration_ms: 8.917125
+  type: 'test'
+  ...
+# Subtest: each wheel module carries aligned axles, ground-contact tyres and configuration ballast
+ok 57 - each wheel module carries aligned axles, ground-contact tyres and configuration ballast
+  ---
+  duration_ms: 9.857916
+  type: 'test'
+  ...
+# Subtest: spinning tyres never rotates axles, suspension or ballast, which detach together
+ok 58 - spinning tyres never rotates axles, suspension or ballast, which detach together
+  ---
+  duration_ms: 8.88275
+  type: 'test'
+  ...
+# Subtest: shell-off exposes the internal frame without changing wheel placement; configurations have distinct wheel modules
+ok 59 - shell-off exposes the internal frame without changing wheel placement; configurations have distinct wheel modules
+  ---
+  duration_ms: 6.126459
+  type: 'test'
+  ...
+# Subtest: material batches and low-segment geometry stay finite, noncollapsed and within the companion allocation
+ok 60 - material batches and low-segment geometry stay finite, noncollapsed and within the companion allocation
+  ---
+  duration_ms: 9.958042
+  type: 'test'
+  ...
+# Subtest: dispose releases every owned resource once, including detached modules, and never releases another owner’s assets
+ok 61 - dispose releases every owned resource once, including detached modules, and never releases another owner’s assets
+  ---
+  duration_ms: 4.397166
+  type: 'test'
+  ...
+# {"colorDraws":2,"geometries":2,"materials":1,"colliders":0,"rollerInstances":254,"chainInstances":378,"triangles":26888}
+# Subtest: rollers meet carrier undersides and exclude the transverse table and solid inlet belts
+ok 62 - rollers meet carrier undersides and exclude the transverse table and solid inlet belts
+  ---
+  duration_ms: 0.36075
+  type: 'test'
+  ...
+# Subtest: two instanced draws follow actual outfeed, stay still at idle and pause, and dispose once
+ok 63 - two instanced draws follow actual outfeed, stay still at idle and pause, and dispose once
+  ---
+  duration_ms: 4.809
+  type: 'test'
+  ...
+# Subtest: closed chain links turn at both sprockets and return below the continuous belt
+ok 64 - closed chain links turn at both sprockets and return below the continuous belt
+  ---
+  duration_ms: 0.506542
+  type: 'test'
+  ...
+# Subtest: intake and forward or recorded wrong-line reverse routing drive only their real mechanical runs
+ok 65 - intake and forward or recorded wrong-line reverse routing drive only their real mechanical runs
+  ---
+  duration_ms: 96.723459
+  type: 'test'
+  ...
+# Subtest: summary reports actual speed/tilt and sampled position without manufacturing a verdict
+ok 66 - summary reports actual speed/tilt and sampled position without manufacturing a verdict
+  ---
+  duration_ms: 0.510083
+  type: 'test'
+  ...
+# Subtest: previous comparable requires all conditions, batch, mode and completed evidence
+ok 67 - previous comparable requires all conditions, batch, mode and completed evidence
+  ---
+  duration_ms: 0.172875
+  type: 'test'
+  ...
+# Subtest: repeatability takes priority; changed setups are explicitly compared as whole setups
+ok 68 - repeatability takes priority; changed setups are explicitly compared as whole setups
+  ---
+  duration_ms: 0.256667
+  type: 'test'
+  ...
+# Subtest: completed history differences retain direction and do not use finish speed as race speed
+ok 69 - completed history differences retain direction and do not use finish speed as race speed
+  ---
+  duration_ms: 0.131666
+  type: 'test'
+  ...
+# Subtest: same-run benchmark comparison requires completion of both lanes and benchmark identity
+ok 70 - same-run benchmark comparison requires completion of both lanes and benchmark identity
+  ---
+  duration_ms: 0.078833
+  type: 'test'
+  ...
+# Subtest: wheel experiment names the actual alternate configuration and rerun conditions without a promised improvement
+ok 71 - wheel experiment names the actual alternate configuration and rerun conditions without a promised improvement
+  ---
+  duration_ms: 0.232041
+  type: 'test'
+  ...
+# {"triangles":10580,"colliders":60,"vertices":22302}
+# Subtest: facade is one finite indexed batch inside the existing building and roof envelope
+ok 72 - facade is one finite indexed batch inside the existing building and roof envelope
+  ---
+  duration_ms: 34.783625
+  type: 'test'
+  ...
+# Subtest: wall windows have opaque infill and thick entrance canopy while the entry remains genuinely open
+ok 73 - wall windows have opaque infill and thick entrance canopy while the entry remains genuinely open
+  ---
+  duration_ms: 28.317166
+  type: 'test'
+  ...
+# Subtest: surveyed service doors remain clear while unassigned wall-bay gaps are physically closed
+ok 74 - surveyed service doors remain clear while unassigned wall-bay gaps are physically closed
+  ---
+  duration_ms: 18.79325
+  type: 'test'
+  ...
+# Subtest: all three path levels, both ramps and every station retain standing-body clearance
+ok 75 - all three path levels, both ramps and every station retain standing-body clearance
+  ---
+  duration_ms: 30.538792
+  type: 'test'
+  ...
+# Subtest: palette and independent instance resource ownership remain intact
+ok 76 - palette and independent instance resource ownership remain intact
+  ---
+  duration_ms: 21.073167
+  type: 'test'
+  ...
+# Subtest: window interiors show the same glass infill, without a black backing or overlapping cross bars
+ok 77 - window interiors show the same glass infill, without a black backing or overlapping cross bars
+  ---
+  duration_ms: 13.891458
+  type: 'test'
+  ...
+# {"triangles":1940,"colliders":14,"vertices":4184}
+# Subtest: fixture preserves the production datum with a compact finite single-batch envelope
+ok 78 - fixture preserves the production datum with a compact finite single-batch envelope
+  ---
+  duration_ms: 12.626667
+  type: 'test'
+  ...
+# Subtest: workplane and four actual chassis support pads meet the unmodified companion in both configurations
+ok 79 - workplane and four actual chassis support pads meet the unmodified companion in both configurations
+  ---
+  duration_ms: 22.020959
+  type: 'test'
+  ...
+# Subtest: real wheel geometries can sweep a full revolution above four actual recessed pockets
+ok 80 - real wheel geometries can sweep a full revolution above four actual recessed pockets
+  ---
+  duration_ms: 12.062583
+  type: 'test'
+  ...
+# Subtest: assembly and finish standing points, their unchanged controls and both side passages remain clear
+ok 81 - assembly and finish standing points, their unchanged controls and both side passages remain clear
+  ---
+  duration_ms: 5.887042
+  type: 'test'
+  ...
+# Subtest: fixture does not mutate the supplied palette or share resources across owners
+ok 82 - fixture does not mutate the supplied palette or share resources across owners
+  ---
+  duration_ms: 4.656541
+  type: 'test'
+  ...
+# Subtest: re-entering a released saved batch starts parked instead of repeating delivery
+ok 83 - re-entering a released saved batch starts parked instead of repeating delivery
+  ---
+  duration_ms: 0.698
+  type: 'test'
+  ...
+# Subtest: release traverses the dock and actual ramp continuously before following is allowed
+ok 84 - release traverses the dock and actual ramp continuously before following is allowed
+  ---
+  duration_ms: 0.882875
+  type: 'test'
+  ...
+# Subtest: a distant visitor is followed at safe separation, then the companion holds still
+ok 85 - a distant visitor is followed at safe separation, then the companion holds still
+  ---
+  duration_ms: 1.452958
+  type: 'test'
+  ...
+# Subtest: pause, hidden frames, unreleased product and bad deltas freeze every mutable field
+ok 86 - pause, hidden frames, unreleased product and bad deltas freeze every mutable field
+  ---
+  duration_ms: 0.36825
+  type: 'test'
+  ...
+# Subtest: leaving the lane, going upstairs and operating another station return to the defined park
+ok 87 - leaving the lane, going upstairs and operating another station return to the defined park
+  ---
+  duration_ms: 3.9095
+  type: 'test'
+  ...
+# Subtest: player eligibility checks finite foot contact and excludes every outside edge and upper gallery
+ok 88 - player eligibility checks finite foot contact and excludes every outside edge and upper gallery
+  ---
+  duration_ms: 0.08975
+  type: 'test'
+  ...
+# Subtest: normal launch accelerates gradually, yaw is rate bounded and wheels count only accepted motion
+ok 89 - normal launch accelerates gradually, yaw is rate bounded and wheels count only accepted motion
+  ---
+  duration_ms: 0.593334
+  type: 'test'
+  ...
+# Subtest: a blocked ramp cannot advance its route cursor or jump to the display lane
+ok 90 - a blocked ramp cannot advance its route cursor or jump to the display lane
+  ---
+  duration_ms: 0.44325
+  type: 'test'
+  ...
+# Subtest: many visitor laps remain on the inset lane, even with large alternating frame times
+ok 91 - many visitor laps remain on the inset lane, even with large alternating frame times
+  ---
+  duration_ms: 5.508125
+  type: 'test'
+  ...
+# Subtest: raw extraction, grouping and three independent processing lines preserve identities and conserve material
+ok 92 - raw extraction, grouping and three independent processing lines preserve identities and conserve material
+  ---
+  duration_ms: 1.455083
+  type: 'test'
+  ...
+# Subtest: complete lifecycle uses measured trials, explicit inspection evidence, a product card and release
+ok 93 - complete lifecycle uses measured trials, explicit inspection evidence, a product card and release
+  ---
+  duration_ms: 2.013041
+  type: 'test'
+  ...
+# Subtest: requests and simulation samples do not mutate prior state or caller-owned action data
+ok 94 - requests and simulation samples do not mutate prior state or caller-owned action data
+  ---
+  duration_ms: 0.276708
+  type: 'test'
+  ...
+# Subtest: failure, cancellation, retry, duplicate finish and stale callback cannot copy or lose materials
+ok 95 - failure, cancellation, retry, duplicate finish and stale callback cannot copy or lose materials
+  ---
+  duration_ms: 0.096125
+  type: 'test'
+  ...
+# Subtest: tickets bind token, revision, batch, configuration id and configuration revision
+ok 96 - tickets bind token, revision, batch, configuration id and configuration revision
+  ---
+  duration_ms: 0.266083
+  type: 'test'
+  ...
+# Subtest: rework returns only the selected module and invalidates current release evidence while retaining old configuration trials
+ok 97 - rework returns only the selected module and invalidates current release evidence while retaining old configuration trials
+  ---
+  duration_ms: 1.45125
+  type: 'test'
+  ...
+# Subtest: changing variant requires wheel rework, not merely a shell label
+ok 98 - changing variant requires wheel rework, not merely a shell label
+  ---
+  duration_ms: 0.435541
+  type: 'test'
+  ...
+# Subtest: empty, unfinished, reset and interrupted trials never satisfy release requirements
+ok 99 - empty, unfinished, reset and interrupted trials never satisfy release requirements
+  ---
+  duration_ms: 0.436875
+  type: 'test'
+  ...
+# Subtest: comparison requires synchronized paired observations, same load and both machines finishing
+ok 100 - comparison requires synchronized paired observations, same load and both machines finishing
+  ---
+  duration_ms: 0.352875
+  type: 'test'
+  ...
+# Subtest: malformed, stale, out of order and out of bounds simulation samples are ignored
+ok 101 - malformed, stale, out of order and out of bounds simulation samples are ignored
+  ---
+  duration_ms: 0.435584
+  type: 'test'
+  ...
+# Subtest: inspection refuses elapsed-time-only completion, wrong parts, wrong config and failed checks
+ok 102 - inspection refuses elapsed-time-only completion, wrong parts, wrong config and failed checks
+  ---
+  duration_ms: 0.82325
+  type: 'test'
+  ...
+# Subtest: save and restore clear uncommitted material actions and invalidate old callback without deadlock
+ok 103 - save and restore clear uncommitted material actions and invalidate old callback without deadlock
+  ---
+  duration_ms: 0.349917
+  type: 'test'
+  ...
+# Subtest: leaving mid-trial retains incomplete evidence, conditions and identity, then permits a new trial
+ok 104 - leaving mid-trial retains incomplete evidence, conditions and identity, then permits a new trial
+  ---
+  duration_ms: 0.449125
+  type: 'test'
+  ...
+# Subtest: save parser rejects damaged inventory, measurements, reports, impossible stages and oversized histories
+ok 105 - save parser rejects damaged inventory, measurements, reports, impossible stages and oversized histories
+  ---
+  duration_ms: 1.639834
+  type: 'test'
+  ...
+# Subtest: restoring issued reports verifies the complete current configuration snapshot
+ok 106 - restoring issued reports verifies the complete current configuration snapshot
+  ---
+  duration_ms: 0.989166
+  type: 'test'
+  ...
+# Subtest: history and continuous samples are bounded while preserving initial and terminal data
+ok 107 - history and continuous samples are bounded while preserving initial and terminal data
+  ---
+  duration_ms: 111.553291
+  type: 'test'
+  ...
+# Subtest: production extraction extremes keep bridge and trolley wheels on real supporting geometry
+ok 108 - production extraction extremes keep bridge and trolley wheels on real supporting geometry
+  ---
+  duration_ms: 1673.547333
+  type: 'test'
+  ...
+# Subtest: steel ropes contact the winch guides and magnet sockets throughout lowering without clamping
+ok 109 - steel ropes contact the winch guides and magnet sockets throughout lowering without clamping
+  ---
+  duration_ms: 10.972333
+  type: 'test'
+  ...
+# Subtest: gantry posts and intake preserve the console approach and full raw placement tolerance
+ok 110 - gantry posts and intake preserve the console approach and full raw placement tolerance
+  ---
+  duration_ms: 241.112
+  type: 'test'
+  ...
+# Subtest: updates retain finite geometry and stable resources; disposal owns only rig resources exactly once
+ok 111 - updates retain finite geometry and stable resources; disposal owns only rig resources exactly once
+  ---
+  duration_ms: 2.379209
+  type: 'test'
+  ...
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: flat test lanes have one visible courtyard surface rather than coplanar overlays
+ok 112 - flat test lanes have one visible courtyard surface rather than coplanar overlays
+  ---
+  duration_ms: 86.537084
+  type: 'test'
+  ...
+# Subtest: factory three-level architecture stays finite and bounded; stations have physical standing space
+ok 113 - factory three-level architecture stays finite and bounded; stations have physical standing space
+  ---
+  duration_ms: 132.524875
+  type: 'test'
+  ...
+# Subtest: production capsule walks from entrance to both galleries and returns without jumping
+ok 114 - production capsule walks from entrance to both galleries and returns without jumping
+  ---
+  duration_ms: 299.664416
+  type: 'test'
+  ...
+# Subtest: two test lanes derive from identical translated surface sections
+ok 115 - two test lanes derive from identical translated surface sections
+  ---
+  duration_ms: 51.862416
+  type: 'test'
+  ...
+# Subtest: finished modules can leave all three press beds through a real opening
+ok 116 - finished modules can leave all three press beds through a real opening
+  ---
+  duration_ms: 48.842208
+  type: 'test'
+  ...
+# Subtest: every signed ground-floor walking edge clears the full standing capsule in both directions
+ok 117 - every signed ground-floor walking edge clears the full standing capsule in both directions
+  ---
+  duration_ms: 56.967458
+  type: 'test'
+  ...
+# Subtest: released companion clears the real dispatch ramp and display lane, including overhead galleries
+ok 118 - released companion clears the real dispatch ramp and display lane, including overhead galleries
+  ---
+  duration_ms: 56.256458
+  type: 'test'
+  ...
+# Subtest: dispatch camera has a full clearance sweep below the gallery and outside the printer
+ok 119 - dispatch camera has a full clearance sweep below the gallery and outside the printer
+  ---
+  duration_ms: 48.170792
+  type: 'test'
+  ...
+# Subtest: operator views reach the real work area without the collision camera collapsing into equipment
+ok 120 - operator views reach the real work area without the collision camera collapsing into equipment
+  ---
+  duration_ms: 48.656333
+  type: 'test'
+  ...
+# Subtest: guidance leaves completed intake, routes the unfinished module, and requires new tests after rework
+ok 121 - guidance leaves completed intake, routes the unfinished module, and requires new tests after rework
+  ---
+  duration_ms: 1.610625
+  type: 'test'
+  ...
+# Subtest: prototype offers alternative experiments and rework without skipping final QA
+ok 122 - prototype offers alternative experiments and rework without skipping final QA
+  ---
+  duration_ms: 1.127917
+  type: 'test'
+  ...
+# {"lamps":41,"bakedVertices":[133066,52,576]}
+# Subtest: static fill follows lamp range and surface orientation, with restrained warm contribution
+ok 123 - static fill follows lamp range and surface orientation, with restrained warm contribution
+  ---
+  duration_ms: 0.644
+  type: 'test'
+  ...
+# Subtest: baking changes only its owned attribute, is numerically repeatable and never mutates lamps
+ok 124 - baking changes only its owned attribute, is numerically repeatable and never mutates lamps
+  ---
+  duration_ms: 0.535084
+  type: 'test'
+  ...
+# Subtest: overlapping strong lamps remain bounded and degenerate distances never produce NaN
+ok 125 - overlapping strong lamps remain bounded and degenerate distances never produce NaN
+  ---
+  duration_ms: 0.095875
+  type: 'test'
+  ...
+# Subtest: invalid attributes and lamp records fail before installing a partial bake
+ok 126 - invalid attributes and lamp records fail before installing a partial bake
+  ---
+  duration_ms: 0.178375
+  type: 'test'
+  ...
+# Subtest: both shader variants patch the current Three standard material and share the caller’s night uniform
+ok 127 - both shader variants patch the current Three standard material and share the caller’s night uniform
+  ---
+  duration_ms: 0.690542
+  type: 'test'
+  ...
+# Subtest: actual factory structure, roofs and walking surface accept the same local lamp contract
+ok 128 - actual factory structure, roofs and walking surface accept the same local lamp contract
+  ---
+  duration_ms: 198.542292
+  type: 'test'
+  ...
+# Subtest: disposing a material leaves caller geometry and the reusable uniform intact
+ok 129 - disposing a material leaves caller geometry and the reusable uniform intact
+  ---
+  duration_ms: 0.26125
+  type: 'test'
+  ...
+# Subtest: room fill reaches coarse floor interiors but excludes the courtyard and the top of the roof
+ok 130 - room fill reaches coarse floor interiors but excludes the courtyard and the top of the roof
+  ---
+  duration_ms: 0.151041
+  type: 'test'
+  ...
+# Subtest: local task fixtures light all three press volumes without changing the courtyard or island exposure
+ok 131 - local task fixtures light all three press volumes without changing the courtyard or island exposure
+  ---
+  duration_ms: 0.185875
+  type: 'test'
+  ...
+# Subtest: ordinary moving press and raw geometries can share work lighting without synthetic vertex attributes
+ok 132 - ordinary moving press and raw geometries can share work lighting without synthetic vertex attributes
+  ---
+  duration_ms: 0.338958
+  type: 'test'
+  ...
+# {"module":"frame","triangles":1732,"colliders":27,"vertices":3608}
+# {"module":"wheels","triangles":1908,"colliders":27,"vertices":3920}
+# {"module":"shell","triangles":1760,"colliders":24,"vertices":3656}
+# Subtest: each casing is a finite single batch inside the existing machine survey and budget
+ok 133 - each casing is a finite single batch inside the existing machine survey and budget
+  ---
+  duration_ms: 23.114
+  type: 'test'
+  ...
+# Subtest: both lower saddles meet the retained press bed, without building a duplicate bed
+ok 134 - both lower saddles meet the retained press bed, without building a duplicate bed
+  ---
+  duration_ms: 13.606208
+  type: 'test'
+  ...
+# Subtest: actual blanks, carriers and both configurations pass along the full X material opening
+ok 135 - actual blanks, carriers and both configurations pass along the full X material opening
+  ---
+  duration_ms: 29.739167
+  type: 'test'
+  ...
+# Subtest: full moving platen/guard envelopes and axial rod probes clear the actual fixed casing
+ok 136 - full moving platen/guard envelopes and axial rod probes clear the actual fixed casing
+  ---
+  duration_ms: 29.072458
+  type: 'test'
+  ...
+# Subtest: the wheel line has real through-bores and each fixed rear construction is distinct
+ok 137 - the wheel line has real through-bores and each fixed rear construction is distinct
+  ---
+  duration_ms: 7.9575
+  type: 'test'
+  ...
+# Subtest: operator approach and front aisle remain outside the new fixed envelope
+ok 138 - operator approach and front aisle remain outside the new fixed envelope
+  ---
+  duration_ms: 4.644167
+  type: 'test'
+  ...
+# Subtest: palette and per-instance geometry ownership are preserved without allocated materials or textures
+ok 139 - palette and per-instance geometry ownership are preserved without allocated materials or textures
+  ---
+  duration_ms: 3.831708
+  type: 'test'
+  ...
+# Subtest: each I column is one connected section with a continuous web and both full-width flanges
+ok 140 - each I column is one connected section with a continuous web and both full-width flanges
+  ---
+  duration_ms: 17.228125
+  type: 'test'
+  ...
+# Subtest: the deep crown has real sloping haunches, a supported centre and matching centre colliders
+ok 141 - the deep crown has real sloping haunches, a supported centre and matching centre colliders
+  ---
+  duration_ms: 5.334583
+  type: 'test'
+  ...
+# Subtest: both hard lines use actual steel unions seated into the reservoir and annular receiver
+ok 142 - both hard lines use actual steel unions seated into the reservoir and annular receiver
+  ---
+  duration_ms: 4.905916
+  type: 'test'
+  ...
+# Subtest: raw material needs actual alignment, pickup, carry and drop; idle time cannot complete it
+ok 143 - raw material needs actual alignment, pickup, carry and drop; idle time cannot complete it
+  ---
+  duration_ms: 1.514416
+  type: 'test'
+  ...
+# Subtest: magnet underside reaches each raw top without pulling its centre through the pickup plane
+ok 144 - magnet underside reaches each raw top without pulling its centre through the pickup plane
+  ---
+  duration_ms: 0.463625
+  type: 'test'
+  ...
+# Subtest: press interlock requires a held lever; early release safely retracts and output travels before committing
+ok 145 - press interlock requires a held lever; early release safely retracts and output travels before committing
+  ---
+  duration_ms: 0.218625
+  type: 'test'
+  ...
+# Subtest: assembly fetches real outfeeds and waits for pickup confirmation before attaching any part
+ok 146 - assembly fetches real outfeeds and waits for pickup confirmation before attaching any part
+  ---
+  duration_ms: 0.644916
+  type: 'test'
+  ...
+# Subtest: assembly samples continuous tool and module contact through every pickup, seating and idle return
+ok 147 - assembly samples continuous tool and module contact through every pickup, seating and idle return
+  ---
+  duration_ms: 5.51875
+  type: 'test'
+  ...
+# Subtest: assembly pause freezes mid-fetch and retract; long frames remain bounded
+ok 148 - assembly pause freezes mid-fetch and retract; long frames remain bounded
+  ---
+  duration_ms: 0.279042
+  type: 'test'
+  ...
+# Subtest: inspection rejects gapped mounts, missing wheels, a never-running motor and wrong serial plate
+ok 149 - inspection rejects gapped mounts, missing wheels, a never-running motor and wrong serial plate
+  ---
+  duration_ms: 0.1595
+  type: 'test'
+  ...
+# Subtest: reworking wheels does not lift the retained chassis again
+ok 150 - reworking wheels does not lift the retained chassis again
+  ---
+  duration_ms: 1.348042
+  type: 'test'
+  ...
+# Subtest: world console rejects remote use; pause clears held controls, Esc and camp recovery return pending material
+ok 151 - world console rejects remote use; pause clears held controls, Esc and camp recovery return pending material
+  ---
+  duration_ms: 0.875833
+  type: 'test'
+  ...
+# Subtest: actual cylinder endpoints stay joined through every material cycle at 30, 60 and 120 Hz
+ok 152 - actual cylinder endpoints stay joined through every material cycle at 30, 60 and 120 Hz
+  ---
+  duration_ms: 9.816542
+  type: 'test'
+  ...
+# Subtest: early release, return and pause preserve sleeve/platen contact without changing operation time
+ok 153 - early release, return and pause preserve sleeve/platen contact without changing operation time
+  ---
+  duration_ms: 2.115209
+  type: 'test'
+  ...
+# Subtest: pose synchronization changes only local Y and never changes mesh or geometry ownership
+ok 154 - pose synchronization changes only local Y and never changes mesh or geometry ownership
+  ---
+  duration_ms: 0.169833
+  type: 'test'
+  ...
+# Subtest: paper follows one continuous rigid path through real open geometry at 0, .5, 1 and between
+ok 155 - paper follows one continuous rigid path through real open geometry at 0, .5, 1 and between
+  ---
+  duration_ms: 15.621084
+  type: 'test'
+  ...
+# Subtest: paper bed, feed nip and supported output tray share the same contact plane
+ok 156 - paper bed, feed nip and supported output tray share the same contact plane
+  ---
+  duration_ms: 7.297209
+  type: 'test'
+  ...
+# Subtest: all real vertices fit a compact finite envelope with four draws and fewer than 2500 triangles
+ok 157 - all real vertices fit a compact finite envelope with four draws and fewer than 2500 triangles
+  ---
+  duration_ms: 5.501833
+  type: 'test'
+  ...
+# Subtest: disposal releases owned resources once even after replacement/detach and preserves caller resources
+ok 158 - disposal releases owned resources once even after replacement/detach and preserves caller resources
+  ---
+  duration_ms: 5.082541
+  type: 'test'
+  ...
+# {"triangles":5542,"colliders":186,"addedColorDrawsAfterMerge":0,"realtimeLights":0}
+# Subtest: production details merge as one finite static batch with bounded exact boxes and seven fixtures
+ok 159 - production details merge as one finite static batch with bounded exact boxes and seven fixtures
+  ---
+  duration_ms: 4.264708
+  type: 'test'
+  ...
+# Subtest: reserve stock supports each live source blank at its real underside, below the extraction sweep
+ok 160 - reserve stock supports each live source blank at its real underside, below the extraction sweep
+  ---
+  duration_ms: 7.645208
+  type: 'test'
+  ...
+# Subtest: all stations, signed walking edges and real operating camera rays retain clearance
+ok 161 - all stations, signed walking edges and real operating camera rays retain clearance
+  ---
+  duration_ms: 260.263625
+  type: 'test'
+  ...
+# Subtest: intake, every routing destination and all manufactured carrier paths stay free of new details
+ok 162 - intake, every routing destination and all manufactured carrier paths stay free of new details
+  ---
+  duration_ms: 501.465417
+  type: 'test'
+  ...
+# Subtest: comparison console never borrows the preceding single trial
+ok 163 - comparison console never borrows the preceding single trial
+  ---
+  duration_ms: 0.744834
+  type: 'test'
+  ...
+# Subtest: a running round without samples replaces old results immediately
+ok 164 - a running round without samples replaces old results immediately
+  ---
+  duration_ms: 0.120208
+  type: 'test'
+  ...
+# Subtest: rework preserves historical identities without promoting old results to the new configuration
+ok 165 - rework preserves historical identities without promoting old results to the new configuration
+  ---
+  duration_ms: 0.092791
+  type: 'test'
+  ...
+# Subtest: both lanes retain their own sampled finish time, finish speed and absolute peak tilt
+ok 166 - both lanes retain their own sampled finish time, finish speed and absolute peak tilt
+  ---
+  duration_ms: 0.119334
+  type: 'test'
+  ...
+# Subtest: incomplete and interrupted trials keep measurements without becoming successful results
+ok 167 - incomplete and interrupted trials keep measurements without becoming successful results
+  ---
+  duration_ms: 0.07775
+  type: 'test'
+  ...
+# Subtest: no readings or peak are fabricated for a missing benchmark; reason codes remain inspectable
+ok 168 - no readings or peak are fabricated for a missing benchmark; reason codes remain inspectable
+  ---
+  duration_ms: 0.053875
+  type: 'test'
+  ...
+# Subtest: fixture and unassembled sources stay exact until clamped, return to their own blank pocket, and park before completion
+ok 169 - fixture and unassembled sources stay exact until clamped, return to their own blank pocket, and park before completion
+  ---
+  duration_ms: 14.838167
+  type: 'test'
+  ...
+# Subtest: final assembly obstructions clear sequentially to real carriers; shell stays there and frame restores after wheel return
+ok 170 - final assembly obstructions clear sequentially to real carriers; shell stays there and frame restores after wheel return
+  ---
+  duration_ms: 27.332166
+  type: 'test'
+  ...
+# Subtest: the return runways, bogie wheels and trolley wheels have actual contact, and the roof clears their full travel
+ok 171 - the return runways, bogie wheels and trolley wheels have actual contact, and the roof clears their full travel
+  ---
+  duration_ms: 197.773
+  type: 'test'
+  ...
+# Subtest: return column footprints leave every surveyed pedestrian edge clear
+ok 172 - return column footprints leave every surveyed pedestrian edge clear
+  ---
+  duration_ms: 3.36075
+  type: 'test'
+  ...
+# Subtest: the selected module is gripped on real surfaces in both configurations, clear of its retained neighbours
+ok 173 - the selected module is gripped on real surfaces in both configurations, clear of its retained neighbours
+  ---
+  duration_ms: 24.271709
+  type: 'test'
+  ...
+# Subtest: raised module travel clears the actual fixed factory solids and stays within material-only pedestrian space
+ok 174 - raised module travel clears the actual fixed factory solids and stays within material-only pedestrian space
+  ---
+  duration_ms: 2673.567125
+  type: 'test'
+  ...
+# Subtest: intake and every outgoing/return route join the actual waiting pocket and press without diagonal shortcuts
+ok 175 - intake and every outgoing/return route join the actual waiting pocket and press without diagonal shortcuts
+  ---
+  duration_ms: 4.214542
+  type: 'test'
+  ...
+# Subtest: actual static decks support intake and staging-to-line transfer, with no collider through the travelling blank
+ok 176 - actual static decks support intake and staging-to-line transfer, with no collider through the travelling blank
+  ---
+  duration_ms: 10970.694125
+  type: 'test'
+  ...
+# Subtest: extraction corrects alignment continuously and only commits after material transport and empty-hoist parking
+ok 177 - extraction corrects alignment continuously and only commits after material transport and empty-hoist parking
+  ---
+  duration_ms: 1.23175
+  type: 'test'
+  ...
+# {"analyticalFactoryGroundSamples":350}
+# Subtest: factory footprint, courtyard and every station have dry level ground with an actual coastal buffer
+ok 178 - factory footprint, courtyard and every station have dry level ground with an actual coastal buffer
+  ---
+  duration_ms: 471.251333
+  type: 'test'
+  ...
+# Subtest: J7 approach participates in paving, recovery and the continuous real road network
+ok 179 - J7 approach participates in paving, recovery and the continuous real road network
+  ---
+  duration_ms: 9.328334
+  type: 'test'
+  ...
+# Subtest: west expansion preserves legacy key heights and the old convex coastal calculation
+ok 180 - west expansion preserves legacy key heights and the old convex coastal calculation
+  ---
+  duration_ms: 0.441416
+  type: 'test'
+  ...
+# Subtest: terrain range covers the full west headland shelf and retains old grid alignment
+ok 181 - terrain range covers the full west headland shelf and retains old grid alignment
+  ---
+  duration_ms: 0.10375
+  type: 'test'
+  ...
+# Subtest: rendered and collided mesh supports the factory, its road and coarse inland blocks
+ok 182 - rendered and collided mesh supports the factory, its road and coarse inland blocks # SKIP
+  ---
+  duration_ms: 0.029083
+  type: 'test'
+  ...
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: four actual suspension rays settle and traction starts the companion on flat ground
+ok 183 - four actual suspension rays settle and traction starts the companion on flat ground
+  ---
+  duration_ms: 11.916083
+  type: 'test'
+  ...
+# Subtest: actual authored hill supports ascent, descent and an observed finish without prescribed transforms
+ok 184 - actual authored hill supports ascent, descent and an observed finish without prescribed transforms
+  ---
+  duration_ms: 149.001458
+  type: 'test'
+  ...
+# {"finishS":10.483333333333434,"highestBodyY":1.6852489709854126,"peakTiltDeg":19.755858729313236,"position":{"x":56.15919494628906,"y":0.42723530530929565,"z":10.771712303161621}}
+# Subtest: translated comparison lanes share conditions and produce matching actual trajectories
+ok 185 - translated comparison lanes share conditions and produce matching actual trajectories
+  ---
+  duration_ms: 137.732
+  type: 'test'
+  ...
+# {"maxLaneDifferenceM":0.0001231953463400819,"finishS":[10.800000000000116,10.800000000000116]}
+# Subtest: timeout is incomplete; explicit pause and zero dt never advance elapsed or physical position
+ok 186 - timeout is incomplete; explicit pause and zero dt never advance elapsed or physical position
+  ---
+  duration_ms: 53.631416
+  type: 'test'
+  ...
+# Subtest: dispose removes owned controller and chassis, is idempotent, and allows another rig
+ok 187 - dispose removes owned controller and chassis, is idempotent, and allows another rig
+  ---
+  duration_ms: 50.643584
+  type: 'test'
+  ...
+# Subtest: variants, payload and selected road section change actual physics parameters
+ok 188 - variants, payload and selected road section change actual physics parameters
+  ---
+  duration_ms: 88.054334
+  type: 'test'
+  ...
+# Subtest: actual 10cm return-lane ridges produce suspension and tilt differences from a smooth surface
+ok 189 - actual 10cm return-lane ridges produce suspension and tilt differences from a smooth surface
+  ---
+  duration_ms: 71.5695
+  type: 'test'
+  ...
+# {"smooth":{"maxTilt":0.059090788692942174,"verticalSpeed":0.07794282585382462,"suspensionRange":0.016150334477424616},"ridged":{"maxTilt":20.669912992693742,"verticalSpeed":0.9115366339683533,"suspensionRange":0.048648530244827265}}
+# Subtest: external displacement, overturned chassis and oversized timesteps stop honestly without a reset
+ok 190 - external displacement, overturned chassis and oversized timesteps stop honestly without a reset
+  ---
+  duration_ms: 6.548791
+  type: 'test'
+  ...
+# {"triangles":3532,"drawCalls":2,"shadowDrawCalls":1,"drivenObjects":3,"bones":4,"geometries":2,"materials":1,"colliders":6}
+# Subtest: two useful fixed workstations fit the extra triangle, draw and animated-object allocation
+ok 191 - two useful fixed workstations fit the extra triangle, draw and animated-object allocation
+  ---
+  duration_ms: 19.423
+  type: 'test'
+  ...
+# Subtest: station volumes avoid interaction bodies, material lines, both hoists and authored camera rays
+ok 192 - station volumes avoid interaction bodies, material lines, both hoists and authored camera rays
+  ---
+  duration_ms: 0.500666
+  type: 'test'
+  ...
+# Subtest: active work moves one finite cleat continuously between trays and keeps the wrench axis fixed
+ok 193 - active work moves one finite cleat continuously between trays and keeps the wrench axis fixed
+  ---
+  duration_ms: 10.746333
+  type: 'test'
+  ...
+# Subtest: pause and inactive states freeze work, hide inactive workers and resume without clock catch-up
+ok 194 - pause and inactive states freeze work, hide inactive workers and resume without clock catch-up
+  ---
+  duration_ms: 6.354375
+  type: 'test'
+  ...
+# Subtest: disposal is idempotent and leaves other instances, added objects and supplied uniforms owned by callers
+ok 195 - disposal is idempotent and leaves other instances, added objects and supplied uniforms owned by callers
+  ---
+  duration_ms: 12.684667
+  type: 'test'
+  ...
+# Subtest: coverage comes from actual opaque upward visual faces at the facility floor only
+ok 196 - coverage comes from actual opaque upward visual faces at the facility floor only
+  ---
+  duration_ms: 1.141708
+  type: 'test'
+  ...
+# Subtest: clipping preserves uncovered gap fill, the exact skirt, and all collision arrays
+ok 197 - clipping preserves uncovered gap fill, the exact skirt, and all collision arrays
+  ---
+  duration_ms: 1.020625
+  type: 'test'
+  ...
+# Subtest: shipped Draco floor coverage removes overlap without changing full foundation collision or skirt
+ok 198 - shipped Draco floor coverage removes overlap without changing full foundation collision or skirt
+  ---
+  duration_ms: 122.021125
+  type: 'test'
+  ...
+# {"actualFlatVisualTriangles":2791,"fullFoundationTriangles":154,"exposedFoundationTriangles":3813,"fullCapAreaM2":2135.52,"exposedCapAreaM2":1302.858,"maxIntersectionAreaM2":0.0000045567849156213924,"totalIntersectionAreaM2":0.00016155030743902898,"extractMs":15.75,"clipMs":17.18}
+1..198
+# tests 198
+# suites 0
+# pass 196
+# fail 1
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 35273.873583
