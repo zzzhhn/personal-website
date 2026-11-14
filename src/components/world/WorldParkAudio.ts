@@ -266,9 +266,14 @@ export class ParkAudio {
     master.connect(comp).connect(ctx.destination);
     this.cueOutput = ctx.createGain(); this.cueOutput.connect(master);
     this.applyFade(true);
-    this.noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-    const d = this.noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
     return ctx;
+  }
+  private ensureNoise(ctx: AudioContext) {
+    if (!this.noise) {
+      this.noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+      const d = this.noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    return this.noise;
   }
   /** Finite Alpha events. Does not start the DJ loop; calls during pause/mute are discarded. */
   cue(kind: 'scan' | 'strike' | 'splash', intensity = 1) {
@@ -412,7 +417,7 @@ export class ParkAudio {
   }
   private hiss(out: AudioNode, t: number, dur: number, peak: number, type: BiquadFilterType, f: number, cue = false, attack = 0) {
     const ctx = this.ctx!, s = ctx.createBufferSource(), flt = ctx.createBiquadFilter(), g = ctx.createGain();
-    s.buffer = this.noise; flt.type = type; flt.frequency.value = f;
+    s.buffer = this.ensureNoise(ctx); flt.type = type; flt.frequency.value = f;
     g.gain.setValueAtTime(attack ? 0 : peak, t);
     if (attack) g.gain.linearRampToValueAtTime(peak, t + attack);
     g.gain.exponentialRampToValueAtTime(0.001, t + dur);

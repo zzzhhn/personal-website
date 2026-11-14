@@ -485,8 +485,27 @@ function clusterHull(g: BufferGeometry, cell: number): BufferGeometry {
   const id = `${g.uuid}:${cell}`, cached = clusters.get(id);
   if (cached) return cached;
   const pos = g.getAttribute('position'), wind = g.getAttribute('_wind'), idx = g.index;
-  const key = new Map<string, number>(), weld = new Int32Array(pos.count);
-  for (let i = 0; i < pos.count; i++) { const k = `${pos.getX(i).toFixed(4)},${pos.getY(i).toFixed(4)},${pos.getZ(i).toFixed(4)}`; let w = key.get(k); if (w === undefined) { w = i; key.set(k, i); } weld[i] = w; }
+  // Match toFixed(4)'s half-away-from-zero rounding, including its distinct
+  // negative rounded zero (but not -0 itself), without allocating vertex strings.
+  const quantize = (x: number) => {
+    const value = Math.abs(x), scaled = value * 10000;
+    let rounded = Math.round(scaled);
+    if (scaled - Math.floor(scaled) === .5) {
+      // Float32 positions multiply exactly here. For Float64 sources, recover
+      // multiplication's low bits when a rounded product lands on a half tie.
+      const split = value * 134217729, hi = split - (split - value);
+      if ((hi * 10000 - scaled) + (value - hi) * 10000 < 0) rounded--;
+    }
+    return x < 0 ? -rounded - 1 : rounded;
+  };
+  const key = new Map<number, Map<number, Map<number, number>>>(), weld = new Int32Array(pos.count);
+  const source = (x: number, y: number, z: number) => key.get(quantize(x))?.get(quantize(y))?.get(quantize(z));
+  for (let i = 0; i < pos.count; i++) {
+    const x = quantize(pos.getX(i)), y = quantize(pos.getY(i)), z = quantize(pos.getZ(i));
+    let ys = key.get(x); if (!ys) { ys = new Map(); key.set(x, ys); }
+    let zs = ys.get(y); if (!zs) { zs = new Map(); ys.set(y, zs); }
+    let w = zs.get(z); if (w === undefined) { w = i; zs.set(z, i); } weld[i] = w;
+  }
   const parent = Int32Array.from({ length: pos.count }, (_, i) => i);
   const find = (x: number): number => { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; };
   const n = idx ? idx.count : pos.count, at = (j: number) => weld[idx ? idx.getX(j) : j];
@@ -519,7 +538,7 @@ function clusterHull(g: BufferGeometry, cell: number): BufferGeometry {
     if (hp && hp.count >= 4) {
       for (let i = 0; i < hp.count; i++) {
         P.push(hp.getX(i), hp.getY(i), hp.getZ(i));
-        const src = key.get(`${hp.getX(i).toFixed(4)},${hp.getY(i).toFixed(4)},${hp.getZ(i).toFixed(4)}`) ?? verts[0];
+        const src = source(hp.getX(i), hp.getY(i), hp.getZ(i)) ?? verts[0];
         if (wind) W.push(wind.getX(src), wind.getY(src), wind.getZ(src), wind.getW(src));
         I.push(base + i);
       }

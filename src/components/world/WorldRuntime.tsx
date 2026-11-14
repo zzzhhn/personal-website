@@ -273,7 +273,12 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
     });
     return unsubscribe;
   }, []);
-  return <Canvas frameloop={renderMode} shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
+  return <Canvas frameloop={renderMode} shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+    onCreated={({ gl }) => {
+      // Driver log queries synchronously wait for compilation, even on success.
+      // Keep full diagnostics in development and for an explicit production probe.
+      if (!import.meta.env.DEV && !new URLSearchParams(window.location.search).has('shaderDebug')) gl.debug.checkShaderErrors = false;
+    }}>
     <ResumeTimeBoundary />
     <AlphaLocalLights /><WorldMaterialWarmup />
     <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={renderMode !== 'always'} colliders={false}>
