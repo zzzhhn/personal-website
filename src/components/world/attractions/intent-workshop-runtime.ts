@@ -5,6 +5,7 @@ import { INTENT_TASKS, findIntentTask, type IntentClass } from './intent-tasks.t
 import { commitIntentEvent, intentActorAvailable, useIntentStore } from './intent-state.ts';
 import { workshopTarget, type WorkshopTarget } from './intent-workshop-layout.ts';
 import { parkAudio } from '../WorldParkAudio';
+import { transitionIntent } from './intent-progress.ts';
 
 type WorkshopPhase = 'idle' | 'ready' | 'processing' | 'returning' | 'result';
 export const WORKSHOP_PROCESS_SECONDS = 2.8;
@@ -23,15 +24,16 @@ function stopProcessingSound() {
 export const useWorkshopStore = create<{
   phase: WorkshopPhase; taskId: string | null; tool: IntentClass | null;
   correct: boolean; revision: number;
-}>(() => ({ phase: 'idle', taskId: null, tool: null, correct: false, revision: 0 }));
+  practice: boolean; practiceCursor: number; practiceClarified: boolean;
+}>(() => ({ phase: 'idle', taskId: null, tool: null, correct: false, revision: 0,
+  practice: false, practiceCursor: 0, practiceClarified: false }));
 // The frame loop mutates only this clock. React receives phase changes, never frame ticks.
 export const workshopClock = { elapsed: 0, revision: -1, intakeElapsed: WORKSHOP_LEVER_SECONDS };
 export function workshopAvailable(id: WorkshopTarget) {
   if (!intentActorAvailable()) return false;
   const s = useWorkshopStore.getState(), p = useWorldStore.getState().position, at = workshopTarget(id);
   if (Math.hypot(p[0] - at[0], p[2] - at[2]) > 2.6 || Math.abs(p[1] - at[1]) > 2) return false;
-  if (id === 'intake') return (s.phase === 'idle' || s.phase === 'result')
-    && INTENT_TASKS.some(task => !useIntentStore.getState().progress.passed.includes(task.id));
+  if (id === 'intake') return s.phase === 'idle' || s.phase === 'result';
   if (s.phase !== 'ready') return false;
   return id !== 'bell' || !!findIntentTask(s.taskId ?? '')?.clarification;
 }
@@ -41,15 +43,20 @@ export function operateWorkshop(id: WorkshopTarget) {
   if (!workshopContact(id)) return;
   const s = useWorkshopStore.getState(), progress = useIntentStore.getState().progress;
   if (id === 'intake') {
-    const task = INTENT_TASKS.find(item => !progress.passed.includes(item.id));
-    if (!task) return;
+    const remaining = INTENT_TASKS.find(item => !progress.passed.includes(item.id));
+    const task = remaining ?? INTENT_TASKS[s.practiceCursor % INTENT_TASKS.length];
     workshopClock.elapsed = 0;
     workshopClock.intakeElapsed = 0;
-    useWorkshopStore.setState({ phase: 'ready', taskId: task.id, tool: null, correct: false });
+    useWorkshopStore.setState({ phase: 'ready', taskId: task.id, tool: null, correct: false,
+      practice: !remaining, practiceClarified: false,
+      practiceCursor: remaining ? s.practiceCursor : (s.practiceCursor + 1) % INTENT_TASKS.length });
     useIntentStore.setState({ notice: null });
     parkAudio.workshopCue('intake', .45);
   } else if (id === 'bell') {
-    commitIntentEvent({ type: 'ask', taskId: s.taskId!, questionId: 'desired-outcome' });
+    if (s.practice) {
+      useWorkshopStore.setState({ practiceClarified: true });
+      useIntentStore.setState({ notice: findIntentTask(s.taskId!)?.clarification?.reply ?? null });
+    } else commitIntentEvent({ type: 'ask', taskId: s.taskId!, questionId: 'desired-outcome' });
     parkAudio.workshopCue('bell', .35);
   } else {
     const revision = s.revision + 1;
@@ -84,8 +91,15 @@ export function advanceWorkshop(dt: number, paused: boolean, hidden: boolean) {
   if (previous < .35 && workshopClock.elapsed >= .35) cancelProcessingSound = parkAudio.workshopCue('process', .28);
   if (workshopClock.elapsed < WORKSHOP_PROCESS_SECONDS) return;
   stopProcessingSound();
-  const result = commitIntentEvent({ type: 'submit', taskId: s.taskId!, answer: s.tool! });
+  const event = { type: 'submit' as const, taskId: s.taskId!, answer: s.tool! };
+  // Practice validates the new answer independently. Never erase the saved key,
+  // credit a duplicate task, or accept a wrong answer merely because it passed once.
+  const result = s.practice ? transitionIntent({ ...useIntentStore.getState().progress,
+    passed: [], clarified: s.practiceClarified ? [s.taskId!] : [] }, event) : commitIntentEvent(event);
   const correct = result.code === 'passed' || result.code === 'already-passed';
+  if (s.practice) useIntentStore.setState({ notice: correct
+    ? { zh: '处理完成。大门保持开启，可以继续接件或去乘车。', en: 'Request completed. The gate stays open. Keep experimenting or take a ride.' }
+    : result.message });
   if (!correct) workshopClock.elapsed = 0;
   useWorkshopStore.setState({ phase: correct ? 'result' : 'returning', correct });
   parkAudio.workshopCue(correct ? 'success' : 'error', correct ? .4 : .35);
@@ -93,5 +107,6 @@ export function advanceWorkshop(dt: number, paused: boolean, hidden: boolean) {
 export function resetWorkshop() {
   stopProcessingSound();
   Object.assign(workshopClock, { elapsed: 0, revision: -1, intakeElapsed: WORKSHOP_LEVER_SECONDS });
-  useWorkshopStore.setState({ phase: 'idle', taskId: null, tool: null, correct: false });
+  useWorkshopStore.setState({ phase: 'idle', taskId: null, tool: null, correct: false,
+    practice: false, practiceCursor: 0, practiceClarified: false });
 }

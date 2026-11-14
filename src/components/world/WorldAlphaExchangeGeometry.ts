@@ -328,5 +328,7 @@ export function buildAlphaExchangeGeometry() {
   // Coplanar floor diagonals are mesh seams, not physical ridges. Apply Rapier's
   // local adjacent-face normal correction without changing vertices or player tolerances.
   const body=mergeBatch(parts);bakeExchangeWorklights(body);
-  return {body,glass:mergeBatch(glass),colliders:{surface:collision(support,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(solid)}};
+  let glassStart=0;
+  const glassRanges=glass.map(g=>{const range={start:glassStart,count:g.getAttribute('position').count};glassStart+=range.count;return range;});
+  return {body,glass:mergeBatch(glass),glassRanges,colliders:{surface:collision(support,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(solid)}};
 }

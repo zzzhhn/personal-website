@@ -9,6 +9,7 @@
  * Switch: `?layout=v4` (default entry keeps the frozen v3 layout until the main thread flips LAYOUT_V4).
  */
 import type { Vec3 } from './types';
+import { FACTORY_APPROACH } from './factory/factory-layout';
 import {
   BUILDINGS_V4, CAMP_FOOT_RADIUS, CAMP_XZ, FOUNDATIONS_V4, insidePolygon, LAYOUT_V4, OBSTACLES_V4, OUTLINE_V4, RIDGE_CENTER, RIDGE_FOOT_R,
   ROAD_Y, TREES_V4, VEHICLE_POSITIONS_V4, WORLD_SHOTS_V4, zoneAtV4, type P2, type ZoneV4,
@@ -258,6 +259,7 @@ const AUTHORED: RoadV4[] = [
   { id: 'ring-south', cls: 'coastal', pts: [[-86, Y, 50], [-73, Y, 66], [-51, Y, 75.4], [-24, Y, 75], [-4, Y, 67.5], [12, Y, 51.5], [21, Y, 30]], drivable: true },
   { id: 'year-street', cls: 'local', pts: [[21, Y, -12], [-4, Y, -12]], drivable: true },
   { id: 'west-road', cls: 'collector', pts: [[-4, Y, -12], [-30, Y, -27], [-88, Y, -27]], drivable: true },
+  { id: 'factory-approach', cls: 'collector', pts: FACTORY_APPROACH.map(([x, z]) => [x, Y, z] as Vec3), drivable: true },
   { id: 'back-street', cls: 'local', pts: [[-4, Y, -54], [-4, Y, -12], [-4, Y, 4]], drivable: true },
   { id: 'hill-road', cls: 'dirt', pts: TRAIL_V4, drivable: true },
   // Beach boardwalk on stilts: both ends start on the flat top, the deck stays level over the sand.
@@ -762,8 +764,9 @@ export const LANDMARKS_V4 = [
 /* ------------------------------------------------------------------ terrain integration (environment session) */
 
 /** Lattice for WorldLandform when v4 is active: covers the new outline + beach + shelf (multiples of 4 cells). */
-// Includes the expanded north cape and its full beach/shelf; flat interiors still use coarse tiles.
-export const TERRAIN_GRID_V4 = { minX: -176, minZ: -456, nx: 912, nz: 1160 };
+// Includes the north and west capes and their full beach/shelf; flat interiors use coarse tiles.
+// Keep the existing right edge (280 m), 0.5 m spacing and 2 m block alignment.
+export const TERRAIN_GRID_V4 = { minX: -304, minZ: -456, nx: 1168, nz: 1160 };
 /** Set to true by the WorldLandform integration patch (it evaluates ridgeHeightV4 itself); until then
  * WorldDistricts draws the ridge as a local terrain patch. Keeping one owner avoids a doubled surface. */
 export const LANDFORM_HAS_RIDGE = true;
@@ -845,6 +848,7 @@ export const NETWORK_WALK_V4: Vec3[] = (() => {
     slicePolyline(road('ring-north'), J('J8'), J('J5')),
     HILL_DRIVE_V4,
     slicePolyline(road('ring-north'), J('J5'), J('J7')),
+    road('factory-approach'), [...road('factory-approach')].reverse(),
     road('ring-west'), road('ring-south'),
     slicePolyline(road('avenue'), J('J1'), J('J2')),
     road('year-street'),

@@ -29,6 +29,7 @@
     "recharts": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "three": "0.186.1",
+    "three-mesh-bvh": "0.8.3",
     "zustand": "5.0.15"
   },
   "overrides": {

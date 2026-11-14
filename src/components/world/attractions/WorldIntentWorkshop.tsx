@@ -10,6 +10,7 @@ import { advanceWorkshop, operateWorkshop, resetWorkshop, useWorkshopStore, work
 import { useIntentStore } from './intent-state';
 import { createWorkshopCapsule, createWorkshopGeometry, createWorkshopMoving, createWorkshopLever } from './intent-workshop-geometry';
 import { coasterWorld } from './coaster-track';
+import { createWorkshopArcade } from './intent-workshop-arcade';
 import WorldIntentSurface, { WorldIntentReflectiveSurface } from './WorldIntentSurface';
 import WorldWorkshopSigns from './WorldWorkshopSigns';
 import type { IntentClass } from './intent-tasks';
@@ -48,6 +49,7 @@ function WorkshopMotion({ tool }: { tool: IntentClass }) {
 }
 export default function WorldIntentWorkshop() {
   const geometry = useMemo(createWorkshopGeometry, []), capsuleGeometry = useMemo(createWorkshopCapsule, []);
+  const arcade = useMemo(createWorkshopArcade, []);
   const solids = useMemo(workshopColliders, []);
   const leverGeometry = useMemo(createWorkshopLever, []), levers = useRef<InstancedMesh>(null);
   const leverFrame = useMemo(() => ({ matrix: new Matrix4(), rotation: new Quaternion(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, intakeValue: NaN, tool: '' }), []);
@@ -56,7 +58,7 @@ export default function WorldIntentWorkshop() {
   const paths = useMemo(() => Object.fromEntries(WORKSHOP_TOOLS.map(({ id, at }) => [id,
     [coasterWorld([-16, 1.66, 73]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 72.15]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 67]),
       coasterWorld([at[0], WORKSHOP_CARRIER_Y, at[2] - .85]), coasterWorld([at[0], 1.6, at[2]])]])), []);
-  useEffect(() => () => { geometry.body.dispose(); geometry.glow.dispose(); capsuleGeometry.dispose(); leverGeometry.dispose(); resetWorkshop(); }, [geometry, capsuleGeometry, leverGeometry]);
+  useEffect(() => () => { geometry.body.dispose(); geometry.glow.dispose(); arcade.dispose(); capsuleGeometry.dispose(); leverGeometry.dispose(); resetWorkshop(); }, [geometry, arcade, capsuleGeometry, leverGeometry]);
   useFrame((_, dt) => {
     const w = useWorldStore.getState();
     advanceWorkshop(dt, w.paused || w.poolInspect || !!w.card || !!w.shot, document.hidden);
@@ -84,6 +86,8 @@ export default function WorldIntentWorkshop() {
     } else { capsule.current.position.copy(positions.a); capsule.current.rotation.y = 0; }
   });
   return <group name="intent-workshop">
+    <mesh geometry={arcade.body} receiveShadow castShadow><WorldIntentReflectiveSurface roughness={.65} metalness={.35} /></mesh>
+    <mesh geometry={arcade.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <mesh geometry={geometry.body} receiveShadow castShadow><WorldIntentReflectiveSurface roughness={.65} metalness={.2} /></mesh>
     <mesh geometry={geometry.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <instancedMesh ref={levers} args={[leverGeometry, undefined, 7]} frustumCulled={false}><meshStandardMaterial vertexColors roughness={.55} metalness={.25} /></instancedMesh>
@@ -95,6 +99,8 @@ export default function WorldIntentWorkshop() {
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-workshop' }}>
       <TrimeshCollider args={[geometry.contactSurface.vertices, geometry.contactSurface.indices]} />
       {solids.map((solid, i) => <CuboidCollider key={i}
+        position={solid.position} args={solid.half} rotation={solid.rotation} />)}
+      {arcade.colliders.map((solid, i) => <CuboidCollider key={`arcade-${i}`}
         position={solid.position} args={solid.half} rotation={solid.rotation} />)}
     </RigidBody>
   </group>;

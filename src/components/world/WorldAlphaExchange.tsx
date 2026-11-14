@@ -5,6 +5,7 @@ import { CanvasTexture, CircleGeometry, MeshStandardMaterial, PlaneGeometry, SRG
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { exchangeCraftMaterial } from './alpha-exchange-craft';
 import { buildAlphaExchangeGeometry } from './WorldAlphaExchangeGeometry';
+import { exchangeGlassBays } from './exchange-glass-bays';
 import WorldAlphaExchangePlay, { exchangePlayInstruction } from './WorldAlphaExchangePlay';
 import { night } from './WorldNight';
 import { useInteractable } from './WorldInteract';
@@ -48,7 +49,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
       texturePlane(...EXCHANGE_PLAY_PROPS.review.displaySize,EXCHANGE_PLAY_PROPS.review.display,[0,0,1024,288],false,EXCHANGE_PLAY_PROPS.review.displayPitch),
     ];
     const faces = mergeGeometries(planes)!; planes.forEach(g => g.dispose());
-    return { ...architecture, faces };
+    return { ...architecture, faces, glassBays:exchangeGlassBays(architecture.glass,architecture.glassRanges) };
   }, []);
   const atlas = useMemo(() => {
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1024;
@@ -127,7 +128,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     text('REPLAY',128,826,17,'#867041'); c.textAlign = 'left'; atlas.texture.needsUpdate = true;
   }, [atlas,state,zh]);
   useEffect(() => () => {
-    releaseExchangePlay(); built.body.dispose(); built.glass.dispose(); built.faces.dispose();
+    releaseExchangePlay(); built.body.dispose(); built.glassBays.forEach(g=>g.dispose());built.glass.dispose(); built.faces.dispose();
     atlas.texture.dispose(); atlas.material.dispose(); atlas.architecture.dispose(); atlas.brass.dispose(); atlas.glass.dispose();
   }, [built,atlas]);
   useEffect(() => {
@@ -152,7 +153,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
   return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN} userData={{ noOcclusionFade:true }}>
     <mesh name="alpha-exchange-architecture" geometry={built.body} material={atlas.architecture} castShadow receiveShadow/>
     <mesh name="alpha-exchange-displays" geometry={built.faces} material={atlas.material}/>
-    <mesh name="alpha-exchange-skylights" geometry={built.glass} material={atlas.glass} receiveShadow renderOrder={1}/>
+    {built.glassBays.map((g,i)=><mesh key={i} name={`alpha-exchange-window-${i}`} geometry={g} material={atlas.glass} receiveShadow renderOrder={1}/>)}
     <pointLight position={[-7,6,-18]} color="#ffdb9d" intensity={130} distance={26} decay={2} castShadow={false}/>
     <pointLight position={[7,6,-31]} color="#ffd293" intensity={130} distance={26} decay={2} castShadow={false}/>
     {(['surface','solid'] as const).map(kind => <RigidBody key={kind} type="fixed" colliders={false} userData={{ [kind]:true, assetId:'alpha-exchange' }}>

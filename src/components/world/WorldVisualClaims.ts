@@ -15,6 +15,7 @@ import { create } from 'zustand';
  * dynamic furniture) in the replacement.
  */
 export type GreyboxKey =
+  | 'alpha-mine-floor' | 'club-basin'
   /** Six internship buildings (shells + colliders) and their roof ring. */
   | 'building'
   /** Per-building forecourt surface, year pillar, plaque and window glow. */

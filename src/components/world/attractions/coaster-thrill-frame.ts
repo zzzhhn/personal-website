@@ -59,12 +59,14 @@ export function thrillFrame(u:number) {
   const forward=new Vector3(1,0,0).applyQuaternion(rotation),up=UP.clone().applyQuaternion(rotation);
   return {point:thrillCurve.getPointAt(d),rotation,forward,up,side:new Vector3(0,0,1).applyQuaternion(rotation)};
 }
+/** Seat-relative eye; manual look/optical zoom must never move this point. */
+export const THRILL_CABIN_EYE_HEIGHT=1.74;
 export function thrillSeat(u:number) {
   const f=thrillFrame(u);
-  return {position:f.point.clone().addScaledVector(f.up,.72),eye:f.point.clone().addScaledVector(f.up,1.74),rotation:f.rotation};
+  return {position:f.point.clone().addScaledVector(f.up,.72),eye:f.point.clone().addScaledVector(f.up,THRILL_CABIN_EYE_HEIGHT),rotation:f.rotation};
 }
 export function thrillRidePose(u:number,firstPerson=false):AttractionRidePose {
-  const f=thrillFrame(u),seat={position:f.point.clone().addScaledVector(f.up,.72),eye:f.point.clone().addScaledVector(f.up,1.74),rotation:f.rotation},d=wrap(u)*THRILL_LENGTH;
+  const f=thrillFrame(u),seat={position:f.point.clone().addScaledVector(f.up,.72),eye:f.point.clone().addScaledVector(f.up,THRILL_CABIN_EYE_HEIGHT),rotation:f.rotation},d=wrap(u)*THRILL_LENGTH;
   let camera=seat.eye.clone(),target=camera.clone().addScaledVector(f.forward,8);
   if(!firstPerson) {
     camera=f.point.clone().addScaledVector(f.forward,-8).addScaledVector(UP,4.5);
