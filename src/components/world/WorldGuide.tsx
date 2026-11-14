@@ -15,6 +15,7 @@ import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection';
 import { GuideCampLayer } from './WorldGuideCamp';
 import { guideActionHand } from './rides/guide-action-hand';
 import { campPropActor, campPropHand } from './camp-prop-interactions';
+import { factoryConsoleHandTarget } from './factory/factory-operator-pose';
 import { ibdInspectionBody, ibdInspectionVisualSockets } from './attractions/ibd-inspection-motion';
 import { ibdInspectionHands } from './attractions/ibd-inspection-hands';
 import { exchangeBody, exchangeVisualSockets } from './alpha-exchange-motion';
@@ -395,7 +396,12 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const campTarget = shown && motion.grounded && !motion.attraction && !motion.seat && !motion.vehicle &&
       !motion.vault && !motion.railVault && motion.dance == null && !world.card && (frozen || campPropActor.available)
       ? actionHand.target : null;
-    if (!campTarget) { rig.camp.reset(); actionHand.palm = null; }
+    const factoryTarget = !campTarget && shown && motion.grounded && !motion.attraction && !motion.seat &&
+      !motion.vehicle && !motion.vault && !motion.railVault && motion.dance == null && !world.card
+      ? factoryConsoleHandTarget(world.factoryStation, world.position, motion.facing, motion.speedMps) : null;
+    const handTarget = campTarget ?? factoryTarget;
+    if (!handTarget) rig.camp.reset();
+    if (!campTarget) actionHand.palm = null;
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
@@ -588,7 +594,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       }
     }
     const mineIdle = useAlphaMineStore.getState();
-    const idleEligible = desired === 'Idle' && intent === 'idle' && speedMps < .12 && grounded && !campTarget &&
+    const idleEligible = desired === 'Idle' && intent === 'idle' && speedMps < .12 && grounded && !handTarget && !world.factoryStation &&
       !seat && !s.sat && !approach && !s.turn && !motion.vehicle && !mineIdle.action && !mineIdle.carried && !mineIdle.equipped;
     const gesture = rig.idle.advance(dt, idleEligible);
     const idleLook = rig.actions.IdleLook;
@@ -931,7 +937,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       const handsAvailable=!attraction&&!dancing&&!motion.seat&&!motion.vehicle&&!motion.railVault;
       const exchangeActive=!!exchangeBody.action||!!exchangeBody.carried;
       const inspectionActive=!!ibdInspectionBody.action||!!ibdInspectionBody.carried;
-      const campActive = campTarget && handsAvailable && !sitting;
+      const campActive = handTarget && handsAvailable && !sitting;
       const otherHandsAvailable = handsAvailable && !campActive;
       const mine = rig.mine.apply(useAlphaMineStore.getState(), otherHandsAvailable&&!exchangeActive&&!inspectionActive);
       Object.assign(exchangeVisualSockets,rig.exchange.apply(exchangeBody.action,exchangeBody.carried,otherHandsAvailable&&!world.card&&!inspectionActive));
@@ -940,8 +946,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       rig.vault.apply(motion.railVault);
       settleGuideAttraction(group.current, rig.seatContact, attraction);
       rig.attractionFeet.apply(rig.slope, attraction, dt);
-      if (campActive) actionHand.palm = rig.camp.apply(campTarget, actionHand.mode, dt);
-      else if (campTarget) { rig.camp.reset(); actionHand.palm = null; }
+      if (campActive) {
+        const palm = rig.camp.apply(handTarget, campTarget ? actionHand.mode : 'grip', dt);
+        if (campTarget) actionHand.palm = palm;
+      } else if (handTarget) { rig.camp.reset(); if (campTarget) actionHand.palm = null; }
       mineVisualSockets.valid = mine.valid && !world.card;
       Object.assign(mineVisualSockets, { assetsReady: mine.assetsReady, contactError: mine.contactError,
         rightReachError: mine.rightReachError, leftReachError: mine.leftReachError,

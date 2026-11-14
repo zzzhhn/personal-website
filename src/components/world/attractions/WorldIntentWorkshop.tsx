@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { Group, InstancedMesh, Matrix4, Quaternion, PointLight, Vector3 } from 'three';
+import { Group, InstancedMesh, Matrix4, Quaternion, Vector3 } from 'three';
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
-import { night } from '../WorldNight';
 import { WORKSHOP_CARRIER_Y, WORKSHOP_INTAKE, WORKSHOP_TARGETS, WORKSHOP_TOOLS, workshopTarget, workshopColliders, type WorkshopTarget } from './intent-workshop-layout';
 import { advanceWorkshop, operateWorkshop, resetWorkshop, useWorkshopStore, workshopAvailable, workshopClock, workshopCarrierProgress, workshopOutputComplete, WORKSHOP_LEVER_SECONDS } from './intent-workshop-runtime';
 import { useIntentStore } from './intent-state';
@@ -53,7 +52,7 @@ export default function WorldIntentWorkshop() {
   const solids = useMemo(workshopColliders, []);
   const leverGeometry = useMemo(createWorkshopLever, []), levers = useRef<InstancedMesh>(null);
   const leverFrame = useMemo(() => ({ matrix: new Matrix4(), rotation: new Quaternion(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, intakeValue: NaN, tool: '' }), []);
-  const capsule = useRef<Group>(null), lamp = useRef<PointLight>(null);
+  const capsule = useRef<Group>(null);
   const positions = useMemo(() => ({ a: new Vector3(...coasterWorld([-16, 1.66, 73])), b: new Vector3(), p: new Vector3() }), []);
   const paths = useMemo(() => Object.fromEntries(WORKSHOP_TOOLS.map(({ id, at }) => [id,
     [coasterWorld([-16, 1.66, 73]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 72.15]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 67]),
@@ -62,7 +61,6 @@ export default function WorldIntentWorkshop() {
   useFrame((_, dt) => {
     const w = useWorldStore.getState();
     advanceWorkshop(dt, w.paused || w.poolInspect || !!w.card || !!w.shot, document.hidden);
-    if (lamp.current) lamp.current.intensity = 48 * night.value;
     if (!capsule.current) return;
     const s = useWorkshopStore.getState();
     const lever = s.phase === 'processing' ? Math.sin(Math.min(1, workshopClock.elapsed / WORKSHOP_LEVER_SECONDS) * Math.PI) * .85 : 0;
@@ -95,7 +93,6 @@ export default function WorldIntentWorkshop() {
     {WORKSHOP_TOOLS.map(tool => <WorkshopMotion key={tool.id} tool={tool.id} />)}
     {WORKSHOP_TARGETS.map(id => <WorkshopInteraction key={id} id={id} />)}
     <WorldWorkshopSigns />
-    <pointLight ref={lamp} position={coasterWorld([-16, 4.1, 67])} color="#ffd6a3" intensity={0} distance={16} decay={2} />
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-workshop' }}>
       <TrimeshCollider args={[geometry.contactSurface.vertices, geometry.contactSurface.indices]} />
       {solids.map((solid, i) => <CuboidCollider key={i}

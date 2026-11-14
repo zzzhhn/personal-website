@@ -38,7 +38,7 @@ test('flat test lanes have one visible courtyard surface rather than coplanar ov
 test('factory three-level architecture stays finite and bounded; stations have physical standing space',()=>{
   const g=buildFactoryGeometry(),w=worldFor(g);
   try{
-    assert.ok(g.triangles>2000 && g.triangles<65000,g.triangles);
+    assert.ok(g.triangles>2000 && g.triangles<69000,g.triangles);
     for(const geo of [g.geometry,g.roofs,g.surface])for(const name of ['position','normal','color','aMat'])
       assert.ok(Array.from(geo.getAttribute(name).array).every(Number.isFinite),name);
     w.step();

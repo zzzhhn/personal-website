@@ -2,7 +2,7 @@ import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { Matrix4, Quaternion, PointLight, Vector3 } from 'three';
+import { Matrix4, Quaternion, Vector3 } from 'three';
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
@@ -68,7 +68,6 @@ function WorkshopCraftInner() {
   const geometry = useMemo(createWorkshopGeometry, []);
   const solids = useMemo(workshopColliders, []);
   const leverFrame = useMemo(() => ({ matrix: new Matrix4(), rotation: new Quaternion(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, intakeValue: NaN, tool: '' }), []);
-  const lamp = useRef<PointLight>(null);
   const positions = useMemo(() => ({ a: new Vector3(...coasterWorld([-16, 1.66, 73])), b: new Vector3(), p: new Vector3() }), []);
   const paths = useMemo(() => Object.fromEntries(WORKSHOP_TOOLS.map(({ id, at }) => [id,
     [coasterWorld([-16, 1.66, 73]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 72.15]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 67]),
@@ -81,7 +80,6 @@ function WorkshopCraftInner() {
     }
     const w = useWorldStore.getState();
     advanceWorkshop(dt, w.paused || w.poolInspect || !!w.card || !!w.shot, document.hidden);
-    if (lamp.current) lamp.current.intensity = 48 * night.value;
     const capsule = model.capsule;
     const s = useWorkshopStore.getState();
     const lever = s.phase === 'processing' ? Math.sin(Math.min(1, workshopClock.elapsed / WORKSHOP_LEVER_SECONDS) * Math.PI) * .85 : 0;
@@ -112,7 +110,6 @@ function WorkshopCraftInner() {
     {WORKSHOP_TOOLS.map(tool => <WorkshopMotion key={tool.id} tool={tool.id} model={model} />)}
     {WORKSHOP_TARGETS.map(id => <WorkshopInteraction key={id} id={id} />)}
     <WorldWorkshopSigns />
-    <pointLight ref={lamp} position={coasterWorld([-16, 4.1, 67])} color="#ffd6a3" intensity={0} distance={16} decay={2} />
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-workshop' }}>
       <TrimeshCollider args={[geometry.contactSurface.vertices, geometry.contactSurface.indices]} />
       {solids.map((solid, i) => <CuboidCollider key={i} position={solid.position} args={solid.half} rotation={solid.rotation} />)}

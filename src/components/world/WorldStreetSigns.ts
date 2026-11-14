@@ -16,14 +16,19 @@ export const CELLS = {
   direction: Array.from({ length: 6 }, (_, i) => [(i % 3) * 680, 288 + Math.floor(i / 3) * 300, 660, 290] as Rect),
 };
 
-/** Direction boards per approach road (arrow relative to the approaching driver). */
+/** Direction boards per approach road (arrow relative to the approaching driver). Each pair is checked
+ * against the board's measured heading and the junction it faces (layout-v4 knockablesV4 / JUNCTIONS_V4):
+ * camp-road eastbound at J1, ring-south northbound at J1, west-road westbound at J7 (factory approach
+ * straight on), year-street westbound at J6, back-street northbound at J4 (north cape road straight on),
+ * ring-west northbound at J7 (factory approach to the left). */
+const NORTH_CAPE: [string, string] = ['北岸 · 过山车', 'North cape · Coaster'];
 export const DIRECTION_TEXT: Record<string, [string, string, string][]> = {
-  'camp-road': [['←', zh.town, en.town], ['→', '南滩', 'South beach']],
+  'camp-road': [['←', zh.town, en.town], ['→', zh.ferryMark, en.ferryMark]],
   'ring-south': [['↑', zh.town, en.town], ['←', zh.camp, en.camp]],
-  'west-road': [['→', zh.ridge, en.ridge], ['←', '西岸', 'West shore']],
-  'back-street': [['←', zh.ridge, en.ridge], ['→', zh.park, en.park]],
-  'year-street': [['←', zh.park, en.park], ['→', zh.camp, en.camp]],
-  'ring-west': [['→', zh.town, en.town], ['↑', zh.ridge, en.ridge]],
+  'west-road': [['↑', zh.factory, en.factory], ['→', zh.ridge, en.ridge]],
+  'back-street': [['↑', ...NORTH_CAPE], ['←', zh.ridge, en.ridge]],
+  'year-street': [['↑', zh.factory, en.factory], ['→', ...NORTH_CAPE]],
+  'ring-west': [['←', zh.factory, en.factory], ['↑', ...NORTH_CAPE]],
 };
 
 const border = (g: CanvasRenderingContext2D, w: number, h: number, col: string, lw: number, inset: number, r = 18) => {
@@ -54,8 +59,9 @@ const directionPaint = (rows: [string, string, string][]): AtlasPainter => (g, w
     const y = h * (.3 + i * .42);
     g.fillStyle = '#E6DCCB'; g.textBaseline = 'middle';
     g.textAlign = 'center'; g.font = `700 92px ${FONT}`; g.fillText(arrow, w * .13, y);
-    g.textAlign = 'left'; g.font = `600 64px ${FONT}`; g.fillText(z, w * .25, y - 22);
-    g.font = `500 38px ${FONT}`; g.globalAlpha = .9; g.fillText(e, w * .25, y + 34); g.globalAlpha = 1;
+    // maxWidth keeps longer place names inside the inner border instead of clipping at the plate edge.
+    g.textAlign = 'left'; g.font = `600 64px ${FONT}`; g.fillText(z, w * .25, y - 22, w * .68);
+    g.font = `500 38px ${FONT}`; g.globalAlpha = .9; g.fillText(e, w * .25, y + 34, w * .68); g.globalAlpha = 1;
     if (i === 0) { g.fillRect(w * .07, h * .52, w * .86, 3); }
   });
 };

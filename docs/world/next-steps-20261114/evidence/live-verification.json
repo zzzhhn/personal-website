@@ -1,0 +1,15 @@
+{
+  "stationActive": "test",
+  "afterRailBump": [
+    -131.6533203125,
+    1.9388238191604614,
+    -7.0397820472717285
+  ],
+  "railStoppedPlayerInsideYard": true,
+  "errors": [],
+  "webkit": {
+    "wkReadyMs": 34329,
+    "wkGuideVisible": true,
+    "wkErrors": []
+  }
+}

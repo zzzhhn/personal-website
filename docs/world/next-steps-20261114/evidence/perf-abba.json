@@ -1,0 +1,283 @@
+{
+  "conditions": "Ordinary /world/ entry (NO ?qa=1) for firstReadyMs, first-orbit, warm-orbit, camp-move; followed by separate ?qa=1 North Cape Coaster crossing probe. Chrome 1920x1080 CSS DPR2 High (2560x1440 drawing buffer), no CPU profiler, no GL wrappers, no screenshots during timed phases. ABBA order across 4341 (0d78ef2) vs 4365 (candidate).",
+  "ordinary": {
+    "baseline-a1": {
+      "firstReadyMs": 15119,
+      "summary": {
+        "first-orbit": {
+          "count": 212,
+          "p50": 16.7,
+          "p95": 83.3,
+          "max": 816.6,
+          "over50": 14,
+          "over100": 8,
+          "over250": 2
+        },
+        "warm-orbit": {
+          "count": 88,
+          "p50": 16.7,
+          "p95": 16.7,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        },
+        "camp-move": {
+          "count": 109,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        }
+      },
+      "pageErrors": []
+    },
+    "candidate-b1": {
+      "firstReadyMs": 15471,
+      "summary": {
+        "first-orbit": {
+          "count": 198,
+          "p50": 16.7,
+          "p95": 83.4,
+          "max": 766.7,
+          "over50": 11,
+          "over100": 8,
+          "over250": 2
+        },
+        "warm-orbit": {
+          "count": 88,
+          "p50": 16.7,
+          "p95": 16.7,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        },
+        "camp-move": {
+          "count": 108,
+          "p50": 16.7,
+          "p95": 16.7,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        }
+      },
+      "pageErrors": []
+    },
+    "candidate-b2": {
+      "firstReadyMs": 15166,
+      "summary": {
+        "first-orbit": {
+          "count": 204,
+          "p50": 16.7,
+          "p95": 66.7,
+          "max": 750,
+          "over50": 12,
+          "over100": 9,
+          "over250": 2
+        },
+        "warm-orbit": {
+          "count": 89,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        },
+        "camp-move": {
+          "count": 109,
+          "p50": 16.7,
+          "p95": 16.7,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        }
+      },
+      "pageErrors": []
+    },
+    "baseline-a2": {
+      "firstReadyMs": 16019,
+      "summary": {
+        "first-orbit": {
+          "count": 214,
+          "p50": 16.7,
+          "p95": 66.7,
+          "max": 583.3,
+          "over50": 14,
+          "over100": 10,
+          "over250": 3
+        },
+        "warm-orbit": {
+          "count": 88,
+          "p50": 16.7,
+          "p95": 16.7,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        },
+        "camp-move": {
+          "count": 109,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 16.8,
+          "over50": 0,
+          "over100": 0,
+          "over250": 0
+        }
+      },
+      "pageErrors": []
+    }
+  },
+  "coasterCrossing": {
+    "baseline-a1": {
+      "programsBefore": 100,
+      "programsInCoaster": 146,
+      "programsAfterLeave": 183,
+      "posInCoaster": [
+        45.11790084838867,
+        2.4086499214172363,
+        -90.51113891601562
+      ],
+      "posAfterLeave": [
+        49.97697830200195,
+        2.408801317214966,
+        -84.03054809570312
+      ],
+      "summary": {
+        "enter-coaster": {
+          "count": 141,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 250,
+          "over50": 2,
+          "over100": 2,
+          "over250": 0
+        },
+        "leave-coaster": {
+          "count": 136,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 300.1,
+          "over50": 2,
+          "over100": 1,
+          "over250": 1
+        }
+      },
+      "pageErrors": []
+    },
+    "candidate-b1": {
+      "programsBefore": 97,
+      "programsInCoaster": 115,
+      "programsAfterLeave": 115,
+      "posInCoaster": [
+        45.09182357788086,
+        2.4086499214172363,
+        -90.54598999023438
+      ],
+      "posAfterLeave": [
+        49.334163665771484,
+        2.4086499214172363,
+        -84.88784790039062
+      ],
+      "summary": {
+        "enter-coaster": {
+          "count": 146,
+          "p50": 16.7,
+          "p95": 33.3,
+          "max": 116.6,
+          "over50": 1,
+          "over100": 1,
+          "over250": 0
+        },
+        "leave-coaster": {
+          "count": 152,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 66.7,
+          "over50": 1,
+          "over100": 0,
+          "over250": 0
+        }
+      },
+      "pageErrors": []
+    },
+    "candidate-b2": {
+      "programsBefore": 110,
+      "programsInCoaster": 127,
+      "programsAfterLeave": 127,
+      "posInCoaster": [
+        45.05544662475586,
+        2.4086499214172363,
+        -90.59445190429688
+      ],
+      "posAfterLeave": [
+        49.5587272644043,
+        2.4086503982543945,
+        -84.58840942382812
+      ],
+      "summary": {
+        "enter-coaster": {
+          "count": 147,
+          "p50": 16.7,
+          "p95": 33.3,
+          "max": 100,
+          "over50": 1,
+          "over100": 0,
+          "over250": 0
+        },
+        "leave-coaster": {
+          "count": 148,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 100.1,
+          "over50": 2,
+          "over100": 1,
+          "over250": 0
+        }
+      },
+      "pageErrors": []
+    },
+    "baseline-a2": {
+      "programsBefore": 102,
+      "programsInCoaster": 147,
+      "programsAfterLeave": 178,
+      "posInCoaster": [
+        45.15133285522461,
+        2.4086499214172363,
+        -90.466552734375
+      ],
+      "posAfterLeave": [
+        49.980770111083984,
+        2.4086556434631348,
+        -84.02548217773438
+      ],
+      "summary": {
+        "enter-coaster": {
+          "count": 123,
+          "p50": 16.7,
+          "p95": 50,
+          "max": 283.3,
+          "over50": 4,
+          "over100": 3,
+          "over250": 1
+        },
+        "leave-coaster": {
+          "count": 138,
+          "p50": 16.7,
+          "p95": 16.8,
+          "max": 333.3,
+          "over50": 1,
+          "over100": 1,
+          "over250": 1
+        }
+      },
+      "pageErrors": []
+    }
+  }
+}

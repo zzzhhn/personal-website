@@ -1,0 +1,63 @@
+{
+  "campGuideVisible": true,
+  "campGuideBox": {
+    "x": 28,
+    "y": 592.4375,
+    "width": 264,
+    "height": 275.5625
+  },
+  "locationBox": {
+    "x": 28,
+    "y": 886,
+    "width": 226,
+    "height": 168
+  },
+  "overlapWithRadar": false,
+  "afterPickGuideVisible": false,
+  "waypointText": "小屋\n雪橇\n渡口\n语法树\n风口\n山顶\n机械伙伴工厂\n物资清点场\n意图过山车\n交易所\nDJC 海边 Club\n1\n2\n3\n4\n5\n6\n山岛渡口\nN\n营地\n山岛渡口 · 75 米",
+  "storageFlag": "1",
+  "placesCount": 6,
+  "activePlaceText": "01\n山岛渡口\n乘渡船上岛 · 登山六站与纸灯、雪橇\n当前航点",
+  "dialogOpenAfterPick": false,
+  "factoryWaypointText": "小屋\n雪橇\n渡口\n语法树\n风口\n山顶\n机械伙伴工厂\n物资清点场\n意图过山车\n交易所\nDJC 海边 Club\n1\n2\n3\n4\n5\n6\n山岛渡口\nN\n营地\n机械伙伴工厂 · 119 米",
+  "factoryStripVisible": true,
+  "factoryStripText": "机械伙伴工厂\n\n从西侧【磁吊取料】开始制造机械伙伴 · 靠近控制台按 E\n\n指引工位 · 磁吊取料 →",
+  "factoryAfterGuideText": "机械伙伴工厂\n\n从西侧【磁吊取料】开始制造机械伙伴 · 靠近控制台按 E\n\n跟随地面箭头",
+  "layoutInfo": {
+    "signs": null,
+    "shelters": null,
+    "sceneNames": [
+      "camp-C04-shelter-craft",
+      "town-signs",
+      "town-boards",
+      "town-body-board-sdic",
+      "town-collider-board-sdic-0",
+      "town-body-board-worldquant",
+      "town-collider-board-worldquant-0",
+      "town-body-board-moe",
+      "town-collider-board-moe-0",
+      "town-body-board-aime",
+      "town-collider-board-aime-0",
+      "town-body-board-video-rebirth",
+      "town-collider-board-video-rebirth-0",
+      "town-body-board-hunyuan",
+      "town-collider-board-hunyuan-0",
+      "board",
+      "board_1",
+      "board_2",
+      "park-signs",
+      "park-lod-signs",
+      "park-lod-signs-0",
+      "park-sign-frames",
+      "park-sign-text",
+      "park-lod-signs-1",
+      "alpha-transport-longitudinal-boarding-boards",
+      "alpha-transport-longitudinal-boarding-boards",
+      "alpha-transport-longitudinal-trough-boards",
+      "alpha-transport-longitudinal-boarding-boards",
+      "alpha-transport-longitudinal-boarding-boards",
+      "alpha-transport-longitudinal-boarding-boards"
+    ]
+  },
+  "errors": []
+}

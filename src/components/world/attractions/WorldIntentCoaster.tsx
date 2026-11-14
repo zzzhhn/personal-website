@@ -66,10 +66,11 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
       <group position={coasterWorld([0, 0, COASTER_GATE_Z])}><WorldCoasterGateCraft part="static" /></group>
     </Suspense>}
     <CoasterTrain active={enabled} />
+    <IntentMovingLight active={enabled} />
     {enabled && <><WorldIntentDevices /><WorldIntentSigns />
       {/* LODs have different support counts. Never reuse an index-keyed collider
           for a different solid while its Rapier hook still owns the old shape. */}
-      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} /><IntentMovingLight />
+      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} />
       <RigidBody key={`track-${renderedNear}`} type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-track-sample' }}>
         <TrimeshCollider args={[structure.track.vertices, structure.track.indices]} friction={.9} />
       </RigidBody>
@@ -162,18 +163,19 @@ function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
 }
 
 /** Two bounded, shadowless fills illuminate moving actors; architecture uses baked radiance. */
-function IntentMovingLight() {
-  const moving = useRef<PointLight>(null), station = useRef<PointLight>(null);
-  const previous = useRef({ elapsed: NaN, riding: false, x: NaN, y: NaN, z: NaN, night: NaN });
+function IntentMovingLight({ active }: { active: boolean }) {
+  const moving = useRef<PointLight>(null), station = useRef<PointLight>(null), workshop = useRef<PointLight>(null);
+  const previous = useRef({ elapsed: NaN, riding: false, x: NaN, y: NaN, z: NaN, night: NaN, active: false });
   useFrame(() => {
-    const last = previous.current, intensityChanged = last.night !== night.value;
+    const last = previous.current, on = active ? night.value : 0, intensityChanged = last.night !== on || last.active !== active;
     if (intensityChanged) {
-      if (moving.current) moving.current.intensity = 32 * night.value;
-      if (station.current) station.current.intensity = 38 * night.value;
+      if (moving.current) moving.current.intensity = 32 * on;
+      if (station.current) station.current.intensity = 38 * on;
+      if (workshop.current) workshop.current.intensity = 48 * on;
     }
-    const becameVisible = last.night <= 0 && night.value > 0;
-    last.night = night.value;
-    if (!moving.current || night.value <= 0) return;
+    const becameVisible = last.night <= 0 && on > 0;
+    last.night = on; last.active = active;
+    if (!active || !moving.current || on <= 0) return;
     if (intentRideClock.riding) {
       if (!becameVisible && last.riding && last.elapsed === intentRideClock.elapsed) return;
       const p = coasterFrame(coasterDistanceAt(intentRideClock.elapsed)).point;
@@ -187,5 +189,6 @@ function IntentMovingLight() {
     last.elapsed = intentRideClock.elapsed; last.riding = intentRideClock.riding;
   });
   return <><pointLight ref={moving} color="#ffd6a3" distance={14} decay={2} intensity={0} />
-    <pointLight ref={station} position={coasterWorld([-3, 5.2, 43])} color="#ffe0b4" distance={18} decay={2} intensity={0} /></>;
+    <pointLight ref={station} position={coasterWorld([-3, 5.2, 43])} color="#ffe0b4" distance={18} decay={2} intensity={0} />
+    <pointLight ref={workshop} position={coasterWorld([-16, 4.1, 67])} color="#ffd6a3" distance={16} decay={2} intensity={0} /></>;
 }
