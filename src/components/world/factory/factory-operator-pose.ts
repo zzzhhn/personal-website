@@ -22,8 +22,8 @@ export function factoryConsoleHandTarget(
   const dx = Math.sin(station.yaw), dz = Math.cos(station.yaw);
   const rx = -dz, rz = dx;
   return factoryWorld([
-    station.at[0] + dx * 0.60 + rx * 0.14,
-    station.at[1] + 1.005,
-    station.at[2] + dz * 0.60 + rz * 0.14,
+    station.at[0] + dx * 0.49 + rx * 0.22,
+    station.at[1] + 1.02,
+    station.at[2] + dz * 0.49 + rz * 0.22,
   ]);
 }

@@ -11,6 +11,7 @@ import { FACTORY_MODULES } from './factory-game.ts';
 import { buildFactoryMachineCasing } from './factory-machine-casing.ts';
 import { buildFactoryRoutingGeometry } from './factory-routing-geometry.ts';
 import { buildFactoryProductionDetail } from './factory-production-detail.ts';
+import { buildFactoryForecourtDetail } from './factory-forecourt-detail.ts';
 export const FACTORY_PALETTE = {
   cream:{color:'#DDD4BF',rough:.66,metal:.12}, teal:{color:'#416B6A',rough:.54,metal:.3},
   steel:{color:'#3E494B',rough:.59,metal:.38}, floor:{color:'#A49F8C',rough:.94,metal:0},
@@ -250,16 +251,16 @@ export function buildFactoryGeometry():FactoryGeometry {
   slab([[36.2,.675,25.3],[37.8,.675,25.3],[37.8,.12,27.5],[36.2,.12,27.5]],.1);
   for(const x of [36.12,37.88])beam([x,.72,25.3],[x,.165,27.5],.035,P.amber);
   for(const z of [26.9,30.6])cube([39,.138,z],[14,.025,.08],P.amber,false,0);
-  const detail=buildFactoryProductionDetail(P);
+  const detail=buildFactoryProductionDetail(P),forecourt=buildFactoryForecourtDetail(P);
   const structure=b.build(),facade=buildFactoryFacade(P),fixture=buildFactoryFixture(P),routing=buildFactoryRoutingGeometry(P);
-  const geometry=mergeGeometries([structure,facade.geometry,fixture.geometry,routing.geometry,detail.geometry,...casings.map(c=>c.geometry)],false);
+  const geometry=mergeGeometries([structure,facade.geometry,fixture.geometry,routing.geometry,detail.geometry,forecourt.geometry,...casings.map(c=>c.geometry)],false);
   structure.dispose();facade.geometry.dispose();fixture.geometry.dispose();
-  routing.geometry.dispose();detail.geometry.dispose();
+  routing.geometry.dispose();detail.geometry.dispose();forecourt.geometry.dispose();
   casings.forEach(c=>c.geometry.dispose());
   if(!geometry)throw new Error('Factory detail attributes must match the structure');
   geometry.computeBoundingBox();geometry.computeBoundingSphere();
-  solids.push(...facade.solids,...fixture.solids,...routing.solids,...detail.solids);
-  lamps.push(...detail.lamps);
+  solids.push(...facade.solids,...fixture.solids,...routing.solids,...detail.solids,...forecourt.solids);
+  lamps.push(...detail.lamps,...forecourt.lamps);
   const roofs=roof.build(),surface=walk.build();
-  return {geometry,roofs,surface,solids,lamps,triangles:b.triangles+facade.triangles+fixture.triangles+routing.triangles+detail.triangles+roof.triangles+walk.triangles+casings.reduce((n,c)=>n+c.triangles,0)};
+  return {geometry,roofs,surface,solids,lamps,triangles:b.triangles+facade.triangles+fixture.triangles+routing.triangles+detail.triangles+forecourt.triangles+roof.triangles+walk.triangles+casings.reduce((n,c)=>n+c.triangles,0)};
 }
