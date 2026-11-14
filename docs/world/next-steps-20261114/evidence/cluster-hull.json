@@ -1,0 +1,37 @@
+{
+  "cases": 93,
+  "reduced": 18,
+  "roundingCases": 160004,
+  "realWindMeshes": [
+    {
+      "name": "public/assets/world/nature-craft/G16.glb:crown",
+      "vertices": 23940
+    },
+    {
+      "name": "public/assets/world/nature-craft/G16.glb:trunk",
+      "vertices": 1428
+    },
+    {
+      "name": "public/assets/world/nature-craft/G17.glb:crown",
+      "vertices": 17568
+    },
+    {
+      "name": "public/assets/world/nature-craft/G17.glb:trunk",
+      "vertices": 1316
+    },
+    {
+      "name": "public/assets/world/nature-craft/G18.glb:crown",
+      "vertices": 20652
+    },
+    {
+      "name": "public/assets/world/nature-craft/G18.glb:trunk",
+      "vertices": 2026
+    }
+  ],
+  "timing": {
+    "scope": "Node CPU, authored G16/G17/G18 wind meshes; no browser frame-time claim",
+    "legacyMedianMs": 78.06212500000015,
+    "numericMedianMs": 46.72458400000005,
+    "speedup": 1.6706863564585201
+  }
+}

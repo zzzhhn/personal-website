@@ -1,0 +1,35 @@
+{
+  "frameCount": 305,
+  "animCounts": {
+    "Run": 154,
+    "Sprint": 6,
+    "Idle": 76,
+    "TurnR": 6,
+    "RunJumpStart": 5,
+    "RunJumpAir": 43,
+    "JumpAir": 8,
+    "Land": 7
+  },
+  "minSoleH": -0.0381,
+  "worstPen": {
+    "t": 1.9701,
+    "anim": "TurnR",
+    "low": -0.0381,
+    "lift": 0,
+    "speed": 0
+  },
+  "maxGroundedBothFloat": 0.0733,
+  "worstFloat": {
+    "t": 2.4035,
+    "anim": "Run",
+    "low": 0.0733,
+    "leftH": 0.0733,
+    "rightH": 0.0745,
+    "speed": 2.702,
+    "contact": [
+      0,
+      0
+    ]
+  },
+  "maxInertAngle": 1.138
+}

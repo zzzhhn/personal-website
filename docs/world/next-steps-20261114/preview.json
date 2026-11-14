@@ -1,0 +1,14 @@
+{
+  "promotedAt": "2026-11-14T14:52:12.829Z",
+  "url": "http://127.0.0.1:4341/world/",
+  "rollbackUrl": "http://127.0.0.1:4364/world/",
+  "worktree": "/Users/bobby/Desktop/3D-personal-world/wt/world-next-steps",
+  "branch": "codex/world-next-steps-20261114",
+  "runtimeCommit": "0b8cd52",
+  "httpStatus": 200,
+  "distSha256": "620f61b15ba30df44e1780709970a8db246f505e680ab0cf0b906b198aeb5523",
+  "liveSha256": "620f61b15ba30df44e1780709970a8db246f505e680ab0cf0b906b198aeb5523",
+  "htmlExactMatch": true,
+  "ordinaryEntryPlaceGuideVisible": true,
+  "pageErrors": []
+}

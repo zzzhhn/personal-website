@@ -1,0 +1,51 @@
+{
+  "tag": "before",
+  "statsDuskA": {
+    "calls": 90,
+    "triangles": 480678,
+    "geometries": 234,
+    "textures": 101,
+    "programs": 127,
+    "camera": [
+      -139.5,
+      5.4,
+      -20.5
+    ]
+  },
+  "statsDuskB": {
+    "calls": 338,
+    "triangles": 1051553,
+    "geometries": 428,
+    "textures": 141,
+    "programs": 200,
+    "camera": [
+      -145,
+      6.8,
+      -24
+    ]
+  },
+  "statsNightA": {
+    "calls": 92,
+    "triangles": 482645,
+    "geometries": 430,
+    "textures": 142,
+    "programs": 204,
+    "camera": [
+      -139.5,
+      5.4,
+      -20.5
+    ]
+  },
+  "statsNightB": {
+    "calls": 341,
+    "triangles": 1055360,
+    "geometries": 430,
+    "textures": 142,
+    "programs": 204,
+    "camera": [
+      -145,
+      6.8,
+      -24
+    ]
+  }
+}
