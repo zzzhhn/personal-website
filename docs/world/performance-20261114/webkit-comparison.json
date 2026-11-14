@@ -1,0 +1,473 @@
+{
+  "before": {
+    "load": {
+      "n": 79,
+      "p50": 45,
+      "p95": 611,
+      "p99": 3789,
+      "max": 9661,
+      "over50": 29,
+      "over100": 11,
+      "over250": 8
+    },
+    "first-orbit": {
+      "n": 103,
+      "p50": 30,
+      "p95": 332,
+      "p99": 535,
+      "max": 2369,
+      "over50": 34,
+      "over100": 18,
+      "over250": 9
+    },
+    "capture-first-orbit": {
+      "n": 4,
+      "p50": 25,
+      "p95": 26,
+      "p99": 26,
+      "max": 30,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "idle": {
+      "n": 180,
+      "p50": 26,
+      "p95": 47,
+      "p99": 67,
+      "max": 87,
+      "over50": 6,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-idle": {
+      "n": 4,
+      "p50": 19,
+      "p95": 19,
+      "p99": 19,
+      "max": 20,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "warm-orbit": {
+      "n": 177,
+      "p50": 18,
+      "p95": 29,
+      "p99": 50,
+      "max": 377,
+      "over50": 2,
+      "over100": 1,
+      "over250": 1
+    },
+    "capture-warm-orbit": {
+      "n": 3,
+      "p50": 19,
+      "p95": 19,
+      "p99": 19,
+      "max": 22,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "camp-movement": {
+      "n": 371,
+      "p50": 18,
+      "p95": 24,
+      "p99": 29,
+      "max": 47,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-camp-movement": {
+      "n": 4,
+      "p50": 23,
+      "p95": 26,
+      "p99": 26,
+      "max": 48,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "factory-arrival-fixture": {
+      "n": 1,
+      "p50": 168,
+      "p95": 168,
+      "p99": 168,
+      "max": 168,
+      "over50": 1,
+      "over100": 1,
+      "over250": 0
+    },
+    "capture-factory-arrival": {
+      "n": 4,
+      "p50": 20,
+      "p95": 55,
+      "p99": 55,
+      "max": 2710,
+      "over50": 2,
+      "over100": 1,
+      "over250": 1
+    },
+    "enter-factory-0": {
+      "n": 329,
+      "p50": 18,
+      "p95": 39,
+      "p99": 66,
+      "max": 1206,
+      "over50": 7,
+      "over100": 3,
+      "over250": 2
+    },
+    "capture-enter-factory-0": {
+      "n": 3,
+      "p50": 22,
+      "p95": 22,
+      "p99": 22,
+      "max": 23,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "factory-orbit-0": {
+      "n": 168,
+      "p50": 17,
+      "p95": 33,
+      "p99": 650,
+      "max": 883,
+      "over50": 7,
+      "over100": 6,
+      "over250": 6
+    },
+    "capture-factory-orbit-0": {
+      "n": 2,
+      "p50": 16,
+      "p95": 16,
+      "p99": 16,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "leave-factory-0": {
+      "n": 287,
+      "p50": 17,
+      "p95": 40,
+      "p99": 160,
+      "max": 2028,
+      "over50": 8,
+      "over100": 4,
+      "over250": 3
+    },
+    "capture-leave-factory-0": {
+      "n": 4,
+      "p50": 18,
+      "p95": 21,
+      "p99": 21,
+      "max": 23,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "enter-factory-1": {
+      "n": 418,
+      "p50": 17,
+      "p95": 24,
+      "p99": 49,
+      "max": 1634,
+      "over50": 5,
+      "over100": 2,
+      "over250": 1
+    },
+    "capture-enter-factory-1": {
+      "n": 4,
+      "p50": 16,
+      "p95": 17,
+      "p99": 17,
+      "max": 18,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "factory-orbit-1": {
+      "n": 182,
+      "p50": 18,
+      "p95": 31,
+      "p99": 54,
+      "max": 288,
+      "over50": 3,
+      "over100": 1,
+      "over250": 1
+    },
+    "capture-factory-orbit-1": {
+      "n": 4,
+      "p50": 18,
+      "p95": 18,
+      "p99": 18,
+      "max": 19,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "leave-factory-1": {
+      "n": 430,
+      "p50": 17,
+      "p95": 22,
+      "p99": 42,
+      "max": 52,
+      "over50": 1,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-leave-factory-1": {
+      "n": 4,
+      "p50": 19,
+      "p95": 20,
+      "p99": 20,
+      "max": 25,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    }
+  },
+  "after": {
+    "load": {
+      "n": 54,
+      "p50": 33,
+      "p95": 1314,
+      "p99": 3938,
+      "max": 10377,
+      "over50": 19,
+      "over100": 9,
+      "over250": 7
+    },
+    "first-orbit": {
+      "n": 99,
+      "p50": 39,
+      "p95": 481,
+      "p99": 1254,
+      "max": 2582,
+      "over50": 35,
+      "over100": 19,
+      "over250": 9
+    },
+    "capture-first-orbit": {
+      "n": 4,
+      "p50": 23,
+      "p95": 23,
+      "p99": 23,
+      "max": 24,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "idle": {
+      "n": 193,
+      "p50": 25,
+      "p95": 36,
+      "p99": 53,
+      "max": 112,
+      "over50": 3,
+      "over100": 1,
+      "over250": 0
+    },
+    "capture-idle": {
+      "n": 4,
+      "p50": 17,
+      "p95": 17,
+      "p99": 17,
+      "max": 18,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "warm-orbit": {
+      "n": 187,
+      "p50": 17,
+      "p95": 21,
+      "p99": 52,
+      "max": 275,
+      "over50": 4,
+      "over100": 2,
+      "over250": 1
+    },
+    "capture-warm-orbit": {
+      "n": 3,
+      "p50": 17,
+      "p95": 17,
+      "p99": 17,
+      "max": 18,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "camp-movement": {
+      "n": 350,
+      "p50": 18,
+      "p95": 34,
+      "p99": 44,
+      "max": 62,
+      "over50": 1,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-camp-movement": {
+      "n": 6,
+      "p50": 36,
+      "p95": 37,
+      "p99": 37,
+      "max": 40,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "factory-arrival-fixture": {
+      "n": 64,
+      "p50": 17,
+      "p95": 20,
+      "p99": 38,
+      "max": 150,
+      "over50": 1,
+      "over100": 1,
+      "over250": 0
+    },
+    "capture-factory-arrival": {
+      "n": 4,
+      "p50": 14,
+      "p95": 16,
+      "p99": 16,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "enter-factory-0": {
+      "n": 418,
+      "p50": 17,
+      "p95": 24,
+      "p99": 38,
+      "max": 150,
+      "over50": 2,
+      "over100": 1,
+      "over250": 0
+    },
+    "capture-enter-factory-0": {
+      "n": 4,
+      "p50": 15,
+      "p95": 17,
+      "p99": 17,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "factory-orbit-0": {
+      "n": 149,
+      "p50": 17,
+      "p95": 18,
+      "p99": 20,
+      "max": 48,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-factory-orbit-0": {
+      "n": 3,
+      "p50": 17,
+      "p95": 17,
+      "p99": 17,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "leave-factory-0": {
+      "n": 406,
+      "p50": 17,
+      "p95": 32,
+      "p99": 45,
+      "max": 49,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-leave-factory-0": {
+      "n": 3,
+      "p50": 16,
+      "p95": 16,
+      "p99": 16,
+      "max": 18,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "enter-factory-1": {
+      "n": 437,
+      "p50": 17,
+      "p95": 20,
+      "p99": 31,
+      "max": 34,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-enter-factory-1": {
+      "n": 3,
+      "p50": 16,
+      "p95": 16,
+      "p99": 16,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "factory-orbit-1": {
+      "n": 157,
+      "p50": 17,
+      "p95": 19,
+      "p99": 39,
+      "max": 45,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-factory-orbit-1": {
+      "n": 2,
+      "p50": 16,
+      "p95": 16,
+      "p99": 16,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "leave-factory-1": {
+      "n": 423,
+      "p50": 17,
+      "p95": 19,
+      "p99": 40,
+      "max": 43,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    },
+    "capture-leave-factory-1": {
+      "n": 2,
+      "p50": 16,
+      "p95": 16,
+      "p99": 16,
+      "max": 17,
+      "over50": 0,
+      "over100": 0,
+      "over250": 0
+    }
+  },
+  "beforeReadyMs": 22973,
+  "afterReadyMs": 22940,
+  "conditions": "Playwright WebKit2336 on M5 Pro, not real Safari/M3. Production High, DPR2 actual buffer. One sequential pair; warm asset wait before first orbit. No GL wrappers/CPU profiler/screenshots.",
+  "errors": [
+    [],
+    []
+  ]
+}

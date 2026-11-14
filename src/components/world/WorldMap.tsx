@@ -11,6 +11,20 @@ import { ALPHA_STATIONS,alphaWorld,alphaContainsWorld,ALPHA_MAINLAND_PIER_POLYGO
 import {ALPHA_VISITOR_PATH,ALPHA_VISITOR_SPURS} from './alpha-island/alpha-visitor-path';
 
 import {FACTORY,FACTORY_FOOTPRINT} from './factory/factory-layout';
+import { createMapPathCache } from './map-path-cache';
+
+const { register, registerShore, path, shorePath } = createMapPathCache();
+// Authored map geometry is immutable; positions and waypoints are never registered.
+[
+  ALPHA_MAINLAND_PIER_POLYGON, ALPHA_MAINLAND_APPROACH, ALPHA_VISITOR_PATH,
+  ...ALPHA_VISITOR_SPURS.map(spur => spur.path), ALPHA_MINE_FOOTPRINT_POINTS,
+  FACTORY_FOOTPRINT, ROAD_POINTS, BOARDWALK_POINTS, ALPHA_MINE_CONNECTOR,
+  ALPHA_EXCHANGE_APPROACH, ATTRACTION_ROAD_SAMPLES[0], INTENT_COASTER_FOOTPRINT,
+  IBD_FOOTPRINT, COASTER_ARRIVAL.roadOutline, COASTER_ARRIVAL.walkOutline,
+  CLUB_APPROACH, ...CLUB_WALKWAYS, CLUB_POOL.outline,
+].forEach(register);
+const fallbackShores = [ISLAND_OUTLINE];
+registerShore(fallbackShores);
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -32,6 +46,8 @@ export function loadMapGeometry() {
     const zs = [-62, 62, ...shore.map(p => p[1]), ...ATTRACTIONS_CAPE.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
     const x = Math.min(...xs) - 7, z = Math.min(...zs) - 7;
     const coaster=coasterCurve.getSpacedPoints(140).map(p=>[p.x,p.z]);
+    registerShore(shores);
+    [camp, coaster, ...(roads?.map(r => r.pts) ?? [])].forEach(register);
     return { shores, camp, roads, landmarks, coaster, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
   });
 }
@@ -41,8 +57,6 @@ function useMapGeometry() {
   return geometry;
 }
 
-const path = (points: readonly (readonly number[])[]) => points.map(p => `${p[0]},${p.length === 3 ? p[2] : p[1]}`).join(' ');
-const shorePath = (loops: number[][][]) => loops.map(points => `M${path(points)}Z`).join(' ');
 /** Heading of travel (radians, map space) from successive published positions; holds while standing still. */
 function useHeading(x: number, z: number) {
   const last = useRef<[number, number] | null>(null), heading = useRef(-Math.PI / 2);
@@ -90,8 +104,8 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <pattern id={seaId} width='5' height='5' patternUnits='userSpaceOnUse' patternTransform='rotate(35)'><rect width='5' height='5' fill='#1E5A5E' /><line x1='0' y1='0' x2='0' y2='5' stroke='#3C8A8A' strokeWidth='.7' opacity='.5' /></pattern>
     </defs>
     <rect x={vb[0] - 300} y={vb[1] - 300} width={vb[2] + 600} height={vb[3] + 600} fill={`url(#${seaId})`} />
-    <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
-    <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
+    <path d={shorePath(geometry?.shores ?? fallbackShores)} fillRule='evenodd' fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
+    <path d={shorePath(geometry?.shores ?? fallbackShores)} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
     <g data-alpha-island='batch1'><polygon points={path(ALPHA_MAINLAND_PIER_POLYGON)} fill='#b39870'/><polyline points={path(ALPHA_MAINLAND_APPROACH)} fill='none' stroke='#d1bc91' strokeWidth='2.2'/><polyline data-alpha-route="visitor" points={path(ALPHA_VISITOR_PATH)} fill="none" stroke="#e0d4b4" strokeWidth="2.4" strokeLinejoin="round" />{ALPHA_VISITOR_SPURS.map(spur=><g key={spur.id}><polyline data-alpha-route={spur.id} points={path(spur.path)} fill="none" stroke="#d0bd91" strokeWidth="1.7" strokeDasharray="2 1" strokeLinejoin="round"/><circle cx={spur.path.at(-1)![0]} cy={spur.path.at(-1)![1]} r="2" fill="#e7c587"/><text x={spur.path.at(-1)![0]+4} y={spur.path.at(-1)![1]+2} fontSize={full?'4':'5'} fill="#fff4da" paintOrder="stroke" stroke="#23343d" strokeWidth="1">{spur.label[lang]}</text></g>)}{(['dock','tree','wind','summit'] as const).map((id,i)=>{const p=alphaWorld(ALPHA_STATIONS[id]);return <g key={id}><circle cx={p[0]} cy={p[2]} r='2.8' fill='#e7c587'/><text x={p[0]+5} y={p[2]+2} fontSize={full?'4':'5'} fill='#fff4da' paintOrder='stroke' stroke='#23343d' strokeWidth='1'>{lang==='zh'?['渡口','语法树','风口','山顶'][i]:['Ferry','Tree','Wind','Summit'][i]}</text></g>;})}</g>
     <polygon data-quarry-outline='physical' points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#99917C' stroke='#B6AB89' strokeOpacity='.45' strokeWidth={full ? .8 : .6} strokeLinejoin='round' />
     {LAYOUT_V4&&<g data-factory-outline="physical"><polygon points={path(FACTORY_FOOTPRINT)} fill="#aaa590" stroke="#d7c9a6" strokeWidth=".7"/><text x={FACTORY.origin[0]} y={FACTORY.origin[2]} textAnchor="middle" fontSize={full?'4.5':'5'} fill="#fff7de" paintOrder="stroke" stroke="#23343d" strokeWidth="1.1">{t.factory}</text><circle cx={FACTORY.entrance[0]} cy={FACTORY.entrance[2]} r="3.3" fill="#23343D" stroke="#4FD1C5"/></g>}

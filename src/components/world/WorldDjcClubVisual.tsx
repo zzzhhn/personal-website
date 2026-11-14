@@ -99,7 +99,7 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
     resources.spill.material.uniforms.uAmount.value=n*.8;resources.beamMaterial.uniforms.uAmount.value=n*.065;
     const near=(camera.position.x-CLUB.center[0])**2+(camera.position.z-CLUB.center[2])**2<RUNNING_RADIUS_SQ;
     if(group.current)group.current.visible=near;
-    lights.current.forEach((light,i)=>{if(light){light.visible=near&&n>.01;light.intensity=n*CLUB_LIGHTS[i].intensity;}});
+    lights.current.forEach((light,i)=>{if(light){light.intensity=near&&n>.01?n*CLUB_LIGHTS[i].intensity:0;}});
     resources.spot.uniforms.uAmount.value=n*1.55;
     if(!isWorldRunning()||!near)return;
     // Reuse the world's one actor tracker. Contact fades spatially as bodies leave the leaves;

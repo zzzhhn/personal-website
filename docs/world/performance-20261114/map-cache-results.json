@@ -1,0 +1,31 @@
+{
+  "baselineCommit": "facdc92",
+  "pointArraysCompared": 44,
+  "totalPoints": 10447,
+  "shorelinePoints": 9159,
+  "geometryRoads": 18,
+  "equalOutputs": true,
+  "registeredSerializationsAcross900Updates": 1,
+  "unregisteredMutationsObserved": true,
+  "ticksPerSample": 900,
+  "samples": 5,
+  "baselineMs": [
+    3326.8133749999997,
+    3559.415083,
+    2755.240375000001,
+    2781.5903749999998,
+    3281.0200829999994
+  ],
+  "cachedMs": [
+    0.515584000000672,
+    0.7730000000010477,
+    1.1275410000016564,
+    0.371791999998095,
+    0.35050000000046566
+  ],
+  "medianBaselineMs": 3281.0200829999994,
+  "medianCachedMs": 0.515584000000672,
+  "speedup": 6363.696474281055,
+  "checksum": 6564963460,
+  "warning": "Focused serialization CPU benchmark only; excludes React reconciliation, SVG painting, Three rendering and app FPS."
+}

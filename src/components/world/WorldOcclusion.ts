@@ -1,7 +1,14 @@
 import { Material, Mesh, Raycaster, Sphere, Vector3, type Camera, type InstancedMesh, type Object3D } from 'three';
 import { useWorldStore } from './store.ts';
 
-type Fade = { mesh: Mesh; source: Material | Material[]; copies: Material[]; amount: { value: number }; active: boolean };
+/**
+ * One cached corridor variant per mesh. `applied` means the copy is currently on the mesh; an inactive entry keeps
+ * its copies (and therefore its compiled program reference) so re-entering the corridor does not recompile.
+ */
+type Fade = { mesh: Mesh; source: Material | Material[]; members: Material[]; geometry: Mesh['geometry']; copies: Material[];
+  versions: number[]; amount: { value: number }; active: boolean; applied: boolean; idle: number };
+/** Inactive cached variants are released after this long unused, or oldest-first above the cap. */
+const CACHE_IDLE_S = 90, CACHE_MAX_INACTIVE = 128;
 
 /**
  * View-corridor fade (shadows v4): any solid scene object between the camera and the player or the
@@ -40,6 +47,34 @@ function flagged(o: Object3D) {
   return false;
 }
 
+const listOf = (m: Material | Material[]) => Array.isArray(m) ? m : [m];
+/** Does `current` still hold exactly `members` (same array-ness, length and members; in-place array edits count)? */
+function holds(current: Material | Material[], members: Material[], array: boolean) {
+  if (Array.isArray(current) !== array) return false;
+  const list = listOf(current);
+  return list.length === members.length && list.every((m, i) => m === members[i]);
+}
+function attachedTo(o: Object3D, root: Object3D) {
+  let p: Object3D | null = o;
+  while (p.parent) p = p.parent;
+  return p === root;
+}
+/** Re-read the source's current properties into a cached copy (colours, maps, intensities set since it was made). */
+function syncCopy(copy: Material, original: Material, version: number) {
+  const shaderCopy = copy as Material & { uniforms?: Record<string, { value: unknown }> };
+  const uniforms = shaderCopy.uniforms;
+  copy.copy(original);
+  if (uniforms) {
+    // Keep the uniform objects the compiled program is bound to; take the source's live values.
+    const live = (original as Material & { uniforms?: Record<string, { value: unknown }> }).uniforms ?? {};
+    shaderCopy.uniforms = uniforms;
+    for (const k of Object.keys(live)) if (uniforms[k]) uniforms[k].value = live[k].value;
+  }
+  copy.transparent = true; copy.depthWrite = false;
+  // Source defines/maps changed through needsUpdate: rebuild the variant too.
+  if (original.version !== version) copy.needsUpdate = true;
+}
+
 export class WorldOcclusion {
   private ray = new Raycaster();
   private meshes: Mesh[] = [];
@@ -65,6 +100,7 @@ export class WorldOcclusion {
         if (!m.isMesh || !m.visible) return;
         if ((m.castShadow || flagged(m)) && !excluded(m)) this.meshes.push(m);
       });
+      this.prune(scene);
     }
     const hitMeshes = new Set<Mesh>();
     const length = camera.position.distanceTo(target);
@@ -104,11 +140,12 @@ export class WorldOcclusion {
     for (const fade of this.fades.values()) fade.active = false;
     for (const mesh of hitMeshes) {
       let fade = this.fades.get(mesh);
+      // Owner changed the material (swap or in-place array edit) or geometry: the variant is stale, drop it.
+      if (fade && this.stale(fade)) { this.release(fade, true); fade = undefined; }
       if (!fade) {
         const source = mesh.material, amount = { value: 0 };
-        const copies = (Array.isArray(source) ? source : [source]).map(original => {
+        const copies = listOf(source).map(original => {
           const copy = original.clone();
-          const originalKey = original.customProgramCacheKey();
           copy.transparent = true; copy.depthWrite = false;
           copy.onBeforeCompile = (shader, renderer) => {
             original.onBeforeCompile.call(copy, shader, renderer);
@@ -129,25 +166,66 @@ export class WorldOcclusion {
               diffuseColor.a *= 1.0 - 0.99 * uViewFade * fadeMask;
               #include <alphatest_fragment>`);
           };
-          copy.customProgramCacheKey = () => originalKey + '-view-corridor-v2';
+          // Read live: a source whose own hook changes later gets a matching variant key.
+          copy.customProgramCacheKey = () => original.customProgramCacheKey() + '-view-corridor-v2';
           return copy;
         });
-        mesh.material = Array.isArray(source) ? copies : copies[0];
-        fade = { mesh, source, copies, amount, active: true }; this.fades.set(mesh, fade);
+        fade = { mesh, source, members: [...listOf(source)], geometry: mesh.geometry, copies, versions: listOf(source).map(m => m.version),
+          amount, active: true, applied: false, idle: 0 };
+        this.fades.set(mesh, fade);
+        this.created++;
+      } else if (!fade.applied) {
+        // Reuse: same program (no compile), current source properties.
+        fade.copies.forEach((copy, i) => { syncCopy(copy, fade!.members[i], fade!.versions[i]); fade!.versions[i] = fade!.members[i].version; });
+        this.reused++;
       }
-      fade.active = true;
+      if (!fade.applied) { mesh.material = this.target(fade); fade.applied = true; fade.amount.value = 0; }
+      fade.active = true; fade.idle = 0;
     }
-    for (const [mesh, fade] of this.fades) {
+    for (const fade of [...this.fades.values()]) {
+      if (!fade.applied) { fade.idle += dt; continue; }
+      // An external replacement made during an active fade wins; never write our source back over it.
+      if (this.stale(fade)) { this.release(fade, true); continue; }
       fade.amount.value += ((fade.active ? 1 : 0) - fade.amount.value) * (1 - Math.exp(-dt * 12));
       if (!fade.active && fade.amount.value < .01) {
-        mesh.material = fade.source; fade.copies.forEach(m => m.dispose()); this.fades.delete(mesh);
+        // Back to the untouched source; the copies stay cached (not disposed) for the next pass.
+        fade.mesh.material = fade.source;
+        fade.applied = false; fade.amount.value = 0; fade.idle = 0;
       }
     }
     this.stats = { candidates: this.meshes.length, tested, rays, ms: performance.now() - t0 };
   }
-  debug() {
-    return { blockers: this.blockers, fades: [...this.fades.values()].map(f => ({ name: f.mesh.name || f.mesh.parent?.name || '(unnamed)', amount: f.amount.value, scope: 'view corridor only' })),
-      corridor_m: this.radius.value.toArray().slice(0, 2), ...this.stats };
+  private created = 0;
+  private reused = 0;
+  private released = 0;
+  /** A fresh array per application, so in-place edits by the owner are detectable and never touch `copies`. */
+  private target(fade: Fade): Material | Material[] { return Array.isArray(fade.source) ? [...fade.copies] : fade.copies[0]; }
+  private stale(fade: Fade) {
+    const array = Array.isArray(fade.source);
+    // Also catches the owner editing its own source array in place while our copy is applied.
+    return fade.mesh.geometry !== fade.geometry || !holds(fade.source, fade.members, array)
+      || !holds(fade.mesh.material, fade.applied ? fade.copies : fade.members, array);
   }
-  dispose() { for (const f of this.fades.values()) { f.mesh.material = f.source; f.copies.forEach(m => m.dispose()); } this.fades.clear(); }
+  /** Free a cached variant. `restore` puts the source back only if our (now disposed) copy is still on the mesh;
+   * an external replacement is left alone. */
+  private release(fade: Fade, restore: boolean) {
+    if (restore && fade.applied && holds(fade.mesh.material, fade.copies, Array.isArray(fade.source))) fade.mesh.material = fade.source;
+    fade.copies.forEach(m => m.dispose()); this.fades.delete(fade.mesh); this.released++;
+  }
+  /** Bounded cache: drop variants of unmounted meshes, swapped materials, long-idle entries and the oldest beyond the cap. */
+  private prune(scene: Object3D) {
+    const idle: Fade[] = [];
+    for (const fade of [...this.fades.values()]) {
+      if (fade.applied) continue;
+      if (!attachedTo(fade.mesh, scene) || this.stale(fade) || fade.idle > CACHE_IDLE_S) this.release(fade, true);
+      else idle.push(fade);
+    }
+    if (idle.length > CACHE_MAX_INACTIVE) idle.sort((a, b) => b.idle - a.idle).slice(0, idle.length - CACHE_MAX_INACTIVE).forEach(f => this.release(f, false));
+  }
+  debug() {
+    return { blockers: this.blockers, fades: [...this.fades.values()].filter(f => f.applied).map(f => ({ name: f.mesh.name || f.mesh.parent?.name || '(unnamed)', amount: f.amount.value, scope: 'view corridor only' })),
+      corridor_m: this.radius.value.toArray().slice(0, 2), ...this.stats,
+      cache: { entries: this.fades.size, created: this.created, reused: this.reused, released: this.released } };
+  }
+  dispose() { for (const f of [...this.fades.values()]) this.release(f, true); this.fades.clear(); }
 }

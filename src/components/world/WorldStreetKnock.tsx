@@ -266,8 +266,8 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     if(nearbyLamp.current){
       let nearest=-1,distanceSq=18*18;const player=st.position;
       for(let i=0;i<lamps.length;i++){if(lamps[i].phase!=='home')continue;const p=lampHeads[i],d=(p.x-player[0])**2+(p.z-player[2])**2;if(d<distanceSq){nearest=i;distanceSq=d;}}
-      nearbyLamp.current.visible=night.value>.01&&nearest>=0;
-      if(nearest>=0){nearbyLamp.current.position.copy(lampHeads[nearest]);nearbyLamp.current.intensity=night.value*110*Math.min(1,(18-Math.sqrt(distanceSq))/5);}
+      nearbyLamp.current.intensity=0;
+      if(nearest>=0){nearbyLamp.current.position.copy(lampHeads[nearest]);nearbyLamp.current.intensity=night.value>.01?night.value*110*Math.min(1,(18-Math.sqrt(distanceSq))/5):0;}
     }
     Object.assign(lastTris, b.update(camera));
     if (set === 'year') {

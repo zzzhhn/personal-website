@@ -1,0 +1,107 @@
+{
+  "errors": [],
+  "steps": [
+    {
+      "event": "paused",
+      "state": true
+    },
+    {
+      "event": "console-exited",
+      "station": null
+    },
+    {
+      "event": "camp",
+      "data": {
+        "position": [
+          -41.99941635131836,
+          5.619417190551758,
+          35.006927490234375
+        ],
+        "station": null,
+        "render": {
+          "drawingBuffer": [
+            2560,
+            1440
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1.3333333333333333,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": [],
+          "coasterVegetation": [
+            {
+              "name": "coaster-ST1-L0",
+              "visible": false,
+              "instances": 0,
+              "triangles": 0,
+              "matrixUploads": 0
+            },
+            {
+              "name": "coaster-ST1-L1",
+              "visible": false,
+              "instances": 0,
+              "triangles": 0,
+              "matrixUploads": 0
+            },
+            {
+              "name": "coaster-ST2-L0",
+              "visible": false,
+              "instances": 0,
+              "triangles": 0,
+              "matrixUploads": 0
+            },
+            {
+              "name": "coaster-ST2-L1",
+              "visible": false,
+              "instances": 0,
+              "triangles": 0,
+              "matrixUploads": 0
+            },
+            {
+              "name": "coaster-G19",
+              "visible": false,
+              "instances": 0,
+              "triangles": 0,
+              "matrixUploads": 0
+            }
+          ]
+        },
+        "occlusion": {
+          "blockers": [],
+          "fades": [],
+          "corridor_m": [
+            1.1,
+            1.6
+          ],
+          "candidates": 305,
+          "tested": 23,
+          "rays": 4,
+          "ms": 0.19999980926513672,
+          "cache": {
+            "entries": 0,
+            "created": 0,
+            "reused": 0,
+            "released": 0
+          }
+        }
+      }
+    },
+    {
+      "event": "remounted",
+      "ready": true
+    }
+  ],
+  "complete": true
+}

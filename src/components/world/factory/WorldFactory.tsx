@@ -30,9 +30,10 @@ function Station({id,active}:{id:FactoryStationId;active:boolean}){
 /** Two local, unshadowed sources at authored fixtures illuminate moving parts
  * and the operator. Static fill alone cannot light a newly printed card or robot.
  * Mounted only inside the active facility, without timers or React frame updates. */
-function WorkLights({lamps}:{lamps:FactoryLamp[]}){
+function WorkLights({lamps,active}:{lamps:FactoryLamp[];active:boolean}){
   const lights=useRef<Array<PointLight|null>>([]);
   useFrame(()=>{
+    if(!active){for(const light of lights.current)if(light)light.intensity=0;return;}
     const state=useWorldStore.getState();
     if(state.paused||state.poolInspect||document.hidden)return;
     const station=state.factoryStation?factoryStation(state.factoryStation):null;
@@ -96,7 +97,8 @@ export default memo(function WorldFactory({active}:{active:boolean}){
       <TrimeshCollider args={[data.vertices,data.indices]} friction={.85}/>
       {data.solids.map((s,i)=><CuboidCollider key={i} args={[s.size[0]/2,s.size[1]/2,s.size[2]/2]} position={s.at} rotation={s.rotation} friction={.85}/>)}
     </RigidBody>
-    {active&&<><WorkLights lamps={data.lamps}/><WorldFactoryMechanisms/><WorldFactoryTrial/><WorldFactoryGuide/><WorldFactoryPrinter/><WorldFactoryArchive/></>}
+    <WorkLights lamps={data.lamps} active={active}/>
+    {active&&<><WorldFactoryMechanisms/><WorldFactoryTrial/><WorldFactoryGuide/><WorldFactoryPrinter/><WorldFactoryArchive/></>}
     {FACTORY_STATIONS.map(s=><Station key={s.id} id={s.id} active={active}/>) }
   </group>;
 });

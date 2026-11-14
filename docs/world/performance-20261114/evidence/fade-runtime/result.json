@@ -1,0 +1,2415 @@
+{
+  "scope": "Actual camp trees/tent and original fade raycasts, QA initial positions then real mouse orbit. No synthetic blocker.",
+  "observations": [
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 0,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 1.3199943451988778,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 6.233921718597412,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 6.283921718597412,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -53.45369058366979,
+          5.97460787980667,
+          40.03516447883595
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.24818092953963997,
+          -0.9687136967199548
+        ],
+        "groundBelowCamera": 4.9000244140625,
+        "clearanceAboveGround": 1.07458346574417,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 284,
+        "tested": 34,
+        "rays": 4,
+        "ms": 0,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 168
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 1,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 1.7126934723961433,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 17.10376951199869,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -57.41471446192015,
+          5.431342585639785,
+          50.914533515759274
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.14142144631982478,
+          -0.9899494807922318
+        ],
+        "groundBelowCamera": 4.81744384765625,
+        "clearanceAboveGround": 0.6138987379835346,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 284,
+        "tested": 27,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 181
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 2,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 2.1053925995934093,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 7.8812757317288735,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 8.173649787902832,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -59.00933949269833,
+          5.892274596070704,
+          40.77698685699721
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.5094936840409702,
+          -0.8604743958551934
+        ],
+        "groundBelowCamera": 4.824493408203125,
+        "clearanceAboveGround": 1.0677811878675794,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 264,
+        "tested": 20,
+        "rays": 4,
+        "ms": 1.5999999046325684,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 187
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 3,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 2.4980917267906753,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 14.318459664636986,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -66.43935140413123,
+          5.570549886637271,
+          42.58416327681383
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.8000001091964865,
+          -0.5999998544046572
+        ],
+        "groundBelowCamera": 4.558441162109375,
+        "clearanceAboveGround": 1.012108724527896,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 264,
+        "tested": 20,
+        "rays": 4,
+        "ms": 0.10000038146972656,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 199
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 4,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 2.8907908539879412,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 17.234619423132234,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -71.6734453568332,
+          5.424802823831268,
+          38.275781472501116
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.9687137418874201,
+          -0.24818075323939404
+        ],
+        "groundBelowCamera": 2.910919189453125,
+        "clearanceAboveGround": 2.5138836343781428,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 264,
+        "tested": 20,
+        "rays": 4,
+        "ms": 0.3000001907348633,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 223
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 5,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 3.283489981185207,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 5.803159073342134,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 8.688664436340332,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -60.73655218564606,
+          5.996137012471506,
+          33.18415959546825
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.9899494550543368,
+          0.14142162648485382
+        ],
+        "groundBelowCamera": 4.8203277587890625,
+        "clearanceAboveGround": 1.1758092536824432,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 264,
+        "tested": 25,
+        "rays": 4,
+        "ms": 0.3000001907348633,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 230
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 6,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 3.676189108382473,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 11.768109156708638,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -65.112398051834,
+          5.698014129490741,
+          28.01554015419526
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.8604743031303005,
+          0.5094938406422828
+        ],
+        "groundBelowCamera": 4.8309173583984375,
+        "clearanceAboveGround": 0.8670967710923039,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 275,
+        "tested": 27,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 230
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 7,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 4.068888235579739,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.951512112551224,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -65.15708893574433,
+          5.438952274613546,
+          20.459560692949335
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.5999997088092934,
+          0.8000002183929471
+        ],
+        "groundBelowCamera": 4.755859375,
+        "clearanceAboveGround": 0.6830928996135457,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [
+          "camp-mesh-G20-crown_1",
+          "camp-mesh-G20-crown_3",
+          "camp-mesh-G20-crown_2",
+          "camp-mesh-G19-crown_3",
+          "camp-mesh-G19-crown_1",
+          "camp-mesh-G19-crown_2"
+        ],
+        "fades": [
+          {
+            "name": "camp-mesh-G20-crown_1",
+            "amount": 0.9990255136071137,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G20-crown_3",
+            "amount": 0.9990255136071137,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G20-crown_2",
+            "amount": 0.9990255136071137,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_1",
+            "amount": 0.9990255136071137,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_3",
+            "amount": 0.9990255136071137,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_2",
+            "amount": 0.9990255136071137,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 276,
+        "tested": 28,
+        "rays": 4,
+        "ms": 1.3000001907348633,
+        "cache": {
+          "entries": 6,
+          "created": 6,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 232
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 8,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 4.4615873627770055,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 10.195960838154601,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -57.52617461315126,
+          5.776588699713494,
+          24.139201912644403
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.24818057693913878,
+          0.9687137870548536
+        ],
+        "groundBelowCamera": 4.8167877197265625,
+        "clearanceAboveGround": 0.9598009799869311,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [
+          {
+            "name": "flag_04",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_brass",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_dark",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_iron",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_wood",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_01",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_02",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_03",
+            "amount": 0.15089058835691865,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 276,
+        "tested": 28,
+        "rays": 4,
+        "ms": 0.20000028610229492,
+        "cache": {
+          "entries": 14,
+          "created": 14,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 239
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 9,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 4.854286489974272,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 12.628568715661961,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 13.76055908203125,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -53.21517452252182,
+          5.655009128473408,
+          21.51780550984772
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.1414218066498792,
+          0.9899494293164091
+        ],
+        "groundBelowCamera": 4.8172760009765625,
+        "clearanceAboveGround": 0.8377331274968451,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [
+          {
+            "name": "flag_04",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_brass",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_dark",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_iron",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_wood",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_01",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_02",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_03",
+            "amount": 0.013770863144714941,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 276,
+        "tested": 37,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 14,
+          "created": 14,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 239
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 10,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 5.246985617171538,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 15.09914668391168,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -47.31558708240599,
+          5.5315318459765725,
+          21.027636930467906
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.5094939972435799,
+          0.8604742104053782
+        ],
+        "groundBelowCamera": 4.8125152587890625,
+        "clearanceAboveGround": 0.71901658718751,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 30,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 14,
+          "created": 14,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 239
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 11,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 5.639684744368805,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 14.951961672409848,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -43.052272132699,
+          5.538888021526615,
+          25.04386726814802
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.8000003275893823,
+          0.5999995632139085
+        ],
+        "groundBelowCamera": 4.810028076171875,
+        "clearanceAboveGround": 0.7288599453547402,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 29,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 14,
+          "created": 14,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 239
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 12,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 6.032383871566071,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.256251496846822,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -39.27092228793175,
+          5.4737007798449255,
+          29.974385172767164
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.9687138322222554,
+          0.24818040063887434
+        ],
+        "groundBelowCamera": 4.8000030517578125,
+        "clearanceAboveGround": 0.673697728087113,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 28,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 14,
+          "created": 14,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 239
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 13,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 6.4250829987633375,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 15.680937957763671,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 15.730937957763672,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -39.49496245264185,
+          5.5024544372087325,
+          36.218684090000124
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.9899494035784487,
+          -0.14142198681490034
+        ],
+        "groundBelowCamera": 4.8000030517578125,
+        "clearanceAboveGround": 0.70245138545092,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [
+          "camp-craft-C06-C06_batch_Camp_ridged_bark_|_authored_longitudinal_response",
+          "camp-craft-C06-C06_batch_Camp_cut_timber_|_shared_photographed_grain",
+          "camp-craft-C06-C06_batch_Camp_exposed_end_grain_|_authored_cut_rings"
+        ],
+        "fades": [
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_ridged_bark_|_authored_longitudinal_response",
+            "amount": 0.9975360758079559,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_cut_timber_|_shared_photographed_grain",
+            "amount": 0.9975360758079559,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_exposed_end_grain_|_authored_cut_rings",
+            "amount": 0.9975360758079559,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 23,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 14,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 6.817782125960604,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.535739036505497,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -40.78810406533279,
+          5.459732241983629,
+          42.41815965172609
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.8604741176804271,
+          -0.5094941538448603
+        ],
+        "groundBelowCamera": 4.8155059814453125,
+        "clearanceAboveGround": 0.6442262605383169,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_ridged_bark_|_authored_longitudinal_response",
+            "amount": 0.10943352318767363,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_cut_timber_|_shared_photographed_grain",
+            "amount": 0.10943352318767363,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_exposed_end_grain_|_authored_cut_rings",
+            "amount": 0.10943352318767363,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 27,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 0,
+      "i": 15,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 7.21048125315787,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.967747463410827,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -44.83098207206567,
+          5.4381408462634635,
+          47.561067343069205
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.5999994176185037,
+          -0.8000004367857909
+        ],
+        "groundBelowCamera": 4.81610107421875,
+        "clearanceAboveGround": 0.6220397720447135,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 38,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 0,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 7.603180380355137,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 6.234582614898682,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 6.284582614898682,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -53.453531157935025,
+          5.974574848799213,
+          40.03580502302195
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.24818022433860032,
+          -0.9687138773896253
+        ],
+        "groundBelowCamera": 4.9000244140625,
+        "clearanceAboveGround": 1.0745504347367127,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 284,
+        "tested": 34,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 1,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 7.995879507552403,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 11.988774996683118,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -56.69225719049467,
+          5.686985447696403,
+          45.857274266930844
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.14142216697991725,
+          -0.9899493778404553
+        ],
+        "groundBelowCamera": 4.8247222900390625,
+        "clearanceAboveGround": 0.8622631576573401,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 284,
+        "tested": 27,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 2,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 8.388578634749669,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 7.890495948082849,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 8.173629760742188,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -59.0140362003517,
+          5.891813777884008,
+          40.78490777905879
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.5094943104461234,
+          -0.8604740249554481
+        ],
+        "groundBelowCamera": 4.824493408203125,
+        "clearanceAboveGround": 1.0673203696808828,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 284,
+        "tested": 20,
+        "rays": 4,
+        "ms": 1.700000286102295,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 3,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 8.781277761946935,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 11.806468973434198,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -64.43227518888052,
+          5.696096940077082,
+          41.078845956005274
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.800000545982173,
+          -0.5999992720230796
+        ],
+        "groundBelowCamera": 4.8383331298828125,
+        "clearanceAboveGround": 0.8577638101942693,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 275,
+        "tested": 20,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 4,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 9.173976889144202,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 14.850806226509453,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -69.36710136723846,
+          5.543943680457462,
+          37.6848938228833
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.9687139225569623,
+          -0.24818004803832097
+        ],
+        "groundBelowCamera": 3.7203216552734375,
+        "clearanceAboveGround": 1.823622025184025,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 275,
+        "tested": 20,
+        "rays": 4,
+        "ms": 0.3000001907348633,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 5,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 9.566676016341468,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 5.583072758969111,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 8.688667297363281,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -60.518949570102585,
+          6.007136730093362,
+          33.215241643539535
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.9899493521024292,
+          0.1414223471449284
+        ],
+        "groundBelowCamera": 4.819488525390625,
+        "clearanceAboveGround": 1.1876482047027368,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 275,
+        "tested": 25,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 6,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 9.959375143538734,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 11.178560843242707,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -64.60573671700777,
+          5.72747922817732,
+          28.31552901020755
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.8604739322304402,
+          0.5094944670473701
+        ],
+        "groundBelowCamera": 4.8242034912109375,
+        "clearanceAboveGround": 0.9032757369663829,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 275,
+        "tested": 27,
+        "rays": 4,
+        "ms": 0,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 7,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 10.352074270736,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 14.580552080488742,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -63.736282970424874,
+          5.557450741543165,
+          22.353952414852802
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.5999991264276352,
+          0.8000006551785285
+        ],
+        "groundBelowCamera": 4.81427001953125,
+        "clearanceAboveGround": 0.7431807220119149,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [
+          "camp-mesh-G20-crown_1",
+          "camp-mesh-G20-crown_3",
+          "camp-mesh-G20-crown_2",
+          "camp-mesh-G19-crown_1",
+          "camp-mesh-G19-crown_3",
+          "camp-mesh-G19-crown_2"
+        ],
+        "fades": [
+          {
+            "name": "camp-mesh-G20-crown_1",
+            "amount": 0.8023386366989945,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G20-crown_3",
+            "amount": 0.8023386366989945,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G20-crown_2",
+            "amount": 0.8023386366989945,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_1",
+            "amount": 0.7610736650594295,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_3",
+            "amount": 0.7610736650594295,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_2",
+            "amount": 0.7610736650594295,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 275,
+        "tested": 28,
+        "rays": 4,
+        "ms": 1.3000001907348633,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 6,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 8,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 10.744773397933267,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 10.365005369565242,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -57.568068451298714,
+          5.768140004862416,
+          23.975648925706537
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          0.24817987173803147,
+          0.968713967724268
+        ],
+        "groundBelowCamera": 4.8167266845703125,
+        "clearanceAboveGround": 0.9514133202921036,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [
+          {
+            "name": "camp-mesh-G20-crown_1",
+            "amount": 0.0735735942192267,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G20-crown_3",
+            "amount": 0.0735735942192267,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G20-crown_2",
+            "amount": 0.0735735942192267,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_1",
+            "amount": 0.07101152815024525,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_3",
+            "amount": 0.07101152815024525,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-mesh-G19-crown_2",
+            "amount": 0.07101152815024525,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_04",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_brass",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_dark",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_iron",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "C10_craft_wood",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_01",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_02",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "flag_03",
+            "amount": 0.028240287087586472,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 283,
+        "tested": 28,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 14,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 9,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 11.137472525130534,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 12.700353784471547,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 13.760564804077148,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -53.20502609449387,
+          5.651421374784041,
+          21.44683203860101
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.14142252730993604,
+          0.9899493263643702
+        ],
+        "groundBelowCamera": 4.8170318603515625,
+        "clearanceAboveGround": 0.8343895144324787,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 283,
+        "tested": 37,
+        "rays": 4,
+        "ms": 0.10000038146972656,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 14,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 10,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 11.5301716523278,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 15.123200922365896,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -47.30333744702902,
+          5.53032963660086,
+          21.006970347923346
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.5094946236485998,
+          0.8604738395054039
+        ],
+        "groundBelowCamera": 4.812652587890625,
+        "clearanceAboveGround": 0.7176770487102351,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 30,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 14,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 11,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 11.922870779525066,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 14.951175322158212,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -43.05289390467822,
+          5.538927322610576,
+          25.04434718472723
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.8000007643748575,
+          0.5999989808321708
+        ],
+        "groundBelowCamera": 4.810028076171875,
+        "clearanceAboveGround": 0.7288992464387007,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 29,
+        "rays": 4,
+        "ms": 0,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 14,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 12,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 12.315569906722333,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.32588510893992,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -39.203548599841184,
+          5.470220554042626,
+          29.957136571233427
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.9687140128915415,
+          0.24817969543773374
+        ],
+        "groundBelowCamera": 4.79998779296875,
+        "clearanceAboveGround": 0.6702327610738763,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 316,
+        "tested": 28,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 14,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 13,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 12.7082690339196,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 15.680947494506835,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": true,
+        "hitDistance": 15.730947494506836,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -39.49495463591729,
+          5.5024539605708185,
+          36.21869672352917
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.9899493006262785,
+          -0.14142270747493824
+        ],
+        "groundBelowCamera": 4.8000030517578125,
+        "clearanceAboveGround": 0.702450908813006,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [
+          "camp-craft-C06-C06_batch_Camp_ridged_bark_|_authored_longitudinal_response",
+          "camp-craft-C06-C06_batch_Camp_cut_timber_|_shared_photographed_grain",
+          "camp-craft-C06-C06_batch_Camp_exposed_end_grain_|_authored_cut_rings"
+        ],
+        "fades": [
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_ridged_bark_|_authored_longitudinal_response",
+            "amount": 0.8900797306398199,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_cut_timber_|_shared_photographed_grain",
+            "amount": 0.8900797306398199,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_exposed_end_grain_|_authored_cut_rings",
+            "amount": 0.8900797306398199,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 23,
+        "rays": 4,
+        "ms": 0.19999980926513672,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 17,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 14,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 13.100968161116866,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.535429632978154,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -40.78837609166566,
+          5.459747705695863,
+          42.41801255437571
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.860473746780339,
+          -0.5094947802498129
+        ],
+        "groundBelowCamera": 4.81549072265625,
+        "clearanceAboveGround": 0.6442569830396128,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_ridged_bark_|_authored_longitudinal_response",
+            "amount": 0.09981670241216073,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_cut_timber_|_shared_photographed_grain",
+            "amount": 0.09981670241216073,
+            "scope": "view corridor only"
+          },
+          {
+            "name": "camp-craft-C06-C06_batch_Camp_exposed_end_grain_|_authored_cut_rings",
+            "amount": 0.09981670241216073,
+            "scope": "view corridor only"
+          }
+        ],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 27,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 17,
+          "released": 0
+        }
+      },
+      "programs": 240
+    },
+    {
+      "pos": [
+        -55,
+        5.62,
+        34
+      ],
+      "pass": 1,
+      "i": 15,
+      "camera": {
+        "rideSafety": null,
+        "yaw": 13.493667288314132,
+        "pitch": -0.04999993840919237,
+        "distance": 17.320507935871973,
+        "desiredDistance": 17.320507935871973,
+        "driveManualZoom": false,
+        "actualDistance": 16.967749515281785,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -44.830990711842134,
+          5.438140743712784,
+          47.56107638451803
+        ],
+        "target": [
+          -54.998897552490234,
+          6.286173725128174,
+          34.00382614135742
+        ],
+        "forwardGround": [
+          -0.599998835236687,
+          -0.80000087357116
+        ],
+        "groundBelowCamera": 4.81610107421875,
+        "clearanceAboveGround": 0.6220396694940344,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "info": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 294,
+        "tested": 38,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 17,
+          "created": 17,
+          "reused": 17,
+          "released": 0
+        }
+      },
+      "programs": 240
+    }
+  ],
+  "errors": [],
+  "visibleFade": {
+    "pos": [
+      -55,
+      5.62,
+      34
+    ],
+    "pass": 0,
+    "i": 7
+  },
+  "last": {
+    "blockers": [],
+    "fades": [],
+    "corridor_m": [
+      1.1,
+      1.6
+    ],
+    "candidates": 294,
+    "tested": 38,
+    "rays": 4,
+    "ms": 0.09999990463256836,
+    "cache": {
+      "entries": 17,
+      "created": 17,
+      "reused": 17,
+      "released": 0
+    }
+  },
+  "reuseObserved": true
+}
