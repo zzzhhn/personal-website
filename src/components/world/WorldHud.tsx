@@ -3,6 +3,7 @@ import AlphaTrailHud from './alpha-island/AlphaTrailHud';
 import AlphaTransportHud from './alpha-island/transports/AlphaTransportHud';
 import { alphaContainsWorld } from './alpha-island/alpha-layout';
 import { useWorldStore } from './store';
+import { useFactoryStore } from './factory/factory-store';
 import { worldText } from './world-i18n';
 import type { WorldContent } from './types';
 import { readDrivingTelemetry } from './vehicle-telemetry';
@@ -138,7 +139,11 @@ export function WorldFirstHints() {
 export function WorldWaypointReadout() {
   const waypoint = useWorldStore(s => s.waypoint), position = useWorldStore(s => s.position), lang = useWorldStore(s => s.lang);
   const d = waypoint ? Math.hypot(waypoint[0] - position[0], waypoint[1] - position[2]) : 0;
-  useEffect(() => { if (waypoint && d < 6) useWorldStore.setState({ waypoint: null }); }, [waypoint, d]);
+  useEffect(() => {
+    // A factory corner can be close on the other side of a conveyor. Its route
+    // controller owns arrival so the global 6 m shortcut cannot skip that turn.
+    if (waypoint && d < 6 && !useFactoryStore.getState().route) useWorldStore.setState({ waypoint: null });
+  }, [waypoint, d]);
   if (!waypoint) return null;
   const t = worldText[lang];
   return <span className='world-waypoint-readout'><i aria-hidden='true' />{t.waypoint} · {Math.round(d)} {t.metres}</span>;

@@ -1,0 +1,48 @@
+
+> personal-website@0.0.1 prebuild
+> node tools/world/check-club-audio.mjs
+
+Club furniture: 4 GLBs and 16 external image references present.
+World craft: 5 production GLBs present; umbrella 4 batches, crate 11 batches, furniture 10 batches, camp 12 batches, ibdStatic 118 batches.
+Club audio: 2 runtime assets present in public.
+
+> personal-website@0.0.1 build
+> astro build
+
+11:09:11 [vite] Re-optimizing dependencies because vite config has changed
+11:09:11 [content] Syncing content
+11:09:11 [content] Synced content
+11:09:11 [types] Generated 302ms
+11:09:11 [build] output: "static"
+11:09:11 [build] mode: "static"
+11:09:11 [build] directory: /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/dist/
+11:09:11 [build] Collecting build info...
+11:09:11 [build] ✓ Completed in 314ms.
+11:09:11 [build] Building static entrypoints...
+11:09:13 [vite] ✓ built in 1.56s
+11:09:17 [WARN] [vite] [plugin vite:reporter] 
+(!) /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/layout-v4.ts is dynamically imported by /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldMap.tsx but also statically imported by /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldDistricts.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldFacilityCraftQA.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldLandform.ts, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetBillboards.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetConstructionSigns.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetFixed.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetKnock.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetLandmarks.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetRails.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetTrees.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldStreetYears.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldTerrain.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldTerrainPaving.ts, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/WorldTownAssets.tsx, /Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+11:09:17 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+11:09:17 [vite] ✓ built in 4.55s
+11:09:17 [build] Rearranging server assets...
+
+ generating static routes 
+11:09:17   ├─ /projects/alpha-agent/index.html (+10ms) 
+11:09:17   ├─ /projects/djc/index.html (+2ms) 
+11:09:17   ├─ /projects/evalforge/index.html (+2ms) 
+11:09:17   ├─ /projects/hepai/index.html (+2ms) 
+11:09:17   ├─ /projects/interactive-learning-platforms/index.html (+3ms) 
+11:09:17   ├─ /projects/kindred/index.html (+2ms) 
+11:09:17   ├─ /world/index.html (+13ms) 
+11:09:17   ├─ /index.html (+160ms) 
+11:09:17 ✓ Completed in 215ms.
+
+11:09:17 [build] ✓ Completed in 6.36s.
+11:09:17 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+11:09:17 [build] 8 page(s) built in 6.70s
+11:09:17 [build] Complete!

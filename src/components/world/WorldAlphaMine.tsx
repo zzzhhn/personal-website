@@ -16,6 +16,7 @@ import { useWorldStore } from './store';
 import { parkAudio } from './WorldParkAudio';
 import WorldAlphaMineFoundation from './WorldAlphaMineFoundation';
 import { mineSurfaceMaterial } from './WorldMineMaterial';
+import { useMountedMineFloorCoverage } from './mine-floor-coverage';
 import { createPoolWaterMaterial } from './WorldPoolWater';
 import { waterContacts } from './WorldWaterInteraction';
 import { night } from './WorldNight';
@@ -249,6 +250,7 @@ function MineAssets({ content }: { content: WorldContent }) {
     return {root,materials:[...materials.values()]};
   },[gltfs]);
   useEffect(()=>()=>scene.materials.forEach(m=>m.dispose()),[scene]);
+  useMountedMineFloorCoverage(scene.root);
   const colliders=useMemo(()=>Object.fromEntries(Object.entries(proxy).map(([k,p])=>[k,{vertices:new Float32Array(p.vertices),indices:new Uint32Array(p.indices)}])) as Record<'surface'|'solid',{vertices:Float32Array;indices:Uint32Array}>,[proxy]);
   const ore=gltfs[2].scene.getObjectByName(manifest.dynamicAssets.ore.root)!;
   const detector=gltfs[3].scene.getObjectByName(manifest.dynamicAssets.detector.root)!;

@@ -1,0 +1,717 @@
+{
+  "operationsComplete": true,
+  "runtimeUnchanged": true,
+  "errors": [],
+  "elapsedSeconds": 408.252,
+  "cases": [
+    {
+      "id": "club-basin",
+      "status": "operations-observed",
+      "fixture": null,
+      "assertions": [
+        {
+          "pass": true,
+          "explanation": "Actual mounted Club basin publishes claim"
+        }
+      ],
+      "screenshots": [
+        "club-basin-day-floor.png",
+        "club-basin-day-walk.png",
+        "club-basin-night-floor.png",
+        "club-basin-night-bay.png"
+      ]
+    },
+    {
+      "id": "exchange-glass",
+      "status": "operations-observed",
+      "fixture": null,
+      "assertions": [
+        {
+          "pass": null,
+          "explanation": "Transparency sorting is screenshot evidence for human review; not an automatic visual pass."
+        }
+      ],
+      "screenshots": [
+        "exchange-glass-day-front.png",
+        "exchange-glass-day-opposing-windows.png",
+        "exchange-glass-night-windows.png",
+        "exchange-glass-night-reverse-windows.png"
+      ]
+    },
+    {
+      "id": "mine-floor",
+      "status": "operations-observed",
+      "fixture": null,
+      "assertions": [
+        {
+          "pass": null,
+          "explanation": "Coverage extraction/lifecycle/fallback correctness is covered separately by mine-floor-coverage unit evidence; no asset-failure simulation here."
+        }
+      ],
+      "screenshots": [
+        "mine-floor-day-mounted-apron.png",
+        "mine-floor-day-low-angle.png",
+        "mine-floor-day-jump-ground.png",
+        "mine-floor-night-floor.png"
+      ]
+    },
+    {
+      "id": "workshop-fresh-T1",
+      "status": "operations-observed",
+      "fixture": null,
+      "assertions": [
+        {
+          "pass": true,
+          "explanation": "Fresh context starts with zero earned task credits"
+        },
+        {
+          "pass": true,
+          "explanation": "Real lookup lever completes T1"
+        },
+        {
+          "pass": true,
+          "explanation": "Only T1 was earned through actual wrong/correct E interactions"
+        }
+      ],
+      "screenshots": [
+        "workshop-fresh-T1-request-T1.png",
+        "workshop-fresh-T1-fresh-wrong-processing.png",
+        "workshop-fresh-T1-fresh-wrong-return.png",
+        "workshop-fresh-T1-fresh-lookup-result.png",
+        "workshop-fresh-T1-night-arcade.png"
+      ]
+    },
+    {
+      "id": "workshop-repeat-save-fixture",
+      "status": "operations-observed",
+      "fixture": {
+        "path": "/Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/docs/world/phase-2-playground/coaster-car-astra-pilot-20261104/ride-complete.json",
+        "sha256": "c3a5e7a6a0ee7ff38cbb55a8e3fdbeea2fa16d7bc185be9f7d66b377e2a658f9",
+        "exactSavedProgress": {
+          "version": 1,
+          "bankRevision": "original-20261027-v1",
+          "passed": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "T6"
+          ],
+          "clarified": [],
+          "chestOpen": true,
+          "keyTaken": true,
+          "gateOpen": true
+        },
+        "scope": "Historical unlocked save restored only for independent repeat/cabin module fixtures. Credits are NOT earned in this browser run."
+      },
+      "assertions": [
+        {
+          "pass": true,
+          "explanation": "App restored the exact historical save without direct game state writes"
+        },
+        {
+          "pass": true,
+          "explanation": "After all tasks, real intake starts T1 repeat practice"
+        },
+        {
+          "pass": true,
+          "explanation": "Real lookup lever completes T1"
+        },
+        {
+          "pass": true,
+          "explanation": "Wrong and correct practice preserve exact saved unlocks and scores"
+        },
+        {
+          "pass": true,
+          "explanation": "Actual next intake advances repeat cursor to T2"
+        }
+      ],
+      "screenshots": [
+        "workshop-repeat-save-fixture-real-T7-from-historical-six.png",
+        "workshop-repeat-save-fixture-practice-request.png",
+        "workshop-repeat-save-fixture-practice-wrong-processing.png",
+        "workshop-repeat-save-fixture-practice-wrong-return.png",
+        "workshop-repeat-save-fixture-practice-lookup-result.png",
+        "workshop-repeat-save-fixture-practice-next-T2.png"
+      ]
+    },
+    {
+      "id": "cabin-save-fixture",
+      "status": "operations-observed",
+      "fixture": {
+        "path": "/Users/bobby/Desktop/3D-personal-world/wt/factory-integrated/docs/world/phase-2-playground/coaster-car-astra-pilot-20261104/ride-complete.json",
+        "sha256": "c3a5e7a6a0ee7ff38cbb55a8e3fdbeea2fa16d7bc185be9f7d66b377e2a658f9",
+        "exactSavedProgress": {
+          "version": 1,
+          "bankRevision": "original-20261027-v1",
+          "passed": [
+            "T1",
+            "T2",
+            "T3",
+            "T4",
+            "T5",
+            "T6"
+          ],
+          "clarified": [],
+          "chestOpen": true,
+          "keyTaken": true,
+          "gateOpen": true
+        },
+        "scope": "Historical unlocked save restored only for independent repeat/cabin module fixtures. Credits are NOT earned in this browser run."
+      },
+      "assertions": [
+        {
+          "pass": true,
+          "explanation": "Actual boarding uses the cabin default"
+        },
+        {
+          "pass": true,
+          "explanation": "Real Escape pause stops the ride clock"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Cabin guard did not fault-pause this actual ride"
+        },
+        {
+          "pass": true,
+          "explanation": "Actual unaccelerated cabin loop completes and dismounts"
+        }
+      ],
+      "screenshots": [
+        "cabin-save-fixture-day-default-eye.png",
+        "cabin-save-fixture-head-look-optical-zoom.png",
+        "cabin-save-fixture-exterior.png",
+        "cabin-save-fixture-cabin-return.png",
+        "cabin-save-fixture-night-cabin.png",
+        "cabin-save-fixture-loop-9.png",
+        "cabin-save-fixture-loop-28.png",
+        "cabin-save-fixture-loop-47.png",
+        "cabin-save-fixture-loop-66.png",
+        "cabin-save-fixture-loop-85.png",
+        "cabin-save-fixture-loop-104.png",
+        "cabin-save-fixture-normal-dismount.png"
+      ]
+    }
+  ]
+}

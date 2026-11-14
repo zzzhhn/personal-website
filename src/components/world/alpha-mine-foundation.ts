@@ -20,8 +20,10 @@ export function mineFoundationSurface(heightAt: (x:number,z:number)=>number) {
     indices.push(a,y>=0?b:c,y>=0?c:b);
   };
   for(const t of ShapeUtils.triangulateShape(contour,[]))triangle(t[0],t[1],t[2]);
+  const plateauCount=indices.length;
   for(let i=0;i<n;i++){const j=(i+1)%n;triangle(i,j,n+i);triangle(j,n+j,n+i);}
-  return {vertices:new Float32Array(vertices),indices:new Uint32Array(indices)};
+  return {vertices:new Float32Array(vertices),indices:new Uint32Array(indices),
+    plateauIndices:new Uint32Array(indices.slice(0,plateauCount)),skirtIndices:new Uint32Array(indices.slice(plateauCount))};
 }
 
 /** A shared draw/collision apron over the measured 14 cm island-to-quarry lip.

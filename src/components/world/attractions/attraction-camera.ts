@@ -17,6 +17,53 @@ export function turnAttractionLook(yaw: number, pitch: number) {
 export function zoomAttractionLook(delta: number) {
   if (Number.isFinite(delta)) attractionLook.zoom = Math.max(.45, Math.min(1.8, attractionLook.zoom * Math.exp(delta)));
 }
+export const ATTRACTION_CABIN_FOV = { min: 45, max: 75 };
+/** Optical zoom preserves the seat eye and uses the same scroll direction as orbit zoom. */
+export function attractionCabinFov(base: number, zoom: number) {
+  if (zoom === 1) return base;
+  return Math.max(ATTRACTION_CABIN_FOV.min, Math.min(ATTRACTION_CABIN_FOV.max,
+    360 / Math.PI * Math.atan(Math.tan(base * Math.PI / 360) * zoom)));
+}
+
+/** Stabilizes only screen roll after collision has chosen the final position/target.
+ * A world-up lookAt has no unique right axis at a vertical view and flips by 180°
+ * across that pole. Parallel transport keeps a continuous axis there; away from
+ * it, a bounded roll correction restores the horizon without steering the view. */
+export class AttractionCameraOrientation {
+  private previous:{forward:Vector3;up:Vector3;seat:Vector3;key:string}|null=null;
+  clear(){this.previous=null;}
+  step(pose:AttractionRidePose,position:Vector3,target:Vector3,delta:number,lifecycle:string):Vector3 {
+    const preferred=new Vector3(...(pose.cameraUp??[0,1,0]));
+    if(pose.firstPerson||!pose.orientation){this.clear();return preferred;}
+    const key=`${lifecycle}:${pose.fov}:${attractionLookRevision}`,seat=new Vector3(...pose.seat),previous=this.previous;
+    const forward=target.clone().sub(position);
+    if(forward.lengthSq()<1e-10)return previous?.up.clone()??preferred;
+    forward.normalize();
+    const gravity=preferred.clone().addScaledVector(forward,-preferred.dot(forward)),poleDistance=gravity.length();
+    const continuous=previous&&previous.key===key&&Number.isFinite(delta)&&delta>=0&&delta<=.25
+      &&previous.seat.distanceTo(seat)<=Math.max(4,delta*100);
+    let up:Vector3;
+    if(continuous){
+      up=previous.up.clone().applyQuaternion(new Quaternion().setFromUnitVectors(previous.forward,forward));
+      up.addScaledVector(forward,-up.dot(forward)).normalize();
+      if(poleDistance>.15){
+        gravity.divideScalar(poleDistance);
+        const roll=Math.atan2(forward.dot(new Vector3().crossVectors(up,gravity)),up.dot(gravity));
+        const weight=Math.min(1,(poleDistance-.15)/.45),limit=1.8*delta*weight*weight*(3-2*weight);
+        up.applyAxisAngle(forward,Math.max(-limit,Math.min(limit,roll)));
+      }
+    }else{
+      up=gravity;
+      if(up.lengthSq()<1e-8){
+        up=new Vector3(0,1,0).applyQuaternion(new Quaternion(...pose.orientation));
+        up.addScaledVector(forward,-up.dot(forward));
+        if(up.lengthSq()<1e-8){up.set(Math.abs(forward.x)<.9?1:0,0,Math.abs(forward.x)<.9?0:1);up.addScaledVector(forward,-up.dot(forward));}
+      }
+      up.normalize();
+    }
+    this.previous={forward,up:up.clone(),seat,key};return up;
+  }
+}
 // The coaster eye is 1.02 m above its seat contact. Its highest car panel is
 // below that eye; the extra .3 m also clears the .22 m near-plane sphere.
 const SEAT_EYE = 1.02, FOLD_WIDTH = .6;
@@ -34,7 +81,8 @@ export function attractionCameraSweepOrigin(pose: AttractionRidePose) {
 }
 /** A view transform only: it cannot change the train, seat or character orientation. */
 export function attractionCameraPose(pose: AttractionRidePose, look = attractionLook): AttractionRidePose {
-  const manual = !!(look.yaw || look.pitch || (!pose.firstPerson && look.zoom !== 1));
+  const cabin = pose.firstPerson && !!pose.orientation;
+  const manual = !!(look.yaw || look.pitch || ((!pose.firstPerson || cabin) && look.zoom !== 1));
   const passengerUp = !pose.firstPerson ? seatUp(pose) : null;
   if (!manual && !passengerUp) return pose;
   const up = new Vector3(...(pose.cameraUp ?? [0, 1, 0])).normalize();
@@ -75,5 +123,6 @@ export function attractionCameraPose(pose: AttractionRidePose, look = attraction
     if (safeHeight !== height) camera.addScaledVector(passengerUp, safeHeight - height);
     else if (!manual) return pose;
   }
-  return { ...pose, cameraPosition: camera.toArray() as Vec3, cameraTarget: target.toArray() as Vec3 };
+  return { ...pose, cameraPosition: camera.toArray() as Vec3, cameraTarget: target.toArray() as Vec3,
+    fov: cabin ? attractionCabinFov(pose.fov, look.zoom) : pose.fov };
 }

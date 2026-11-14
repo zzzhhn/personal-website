@@ -1,0 +1,85 @@
+TAP version 13
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: entrance profile reproduces the measured 14 cm island-to-mine difference
+ok 1 - entrance profile reproduces the measured 14 cm island-to-mine difference
+  ---
+  duration_ms: 478.257875
+  type: 'test'
+  ...
+# Subtest: apron triangles face upward and feather into the island within the existing climb limit
+ok 2 - apron triangles face upward and feather into the island within the existing climb limit
+  ---
+  duration_ms: 0.25525
+  type: 'test'
+  ...
+# Subtest: continuous floor has an upward plateau and a walkable skirt tied to actual terrain
+ok 3 - continuous floor has an upward plateau and a walkable skirt tied to actual terrain
+  ---
+  duration_ms: 6.54075
+  type: 'test'
+  ...
+# Subtest: ordinary walking across quarry foundation: reported blocked approach
+ok 4 - ordinary walking across quarry foundation: reported blocked approach
+  ---
+  duration_ms: 70.819208
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[-0.5135,0,-1.6304],"goal":[-0.51,0,-1.8],"settledCenter":[-0.51,0.8168,1.8],"frames":73,"walked":3.43,"contacts":[{"kind":"surface","normal":[0,1,0],"witness":[-0.5141,0,-1.6284]}]}
+# Subtest: ordinary walking across quarry foundation: outside to inside
+ok 5 - ordinary walking across quarry foundation: outside to inside
+  ---
+  duration_ms: 27.760667
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[-0.5146,0,-1.6306],"goal":[-0.51,0,-1.8],"settledCenter":[-0.5263,0.7235,4.9643],"frames":136,"walked":6.91,"contacts":[{"kind":"surface","normal":[0,1,0],"witness":[-0.5141,0,-1.6259]}]}
+# Subtest: ordinary walking across quarry foundation: beyond graded outline to inside
+ok 6 - ordinary walking across quarry foundation: beyond graded outline to inside
+  ---
+  duration_ms: 30.018959
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[-0.5132,-0.0001,-1.6761],"goal":[-0.51,0,-1.8],"settledCenter":[-0.5199,0.6795,6.4942],"frames":155,"walked":8.18,"contacts":[{"kind":"surface","normal":[0,1,0],"witness":[-0.5131,0,-1.6177]}]}
+# Subtest: ordinary walking across quarry foundation: inside to outside
+ok 7 - ordinary walking across quarry foundation: inside to outside
+  ---
+  duration_ms: 23.031375
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[-0.5088,-0.0637,4.5574],"goal":[-0.51,-0.14,4.7],"settledCenter":[-0.51,0.8188,-1.8],"frames":123,"walked":6.36,"contacts":[{"kind":"surface","normal":[-0.0048,0.9969,0.0787],"witness":[-0.5068,-0.0574,4.4706]}]}
+# Subtest: ordinary walking across quarry foundation: diagonal island trail
+ok 8 - ordinary walking across quarry foundation: diagonal island trail
+  ---
+  duration_ms: 23.854833
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[0.1275,-0.0003,0.1077],"goal":[0,0,0],"settledCenter":[4.8504,0.7847,3.8462],"frames":122,"walked":6.34,"contacts":[{"kind":"surface","normal":[0.0449,0.9984,-0.0348],"witness":[0.1593,0,0.1593]}]}
+# Subtest: ordinary walking across quarry foundation: left lane
+ok 9 - ordinary walking across quarry foundation: left lane
+  ---
+  duration_ms: 22.359875
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[-2.5045,-0.0001,-1.6518],"goal":[-2.5,0,-1.8],"settledCenter":[-2.5162,0.7138,4.9636],"frames":136,"walked":6.93,"contacts":[{"kind":"surface","normal":[0,1,0],"witness":[-2.5047,0,-1.594]}]}
+# Subtest: ordinary walking across quarry foundation: right lane
+ok 10 - ordinary walking across quarry foundation: right lane
+  ---
+  duration_ms: 20.813
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":2,"position":[2.4967,-0.0001,-1.6383],"goal":[2.5,0,-1.8],"settledCenter":[2.5155,0.7135,4.966],"frames":136,"walked":6.93,"contacts":[{"kind":"surface","normal":[0,1,0],"witness":[2.4971,0,-1.5803]}]}
+# Subtest: ordinary walking across quarry foundation: feathered side entry
+ok 11 - ordinary walking across quarry foundation: feathered side entry
+  ---
+  duration_ms: 25.602
+  type: 'test'
+  ...
+# {"passed":true,"reason":"reached","segment":3,"position":[0.0168,-0.0005,-1.6611],"goal":[0,0,-1.8],"settledCenter":[-4.7,0.8168,2.1],"frames":167,"walked":8.59,"contacts":[{"kind":"surface","normal":[0.074,0.9973,-0.0001],"witness":[0,0,-1.6029]}]}
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1230.8815

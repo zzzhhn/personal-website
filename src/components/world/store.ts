@@ -27,6 +27,8 @@ interface WorldState {
   /** Seated pose: the guide sits at `position` facing `yaw`; any movement key stands up. */
   seat: { id: string; position: Vec3; yaw: number } | null;
   clubMode: 'dance' | 'dj' | null;
+  /** A factory console owns movement until the player exits with Esc. */
+  factoryStation: import('./factory/factory-layout').FactoryStationId | null;
   danceStep: 0 | 1;
   canVault: boolean;
   /** Short bilingual notice (place names, hints); `at` is performance.now() ms when shown. */
@@ -35,7 +37,7 @@ interface WorldState {
   recoverRequest: number;
   speed: number;
   /** v4 adds the north ridge and the open shore (west / south beach). */
-  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster' | 'alpha';
+  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster' | 'alpha' | 'factory';
   position: Vec3;
   ready: boolean;
   /** Actual discovered loader items; the core scene still determines when play can begin. */
@@ -51,18 +53,19 @@ interface WorldState {
 }
 export const useWorldStore = create<WorldState>(() => ({
   lang: 'en', light: 'dusk', worldMinutes: 1050, timeRevision: 0, timeRunning: true, weather: 'clear', paused: false, poolInspect: false, campReturnRequest: 0, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
-  clubMode:null, danceStep:0, canVault:false, canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
+  clubMode:null, factoryStation:null, danceStep:0, canVault:false, canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
   ready: false, zoom: 1, quality: 'high', shot: null, waypoint: null, interactPick: null,
   loading: { phase: 'runtime', loaded: 0, total: 0, active: false, failed: 0 },
 }));
-export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturnRequest: s.campReturnRequest + 1, clubMode:null }));
+export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturnRequest: s.campReturnRequest + 1, clubMode:null, factoryStation:null }));
 export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
   if (cancelAlphaHand()) return;
   if (cancelCampPropInteraction()) return;
   const state=useWorldStore.getState();
-  if(state.clubMode)useWorldStore.setState({clubMode:null});
+  if(state.factoryStation)useWorldStore.setState({factoryStation:null});
+  else if(state.clubMode)useWorldStore.setState({clubMode:null});
   else if(state.poolInspect)useWorldStore.setState({poolInspect:false});
   else if(state.card&&!state.paused)useWorldStore.setState({card:null});
   else useWorldStore.setState({paused:!state.paused});

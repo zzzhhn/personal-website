@@ -1,0 +1,1987 @@
+{
+  "sourceBase": "f248bc235e7a66ec3a112207f17b79ce44bff8b2",
+  "latestIntegratedReference": "62050189726edd3486673d8aabf1feac54fc250e",
+  "recoveryOnly": true,
+  "files": [
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/README.md",
+      "bytes": 5492,
+      "sha256": "1f035d9c39887f6d4c5f60284dcb69520f32ea5cc259bb720eac6fbd2e9d7393",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/after-frame-day.jpg",
+      "bytes": 68848,
+      "sha256": "b9d9cbba3949129d5d719e11f59e844000e8b695e339c0767cd79c5450205644",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/after-frame-night.jpg",
+      "bytes": 59141,
+      "sha256": "a7562537df5a1eec274549bef9d634b207f441322c2ef1ee6910f1fff023654e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/after-metrics.json",
+      "bytes": 288,
+      "sha256": "0ba5b4bb1b8e634de0bddd403208c4cda48623ac0f88ec038e2c5539c0f9c885",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/after-shell-day.jpg",
+      "bytes": 94262,
+      "sha256": "dd6769d67e63d06a8c5fbfd032462fd7878f6e7065bc3a22b5e5bc9510155ff1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/after-shell-night.jpg",
+      "bytes": 78393,
+      "sha256": "9212b0688519d741a48f5e6f6558443103403f6eea795951e01df3b623887c6d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/after-wheels-day.jpg",
+      "bytes": 90926,
+      "sha256": "c3fac87207067ac993463a599accadcc741d6bf5a1fb7710d2135c38e7e097df",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/before-frame-day.jpg",
+      "bytes": 65981,
+      "sha256": "a9fd0e65dde6dea70ca2eab46e1472427de5d5154b76396ba2581c688d8cdc9f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/before-metrics.json",
+      "bytes": 285,
+      "sha256": "e46055fdbdc433fbccd8632dba586eb1eca805fbb71e2e5e27c378519395161f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/build.log",
+      "bytes": 3571,
+      "sha256": "c211f640d8d3466d7c179dc07c91ede4eb6d48d27f555fbb2bece6704af82218",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/factory-carrier.before.test.mjs",
+      "bytes": 7584,
+      "sha256": "3840046c2a468cefb97821a474055206a26f518de48f4299fc2412faa92c3c66",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/factory-carrier.before.ts",
+      "bytes": 3938,
+      "sha256": "4ff6384748c84da5a2171cb91c8cebd73c9acad554399c2b302a43ba5a2372f5",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/factory-carrier.test.mjs.after",
+      "bytes": 10128,
+      "sha256": "5a15ed69444a436290a7fbb8c49517546b1177679dc9c7c831a250de0e86abd3",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/factory-carrier.test.mjs.patch",
+      "bytes": 3318,
+      "sha256": "5d6c58577022b257c3baa634a53289fd6b72571edf529e3e47372f755b91a53f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/factory-carrier.ts.after",
+      "bytes": 6366,
+      "sha256": "c14e1311d1724376b6b6878a9368047d2ebb59436667c1f860696f732cabd07e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/factory-carrier.ts.patch",
+      "bytes": 3662,
+      "sha256": "e0089549b4a192b1ba0b05f895618e9c0b688bc50bc968d269627f8a695552ef",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/manifest.json",
+      "bytes": 2551,
+      "sha256": "6c03ecd7881dc7c5316156d73f653d0b75282560938bc247ac6a9c9307280d1a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/mobile-fallback.jpg",
+      "bytes": 30450,
+      "sha256": "7e25141200ec113f62d476f3eed6633abd4d3174c9b6ec61f50d63cc2b3054fc",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/review-fixture.astro",
+      "bytes": 2364,
+      "sha256": "bf883f28245b945717bc09d7dacc0ac2c5629fb1de4a2275dc6ebcb2eefd6e81",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/carrier-refinement-20261030/targeted-tests.log",
+      "bytes": 3451,
+      "sha256": "fe70dcea2f927562da61daaeb635c0e6be2a5c38735775a73ba0676f72a664bb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/README.md",
+      "bytes": 8273,
+      "sha256": "fbb4976f167fc51481acdd1194b72223acf6d7565bd04ad88a3a2b4924340c86",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/WorldFactory.patch",
+      "bytes": 2183,
+      "sha256": "4e98fb325e8a1d60f296c5744bdf64797f8ea5a8b2c746a089249dea0ffc8740",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/bench-probe.mjs",
+      "bytes": 8676,
+      "sha256": "7c4ed2645c86e33f29fed139db3260975cb1fbf1833957db794e3f387dad4d74",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/bench.config.mjs",
+      "bytes": 346,
+      "sha256": "7bc01d3701399da6a7791ccabed31adcce7b0c308921aa6710f68c9f432eb4bb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/builds.json",
+      "bytes": 1557,
+      "sha256": "64138fd73e849ef6361eb570d94de42b61e21784b0b653b156d92e70f131292f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-draw-composition.json",
+      "bytes": 19838,
+      "sha256": "024e3482812d2b47924675a87d03c9f0df0d5936be2670a3fc244ef80cdb4b59",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-factory-only.json",
+      "bytes": 28293,
+      "sha256": "a471a65d89b9e90aa291de8b8509cc2cb8ee4267c6cced3b5fefb7987b9302ed",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-idle-return.json",
+      "bytes": 28463,
+      "sha256": "9ade1b8836a8edaf45ccec06fe400fd0c14dbc10a58da196feea5fcf22a61bd2",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-idle.json",
+      "bytes": 28592,
+      "sha256": "344084801a469c4ea4c131aac0ea5824196be5c26005a665302ceef1405e1eb9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-meta.json",
+      "bytes": 613,
+      "sha256": "580244c141c771fb8c77caee6749455e6fd04f192a870669eeb679a226e10e7b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-pause-resume.json",
+      "bytes": 701,
+      "sha256": "0205e67168673ce140dbb9f03ff21b8c0a2a95d4731a18a7e294d15289b6fec8",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-processing.json",
+      "bytes": 47398,
+      "sha256": "ddbf0c38acab664051edf4cbf5820508bf4ebf9e277b497a92cab28701c91adf",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-quarter-pixels.json",
+      "bytes": 28501,
+      "sha256": "eabb35457ca27d379d1c12f24166a82dd0364adad9daf11b8ae2e747c2065eb9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/diag-work-day.jpg",
+      "bytes": 273877,
+      "sha256": "5a2113ae341d2fb25d1095a68ce8e965cf853ff2bb4f412a5e482febad57505d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/fixture.astro",
+      "bytes": 1106,
+      "sha256": "e1f9317c28f5b447d101a5da80f84744e24913a0469e762fdc76d86556626c52",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/normal-build.json",
+      "bytes": 493,
+      "sha256": "c04bc941a562d9c22faaea570cd623abaf458e832911569763909b105d207848",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a1-idle.json",
+      "bytes": 53191,
+      "sha256": "dd40a970c3f87a32055ae3aba9fa8a2ce42774e7ebade48d50ea96c41e76d30f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a1-meta.json",
+      "bytes": 662,
+      "sha256": "976857b3f0d7b051e49a16a5b880394d6dda25450ba3937297e7a4b1b8790261",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a1-pause-resume.json",
+      "bytes": 699,
+      "sha256": "d057f89819baacf4c2e24ae6770b4ba720f2d6aadab340663acf26d0973ad6ce",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a1-processing.json",
+      "bytes": 74494,
+      "sha256": "1b974ccc046891b938d366c647da4070f9f341fa6409ba0f342cfda759789da3",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a1-work-day.jpg",
+      "bytes": 273915,
+      "sha256": "9d2faadd38a1494fe3db5c573ce18730fc24d75e8b4483163a1d31b6d9da45c1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a2-idle.json",
+      "bytes": 53071,
+      "sha256": "ff0f7c8b3084cb24005984da61054e4789ce5eab20ef3e84d80fde7f37136a4e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a2-meta.json",
+      "bytes": 662,
+      "sha256": "f175914f9929b6f006923a66cf456c9b7038b6cd2be66ae1c69d18a6d6f24162",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a2-pause-resume.json",
+      "bytes": 699,
+      "sha256": "87fef3345a131cde8d0d84fae77679d97e481e95fcd74fd3df270ba4e6621f87",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a2-processing.json",
+      "bytes": 59467,
+      "sha256": "36206c5b139b8d1508224cb490b7b6a8e0cd1450523efe15ebc3608f809bc437",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-a2-work-day.jpg",
+      "bytes": 273843,
+      "sha256": "b7ae22721ab0da3491275a250127167f19e6f74f99ad4a47a71fcf0584edae58",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-b-idle.json",
+      "bytes": 52325,
+      "sha256": "3f2a66303839fec518b359ded48e200f652fdcf48824f232f378877928b36349",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-b-meta.json",
+      "bytes": 661,
+      "sha256": "6a08c9c8c2ee251defc6b26fd40c0254c604c8cc30cdd9b12fc6ad05b98fa1e3",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-b-pause-resume.json",
+      "bytes": 655,
+      "sha256": "9a0623a80db52e96e6e4ca4afea91d9a7a800ef2683f0300b10af6197e78e01a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-b-processing.json",
+      "bytes": 66026,
+      "sha256": "5b7389907b389142d310789d47516d6b4b0aa9429eed53cde2bc589a028963e0",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-b-work-day.jpg",
+      "bytes": 273895,
+      "sha256": "a50e54b4895e0ad2508429d166ed8397abcd78b7f20c5a01bfadfd530cb6d0d4",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-idle-index-1.json",
+      "bytes": 35266,
+      "sha256": "c287824fb2233c5c263536021a7af88ca1a2159f72f057f2cfc34c2cdfd6522f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-idle-index-2.json",
+      "bytes": 34934,
+      "sha256": "49fe17cac57a0894d480b9598a27c77da7a6f9c505d3352e209c39fba649a526",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-idle-stock-0.json",
+      "bytes": 35767,
+      "sha256": "3a1d997efc2c2771fb8b256740b4ee78720fb5b58152148e834806dc23652c4f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-idle-stock-3.json",
+      "bytes": 35254,
+      "sha256": "cf0a2f9e1a42ef4319efd1ab10635136aefd237a2892ac84e85ddde47ec089c2",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-index-cost.json",
+      "bytes": 117,
+      "sha256": "5f20e653ac9c23cefab1046189919244ca5ef340eaaaaa97dfbfc551ef177049",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-meta.json",
+      "bytes": 663,
+      "sha256": "e6539826d52ad1eedbd3234a0fd0b83598bf5824764baadb41f8b631a5aade6c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-pause-resume.json",
+      "bytes": 660,
+      "sha256": "0f23d845d5ad293567a56aa1bc425e0994b151666a05ee6e0c87c38800bbbcd7",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-process-index-0.json",
+      "bytes": 78074,
+      "sha256": "8f12843927b12524b727488168aabebd8e5089ac54197afa52152abddb7e4856",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-process-index-3.json",
+      "bytes": 75306,
+      "sha256": "505716706f361ff64581d0bad5b2f022987cd235cb2b657df255b4d237d147a5",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-process-stock-1.json",
+      "bytes": 53877,
+      "sha256": "1d5fefe2cad7483bcafe1798763b628b42e1d6c2afd7b84ccbc5c604bc762468",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-process-stock-2.json",
+      "bytes": 53980,
+      "sha256": "45bacde9b93996a4a637dd84d18063ac70ca3d2f28c8e0ca4413b64a9711cca4",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-visual-index.jpg",
+      "bytes": 273914,
+      "sha256": "e13a1c39958aa23df1cc1dd446f2cc6a06812e4b0f6bd2d0c042264e459bb9fe",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-visual-stock.jpg",
+      "bytes": 273995,
+      "sha256": "5142d019a2b355d137633d9ab07427da169675a2cd4ebd2d972687411faa1839",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/pair-cross-work-day.jpg",
+      "bytes": 273943,
+      "sha256": "28beccd5f0a142eb90e66cd5fb43f9e88d284b36787ec4c38cb78d82af7f1aae",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/serve.py",
+      "bytes": 1408,
+      "sha256": "ab22e42fe31d6b8b56f31310e27116bf575248adafd5a75db380b9ffe714b831",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/structure-raycast.test.mjs",
+      "bytes": 2528,
+      "sha256": "c9c458607e7cde5eee44a704f9111bdbc281a32008840d54d8cbb3d600076fc4",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/summarize.py",
+      "bytes": 871,
+      "sha256": "39800a3a10ea5eccb3f70ccacc2775b4896726402220cca5cb4a6f8cae5183cb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/targeted.log",
+      "bytes": 594,
+      "sha256": "31fd51cad6dc9e8f9c5d2c73e449c150b2167f4ded5a5faa7ac9772642eb3963",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/factory-perf-20261031/visual-comparison.json",
+      "bytes": 274,
+      "sha256": "3bc3a00ab0090a2d781efcd90bf8acad2124cac4581576ff6e511109c5d6bbfa",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/README.md",
+      "bytes": 11297,
+      "sha256": "5f2aefae47be07059c86d6f443aabb0c92d7030b9b3f275de264f9dc4e2b643d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/coaster-cabin-runtime.jpg",
+      "bytes": 184605,
+      "sha256": "4aa8c27a7a87e89dd792163f91ce39dca73874bd99ba11c9e1428e3c2a6080ec",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/factory-frame-midnight.jpg",
+      "bytes": 79873,
+      "sha256": "b32c28f70cd91434572c931d3538cc14b6f6f13d2dcfb86e0bbc22e2d0f06054",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/factory-frame-noon.jpg",
+      "bytes": 84222,
+      "sha256": "e152b2e71a569ff26be499b7342c7427170a4e5f6b071a9e759483675cc689f1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/factory-play-feedback.md",
+      "bytes": 4916,
+      "sha256": "f4c7399d54090555a4c0cb15a67379b73773e9598499b6c47cfed9e4b50cc712",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/factory-production-v2-midnight.jpg",
+      "bytes": 126416,
+      "sha256": "7e6c581bd922e80f39e1e179fd773f24d6ec863c1f7002289688495eba7b7972",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/factory-production-v2-noon.jpg",
+      "bytes": 138699,
+      "sha256": "3c6e4bbaa2c5eebc1d03e735c9a0e5f3b3957603c4ba9c26b4f97c080f7c97ac",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/factory-worklife.md",
+      "bytes": 5128,
+      "sha256": "00af0ca7fe4831f7e75e3abdb8ce9a8c443f1d45d7106ac653e830f0f151ed29",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/intent-arcade.md",
+      "bytes": 4251,
+      "sha256": "af59235d023881231d559586db955937ce0a9e8f9df86003a63436e07487f908",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/feedback-20261030/performance-resume-audit.md",
+      "bytes": 6149,
+      "sha256": "c3c278198c0dcc4e7f51f74671b4d3e922c090482d3836c28b25a24f1b0f9120",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/README.md",
+      "bytes": 7099,
+      "sha256": "6ea616d97dd6d27491f5897e1515ea7fdc13f6da89ca8bc48c46c6f0251691c9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/WorldFactoryMechanisms.before.tsx",
+      "bytes": 13088,
+      "sha256": "429052c281033759d970d83def29c889dc83ba30fbbd99cac66826cf82351d31",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/WorldFactoryMechanisms.tsx.after",
+      "bytes": 13394,
+      "sha256": "07bdc233932135385b4a476d9eef4d70c7f341998adba804be03306d70deaade",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/WorldFactoryMechanisms.tsx.patch",
+      "bytes": 3500,
+      "sha256": "83a650b2406e47f68b249d0b6978d485c99b388357b6140b42f202503168daa1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-frame-detail-day.jpg",
+      "bytes": 105052,
+      "sha256": "dac0d5553958f336303777de6324e9d24519ef936da89efdb7a7db9d852eb3b7",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-frame-work-day.jpg",
+      "bytes": 93449,
+      "sha256": "be5c9a6f0ae70a84bfc19a2a19453dc0460ad4bbcce51126d67d71b4b7e6c914",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-frame-work-night.jpg",
+      "bytes": 87559,
+      "sha256": "a133148777f68b319f690adac71694424bc9e6d60090ae632384269414ec6b45",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-metrics.json",
+      "bytes": 398,
+      "sha256": "be73be3043f16b654127595f5e8bfd2be9a022d8d6d15e7f796a4284c6c64f8f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-rod-lowered-day.jpg",
+      "bytes": 94057,
+      "sha256": "6964108778ab55735378f8d921834a4643eb42ab9f6bd8b6e7bb429bf9421e15",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-shell-lowered-day.jpg",
+      "bytes": 103755,
+      "sha256": "212427307b3b934f63e6288ae132523b7c38c9353cf2ec460ce0d995f0fac13c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-wheels-lowered-day.jpg",
+      "bytes": 102921,
+      "sha256": "f57482e3d6847578f54451f533ee336ef0c17727c8b87f3305e03254d6d9599b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/after-wheels-work-day.jpg",
+      "bytes": 102132,
+      "sha256": "063085379e64c197c1258cffec1794d1cb62dda402b5f14c940858bd75a89e05",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/before-frame-detail-day.jpg",
+      "bytes": 107364,
+      "sha256": "91b366ae0378a32ff2c1666ef2b6cc7a46702780f48a8595f4c4f379bdc26645",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/before-frame-work-day.jpg",
+      "bytes": 92580,
+      "sha256": "2e7fe789bfc8baa5496d3a321083db0d0e415e8c7cc2c0eacfc5fa1eb106db37",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/before-frame-work-night.jpg",
+      "bytes": 86397,
+      "sha256": "900fce5416f63a3689c44c1c5eb0400fcd6c84db3d0a46a312f5818ecec32df4",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/before-metrics.json",
+      "bytes": 398,
+      "sha256": "5e8c207232b99e701a7c554d1cb33d86e9c426fdbd1e1876472e78c6c16bdf0a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/before-rod-lowered-day.jpg",
+      "bytes": 94023,
+      "sha256": "57e7a1b135bca5ac6a49a129e820bb8412043619664d22be162d2bb65194496e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/build.log",
+      "bytes": 3495,
+      "sha256": "63b4b4be3df9ee8937db5f7bab1e12cd46e2417affce628297dc1bda8ebbaf76",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/cold-console.json",
+      "bytes": 546,
+      "sha256": "be55b16394533eb16fbf07180c3635f1eabe520e252fe773b81a890e30bb5c7a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/cold-live-cycle-complete.jpg",
+      "bytes": 129979,
+      "sha256": "9c19555f2f6bdd7a1b668ca4a284da45499ef5a01de3314032223e1686fa6c2a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-machine-casing.before.test.mjs",
+      "bytes": 10140,
+      "sha256": "efc6b38d67f6534dfb3be45b05ff35c47ee3ee3ccd313728929763ea27cbff4f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-machine-casing.before.ts",
+      "bytes": 6648,
+      "sha256": "1f44ae9f5c2a47a304bc712145983f1a538afbcdb110847dc39647c1825f01d6",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-machine-casing.test.mjs.after",
+      "bytes": 13838,
+      "sha256": "85452b213ddcc6c9e16fb1b22feb9fea029e7ec71ef9aef91b54b3b0df970e01",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-machine-casing.test.mjs.patch",
+      "bytes": 4045,
+      "sha256": "2fd39b9adf9ecda0c467e163917c72e2cb77406c1d60cb9870eb7a71b50b71cd",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-machine-casing.ts.after",
+      "bytes": 8733,
+      "sha256": "ea0fce254ef5aca1a7a045c84448e3c350dd9e531ed2a628054f3f5f722936bf",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-machine-casing.ts.patch",
+      "bytes": 4438,
+      "sha256": "9ef8e9390f8151180412e9050b9608b67c98d98e47b1e7c585eab1661f5e2e67",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-press-rod.test.mjs.after",
+      "bytes": 3775,
+      "sha256": "29a51af9cbde4bf6b44f6acdd6d41d0a31fead90dbdb43e55cbc9ad9e0bacac0",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-press-rod.test.mjs.patch",
+      "bytes": 3940,
+      "sha256": "bbef821d5f93e72e8f13764facba94901e284c7fe448cc515d568db014f9a26c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-press-rod.ts.after",
+      "bytes": 753,
+      "sha256": "038154ab6af7b49597182f0122fd9ca402ce766a8afcf66cee38bf73cb4d8057",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/factory-press-rod.ts.patch",
+      "bytes": 855,
+      "sha256": "716d7a0bf6533ad87df0e5084ca9a5c8b9cd9eebe518c4278e3c4aface7b9762",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/manifest.json",
+      "bytes": 4733,
+      "sha256": "efa8d7348e1a1cd7f04737e056f0c36af61009f6e385f525e4c24179ca858005",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/review-fixture.astro",
+      "bytes": 3645,
+      "sha256": "89f1194023d855267d75a2d67d7847690bc50da8036c44ab967f9586f2738c6a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/runtime-sample.json",
+      "bytes": 9538,
+      "sha256": "469bdb52b8e7dbe404eae2196a100a620e27dee314a39c090140021d433f5bd4",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/targeted-tests.log",
+      "bytes": 5626,
+      "sha256": "24dc17048edb33080c5327a3f7a84c3fd918ba08871fa8f6f2f2fbcb5dc85d65",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/press-refinement-20261030/typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/design-v1-20261029.md",
+      "bytes": 11921,
+      "sha256": "3855be37b0a46bd3d5fe664c976ee21c80916391bfdd90f3490216660ed66972",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-01-overview-v1.png",
+      "bytes": 3555915,
+      "sha256": "44ecc17350a445b3598e82bf8a787d68bff3fdd958f8c062fb03e2f58560a317",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-02-assembly-v1.png",
+      "bytes": 2708427,
+      "sha256": "f97c0ab5894b5e5da9132a354c3bcbb9326453acf3cf06fdecab6a1c1f3903f9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-03-testing-v1.png",
+      "bytes": 3132019,
+      "sha256": "d400583d28186a21d3c8724342d584c619c82bd4fd18bd00a36267e39ca2bd6d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-v1.json",
+      "bytes": 2510,
+      "sha256": "f3e061adc96c40a1e45a501621fbe8dffe6b6da49931b53abab53fe88ae6f35d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/prototype-prompts-v1.md",
+      "bytes": 11758,
+      "sha256": "afdcacd7b92247376a8d32f16e012eafc3c966a539f179598811cf79e9227866",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/comparison-config2-day.jpg",
+      "bytes": 128842,
+      "sha256": "d3d870d9100a5b42bb83cc0dff57d835544d33b58cccad18d46261c53b9f250f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/dispatch-printer-day.jpg",
+      "bytes": 132390,
+      "sha256": "f8bc9c1b2f1a4355f2b7548fe98bff18b288c72744f5dedc9c0d78b82893ea19",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/final-inspection-day.jpg",
+      "bytes": 113239,
+      "sha256": "738cab2c4d7ac011f90d976815095a5a7913b01c3ccf779d37cba5a2803c3e06",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/fixture-config2-day.jpg",
+      "bytes": 105482,
+      "sha256": "def74b5f89c497df7595ed0f48d4a7638b0da63c2b95f75ada8e8470648a7c01",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/fixture-config2-night.jpg",
+      "bytes": 73398,
+      "sha256": "7b1a144e878cded3888b97f0dab24417de9e1ff59e82b537d4230721d86a706e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/intake-continuous-transfer-day.jpg",
+      "bytes": 90525,
+      "sha256": "a81068bbae02535a86a27bfdacecc8479cdf7a97b64683edc9d8c881a53db2c9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/next-batch-archive-day.jpg",
+      "bytes": 129816,
+      "sha256": "c9ca27210627b03b7d4e8f840afd69895c45f46693b999bfb5d1c821d9b5db9f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/press-before-light-camera-day.jpg",
+      "bytes": 98387,
+      "sha256": "d84a2f5abfc5f32862526eb6f8e669515a0fba63136265ad8e8ff706aec88f27",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/printer-contact-day.jpg",
+      "bytes": 137086,
+      "sha256": "0c6a0c6275205ce28575c02e4553c7d18bdcee45b3accfeef08053ec64c5fcd6",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/qa-20261029/printer-night-before-worklight.jpg",
+      "bytes": 94691,
+      "sha256": "a8a27151ae5e35db6e7a425547333e41e6dc61a642b0f885802deaa5d782d81d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/review-v1.md",
+      "bytes": 2749,
+      "sha256": "a70419d7288aff3215e71e165f847fdbe0e1d24f6f6e606c796083f5d642c99d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 551425,
+      "sha256": "b34fd6646c74ebd3cd9ac8834f4008cf885505d778d2dc6e98ac7cd8f0f3e526",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1285,
+      "sha256": "f0af42b86d480d448f1efa012c2ed5a93dd8298ea980e097e4e62c62f2d5181f",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "bytes": 316532,
+      "sha256": "3573ebc2a73acb835f4826ac53d64b53b190a4184679a7ebfbfa9a35f6db23d6",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "public/assets/world/camp/craft/camp-props-v1.glb",
+      "bytes": 3313188,
+      "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/LICENSES.md",
+      "bytes": 709,
+      "sha256": "21d16437380c34abfc6b77541670387e4ab7ff5b6add27e048f9faead698dc22",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/djc-north-bar-lod1-v1.glb",
+      "bytes": 10531556,
+      "sha256": "0add8f8ae011b4088c68e2cebdd07366c109ce85e30f42534f53a71f062bbf3d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/djc-north-bar-v1.glb",
+      "bytes": 13283808,
+      "sha256": "2bb1309fb7488de7fb5ad96aa5030b17ba80c1ca32b6f728ff56b7410c9bbf2f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+      "bytes": 1479424,
+      "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+      "bytes": 1945604,
+      "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+      "bytes": 1366709,
+      "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+      "bytes": 2355851,
+      "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+      "bytes": 1075749,
+      "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+      "bytes": 839007,
+      "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+      "bytes": 3562033,
+      "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+      "bytes": 2326816,
+      "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/daybed/LICENSES.md",
+      "bytes": 730,
+      "sha256": "4d8ec9e0fa0b95211933ccf85495ef85d600fa1839e9728d4723290f6e8ee27c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/daybed/daybed-ao-v1.glb",
+      "bytes": 13905392,
+      "sha256": "99a0abd938b967d9654d882b4d35b126fadfdc3cd1f053f513ac9f3a5e11594e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/furniture/furniture-v1.glb",
+      "bytes": 2891784,
+      "sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/lantern/LICENSES.md",
+      "bytes": 810,
+      "sha256": "cd56a85b83bd7ffd9e717a5f48fd15c093d2d5db3acb9feec1960a1ff8cb0e07",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/lantern/pool-lantern-v2.glb",
+      "bytes": 1358944,
+      "sha256": "30022ad90d063a6d267f07c69dc1e42b76bb93d702d19b3f00ffb0212789fbbe",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/umbrella/LICENSES.md",
+      "bytes": 766,
+      "sha256": "7da0e4a4b58b35a653a5ffb0fcdc33e78927efecbd73dc221a4b0327295263c4",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/club/umbrella/umbrella-v1.glb",
+      "bytes": 2471556,
+      "sha256": "acabe5cd136560ea73f6957904c5e1d7e1569a7b66e258d8db553d7d50aae592",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/ibd/crate/LICENSES.md",
+      "bytes": 962,
+      "sha256": "a09519c32d32252b83a1b4c3155d0cda88fc5e4e0de04c01e62a2e54e3571281",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/ibd/crate/crate-v1.glb",
+      "bytes": 4161428,
+      "sha256": "a01de057e34cc1788684d0874b5da50682ab9fdfeae2f794a5140411b207723e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/ibd/static-craft/static-craft-v1.glb",
+      "bytes": 2962376,
+      "sha256": "a78dd5173df444a8d24afa4be7f1bbfd514a58c608348228b58c7856f1a247d5",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/C09.glb",
+      "bytes": 127324,
+      "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G16.glb",
+      "bytes": 311788,
+      "sha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G17.glb",
+      "bytes": 234644,
+      "sha256": "d4c98d8a8bd8b59d61d6b0c40fdc84fab9cdccda27f546a5fdd0b612dc9c0e59",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G18.glb",
+      "bytes": 273592,
+      "sha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G21.glb",
+      "bytes": 301604,
+      "sha256": "ed36a3539b0c70995f9711f675e54744b4a1c0a143a1b3b4bad02f4ed90f1dbf",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G22.glb",
+      "bytes": 296956,
+      "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G23.glb",
+      "bytes": 293268,
+      "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/ST1.glb",
+      "bytes": 193500,
+      "sha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/ST2.glb",
+      "bytes": 181260,
+      "sha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "public/assets/world/nature-craft/grass.glb",
+      "bytes": 5520,
+      "sha256": "7d984a67dbaeef4654baac65be878854b7a4736a0954b1361af9ce8dbe903b48",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldActors.tsx",
+      "bytes": 118650,
+      "sha256": "29666638ed9f58236abfb33f1e76903967966754519c35c1f1ecce4d1d103910",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldAlphaExchange.tsx",
+      "bytes": 14481,
+      "sha256": "499a3e969a61d8dae368ef21848401917a3d1a3033f8f470978af3d074933b62",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldAlphaExchangeGeometry.ts",
+      "bytes": 24252,
+      "sha256": "216ca870469d19c7b663ddf8887584f47bf982cf069f3c35f2c781fef5aec41e",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldAlphaMine.tsx",
+      "bytes": 22160,
+      "sha256": "4232a797432e7020fcbeb29674473fd54acd64b08e8f4ac41a3c7ad09d202e10",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldAlphaMineFoundation.tsx",
+      "bytes": 1970,
+      "sha256": "57f966416d45580da461f47c096ecc18011f1ae24adf480a26ad2c66960bca11",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldApp.tsx",
+      "bytes": 13727,
+      "sha256": "b52d57d9c0d112e20598f89e3d36279fcc9a94fad92edac0d49480b445fe1263",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldCamp.tsx",
+      "bytes": 38500,
+      "sha256": "7f5b4fa31be8806c39ab2183f0792ee7f07a5c088783fea8e850cdbdb047588e",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldCampCraftProps.tsx",
+      "bytes": 2814,
+      "sha256": "d8d22680716a8795fc7a5bddea261c19002c2a5928789305349ebff993b42a89",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubBar.tsx",
+      "bytes": 5957,
+      "sha256": "5268de423a69111fb64e2d1eafde6a3b4e51229ca32dcf43f52e172546e27c79",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubDaybeds.tsx",
+      "bytes": 2146,
+      "sha256": "1d0ef0d29396d008baa0a371ec6ce05c503acc9a488f19982b0677fe6a0a367b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubFurniture.tsx",
+      "bytes": 2290,
+      "sha256": "100ac559798f25b24d67a9efbcc47f51428e799cebb1fcaa0533fdf78abdbe7e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubGeometry.ts",
+      "bytes": 44219,
+      "sha256": "ecb71d59b74cf5304c1d29d99b5bad33f000ce97040ed92b166183eecbec9b17",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubLanterns.tsx",
+      "bytes": 2414,
+      "sha256": "ec4b5b14cded46970a751a6fd32b9f200a6b3a87ece77c77189faee6381a7ced",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubUmbrellas.tsx",
+      "bytes": 2278,
+      "sha256": "5d12a3407142fd0ec9da138bb0b075fee64f4f0585e945dc448071b271c65d28",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldDjcClubVisual.tsx",
+      "bytes": 12754,
+      "sha256": "2bc4f8964179026ff36ba6abe299237e85b30fa3339bc657b9fe40d74e9abb1b",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldDjcFurnitureEnvironment.ts",
+      "bytes": 2351,
+      "sha256": "d3e5dc1c367400f79df93df6071b054a1afb42887a716e958b2c1be7ca3e4ac9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/WorldEnvironment.tsx",
+      "bytes": 31426,
+      "sha256": "c3cd37f6df47d3aa6bbcb8380aec955b372951ad50bdce8631c58cbfc11bc5df",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldGrass.tsx",
+      "bytes": 24942,
+      "sha256": "7c642f98f42ce18ce891c0acce60d42b11f4f54653b409ec0f9631c82df13648",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldGuideVehicle.ts",
+      "bytes": 25519,
+      "sha256": "dc2740103075a2b5535d63078c83a60465fd9e021d674231147d8fa1c1f8a872",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldHud.tsx",
+      "bytes": 10631,
+      "sha256": "cdf61f14b9175c24c77520a10bffe581cefc7e3f2bfd09886c4cb33c3cc27987",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldInteract.ts",
+      "bytes": 4924,
+      "sha256": "e19fa006c5a4d3b63b73bc72468aa9979f9dfd62355fd1be3c431a19cbd6100b",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldLandform.ts",
+      "bytes": 61519,
+      "sha256": "2df2685194a741688b46fc4e3a6e0c50fca318e4a16d066b760c23d7bc19230f",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldMap.tsx",
+      "bytes": 15035,
+      "sha256": "f92129524d28e3460165ffe06daf43d5cc3fc2baf40efe06c05b154056b913e7",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldStreetAssets.ts",
+      "bytes": 33949,
+      "sha256": "98002dde9bf81df4ad1b32e555ee6615e247e17eea7a29ea98c389ddae5239a7",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldStreetTrees.tsx",
+      "bytes": 8469,
+      "sha256": "e177c0601fbfcaee777cdc6b26053f1a254a274243a5bda76357f0567e5091b9",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldTerrain.tsx",
+      "bytes": 30018,
+      "sha256": "520ff4acb1fbc2641ce6d5d602493228e00e8ce064b2bb28bee93b70054b1b7f",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldTerrainPaving.ts",
+      "bytes": 49096,
+      "sha256": "61f1c36f5496f3fa0ab01ed8a7fd4c61a326c3b4648918da7e0fe627a6b18dd1",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldTerrainRoads.tsx",
+      "bytes": 13505,
+      "sha256": "cb732ef9c78b9ce7f33d0f1433d8ea7b7ee67da41136d59c150fdc861f27b784",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldVisualClaims.ts",
+      "bytes": 4147,
+      "sha256": "9151d4b53cf0830aaeebb9d31f06f928f1d4628010e69efbd40a773826e65ace",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/WorldWater.ts",
+      "bytes": 22411,
+      "sha256": "477b210797f862d1f6117d8cc8e0c66ad4ddf0ffcb7ce308497a96e8c28dd2be",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/alpha-mine-foundation.ts",
+      "bytes": 2614,
+      "sha256": "1f57ece1629329bd5effc566615cbf8e7f3131908986fedec021e4e4fe39507e",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/WorldAttractions.tsx",
+      "bytes": 1326,
+      "sha256": "e1efbf56dfa3f0ec6269364f1dd54c60e722052d96ae0d08e6b12af3bcd03da4",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/WorldIbdCratePart.tsx",
+      "bytes": 1429,
+      "sha256": "9ad4e358ebd90317bae6f8b214a9a60967d7060a907c62a6e3864d2ecbd4e3e0",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/WorldIbdMechanisms.tsx",
+      "bytes": 14616,
+      "sha256": "d092a4928e39bc1f141ab970a3ec7532985685302f29d4b9b05303b632befbd9",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/WorldIbdStaticCraft.tsx",
+      "bytes": 2086,
+      "sha256": "6f24b853ffd55fac3657f2c879309a7da23cb994736ce33bb3719e160c80c739",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/WorldIbdYard.tsx",
+      "bytes": 4567,
+      "sha256": "e2f98770f6de4cc44c543dc05adbfa480199713d7f8fec8589e01f9fa96e2605",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/WorldIntentHud.tsx",
+      "bytes": 9502,
+      "sha256": "7f10970097c3ca75bcf9ad3cda13fb79b2d92f0d37997f363ac1994876dc6cb3",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/WorldIntentWorkshop.tsx",
+      "bytes": 8355,
+      "sha256": "4c0681874df09b94f89345ffbfd4f614db352cc66f5073ac665c307d2b585e12",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/attraction-camera-cabin.test.mjs",
+      "bytes": 9166,
+      "sha256": "31cd7a56d1dce8e1b6d5570964cf9ece7329baa8479b8e1f29f2a835dd1c9fc2",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/attraction-camera-cabin.ts",
+      "bytes": 2556,
+      "sha256": "7c7e97e6bb3f048aa366f31307cb73864b60e1112b1a3d5aac3ccf3136d697ec",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/attraction-camera-obstruction.test.mjs",
+      "bytes": 10230,
+      "sha256": "f6f3ced2835b85c631d713b252c90d5d3a5fcd39fec62d92e42411e111235090",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/attraction-camera.test.mjs",
+      "bytes": 7595,
+      "sha256": "20d7f37b3b345c59240e5d30cd7fc39f8e55b50d5d51cbadb0956b266dd2e017",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/attraction-camera.ts",
+      "bytes": 7639,
+      "sha256": "defe3e955d699b8386b2404c4b0a303fe67ac9234442f6cf7f3eca22d4568143",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-access.ts",
+      "bytes": 1298,
+      "sha256": "f0b437c41d4e9185516dca9093a0b4259c7b9677a1f1fa701de5437f65eb9b5e",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-feedback.test.mjs",
+      "bytes": 8243,
+      "sha256": "4807e46b9b82ad8d379779c769861102fef744d9b2db836df366aa7bb1d0c46e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-thrill-frame.ts",
+      "bytes": 5480,
+      "sha256": "1ae07f72b8110f15074f0f9b41bb77685dcd748976aee104bb67425f9b257ea7",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-thrill-motion.ts",
+      "bytes": 5932,
+      "sha256": "2a8813a76bee18ac0f592e314f1930e66c8b93450d117871b9f7873b295f4b07",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-track.test.mjs",
+      "bytes": 16825,
+      "sha256": "43d680fc6d6cb47d1e523a19180d02f65f9f7ea7d2663847ebd1bf60daf6a9b3",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-track.ts",
+      "bytes": 4413,
+      "sha256": "76262334ef4891267ba87c4eb959ad23fb220732ca399c9d76b5a15f4d825aa9",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-transition.test.mjs",
+      "bytes": 12088,
+      "sha256": "c0c8f3aa4ac8721915fccb7ecf2fc5213c0f433d2ce3abb5f0b14d5e78e8e0c1",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/coaster-transition.ts",
+      "bytes": 9395,
+      "sha256": "663a8951d0d31f706b3749a1a4ed6012ea0fc638c17db496b1c3768dcb6e0446",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/ibd-crate-visual.test.mjs",
+      "bytes": 6675,
+      "sha256": "3d6890b397c13cb3d55a3d76edb925c972674151c89505d878cabe13a098a215",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/ibd-crate-visual.ts",
+      "bytes": 1560,
+      "sha256": "b37fd3782cd6a2c32070c81794025e301b490213da88e178f0c44bf59071933e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/ibd-pack-geometry.ts",
+      "bytes": 5276,
+      "sha256": "4ad380a9f1a69b42d4ade359aeb44f1fa5370dfd5e510dba53e011062ae26c45",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/ibd-static-craft-visual.test.mjs",
+      "bytes": 8077,
+      "sha256": "ae642fe05abeb5698f7f0dd3f20aeec4c66466c7c157804d8218427741634f11",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/ibd-static-craft-visual.ts",
+      "bytes": 4462,
+      "sha256": "7f8044deef23806c7122f611855b004d6ba31b822e83a2aaeac4069bb3d53ca1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/ibd-yard-geometry.ts",
+      "bytes": 13791,
+      "sha256": "2eae23c2e7c1a38f6d4e05f234b9a0cc883da4e0d2c767af344dcf3c349cbc1e",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/intent-state.ts",
+      "bytes": 8739,
+      "sha256": "22d3c5b213758f0238a186a18244d053559ef4abc19dd85fa41c756e2d3a69a1",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/intent-workshop-arcade.test.mjs",
+      "bytes": 6998,
+      "sha256": "7767292a2cbb4a783606966e012d554d54cfc1abfd0d8710f907993c4185d2bb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/intent-workshop-arcade.ts",
+      "bytes": 6736,
+      "sha256": "d03f5c7e614859fc46dff24914cc0d3e5dc661ddeae74ae84346c8657d90ce1f",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/attractions/intent-workshop-runtime.test.mjs",
+      "bytes": 11105,
+      "sha256": "7d0f7d049c6f9061efa24f9f6ecb547b724910b3baf82e0bdbb1741e480b5c24",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/attractions/intent-workshop-runtime.ts",
+      "bytes": 6531,
+      "sha256": "9cc8c6102e65df3dd08bec9d875f3af76864144b140e2adbf83c65469c0eade3",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/camp-craft-visual.test.mjs",
+      "bytes": 7431,
+      "sha256": "33ce6c34ff53c20da26a6fde5559cda09739dde5067bdfc69bd82a592339e718",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/camp-craft-visual.ts",
+      "bytes": 3141,
+      "sha256": "4afaf50aa97e79a85211e9c15d6542ab9365fcb9b30c41124723fb83cc36d8cd",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/club-basin-mask.test.mjs",
+      "bytes": 1348,
+      "sha256": "b036554196dd353cee4286874c124e0b38eff5ab0d120afb3cca110f224b300c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/club-basin-mask.ts",
+      "bytes": 1634,
+      "sha256": "a7925f88d4bc80f64d00d24061ac3ef986b83e813a8237af99343f2f9a2829dc",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/club-geometry.test.mjs",
+      "bytes": 17535,
+      "sha256": "879a0bb1e2791974a120c3bd0b765141c6cc61eb741eb82da22b4559b20b1024",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/djc-bar-layout.ts",
+      "bytes": 7324,
+      "sha256": "8eb463cf465aee039a93f1d6d049d0c7ccaf2da56b41a104b44f0d97e31a82d8",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-bar-runtime.test.mjs",
+      "bytes": 13818,
+      "sha256": "8f6a298e368249901aad3dc7b42ed5da3541b24b51778d0267bbf5a2ad56d335",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-club-layout.ts",
+      "bytes": 7911,
+      "sha256": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/djc-daybed-visual.test.mjs",
+      "bytes": 10112,
+      "sha256": "e860ea63e03f945a62aabaab19a09faa769b91d3137f164658f5ce69b65beaef",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-daybed-visual.ts",
+      "bytes": 3682,
+      "sha256": "be1622d3fef1e3ebb114cfa189b27524e057edc00febe79ed3677da958787805",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-environment-radiance.test.mjs",
+      "bytes": 1678,
+      "sha256": "2a34bbd9456c9b68fe26053ba04d4f224079504b0f9e0cb5cec0ef761204cb68",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-environment-radiance.ts",
+      "bytes": 1126,
+      "sha256": "9b1f22be10caec134c73d5f74131ae62d14793f6b0645e45a12f093487a37172",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-furniture-visual.test.mjs",
+      "bytes": 5525,
+      "sha256": "ba3445a89056ee906f301f1345ca4bc9598c2dbe8d67e9dba57f290b8377a64c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-furniture-visual.ts",
+      "bytes": 3696,
+      "sha256": "1c29889132bec11d24ddae4724294dd92a6b4ac5ef0ebfd723ae87e5cb82360b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-pool-lantern-visual.test.mjs",
+      "bytes": 9730,
+      "sha256": "4a2b5cfc8687f44706f283da59232555ba18a0efc71409ec9ae5b7acf0a4c7c9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-pool-lantern-visual.ts",
+      "bytes": 4257,
+      "sha256": "592fd313f18b2de2f7524355b28283bdd93f154feb07b26722314752c5612e9a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-umbrella-visual.test.mjs",
+      "bytes": 8174,
+      "sha256": "0c3d1fe2de53082e7495922fd24fb0620363340eae65b9202ea65e7ddc925c82",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/djc-umbrella-visual.ts",
+      "bytes": 2927,
+      "sha256": "3aed9b8a8c9cf82536ffe0b6997750c8047d1a4e9447f46f59e2b2f6f470eb02",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/exchange-glass-bays.test.mjs",
+      "bytes": 1088,
+      "sha256": "454973cc35591ef1cd5d2116d222085cfbfffceef76490c75280d546cf097483",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/exchange-glass-bays.ts",
+      "bytes": 909,
+      "sha256": "ba666b080d94d1e414c97d19b6ce452c1051daa97b8a3e12242720e0867964e1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactory.tsx",
+      "bytes": 6708,
+      "sha256": "6194d80df09104e3a8b3bcc9af4fe8b44c61a91624222d231fc4386f5c073f46",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryArchive.tsx",
+      "bytes": 1240,
+      "sha256": "67cb5aaf034256749aef5b8ccfdd279dee2abdc4e82957e2434d1a10df5c6a35",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryGuide.tsx",
+      "bytes": 3250,
+      "sha256": "b5a96c5d78112f89188b7ca531cd3082d03a1ac24383e485d26d969f18fef134",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryHud.tsx",
+      "bytes": 9616,
+      "sha256": "4967b3d49305b332fc91475554f08f558c824736a318ced8141390d26e8ebe04",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryMechanisms.tsx",
+      "bytes": 13394,
+      "sha256": "07bdc233932135385b4a476d9eef4d70c7f341998adba804be03306d70deaade",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryPrinter.tsx",
+      "bytes": 3888,
+      "sha256": "f9b9e250ab9543551f61087de04f0e98f8028e437744d8913a6c17f90860eb90",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryReadings.tsx",
+      "bytes": 7360,
+      "sha256": "d6cf68f7bdb0369f342f22a193a610ee333c0e77ffb4d85af4753fdfada6bcfb",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/WorldFactoryTrial.tsx",
+      "bytes": 4213,
+      "sha256": "fecedde25ea89b3ce81f941dd5adf791b1bff80e099cd9e6b136fd44dec3f015",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-assembly-hoist.ts",
+      "bytes": 3753,
+      "sha256": "67f7feb02bc9449ad87f0fe245c70fc40a1fa078f4bc05de6d7c98f52a9a8d7d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-batch.test.mjs",
+      "bytes": 16138,
+      "sha256": "cd71c6270f97522f5ccd1856ea6a0c595dde7ed4dd8b0bbeba9f3d81a52c8ea7",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-carrier.test.mjs",
+      "bytes": 10128,
+      "sha256": "5a15ed69444a436290a7fbb8c49517546b1177679dc9c7c831a250de0e86abd3",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-carrier.ts",
+      "bytes": 6366,
+      "sha256": "c14e1311d1724376b6b6878a9368047d2ebb59436667c1f860696f732cabd07e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-companion.test.mjs",
+      "bytes": 11541,
+      "sha256": "a84b62fa6c1df882210c0e567705d4431722e924b0107927edc2e7ecb8a6a460",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-companion.ts",
+      "bytes": 9567,
+      "sha256": "733bc7b4ace6933614b69afc364541cc685687bd0e9346f4f0a0c3f0937c5658",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-conveyor.test.mjs",
+      "bytes": 5044,
+      "sha256": "b0286701728e8aadb3ec809b44c318f4fe42b0a3a595f693883ca59bbee6b2ad",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-conveyor.ts",
+      "bytes": 11339,
+      "sha256": "676347eac79623660a388bc2d802f32faafe56abc1ce3c70a128a1c3201e3969",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-copy.ts",
+      "bytes": 4710,
+      "sha256": "b3490b40c2bd9889c29b7c1d53c7f8bd5940d863866b60307ae1b42e75f433d0",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-experiment-feedback.test.mjs",
+      "bytes": 5911,
+      "sha256": "c8f4b428b2f65bff103570b2740c26489457e7cf5ee7e9ef1eb94e81c6cae101",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-experiment-feedback.ts",
+      "bytes": 7495,
+      "sha256": "53c2414a739b3be18f42fbc297b31acf8e5394864e0a211daf7ad03ce75c5049",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-facade.test.mjs",
+      "bytes": 8575,
+      "sha256": "e817d2d8d85c25a34e054f25f960cb1d81f3cfd646cc03a8803a6bd05ec90cae",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-facade.ts",
+      "bytes": 8359,
+      "sha256": "45ecaf446144c05874b1e9e66fc20dfb915f08e2fcdaf24f66e9030ac33544c1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-fixture.test.mjs",
+      "bytes": 7395,
+      "sha256": "bd0a86dc5fefa3c6f18755c3839911c5e88e54972117b6701c6e26c002c3b90d",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-fixture.ts",
+      "bytes": 4637,
+      "sha256": "a0d05910835357a869b7ba9b39d6b738601c39aaeb56d7e0fde5f8a160ef1d60",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-follower.test.mjs",
+      "bytes": 7338,
+      "sha256": "d5410a87db5e39594bac5be78cd39457cbedbf36d93730673462755b3fd7d13e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-follower.ts",
+      "bytes": 8423,
+      "sha256": "8fa9aee80f43cf3bc3d5d3c9f40f0d61b3b5b9efb4e33422bc938f59ff34d6c6",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-game.test.mjs",
+      "bytes": 19433,
+      "sha256": "b3a18800663a0fe5b62e571b85105035e7088cf1f59d35128af4ae398496b090",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-game.ts",
+      "bytes": 30054,
+      "sha256": "0eab8cb86f341704f95593e82060e231cef3c4326b26fe770a90d3f2a31b25aa",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-gantry.test.mjs",
+      "bytes": 7356,
+      "sha256": "e7565680007cb935afc7ead3f71f7003fedeba9e12e4dfffa580ba973d7b1514",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-gantry.ts",
+      "bytes": 5754,
+      "sha256": "8c8eb6ccdc15084ce050cfc772ac8e5503bb5c4ba2c73fef46303cf61973948b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-geometry.test.mjs",
+      "bytes": 9299,
+      "sha256": "5a343d4650d73235a33a21f6fdbd2d4a27afc18b88675c3792438eef2ba587a3",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-geometry.ts",
+      "bytes": 16244,
+      "sha256": "8f3532bf870a788e43f5251e2e8ad91d08102294e4e878c6062b63768ebe96d9",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-guidance.test.mjs",
+      "bytes": 3219,
+      "sha256": "bfcde81999d540ae5e0a8016de6a5d25277d61cf6e0ab98f4d943c288f2017df",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-guidance.ts",
+      "bytes": 3890,
+      "sha256": "353ec9055edde62121a159659e0dcd89f78d2d0766df9b4134feda1c14fe61cd",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-inspection.ts",
+      "bytes": 2181,
+      "sha256": "aaccb4da2d5d3b3760f81793d04727b224faf6e3aef972285bb7d9882cb9cc80",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-layout.ts",
+      "bytes": 5535,
+      "sha256": "4a8eeed2778aa8ef126291d49c592c9a99ea90cae9cdec86ede52bd313b8f786",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-lighting.test.mjs",
+      "bytes": 10558,
+      "sha256": "8699a225d6313f948a86fdb54fe3cfc18e27c221025af990d29433d893f0f23b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-lighting.ts",
+      "bytes": 10435,
+      "sha256": "893a4fddfed73464705be1b47b50ab75285b667303dad849bca7cbbc56b3ed52",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-machine-casing.test.mjs",
+      "bytes": 13838,
+      "sha256": "85452b213ddcc6c9e16fb1b22feb9fea029e7ec71ef9aef91b54b3b0df970e01",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-machine-casing.ts",
+      "bytes": 8733,
+      "sha256": "ea0fce254ef5aca1a7a045c84448e3c350dd9e531ed2a628054f3f5f722936bf",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-navigation.ts",
+      "bytes": 3087,
+      "sha256": "a7566d2f7e1abe26d26847c732ec5b5a1899c03f923061ce51e4976b3561e283",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-operation.test.mjs",
+      "bytes": 12694,
+      "sha256": "d9d2688f56c91efceacfd1e47cf0e2e458eafcd6dd40e4eeae93a013defcff72",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-operation.ts",
+      "bytes": 9083,
+      "sha256": "c394d6d989026e7089152bd2a5978dcbf6a14f88dfc4230cc25b8972401c3d0a",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-press-rod.test.mjs",
+      "bytes": 3775,
+      "sha256": "29a51af9cbde4bf6b44f6acdd6d41d0a31fead90dbdb43e55cbc9ad9e0bacac0",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-press-rod.ts",
+      "bytes": 753,
+      "sha256": "038154ab6af7b49597182f0122fd9ca402ce766a8afcf66cee38bf73cb4d8057",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-printer.test.mjs",
+      "bytes": 7387,
+      "sha256": "2fd45a652da0430072278ea6437c3ffdb6cafc5b95fe167cf9c9783f65507a06",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-printer.ts",
+      "bytes": 5621,
+      "sha256": "506a9e099e383e28861f98abd6429b66f89e1d82642eaf03603ef6c81cc6a5c7",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-production-detail.test.mjs",
+      "bytes": 4877,
+      "sha256": "689d94fc4604efc6777454a4d03c8a72cf3e6cbff1c54945008d636e8c883578",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-production-detail.ts",
+      "bytes": 5292,
+      "sha256": "00d238f28c6be9a0dc057026ab75ed72d89c9959fba0b83cd2d75589ad93d897",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-readings.test.mjs",
+      "bytes": 5606,
+      "sha256": "5b8e4616d687095d15eed28def7c136ba6405dcf7031041f42c659047476a17c",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-readings.ts",
+      "bytes": 4592,
+      "sha256": "f2689f630111a3deeeb3a66f67ac1b543c24b68bc1519cae72e340367516ea7e",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-return.test.mjs",
+      "bytes": 13188,
+      "sha256": "616828e11104e27a89c1e6134c8b36553023ccc4036be07a835bff69b6c71857",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-return.ts",
+      "bytes": 17371,
+      "sha256": "a965a8d9ab29842dc24dec8274e9419bf43fe8efda677bda0b270f70d894e400",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-routing-geometry.ts",
+      "bytes": 3101,
+      "sha256": "6a58a788694eafd8b6b65bb6a7c19e3823b9057cc7382196f57372db75ca5992",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-routing.test.mjs",
+      "bytes": 4679,
+      "sha256": "669088acd4ffd41eae5c4c9e2f3cdf802730aabfe6e2d6afd62201db3e9a9e15",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-routing.ts",
+      "bytes": 2262,
+      "sha256": "c19b4807aeca0400945d90113425feeb065dc437c4bb1380ec3d73c4a3d0e177",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-store.ts",
+      "bytes": 9786,
+      "sha256": "13cab590cb99b54778bf14ad7f7befeb2af146943eae4c244952ce73ae817f80",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-structure-raycast.ts",
+      "bytes": 458,
+      "sha256": "df5d259e64899a93e9f5d56a73d5e2887bff7d590159fcc171672289f9ccd585",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-terrain.test.mjs",
+      "bytes": 7088,
+      "sha256": "a5e6fb698710ff4d08117a692531306cd94896bc1aa20d9c9b9cb7554f50311b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-trial-physics.test.mjs",
+      "bytes": 10080,
+      "sha256": "ae5439ba3dd41295814521ce24f2bd461126fdf76a59324cad8bed0a8bd2bd93",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-trial-physics.ts",
+      "bytes": 12725,
+      "sha256": "1998225009e1dfa03fffc555251397fd506f978069472bc912c1fc10a9e03843",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-worklife.test.mjs",
+      "bytes": 8089,
+      "sha256": "8351583ede1f0796bef49ea13778fcfb73be3167fd5d637ab1d3105ef92d9776",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory-worklife.ts",
+      "bytes": 10491,
+      "sha256": "b4de61cdf64e174a05ed20c17a3d9fb0be58990503c25e69440aae5316c8141b",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/factory/factory.css",
+      "bytes": 2064,
+      "sha256": "6177cb5e37fe5c910bff4e14789b64ff8302447b69f695bdd491c9a53f187155",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/guide-vehicle-timing.test.mjs",
+      "bytes": 1909,
+      "sha256": "cda22ddbd61c66b487e0caab6a4e4738f57618b4025a858210cd4dfed83e6c77",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/guide-vehicle.test.mjs",
+      "bytes": 39420,
+      "sha256": "b01aed827068e68250ea183d5c0d11367ab0ac89c555915ed44013396f76ff24",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/layout-v4-flag.ts",
+      "bytes": 8186,
+      "sha256": "1ff50e3a23e5fe5e6fe36365ee3977ddb4dacb4ccd468e310201951b1fab0a4f",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/layout-v4.ts",
+      "bytes": 58804,
+      "sha256": "995282e6d6985933a2ec13714226d6bb9b99903234fa170d7a6babca453fe7f6",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/mine-floor-coverage.test.mjs",
+      "bytes": 10322,
+      "sha256": "a310deb464a24e540c536eaeb817c145fea11633d13852816d7eb3c4c0b95050",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/mine-floor-coverage.ts",
+      "bytes": 7019,
+      "sha256": "6542e1987d44417be94bcbd42cf3416a2774328456ac999ba6b7d900372af3c1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/store.ts",
+      "bytes": 4019,
+      "sha256": "585f9440f030aacfdef8aa52d87aea493d2452aed08486c4d8cdd1972cafa0b6",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/street-surface-alignment.test.mjs",
+      "bytes": 7462,
+      "sha256": "346d1e6aa82abf58bd413fe5409be1d24b97c4103668dbdcdc75a97290f2beef",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/terrain-paving-surface.test.mjs",
+      "bytes": 7922,
+      "sha256": "006073376fc74d2ab9e8ba2ee0579aa5bee4c8da63a4dc3f8b2bcd7078fbbcfd",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/vehicle-driving-input.test.mjs",
+      "bytes": 2131,
+      "sha256": "f4b1c63d55ee2a2bd49c50c11c11578d79245a6d4e8e19e8261c045fcce94336",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/vehicle-driving.test.mjs",
+      "bytes": 11023,
+      "sha256": "85fd83ad88d187f620fa7dc1888bb82b74f61a25246c03279b64c3405528eb9e",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/vehicle-driving.ts",
+      "bytes": 5965,
+      "sha256": "6af0c6824e156590dda502863437417e59926f813ca861cc7a90d008756cf304",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "src/components/world/world-craft-gltf-test.mjs",
+      "bytes": 1349,
+      "sha256": "cc766467de24cde176d68505de656fa3c61d30c17438a2ad9b8d59964ac53672",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "src/components/world/world-i18n.ts",
+      "bytes": 8673,
+      "sha256": "98f8df2ba312991a36727681015765317b98e409071383619e38ef65c1a3066a",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "tools/world/check-club-assets.mjs",
+      "bytes": 3602,
+      "sha256": "e2275502bae8685f024371ab20b2539a8ac0b4620c983e1f9978e43c8cfe86fe",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "tools/world/check-club-audio.mjs",
+      "bytes": 991,
+      "sha256": "1eed3e140e5bafed1f208d8f8a06c7d01d235a8e0f912cc685016b17553b81d9",
+      "kind": "existing-integration-delta"
+    },
+    {
+      "path": "tools/world/check-world-craft-assets.mjs",
+      "bytes": 6309,
+      "sha256": "51084e73818f3d663a99b584c70f25056045d1d0acbc5b43185ef2d22199cad1",
+      "kind": "untracked-local-recovery"
+    },
+    {
+      "path": "tools/world/check-world-craft-assets.test.mjs",
+      "bytes": 2105,
+      "sha256": "f5b283b78f4e8b7e54576a2284cbb6821a7bc70a539b9ccdee953b270055c35c",
+      "kind": "untracked-local-recovery"
+    }
+  ]
+}

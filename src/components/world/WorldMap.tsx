@@ -10,6 +10,8 @@ import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, ATTRACTIONS_CAPE, INTENT_COAS
 import { ALPHA_STATIONS,alphaWorld,alphaContainsWorld,ALPHA_MAINLAND_PIER_POLYGON,ALPHA_MAINLAND_APPROACH } from './alpha-island/alpha-layout';
 import {ALPHA_VISITOR_PATH,ALPHA_VISITOR_SPURS} from './alpha-island/alpha-visitor-path';
 
+import {FACTORY,FACTORY_FOOTPRINT} from './factory/factory-layout';
+
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
 type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[]; coaster: number[][] };
@@ -92,6 +94,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
     <g data-alpha-island='batch1'><polygon points={path(ALPHA_MAINLAND_PIER_POLYGON)} fill='#b39870'/><polyline points={path(ALPHA_MAINLAND_APPROACH)} fill='none' stroke='#d1bc91' strokeWidth='2.2'/><polyline data-alpha-route="visitor" points={path(ALPHA_VISITOR_PATH)} fill="none" stroke="#e0d4b4" strokeWidth="2.4" strokeLinejoin="round" />{ALPHA_VISITOR_SPURS.map(spur=><g key={spur.id}><polyline data-alpha-route={spur.id} points={path(spur.path)} fill="none" stroke="#d0bd91" strokeWidth="1.7" strokeDasharray="2 1" strokeLinejoin="round"/><circle cx={spur.path.at(-1)![0]} cy={spur.path.at(-1)![1]} r="2" fill="#e7c587"/><text x={spur.path.at(-1)![0]+4} y={spur.path.at(-1)![1]+2} fontSize={full?'4':'5'} fill="#fff4da" paintOrder="stroke" stroke="#23343d" strokeWidth="1">{spur.label[lang]}</text></g>)}{(['dock','tree','wind','summit'] as const).map((id,i)=>{const p=alphaWorld(ALPHA_STATIONS[id]);return <g key={id}><circle cx={p[0]} cy={p[2]} r='2.8' fill='#e7c587'/><text x={p[0]+5} y={p[2]+2} fontSize={full?'4':'5'} fill='#fff4da' paintOrder='stroke' stroke='#23343d' strokeWidth='1'>{lang==='zh'?['渡口','语法树','风口','山顶'][i]:['Ferry','Tree','Wind','Summit'][i]}</text></g>;})}</g>
     <polygon data-quarry-outline='physical' points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#99917C' stroke='#B6AB89' strokeOpacity='.45' strokeWidth={full ? .8 : .6} strokeLinejoin='round' />
+    {LAYOUT_V4&&<g data-factory-outline="physical"><polygon points={path(FACTORY_FOOTPRINT)} fill="#aaa590" stroke="#d7c9a6" strokeWidth=".7"/><text x={FACTORY.origin[0]} y={FACTORY.origin[2]} textAnchor="middle" fontSize={full?'4.5':'5'} fill="#fff7de" paintOrder="stroke" stroke="#23343d" strokeWidth="1.1">{t.factory}</text><circle cx={FACTORY.entrance[0]} cy={FACTORY.entrance[2]} r="3.3" fill="#23343D" stroke="#4FD1C5"/></g>}
     {geometry?.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />

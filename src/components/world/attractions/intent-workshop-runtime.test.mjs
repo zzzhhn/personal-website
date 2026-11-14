@@ -83,7 +83,33 @@ test('the ambiguous seventh request needs the physical bell before a route can e
   fresh(); useIntentStore.setState({ progress: { ...createIntentProgress(), passed: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'] } });
   action('intake'); action('rewrite'); finish(); assert.equal(useIntentStore.getState().progress.passed.length, 6);
   finish(); action('bell'); action('rewrite'); finish(); assert.equal(useIntentStore.getState().progress.passed.length, 7);
-  at('intake'); assert.equal(workshopAvailable('intake'), false);
+  at('intake'); assert.equal(workshopAvailable('intake'), true);
+});
+
+test('unlocked workshop keeps playing, validates wrong replays, and preserves all unlocks', () => {
+  fresh();
+  const unlocked = { ...createIntentProgress(), passed: ['T1','T2','T3','T4','T5','T6','T7'],
+    clarified: ['T7'], chestOpen: true, keyTaken: true, gateOpen: true };
+  useIntentStore.setState({ progress: unlocked });
+  action('intake'); assert.equal(useWorkshopStore.getState().practice, true);
+  assert.equal(useWorkshopStore.getState().taskId, 'T1');
+  action('act'); finish(); assert.equal(useWorkshopStore.getState().phase, 'returning');
+  assert.deepEqual(useIntentStore.getState().progress, unlocked);
+  finish(); action('lookup'); finish(); assert.equal(useWorkshopStore.getState().phase, 'result');
+  action('intake'); assert.equal(useWorkshopStore.getState().taskId, 'T2');
+  assert.deepEqual(useIntentStore.getState().progress, unlocked);
+});
+
+test('practice clarification must be rediscovered without changing saved progress', () => {
+  fresh();
+  const unlocked = { ...createIntentProgress(), passed: ['T1','T2','T3','T4','T5','T6','T7'],
+    clarified: ['T7'], chestOpen: true, keyTaken: true, gateOpen: true };
+  useIntentStore.setState({ progress: unlocked }); useWorkshopStore.setState({ practiceCursor: 6 });
+  action('intake'); action('rewrite'); finish();
+  assert.equal(useWorkshopStore.getState().phase, 'returning');
+  finish(); action('bell'); action('rewrite'); finish();
+  assert.equal(useWorkshopStore.getState().correct, true);
+  assert.deepEqual(useIntentStore.getState().progress, unlocked);
 });
 
 test('physical actions dispatch distinct sounds once, and machine sound stops before the actual result', t => {

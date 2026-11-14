@@ -21,6 +21,7 @@ const Runtime = lazy(async () => {
   return import('./WorldRuntime');
 });
 const IbdHud=memo(lazy(()=>import('./attractions/WorldIbdHud')));
+const FactoryHud=memo(lazy(()=>import('./factory/WorldFactoryHud')));
 const IntentHud=memo(lazy(()=>import('./attractions/WorldIntentHud')));
 // QA-only ui fixtures (?qa=1&uitest=1); the normal entry never loads this chunk.
 const uiTest = typeof window !== 'undefined' && /[?&]qa=1/.test(window.location.search) && /[?&]uitest=1/.test(window.location.search);
@@ -130,7 +131,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldDrivingHud />
     <WorldAlphaMineHud />
     <WorldClubHud />
-    <Suspense fallback={null}><IbdHud/><IntentHud/></Suspense>
+    <Suspense fallback={null}><IbdHud/><IntentHud/><FactoryHud/></Suspense>
     <WorldPoolInspect />
     {PlaytestReadout&&!shellOnly&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>

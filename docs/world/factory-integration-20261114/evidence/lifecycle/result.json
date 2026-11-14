@@ -1,0 +1,370 @@
+{
+  "scope": "QA initial raw station; actual UI/E/mouse/keys. Cancellation, menu pause and camp return without state writes",
+  "errors": [],
+  "steps": [
+    {
+      "n": "operation-live",
+      "world": {
+        "station": "raw",
+        "paused": false,
+        "position": [
+          -234.5,
+          1.9388248920440674,
+          -12.5
+        ],
+        "zone": "factory"
+      },
+      "f": {
+        "game": {
+          "version": 1,
+          "gameId": "963c3038-6cb7-4da5-b261-b70e025c8040",
+          "sequence": 1,
+          "revision": 0,
+          "batchId": null,
+          "configuration": null,
+          "configurations": [],
+          "materials": {
+            "frame": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:frame",
+              "status": "source",
+              "line": null
+            },
+            "wheels": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:wheels",
+              "status": "source",
+              "line": null
+            },
+            "shell": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:shell",
+              "status": "source",
+              "line": null
+            }
+          },
+          "parts": {
+            "frame": null,
+            "wheels": null,
+            "shell": null
+          },
+          "trialAssembled": false,
+          "finalAssembled": false,
+          "released": false,
+          "trials": [],
+          "report": null,
+          "pending": {
+            "token": "963c3038-6cb7-4da5-b261-b70e025c8040:action:1",
+            "batchId": null,
+            "configurationId": null,
+            "configurationRevision": null,
+            "revision": 0,
+            "action": {
+              "type": "extract",
+              "module": "frame"
+            },
+            "trialId": null
+          },
+          "history": [],
+          "archives": []
+        },
+        "active": true,
+        "save": "memory",
+        "notice": null,
+        "phase": "aim",
+        "aligned": false,
+        "route": null,
+        "printSequence": 0,
+        "dispatchView": "dock"
+      },
+      "op": {
+        "action": {
+          "type": "extract",
+          "module": "frame"
+        },
+        "phase": "aim",
+        "tool": [
+          -36.786559999084474,
+          3.4,
+          -19
+        ],
+        "target": [
+          -42,
+          1.42,
+          -16
+        ],
+        "elapsed": 0,
+        "stroke": 0,
+        "guard": 0,
+        "progress": 0,
+        "attached": false,
+        "seated": 0,
+        "assemblyModules": [],
+        "assemblyModule": null
+      },
+      "input": {
+        "x": 0,
+        "z": 0,
+        "held": false,
+        "confirm": false
+      }
+    },
+    {
+      "n": "paused",
+      "world": {
+        "station": "raw",
+        "paused": true,
+        "position": [
+          -234.5,
+          1.9388248920440674,
+          -12.5
+        ],
+        "zone": "factory"
+      },
+      "f": {
+        "game": {
+          "version": 1,
+          "gameId": "963c3038-6cb7-4da5-b261-b70e025c8040",
+          "sequence": 1,
+          "revision": 0,
+          "batchId": null,
+          "configuration": null,
+          "configurations": [],
+          "materials": {
+            "frame": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:frame",
+              "status": "source",
+              "line": null
+            },
+            "wheels": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:wheels",
+              "status": "source",
+              "line": null
+            },
+            "shell": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:shell",
+              "status": "source",
+              "line": null
+            }
+          },
+          "parts": {
+            "frame": null,
+            "wheels": null,
+            "shell": null
+          },
+          "trialAssembled": false,
+          "finalAssembled": false,
+          "released": false,
+          "trials": [],
+          "report": null,
+          "pending": {
+            "token": "963c3038-6cb7-4da5-b261-b70e025c8040:action:1",
+            "batchId": null,
+            "configurationId": null,
+            "configurationRevision": null,
+            "revision": 0,
+            "action": {
+              "type": "extract",
+              "module": "frame"
+            },
+            "trialId": null
+          },
+          "history": [],
+          "archives": []
+        },
+        "active": true,
+        "save": "memory",
+        "notice": null,
+        "phase": "aim",
+        "aligned": false,
+        "route": null,
+        "printSequence": 0,
+        "dispatchView": "dock"
+      },
+      "op": {
+        "action": {
+          "type": "extract",
+          "module": "frame"
+        },
+        "phase": "aim",
+        "tool": [
+          -36.786559999084474,
+          3.4,
+          -19
+        ],
+        "target": [
+          -42,
+          1.42,
+          -16
+        ],
+        "elapsed": 0,
+        "stroke": 0,
+        "guard": 0,
+        "progress": 0,
+        "attached": false,
+        "seated": 0,
+        "assemblyModules": [],
+        "assemblyModule": null
+      },
+      "input": {
+        "x": 0,
+        "z": 0,
+        "held": false,
+        "confirm": false
+      }
+    },
+    {
+      "n": "cancelled",
+      "world": {
+        "station": null,
+        "paused": false,
+        "position": [
+          -234.5,
+          1.9388248920440674,
+          -12.5
+        ],
+        "zone": "factory"
+      },
+      "f": {
+        "game": {
+          "version": 1,
+          "gameId": "963c3038-6cb7-4da5-b261-b70e025c8040",
+          "sequence": 1,
+          "revision": 1,
+          "batchId": null,
+          "configuration": null,
+          "configurations": [],
+          "materials": {
+            "frame": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:frame",
+              "status": "source",
+              "line": null
+            },
+            "wheels": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:wheels",
+              "status": "source",
+              "line": null
+            },
+            "shell": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:shell",
+              "status": "source",
+              "line": null
+            }
+          },
+          "parts": {
+            "frame": null,
+            "wheels": null,
+            "shell": null
+          },
+          "trialAssembled": false,
+          "finalAssembled": false,
+          "released": false,
+          "trials": [],
+          "report": null,
+          "pending": null,
+          "history": [
+            {
+              "token": "963c3038-6cb7-4da5-b261-b70e025c8040:action:1",
+              "action": "extract",
+              "outcome": "cancelled"
+            }
+          ],
+          "archives": []
+        },
+        "active": true,
+        "save": "saved",
+        "notice": null,
+        "phase": "aim",
+        "aligned": false,
+        "route": null,
+        "printSequence": 0,
+        "dispatchView": "dock"
+      },
+      "op": null,
+      "input": {
+        "x": 0,
+        "z": 0,
+        "held": false,
+        "confirm": false
+      }
+    },
+    {
+      "n": "camp-cleanup",
+      "world": {
+        "station": null,
+        "paused": false,
+        "position": [
+          -41.99941635131836,
+          5.619417190551758,
+          35.006927490234375
+        ],
+        "zone": "camp"
+      },
+      "f": {
+        "game": {
+          "version": 1,
+          "gameId": "963c3038-6cb7-4da5-b261-b70e025c8040",
+          "sequence": 2,
+          "revision": 2,
+          "batchId": null,
+          "configuration": null,
+          "configurations": [],
+          "materials": {
+            "frame": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:frame",
+              "status": "source",
+              "line": null
+            },
+            "wheels": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:wheels",
+              "status": "source",
+              "line": null
+            },
+            "shell": {
+              "id": "963c3038-6cb7-4da5-b261-b70e025c8040:raw:shell",
+              "status": "source",
+              "line": null
+            }
+          },
+          "parts": {
+            "frame": null,
+            "wheels": null,
+            "shell": null
+          },
+          "trialAssembled": false,
+          "finalAssembled": false,
+          "released": false,
+          "trials": [],
+          "report": null,
+          "pending": null,
+          "history": [
+            {
+              "token": "963c3038-6cb7-4da5-b261-b70e025c8040:action:1",
+              "action": "extract",
+              "outcome": "cancelled"
+            },
+            {
+              "token": "963c3038-6cb7-4da5-b261-b70e025c8040:action:2",
+              "action": "extract",
+              "outcome": "cancelled"
+            }
+          ],
+          "archives": []
+        },
+        "active": false,
+        "save": "saved",
+        "notice": null,
+        "phase": "aim",
+        "aligned": false,
+        "route": null,
+        "printSequence": 0,
+        "dispatchView": "dock"
+      },
+      "op": null,
+      "input": {
+        "x": 0,
+        "z": 0,
+        "held": false,
+        "confirm": false
+      }
+    }
+  ],
+  "complete": true
+}

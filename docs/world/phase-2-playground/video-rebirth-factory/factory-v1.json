@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "scene": "video-rebirth-factory-v1",
+  "references": [
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-01-overview-v1.png",
+      "sha256": "44ecc17350a445b3598e82bf8a787d68bff3fdd958f8c062fb03e2f58560a317"
+    },
+    {
+      "role": "assembly",
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-02-assembly-v1.png",
+      "sha256": "f97c0ab5894b5e5da9132a354c3bcbb9326453acf3cf06fdecab6a1c1f3903f9"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/video-rebirth-factory/factory-03-testing-v1.png",
+      "sha256": "d400583d28186a21d3c8724342d584c619c82bd4fd18bd00a36267e39ca2bd6d",
+      "note": "右侧为同场景夜间参考"
+    }
+  ],
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "quote": "可以的，这个图的方向我认可，下面你再生成一段简练的 prompt 让我能够替换掉现有的 goal，完成这个新场景的开发吧。",
+      "date": "2026-10-29"
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "quote": "可以的，这个图的方向我认可，下面你再生成一段简练的 prompt 让我能够替换掉现有的 goal，完成这个新场景的开发吧。",
+      "date": "2026-10-29",
+      "scope": "图面空间方向及工厂开发；具体放置坐标和工程尺寸由集成验证"
+    }
+  },
+  "reviewViews": [
+    {
+      "id": "F01",
+      "view": "入口总览",
+      "times": [
+        12,
+        0
+      ]
+    },
+    {
+      "id": "F02",
+      "view": "玩家在装配夹具操作位置",
+      "times": [
+        12,
+        0
+      ]
+    },
+    {
+      "id": "F03",
+      "view": "双机试验场与产品卡",
+      "times": [
+        12,
+        0
+      ]
+    },
+    {
+      "id": "F04",
+      "view": "加工回流/楼梯/货梯/高廊",
+      "times": [
+        12,
+        0
+      ]
+    }
+  ],
+  "failureConditions": [
+    "以三个桌子或长文字卡代替可操作生产链",
+    "整体形体没有分段锯齿厂房和通高中庭",
+    "材料加工、部件对接和返工前后不可辨",
+    "夜间只有灯点，行走面与机器界面不可读",
+    "楼梯、货梯、狭窄位置不可返回或视角穿模",
+    "伙伴比例漂移成大车，人和工位接触悬空",
+    "未实际完成试验却展示成功或虚构指标"
+  ],
+  "runtimeAcceptance": "pending",
+  "visualAcceptance": "pending"
+}

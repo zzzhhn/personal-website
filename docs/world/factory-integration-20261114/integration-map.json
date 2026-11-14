@@ -1,0 +1,62 @@
+{
+  "base": "262ba2eab7bc702ac877f419811ff5233e43bdfc",
+  "recovery": "ce1743ae44c8e4b201ba42f31fb11c207810c20f",
+  "strategy": "new feature modules copied; current shared files patched with scoped original deltas; no old-tree merge",
+  "runtimeChanges": [
+    "src/components/world/WorldActors.tsx",
+    "src/components/world/WorldAlphaExchange.tsx",
+    "src/components/world/WorldAlphaExchangeGeometry.ts",
+    "src/components/world/WorldAlphaMine.tsx",
+    "src/components/world/WorldAlphaMineFoundation.tsx",
+    "src/components/world/WorldApp.tsx",
+    "src/components/world/WorldDjcClubVisual.tsx",
+    "src/components/world/WorldHud.tsx",
+    "src/components/world/WorldInteract.ts",
+    "src/components/world/WorldLandform.ts",
+    "src/components/world/WorldMap.tsx",
+    "src/components/world/WorldTerrain.tsx",
+    "src/components/world/WorldVisualClaims.ts",
+    "src/components/world/alpha-mine-foundation.ts",
+    "src/components/world/attractions/WorldAttractions.tsx",
+    "src/components/world/attractions/WorldIntentHud.tsx",
+    "src/components/world/attractions/WorldIntentWorkshop.tsx",
+    "src/components/world/attractions/attraction-camera.test.mjs",
+    "src/components/world/attractions/attraction-camera.ts",
+    "src/components/world/attractions/coaster-thrill-frame.ts",
+    "src/components/world/attractions/coaster-track.ts",
+    "src/components/world/attractions/intent-state.ts",
+    "src/components/world/attractions/intent-workshop-runtime.test.mjs",
+    "src/components/world/attractions/intent-workshop-runtime.ts",
+    "src/components/world/layout-v4.ts",
+    "src/components/world/store.ts",
+    "src/components/world/world-i18n.ts"
+  ],
+  "excludedRecoveryChanges": [
+    "old camp/Club/IBD art and music",
+    "WorldWater old shader",
+    "coaster-track old route/speed/boarding changes",
+    "global nature geometry refinements already in latest Alpha"
+  ],
+  "tests": {
+    "initial": {
+      "cases": 198,
+      "pass": 196,
+      "fail": 1,
+      "skip": 1,
+      "failure": "test-only missing quarry-walk helper"
+    },
+    "targetedAfterHelperRestore": {
+      "cases": 11,
+      "pass": 11,
+      "fail": 0,
+      "skip": 0
+    },
+    "netCoverage": "207 passing cases plus one explicitly skipped original terrain-mesh case; initial failed file was replaced by its 11 actual cases"
+  },
+  "typecheck": {
+    "files": 769,
+    "errors": 0,
+    "warnings": 0
+  },
+  "build": "8 Astro pages, success"
+}

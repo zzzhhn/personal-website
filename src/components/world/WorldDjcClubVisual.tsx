@@ -9,6 +9,7 @@ import { isWorldRunning, windUniforms } from './WorldWind';
 import { actorState } from './WorldGrass';
 import { applyDjcFacilityFinish } from './WorldDjcFacilityFinish';
 import WorldClubWater from './WorldClubWater';
+import { useGreyboxClaim } from './WorldVisualClaims';
 import { markClubWaterSurfaceOnly } from './WorldClubWaterCapture';
 import { CLUB_LIGHTS, createClubBeamMaterial, createClubLightSpill, createClubMirrorMaterial } from './WorldClubLighting';
 import WorldDjcClubBar from './WorldDjcClubBar';
@@ -65,6 +66,7 @@ function spotMaterial() {
 /** beat is the actual playback clock in beats; energy is a bounded 0..1 audio activity value.
  * Neither callback enters React state. Ambient motion uses the island's pause-aware wind clock. */
 export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energy?:()=>number}) {
+  useGreyboxClaim('club-basin');
   const legacyNorthBar=useMemo(()=>djcBarQaMode(typeof window==='undefined'?'':window.location.search)==='legacy',[]);
   const legacyDaybeds=useMemo(()=>djcDaybedLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const candidatePoolLanterns=useMemo(()=>djcPoolLanternCandidate(typeof window==='undefined'?'':window.location.search),[]);
