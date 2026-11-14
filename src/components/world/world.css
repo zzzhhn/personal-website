@@ -284,3 +284,52 @@ body:has(.world-app) astro-dev-toolbar { display: none !important; }
 .world-drive-instruments.is-drifting .world-drive-slip { color: #efb476; }
 .world-drive-instruments.is-boosting .world-nitro-label { color: #8ce3d9; }
 @media (max-width: 600px) { .world-app .world-drive-instruments { width: 248px; padding: 10px 12px; } }
+
+/* ── Featured places (Esc map): numbered paper index under the map; one press sets the waypoint ── */
+.world-places { margin-top: 18px; padding-top: 16px; border-top: 1px solid #f4ecdb18; }
+.world-places-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+.world-places h3 { margin: 0; font: 400 22px/1 var(--serif); letter-spacing: -.005em; }
+.world-places-head p { margin: 0; font-size: 12px; color: #a9bdc1; }
+.world-places ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.world-places button { position: relative; width: 100%; height: 100%; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: 3px 10px; align-content: start; text-align: left;
+  padding: 11px 12px 12px; border-radius: 10px; border: 1px solid #f4ecdb1f; background: #ffffff0a; color: var(--paper); transition: background .18s, border-color .18s, transform .18s var(--ease-out); }
+.world-places button:hover { background: #ffffff14; border-color: #f4ecdb40; transform: translateY(-1px); }
+.world-places-num { grid-row: span 2; font: 500 11px/1.6 var(--sans); color: var(--sand); font-variant-numeric: tabular-nums; letter-spacing: .06em; }
+.world-places strong { font: 400 17px/1.15 var(--serif); }
+.world-places small { font-size: 11.5px; line-height: 1.45; color: #c4d3d4; }
+.world-places button[aria-pressed="true"] { border-color: #f2b98a; background: linear-gradient(180deg, #f2b98a1f, #f2b98a0a); }
+.world-places em { grid-column: 2; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-style: normal; font-size: 11px; color: #f9dcc0; }
+.world-places em i { display: inline-block; width: 8px; height: 8px; }
+
+/* ── First-visit place guide (above the radar): a small paper card, never a quest list ── */
+.world-place-guide { position: absolute; z-index: 3; left: 28px; bottom: 212px; width: 264px; padding: 12px 12px 10px; border-radius: 14px;
+  background: var(--glass); border: 1px solid var(--glass-line); backdrop-filter: blur(10px); box-shadow: 0 10px 30px #0b1a2140; animation: world-rise .5s var(--ease-out) .2s both; }
+.world-place-guide header { display: flex; align-items: center; justify-content: space-between; }
+.world-place-guide .world-eyebrow { color: var(--sand); opacity: 1; }
+.world-place-guide-close { width: 24px; height: 24px; margin: -4px -4px 0 0; border: 0; border-radius: 50%; background: none; color: #c4d3d4; font-size: 17px; line-height: 1; }
+.world-place-guide-close:hover { background: #ffffff14; color: var(--paper); }
+.world-place-guide > p { margin: 4px 0 9px; font: 400 17px/1.2 var(--serif); }
+.world-place-guide-list { display: flex; flex-direction: column; gap: 5px; }
+.world-place-guide-list button { display: flex; flex-direction: column; gap: 2px; text-align: left; padding: 7px 10px 8px; border-radius: 9px; border: 1px solid #f4ecdb1a; background: #ffffff08;
+  animation: world-rise .45s var(--ease-out) both; transition: background .18s, border-color .18s; }
+.world-place-guide-list button:hover { background: #ffffff14; border-color: #c9a97866; }
+.world-place-guide-list strong { font-size: 13px; font-weight: 500; }
+.world-place-guide-list small { font-size: 11px; line-height: 1.4; color: #b9cacd; }
+.world-place-guide-all { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding: 2px 0; border: 0; background: none; color: #c4d3d4; font-size: 12px; }
+.world-place-guide-all:hover { color: var(--paper); }
+.world-place-guide-all kbd { height: 19px; min-width: 30px; font-size: 10px; }
+
+/* ── Factory floor next step (top right, below the bar; consoles replace it at the same spot) ── */
+.world-factory-next { position: absolute; z-index: 3; top: 84px; right: 28px; width: min(318px, calc(100vw - 56px)); padding: 11px 14px 12px; border-radius: 12px;
+  background: #263b3ce6; border: 1px solid #879b8b99; color: #f4ead5; backdrop-filter: blur(8px); box-shadow: 0 8px 26px #0003; animation: world-rise .4s var(--ease-out) both; }
+.world-factory-next .world-eyebrow { color: #e1b76b; opacity: 1; }
+.world-factory-next p { margin: 5px 0 9px; font-size: 13.5px; line-height: 1.5; }
+.world-factory-next strong { font-weight: 600; color: #fff3d9; }
+.world-factory-next button { padding: 6px 12px; border-radius: 999px; border: 1px solid #dfb66d; background: none; color: #f0cf94; font-size: 12.5px; transition: background .18s; }
+.world-factory-next button:hover { background: #dfb66d1f; }
+.world-factory-next-on { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: #e8c67b; }
+.world-factory-next-on i { width: 0; height: 0; border-left: 6px solid #e8c67b; border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+.world-shot .world-place-guide, .world-shot .world-factory-next { display: none; }
+@media (max-height: 760px) { .world-place-guide { bottom: 176px; } }
+@media (max-width: 1100px) { .world-places ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .world-place-guide, .world-place-guide-list button, .world-factory-next { animation: none !important; } .world-places button { transition: none; } }

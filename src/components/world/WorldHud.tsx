@@ -4,6 +4,10 @@ import AlphaTransportHud from './alpha-island/transports/AlphaTransportHud';
 import { alphaContainsWorld } from './alpha-island/alpha-layout';
 import { useWorldStore } from './store';
 import { useFactoryStore } from './factory/factory-store';
+import { FACTORY_STATION_NAMES } from './factory/factory-copy';
+import { nextFactoryStation } from './factory/factory-guidance';
+import { factoryStation, factoryWorld, inFactory, type FactoryStationId } from './factory/factory-layout';
+import { FIRST_VISIT_DESTINATIONS, destination, destinationAt, factoryGuideRoute } from './world-destinations';
 import { worldText } from './world-i18n';
 import type { WorldContent } from './types';
 import { readDrivingTelemetry } from './vehicle-telemetry';
@@ -146,5 +150,70 @@ export function WorldWaypointReadout() {
   }, [waypoint, d]);
   if (!waypoint) return null;
   const t = worldText[lang];
-  return <span className='world-waypoint-readout'><i aria-hidden='true' />{t.waypoint} · {Math.round(d)} {t.metres}</span>;
+  const place = destinationAt(waypoint);
+  return <span className='world-waypoint-readout'><i aria-hidden='true' />{place ? destination(place).name[lang] : t.waypoint} · {Math.round(d)} {t.metres}</span>;
+}
+
+const GUIDE_KEY = 'world-place-guide-v1';
+const guideSeen = () => { try { return localStorage.getItem(GUIDE_KEY) === '1'; } catch { return false; } };
+const rememberGuide = () => { try { localStorage.setItem(GUIDE_KEY, '1'); } catch { /* optional */ } };
+
+/** First-visit "where to go" capsule above the radar. Shown only at camp, on foot, with no waypoint,
+ * card or QA shot; it is remembered once the visitor picks a place, closes it or walks out of camp. */
+export function WorldPlaceGuide() {
+  const lang = useWorldStore(s => s.lang), ready = useWorldStore(s => s.ready);
+  const blocked = useWorldStore(s => s.paused || s.poolInspect || !!s.shot || !!s.card || !!s.activeVehicle || !!s.seat || !!s.clubMode || !!s.factoryStation);
+  const atCamp = useWorldStore(s => s.zone === 'camp'), waypoint = useWorldStore(s => s.waypoint);
+  const [seen, setSeen] = useState(true);
+  const shown = useRef(false);
+  useEffect(() => { setSeen(guideSeen()); }, []);
+  const visible = ready && !seen && !blocked && atCamp && !waypoint;
+  if (visible) shown.current = true;
+  useEffect(() => {
+    // Once seen, leaving camp or setting any waypoint (map, Esc list) retires it for good.
+    if (seen || !shown.current || (atCamp && !waypoint)) return;
+    rememberGuide(); setSeen(true);
+  }, [seen, atCamp, waypoint]);
+  if (!visible) return null;
+  const t = worldText[lang];
+  const close = () => { rememberGuide(); setSeen(true); };
+  return <section className='world-place-guide' aria-label={t.guideTitle}>
+    <header><span className='world-eyebrow'>{t.guideTitle}</span><button className='world-place-guide-close' onClick={close} aria-label={t.guideClose}>×</button></header>
+    <p>{t.guideLead}</p>
+    <div className='world-place-guide-list'>
+      {FIRST_VISIT_DESTINATIONS.map((id, i) => { const d = destination(id); return <button key={id} style={{ animationDelay: `${.35 + i * .08}s` }}
+        onClick={() => { close(); useWorldStore.setState({ waypoint: [...d.at] }); }}>
+        <strong>{d.name[lang]}</strong><small>{d.detail[lang]}</small></button>; })}
+    </div>
+    <button className='world-place-guide-all' onClick={() => { close(); useWorldStore.setState({ paused: true }); }}><kbd>Esc</kbd>{t.guideAll}</button>
+  </section>;
+}
+
+/** In the factory but at no console: name the next station from the real batch state and offer the
+ * same floor arrows the consoles use. Hidden while any console, vehicle, card or pause owns the screen. */
+export function WorldFactoryNextStep() {
+  const lang = useWorldStore(s => s.lang), ready = useWorldStore(s => s.ready);
+  const inside = useWorldStore(s => inFactory(s.position[0], s.position[2]));
+  const blocked = useWorldStore(s => s.paused || s.poolInspect || !!s.shot || !!s.card || !!s.activeVehicle || !!s.seat || !!s.clubMode || s.factoryStation !== null);
+  // `active` means the factory chunk mounted and restored the saved batch; before that `game` is a placeholder.
+  const game = useFactoryStore(s => s.game), routing = useFactoryStore(s => s.route !== null), loaded = useFactoryStore(s => s.active);
+  if (!ready || !inside || blocked || !loaded) return null;
+  const t = worldText[lang], zh = lang === 'zh';
+  const next = nextFactoryStation(game);
+  const target: FactoryStationId = next ?? 'release';
+  const fresh = next === 'raw' && game.history.length === 0 && !game.pending;
+  const name = FACTORY_STATION_NAMES[target][zh ? 0 : 1];
+  const guide = () => {
+    const p = useWorldStore.getState().position, route = factoryGuideRoute(p[0], p[2], target);
+    // Same contract as a console's "Guide me": floor arrows follow `route`, the waypoint is its next corner.
+    useFactoryStore.setState({ route: route.length > 1 ? route : null });
+    const at = factoryWorld(route.length > 1 ? route[1] : factoryStation(target).at);
+    useWorldStore.setState({ waypoint: [at[0], at[2]] });
+  };
+  return <aside className='world-factory-next' aria-live='polite' aria-label={t.factory}>
+    <span className='world-eyebrow'>{t.factory}</span>
+    {fresh ? <p>{t.factoryFresh}</p> : next ? <p>{t.factoryNext} · <strong>{name}</strong> · {t.factoryNextTail}</p> : <p>{t.factoryReleased}</p>}
+    {routing ? <span className='world-factory-next-on'><i aria-hidden='true' />{t.factoryShown}</span>
+      : <button onClick={guide}>{t.factoryShow}{!fresh && next ? '' : ` · ${name}`} →</button>}
+  </aside>;
 }

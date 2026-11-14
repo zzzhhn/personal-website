@@ -8,6 +8,9 @@ import { Matrix4, Quaternion, Vector3 } from 'three';
 import { BUILDINGS_V4, LANDMARKS_V4, ROADS_V4, solidsV4, type SolidBox } from './layout-v4';
 import { islandShoreline } from './WorldLandform';
 import { worldText } from './world-i18n';
+import { FACTORY, FACTORY_FOOTPRINT } from './factory/factory-layout';
+import { ALPHA_MAINLAND_PIER_POLYGON } from './alpha-island/alpha-layout';
+import { FERRY_MAP_MARK } from './world-destinations';
 import * as A from './WorldStreetAssets';
 import { cellOf, FONT, paintAtlas } from './WorldStreetMaterial';
 import StreetStatic, { at, type Seat, type StaticKind, type StaticPlacement } from './WorldStreetStatic';
@@ -23,7 +26,9 @@ function paintPoster(g: CanvasRenderingContext2D, w: number, h: number, here: [n
   g.fillStyle = sea; g.fillRect(pad, top, w - 2 * pad, h - top - bottom);
   const shore = islandShoreline();
   const xs = shore.map(p => p[0]), zs = shore.map(p => p[1]);
-  const x0 = Math.min(...xs, 54) - 6, x1 = Math.max(...xs, 54) + 6, z0 = Math.min(...zs) - 6, z1 = Math.max(...zs) + 6;
+  // The ferry pier head reaches past the waterline; keep it inside the sea panel.
+  const pierZ = Math.max(...ALPHA_MAINLAND_PIER_POLYGON.map(p => p[2]));
+  const x0 = Math.min(...xs, 54) - 6, x1 = Math.max(...xs, 54) + 6, z0 = Math.min(...zs) - 6, z1 = Math.max(...zs, pierZ) + 6;
   const s = Math.min((w - 2 * pad) / (x1 - x0), (h - top - bottom) / (z1 - z0));
   const ox = pad + ((w - 2 * pad) - (x1 - x0) * s) / 2, oz = top + ((h - top - bottom) - (z1 - z0) * s) / 2;
   const P = (x: number, z: number): [number, number] => [ox + (x - x0) * s, oz + (z - z0) * s];
@@ -41,17 +46,31 @@ function paintPoster(g: CanvasRenderingContext2D, w: number, h: number, here: [n
   }
   g.fillStyle = '#4E647D';
   for (const b of BUILDINGS_V4) { const q = P(b.position[0] - b.size[0] / 2, b.position[2] - b.size[2] / 2); g.fillRect(q[0], q[1], b.size[0] * s, b.size[2] * s); }
+  // Companion Works hall (west cape) and the mainland ferry pier (south shore).
+  const shape = (pts: readonly (readonly number[])[], fill: string) => {
+    g.beginPath(); pts.forEach((p, i) => { const q = P(p[0], p.length === 3 ? p[2] : p[1]); g[i ? 'lineTo' : 'moveTo'](q[0], q[1]); }); g.closePath(); g.fillStyle = fill; g.fill();
+  };
+  shape(FACTORY_FOOTPRINT, '#8F8A76');
+  shape(ALPHA_MAINLAND_PIER_POLYGON, '#9C7B55');
   const zh = worldText.zh, en = worldText.en;
   const label = (x: number, z: number, a: string, b: string) => {
     const q = P(x, z); g.textAlign = 'center'; g.fillStyle = '#26282A';
-    g.font = `600 30px ${FONT}`; g.fillText(a, q[0], q[1]); g.font = `500 20px ${FONT}`; g.fillText(b, q[0], q[1] + 24);
+    g.font = `600 23px ${FONT}`; g.fillText(a, q[0], q[1]); g.font = `500 15px ${FONT}`; g.fillText(b, q[0], q[1] + 19);
   };
   const L = Object.fromEntries(LANDMARKS_V4.map(l => [l.label, l.p]));
   label(L.campfire[0], L.campfire[1], zh.camp, en.camp);
-  label(L.windmill[0], L.windmill[1] + 4, zh.ridge, en.ridge);
+  label(L.windmill[0] - 18, L.windmill[1] - 16, zh.ridge, en.ridge);
   label(4, -14, zh.town, en.town);
-  label(46, -60, zh.park, en.park);
-  label(-30, 82, '南滩', 'South beach');
+  label(64, -74, zh.park, en.park);
+  label(-72, 78, '南滩', 'South beach');
+  label(FACTORY.origin[0], FACTORY.origin[2] + 6, zh.factory, en.factory);
+  // Ferry pin: an anchor disc on the pier head, named to the east so it clears the beach label.
+  const f = P(FERRY_MAP_MARK[0], FERRY_MAP_MARK[1]);
+  g.fillStyle = '#23343D'; g.beginPath(); g.arc(f[0], f[1], 11, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = '#E7C587'; g.lineWidth = 3; g.stroke();
+  g.fillStyle = '#EFE6D6'; g.fillRect(f[0] - 1.5, f[1] - 6, 3, 10); g.fillRect(f[0] - 5, f[1] + 2, 10, 3);
+  g.textAlign = 'left'; g.fillStyle = '#26282A';
+  g.font = `600 26px ${FONT}`; g.fillText(zh.ferryMark, f[0] + 18, f[1] + 2); g.font = `500 18px ${FONT}`; g.fillText(`${en.ferryMark} · Alpha`, f[0] + 18, f[1] + 24);
   // You are here.
   const q = P(here[0], here[1]);
   g.fillStyle = '#E8803A'; g.beginPath(); g.arc(q[0], q[1], 15, 0, Math.PI * 2); g.fill();

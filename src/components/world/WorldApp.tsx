@@ -12,7 +12,8 @@ import WorldAlphaMineHud from './WorldAlphaMineHud';
 import WorldClubHud from './WorldClubHud';
 import WorldPoolInspect from './WorldPoolInspect';
 import WorldAudioSettings from './WorldAudioSettings';
-import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle, WorldNotice } from './WorldHud';
+import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle, WorldNotice, WorldPlaceGuide, WorldFactoryNextStep } from './WorldHud';
+import { WORLD_DESTINATIONS, destinationAt } from './world-destinations';
 import './world.css';
 
 const Runtime = lazy(async () => {
@@ -128,6 +129,8 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldCards content={content} />
     {UiTest && <Suspense fallback={null}><UiTest /></Suspense>}
     <WorldFirstHints />
+    <WorldPlaceGuide />
+    <WorldFactoryNextStep />
     <WorldDrivingHud />
     <WorldAlphaMineHud />
     <WorldClubHud />
@@ -143,6 +146,16 @@ export default function WorldApp({ content }: { content: WorldContent }) {
           <span><i className="lg-you" />{t.legendYou}</span><span><i className="lg-bld" />{t.legendBuildings}</span><span><i className="lg-booth" />{t.legendBooths}</span><span><i className="lg-plot" />{t.legendPlots}</span>
           {s.waypoint ? <button className="world-link-button" onClick={() => useWorldStore.setState({ waypoint: null })}><i className="lg-wp" />{t.waypointClear}</button> : <span className="world-map-tip"><i className="lg-wp" />{t.waypointSet}</span>}
         </div>
+        <section className="world-places" aria-labelledby="world-places-title">
+          <div className="world-places-head"><h3 id="world-places-title">{t.placesTitle}</h3><p>{t.placesHint}</p></div>
+          <ol>{WORLD_DESTINATIONS.map((d, i) => { const on = destinationAt(s.waypoint) === d.id; return <li key={d.id}>
+            <button aria-pressed={on} aria-describedby={on ? 'world-places-active' : undefined}
+              onClick={() => useWorldStore.setState({ waypoint: [...d.at], paused: false })}>
+              <span className="world-places-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <strong>{d.name[s.lang]}</strong><small>{d.detail[s.lang]}</small>
+              {on && <em id="world-places-active"><i className="lg-wp" />{t.placesActive}</em>}
+            </button></li>; })}</ol>
+        </section>
       </div>
       <div className="world-dialog-side">
         <div className="world-dialog-actions"><button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button>

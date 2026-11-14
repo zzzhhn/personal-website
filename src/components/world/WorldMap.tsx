@@ -12,6 +12,7 @@ import {ALPHA_VISITOR_PATH,ALPHA_VISITOR_SPURS} from './alpha-island/alpha-visit
 
 import {FACTORY,FACTORY_FOOTPRINT} from './factory/factory-layout';
 import { createMapPathCache } from './map-path-cache';
+import { FERRY_MAP_MARK } from './world-destinations';
 
 const { register, registerShore, path, shorePath } = createMapPathCache();
 // Authored map geometry is immutable; positions and waypoints are never registered.
@@ -154,6 +155,12 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
         : <rect x={-2 * s} y={-2 * s} width={4 * s} height={4 * s} fill='#B9602A' stroke='#F4ECDB' strokeWidth='.6' />}
     </g>)}
     {waypoint && !full && !wpEdge && <line x1={px} y1={pz} x2={waypoint[0]} y2={waypoint[1]} stroke='#F2B98A' strokeWidth='1.2' strokeDasharray='2.5 2' />}
+    {/* Mainland ferry: the pier alone reads as a pale line, so name it on both radar and full map. */}
+    <g data-ferry-mark='mainland' transform={`translate(${FERRY_MAP_MARK[0]} ${FERRY_MAP_MARK[1]})`}>
+      <circle r={3 * s} fill='#23343D' stroke='#E7C587' strokeWidth='.9' />
+      <path d={`M${-1.7 * s} ${.3 * s}H${1.7 * s}L${1.1 * s} ${1.5 * s}H${-1.1 * s}Z M0 ${.3 * s}V${-1.7 * s}L${1.3 * s} ${-.4 * s}H0`} fill='#F4ECDB' />
+      <text x={5 * s} y={1.6} fontSize={full ? '4.4' : '5'} fill='#fff4da' paintOrder='stroke' stroke='#23343d' strokeWidth='1.1'>{t.ferryMark}</text>
+    </g>
     {wp && <g className='world-map-waypoint' transform={`translate(${wp[0]} ${wp[1]})`}>
       <path d={`M0 0 L${-3.1 * s} ${-5.4 * s} A${3.6 * s} ${3.6 * s} 0 1 1 ${3.1 * s} ${-5.4 * s} Z`} fill='#F2B98A' stroke='#23343D' strokeWidth='.7' strokeLinejoin='round' />
       <circle cy={-7.6 * s} r={1.25 * s} fill='#23343D' />
