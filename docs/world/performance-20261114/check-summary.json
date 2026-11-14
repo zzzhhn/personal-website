@@ -1,0 +1,11 @@
+{
+  "result": [
+    "Result (771 files): ",
+    "- 0 errors",
+    "- 0 warnings",
+    "- 175 hints"
+  ],
+  "rawLog": "evidence/bounded-check.log",
+  "build": "evidence/bounded-build.log",
+  "occlusionTests": "evidence/occlusion-tests.log"
+}

@@ -1,0 +1,11 @@
+{
+  "url": "http://127.0.0.1:4341/world/",
+  "ordinary": true,
+  "actions": "mouse turn and W movement after normal load; no QA state writes",
+  "runtime": "46e6e81d2e7bbd59c0ed1f1dc1bb03231ea3ce41",
+  "htmlMatchesDist": true,
+  "htmlSHA256": "189b5846f3a3de337f22904577a634182824cfd8207188a7e9aa801eed53eef9",
+  "errors": [],
+  "time": "2026-11-14T08:20:21.006Z",
+  "baseline": "http://127.0.0.1:4362/world/"
+}

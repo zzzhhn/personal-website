@@ -1,0 +1,85 @@
+{
+  "cameraAndQualityEqual": true,
+  "pairs": [
+    {
+      "scene": "camp",
+      "time": "day",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "camp",
+      "time": "night",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "factory",
+      "time": "day",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "factory",
+      "time": "night",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "pool",
+      "time": "day",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "pool",
+      "time": "night",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "alpha-tree",
+      "time": "day",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    },
+    {
+      "scene": "alpha-tree",
+      "time": "night",
+      "same": true,
+      "buffer": [
+        2560,
+        1440
+      ],
+      "shadowMap": 2508
+    }
+  ]
+}

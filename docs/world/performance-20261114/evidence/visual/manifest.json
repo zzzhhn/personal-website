@@ -1,0 +1,6830 @@
+{
+  "scope": "Same-camera day/night comparison; actual GL output. QA initial regional placement only.",
+  "runs": [
+    {
+      "variant": "baseline",
+      "name": "camp",
+      "time": "day",
+      "camera": {
+        "position": [
+          -36.927461530939055,
+          14.75468187548979,
+          41.80598711948771
+        ],
+        "quaternion": [
+          -0.3632087023834933,
+          0.29097080903435396,
+          0.12052405535670126,
+          0.8768633752661626
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.9,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.8,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 12.704072385732918,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.8,
+            "visible": true
+          }
+        ],
+        "programs": 148
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 23,
+        "rays": 4,
+        "ms": 0.09999990463256836
+      },
+      "actor": {
+        "player": [
+          -42.00025177001953,
+          5.619400501251221,
+          35.0040168762207
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.0001350717357126996,
+          0.000003442337174419663,
+          0.0003364441799931228
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 706,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              7.116235600790333e-9,
+              -0.06118883937597275,
+              -6.100685823184904e-8
+            ],
+            "yaw": 3.4155850262262166e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.1480453565582138e-7,
+              -0.061287060379981995,
+              -9.012339319269813e-9
+            ],
+            "yaw": 1.570805955591488,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003608402225325557,
+              "speed": -0.00014320909016635574,
+              "lateralSpeed": -0.00007216804453783343,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.36778804659843445,
+                0.3611038625240326,
+                0.3609553277492523
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.4163316604909055e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "camp",
+      "time": "night",
+      "camera": {
+        "position": [
+          -36.927461530939055,
+          14.75468187548979,
+          41.80598711948771
+        ],
+        "quaternion": [
+          -0.3632087023834933,
+          0.29097080903435396,
+          0.12052405535670126,
+          0.8768633752661626
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 30.612674617644856,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 4,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.801898146552849,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 206
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 23,
+        "rays": 4,
+        "ms": 0.09999990463256836
+      },
+      "actor": {
+        "player": [
+          -42.00025177001953,
+          5.619400501251221,
+          35.0040168762207
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00013507167750503868,
+          0.000003442337174419663,
+          0.0003364441799931228
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 905,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              2.9938591605827014e-9,
+              -0.0611887201666832,
+              1.8217285457922117e-7
+            ],
+            "yaw": -1.7761968561589231e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -6.136983188298473e-8,
+              -0.06128617376089096,
+              7.743069296850535e-9
+            ],
+            "yaw": 1.570805955596117,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003604827921348066,
+              "speed": -0.00014322164996405953,
+              "lateralSpeed": -0.00007209655845819063,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677876889705658,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.416372807475722e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "factory",
+      "time": "day",
+      "camera": {
+        "position": [
+          -129.99679459731237,
+          11.09219269969312,
+          -18.208850441932878
+        ],
+        "quaternion": [
+          -0.3384793738198426,
+          0.4310458002491116,
+          0.17854501646714604,
+          0.8171614948594168
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0.012835369912767161,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0.01777205064844684,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.8988151966234368,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.796564070207967,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 13.842818564286546,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0.025670739825534323,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0.025670739825534323,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0.025670739825534323,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0.006001781887064363,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0.011177540268757714,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0.13822706059903098,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0.09873361471359354,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0.01777205064844684,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0.01777205064844684,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0.01777205064844684,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0.01777205064844684,
+            "visible": false
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 7.207108820259379,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 5.205134147965107,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0.10860697618495291,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.796564070207967,
+            "visible": true
+          }
+        ],
+        "programs": 266
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 290,
+        "tested": 1,
+        "rays": 4,
+        "ms": 0.09999990463256836
+      },
+      "actor": {
+        "player": [
+          -137,
+          1.956911325454712,
+          -23
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0,
+          -2.057694015178413e-10,
+          0
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1189,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -2.7895983301107208e-9,
+              -0.061188675463199615,
+              8.862540568088662e-8
+            ],
+            "yaw": -9.432581686141692e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -3.216765520619447e-8,
+              -0.06128761172294617,
+              -3.3420453071641987e-9
+            ],
+            "yaw": 1.5708059555822298,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036082855149782134,
+              "speed": -0.00014320132262931356,
+              "lateralSpeed": -0.00007216571033088352,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.3677879869937897,
+                0.3611038625240326,
+                0.36095544695854187
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.416372807475722e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "factory",
+      "time": "night",
+      "camera": {
+        "position": [
+          -129.99679459731237,
+          11.09219269969312,
+          -18.208850441932878
+        ],
+        "quaternion": [
+          -0.3384793738198426,
+          0.4310458002491116,
+          0.17854501646714604,
+          0.8171614948594168
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 31.580057481360946,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 4,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 8.08412405000903,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": false
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 14.4,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 10.4,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 110,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 266
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 290,
+        "tested": 1,
+        "rays": 4,
+        "ms": 0.09999990463256836
+      },
+      "actor": {
+        "player": [
+          -137,
+          1.956911325454712,
+          -23
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0,
+          -2.057694015178413e-10,
+          0
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1382,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -3.6275069614788436e-9,
+              -0.061188794672489166,
+              1.6216194609341983e-8
+            ],
+            "yaw": -3.3318619147853415e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -7.442358906928348e-8,
+              -0.06128644198179245,
+              4.560446686951991e-9
+            ],
+            "yaw": 1.570805955591488,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003605453734973611,
+              "speed": -0.0001432175191541856,
+              "lateralSpeed": -0.0000721090747307178,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677876889705658,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.4163316604909055e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "pool",
+      "time": "day",
+      "camera": {
+        "position": [
+          67.99770424634168,
+          10.504381398143945,
+          46.52011844790842
+        ],
+        "quaternion": [
+          -0.00015239799649496965,
+          0.9238794592516837,
+          0.3826834020199685,
+          0.0003679213100166432
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0.02573120959959155,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0.03562782867635753,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.8976248114215761,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.7931119531225708,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 13.8718168003424,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0.0514624191991831,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0.0514624191991831,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0.0514624191991831,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0.02082999779589616,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0.04210241069211124,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0.2771053341494475,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0.1979323815353196,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0.03562782867635753,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0.03562782867635753,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0.03562782867635753,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0.03562782867635753,
+            "visible": false
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 110,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.7931119531225708,
+            "visible": true
+          }
+        ],
+        "programs": 392
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 250,
+        "tested": 0,
+        "rays": 0,
+        "ms": 0
+      },
+      "actor": {
+        "player": [
+          67.99066925048828,
+          1.3691024780273438,
+          55.005489349365234
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.0008619522559456527,
+          0.000004970603185938671,
+          -0.00034483024501241744
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1728,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              4.7427222149565296e-9,
+              -0.061188824474811554,
+              4.4679474342501635e-8
+            ],
+            "yaw": -7.762242854567271e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.915060288126824e-8,
+              -0.06128674000501633,
+              -1.6877602648790457e-9
+            ],
+            "yaw": 1.5708059555984315,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036124809703451086,
+              "speed": -0.00014321790583520349,
+              "lateralSpeed": -0.00007224961943833081,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.416331408055416e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "pool",
+      "time": "night",
+      "camera": {
+        "position": [
+          67.99770424634168,
+          10.504381398143945,
+          46.52011844790842
+        ],
+        "quaternion": [
+          -0.00015239799649496965,
+          0.9238794592516837,
+          0.3826834020199685,
+          0.0003679213100166432
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 31.889004911998246,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 3.891788658459232,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.414777634469503,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 110,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 392
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 250,
+        "tested": 0,
+        "rays": 0,
+        "ms": 0.09999990463256836
+      },
+      "actor": {
+        "player": [
+          67.99066925048828,
+          1.3691024780273438,
+          55.005489349365234
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.0008619417203590274,
+          0.000004986909516446758,
+          -0.00034170850994996727
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1912,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -3.3566087687120216e-9,
+              -0.061188653111457825,
+              -1.1846877612242679e-7
+            ],
+            "yaw": 7.803984933985313e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              8.12775198255622e-8,
+              -0.06128624081611633,
+              1.1605941985237678e-8
+            ],
+            "yaw": 1.5708059555984315,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003615285846021925,
+              "speed": -0.00014321555991919028,
+              "lateralSpeed": -0.00007230571695194038,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.416331408055416e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "alpha-tree",
+      "time": "day",
+      "camera": {
+        "position": [
+          185.5975142344611,
+          28.099386980317643,
+          156.41219692830754
+        ],
+        "quaternion": [
+          0.1541546590491768,
+          0.8456054851046182,
+          0.3502612603474134,
+          -0.37216226857952267
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.9,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.8,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 12.169883499578319,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": false
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 110,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.8,
+            "visible": true
+          }
+        ],
+        "programs": 414
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 241,
+        "tested": 11,
+        "rays": 4,
+        "ms": 6.199999809265137
+      },
+      "actor": {
+        "player": [
+          191.85450744628906,
+          18.9641056060791,
+          162.14369201660156
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00003226377157261595,
+          -0.000005879820037080208,
+          -0.000103823869721964
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 2284,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -1.259783499740763e-9,
+              -0.06118869036436081,
+              -6.594198254106232e-8
+            ],
+            "yaw": 1.3254537748075065e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              8.12775198255622e-8,
+              -0.06128624081611633,
+              1.1605941985237678e-8
+            ],
+            "yaw": 1.5708059555984315,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003615285846021925,
+              "speed": -0.00014321555991919028,
+              "lateralSpeed": -0.00007230571695194038,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.416331408055416e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "baseline",
+      "name": "alpha-tree",
+      "time": "night",
+      "camera": {
+        "position": [
+          185.5975142344611,
+          28.099386980317643,
+          156.41219692830754
+        ],
+        "quaternion": [
+          0.1541546590491768,
+          0.8456054851046182,
+          0.3502612603474134,
+          -0.37216226857952267
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 31.192876892216272,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 4,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.660943846621768,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 110,
+            "visible": false
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 414
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 241,
+        "tested": 11,
+        "rays": 4,
+        "ms": 6.099999904632568
+      },
+      "actor": {
+        "player": [
+          191.85450744628906,
+          18.9641056060791,
+          162.14369201660156
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00003226377157261595,
+          -0.000005879820037080208,
+          -0.000103823869721964
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 2487,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -1.1323757931336331e-8,
+              -0.061188675463199615,
+              5.462187502303095e-8
+            ],
+            "yaw": -8.597954851531357e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.4235695289244177e-8,
+              -0.06128674000501633,
+              -2.9328361961233895e-9
+            ],
+            "yaw": 1.5708059555938023,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003612391368870195,
+              "speed": -0.00014321718694513413,
+              "lateralSpeed": -0.00007224782740883019,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.4163723026047425e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "camp",
+      "time": "day",
+      "camera": {
+        "position": [
+          -36.927461530939055,
+          14.75468187548979,
+          41.80598711948771
+        ],
+        "quaternion": [
+          -0.3632087023834933,
+          0.29097080903435396,
+          0.12052405535670126,
+          0.8768633752661626
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.9,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.8,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 12.250756555921921,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.8,
+            "visible": true
+          }
+        ],
+        "programs": 171
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 23,
+        "rays": 4,
+        "ms": 0.5,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          -42.00025177001953,
+          5.619400501251221,
+          35.0040168762207
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.0001350716920569539,
+          0.0000034423389934090665,
+          0.00033644415088929236
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 582,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -3.936676762350544e-9,
+              -0.061188675463199615,
+              1.2255746639766585e-7
+            ],
+            "yaw": -1.2814816747660756e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              9.966519343151958e-8,
+              -0.061287038028240204,
+              5.198111718840437e-9
+            ],
+            "yaw": 1.5708059555845444,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003612152380387096,
+              "speed": -0.00014320663158211302,
+              "lateralSpeed": -0.00007224304763916198,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.3677879869937897,
+                0.3611038625240326,
+                0.36095544695854187
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.4163316604909055e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "camp",
+      "time": "night",
+      "camera": {
+        "position": [
+          -36.927461530939055,
+          14.75468187548979,
+          41.80598711948771
+        ],
+        "quaternion": [
+          -0.3632087023834933,
+          0.29097080903435396,
+          0.12052405535670126,
+          0.8768633752661626
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 32.32641290575163,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 4,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.471327691600747,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 175
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 305,
+        "tested": 23,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          -42.00025177001953,
+          5.619400501251221,
+          35.0040168762207
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00013507167750503868,
+          0.000003442344450377277,
+          0.00033644409268163145
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 775,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -1.9618942914689796e-8,
+              -0.061188481748104095,
+              6.386773065969464e-8
+            ],
+            "yaw": -7.056897936607416e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.233057567162632e-8,
+              -0.06128734350204468,
+              -1.1740636018942041e-8
+            ],
+            "yaw": 1.5708059555822298,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036037540170234653,
+              "speed": -0.00014319665585683765,
+              "lateralSpeed": -0.00007207508037167071,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.3677879869937897,
+                0.3611038625240326,
+                0.3609553277492523
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.4163723026047425e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "factory",
+      "time": "day",
+      "camera": {
+        "position": [
+          -129.99679459731237,
+          11.09219269969312,
+          -18.208850441932878
+        ],
+        "quaternion": [
+          -0.3384793738198426,
+          0.4310458002491116,
+          0.17854501646714604,
+          0.8171614948594168
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.9,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.8,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 13.752808002370026,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 7.2,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 5.2,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.8,
+            "visible": true
+          }
+        ],
+        "programs": 180
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 290,
+        "tested": 1,
+        "rays": 4,
+        "ms": 0,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          -137,
+          1.956911325454712,
+          -23
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0,
+          -2.057694015178413e-10,
+          0
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1116,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              4.030388911502314e-9,
+              -0.06118868291378021,
+              -6.954265074909927e-8
+            ],
+            "yaw": 2.362540441033627e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -1.0015187967837846e-7,
+              -0.06128674000501633,
+              1.5297192845764584e-8
+            ],
+            "yaw": 1.5708059555891734,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036105569137250404,
+              "speed": -0.000143225270245513,
+              "lateralSpeed": -0.00007221113830587924,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677876889705658,
+                0.3611036241054535,
+                0.36095520853996277
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.416331408055416e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "factory",
+      "time": "night",
+      "camera": {
+        "position": [
+          -129.99679459731237,
+          11.09219269969312,
+          -18.208850441932878
+        ],
+        "quaternion": [
+          -0.3384793738198426,
+          0.4310458002491116,
+          0.17854501646714604,
+          0.8171614948594168
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 30.82027336761861,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 4,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.954482581653789,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 14.4,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 10.4,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 110,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 181
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 290,
+        "tested": 1,
+        "rays": 4,
+        "ms": 0.09999990463256836,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          -137,
+          1.956911325454712,
+          -23
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          0,
+          -2.057694015178413e-10,
+          0
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1308,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              1.1451282588836875e-8,
+              -0.06118883937597275,
+              -8.0465738960811e-8
+            ],
+            "yaw": 4.2341016057747674e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.576801480496215e-7,
+              -0.06128726154565811,
+              -1.1861050808192886e-8
+            ],
+            "yaw": 1.5708059555799152,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036031509412319234,
+              "speed": -0.00014320423533387608,
+              "lateralSpeed": -0.00007206301885582421,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.3677879869937897,
+                0.3611038625240326,
+                0.3609553277492523
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.416331408055416e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "pool",
+      "time": "day",
+      "camera": {
+        "position": [
+          67.99770424634168,
+          10.504381398143945,
+          46.52011844790842
+        ],
+        "quaternion": [
+          -0.00015239799649496965,
+          0.9238794592516837,
+          0.3826834020199685,
+          0.0003679213100166432
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.9,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.8,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 13.284316086174803,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0.10479480106996047,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0.20941599100315422,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.8,
+            "visible": true
+          }
+        ],
+        "programs": 227
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 250,
+        "tested": 0,
+        "rays": 0,
+        "ms": 0,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          67.99066925048828,
+          1.3691024780273438,
+          55.00548553466797
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00024114597181323916,
+          0.000004137662472203374,
+          0.00042538935667835176
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1606,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              1.9041450638468405e-9,
+              -0.06118877977132797,
+              -3.984949259461246e-8
+            ],
+            "yaw": 1.7045248721186123e-12,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -7.505484944658747e-8,
+              -0.06128668785095215,
+              5.006371761595574e-9
+            ],
+            "yaw": 1.5708059555868588,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003604373367175832,
+              "speed": -0.00014321660256805203,
+              "lateralSpeed": -0.00007208746737473415,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677876889705658,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.4163316604909055e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "pool",
+      "time": "night",
+      "camera": {
+        "position": [
+          67.99770424634168,
+          10.504381398143945,
+          46.52011844790842
+        ],
+        "quaternion": [
+          -0.00015239799649496965,
+          0.9238794592516837,
+          0.3826834020199685,
+          0.0003679213100166432
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 32.47503624951751,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 3.894188684413233,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.814589971372651,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 227
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 250,
+        "tested": 0,
+        "rays": 0,
+        "ms": 0,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          67.99066925048828,
+          1.3691024780273438,
+          55.005489349365234
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.0008618751890026033,
+          0.000004986249223293271,
+          -0.0003417631087359041
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 1763,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              3.09458059177814e-9,
+              -0.06118873506784439,
+              -1.316383730909365e-7
+            ],
+            "yaw": 5.985547518627507e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              2.2694656820476666e-8,
+              -0.06128773093223572,
+              -8.453051036916293e-10
+            ],
+            "yaw": 1.5708059555868588,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036115972220229516,
+              "speed": -0.00014321464618346558,
+              "lateralSpeed": -0.0000722319444718646,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.3677879869937897,
+                0.3611038625240326,
+                0.36095544695854187
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.4163723026047425e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "alpha-tree",
+      "time": "day",
+      "camera": {
+        "position": [
+          185.5975142344611,
+          28.099386980317643,
+          156.41219692830754
+        ],
+        "quaternion": [
+          0.1541546590491768,
+          0.8456054851046182,
+          0.3502612603474134,
+          -0.37216226857952267
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 1.9,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 3.8,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 13.813419713402707,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 3.8,
+            "visible": true
+          }
+        ],
+        "programs": 243
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 241,
+        "tested": 11,
+        "rays": 4,
+        "ms": 6.400000095367432,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          191.85450744628906,
+          18.9641056060791,
+          162.14369201660156
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00003226377157261595,
+          -0.000005879820037080208,
+          -0.000103823869721964
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 2153,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              1.1746459804840015e-8,
+              -0.06118876487016678,
+              1.6084486276213283e-7
+            ],
+            "yaw": -1.621583114825766e-10,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374423503875732,
+              2.0024096965789795
+            ],
+            "velocity": [
+              -1.2452716191546642e-7,
+              -0.061286501586437225,
+              3.878239063226374e-9
+            ],
+            "yaw": 1.5708059555984315,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.00003615210592432031,
+              "speed": -0.00014321813258226735,
+              "lateralSpeed": -0.00007230421188014054,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793622374534607,
+                0.3677878677845001,
+                0.3611036241054535,
+                0.3609550893306732
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597753359165e-8,
+              -0.061189789324998856,
+              -3.416372807475722e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    },
+    {
+      "variant": "candidate",
+      "name": "alpha-tree",
+      "time": "night",
+      "camera": {
+        "position": [
+          185.5975142344611,
+          28.099386980317643,
+          156.41219692830754
+        ],
+        "quaternion": [
+          0.1541546590491768,
+          0.8456054851046182,
+          0.3502612603474134,
+          -0.37216226857952267
+        ],
+        "fov": 50,
+        "near": 0.1,
+        "far": 600,
+        "exposure": 1,
+        "canvas": {
+          "width": 2560,
+          "height": 1440
+        },
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        }
+      },
+      "render": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1.3333333333333333,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2508,
+        "shadowType": 1,
+        "postprocessing": [],
+        "coasterVegetation": [
+          {
+            "name": "coaster-ST1-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST1-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L0",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-ST2-L1",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          },
+          {
+            "name": "coaster-G19",
+            "visible": false,
+            "instances": 0,
+            "triangles": 0,
+            "matrixUploads": 0
+          }
+        ]
+      },
+      "lights": {
+        "lights": [
+          {
+            "name": "alpha-fixed-night-fill-slot",
+            "type": "PointLight",
+            "intensity": 13,
+            "visible": true
+          },
+          {
+            "name": "alpha-fixed-rack-light-slot",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "HemisphereLight",
+            "intensity": 0.7,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "DirectionalLight",
+            "intensity": 0.32,
+            "visible": false
+          },
+          {
+            "name": "camp-fire-key",
+            "type": "PointLight",
+            "intensity": 31.100528180272658,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 26,
+            "visible": true
+          },
+          {
+            "name": "camp-night-fill",
+            "type": "PointLight",
+            "intensity": 4,
+            "visible": true
+          },
+          {
+            "name": "camp-fire-spill",
+            "type": "PointLight",
+            "intensity": 7.888814981927709,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 130,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-0",
+            "type": "PointLight",
+            "intensity": 140,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-1",
+            "type": "PointLight",
+            "intensity": 100,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-2",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-3",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-4",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "djc-venue-light-5",
+            "type": "PointLight",
+            "intensity": 18,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-0",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "factory-work-light-1",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "street-nearest-lamp-key",
+            "type": "PointLight",
+            "intensity": 0,
+            "visible": true
+          },
+          {
+            "name": "world-sun-cascaded",
+            "type": "SunLight",
+            "intensity": 0.32,
+            "visible": true
+          }
+        ],
+        "programs": 243
+      },
+      "occlusion": {
+        "blockers": [],
+        "fades": [],
+        "corridor_m": [
+          1.1,
+          1.6
+        ],
+        "candidates": 241,
+        "tested": 11,
+        "rays": 4,
+        "ms": 6.299999713897705,
+        "cache": {
+          "entries": 0,
+          "created": 0,
+          "reused": 0,
+          "released": 0
+        }
+      },
+      "actor": {
+        "player": [
+          191.85450744628906,
+          18.9641056060791,
+          162.14369201660156
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "playerVelocity": [
+          -0.00003226377157261595,
+          -0.000005879820037080208,
+          -0.000103823869721964
+        ],
+        "playerCollider": {
+          "radius": 0.34,
+          "halfHeight": 0.48,
+          "centerHeight": 0.8200000000000001
+        },
+        "playerYaw": 0,
+        "physicsStep": 2372,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00594139099121,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              6.9402443791943824e-9,
+              -0.06118880212306976,
+              7.720423411683441e-8
+            ],
+            "yaw": -8.431486233984836e-11,
+            "entering": false,
+            "mass": 1400,
+            "com": [
+              -0.06864000111818314,
+              -0.37525999546051025,
+              0
+            ],
+            "inertia": [
+              1946.348876953125,
+              579.1201782226562,
+              1645.604248046875
+            ],
+            "inertiaFrame": [
+              -3.37274053130443e-9,
+              -4.6737113734707236e-8,
+              -0.7180261015892029,
+              0.696016252040863
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          },
+          {
+            "id": "coupe",
+            "position": [
+              26.199382781982422,
+              2.1374425888061523,
+              2.0024096965789795
+            ],
+            "velocity": [
+              1.2404616711592098e-7,
+              -0.061287663877010345,
+              -1.1224082108185485e-8
+            ],
+            "yaw": 1.5708059555799152,
+            "entering": false,
+            "mass": 1100,
+            "com": [
+              -0.07568001002073288,
+              -0.10298000276088715,
+              0
+            ],
+            "inertia": [
+              1750.152099609375,
+              1504.3792724609375,
+              378.1474304199219
+            ],
+            "inertiaFrame": [
+              -0.49476608633995056,
+              0.5051798820495605,
+              -0.5051797032356262,
+              0.4947660267353058
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": {
+              "power": 0,
+              "steering": 0,
+              "rearGrip": 1,
+              "nitro": 1,
+              "boostLock": false,
+              "rechargeDelay": 0,
+              "boosting": false,
+              "handbrake": false,
+              "braking": false,
+              "slipAngle": -0.000036087975933367244,
+              "speed": -0.00014320371146868153,
+              "lateralSpeed": -0.00007217595189806708,
+              "contacts": 4,
+              "engine": 0,
+              "suspension": [
+                0.36793652176856995,
+                0.36778804659843445,
+                0.3611038625240326,
+                0.3609553277492523
+              ]
+            }
+          },
+          {
+            "id": "van",
+            "position": [
+              45.992454528808594,
+              2.464979648590088,
+              -45
+            ],
+            "velocity": [
+              4.406597398087797e-8,
+              -0.061189789324998856,
+              -3.416331408055416e-22
+            ],
+            "yaw": -4.0301506532856916e-12,
+            "entering": false,
+            "mass": 2100,
+            "com": [
+              -0.07919997721910477,
+              -0.3244398534297943,
+              0
+            ],
+            "inertia": [
+              3808.346435546875,
+              3423.21826171875,
+              1211.8272705078125
+            ],
+            "inertiaFrame": [
+              -0.5098779201507568,
+              -0.4899229407310486,
+              0.4899231493473053,
+              0.5098777413368225
+            ],
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0,
+            "steering": 0,
+            "steerInput": 0,
+            "throttleInput": 0,
+            "driving": null
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

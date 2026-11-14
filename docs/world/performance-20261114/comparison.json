@@ -1,0 +1,259 @@
+{
+  "baseline": "facdc92",
+  "candidate": "46e6e81",
+  "conditions": "Production, high2560x1440 drawing buffer on1920x1080 CSS/DPR2. No CPU profiler, no GL wrappers, no screenshots in timed phases. A1/A2 from earlier BAAB; final bounded candidate B1/B2 afterwards. GPU/OS caches and unrelated apps not reset; no cold-cache claim.",
+  "firstReadyMs": {
+    "confirm-a1": 17577.5,
+    "confirm-a2": 16781.800000190735,
+    "bounded-b1": 16170.60000038147,
+    "bounded-b2": 16659.599999904633
+  },
+  "results": {
+    "first-orbit": {
+      "confirm-a1": {
+        "p95": 83.4,
+        "max": 1233.3,
+        "over50": 22,
+        "over100": 12,
+        "over250": 6
+      },
+      "confirm-a2": {
+        "p95": 66.8,
+        "max": 616.6,
+        "over50": 22,
+        "over100": 11,
+        "over250": 6
+      },
+      "bounded-b1": {
+        "p95": 66.6,
+        "max": 1116.6,
+        "over50": 14,
+        "over100": 8,
+        "over250": 5
+      },
+      "bounded-b2": {
+        "p95": 66.6,
+        "max": 733.2,
+        "over50": 15,
+        "over100": 10,
+        "over250": 5
+      }
+    },
+    "warm-orbit": {
+      "confirm-a1": {
+        "p95": 16.8,
+        "max": 50.1,
+        "over50": 1,
+        "over100": 0,
+        "over250": 0
+      },
+      "confirm-a2": {
+        "p95": 16.8,
+        "max": 33.4,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 16.8,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.8,
+        "max": 33.4,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      }
+    },
+    "camp-movement": {
+      "confirm-a1": {
+        "p95": 16.8,
+        "max": 50,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "confirm-a2": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 33.3,
+        "max": 66.6,
+        "over50": 3,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      }
+    },
+    "enter-factory-0": {
+      "confirm-a1": {
+        "p95": 33.3,
+        "max": 3733.2,
+        "over50": 3,
+        "over100": 3,
+        "over250": 2
+      },
+      "confirm-a2": {
+        "p95": 16.8,
+        "max": 166.7,
+        "over50": 2,
+        "over100": 2,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      }
+    },
+    "factory-orbit-0": {
+      "confirm-a1": {
+        "p95": 33.3,
+        "max": 999.9,
+        "over50": 8,
+        "over100": 5,
+        "over250": 5
+      },
+      "confirm-a2": {
+        "p95": 16.7,
+        "max": 33.2,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      }
+    },
+    "leave-factory-0": {
+      "confirm-a1": {
+        "p95": 16.8,
+        "max": 1633.2,
+        "over50": 5,
+        "over100": 3,
+        "over250": 1
+      },
+      "confirm-a2": {
+        "p95": 16.8,
+        "max": 133.3,
+        "over50": 1,
+        "over100": 1,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.8,
+        "max": 33.3,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      }
+    },
+    "enter-factory-1": {
+      "confirm-a1": {
+        "p95": 16.7,
+        "max": 1033.3,
+        "over50": 2,
+        "over100": 2,
+        "over250": 1
+      },
+      "confirm-a2": {
+        "p95": 16.7,
+        "max": 83.3,
+        "over50": 1,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 16.8,
+        "max": 50,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.8,
+        "max": 50.1,
+        "over50": 1,
+        "over100": 0,
+        "over250": 0
+      }
+    },
+    "leave-factory-1": {
+      "confirm-a1": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "confirm-a2": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b1": {
+        "p95": 16.7,
+        "max": 16.8,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      },
+      "bounded-b2": {
+        "p95": 16.7,
+        "max": 33.4,
+        "over50": 0,
+        "over100": 0,
+        "over250": 0
+      }
+    }
+  },
+  "errors": {
+    "confirm-a1": [],
+    "confirm-a2": [],
+    "bounded-b1": [],
+    "bounded-b2": []
+  }
+}
