@@ -10,7 +10,7 @@ import { alphaMaterial } from '../alpha-materials';
 import type { AlphaFinish } from '../alpha-art';
 import { useAlphaStore } from '../alpha-state';
 import { ALPHA_WATERWHEEL } from '../alpha-batch2-layout';
-import { buildSluiceCrank, buildSluicePanel, buildWaterwheelFlowers, buildWaterwheelFrame, buildWaterwheelRotor, SLUICE_X, WATERWHEEL_CENTER } from './waterwheel-art';
+import { buildSluiceCrank, buildSluicePanel, buildWaterwheelFlowers, buildWaterwheelFrame, buildWaterwheelRotor, waterwheelFoundationContacts, waterwheelFoundationExtensions, SLUICE_X, WATERWHEEL_CENTER } from './waterwheel-art';
 import { cycleWaterwheelGate, getWaterwheelSnapshot, subscribeWaterwheel, type WaterwheelSnapshot } from './waterwheel-state';
 
 type CraftParts = { finish: AlphaFinish; geometry: BufferGeometry }[];
@@ -51,7 +51,8 @@ export default function AlphaWaterwheel({ onVisit, onBalanced }: { onVisit?: () 
   const rotor = useRef<Group>(null), gates = useRef<(Group | null)[]>([]), cranks = useRef<(Group | null)[]>([]), bucketWater = useRef<InstancedMesh>(null), spray = useRef<InstancedMesh>(null), streams = useRef<(Mesh | null)[]>([]), curtain = useRef<(Mesh | null)[]>([]), flowers = useRef<Group>(null), irrigation = useRef<Group>(null);
   const animation = useRef({ time: 0, speed: 2.25, fill: .18, flower: 0, reveal: 0, angle: 0, gates: [2, 2, 2] });
   const built = useMemo(() => {
-    const frame = buildWaterwheelFrame(), wheel = buildWaterwheelRotor(), panel = buildSluicePanel(), crank = buildSluiceCrank(), flower = buildWaterwheelFlowers();
+    const foundations = waterwheelFoundationContacts(), extensions = waterwheelFoundationExtensions(foundations);
+    const frame = buildWaterwheelFrame(foundations), wheel = buildWaterwheelRotor(), panel = buildSluicePanel(), crank = buildSluiceCrank(), flower = buildWaterwheelFlowers();
     const all = [frame, wheel, panel, crank, flower.stems, flower.petals];
     const materials = new Map<AlphaFinish, MeshStandardMaterial>();
     all.flat().forEach(p => { if (!materials.has(p.finish)) materials.set(p.finish, alphaMaterial(p.finish)); });
@@ -59,7 +60,7 @@ export default function AlphaWaterwheel({ onVisit, onBalanced }: { onVisit?: () 
     const foam = alphaMaterial('paper'); foam.color.set('#e0f5ed'); foam.emissiveIntensity = .035;
     const petal = alphaMaterial('paper'); petal.color.set('#b990bc'); petal.emissiveIntensity = .025;
     const wet = alphaMaterial('stone'); wet.color.set('#596f69'); wet.roughness = .42;
-    return { frame, wheel, panel, crank, flower, all, materials, water, foam, petal, wet, cube: new BoxGeometry(1, 1, 1), dummy: new Object3D(), station: new Vector3(...stationWorld), bloomColor: new Color('#e1b4d8'), dryColor: new Color('#8b8871') };
+    return { frame, wheel, panel, crank, flower, foundations, extensions, all, materials, water, foam, petal, wet, cube: new BoxGeometry(1, 1, 1), dummy: new Object3D(), station: new Vector3(...stationWorld), bloomColor: new Color('#e1b4d8'), dryColor: new Color('#8b8871') };
   }, []);
   useEffect(() => () => { built.all.flat().forEach(p => p.geometry.dispose()); built.materials.forEach(m => m.dispose()); built.water.dispose(); built.foam.dispose(); built.petal.dispose(); built.wet.dispose(); built.cube.dispose(); }, [built]);
 
@@ -138,6 +139,7 @@ export default function AlphaWaterwheel({ onVisit, onBalanced }: { onVisit?: () 
     <RigidBody type="fixed" colliders={false} userData={{ solid: true }} name="alpha-waterwheel-static-safety-proxies">
       {/* The rotor remains cosmetic; an immovable envelope prevents moving-mesh contacts. */}
       <CuboidCollider position={[-5.3, 3.25, -1.5]} args={[3.15, 3.25, 1.85]} />
+      {built.extensions.map(f => <CuboidCollider key={f.id} name={`alpha-waterwheel-foundation-${f.id}`} position={f.position} args={f.half} />)}
       {SLUICE_X.map(x => <CuboidCollider key={x} position={[x, 1.15, 2.3]} args={[.82, 1.15, .6]} />)}
       {[-1.65, 8.05].flatMap(x => [-6, -2.6].map(z => <CuboidCollider key={`${x}-${z}`} position={[x, 2.6, z]} args={[.82, 2.6, .3]} />))}
       <CuboidCollider position={[3.05, 5.36, -4.3]} args={[4.8, .46, 2.1]} />

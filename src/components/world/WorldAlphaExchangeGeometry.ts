@@ -1,13 +1,15 @@
 import { BoxGeometry, BufferGeometry, CylinderGeometry, Euler, Float32BufferAttribute, Matrix4, Quaternion, TorusGeometry, Vector2,Vector3,ShapeUtils } from 'three';
 import { TriMeshFlags } from '@dimforge/rapier3d-compat';
 import { mergeBatch, toBatch, type Emit } from './WorldParkKit';
-import { EXCHANGE_HALL,EXCHANGE_COLUMNS,exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
+import { ALPHA_EXCHANGE_ORIGIN,EXCHANGE_HALL,EXCHANGE_COLUMNS,exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK,EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout';
 import { exchangeChamferBox,exchangeSurface,bakeExchangeWorklights,EXCHANGE_BANK_LAMPS } from './alpha-exchange-craft';
 import { buildExchangeInteriorCraft } from './alpha-exchange-interior-craft';
 import { buildExchangeGalleryCraft } from './alpha-exchange-gallery-craft';
 import { buildExchangeClearingCraft } from './alpha-exchange-clearing-craft';
 import type { Vec3 } from './types';
+import { terrainHeight } from './WorldLandform';
+import { exchangeGroundSkirt } from './facility-site-contact';
 
 export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
 /** Local to the unchanged entrance origin. Visible and collider faces share source vertices.
@@ -67,6 +69,7 @@ export function buildAlphaExchangeGeometry() {
     }
     slab.outline.forEach((a,i)=>{if(!slab.walls[i])return;const b=slab.outline[(i+1)%slab.outline.length],p:Vec3=[a[0],slab.y,a[1]],q:Vec3=[b[0],slab.y,b[1]],r:Vec3=[b[0],slab.y-slab.depth,b[1]],s:Vec3=[a[0],slab.y-slab.depth,a[1]];walls.push(...p,...q,...r,...p,...r,...s);});
     raw(top,slab.color,'surface',[0,.09,1]);raw(bottom,slab.color);raw(walls,slab.color);
+    raw(exchangeGroundSkirt(slab,ALPHA_EXCHANGE_ORIGIN,terrainHeight),slab.color);
   }
   for(const b of exchangeBoxes())add(new BoxGeometry(...b.size),b.color,b.center,b.rotation??[0,0,0],b.surface?'surface':'solid');
   // Broad visible steps are complemented by continuous entrance and pit side routes.

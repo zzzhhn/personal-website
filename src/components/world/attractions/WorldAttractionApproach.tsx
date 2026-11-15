@@ -6,6 +6,7 @@ import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL } from './attraction-layout';
 import { clipArrivalJunction, roadRail, type SiteMesh, type SitePoint } from './coaster-arrival-site';
 import { meshHeight, terrainHeight } from '../WorldLandform';
 import { useWorldStore } from '../store';
+import { approachEdgeSkirts } from './attraction-approach-edges';
 
 /** Follow the physical triangles, including the ridge's snapped crease vertices. */
 const approachHeight = (x:number,z:number) => meshHeight(x,z)??terrainHeight(x,z);
@@ -68,16 +69,26 @@ export default function WorldAttractionApproach() {
     const groups=[asphalt,edge,paint],colors=['#65665e','#b9ae8c','#e1d4ad'];
     const meshes=groups.map((parts,i)=>{
       const geometry=mergeGeometries(parts)!;parts.forEach(p=>p.dispose());
-      return {geometry,indices:new Uint32Array(geometry.index!.array),material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
+      return {geometry,positions:geometry.getAttribute('position').array as Float32Array,indices:new Uint32Array(geometry.index!.array),material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
     });
     const walk=siteGeometry(COASTER_ARRIVAL.walk);
+    // Keep the frozen top/physics arrays separate from these purely visual sides.
+    // Include the walking connector as a neighbour so its shared arrival edge stays open.
+    const tops=[...meshes.slice(0,2).map(m=>({positions:m.positions,indices:m.indices})),
+      {...COASTER_ARRIVAL.walk,close:false}];
+    approachEdgeSkirts(tops,approachHeight).slice(0,2).forEach((data,i)=>{
+      if(!data.indices.length)return;
+      const sides=siteGeometry(data),top=meshes[i].geometry;
+      meshes[i].geometry=mergeGeometries([top,sides])!;
+      top.dispose();sides.dispose();
+    });
     return {meshes,walk,walkIndices:new Uint32Array(walk.index!.array)};
   },[]);
   useEffect(()=>()=>{built.meshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});built.walk.dispose();},[built]);
   return <group name="north-attractions-approach" userData={{noOcclusionFade:true}}>
     {built.meshes.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
     <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
-      <TrimeshCollider args={[built.meshes[0].geometry.getAttribute('position').array as Float32Array,built.meshes[0].indices]} friction={.9}/>
+      <TrimeshCollider args={[built.meshes[0].positions,built.meshes[0].indices]} friction={.9}/>
     </RigidBody>
     <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'coaster-arrival-walk'}}>
       <TrimeshCollider args={[built.walk.getAttribute('position').array as Float32Array,built.walkIndices]} friction={.9}/>

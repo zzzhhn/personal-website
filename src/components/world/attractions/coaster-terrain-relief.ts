@@ -133,6 +133,17 @@ const ridges: readonly (readonly [number,number,number,number])[] = [
   [-22,-62,7.6,14],[-18,-40,10,14],[-14,-18,6.4,13],[7,-54,10.5,16],
   [13,-31,7.5,17],[26,-15,8.4,15],[40,-42,9,12],[40,-17,7.8,13],[33,5,6.5,16],[30,26,5.8,15],
 ];
+const INFIELD_STEP = 3;
+// The retained straight promenade in coaster-landscape.ts: [16,43], 3 x 20 m,
+// top .11. Protect every source cell touching its footprint, so a triangle with
+// an outside vertex cannot interpolate back through the unchanged paving.
+const INFIELD_PROMENADE = { minX: 14.5, maxX: 17.5, minZ: 33, maxZ: 53, top: .11 };
+const PROMENADE_CELLS = {
+  minX: Math.floor(INFIELD_PROMENADE.minX / INFIELD_STEP) * INFIELD_STEP,
+  maxX: Math.ceil(INFIELD_PROMENADE.maxX / INFIELD_STEP) * INFIELD_STEP,
+  minZ: Math.floor(INFIELD_PROMENADE.minZ / INFIELD_STEP) * INFIELD_STEP,
+  maxZ: Math.ceil(INFIELD_PROMENADE.maxZ / INFIELD_STEP) * INFIELD_STEP,
+};
 function infieldHeight(x:number,z:number) {
   const fold=Math.max(...ridges.map(([rx,rz,h,width])=>h*Math.exp(-((x-rx)**2+(z-rz)**2)/(width*width))));
   let y=.35+fold+fracture(x*.32,z*.32,3)*.65;
@@ -142,7 +153,12 @@ function infieldHeight(x:number,z:number) {
   const walk=walkSample(x,z);
   if(walk.distance<5.4)y=Math.min(y,walk.height-.26+Math.max(0,walk.distance-3.3)*.38);
   // At low track crossings this becomes a shallow cutting, joining the retained grass at its edges.
-  return Math.max(-.45,Math.min(y,safetyCeiling(x,z)));
+  const cut=Math.max(-.45,Math.min(y,safetyCeiling(x,z)));
+  // A cutting must return to the retained island at its perimeter. Previously
+  // the walking ceiling lowered even perimeter vertices below the old grass.
+  const joined=cut<.04?.04+(cut-.04)*Math.min(1,edge/1.2):cut;
+  return x>=PROMENADE_CELLS.minX&&x<=PROMENADE_CELLS.maxX&&z>=PROMENADE_CELLS.minZ&&z<=PROMENADE_CELLS.maxZ
+    ?Math.min(joined,INFIELD_PROMENADE.top-.035):joined;
 }
 
 type InfieldSurface = { points: Vec3[]; faces: [number,number,number][]; cells: Map<string,number[]> };
@@ -192,7 +208,7 @@ function clippedSurface(outline:readonly Point2[],step:number,height:(x:number,z
   return {points,faces,cells,savedTopTriangles};
 }
 function getInfieldSurface() {
-  return infieldSurface??=clippedSurface(COASTER_INFIELD_OUTLINE,3,infieldHeight);
+  return infieldSurface??=clippedSurface(COASTER_INFIELD_OUTLINE,INFIELD_STEP,infieldHeight);
 }
 
 function surfaceSampler(points:Vec3[],faces:[number,number,number][]) {
@@ -231,7 +247,7 @@ export function coasterDropHeight(x:number,z:number) {
 
 /** Exact barycentric top surface, also used to seat vegetation on the collision mesh. */
 export function coasterInfieldHeight(x:number,z:number) {
-  const mesh=getInfieldSurface(),ids=mesh.cells.get(`${Math.floor(x/3)*3},${Math.floor(z/3)*3}`)??[];
+  const mesh=getInfieldSurface(),ids=mesh.cells.get(`${Math.floor(x/INFIELD_STEP)*INFIELD_STEP},${Math.floor(z/INFIELD_STEP)*INFIELD_STEP}`)??[];
   for(const i of ids){
     const [a,b,c]=mesh.faces[i].map(v=>mesh.points[v]);
     const d=(b[2]-c[2])*(a[0]-c[0])+(c[0]-b[0])*(a[2]-c[2]);

@@ -8,6 +8,7 @@ import { EXCHANGE_CAPE, exchangeCapeDistance } from './alpha-exchange-layout';
 import { CLUB_CAPE, CLUB_POOL, clubCapeDistance, clubScatterBlocked, meshWaterlineLoops } from './djc-club-layout';
 import { attractionCapeDistance, attractionScatterBlocked, attractionCliffCoastHeight } from './attractions/attraction-layout';
 import { factoryCapeDistance, factoryScatterBlocked } from './factory/factory-layout';
+import { coasterInfieldHeight } from './attractions/coaster-terrain-relief';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -336,7 +337,23 @@ export function terrainHeight(x: number, z: number) {
   return LAYOUT_V4 ? clubGroundHeight(pave(h, x, z),x,z) : h;
 }
 /** Local shallow basin, 3.5 cm below its editable mineral lining, inside the same island mesh. */
-function clubGroundHeight(h:number,x:number,z:number) {return CLUB_POOL.contains(x,z)?Math.min(h,CLUB_POOL.floorHeight(x,z)-.035):h;}
+function clubGroundHeight(h:number,x:number,z:number) {
+  if(CLUB_POOL.contains(x,z))return Math.min(h,CLUB_POOL.floorHeight(x,z)-.035);
+  // The stone apron tapers to y=1.015. Retain its dry earth datum at y=1,
+  // including a narrow shoulder, so coastline noise cannot pierce the paving.
+  if(Math.abs(x-CLUB_POOL.center[0])<CLUB_POOL.radii[0]+8&&Math.abs(z-CLUB_POOL.center[2])<CLUB_POOL.radii[1]+8){
+    const distance=CLUB_POOL.distance(x,z);
+    if(distance<7.4)h=Math.min(h,1+Math.max(0,distance-6.4)*.08);
+  }
+  // The infield is a second, authored solid surface. Its shallow cuttings must
+  // also cut the underlying island, rather than leaving grass/physics above it.
+  if(coasterInfieldBounds(x,z)){
+    const top=coasterInfieldHeight(x-50,z+195);
+    if(top!==null)return Math.min(h,1+top-.035);
+  }
+  return h;
+}
+const coasterInfieldBounds=(x:number,z:number)=>x>=20&&x<=101&&z>=-269&&z<=-150;
 /** v4: ground under / beside the field paving (cap under it, fill under its outer chamfer). */
 function pave(h: number, x: number, z: number) {
   const [cap, floor] = pavingGround(x, z);
@@ -385,7 +402,7 @@ export function buildTerrain(): Terrain {
     const { d, s } = coastFrame(cx, cz);
     const camp = Math.hypot(cx - CAMP_CENTER[0], cz - CAMP_CENTER[2]);
     let k = 2;
-    if ((d < topPush(s) - 4.5 || LAYOUT_V4 && (attractionCapeDistance(cx,cz)<-4.5 || factoryCapeDistance(cx,cz)<-4.5)) && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && (nearRidgeV4(cx, cz)||CLUB_POOL.distance(cx,cz)<4))) k = 3;
+    if ((d < topPush(s) - 4.5 || LAYOUT_V4 && (attractionCapeDistance(cx,cz)<-4.5 || factoryCapeDistance(cx,cz)<-4.5)) && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && (nearRidgeV4(cx, cz)||CLUB_POOL.distance(cx,cz)<4||coasterInfieldBounds(cx,cz)))) k = 3;
     else {
       let maxH = -Infinity;
       for (let j = j0; j <= j0 + BLOCK; j++) for (let i = i0; i <= i0 + BLOCK; i++) {

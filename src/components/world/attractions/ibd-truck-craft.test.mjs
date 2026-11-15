@@ -4,6 +4,7 @@ import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import { Builder, cbox } from '../WorldStreetGeometry.ts';
 import { buildIbdTruck } from './ibd-truck-geometry.ts';
 import { IBD_TRUCK_FLOOR as floor, IBD_TRUCK_WHEELS as wheels } from './ibd-yard-layout.ts';
+import { ibdTruckMountedPoint, ibdTruckLoadingRamp } from './ibd-truck-datum.ts';
 
 const b = new Builder(), solids = [];
 buildIbdTruck(b, (at, size, surface, solid = false, bevel = .03, rotation) => {
@@ -19,16 +20,17 @@ function hit(from, direction, far) {
   return ray.intersectObject(mesh, false)[0];
 }
 
-test('the full crafted truck keeps every original collision envelope and ramp transform', () => {
-  assert.deepEqual(solids, [
+test('the grounded truck translates original collision envelopes and keeps ramp feet on the yard', () => {
+  const body = [
     { at: [16, 1.05, 12.5], size: [4, .3, 9] },
     { at: [18, 2.3, 12.5], size: [.2, 3.1, 9] },
     { at: [16, 3.9, 12.5], size: [4, .16, 9] },
     { at: [16, 2.3, 8], size: [4, 3.1, .15] },
     { at: [16, 2.3, 17], size: [4, 3.1, .15] },
     { at: [16, 1.55, 19.5], size: [3.8, 2.6, 3.5] },
-    ...[10.5, 14.5].map(z => ({ at: [12.5, .6, z], size: [Math.hypot(3, floor), .14, 2.9], rotation: [0, 0, Math.atan2(floor, 3)] })),
-  ]);
+  ];
+  assert.deepEqual(solids, [...body.map(s => ({...s,at:ibdTruckMountedPoint(s.at)})),
+    ...[10.5,14.5].map(ibdTruckLoadingRamp)]);
   assert.equal(geometry.groups.length, 0, 'physical finishes stay in the merged draw');
   for (const attribute of Object.values(geometry.attributes)) assert.ok(attribute.array.every(Number.isFinite));
   const p = geometry.attributes.position, idx = geometry.index, a = new Vector3(), edge = new Vector3(), other = new Vector3();
@@ -55,16 +57,19 @@ test('wear boards share the real cargo floor datum, with shallow joints and the 
   const uv = geometry.attributes.aSuv;
   for (const z of [10.5, 14.5]) {
     for (const x of [14.335, 15.285, 16.235, 17.66]) {
-      const top = hit([x, 1.5, z], [0, -1, 0], .5);
+      const top = hit([x, floor + .3, z], [0, -1, 0], .5);
       assert.ok(top && Math.abs(top.point.y-floor) < 1e-6, 'wood deck floats above or below the carrying datum');
       assert.equal(role.getW(top.face.a), -3, 'wear board does not use the wood finish');
       assert.ok(Math.abs(uv.getX(top.face.a)) > 8, 'board manufacturing coordinates were discarded');
     }
-    const joint = hit([14.5725, 1.5, z], [0, -1, 0], .5);
+    const joint = hit([14.5725, floor + .3, z], [0, -1, 0], .5);
     assert.ok(joint && floor-joint.point.y > .02 && floor-joint.point.y < .03, 'board joint must expose the nearby steel carrier');
-    for (const y of [1.3, 2.2, 3.3]) {
+    // Preserve the original .1/1/2.1 m clearance above the carrying floor.
+    // A world-fixed y=1.3 now intersects the raised ramp nose below this aperture.
+    for (const clearance of [.1, 1, 2.1]) {
+      const y = floor + clearance;
       const opening = hit([13.8, y, z], [1, 0, 0], 4.5);
-      assert.ok(opening && opening.point.x > 17.85, 'truck framing closes the west loading aperture');
+      assert.ok(opening && opening.point.x > 17.85, `truck framing closes the west loading aperture at y=${y}, z=${z}: ${opening?.point.toArray()}`);
     }
   }
 });

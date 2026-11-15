@@ -40,3 +40,9 @@ test('curved sled swept corridor avoids lodge, shallows and arrival walk',()=>{
  assert.ok(shallows>6,`sled excavation reaches the shallows: ${shallows}`);
  assert.ok(walk>3,`arrival walk crosses sled corridor: ${walk}`);
 });
+
+test('waterfall passage fixed stone floor is not buried by the mountain triangles',()=>{
+ for(let x=-31.8;x<=-19.8;x+=.5)for(let z=3.6;z<=6.2;z+=.5){
+  assert.ok(alphaGroundHeight(x,z)<24.01,`terrain protrudes through passage at ${x},${z}`);
+ }
+});

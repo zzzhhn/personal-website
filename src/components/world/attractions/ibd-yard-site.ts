@@ -3,6 +3,7 @@ import { bar, lathe, type Builder, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { IBD_FIXTURES } from './ibd-yard-lighting.ts';
 import { IBD_SHEDS } from './ibd-yard-layout.ts';
+import { IBD_YARD_PAVING_Y } from './ibd-truck-datum';
 import type { IbdCube } from './ibd-yard-architecture.ts';
 import { IBD_BOUNDARY_SEGMENTS, IBD_FOOTPRINT, IBD_YARD } from './attraction-layout.ts';
 import { addIbdPlant, addIbdFencePanel, addIbdLanternFrame } from './ibd-site-craft.ts';
@@ -44,7 +45,7 @@ export function buildIbdPaving(b: Builder) {
       let patch = clip(clip(triangle, 0, x, true), 0, x + 2, false);
       patch = clean(clip(clip(patch, 1, z, true), 1, z + 2, false));
       if (patch.length < 3 || Math.abs(area(patch)) < 1e-7) continue;
-      const top = b.face(patch.map(([xx, zz]): V3 => [xx, .085, zz]), P.paving, [0, 1, 0]);
+      const top = b.face(patch.map(([xx, zz]): V3 => [xx, IBD_YARD_PAVING_Y, zz]), P.paving, [0, 1, 0]);
       // The IBD shader reserves aMat.w=2 for paving; ordinary props/signs retain 0/1.
       // This changes only shading, never the closed collision slab or its tessellation.
       for (const vertex of top) b.mat[vertex * 4 + 3] = 2;
@@ -53,7 +54,7 @@ export function buildIbdPaving(b: Builder) {
   }
   for (let i = 0; i < polygon.length; i++) {
     const [x, z] = polygon[i], [xx, zz] = polygon[(i + 1) % polygon.length];
-    b.face([[x, .085, z], [x, -.32, z], [xx, -.32, zz], [xx, .085, zz]], P.concrete, [zz - z, 0, x - xx]);
+    b.face([[x, IBD_YARD_PAVING_Y, z], [x, -.32, z], [xx, -.32, zz], [xx, IBD_YARD_PAVING_Y, zz]], P.concrete, [zz - z, 0, x - xx]);
   }
   // Weld equal collision vertices across the tiled top, avoiding artificial edges between coplanar cells.
   const vertices: number[] = [], remap: number[] = [], ids = new Map<string, number>();
@@ -142,8 +143,8 @@ export function buildIbdSite(b: Builder, cube: IbdCube) {
       const e = new Euler().setFromQuaternion(q, 'YXZ'), rotation: V3 = [e.x, e.y, e.z];
       b.tr(f.at, rotation, () => {
         const truck = f.mount === 'truck', width = f.mount === 'bench' ? .48 : 1.2;
-        // Truck units sit flush under the unchanged ceiling: bottom 3.764m,
-        // leaving >.25m above the actual closed loaded pallet/lid envelope.
+        // Truck units follow the same mounted datum as their ceiling and cargo,
+        // retaining >.25m above the actual closed loaded pallet/lid envelope.
         cube([0, 0, 0], [width, truck ? .05 : .14, .35], P.dark, false, 0);
         cube([0, truck ? -.032 : -.083, 0], [width - .1, .018, .25], P.lens, false, 0);
         for (const side of [-1, 1]) cube([side * (width / 2 - .025), 0, 0], [.05, truck ? .045 : .12, .37], P.cutSteel, false, 0);

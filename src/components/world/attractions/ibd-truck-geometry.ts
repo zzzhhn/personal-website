@@ -1,7 +1,8 @@
 import { Builder, bar, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import type { IbdCube, IbdSolid } from './ibd-yard-architecture.ts';
-import { IBD_TRUCK_FLOOR as floor, IBD_TRUCK_WHEELS as wheels } from './ibd-yard-layout.ts';
+import { IBD_TRUCK_WHEELS as wheels } from './ibd-yard-layout.ts';
+import { IBD_TRUCK_MODEL_FLOOR as floor, IBD_TRUCK_MODEL_WHEEL_Y, groundIbdTruckBody, ibdTruckLoadingRamp } from './ibd-truck-datum';
 
 const trim: Surf = { color: '#b8c2c2', rough: .43, metal: .62 };
 const seam: Surf = { color: '#40575c', rough: .67, metal: .28 };
@@ -27,7 +28,7 @@ function finish(b: Builder, code: -2 | -3 | -4, along: 0 | 2, draw: () => void) 
  * Local +Y points outboard. The tyre retains the fixed radius/width/contact. */
 function truckWheel(b: Builder, side: number, z: number) {
   const x = wheels.centerX + side * wheels.halfTrack;
-  b.tr([x, wheels.centerY, z], [0, 0, -side * Math.PI / 2], () => {
+  b.tr([x, IBD_TRUCK_MODEL_WHEEL_Y, z], [0, 0, -side * Math.PI / 2], () => {
     lathe(b, [[.35, -wheels.halfWidth], [.49, -wheels.halfWidth], [.56, -.18],
       [wheels.radius, -.13], [wheels.radius, -.075], [.564, -.065], [.564, -.045], [wheels.radius, -.035],
       [wheels.radius, .035], [.564, .045], [.564, .065], [wheels.radius, .075],
@@ -185,9 +186,10 @@ export function buildIbdCab(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
 /** Side-loading rigid truck. Its long axis follows the two real pallet bays (+Z).
  * West remains open all the way to the floor: no decorative sill crosses a ramp. */
 export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
-  // Original collision floor, east wall, roof and end closures are unchanged.
+  const firstPosition=b.pos.length,firstSolid=solids.length;
+  // Preserve the original model frame; one final placement moves body and solids together.
   // The visible deck uses a steel carrier and actual hardwood wear boards with
-  // flush 1.2 m tops, rather than a second sheet floating above the datums.
+  // flush model-space 1.2 m tops; the shared placement then grounds the complete body.
   solids.push({ at: [16, floor - .15, 12.5], size: [4, .3, 9] });
   solids.push({ at: [18, 2.3, 12.5], size: [.2, 3.1, 9] });
   for (const z of [9.5, 12.5, 15.5]) {
@@ -272,5 +274,9 @@ export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   buildIbdCab(b, cube, solids);
 
   for (const z of wheels.axles) for (const side of [-1, 1]) truckWheel(b, side, z);
-  for (const z of [10.5, 14.5]) finish(b, -4, 0, () => cube([12.5, floor / 2, z], [Math.hypot(3, floor), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(floor, 3)]));
+  groundIbdTruckBody(b.pos,firstPosition,solids,firstSolid);
+  for (const z of [10.5, 14.5]) {
+    const ramp=ibdTruckLoadingRamp(z);
+    finish(b, -4, 0, () => cube(ramp.at,ramp.size,P.steel,true,0,ramp.rotation));
+  }
 }

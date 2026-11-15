@@ -12,6 +12,7 @@ import WorldAlphaMineHud from './WorldAlphaMineHud';
 import WorldClubHud from './WorldClubHud';
 import WorldPoolInspect from './WorldPoolInspect';
 import WorldAudioSettings from './WorldAudioSettings';
+import WorldSiteReview from './WorldSiteReview';
 import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle, WorldNotice, WorldPlaceGuide, WorldFactoryNextStep } from './WorldHud';
 import { WORLD_DESTINATIONS, destinationAt } from './world-destinations';
 import './world.css';
@@ -108,6 +109,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
   if (supported === null) return <Loading />;
   if (!supported) return <main className="world-cover world-mobile"><WorldMap mode='full' /><span className="world-eyebrow">{t.title}</span><h1>{t.mobile}</h1><p>{t.mobileDetail}</p><a href="/">← {t.back}</a></main>;
   return <main className={`world-app ${s.shot ? 'world-shot' : ''}`} aria-label={t.title}>
+    <WorldSiteReview />
     {shellOnly ? <p className="world-shell-preview">UI preview · 3D scene not loaded</p> : <WorldErrorBoundary message={t.error} retry={t.retry}>
       <Suspense fallback={null}><Runtime content={content} /></Suspense>
       {!s.ready && <Loading />}

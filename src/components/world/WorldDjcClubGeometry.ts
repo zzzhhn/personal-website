@@ -3,6 +3,7 @@ import { CLUB, CLUB_POOL, CLUB_DAYBEDS, CLUB_WALKWAYS, CLUB_PALMS, CLUB_SOFT_PLA
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { terrainHeight } from './WorldLandform';
 import { DJC_BAR_DANCE_JOIN } from './djc-bar-layout';
+import { djcWalkwayOutline, djcWalkwaySupports, djcPoolRimAccess, djcPoolInnerReturn } from './facility-site-contact';
 
 type V3 = [number, number, number];
 export type ClubBatch = 'wood' | 'stone' | 'metal' | 'fabric' | 'foliage' | 'glass' | 'amber' | 'cyan';
@@ -240,6 +241,10 @@ export function buildDjcClubGeometry({
       const [a,b,c]=tri.map(i=>outline[i]),ny=(b[2]-a[2])*(c[0]-a[0])-(b[0]-a[0])*(c[2]-a[2]);
       if(Math.abs(ny)<1e-7)continue; // Collinear outline stations are not support faces.
       const t=ny>0?[a,b,c]:[a,c,b];top.push(...t[0],...t[1],...t[2]);surface.triangle(t[0],t[1],t[2]);walkwayFaces.push(t);
+      // Close the deck volume from below; front-sided top triangles disappear
+      // when seen between the supports. Reverse the upward winding.
+      const bottom=t.map(p=>[p[0],p[1]-.18,p[2]] as V3);
+      sides.push(...bottom[2],...bottom[1],...bottom[0]);
     }
     for(let i=0;i<outline.length;i++){const a=outline[i],b=outline[(i+1)%outline.length],c:V3=[b[0],b[1]-.18,b[2]],d:V3=[a[0],a[1]-.18,a[2]];sides.push(...a,...b,...c,...a,...c,...d);}
     solidTriangles(sides);add('wood',fromTriangles(top),C.wood);add('wood',fromTriangles(sides),C.edge);
@@ -270,8 +275,10 @@ export function buildDjcClubGeometry({
   // Stepping fans spread towards two irregular pool-side paths, rather than a rectangle around the venue.
   for(const p of CLUB_WALKWAYS) {
     // Triangulate the simple paving outline with Three's ear-cut tessellator below.
-    const outline=p.map(([x,z])=>[x,1.4+Math.max(0,Math.min(1,(46-x)/6))*.2,z] as V3);
+    const outline=djcWalkwayOutline(p);
     pavedOutline(outline);
+    const piles=djcWalkwaySupports(outline,terrainHeight);
+    if(piles.positions.length){solidTriangles(piles.positions);add('wood',fromTriangles(piles.positions),C.edge);}
   }
   // Meet the refined deck at its south edge. The old approach continued under the
   // deck and protruded through the last 34 mm of its surface.
@@ -304,25 +311,23 @@ export function buildDjcClubGeometry({
     const p=(t:number,o:number,y:number):V3=>{const q=CLUB_POOL.boundary(t,o);return[q[0],y,q[1]];};
     const width=2.8+.45*Math.sin(mid*4+.4);
     // Four broad bays keep an exit nearby around the enlarged basin.
-    const access=Math.abs(Math.cos(mid))<.22||Math.abs(Math.sin(mid))<.28;
+    const access=djcPoolRimAccess(a,b);
     const coping=access?1.35:.52;
     finishRole = basinFinish ? FINISH.coping : 0;
     const copingColor = !basinCraft ? '#d0c7af' : access ? '#c3b79d' : '#e0d3b5';
     slab('stone',[p(a,0,access?1:1.43),p(a,coping,1.43),p(b,coping,1.43),p(b,0,access?1:1.43)],
       .14, copingColor, true, false, !basinCraft ? copingColor : '#afa38a');
-    if (basinCraft && !access) {
-      // The return starts at the underside of the existing coping and ends
-      // below the exact edge of the mineral floor. Access slopes stay open.
-      const upperA = p(a, 0, 1.29), upperB = p(b, 0, 1.29);
-      const bottom = ([x, , z]: V3): V3 => [x, CLUB_POOL.floorHeight(x, z) - .006, z];
-      const lowerA = bottom(upperA), lowerB = bottom(upperB);
-      const lining = fromTriangles([...upperB,...upperA,...lowerA,...upperB,...lowerA,...lowerB]);
+    const innerReturn=djcPoolInnerReturn(a,b);
+    if (innerReturn) {
+      const {positions,lowerA,lowerB}=innerReturn;
+      const lining = fromTriangles(positions);
       lining.setAttribute('aDjcGrain', new Float32BufferAttribute([
         b * 20, 1.29, a * 20, 1.29, a * 20, lowerA[1],
         b * 20, 1.29, a * 20, lowerA[1], b * 20, lowerB[1],
       ], 2));
       finishRole = basinFinish ? FINISH.lining : 0;
-      add('stone', lining, '#78968f');
+      solidTriangles(Array.from(lining.getAttribute('position').array));
+      add('stone', lining, basinCraft ? '#78968f' : '#a4b3ab');
     }
     finishRole = basinFinish ? FINISH.paver : 0;
     slab('stone',[p(a,coping,1.4),p(a,width,1.4),p(b,width,1.4),p(b,coping,1.4)],.4,'#c3baa2',true,true);

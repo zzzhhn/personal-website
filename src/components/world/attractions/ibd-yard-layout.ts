@@ -1,5 +1,7 @@
 import { IBD_YARD } from './attraction-layout.ts';
 import type { Vec3, Bi } from '../types';
+import { IBD_TRUCK_FLOOR, IBD_TRUCK_MODEL_WHEEL_Y, IBD_TRUCK_WHEEL_RADIUS, IBD_TRUCK_GROUND_LIFT } from './ibd-truck-datum';
+export { IBD_TRUCK_FLOOR } from './ibd-truck-datum';
 
 export type IbdSlot = 'coil-front' | 'coil-rear' | 'parts-a' | 'parts-b';
 export type IbdStockKey = 'stock-a' | 'stock-b';
@@ -61,10 +63,9 @@ export const ibdPackHome=(id:IbdPackStation):Vec3=>isIbdStockKey(id)?IBD_STOCK_H
 export const ibdStockRoute=(key:IbdStockKey):Vec3[]=>[
   [...IBD_STOCK_HOME[key]],[IBD_STOCK_HOME[key][0],1.1,-19.7],[18,1.1,-19.7],[...IBD_CARGO_HOME['parts-b']],
 ];
-export const IBD_TRUCK_FLOOR = 1.2;
 /** The fixed loading truck, shared by its visible tyres and local ground occlusion. */
 export const IBD_TRUCK_WHEELS = {
-  centerX: 16, centerY: .6, halfTrack: 1.73, radius: .58, halfWidth: .23,
+  centerX: 16, centerY: IBD_TRUCK_MODEL_WHEEL_Y + IBD_TRUCK_GROUND_LIFT, halfTrack: 1.73, radius: IBD_TRUCK_WHEEL_RADIUS, halfWidth: .23,
   axles: [9.5, 14.5, 19.5],
 } as const;
 export const IBD_TRUCK: Partial<Record<IbdSlot, Vec3>> = {

@@ -1,11 +1,41 @@
 import { CylinderGeometry, Quaternion, SphereGeometry, Vector3 } from 'three';
 import { AlphaBuilder } from '../alpha-art';
 import type { Vec3 } from '../../types';
+import { ALPHA_WATERWHEEL } from '../alpha-batch2-layout';
+import { alphaGroundHeight } from '../alpha-terrain';
 
 const turnZ = (a: number) => new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), a);
 const axleQ = new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), Math.PI / 2);
 export const WATERWHEEL_CENTER: Vec3 = [-5.3, 3.17, -1.5];
 export const SLUICE_X = [-1.9, 1.1, 4.1] as const;
+
+export interface WaterwheelFoundation {
+  id: string; x: number; z: number; width: number; depth: number;
+  top: number; originalBottom: number; bottom: number; bevel: number;
+}
+/** Nine samples per bearing footprint use the same cached triangles as Alpha's render
+ * and Rapier ground. Bury the lower round-over as well as the measured gap, while
+ * retaining each original upper surface and every timber/upper masonry position. */
+export function waterwheelFoundationContacts(sample = alphaGroundHeight): WaterwheelFoundation[] {
+  const survey: Omit<WaterwheelFoundation, 'bottom'>[] = [];
+  for (const x of [-8.15, -2.55]) for (const z of [-2.8, -.25])
+    survey.push({ id: `headrace-${x}-${z}`, x, z, width: .85, depth: .85, top: .56, originalBottom: 0, bevel: .08 });
+  for (const x of [-1.65, 8.05]) for (const z of [-6, -2.6])
+    survey.push({ id: `arch-${x}-${z}`, x, z, width: 1.65, depth: .6, top: .65, originalBottom: -.01, bevel: .1 });
+  return survey.map(f => {
+    let lowest = Infinity;
+    for (const dx of [-f.width / 2, 0, f.width / 2]) for (const dz of [-f.depth / 2, 0, f.depth / 2])
+      lowest = Math.min(lowest, sample(ALPHA_WATERWHEEL.center[0] + f.x + dx, ALPHA_WATERWHEEL.center[2] + f.z + dz) - ALPHA_WATERWHEEL.center[1]);
+    const bottom = lowest < f.originalBottom - 1e-4 ? lowest - f.bevel - .01 : f.originalBottom;
+    return { ...f, bottom };
+  });
+}
+/** Existing fixed envelopes stop at local y=0. Cover only the newly extended lower
+ * support, meeting those envelopes without moving or widening their upper proxies. */
+export const waterwheelFoundationExtensions = (foundations: readonly WaterwheelFoundation[]) => foundations
+  .filter(f => f.bottom < f.originalBottom - 1e-4)
+  .map(f => ({ id: f.id, position: [f.x, f.bottom / 2, f.z] as Vec3,
+    half: [f.width / 2, -f.bottom / 2, f.depth / 2] as Vec3 }));
 
 /** Editable timber construction, no filled wheel disc. Axial +Z, 18 hollow
  * buckets, twin segmented rims, mortised spokes, iron straps and bearing axle. */
@@ -36,7 +66,7 @@ export function buildWaterwheelRotor() {
   return b.finish();
 }
 
-export function buildWaterwheelFrame() {
+export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts()) {
   const b = new AlphaBuilder();
   // Four footings carry the upper headrace. Lower bearing piers flank the wheel.
   for (const z of [-2.85, -.15]) {
@@ -46,7 +76,8 @@ export function buildWaterwheelFrame() {
     for (const x of [-5.7, -4.9]) b.cyl('metal', [x, 3.08, z], .045, .45);
   }
   for (const x of [-8.15, -2.55]) for (const z of [-2.8, -.25]) {
-    b.box('stone', [x, .28, z], [.85, .56, .85], .08);
+    const f = foundations.find(f => f.x === x && f.z === z)!;
+    b.box('stone', [x, (f.top + f.bottom) / 2, z], [f.width, f.top - f.bottom, f.depth], f.bevel);
     b.beam('wood', [x, .4, z], [x, 6.48, z], .31);
     b.beam('wood', [x, 4.95, z], [x + (x < -5 ? .95 : -.95), 6.12, z], .19);
     b.box('metal', [x, .72, z], [.34, .2, .34], .02);
@@ -57,8 +88,12 @@ export function buildWaterwheelFrame() {
   b.beam('darkwood', [-8.32, 6.02, -2.8], [-2.35, 6.02, -2.8], .28);
   b.beam('darkwood', [-8.32, 6.02, -.25], [-2.35, 6.02, -.25], .28);
   // Massive layered rock ledge, with a 4.85m clear, open-backed passage beneath.
-  for (const x of [-1.65, 8.05]) for (const z of [-6, -2.6]) for (let row = 0; row < 8; row++)
-    b.box('stone', [x + Math.sin(row * 2.7) * .06, .32 + row * .65, z], [1.65, .66, .6], .1);
+  for (const x of [-1.65, 8.05]) for (const z of [-6, -2.6]) for (let row = 0; row < 8; row++) {
+    if (row === 0) {
+      const f = foundations.find(f => f.x === x && f.z === z)!;
+      b.box('stone', [x, (f.top + f.bottom) / 2, z], [f.width, f.top - f.bottom, f.depth], f.bevel);
+    } else b.box('stone', [x + Math.sin(row * 2.7) * .06, .32 + row * .65, z], [1.65, .66, .6], .1);
+  }
   for (let i = 0; i < 6; i++) b.box('stone', [-.55 + i * 1.44, 5.36, -4.3], [1.59, .92, 4.2], .16);
   // The bridge channel feeds the wheel headrace. Its support never reaches the passage.
   for (const z of [-2.9, -1.72]) b.beam('wood', [-2.8, 6.3, z], [6.6, 6.6, z], .16);

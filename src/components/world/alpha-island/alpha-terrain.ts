@@ -76,6 +76,11 @@ export function alphaHeight(x:number,z:number) {
  const mouth=Math.min(Math.hypot(x-ALPHA_CAVE_PATH[0][0],z-ALPHA_CAVE_PATH[0][2]),Math.hypot(x-ALPHA_CAVE_PATH.at(-1)![0],z-ALPHA_CAVE_PATH.at(-1)![2]));
  const caveWeight=(1-smooth(3.3,4.5,cave.distance))*smooth(0,2,mouth);
  if(caveWeight>0)h=Math.min(h,h*(1-caveWeight)+(cave.y-.35)*caveWeight);
+ // The waterfall passage has its own fixed stone floor at y=24.04. Recess the
+ // underlying 1.5m lattice, including the cells spanning its edges, while leaving
+ // the older y=25 trail at z=2 intact. This is not a grade change to the station.
+ const passageEdge=Math.hypot(Math.max(-33-x,0,x+19.5),Math.max(3-z,0,z-7.5));
+ if(passageEdge<.45){const w=1-smooth(0,.45,passageEdge);h=Math.min(h,h*(1-w)+23.85*w);}
  const realCable=nearestAlphaSegment(x,z,cableSamples);const u=(realCable.index+realCable.t)/192;
  const ca=cableSamples[realCable.index],cb=cableSamples[realCable.index+1],grade=Math.abs(cb[1]-ca[1])/Math.max(.01,Math.hypot(cb[0]-ca[0],cb[2]-ca[2]));
  const clear=Math.max(.3,2.1*grade+.3,7*smooth(.08,.22,u)*(1-smooth(.76,.96,u)));

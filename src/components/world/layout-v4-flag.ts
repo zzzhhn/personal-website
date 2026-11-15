@@ -61,6 +61,21 @@ export const WORLD_SHOTS_V4 = [
   { id: 'ridge', position: [10, 40, -40] as Vec3, target: [-30, 4, -84] as Vec3 },
   // Paired evidence cameras share geometry, projection and time presets across revisions.
   ...(['day', 'night'] as const).flatMap(time => [
+    // Contact-height review cameras use the production world and materials.
+    { id: `site-alpha-shallows-${time}`, position: [183, 14.2, 117] as Vec3, target: [199, 12.2, 130] as Vec3 },
+    { id: `site-alpha-lodge-${time}`, position: [152, 6.3, 144] as Vec3, target: [170, 4.1, 151] as Vec3 },
+    { id: `site-alpha-wheel-${time}`, position: [217, 26, 206] as Vec3, target: [206, 26, 199] as Vec3 },
+    { id: `site-coaster-infield-${time}`, position: [69, 2.6, -148] as Vec3, target: [66, 1, -159] as Vec3 },
+    { id: `site-road-edge-${time}`, position: [-76, 1.7, -133] as Vec3, target: [-74, 1.02, -140] as Vec3 },
+    { id: `site-exchange-foot-${time}`, position: [34, 2.7, -72] as Vec3, target: [42, 1.2, -79] as Vec3 },
+    { id: `site-club-span-${time}`, position: [54, 2, 44] as Vec3, target: [50, 1.2, 39] as Vec3 },
+    { id: `site-club-pool-${time}`, position: [81, 2.1, 61] as Vec3, target: [83, 1.15, 64] as Vec3 },
+    { id: `site-club-apron-${time}`, position: [90, 2.3, 40] as Vec3, target: [86.8, 1.05, 45.1] as Vec3 },
+    { id: `site-ibd-truck-${time}`, position: [-77, 2.6, -160] as Vec3, target: [-73.73, 1.6, -162.5] as Vec3 },
+    { id: `site-camp-${time}`, position: [-24, 12.5, 48] as Vec3, target: [-43, 6.1, 27] as Vec3 },
+    { id: `site-town-${time}`, position: [24, 3, 17] as Vec3, target: [10, 1.4, 7] as Vec3 },
+    { id: `site-quarry-${time}`, position: [-78, 3, -46] as Vec3, target: [-84, 1.2, -56] as Vec3 },
+    { id: `site-factory-${time}`, position: [-139, 3, -27] as Vec3, target: [-153, 1.2, -17] as Vec3 },
     { id: `camp-batch-overview-${time}`, position: [-24, 12.5, 48] as Vec3, target: [-43, 6.1, 27] as Vec3 },
     { id: `camp-batch-shelter-${time}`, position: [-37.5, 7.2, 19.3] as Vec3, target: [-33, 6.0, 12.5] as Vec3 },
     { id: `camp-batch-flags-${time}`, position: [-50.7, 7.0, 34.9] as Vec3, target: [-57, 6.4, 30] as Vec3 },

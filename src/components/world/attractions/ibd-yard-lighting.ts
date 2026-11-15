@@ -3,6 +3,7 @@ import type { V3 } from '../WorldStreetGeometry.ts';
 import { IBD_CONCRETE_GLSL, IBD_CONCRETE_COLOR } from './ibd-concrete-surface.ts';
 import { IBD_COIL_GLSL } from './ibd-coil-surface.ts';
 import { IBD_GROUND_CONTACT_GLSL } from './ibd-ground-contact.ts';
+import { ibdTruckMountedPoint } from './ibd-truck-datum';
 
 export interface IbdFixture {
   at: V3; reach: number; power: number; pendant?: boolean;
@@ -32,8 +33,8 @@ export const IBD_FIXTURES: readonly IbdFixture[] = [
   { at: [26, 4.8, -16.1], reach: 7, power: .65, pendant: true, mount: 'strip', aim: [26, 1.2, -18.8] },
   { at: [-6.65, 2.45, 18.6], reach: 5.5, power: .48, mount: 'bench', baseY: 1.18, aim: [-6, 1.2, 19] },
   { at: [-3.65, 2.15, 25.6], reach: 5.5, power: .48, mount: 'bench', baseY: .88, aim: [-3, .9, 26] },
-  { at: [16, 3.805, 10.5], reach: 5.8, power: .6, mount: 'truck', aim: [16, 1.6, 10.5] },
-  { at: [16, 3.805, 14.5], reach: 5.8, power: .6, mount: 'truck', aim: [16, 1.6, 14.5] },
+  { at: ibdTruckMountedPoint([16, 3.805, 10.5]), reach: 5.8, power: .6, mount: 'truck', aim: ibdTruckMountedPoint([16, 1.6, 10.5]) },
+  { at: ibdTruckMountedPoint([16, 3.805, 14.5]), reach: 5.8, power: .6, mount: 'truck', aim: ibdTruckMountedPoint([16, 1.6, 14.5]) },
 ];
 
 function direction(fixture: IbdFixture, dx: number, dy: number, dz: number, distance: number) {

@@ -7,6 +7,7 @@ import { buildIbdStatic } from './ibd-yard-geometry.ts';
 import { createIbdYardGame } from './ibd-yard-game.ts';
 import { ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
 import { IBD_STATIONS } from './ibd-yard-layout.ts';
+import { IBD_TRUCK_GROUND_LIFT } from './ibd-truck-datum.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics.ts';
 import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../player-motion.ts';
 import { playerSupport, followPlayerGround } from '../player-ground.ts';
@@ -54,7 +55,7 @@ test('all 20 rollers and eight side bars reuse exact closed visual triangles wit
   // The rack-mounted sign replaced two freestanding posts (ab7f0b9), clearing
   // the carton-transfer corridor without changing roller or truck contacts.
   assert.equal(data.solids.length,256);
-  assert.ok(data.solids.some(s => s.at.every((v,i)=>v === [16,3.9,12.5][i])
+  assert.ok(data.solids.some(s => s.at.every((v,i)=>v === [16,3.9+IBD_TRUCK_GROUND_LIFT,12.5][i])
     && s.size.every((v,i)=>v === [4,.16,9][i])), 'truck roof still stops a jumping player');
   // Near-field truck/control detail may evolve; the contact mesh must still reuse the exact bars.
   assert.ok(data.geometry.index.count/3 < IBD_GEOMETRY_BUDGET.static, 'static yard stays within its geometry allocation');
