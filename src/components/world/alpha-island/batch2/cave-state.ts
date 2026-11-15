@@ -1,5 +1,6 @@
 import type { Vec3 } from '../../types';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2Segment } from '../alpha-batch2-layout.ts';
+import { createCaveExploration, startCaveExploration, cancelCaveExploration } from './cave-exploration';
 
 export const CAVE_ECHO_SECONDS = 4.8;
 // Inside the existing cave floor, left of the through-route. The full .82 x .75 m
@@ -32,14 +33,15 @@ export function caveNear(position: readonly number[], margin = 0) {
     && position[1] > 19 && position[1] < 43;
 }
 export const createCaveState = () => ({ lamp: 'rack' as 'rack' | 'reaching' | 'carried', reachTime: 0,
-  echoAge: CAVE_ECHO_SECONDS, chime: 0 as CaveChime, revision: 0 });
+  echoAge: CAVE_ECHO_SECONDS, chime: 0 as CaveChime, revision: 0, exploration: createCaveExploration() });
 export type CaveState = ReturnType<typeof createCaveState>;
 export function cancelCaveState(s: CaveState) {
   s.lamp = 'rack'; s.reachTime = 0; s.echoAge = CAVE_ECHO_SECONDS; s.revision++;
+  cancelCaveExploration(s.exploration);
 }
 export function startCaveEcho(s: CaveState, chime: CaveChime) {
   if (s.echoAge < .65) return false;
-  s.chime = chime; s.echoAge = 0; s.revision++; return true;
+  s.chime = chime; s.echoAge = 0; s.revision++; startCaveExploration(s.exploration, chime); return true;
 }
 export function tickCaveState(s: CaveState, dt: number, handError: number) {
   dt = Math.max(0, Math.min(.08, Number.isFinite(dt) ? dt : 0));

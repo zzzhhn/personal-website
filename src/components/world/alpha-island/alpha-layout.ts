@@ -5,6 +5,8 @@ import type { Vec3 } from '../types';
 export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r7-20261115';
 export const ALPHA_ORIGIN: Vec3 = [235, 0, 190];
 export const ALPHA_YAW = 0;
+/** Shared assembled datum: crank axis stays connected to the wind-gate crossbar. */
+export const ALPHA_WIND_GATE_Y = 37.8;
 export const alphaWorld = (p: readonly number[]): Vec3 => [p[0] + ALPHA_ORIGIN[0], p[1], p[2] + ALPHA_ORIGIN[2]];
 export const alphaLocal = (p: readonly number[]): Vec3 => [p[0] - ALPHA_ORIGIN[0], p[1], p[2] - ALPHA_ORIGIN[2]];
 export const ALPHA_BOUNDS = { minX: 137, maxX: 333, minZ: 76, maxZ: 304, minY: -5, maxY: 91 } as const;

@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { CuboidCollider,RigidBody,TrimeshCollider,ConvexHullCollider } from '@react-three/rapier';
 import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,TubeGeometry,CatmullRomCurve3,Vector3,Float32BufferAttribute,LatheGeometry,Vector2 } from 'three';
 import { AlphaBuilder,createAlphaLodge,createAlphaRack,alphaLanternGeometry,type AlphaFinish } from './alpha-art';
-import { ALPHA_MAIN_PATH,ALPHA_STATIONS,ALPHA_SOCKETS } from './alpha-layout';
+import { ALPHA_MAIN_PATH,ALPHA_STATIONS,ALPHA_SOCKETS,ALPHA_WIND_GATE_Y } from './alpha-layout';
 import { alphaGroundHeight as alphaHeight,alphaPathDistance } from './alpha-terrain';
 import {batch2PathDistance} from './alpha-batch2-layout';
 import { createAlphaBoulderField } from './alpha-rocks';
@@ -24,7 +24,12 @@ function railSpans(){const spans:{a:Vec3;b:Vec3}[]=[];for(let i=2;i<ALPHA_MAIN_P
 function routeRails(){const b=new AlphaBuilder();for(const {a,c} of railSpans().map(s=>({a:s.a,c:s.b}))){for(const p of [a,c]){b.cyl('wood',[p[0],p[1]+.55,p[2]],.095,1.18,.085);b.cyl('metal',[p[0],p[1]+.13,p[2]],.105,.045);}b.beam('wood',[a[0],a[1]+.94,a[2]],[c[0],c[1]+.94,c[2]],.1);b.beam('rope',[a[0],a[1]+.48,a[2]],[c[0],c[1]+.48,c[2]],.035);}return b.finish();}
 function PathRailColliders(){const spans=useMemo(railSpans,[]);return <>{spans.map((s,i)=>{const a=new Vector3(...s.a),b=new Vector3(...s.b),d=b.clone().sub(a),q=new Quaternion().setFromUnitVectors(new Vector3(1,0,0),d.clone().normalize()),p=a.add(b).multiplyScalar(.5);p.y+=.5;return <RigidBody key={i} type="fixed" colliders={false} position={p.toArray() as Vec3} quaternion={q.toArray()} userData={{solid:true}}><CuboidCollider args={[d.length()/2,.52,.07]}/></RigidBody>;})}</>;}
 function treeRope(){const b=new AlphaBuilder();b.beam('rope',[-.7,3.2,1.3],[-.7,1.2,1.3],.028);b.cyl('darkwood',[-.7,1.2,1.3],.075,.25);return b.finish();}
-function windGate(){const b=new AlphaBuilder();for(const x of [-1,1]){b.box('stone',[x,.16,0],[.6,.32,.65],.07);b.beam('wood',[x,.2,0],[x,1.5,0],.16);}b.beam('metal',[-1.1,1.05,0],[1.1,1.05,0],.065);for(let i=0;i<6;i++)b.box('wood',[-.8+i*.32,1.2,0],[.2,.8,.12]);return b.finish();}
+function windGate(){const b=new AlphaBuilder();for(const x of [-1,1]){
+ // Extend the same stone foot into the actual sloping triangles. Keep its top,
+ // post and crossbar together, rather than lowering only an invisible target.
+ let bottom=0;for(let iz=0;iz<=4;iz++)for(let ix=0;ix<=4;ix++)bottom=Math.min(bottom,alphaHeight(16+x-.3+ix*.15,-44-.325+iz*.1625)-ALPHA_WIND_GATE_Y-.08);
+ b.box('stone',[x,(bottom+.32)/2,0],[.6,.32-bottom,.65],.07);b.beam('wood',[x,.2,0],[x,1.5,0],.16);
+}b.beam('metal',[-1.1,1.05,0],[1.1,1.05,0],.065);for(let i=0;i<6;i++)b.box('wood',[-.8+i*.32,1.2,0],[.2,.8,.12]);return b.finish();}
 function summitCairns(){const b=new AlphaBuilder();for(let i=0;i<108;i++){const a=i*2.399,r=4.3+Math.sqrt(i)*1.6,x=2+Math.cos(a)*r,z=39+Math.sin(a)*r,y=alphaHeight(x,z);if(y<70||Math.hypot(x+7,z-43)<4||Math.hypot(x-2,z-39)<3)continue;for(let j=0;j<3+(i%3);j++){const g=new SphereGeometry(.28-j*.035,10,6);g.scale(1.4,.48,1);b.add(g,'stone',[x+Math.sin(j+i)*.07,y+.12+j*.22,z]);}}return b.finish();}
 function plateauRocks(){const b=new AlphaBuilder();for(let i=0;i<120;i++){const a=i*2.399,r=27+(i%17)*3.3,x=Math.cos(a)*r,z=Math.sin(a)*r*1.2,y=alphaHeight(x,z);if(y<-.8||alphaPathDistance(x,z)<4.5)continue;const g=new SphereGeometry(1,10,7);const at=g.getAttribute('position');for(let k=0;k<at.count;k++){const v=new Vector3().fromBufferAttribute(at,k);v.multiplyScalar(1+.12*Math.sin(v.y*9+v.x*7+i));at.setXYZ(k,v.x,v.y,v.z);}g.computeVertexNormals();b.add(g,'stone',[x,y-.28,z],new Quaternion().setFromAxisAngle(new Vector3(0,1,0),i*1.7),[1.3+(i%4)*.4,.9+(i%3)*.35,1.3]);}return b.finish();}
 export function AlphaSign({position,text,width=3.3,height=1.35,nightLegible=true}:{position:Vec3;text:string;width?:number;height?:number;nightLegible?:boolean}){
@@ -49,7 +54,7 @@ export default function AlphaScenery(){const [lx,ly,lz]=ALPHA_STATIONS.lodge;ret
  <AlphaVisitorWayfinding/><LodgeRamp/><BellMechanism/><WindHandle/><SandMiniature/><TrailLamps/>
  <Craft name="alpha-path-fence" build={routeRails}/><PathRailColliders/><BoulderField/>
  <AlphaGrammarTree/><Craft name="alpha-grammar-tree-pull-rope" build={treeRope} position={ALPHA_STATIONS.tree}/>
- <Craft name="alpha-wind-gate" build={windGate} position={[16,38,-44]}/>
+ <Craft name="alpha-wind-gate" build={windGate} position={[16,ALPHA_WIND_GATE_Y,-44]}/>
  <CairnField/>
  <Craft name="alpha-lantern-rack" build={createAlphaRack} position={[-8,83,42]}/><RigidBody type="fixed" colliders={false} position={[-8,83,42]} userData={{solid:true}}>{[-1.25,1.25].map(x=><group key={x}><CuboidCollider position={[x,.17,0]} args={[.3,.17,.35]}/><CuboidCollider position={[x,1.35,0]} args={[.09,1.2,.09]}/></group>)}<CuboidCollider position={[0,.24,0]} args={[1.45,.08,.425]}/></RigidBody>
  <AlphaSign position={[-68.6,alphaHeight(-68.6,-36.6),-36.6]} width={2.4} height={1.04} nightLegible text="一切，从一个想法开始。"/>
@@ -85,6 +90,6 @@ function cairnClearOfVisitorRoute(x:number,z:number){
 function CairnField(){const built=useMemo(()=>{const g=new SphereGeometry(1,10,6),m=alphaMaterial('stone');m.vertexColors=false;const mesh=new InstancedMesh(g,m,520),d=new Object3D(),color=new Color();let count=0;for(let i=0;i<108;i++){const a=i*2.399,r=4.3+Math.sqrt(i)*1.6,x=2+Math.cos(a)*r,z=39+Math.sin(a)*r,y=alphaHeight(x,z);if(y<70||Math.hypot(x+7,z-43)<4||Math.hypot(x-2,z-39)<3||!cairnClearOfVisitorRoute(x,z))continue;for(let j=0;j<3+i%3;j++){const radius=.28-j*.035;d.position.set(x+Math.sin(j+i)*.07,y+.12+j*.22,z);d.rotation.set(0,i+j*.3,0);d.scale.set(radius*1.4,radius*.48,radius);d.updateMatrix();mesh.setMatrixAt(count,d.matrix);color.set(i%3?'#dddcd1':'#c4c9c4');mesh.setColorAt(count++,color);}}mesh.count=count;mesh.name='alpha-summit-decorative-cairn-instances';mesh.computeBoundingSphere();mesh.castShadow=mesh.receiveShadow=true;return mesh;},[]);useEffect(()=>()=>{built.geometry.dispose();(built.material as MeshStandardMaterial).dispose();built.dispose();},[built]);return <primitive object={built}/>;}
 
 function handleParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[.6,0,0],.06);b.beam('wood',[.6,0,0],[.6,0,.4],.08);b.cyl('metal',[0,0,0],.1,.12);return b.finish();}
-function WindHandle(){const ref=useRef<Group>(null);useFrame((_,dt)=>{if(ref.current)ref.current.rotation.y+=(useAlphaStore.getState().wind*.7-ref.current.rotation.y)*Math.min(1,dt*8);});return <group ref={ref} position={[16.8,39.05,-44]}><Craft build={handleParts} name="alpha-working-wind-crank"/></group>;}
+function WindHandle(){const ref=useRef<Group>(null);useFrame((_,dt)=>{if(ref.current)ref.current.rotation.y+=(useAlphaStore.getState().wind*.7-ref.current.rotation.y)*Math.min(1,dt*8);});return <group ref={ref} position={[16.8,ALPHA_WIND_GATE_Y+1.05,-44]}><Craft build={handleParts} name="alpha-working-wind-crank"/></group>;}
 
 function BoulderField(){const field=useMemo(createAlphaBoulderField,[]),m=useMemo(()=>alphaMaterial('stone'),[]);useEffect(()=>()=>{field.parts.forEach(p=>p.geometry.dispose());m.dispose();},[field,m]);return <group name="alpha-supported-boulder-field">{field.parts.map((p,i)=><mesh key={i} name="alpha-supported-rock-batch" geometry={p.geometry} material={m} castShadow receiveShadow/>)}<RigidBody type="fixed" colliders={false} userData={{solid:true}}>{field.colliders.map((c,i)=><ConvexHullCollider key={i} args={[c.points]}/>)}</RigidBody></group>;}

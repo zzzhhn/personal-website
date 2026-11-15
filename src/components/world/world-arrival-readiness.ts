@@ -6,7 +6,7 @@ import { findSafePlayerLanding } from './safe-landing';
 import { resetPlayerBody } from './player-ground';
 import type { Vec3 } from './types';
 
-/** Only the three named public Alpha arrivals wait for their independently lazy district. */
+/** Named public Alpha arrivals wait for their independently lazy district. */
 export function namedAlphaArrival(start: string | null): Vec3 | null {
   return start && Object.hasOwn(ALPHA_BATCH2_ARRIVALS, start) ? alphaWorld(ALPHA_BATCH2_ARRIVALS[start]) : null;
 }

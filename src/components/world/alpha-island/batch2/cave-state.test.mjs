@@ -51,3 +51,12 @@ test('fork floor has one vertical surface across the two-route overlap',async()=
     }
   }finally{geometry?.dispose();material?.dispose();hook.deregister();}
 });
+
+test('cancelling exploration restores lamp and active route without erasing prior experience',()=>{
+  const state=createCaveState();startCaveEcho(state,2);state.lamp='carried';
+  assert.equal(state.exploration.route,'mural');assert.equal(state.exploration.completed,false);
+  cancelCaveState(state);
+  assert.equal(state.lamp,'rack');assert.equal(state.exploration.route,null);assert.equal(state.exploration.completed,false);
+  state.exploration.completed=true;startCaveEcho(state,0);cancelCaveState(state);
+  assert.equal(state.exploration.completed,true);assert.equal(state.exploration.visited,true);
+});

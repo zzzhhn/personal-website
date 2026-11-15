@@ -12,6 +12,8 @@ export const ALPHA_BATCH2_ARRIVALS: Record<string,Vec3> = {
  'alpha-shallows':[-44.75,12.08,-56],
  'alpha-waterwheel':[-29,24,16],
  'alpha-cave':[-15,24.12,-35],
+ 'alpha-wind':[19,38,-42],
+ 'alpha-summit':[2,83,44],
 };
 export const ALPHA_BATCH2_PATHS: Vec3[][] = [
   [[-54,6,-40],[-47,9.2,-48],[-45,12,-56],[-27,12,-56],[-22,16,-40]],

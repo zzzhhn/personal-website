@@ -16,6 +16,7 @@ import { caveChime, caveChimeTarget, caveLampRack, caveMinerLamp, caveMural, cav
 import { createCaveAudio } from './cave-audio';
 import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
 import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice } from './batch2-station-feedback';
+import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
 const OWNER='alpha-echo-cave';
 const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
 type Parts={finish:AlphaFinish;geometry:BufferGeometry}[];
@@ -32,23 +33,24 @@ function SameMeshCollider({geometry}:{geometry:BufferGeometry}) {
   const buffers=useMemo(()=>({v:new Float32Array(geometry.getAttribute('position').array),i:geometry.index?new Uint32Array(geometry.index.array):new Uint32Array(Array.from({length:geometry.getAttribute('position').count},(_,i)=>i))}),[geometry]);
   return <TrimeshCollider args={[buffers.v,buffers.i]} friction={.9}/>;
 }
-function ChimeInteraction({index,onRing}:{index:CaveChime;onRing:(n:CaveChime)=>void}) {
+function ChimeInteraction({index,onRing,enabled}:{index:CaveChime;onRing:(n:CaveChime)=>void;enabled:()=>boolean}) {
   useInteractable({id:`alpha-cave-chime-${index}`,position:alphaWorld(caveChimeTarget(index)),radius:1.45,kind:'exhibit',
     label:index===2?{zh:'敲沉铜管，听左侧回声',en:'Strike the low chime'}:{zh:index===1?'敲高铜管，听穿山回声':'敲铜管，循回声穿洞',en:index===1?'Strike the high chime':'Strike the bronze chime'},
-    onInteract:()=>onRing(index)});return null;
+    enabled,onInteract:()=>onRing(index)});return null;
 }
 
 /** Mount once inside the existing ALPHA_ORIGIN group. Floor, shell and solid
  * collision share the authored mesh. No cap or collider covers the daylight exit. */
-export default function AlphaEchoCave() {
+export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;onComplete?:()=>void}={}) {
   const built=useMemo(createCaveArt,[]),rack=useMemo(caveLampRack,[]),lamp=useMemo(caveMinerLamp,[]),scaffold=useMemo(caveScaffold,[]),mural=useMemo(caveMural,[]),chimes=useMemo(()=>[0,1,2].map(caveChime),[]);
   const state=useRef(createCaveState()),audio=useMemo(createCaveAudio,[]),handLamp=useRef<Group>(null),rackLamp=useRef<Group>(null),rings=useRef<(Mesh|null)[]>([]),chimeRefs=useRef<(Group|null)[]>([]);
+  const echoFromChime=useRef(true);
   const sequence=useRef(caveEchoSequence(0)),target=useRef<Vec3|null>(null),cancelling=useRef(false);
   const forward=useMemo(()=>new Vector3(),[]),up=useMemo(()=>new Vector3(),[]);
   const ringMaterials=useMemo(()=>Array.from({length:4},()=>new MeshBasicMaterial({color:'#ffd18c',transparent:true,opacity:0,depthWrite:false,side:DoubleSide,toneMapped:false})),[]);
   function cancel() {
     if(cancelling.current)return;cancelling.current=true;
-    if(state.current.lamp==='rack'&&state.current.echoAge>=CAVE_ECHO_SECONDS&&guideActionHand.owner!==OWNER&&!alphaCaveLight.active){cancelling.current=false;return;}
+    if(state.current.lamp==='rack'&&state.current.echoAge>=CAVE_ECHO_SECONDS&&guideActionHand.owner!==OWNER&&!alphaCaveLight.active&&!state.current.exploration.route){cancelling.current=false;return;}
     cancelCaveState(state.current);audio.stop();alphaCaveLight.active=false;alphaCaveLight.intensity=0;target.current=null;
     if(handLamp.current)handLamp.current.visible=false;if(rackLamp.current)rackLamp.current.visible=true;
     if(guideActionHand.owner===OWNER)Object.assign(guideActionHand,{owner:null,target:null,facing:null,palm:null,cancel:null,mode:'reach'});
@@ -79,11 +81,32 @@ export default function AlphaEchoCave() {
       }else if(action==='take')pick();
       else useWorldStore.setState({toast:{zh:'靠近挂架伸出矿灯的一侧，再按 E 取灯。',en:'Move to the lamp side of the rack, then press E to take it.',at:performance.now()}});
     }});
-  const ring=(index:CaveChime)=>{
-    const w=useWorldStore.getState();if(w.paused||document.hidden||!startCaveEcho(state.current,index))return;
-    sequence.current=caveEchoSequence(index);audio.play(sequence.current);
-    useWorldStore.setState({toast:{zh:index===2?'沉声停在壁画前，回头还能看见岔口。':'回声和暖色光环一起通向洞外。',en:index===2?'The dull echo ends at a mural. The fork remains behind you.':'Follow the echoes and warm rings toward daylight.',at:performance.now()}});
+  const canExplore=()=>{
+    const w=useWorldStore.getState();
+    return campPropActor.available&&!w.paused&&!w.shot&&!w.card&&!w.poolInspect&&!w.activeVehicle&&!w.seat&&!document.hidden;
   };
+  const ring=(index:CaveChime)=>{
+    const firstVisit=!state.current.exploration.visited;
+    if(!canExplore()||!startCaveEcho(state.current,index))return;
+    echoFromChime.current=true;sequence.current=caveEchoSequence(index);audio.play(sequence.current);
+    if(firstVisit)onVisit?.();
+    useWorldStore.setState({toast:{zh:index===2?'沉声向左折去。沿暖色矿环看看，岔口始终能走回来。':'清亮回声逐段穿过岩洞，下一道矿环会留在前方。',en:index===2?'The low echo bends left. Follow the warm rings; the fork remains open behind you.':'The clear echo travels through the cave. Its next warm ring stays ahead.',at:performance.now()}});
+  };
+  useInteractable({id:'alpha-cave-mural',position:alphaWorld([built.muralPosition[0],built.muralPosition[1]+1.4,built.muralPosition[2]]),radius:1.9,kind:'exhibit',
+    label:{zh:'看看山水日轮壁画，循原路回岔口',en:'Read the mountain, water and sun relief; retrace the side passage'},
+    enabled:()=>canExplore()&&caveAtWaypoint(alphaLocal(campPropActor.position),caveRoutePoints('mural').at(-1)!),
+    onInteract:()=>{
+      const end=caveRoutePoints('mural').at(-1)!;
+      if(!canExplore()||!caveAtWaypoint(alphaLocal(campPropActor.position),end))return;
+      const returning=readCaveMural(state.current.exploration);
+      if(returning){state.current.echoAge=0;echoFromChime.current=false;sequence.current=caveReturnEchoSequence();audio.play(sequence.current);}
+      // The relief remains readable without ringing a chime; only a genuine
+      // echo-led round trip publishes this optional experience's completion.
+      const message=returning?{zh:'岩面刻着山、水和日轮。暖色矿环正沿来路回到岔口。',en:'Mountains, water and a sun are carved into the rock. The warm rings retrace your way to the fork.'}
+        :{zh:'岩面刻着山、水和日轮。沿来时的侧道就能回到岔口。',en:'Mountains, water and a sun are carved into the rock. The side passage leads back to the fork.'};
+      useWorldStore.setState({toast:{...message,at:performance.now()}});
+    }});
+
   useEffect(()=>{
     const unregister=registerCaveCancellation(cancel);
     const off=useWorldStore.subscribe((s,p)=>{
@@ -97,8 +120,8 @@ export default function AlphaEchoCave() {
   useEffect(()=>()=>{for(const parts of [built.solid,built.floor,built.detail,built.seams,rack,lamp,scaffold,mural,...chimes])parts.forEach(p=>p.geometry.dispose());ringMaterials.forEach(m=>m.dispose());},[built,rack,lamp,scaffold,mural,chimes,ringMaterials]);
   useFrame(({camera},delta)=>{
     const w=useWorldStore.getState(),s=state.current,near=caveNear(alphaLocal(w.position));
-    if(!near){if(s.lamp!=='rack'||s.echoAge<CAVE_ECHO_SECONDS)cancel();return;}
-    if(w.paused||w.shot||document.hidden)return;
+    if(!near){if(s.lamp!=='rack'||s.echoAge<CAVE_ECHO_SECONDS||s.exploration.route)cancel();return;}
+    if(!canExplore())return;
     if(s.lamp!=='rack'){
       if(!campPropActor.available||guideActionHand.owner!==OWNER||!target.current){cancel();return;}
       if(s.lamp==='carried'){
@@ -121,8 +144,22 @@ export default function AlphaEchoCave() {
     if(s.echoAge<CAVE_ECHO_SECONDS){
       camera.getWorldDirection(forward);up.set(0,1,0).applyQuaternion(camera.quaternion);audio.listener(camera.position.toArray(),forward.toArray(),up.toArray());
     }
-    rings.current.forEach((mesh,i)=>{if(!mesh)return;const echo=sequence.current[i],pulse=echo?caveRingPulse(s.echoAge,echo.delay):null;mesh.visible=!!pulse;if(pulse){mesh.position.fromArray(echo.position);mesh.scale.setScalar(pulse.scale);(mesh.material as MeshBasicMaterial).opacity=pulse.opacity;}});
-    chimeRefs.current.forEach((g,i)=>{if(g)g.rotation.z=i===s.chime&&s.echoAge<2.5?Math.sin(s.echoAge*19)*Math.exp(-s.echoAge*1.8)*.15:0;});
+    const explored=advanceCaveExploration(s.exploration,alphaLocal(w.position),s.echoAge);
+    if(explored){
+      const message=explored.kind==='mural'?{zh:'沉声落在这面壁画前。走近看看，再循原路回岔口。',en:'The low echo ends at this relief. Look closer, then return along the side passage.'}
+        :explored.kind==='return'?{zh:'回到岔口了，清亮的回声通向洞外。',en:'Back at the fork. The clear chimes lead toward daylight.'}
+        :{zh:'回声带你穿过了岩洞，前面接回山路。',en:'The echoes have led you through the cave and back to the mountain trail.'};
+      useWorldStore.setState({toast:{...message,at:performance.now()}});
+      if(explored.firstComplete)onComplete?.();
+    }
+    rings.current.forEach((mesh,i)=>{
+      if(!mesh)return;
+      const echo=sequence.current[i],pulse=echo?caveRingPulse(s.echoAge,echo.delay):null;
+      const guide=echo?caveGuideRingOpacity(s.exploration,i,s.echoAge,echo.delay):0;
+      mesh.visible=!!pulse||guide>0;
+      if(echo&&mesh.visible){mesh.position.fromArray(echo.position);mesh.scale.setScalar(pulse?.scale??1.35);mesh.quaternion.copy(camera.quaternion);(mesh.material as MeshBasicMaterial).opacity=Math.max(pulse?.opacity??0,guide);}
+    });
+    chimeRefs.current.forEach((g,i)=>{if(g)g.rotation.z=echoFromChime.current&&i===s.chime&&s.echoAge<2.5?Math.sin(s.echoAge*19)*Math.exp(-s.echoAge*1.8)*.15:0;});
   });
   return <group name="alpha-echo-cave-station-6">
     <Craft parts={built.solid} name="alpha-cave-thick-faceted-rock-shell"/>
@@ -141,7 +178,7 @@ export default function AlphaEchoCave() {
       <RigidBody type="fixed" colliders={false} userData={{solid:true}}>{[-1.12,1.12].map(x=><group key={x}><CuboidCollider position={[x,.19,0]} args={[.32,.19,.37]}/><CuboidCollider position={[x,1.93,0]} args={[.115,1.63,.145]}/></group>)}<CuboidCollider position={[0,3.56,0]} args={[1.325,.13,.175]}/></RigidBody>
     </group>
     <group position={built.muralPosition} rotation={[0,built.muralYaw,0]}><Craft parts={mural} name="alpha-cave-carved-mountain-water-sun-mural" glow/></group>
-    {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring}/>)}
+    {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring} enabled={canExplore}/>)}
     {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
   </group>;
 }
