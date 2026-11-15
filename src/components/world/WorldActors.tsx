@@ -2,6 +2,7 @@ import { rideFootRouteClear } from './rides/ride-clearance';
 import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-hand';
 import { localWindPace } from './rides/local-wind';
 import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
+import { ALPHA_BATCH2_ARRIVALS } from './alpha-island/alpha-batch2-layout';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -366,6 +367,8 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
+    const mountain=start&&Object.hasOwn(ALPHA_BATCH2_ARRIVALS,start)?ALPHA_BATCH2_ARRIVALS[start]:undefined;
+    if(mountain){const p=alphaWorld(mountain);return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
     if(LAYOUT_V4&&start==='factory')return [FACTORY.entrance[0],FACTORY.entrance[1]+PLAYER_CENTER_HEIGHT,FACTORY.entrance[2]];
     if(LAYOUT_V4&&import.meta.env.DEV&&start?.startsWith('factory-')){
       const station=FACTORY_STATIONS.find(s=>s.id===start.slice(8));
@@ -952,10 +955,11 @@ export default function WorldActors() {
       releaseGuideActionHand();cancelCampPropInteraction();
       if(!rideHeld.current){
         const start=player.current.translation();
+        // Select a clear joining leg before validating the complete boarding route.
+        attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&rideFootRouteClear(world,rapier,player.current,[from,to]));
         captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
         const route=attractionRide.driver?.boardingPath;
         if(route&&!rideFootRouteClear(world,rapier,player.current,route)){endAttractionRide();actorNotice('登乘通道被挡住了，请在站台稍候。','The boarding path is blocked. Please wait on the platform.');return;}
-        attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&rideFootRouteClear(world,rapier,player.current,[from,to]));
         clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});

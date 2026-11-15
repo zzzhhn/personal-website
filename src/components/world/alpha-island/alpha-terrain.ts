@@ -1,6 +1,7 @@
 import { CatmullRomCurve3,Vector3 } from 'three';
 import { ALPHA_BERTH_BASIN, ALPHA_ORIGIN, ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
 import type { Vec3 } from '../types';
+import { ALPHA_BATCH2_PATHS, ALPHA_SHALLOWS, ALPHA_WATERWHEEL, ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2PathDistance, batch2Segment } from './alpha-batch2-layout';
 const cableCurve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
 const cableSamples=Array.from({length:193},(_,i)=>{const p=cableCurve.getPointAt(i/192);return [p.x,Math.max(38,Math.min(73,p.y)),p.z] as Vec3;});
 const sledCurve=new CatmullRomCurve3(ALPHA_SLED_PATH.map(p=>new Vector3(p[0],p[1]+.16,p[2])),false,'centripetal');
@@ -32,7 +33,8 @@ export function alphaSurfaceNormalY(x:number,z:number){const e=.65,dx=(alphaHeig
 export function alphaHeight(x:number,z:number) {
  let h=alphaBaseHeight(x,z);
  const p=nearestAlphaSegment(x,z,ALPHA_MAIN_PATH),b=nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH);
- const n=p.distance<b.distance?p:b;
+ let n=p.distance<b.distance?p:b;
+ for(const path of ALPHA_BATCH2_PATHS){const s=nearestAlphaSegment(x,z,path);if(s.distance<n.distance)n=s;}
  const blend=1-smooth(2.3,6,n.distance);h=h*(1-blend)+n.y*blend;
  // Broad dry terminal aprons. Same geometric extent supports safe-exit rings.
  for(const s of Object.values(ALPHA_SOCKETS)) {
@@ -44,6 +46,16 @@ export function alphaHeight(x:number,z:number) {
  for(const [cx,cy,cz,r] of [[-64,3.8,-40,5],[-42,18,-29,5.5],[19,38,-42,7],[2,83,39,6],[-7,83,43,4]]) {
    const w=1-smooth(r,r+10,Math.hypot(x-cx,z-cz));h=h*(1-w)+cy*w;
  }
+ // Station foundations grade into the existing mountain instead of floating on
+ // top. Existing paths are reapplied below; water never changes player grounding.
+ const wheel=ALPHA_WATERWHEEL;
+ const wheelEdge=Math.hypot(Math.max(0,Math.abs(x-wheel.center[0])-wheel.size[0]/2),Math.max(0,Math.abs(z-wheel.center[2])-wheel.size[1]/2));
+ const wheelWeight=1-smooth(0,4,wheelEdge);
+ h=h*(1-wheelWeight)+wheel.center[1]*wheelWeight;
+ const pool=ALPHA_SHALLOWS;
+ const poolEdge=Math.hypot(Math.max(0,Math.abs(x-pool.center[0])-pool.size[0]/2),Math.max(0,Math.abs(z-pool.center[2])-pool.size[1]/2));
+ const poolWeight=1-smooth(0,4,poolEdge);
+ h=h*(1-poolWeight)+pool.center[1]*poolWeight;
  const cable=nearestAlphaSegment(x,z,ALPHA_CABLE_PATH);
  if(cable.index>0&&cable.index<4&&cable.distance<7) {
    const terminal=Math.min(Math.hypot(x-35,z+39),Math.hypot(x-29,z-22));
@@ -53,6 +65,16 @@ export function alphaHeight(x:number,z:number) {
  if(sled.distance<5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2) h=Math.min(h,sled.y-.35);
  // Reapply walking datum after broad terraces; approach ramps must not become steps.
  h=h*(1-blend)+n.y*blend;
+ // The stream bed stays below the visible water; bridge and permanent bypass
+ // supply their own fixed support. Leave a dry bank around the whole basin.
+ const poolInset=Math.min(pool.size[0]/2-Math.abs(x-pool.center[0]),pool.size[1]/2-Math.abs(z-pool.center[2]));
+ if(poolInset>0){const w=smooth(.1,1.1,poolInset);h=h*(1-w)+pool.bedY*w;}
+ // Cave's authored floor owns support. Recess the terrain below it so the coarse
+ // mountain grid cannot poke through a turn; taper at both open trail mouths.
+ const caveMain=batch2Segment(x,z,ALPHA_CAVE_PATH),caveSide=batch2Segment(x,z,ALPHA_CAVE_DEAD_END),cave=caveMain.distance<caveSide.distance?caveMain:caveSide;
+ const mouth=Math.min(Math.hypot(x-ALPHA_CAVE_PATH[0][0],z-ALPHA_CAVE_PATH[0][2]),Math.hypot(x-ALPHA_CAVE_PATH.at(-1)![0],z-ALPHA_CAVE_PATH.at(-1)![2]));
+ const caveWeight=(1-smooth(3.3,4.5,cave.distance))*smooth(0,2,mouth);
+ if(caveWeight>0)h=Math.min(h,h*(1-caveWeight)+(cave.y-.35)*caveWeight);
  if(sled.distance<5&&n.distance>3.5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2)h=Math.min(h,sled.y-.35);
  const realCable=nearestAlphaSegment(x,z,cableSamples);const u=(realCable.index+realCable.t)/192;
  const ca=cableSamples[realCable.index],cb=cableSamples[realCable.index+1],grade=Math.abs(cb[1]-ca[1])/Math.max(.01,Math.hypot(cb[0]-ca[0],cb[2]-ca[2]));
@@ -67,7 +89,7 @@ export function alphaHeight(x:number,z:number) {
  if(berth>0)h=Math.min(h,h*(1-berth)+bay.floorY*berth);
  return h;
 }
-export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance);
+export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance,batch2PathDistance(x,z));
 export function alphaTerrainData(step=1.5) {
  const nx=Math.ceil(196/step),nz=Math.ceil(228/step),positions=new Float32Array((nx+1)*(nz+1)*3),surface:number[]=[],solid:number[]=[],indices:number[]=[];
  for(let j=0;j<=nz;j++)for(let i=0;i<=nx;i++){const x=-98+i*196/nx,z=-114+j*228/nz,k=(j*(nx+1)+i)*3;positions.set([x,alphaHeight(x,z),z],k);}

@@ -3,6 +3,7 @@ import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
 import { mergeGeometries, toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { ALPHA_CABLE_PATH, ALPHA_SLED_PATH, ALPHA_SOCKETS } from './alpha-layout.ts';
 import { alphaHeight, alphaPathDistance, alphaRadial, alphaSurfaceNormalY, nearestAlphaSegment } from './alpha-terrain.ts';
+import { batch2PlantClearance } from './alpha-batch2-layout';
 
 type Position = [number, number, number];
 export interface AlphaBoulderField {
@@ -92,7 +93,7 @@ export function createAlphaBoulderField(): AlphaBoulderField {
     const a = candidate * 2.39996323, r = 8 + Math.sqrt((candidate + .5) / 6000) * 90;
     const x = Math.cos(a) * r, z = Math.sin(a) * r * 1.10, radius = 1 + rnd() * 1.5;
     const height = alphaHeight(x, z);
-    if (height < 1 || height > 60 || alphaRadial(x, z) > .94
+    if (height < 1 || height > 60 || alphaRadial(x, z) > .94 || batch2PlantClearance(x,z)
       || alphaPathDistance(x, z) < 4.5 + radius || socketDistance(x, z) < 9 + radius
       || nearestAlphaSegment(x, z, ALPHA_CABLE_PATH).distance < 5 + radius
       || nearestAlphaSegment(x, z, ALPHA_SLED_PATH).distance < 4 + radius
@@ -104,7 +105,7 @@ export function createAlphaBoulderField(): AlphaBoulderField {
       const h = alphaHeight(sx, sz);
       supportHeights.push(h);
       slopeY = Math.min(slopeY, alphaSurfaceNormalY(sx, sz));
-      if (h < 1 || h > 60 || alphaPathDistance(sx, sz) < 4.5 || socketDistance(sx, sz) < 9) clear = false;
+      if (h < 1 || h > 60 || alphaPathDistance(sx, sz) < 4.5 || socketDistance(sx, sz) < 9 || batch2PlantClearance(sx,sz)) clear = false;
     }
     const minSupport = Math.min(...supportHeights), maxSupport = Math.max(...supportHeights);
     if (!clear || slopeY < .94 || maxSupport - minSupport > Math.min(.90, radius * .50)) continue;

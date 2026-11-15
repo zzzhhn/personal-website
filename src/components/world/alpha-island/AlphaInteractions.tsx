@@ -7,6 +7,7 @@ import { campPropActor } from '../camp-prop-interactions';
 import { guideActionHand as campPropHand } from '../rides/guide-action-hand';
 import { ALPHA_ORIGIN,ALPHA_STATIONS,alphaLocal,alphaWorld,alphaContainsWorld,ALPHA_MAIN_PATH } from './alpha-layout';
 import { alphaMotion,useAlphaStore,startAlphaHand,cancelAlphaHand,releaseAlphaLantern,visitAlphaStation,saveAlphaProgress,ALPHA_LANTERN_CAP,ALPHA_LANTERN_LIFETIME,type AlphaAction } from './alpha-state';
+import { ALPHA_SHALLOWS,ALPHA_WATERWHEEL,ALPHA_CAVE_PATH } from './alpha-batch2-layout';
 import { alphaHeight } from './alpha-terrain';
 import { alphaMaterial } from './alpha-materials';
 import { alphaLanternGeometry } from './alpha-art';
@@ -38,7 +39,7 @@ export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.car
  if(stoneRef.current){stoneRef.current.visible=useAlphaStore.getState().action==='stone'&&a.placing;if(campPropHand.palm){const p=alphaLocal(campPropHand.palm);stoneRef.current.position.set(p[0],p[1]-.08,p[2]);}}
  if(hand.current){hand.current.visible=useAlphaStore.getState().carried;if(palmOrNull()){const p=alphaLocal(campPropHand.palm!);hand.current.position.set(p[0],p[1]-.89,p[2]);}}
  if(ball.current){const t=((alphaMotion.time-alphaMotion.sandAt)/6);ball.current.visible=t>=0&&t<1;if(t>=0&&t<1){const n=t*(ALPHA_MAIN_PATH.length-1),i=Math.floor(n),p=ALPHA_MAIN_PATH[i],q=ALPHA_MAIN_PATH[Math.min(i+1,ALPHA_MAIN_PATH.length-1)],f=n-i;ball.current.position.set(-64+(p[0]+(q[0]-p[0])*f)/95,5.49+(p[1]+(q[1]-p[1])*f)/180,-39.9+(p[2]+(q[2]-p[2])*f)/100);}}
- const pos=alphaLocal(world.position);for(const [n,p] of [[1,ALPHA_STATIONS.lodge],[3,ALPHA_STATIONS.tree],[7,ALPHA_STATIONS.wind],[8,ALPHA_STATIONS.cableUpper],[11,ALPHA_STATIONS.summit],[12,ALPHA_STATIONS.sledLower]] as [number,Vec3][]){if(Math.hypot(pos[0]-p[0],pos[2]-p[2])<8&&Math.abs(pos[1]-p[1])<4)visitAlphaStation(n);}
+ const pos=alphaLocal(world.position);for(const [n,p] of [[1,ALPHA_STATIONS.lodge],[2,ALPHA_SHALLOWS.center],[3,ALPHA_STATIONS.tree],[5,ALPHA_WATERWHEEL.center],[6,ALPHA_CAVE_PATH[0]],[7,ALPHA_STATIONS.wind],[8,ALPHA_STATIONS.cableUpper],[11,ALPHA_STATIONS.summit],[12,ALPHA_STATIONS.sledLower]] as [number,Vec3][]){if(Math.hypot(pos[0]-p[0],pos[2]-p[2])<8&&Math.abs(pos[1]-p[1])<4)visitAlphaStation(n);}
  });
  return <group name="alpha-playable-stations">{(['bell','sand','tree','wind','stone','lantern'] as AlphaAction[]).map(kind=><Action key={kind} kind={kind}/>)}<group visible={!carried}><AlphaLantern position={[-8.65,83.3,41.7]}/></group><AlphaLantern position={[-7.35,83.3,41.7]}/><AlphaLantern rootRef={hand}/><FlyingLanterns/><WindFlags/><mesh ref={ball} name="alpha-sand-route-ball" visible={false}><sphereGeometry args={[.075,12,8]}/><meshStandardMaterial color="#dba650" metalness={.6} roughness={.3}/></mesh><mesh ref={stoneRef} visible={false} scale={[.32,.1,.25]}><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color="#adb3a6" roughness={.94}/></mesh><PlayerCairn/></group>;
 }

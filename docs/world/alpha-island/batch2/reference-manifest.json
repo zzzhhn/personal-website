@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "scene": "Alpha mountain island batch 2: shallows, waterwheel, echo cave",
+  "references": [
+    {"role": "day", "path": "docs/world/alpha-island/batch2/references/three-stations-day-night-v1.png", "region": "top row", "sha256": "2abe0d6a81f089d593008ebd61c72a8101d93727c454f5bc8887a9fb6d8cc3d8"},
+    {"role": "night", "path": "docs/world/alpha-island/batch2/references/three-stations-day-night-v1.png", "region": "bottom row", "sha256": "2abe0d6a81f089d593008ebd61c72a8101d93727c454f5bc8887a9fb6d8cc3d8"}
+  ],
+  "approvals": {
+    "style": {"status": "approved", "source": "human-user", "date": "2026-11-15", "quote": "已解锁，三站昼夜参考图也通过，可以继续推进了。先把缆车、雪橇的实测和性能验收补齐，再分 subagents 做新场景，保住现在的建模和材质质感，验证后更新 4341 并同步 GitHub。", "scope": "Three-station day/night visual direction; preserve current modelling and materials."},
+    "layout": {"status": "approved", "source": "human-user", "date": "2026-11-15", "quote": "已解锁，三站昼夜参考图也通过，可以继续推进了。", "scope": "Reference spatial direction for stations 2/5/6, subject to existing eight-stone, independent bypass, fork and traversable waterfall-path contracts. Transport play and performance acceptance precede new-scene delegation."}
+  },
+  "reviewViews": ["shallows approach and bypass 12:00/00:00", "three gates and waterwheel 12:00/00:00", "cave fork and exit 12:00/00:00"],
+  "failureConditions": ["Missing independent static crossing", "Dark unreadable path or character", "Unsupported wood joints or thin rock shell", "Visual route disagrees with collision", "Region entry changes dynamic light count", "Materials flattened or quality reduced", "Fewer than eight interactive stones"],
+  "provenance": "Built-in imagegen using approved batch-1 concept and real runtime lodge capture. Concept only, not runtime evidence."
+}

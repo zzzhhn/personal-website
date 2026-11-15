@@ -1,0 +1,47 @@
+
+> personal-website@0.0.1 prebuild
+> node tools/world/check-club-audio.mjs
+
+Club furniture: 4 GLBs and 16 external image references present.
+World craft: 5 production GLBs present; umbrella 4 batches, crate 11 batches, furniture 10 batches, camp 12 batches, ibdStatic 118 batches.
+Club audio: 2 runtime assets present in public.
+
+> personal-website@0.0.1 build
+> astro build
+
+00:50:01 [content] Syncing content
+00:50:01 [content] Synced content
+00:50:01 [types] Generated 389ms
+00:50:01 [build] output: "static"
+00:50:01 [build] mode: "static"
+00:50:01 [build] directory: /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/dist/
+00:50:01 [build] Collecting build info...
+00:50:01 [build] ✓ Completed in 400ms.
+00:50:01 [build] Building static entrypoints...
+00:50:03 [vite] ✓ built in 2.14s
+00:50:08 [WARN] [vite] [plugin vite:reporter] 
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldFacilityCraftQA.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-alpha-batch2-20261115/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+00:50:09 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+00:50:09 [vite] ✓ built in 5.84s
+00:50:09 [build] Rearranging server assets...
+
+ generating static routes 
+00:50:09   ├─ /projects/alpha-agent/index.html (+11ms) 
+00:50:09   ├─ /projects/djc/index.html (+2ms) 
+00:50:09   ├─ /projects/evalforge/index.html (+2ms) 
+00:50:09   ├─ /projects/hepai/index.html (+2ms) 
+00:50:09   ├─ /projects/interactive-learning-platforms/index.html (+3ms) 
+00:50:09   ├─ /projects/kindred/index.html (+2ms) 
+00:50:09   ├─ /world/index.html (+7ms) 
+00:50:09   ├─ /index.html (+152ms) 
+00:50:09 ✓ Completed in 276ms.
+
+00:50:09 [build] ✓ Completed in 8.29s.
+00:50:09 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+00:50:09 [build] 8 page(s) built in 8.70s
+00:50:09 [build] Complete!

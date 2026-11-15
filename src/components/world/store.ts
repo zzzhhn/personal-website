@@ -3,6 +3,7 @@ import { cancelAlphaHand } from './alpha-island/alpha-state';
 import type { Lang, Vec3, VehicleId } from './types';
 import { TIME_PRESETS, type TimePreset, type Weather } from './world-climate.ts';
 import { cancelCampPropInteraction } from './camp-prop-interactions';
+import { guideActionHand,releaseGuideActionHand } from './rides/guide-action-hand';
 /** Content card opened by an interactable (rendered by WorldCards). `id` selects the content source. */
 export interface WorldCard { kind: 'project' | 'experience' | 'about' | 'note'; id: string; page?: number }
 /** Interactable currently in reach (prompt shown by the HUD). */
@@ -62,6 +63,7 @@ export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s =
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
   if (cancelAlphaHand()) return;
+  if (guideActionHand.owner) { releaseGuideActionHand(); return; }
   if (cancelCampPropInteraction()) return;
   const state=useWorldStore.getState();
   if(state.factoryStation)useWorldStore.setState({factoryStation:null});

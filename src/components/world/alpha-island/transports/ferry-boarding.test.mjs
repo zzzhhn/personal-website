@@ -1,5 +1,6 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
 import {TransportDriver} from '../../rides/transport-driver.ts';
+import {verifyPhysicalBoardingJoins} from '../../rides/transport-joining-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
@@ -48,6 +49,8 @@ test('ferry boarding, steps, canopy and exact safe exits clear actual boat and p
    }
    assert.ok(rideFootRouteClear(world,R,body,path),`${index} ${name} actual capsule`);
   }
+  const joins=verifyPhysicalBoardingJoins(world,R,body,route,index);
+  context.diagnostic(JSON.stringify({index,physicalBoardingJoins:joins}));
   const landing=findSafePlayerLanding(world,R,body,[terminal.safeExit],-.7);
   assert.ok(landing,`${index} exact safe exit has support ring and swept escape`);
   const delta=landing[1]-.88-terminal.safeExit[1];assert.ok(Math.abs(delta)<.12,JSON.stringify({index,landing,delta}));
