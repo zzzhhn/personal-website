@@ -5,15 +5,15 @@ const xz=(p:readonly number[]):VisitorPoint=>[p[0],p[2]];
  * These connectors avoid the sled bodies and the peak's sharp terrain corner.
  * The common middle retains the six-stop batch1 trail, without exposing other stations. */
 export const ALPHA_VISITOR_LOWER:readonly VisitorPoint[]=[
- xz(alphaWorld(ALPHA_SOCKETS.dock.safeExit[0])),[161,146],[164.5,146],[164.5,167],
- [174,167],[174,156],[177,155.5],[177,146],[176,146],[181,150],
+ xz(alphaWorld(ALPHA_SOCKETS.dock.safeExit[0])),
+ ...ALPHA_MAIN_PATH.slice(0,4).map(p=>xz(alphaWorld(p))),[181,150],
 ];
 export const ALPHA_VISITOR_UPPER:readonly VisitorPoint[]=[
  [264,232],[264,230.5],[254,230.5],[254,236],[243,247],[241,247],
  xz(alphaWorld(ALPHA_MAIN_PATH[31])),xz(alphaWorld(ALPHA_STATIONS.summit)),
 ];
 export const ALPHA_VISITOR_SPURS=[
- {id:'lodge',label:{zh:'小屋',en:'Lodge'},path:[[174,156],[171,155.3],[171,154.2],[171,151.6]] as readonly VisitorPoint[]},
+ {id:'lodge',label:{zh:'小屋',en:'Lodge'},path:[[176,156],[171,155.3],[171,154.2],[171,151.6]] as readonly VisitorPoint[]},
  {id:'sled',label:{zh:'雪橇',en:'Sled'},path:[[254,230.5],[256,232]] as readonly VisitorPoint[]},
 ] as const;
 function join(...paths:readonly (readonly VisitorPoint[])[]){const result:VisitorPoint[]=[];for(const path of paths)for(const p of path){const q=result.at(-1);if(!q||Math.hypot(q[0]-p[0],q[1]-p[1])>1e-6)result.push(p);}return result;}

@@ -6,6 +6,7 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import { alphaReplayPlugin } from "./tools/world/alpha-mine-data/local-replay-plugin.mjs";
+import { worldMapSnapshotPlugin } from "./tools/world/world-map-snapshot-plugin.mjs";
 
 export default defineConfig({
   site: "https://bobbyzhong.com",
@@ -14,7 +15,7 @@ export default defineConfig({
   vite: {
     // Linked worktrees share dependencies, but must not invalidate one another's optimizer URLs.
     cacheDir: fileURLToPath(new URL('./.astro/node_modules/.vite', import.meta.url)),
-    plugins: [tailwindcss(), alphaReplayPlugin()],
+    plugins: [worldMapSnapshotPlugin(), tailwindcss(), alphaReplayPlugin()],
     server: { fs: { allow: [fileURLToPath(new URL(".", import.meta.url)), realpathSync(fileURLToPath(new URL("./node_modules", import.meta.url)))] } },
   },
 });

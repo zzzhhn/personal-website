@@ -1,11 +1,11 @@
-import { useEffect, useId, useRef, useState, type MouseEvent } from 'react';
+import { useId, useRef, type MouseEvent } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
-import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
+import { LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
-import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, ATTRACTIONS_CAPE, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
+import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
 
 import { ALPHA_STATIONS,alphaWorld,alphaContainsWorld,ALPHA_MAINLAND_PIER_POLYGON,ALPHA_MAINLAND_APPROACH } from './alpha-island/alpha-layout';
 import {ALPHA_VISITOR_PATH,ALPHA_VISITOR_SPURS} from './alpha-island/alpha-visitor-path';
@@ -16,6 +16,8 @@ const alphaBatch2Stops=[{p:alphaWorld(ALPHA_SHALLOWS.center),zh:'石滩',en:'Sha
 import {FACTORY,FACTORY_FOOTPRINT} from './factory/factory-layout';
 import { createMapPathCache } from './map-path-cache';
 import { FERRY_MAP_MARK } from './world-destinations';
+import mapV4 from './world-map-v4.generated.json';
+import mapV3 from './world-map-v3.generated.json';
 
 const { register, registerShore, path, shorePath } = createMapPathCache();
 // Authored map geometry is immutable; positions and waypoints are never registered.
@@ -27,39 +29,14 @@ const { register, registerShore, path, shorePath } = createMapPathCache();
   IBD_FOOTPRINT, COASTER_ARRIVAL.roadOutline, COASTER_ARRIVAL.walkOutline,
   CLUB_APPROACH, ...CLUB_WALKWAYS, CLUB_POOL.outline,
 ].forEach(register);
-const fallbackShores = [ISLAND_OUTLINE];
-registerShore(fallbackShores);
-
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
-type Landmark = { id: string; p: [number, number]; label: string };
-type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[]; coaster: number[][] };
-let mapGeometryPromise: Promise<MapGeometry> | null = null;
-/** Shares the terrain's waterline and the v4 road hierarchy, loaded lazily with the runtime chunk so the
- * loading screen never pulls Three / terrain generation into the initial bundle. */
-export function loadMapGeometry() {
-  const v4 = LAYOUT_V4 ? import('./layout-v4').then(({ ROADS_V4, CONNECTORS_V4, paveHalf, LANDMARKS_V4 }) => ({
-    roads: [...ROADS_V4, ...CONNECTORS_V4]
-      .map(r => ({ pts: r.pts, width: r.cls === 'foot' ? 2 : r.cls === 'dirt' ? 3 : paveHalf(r.cls) * .9, color: r.cls === 'dirt' ? '#B08A5E' : r.cls === 'foot' ? '#C9A978' : r.cls === 'avenue' ? '#F3EBDD' : '#D9D2C2', dash: r.cls === 'dirt' ? '3 2' : undefined }))
-      .sort((a, b) => b.width - a.width),
-    landmarks: LANDMARKS_V4.map(l => ({ id: l.id, p: [l.p[0], l.p[1]] as [number, number], label: l.label })),
-  })) : Promise.resolve({ roads: undefined, landmarks: [] as Landmark[] });
-  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4, import('./attractions/coaster-track'),import('./alpha-island/alpha-terrain')]).then(([{ islandShorelines, campRadius }, { roads, landmarks }, {coasterCurve},{alphaShoreline}]) => {
-    const shores = [...islandShorelines(),alphaShoreline()], shore = shores.flat();
-    const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
-    const xs = [-77, 85, ...shore.map(p => p[0]), ...ATTRACTIONS_CAPE.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
-    const zs = [-62, 62, ...shore.map(p => p[1]), ...ATTRACTIONS_CAPE.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
-    const x = Math.min(...xs) - 7, z = Math.min(...zs) - 7;
-    const coaster=coasterCurve.getSpacedPoints(140).map(p=>[p.x,p.z]);
-    registerShore(shores);
-    [camp, coaster, ...(roads?.map(r => r.pts) ?? [])].forEach(register);
-    return { shores, camp, roads, landmarks, coaster, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
-  });
-}
-function useMapGeometry() {
-  const [geometry, setGeometry] = useState<MapGeometry | null>(null);
-  useEffect(() => { let live = true; loadMapGeometry().then(g => { if (live) setGeometry(g); }).catch(() => {}); return () => { live = false; }; }, []);
-  return geometry;
-}
+type Landmark = { id: string; p: readonly number[]; label: string };
+type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: readonly number[]; roads?: MapRoad[]; landmarks: Landmark[]; coaster: number[][] };
+/** Generated from the runtime's terrain waterline and road/track sources before dev/build.
+ * Loading, full map and radar share this geometry from their very first render. */
+export const WORLD_MAP_GEOMETRY: MapGeometry = LAYOUT_V4 ? mapV4 : mapV3;
+registerShore(WORLD_MAP_GEOMETRY.shores);
+[WORLD_MAP_GEOMETRY.camp, WORLD_MAP_GEOMETRY.coaster, ...(WORLD_MAP_GEOMETRY.roads?.map(r => r.pts) ?? [])].forEach(register);
 
 /** Heading of travel (radians, map space) from successive published positions; holds while standing still. */
 function useHeading(x: number, z: number) {
@@ -72,7 +49,7 @@ function useHeading(x: number, z: number) {
 /** Minimap (follows the player, north up, a GTA-style radar window) and the full map used by the Esc menu and
  * the loading cover. The full map sets / clears the waypoint on click when `interactive`. */
 export default function WorldMap({ mode = 'mini', interactive = false, showPlayer = true }: { mode?: 'mini' | 'full'; interactive?: boolean; showPlayer?: boolean }) {
-  const geometry = useMapGeometry();
+  const geometry = WORLD_MAP_GEOMETRY;
   const position = useWorldStore(s => s.position);
   const lang = useWorldStore(s => s.lang);
   const waypoint = useWorldStore(s => s.waypoint);
@@ -83,7 +60,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
   const svg = useRef<SVGSVGElement>(null);
   const full = mode === 'full';
   const R = 46; // minimap half-window in metres
-  const vb = full ? (geometry?.viewBox ?? [-85, -100, 180, 175]) : [px - R, pz - R, R * 2, R * 2];
+  const vb = full ? geometry.viewBox : [px - R, pz - R, R * 2, R * 2];
   const s = full ? 1 : .8; // marker scale
   const click = (e: MouseEvent<SVGSVGElement>) => {
     if (!interactive || !svg.current) return;
@@ -108,12 +85,12 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <pattern id={seaId} width='5' height='5' patternUnits='userSpaceOnUse' patternTransform='rotate(35)'><rect width='5' height='5' fill='#1E5A5E' /><line x1='0' y1='0' x2='0' y2='5' stroke='#3C8A8A' strokeWidth='.7' opacity='.5' /></pattern>
     </defs>
     <rect x={vb[0] - 300} y={vb[1] - 300} width={vb[2] + 600} height={vb[3] + 600} fill={`url(#${seaId})`} />
-    <path d={shorePath(geometry?.shores ?? fallbackShores)} fillRule='evenodd' fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
-    <path d={shorePath(geometry?.shores ?? fallbackShores)} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
+    <path d={shorePath(geometry.shores)} fillRule='evenodd' fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
+    <path d={shorePath(geometry.shores)} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
     <g data-alpha-island='batch2'>{alphaBatch2MapPaths.map((p,i)=><polyline key={'batch2-'+i} points={path(p)} fill='none' stroke='#c5bba2' strokeWidth='1.8' strokeDasharray={i===3?'2 2':undefined} strokeLinejoin='round'/>)}{full&&alphaBatch2Stops.map(stop=><g key={stop.en}><circle cx={stop.p[0]} cy={stop.p[2]} r='2' fill='#e7c587'/><text x={stop.p[0]+4} y={stop.p[2]+2} fontSize='4' fill='#fff4da' paintOrder='stroke' stroke='#23343d' strokeWidth='1'>{stop[lang]}</text></g>)}<polygon points={path(ALPHA_MAINLAND_PIER_POLYGON)} fill='#b39870'/><polyline points={path(ALPHA_MAINLAND_APPROACH)} fill='none' stroke='#d1bc91' strokeWidth='2.2'/><polyline data-alpha-route="visitor" points={path(ALPHA_VISITOR_PATH)} fill="none" stroke="#e0d4b4" strokeWidth="2.4" strokeLinejoin="round" />{ALPHA_VISITOR_SPURS.map(spur=><g key={spur.id}><polyline data-alpha-route={spur.id} points={path(spur.path)} fill="none" stroke="#d0bd91" strokeWidth="1.7" strokeDasharray="2 1" strokeLinejoin="round"/><circle cx={spur.path.at(-1)![0]} cy={spur.path.at(-1)![1]} r="2" fill="#e7c587"/><text x={spur.path.at(-1)![0]+4} y={spur.path.at(-1)![1]+2} fontSize={full?'4':'5'} fill="#fff4da" paintOrder="stroke" stroke="#23343d" strokeWidth="1">{spur.label[lang]}</text></g>)}{(['dock','tree','wind','summit'] as const).map((id,i)=>{const p=alphaWorld(ALPHA_STATIONS[id]);return <g key={id}><circle cx={p[0]} cy={p[2]} r='2.8' fill='#e7c587'/><text x={p[0]+5} y={p[2]+2} fontSize={full?'4':'5'} fill='#fff4da' paintOrder='stroke' stroke='#23343d' strokeWidth='1'>{lang==='zh'?['渡口','语法树','风口','山顶'][i]:['Ferry','Tree','Wind','Summit'][i]}</text></g>;})}</g>
     <polygon data-quarry-outline='physical' points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#99917C' stroke='#B6AB89' strokeOpacity='.45' strokeWidth={full ? .8 : .6} strokeLinejoin='round' />
     {LAYOUT_V4&&<g data-factory-outline="physical"><polygon points={path(FACTORY_FOOTPRINT)} fill="#aaa590" stroke="#d7c9a6" strokeWidth=".7"/><text x={FACTORY.origin[0]} y={FACTORY.origin[2]} textAnchor="middle" fontSize={full?'4.5':'5'} fill="#fff7de" paintOrder="stroke" stroke="#23343d" strokeWidth="1.1">{t.factory}</text><circle cx={FACTORY.entrance[0]} cy={FACTORY.entrance[2]} r="3.3" fill="#23343D" stroke="#4FD1C5"/></g>}
-    {geometry?.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
+    {geometry.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />
     <polyline points={path(ALPHA_MINE_CONNECTOR)} fill='none' stroke='#B99469' strokeWidth={ALPHA_MINE_CONNECTOR_WIDTH} strokeLinejoin='round' strokeLinecap='round' />
@@ -122,7 +99,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <polyline points={path(ATTRACTION_ROAD_SAMPLES[0])} fill='none' stroke='#D9D2C2' strokeWidth='6.4' strokeLinejoin='round'/>
       {[IBD_YARD,INTENT_COASTER].map((site,i)=><g key={i}>
         {i===1?<polygon points={path(INTENT_COASTER_FOOTPRINT)} fill='#36565e' stroke='#c4c5a3' strokeWidth='.7'/>:<polygon data-ibd-footprint='physical' points={path(IBD_FOOTPRINT)} fill='#89745c' stroke='#c4c5a3' strokeWidth='.7'/>}
-        {i===1&&geometry&&<polyline points={path(geometry.coaster)} fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
+        {i===1&&<polyline points={path(geometry.coaster)} fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
         <circle cx={site.entrance[0]} cy={site.entrance[2]} r='3.3' fill='#23343D' stroke='#4FD1C5'/>
         <text x={site.center[0]} y={site.center[2]+(i?0:2)} textAnchor='middle' fontSize={full?'4.5':'5'} fill='#fff7de' paintOrder='stroke' stroke='#23343d' strokeWidth='1.1'>{lang==='zh'?(i?'意图过山车':'物资清点场'):(i?'INTENT COASTER':'INVENTORY YARD')}</text>
       </g>)}
@@ -139,7 +116,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <circle cx={CLUB.center[0]} cy={CLUB.center[2]} r={2.7*s} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9'/>
       <text x={CLUB.center[0]} y={CLUB.center[2]+17} textAnchor='middle' fontSize={full?'4.2':'4.6'} fill='#F4ECDB'>{lang==='zh'?'DJC 海边 Club':'DJC Beach Club'}</text>
     </g>}
-    {geometry ? <polygon points={path(geometry.camp)} fill='#D2B98A' stroke='#E8803A' strokeWidth={full ? 1.2 : 1} /> : <circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r='15' fill='#D2B98A' stroke='#E8803A' strokeWidth='1.2' />}
+    <polygon points={path(geometry.camp)} fill='#D2B98A' stroke='#E8803A' strokeWidth={full ? 1.2 : 1} />
     {FOUNDATIONS.map(f => <rect key={f.id} x={f.position[0] - f.size[0] / 2} y={f.position[2] - f.size[2] / 2} width={f.size[0]} height={f.size[2]} fill='none' stroke='#F4ECDB' strokeWidth='.8' strokeDasharray='2 1.6' opacity='.8' />)}
     {/* Six internship buildings, numbered in startDate order (oldest -> newest). */}
     {BUILDINGS.map((b, i) => <g key={b.id} transform={`translate(${b.position[0]} ${b.position[2]})`}>
@@ -153,7 +130,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <path d={`M${-1.5 * s} ${1.8 * s}V${-1.6 * s}H${1.5 * s}V${1.8 * s}`} fill='none' stroke='#F4ECDB' strokeWidth='.7' />
     </g>
     <circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r={2.3 * s} fill='#E8803A' /><circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r={4.4 * s} fill='none' stroke='#E8803A' strokeWidth='.7' />
-    {geometry?.landmarks.filter(l => landmarkName[l.label]).map(l => <g key={l.id} transform={`translate(${l.p[0]} ${l.p[1]})`}>
+    {geometry.landmarks.filter(l => landmarkName[l.label]).map(l => <g key={l.id} transform={`translate(${l.p[0]} ${l.p[1]})`}>
       {l.label === 'windmill' ? <path d={`M0 ${-4.4 * s}L${1.3 * s} 0L0 ${4.4 * s}L${-1.3 * s} 0Z M${-4.4 * s} 0L0 ${1.3 * s}L${4.4 * s} 0L0 ${-1.3 * s}Z`} fill='#F4ECDB' stroke='#23343D' strokeWidth='.5' />
         : <rect x={-2 * s} y={-2 * s} width={4 * s} height={4 * s} fill='#B9602A' stroke='#F4ECDB' strokeWidth='.6' />}
     </g>)}
@@ -171,7 +148,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     {full && <g className='world-map-labels'>
       <text x={ALPHA_MINE_ORIGIN[0]} y={ALPHA_MINE_ORIGIN[2]-26} textAnchor='middle' fontSize='4.2'>{lang === 'zh' ? 'WorldQuant 因子矿场' : 'WorldQuant factor quarry'}</text>
       {(['camp', 'town', 'park'] as const).map(z => { const at = z === 'camp' ? [CAMP_CENTER[0], CAMP_CENTER[2] + 24] : z === 'town' ? [-15, -4] : [64, -62]; return <text key={z} x={at[0]} y={at[1]} textAnchor='middle' fontSize='6'>{t[z]}</text>; })}
-      {geometry?.landmarks.filter(l => landmarkName[l.label]).map(l => <text key={l.id} x={l.p[0]} y={l.p[1] + 10} textAnchor='middle' fontSize='4.6'>{landmarkName[l.label]}</text>)}
+      {geometry.landmarks.filter(l => landmarkName[l.label]).map(l => <text key={l.id} x={l.p[0]} y={l.p[1] + 10} textAnchor='middle' fontSize='4.6'>{landmarkName[l.label]}</text>)}
     </g>}
     {/* Player: travel-direction arrow, white with a dark rim so it reads on grass, sand and road. */}
     {/* Invisible r=2.6 anchor kept for the normal-entry bots, which steer by `aside.world-location svg circle[r="2.6"]`. */}

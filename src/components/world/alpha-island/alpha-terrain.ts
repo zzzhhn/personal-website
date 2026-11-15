@@ -61,10 +61,11 @@ export function alphaHeight(x:number,z:number) {
    const terminal=Math.min(Math.hypot(x-35,z+39),Math.hypot(x-29,z-22));
    const w=(1-smooth(5,8,cable.distance))*smooth(5,14,terminal);h=Math.min(h,h*(1-w)+(cable.y-7)*w);
  }
- const sled=nearestAlphaSegment(x,z,ALPHA_SLED_PATH);
- if(sled.distance<5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2) h=Math.min(h,sled.y-.35);
  // Reapply walking datum after broad terraces; approach ramps must not become steps.
  h=h*(1-blend)+n.y*blend;
+ // Full facility footprints own their grade, not just the central route sample.
+ // Apply before the bed cut and retain transport clearance as a conflict detector.
+ if(poolEdge===0)h=pool.center[1];
  // The stream bed stays below the visible water; bridge and permanent bypass
  // supply their own fixed support. Leave a dry bank around the whole basin.
  const poolInset=Math.min(pool.size[0]/2-Math.abs(x-pool.center[0]),pool.size[1]/2-Math.abs(z-pool.center[2]));
@@ -75,7 +76,6 @@ export function alphaHeight(x:number,z:number) {
  const mouth=Math.min(Math.hypot(x-ALPHA_CAVE_PATH[0][0],z-ALPHA_CAVE_PATH[0][2]),Math.hypot(x-ALPHA_CAVE_PATH.at(-1)![0],z-ALPHA_CAVE_PATH.at(-1)![2]));
  const caveWeight=(1-smooth(3.3,4.5,cave.distance))*smooth(0,2,mouth);
  if(caveWeight>0)h=Math.min(h,h*(1-caveWeight)+(cave.y-.35)*caveWeight);
- if(sled.distance<5&&n.distance>3.5&&sled.index>0&&sled.index<ALPHA_SLED_PATH.length-2)h=Math.min(h,sled.y-.35);
  const realCable=nearestAlphaSegment(x,z,cableSamples);const u=(realCable.index+realCable.t)/192;
  const ca=cableSamples[realCable.index],cb=cableSamples[realCable.index+1],grade=Math.abs(cb[1]-ca[1])/Math.max(.01,Math.hypot(cb[0]-ca[0],cb[2]-ca[2]));
  const clear=Math.max(.3,2.1*grade+.3,7*smooth(.08,.22,u)*(1-smooth(.76,.96,u)));
@@ -83,6 +83,14 @@ export function alphaHeight(x:number,z:number) {
  const realSled=nearestAlphaSegment(x,z,sledSamples),su=(realSled.index+realSled.t)/256;
  const sa=sledSamples[realSled.index],sb=sledSamples[realSled.index+1],sg=Math.abs(sb[1]-sa[1])/Math.max(.01,Math.hypot(sb[0]-sa[0],sb[2]-sa[2]));
  if(realSled.distance<3.7&&su>.06&&su<.995){const w=1-smooth(1.8,3.7,realSled.distance),clear=Math.max(.38,1.8*sg+.22);h=Math.min(h,h*(1-w)+(realSled.y-clear)*w);}
+ // Graded occupied pads lie outside the surveyed track envelope. Track excavation
+ // cannot remove a house footing or the pedestrian egress apron beside the rails.
+ const lodgeEdge=Math.hypot(Math.max(0,Math.abs(x+64)-4),Math.max(0,Math.abs(z+40)-3.4));
+ const lodgeWeight=1-smooth(0,.8,lodgeEdge);
+ h=h*(1-lodgeWeight)+3.8*lodgeWeight;
+ const exitEdge=Math.hypot(Math.max(-64.6-x,0,x+59),Math.max(-34-z,0,z+20));
+ const exitWeight=1-smooth(0,.6,exitEdge);
+ h=h*(1-exitWeight)+3.8*exitWeight;
  // R6 surveyed underwater side-berth basin. Keep dry pier footprint x>=147.5
  // intact; the complete hull/fenders occupy x<=145.5. Smooth bank is underwater.
  const bay=ALPHA_BERTH_BASIN,wx=x+ALPHA_ORIGIN[0],wz=z+ALPHA_ORIGIN[2],berth=(1-smooth(bay.innerMaxX,bay.bankMaxX,wx))*smooth(bay.fadeMinZ,bay.innerMinZ,wz)*(1-smooth(bay.innerMaxZ,bay.fadeMaxZ,wz));
@@ -90,12 +98,27 @@ export function alphaHeight(x:number,z:number) {
  return h;
 }
 export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance,batch2PathDistance(x,z));
-export function alphaTerrainData(step=1.5) {
+type AlphaTerrainData={positions:Float32Array;surface:Uint32Array;solid:Uint32Array;indices:Uint32Array;nx:number;nz:number};
+let runtimeTerrain:AlphaTerrainData|null=null;
+export function alphaTerrainData(step=1.5):AlphaTerrainData {
+ if(step===1.5&&runtimeTerrain)return runtimeTerrain;
  const nx=Math.ceil(196/step),nz=Math.ceil(228/step),positions=new Float32Array((nx+1)*(nz+1)*3),surface:number[]=[],solid:number[]=[],indices:number[]=[];
  for(let j=0;j<=nz;j++)for(let i=0;i<=nx;i++){const x=-98+i*196/nx,z=-114+j*228/nz,k=(j*(nx+1)+i)*3;positions.set([x,alphaHeight(x,z),z],k);}
  const tri=(a:number,b:number,c:number)=>{const ax=positions[b*3]-positions[a*3],ay=positions[b*3+1]-positions[a*3+1],az=positions[b*3+2]-positions[a*3+2],bx=positions[c*3]-positions[a*3],by=positions[c*3+1]-positions[a*3+1],bz=positions[c*3+2]-positions[a*3+2];
  const ny=az*bx-ax*bz,len=Math.hypot(ay*bz-az*by,ny,ax*by-ay*bx);(ny/len>.64?surface:solid).push(a,b,c);indices.push(a,b,c);};
  for(let j=0;j<nz;j++)for(let i=0;i<nx;i++){const a=j*(nx+1)+i;tri(a,a+nx+1,a+1);tri(a+1,a+nx+1,a+nx+2);}
- return {positions,surface:new Uint32Array(surface),solid:new Uint32Array(solid),indices:new Uint32Array(indices),nx,nz};
+ const data={positions,surface:new Uint32Array(surface),solid:new Uint32Array(solid),indices:new Uint32Array(indices),nx,nz};
+ if(step===1.5)runtimeTerrain=data;
+ return data;
+}
+/** Placement samples the exact triangles used by both visible ground and Rapier.
+ * Cached source arrays are shared read-only; no raycast or extra mesh is allocated. */
+export function alphaGroundHeight(x:number,z:number) {
+ if(x< -98||x>98||z< -114||z>114)return alphaHeight(x,z);
+ const d=alphaTerrainData(),p=d.positions;
+ const i=Math.min(d.nx-1,Math.floor((x+98)/196*d.nx)),j=Math.min(d.nz-1,Math.floor((z+114)/228*d.nz));
+ const a=(j*(d.nx+1)+i)*3,b=a+3,c=a+(d.nx+1)*3,e=c+3;
+ const u=(x-p[a])/(p[b]-p[a]),v=(z-p[a+2])/(p[c+2]-p[a+2]);
+ return u+v<=1?p[a+1]*(1-u-v)+p[b+1]*u+p[c+1]*v:p[b+1]*(1-v)+p[c+1]*(1-u)+p[e+1]*(u+v-1);
 }
 export function alphaShoreline():[number,number][] {return Array.from({length:128},(_,i)=>{const a=i/128*Math.PI*2;let lo=0,hi=135;for(let k=0;k<14;k++){const r=(lo+hi)/2;if(alphaHeight(Math.cos(a)*r,Math.sin(a)*r)>-.7)lo=r;else hi=r;}const p=alphaWorld([Math.cos(a)*lo,0,Math.sin(a)*lo]);return [p[0],p[2]];});}

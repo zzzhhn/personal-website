@@ -7,7 +7,7 @@ import { CAMP_CENTER, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
 import WorldExperienceSummary from './WorldExperienceSummary';
 import WorldCards from './WorldCards';
-import WorldMap, { loadMapGeometry } from './WorldMap';
+import WorldMap, { WORLD_MAP_GEOMETRY } from './WorldMap';
 import WorldAlphaMineHud from './WorldAlphaMineHud';
 import WorldClubHud from './WorldClubHud';
 import WorldPoolInspect from './WorldPoolInspect';
@@ -45,8 +45,7 @@ class WorldErrorBoundary extends Component<{ children: ReactNode; message: strin
 function Loading() {
   const t = worldText[useWorldStore(s => s.lang)];
   const loading = useWorldStore(s => s.loading);
-  const [viewBox, setViewBox] = useState<readonly number[]>([-85, -70, 180, 145]);
-  useEffect(() => { let live = true; loadMapGeometry().then(g => { if (live) setViewBox(g.viewBox); }).catch(() => {}); return () => { live = false; }; }, []);
+  const viewBox = WORLD_MAP_GEOMETRY.viewBox;
   const observed = loading.phase === 'ready' ? 1 : loading.phase === 'scene' ? .94 : loading.total ? .08 + .8 * loading.loaded / loading.total : .04;
   // Keep earned colour when another dependency is discovered. This is a visual frontier, not a byte percentage.
   const frontier = useRef(0);

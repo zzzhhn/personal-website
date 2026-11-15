@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Frustum,InstancedMesh,Matrix4,Object3D,Sphere,Vector3 } from 'three';
 import { CuboidCollider,RigidBody } from '@react-three/rapier';
 import { createAlphaPine,createAlphaPineFar,createAlphaShrub,createAlphaGrassTuft } from './alpha-nature';
-import { alphaHeight,alphaPathDistance,alphaRadial,nearestAlphaSegment,alphaSurfaceNormalY } from './alpha-terrain';
+import { alphaGroundHeight as alphaHeight,alphaPathDistance,alphaRadial,nearestAlphaSegment,alphaSurfaceNormalY } from './alpha-terrain';
 import { ALPHA_SOCKETS,ALPHA_CABLE_PATH,ALPHA_SLED_PATH,ALPHA_MAIN_PATH,ALPHA_ORIGIN } from './alpha-layout';
 import { alphaBoardingIntersectsPlant } from './alpha-boarding-mask';
 import { alphaMaterial } from './alpha-materials';

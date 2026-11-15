@@ -4,7 +4,7 @@ import { CuboidCollider,RigidBody,TrimeshCollider,ConvexHullCollider } from '@re
 import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,TubeGeometry,CatmullRomCurve3,Vector3,Float32BufferAttribute,LatheGeometry,Vector2 } from 'three';
 import { AlphaBuilder,createAlphaLodge,createAlphaRack,alphaLanternGeometry,type AlphaFinish } from './alpha-art';
 import { ALPHA_MAIN_PATH,ALPHA_STATIONS,ALPHA_SOCKETS } from './alpha-layout';
-import { alphaHeight,alphaPathDistance } from './alpha-terrain';
+import { alphaGroundHeight as alphaHeight,alphaPathDistance } from './alpha-terrain';
 import {batch2PathDistance} from './alpha-batch2-layout';
 import { createAlphaBoulderField } from './alpha-rocks';
 import { alphaMaterial,alphaMaterialUniforms } from './alpha-materials';

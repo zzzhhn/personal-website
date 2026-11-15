@@ -2,7 +2,7 @@ import { BufferGeometry, Float32BufferAttribute, Vector3 } from 'three';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { mergeGeometries, toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { ALPHA_CABLE_PATH, ALPHA_SLED_PATH, ALPHA_SOCKETS } from './alpha-layout.ts';
-import { alphaHeight, alphaPathDistance, alphaRadial, alphaSurfaceNormalY, nearestAlphaSegment } from './alpha-terrain.ts';
+import { alphaGroundHeight as alphaHeight, alphaPathDistance, alphaRadial, alphaSurfaceNormalY, nearestAlphaSegment } from './alpha-terrain.ts';
 import { batch2PlantClearance } from './alpha-batch2-layout';
 
 type Position = [number, number, number];
