@@ -41,3 +41,9 @@
 使用项目现有 TS 模块 loader，26 项状态/真实 Rapier/地板与骨骼回归通过；`npx tsc --noEmit` 通过；正式构建于 16:11:21 完成。直接裸 `node --test` 不支持本仓库无后缀 TS 导入，该调用失败后改用既有 `tools/world/alpha-mine-tests/register.mjs`，未改生产导入以迁就测试。
 
 本次复测开始时 Mac 锁屏，浏览器无法继续。因此这些新增交互与到达修复仍为待实际试玩的候选版，**未覆盖 4341**；4341 保持上面的地图接缝已验收冻结构建。没有新增完整性能验收。
+
+## 同日后续：改由用户定点试玩
+
+Bobby 已解锁，并明确要求减少 Agent computer use 漫游，改为技术检查后给出入口与关注点，由本人体验反馈。按这一新分工，4341 已切到 `9cc4c151` 的候选构建，冻结于 `/tmp/bobby-world-alpha-usertrial-9cc4c151`。HTTP 入口 SHA-256 为 `5335bedd464d1c2a040f264d539d577b2ad3da60e7fe8e77fae449e227fe21f0`，与冻结构建一致，元数据明确 `technical-checks-passed; user-playtest-pending`。旧冻结版保留用于回退，未公开部署。
+
+本次没有新开浏览器、没有重跑未变更源码的测试与构建，也没有把用户试玩待确认改写成 Agent 实景通过。技术证据仍为上一节的 26 项回归、类型检查和正式构建。入口与体验关注点见 [Agent 检查与玩家体验分工](../agent-review-and-playtest.md)。
