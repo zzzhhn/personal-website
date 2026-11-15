@@ -33,13 +33,62 @@ function fixture(position, populate) {
   };
   return { world, body, tick, free() { world.removeCharacterController(guard); world.free(); } };
 }
-function slope(degrees = 15) {
+function slope(degrees = 15, mesh = false) {
   const a = degrees * Math.PI / 180;
   return fixture([0, PLAYER_HALF_HEIGHT + PLAYER_RADIUS / Math.cos(a) + .002, 0], world => {
+    if (mesh) {
+      const vertices = new Float32Array([-100, 0, -10, 100, 0, -10, -100, 0, 10, 100, 0, 10]);
+      for (let i = 0; i < vertices.length; i += 3) {
+        const x = vertices[i]; vertices[i] = x * Math.cos(a); vertices[i + 1] = x * Math.sin(a);
+      }
+      world.createCollider(R.ColliderDesc.trimesh(vertices, new Uint32Array([0, 2, 1, 1, 2, 3])).setFriction(.9));
+      return;
+    }
     world.createCollider(R.ColliderDesc.cuboid(50, .5, 10).setTranslation(.5 * Math.sin(a), -.5 * Math.cos(a), 0)
       .setRotation({ x: 0, y: 0, z: Math.sin(a / 2), w: Math.cos(a / 2) }).setFriction(.9));
   });
 }
+test('sustained uphill input cannot climb nonwalkable faces or hold a falling capsule on a cliff', t => {
+  for (const mesh of [false, true]) for (const degrees of [26, 30, 40, 60, 85]) {
+    const f = slope(degrees, mesh);
+    try {
+      const start = f.body.translation(); let peak = start.y, grounded = 0;
+      for (let i = 0; i < 300; i++) {
+        if (f.tick(6.2).grounded) grounded++;
+        peak = Math.max(peak, f.body.translation().y);
+      }
+      const end = f.body.translation();
+      t.diagnostic(JSON.stringify({ degrees, mesh, rise: peak - start.y, fall: start.y - end.y, grounded }));
+      assert.ok(peak - start.y < .025, `input powered ascent on ${degrees} degree ${mesh ? 'mesh' : 'solid'} face`);
+      assert.ok(end.y < start.y - .1, 'gravity must release the capsule downhill instead of hovering');
+      assert.equal(grounded, 0, 'a nonwalkable cliff cannot provide gameplay support');
+    } finally { f.free(); }
+  }
+});
+test('walkable 24 degree floor retains grounded uphill locomotion beside the slope limit', t => {
+  for (const mesh of [false, true]) {
+    const f = slope(24, mesh);
+    try {
+      let grounded = 0;
+      for (let i = 0; i < 300; i++) if (f.tick(6.2).grounded) grounded++;
+      t.diagnostic(JSON.stringify({ mesh, grounded, position: f.body.translation() }));
+      assert.ok(f.body.translation().x > 25, JSON.stringify(f.body.translation()));
+      assert.ok(grounded >= 285, `valid floor lost support ${300 - grounded} frames`);
+    } finally { f.free(); }
+  }
+});
+test('nonwalkable uphill input retains motion along the face and gravity downhill', () => {
+  for (const mesh of [false, true]) {
+    const f = slope(40, mesh);
+    try {
+      const start = f.body.translation();
+      for (let i = 0; i < 120; i++) f.tick(6.2, 3.6);
+      const end = f.body.translation();
+      assert.ok(end.z > start.z + 4, 'the steep-face guard must preserve tangential movement');
+      assert.ok(end.y < start.y - .1, 'tangential travel cannot pin the capsule to the face');
+    } finally { f.free(); }
+  }
+});
 test('the zero-friction dynamic player stands on a 15 degree slope for ten seconds', t => {
   const f = slope();
   try {

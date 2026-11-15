@@ -5,21 +5,21 @@ import { alphaTerrainData,alphaGroundHeight } from './alpha-terrain.ts';
 import { ALPHA_SLED_PATH, ALPHA_MAIN_PATH } from './alpha-layout.ts';
 import { batch2Segment } from './alpha-batch2-layout.ts';
 
-test('actual terrain mesh supports the shallows banks and lodge footprint',()=>{
+test('actual terrain mesh supports the coastal footpath and lodge footprint',()=>{
  const data=alphaTerrainData(),g=new BufferGeometry();
  g.setAttribute('position',new Float32BufferAttribute(data.positions,3));g.setIndex(Array.from(data.indices));
  const material=new MeshBasicMaterial({side:DoubleSide}),mesh=new Mesh(g,material),ray=new Raycaster();mesh.updateMatrixWorld();
  const height=(x,z)=>{ray.set(new Vector3(x,100,z),new Vector3(0,-1,0));return ray.intersectObject(mesh)[0]?.point.y;};
  try {
-  // These are the visible planted-bank bases, including the former four-metre gap.
-  for(let i=0;i<6;i++)for(const z of [-65.65,-54.35]){
-   const x=-43.9+i*3.15,y=height(x,z);
-   assert.ok(y>=11.7&&y<=12.25,`unsupported/buried bank at ${x},${z}: ${y}`);
+  // Removing the rune basin must retain continuous ground under the old crossing.
+  for(let x=-44.75;x<=-27;x+=.5)for(const z of [-56.7,-56,-55.3]){
+   const y=height(x,z);
+   assert.ok(Math.abs(y-12)<.25,`unsupported coastal footpath at ${x},${z}: ${y}`);
+   assert.ok(Math.abs(height(x+.25,z)-y)/.25<Math.tan(25*Math.PI/180),`coastal footpath exceeds walking slope at ${x},${z}`);
   }
   for(const x of [-67.2,-64,-60.8])for(const z of [-42.6,-40,-37.4]){
    const y=height(x,z);assert.ok(y>=3.65&&y<=3.9,`lodge foundation at ${x},${z}: ${y}`);
   }
-  assert.ok(height(-36,-60)<11.92,'stream bed must be below the water');
   for(let i=0;i<48;i++){
    const x=-84+(i*13.7)%168,z=-97+(i*27.3)%194;
    assert.ok(Math.abs(height(x,z)-alphaGroundHeight(x,z))<1e-5,'placement differs from rendered terrain');

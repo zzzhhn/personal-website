@@ -1,7 +1,7 @@
 import { CatmullRomCurve3,Vector3 } from 'three';
 import { ALPHA_BERTH_BASIN, ALPHA_ORIGIN, ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
 import type { Vec3 } from '../types';
-import { ALPHA_BATCH2_PATHS, ALPHA_SHALLOWS, ALPHA_WATERWHEEL, ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2PathDistance, batch2Segment } from './alpha-batch2-layout';
+import { ALPHA_BATCH2_PATHS, ALPHA_WATERWHEEL, ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2PathDistance, batch2Segment } from './alpha-batch2-layout';
 const cableCurve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
 const cableSamples=Array.from({length:193},(_,i)=>{const p=cableCurve.getPointAt(i/192);return [p.x,Math.max(38,Math.min(73,p.y)),p.z] as Vec3;});
 const sledCurve=new CatmullRomCurve3(ALPHA_SLED_PATH.map(p=>new Vector3(p[0],p[1]+.16,p[2])),false,'centripetal');
@@ -52,10 +52,6 @@ export function alphaHeight(x:number,z:number) {
  const wheelEdge=Math.hypot(Math.max(0,Math.abs(x-wheel.center[0])-wheel.size[0]/2),Math.max(0,Math.abs(z-wheel.center[2])-wheel.size[1]/2));
  const wheelWeight=1-smooth(0,4,wheelEdge);
  h=h*(1-wheelWeight)+wheel.center[1]*wheelWeight;
- const pool=ALPHA_SHALLOWS;
- const poolEdge=Math.hypot(Math.max(0,Math.abs(x-pool.center[0])-pool.size[0]/2),Math.max(0,Math.abs(z-pool.center[2])-pool.size[1]/2));
- const poolWeight=1-smooth(0,4,poolEdge);
- h=h*(1-poolWeight)+pool.center[1]*poolWeight;
  const cable=nearestAlphaSegment(x,z,ALPHA_CABLE_PATH);
  if(cable.index>0&&cable.index<4&&cable.distance<7) {
    const terminal=Math.min(Math.hypot(x-35,z+39),Math.hypot(x-29,z-22));
@@ -63,13 +59,8 @@ export function alphaHeight(x:number,z:number) {
  }
  // Reapply walking datum after broad terraces; approach ramps must not become steps.
  h=h*(1-blend)+n.y*blend;
- // Full facility footprints own their grade, not just the central route sample.
- // Apply before the bed cut and retain transport clearance as a conflict detector.
- if(poolEdge===0)h=pool.center[1];
- // The stream bed stays below the visible water; bridge and permanent bypass
- // supply their own fixed support. Leave a dry bank around the whole basin.
- const poolInset=Math.min(pool.size[0]/2-Math.abs(x-pool.center[0]),pool.size[1]/2-Math.abs(z-pool.center[2]));
- if(poolInset>0){const w=smooth(.1,1.1,poolInset);h=h*(1-w)+pool.bedY*w;}
+ // The retired rune basin is ordinary hillside again. Its graded footpath above
+ // remains supported by the same visible terrain and collider triangles.
  // Cave's authored floor owns support. Recess the terrain below it so the coarse
  // mountain grid cannot poke through a turn; taper at both open trail mouths.
  const caveMain=batch2Segment(x,z,ALPHA_CAVE_PATH),caveSide=batch2Segment(x,z,ALPHA_CAVE_DEAD_END),cave=caveMain.distance<caveSide.distance?caveMain:caveSide;

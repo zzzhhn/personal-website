@@ -12,7 +12,8 @@ import { attractionRide, updateAttractionRide } from './attraction-ride';
 import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH, COASTER_GATE_Z } from './coaster-track';
 import { createCoasterStructure, type CoasterCollider } from './coaster-geometry';
 import { activateIntentTarget, intentRideClock, intentRideQaHold, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
-import { advanceCoasterTransition, returnCoasterToStation } from './coaster-transition';
+import { advanceCoasterTransition, finishSkippedCoasterTravel, returnCoasterToStation } from './coaster-transition';
+import { resetAttractionLook } from './attraction-camera';
 import WorldIntentDevices from './WorldIntentDevices';
 import WorldCoasterTrainCraft from './WorldCoasterTrainCraft';
 import WorldIntentSigns from './WorldIntentSigns';
@@ -102,6 +103,11 @@ function CoasterTrain({ active }: { active: boolean }) {
     if (s.riding && !owned) { clearIntentRide(); }
     if (owned && transition.phase === 'riding') {
       const qaHold = import.meta.env.DEV && intentRideQaHold.revision === attractionRide.revision && intentRideQaHold.second !== null;
+      if (finishSkippedCoasterTravel(transition, dt, frozen || qaHold)) {
+        Object.assign(intentRideClock, { elapsed: COASTER_DURATION, riding: false });
+        resetAttractionLook();
+        useIntentStore.setState({ rideSecond: COASTER_DURATION });
+      }
       if (qaHold) intentRideClock.elapsed = intentRideQaHold.second!;
       const next = advanceCoaster(intentRideClock, dt, active, frozen || qaHold, document.hidden, true, attractionRide.revision);
       Object.assign(intentRideClock, next);

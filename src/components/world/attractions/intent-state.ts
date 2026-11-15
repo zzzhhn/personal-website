@@ -9,7 +9,7 @@ import { mineActor, useAlphaMineStore } from '../alpha-mine-state';
 import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, beginAttractionRide, endAttractionRide, requestAttractionExit } from './attraction-ride.ts';
 import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
-import { COASTER_BOARDING, coasterAtBoardingEntrance, type CoasterBoardingPhase } from './coaster-transition.ts';
+import { COASTER_BOARDING, coasterAtBoardingEntrance, requestCoasterSkip, type CoasterBoardingPhase } from './coaster-transition.ts';
 import { coasterRidePose, coasterWorld, COASTER_GATE_Z, COASTER_DEFAULT_VIEW, type CoasterView, type CoasterClock } from './coaster-track.ts';
 
 interface IntentState {
@@ -109,6 +109,12 @@ export function stopIntentRide() {
   if (intentRideClock.revision !== attractionRide.revision || !attractionRide.active) return;
   requestAttractionExit();
   useIntentStore.setState({ exitRequested: true });
+}
+export function skipIntentRide() {
+  const w = useWorldStore.getState();
+  if (intentRideClock.revision !== attractionRide.revision || !attractionRide.active || !useIntentStore.getState().riding
+    || w.paused || w.poolInspect || w.shot || (typeof document !== 'undefined' && document.hidden)) return;
+  if (attractionRide.transition) requestCoasterSkip(attractionRide.transition);
 }
 /** Lifecycle/recovery cleanup is distinct from the normal station-only exit request. */
 export function clearIntentRide(abort = false) {

@@ -1,8 +1,10 @@
 import type { Collider, RigidBody, World } from '@dimforge/rapier3d-compat';
 import type * as Rapier from '@dimforge/rapier3d-compat';
+import { Ray } from '@dimforge/rapier3d-compat';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 
 type Vector = { x: number; y: number; z: number };
+const WALKABLE_NORMAL_Y = Math.cos(25 * Math.PI / 180);
 const clearanceQueries = new WeakMap<object, { world: World; candidates: Collider[]; blocked: Set<number> }>();
 /** A query-only swept guard. The dynamic body still owns gravity, support, impulses and CCD.
  * Rapier's slide solver handles corners without widening the player's existing capsule. */
@@ -39,15 +41,42 @@ export function sweptPlayerVelocity(controller: ReturnType<typeof createPlayerCl
   controller.computeColliderMovement(body.collider(0), { x: velocity.x * dt, y: velocity.y * dt, z: velocity.z * dt },
     excludeSensors, undefined, c => !blocked.has(c.handle));
   let wall = false;
+  const allowed = controller.computedMovement();
+  let x = allowed.x / dt, z = allowed.z / dt;
   for (let i = 0; i < controller.numComputedCollisions(); i++) {
     const hit = controller.computedCollision(i);
-    if (hit && Math.abs(hit.normal1.y) < .65) { wall = true; break; }
+    if (!hit || Math.abs(hit.normal1.y) >= WALKABLE_NORMAL_Y) continue;
+    const raw = hit.normal1, at = hit.witness1;
+    // Capsule/triangle edge contacts can tilt the query normal. Recover the face
+    // normal before deciding whether the current support is a walkable slope.
+    const surface = hit.collider?.castRayAndGetNormal(new Ray(
+      { x: at.x + raw.x * .02, y: at.y + raw.y * .02, z: at.z + raw.z * .02 },
+      { x: -raw.x, y: -raw.y, z: -raw.z }), .04, false);
+    const n = surface?.normal ?? raw;
+    if (Math.abs(n.y) >= WALKABLE_NORMAL_Y) continue;
+    // A capsule meeting a low platform lip can report its vertical side even
+    // though the adjacent top continues the walking surface. Confirm that top
+    // geometrically, within 10 cm of the sole; this never exempts a steep ramp
+    // or a wall whose walkable top is above the ordinary seam/curb range.
+    const sole = p.y - PLAYER_HALF_HEIGHT - PLAYER_RADIUS;
+    if (raw.y > .65 && at.y <= sole + .1) {
+      const top = hit.collider?.castRayAndGetNormal(new Ray(
+        { x: at.x - raw.x * .02, y: at.y + .025, z: at.z - raw.z * .02 },
+        { x: 0, y: -1, z: 0 }), .05, false);
+      if (top && top.normal.y >= WALKABLE_NORMAL_Y) continue;
+    }
+    wall = true;
+    const horizontal = n.x * n.x + n.z * n.z;
+    const into = x * n.x + z * n.z;
+    // A dynamic capsule can turn inward input into upward solver impulses even
+    // when the character query rejects that slope. Remove only inward horizontal
+    // motion; retain along-face movement and the body's unmodified fall/jump.
+    if (into < 0 && horizontal > 1e-6) { x -= into * n.x / horizontal; z -= into * n.z / horizontal; }
   }
   // Ground-only results are deliberately ignored: preserve the existing slope/support servo and
   // physical launch/landing behavior rather than turning the player into a kinematic controller.
   if (!wall) return velocity;
-  const allowed = controller.computedMovement();
-  return { x: allowed.x / dt, y: velocity.y, z: allowed.z / dt };
+  return { x, y: velocity.y, z };
 }
 
 /** Validate the entire standing-capsule route, including head clearance, for door step-outs. */

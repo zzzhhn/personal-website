@@ -14,14 +14,16 @@ import { alphaLanternGeometry } from './alpha-art';
 import { primeAlphaAudio,ringAlphaBell,stopAlphaAudio } from './alpha-audio';
 import { AlphaLantern } from './AlphaScenery';
 import type { Vec3 } from '../types';
-import { alphaActionTarget,alphaActionCanReach,alphaActionLabel,alphaActionNotice,alphaStonePlacementTarget,alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction } from './alpha-action-reach';
+import { alphaActionTarget,alphaActionCanReach,alphaActionLabel,alphaActionNotice,alphaStonePlacementTarget,alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction,alphaPickupApproach } from './alpha-action-reach';
+import { PICKUP_DISCOVERY_RADIUS } from '../pickup-approach';
 const announce=(zh:string,en:string)=>useWorldStore.setState({toast:{zh,en,at:performance.now()}});
 const actionTarget=(kind:AlphaAction)=>alphaActionTarget(kind,useAlphaStore.getState().wind);
 const actorCanAct=()=>{const w=useWorldStore.getState();return campPropActor.available&&!w.paused&&!w.shot&&!w.card&&!w.seat&&!w.activeVehicle&&!w.poolInspect&&!document.hidden;};
 // This pass calibrates the lantern and wind grip only; retain the other stations' existing workflow.
-const canReachAction=(kind:AlphaAction)=>{if(kind!=='wind'&&kind!=='lantern')return true;return alphaActionCanReach(kind,campPropActor.position,campPropActor.grounded,useAlphaStore.getState().wind);};
-function Action({kind}:{kind:AlphaAction}){useAlphaStore(s=>s.wind);useInteractable({id:`alpha-${kind}`,position:alphaWorld(actionTarget(kind)),radius:kind==='sand'?1.6:1.3,kind:'exhibit',
- get label(){return alphaActionLabel(kind,canReachAction(kind),useAlphaStore.getState().wind);},
+const canReachAction=(kind:AlphaAction)=>{if(kind==='stone')return campPropActor.grounded&&alphaPickupApproach(kind).ready(campPropActor.position);if(kind!=='wind'&&kind!=='lantern')return true;return alphaActionCanReach(kind,campPropActor.position,campPropActor.grounded,useAlphaStore.getState().wind);};
+function Action({kind}:{kind:AlphaAction}){useAlphaStore(s=>s.wind);const pickup=kind==='wind'||kind==='lantern'||kind==='stone';useInteractable({id:`alpha-${kind}`,position:alphaWorld(actionTarget(kind)),radius:pickup?PICKUP_DISCOVERY_RADIUS:kind==='sand'?1.6:1.3,kind:'exhibit',
+ get label(){return alphaActionLabel(kind,pickup||canReachAction(kind),useAlphaStore.getState().wind);},
+ get approach(){return kind==='wind'||kind==='lantern'||kind==='stone'?alphaPickupApproach(kind,useAlphaStore.getState().wind):undefined;},
  enabled:()=>actorCanAct()&&!useAlphaStore.getState().action&&!useAlphaStore.getState().carried&&(kind!=='stone'||useAlphaStore.getState().stones<32),
  onInteract:()=>{if(!actorCanAct()||useAlphaStore.getState().action||useAlphaStore.getState().carried||(kind==='stone'&&useAlphaStore.getState().stones>=32))return;
   if(!canReachAction(kind)){const label=alphaActionLabel(kind,false);announce(label.zh,label.en);return;}

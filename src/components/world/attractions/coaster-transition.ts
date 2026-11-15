@@ -76,10 +76,11 @@ export function coasterAtBoardingEntrance(foot: Vec3): boolean {
 }
 export interface CoasterTransition {
   phase: CoasterBoardingPhase; elapsed: number; exitRequested: boolean;
+  skipRequested: boolean;
   captured: boolean; from: Vec3; fromYaw: number; frame: CoasterActorFrame;
 }
 export function createCoasterTransition(from: Vec3, yaw: number, pose: AttractionRidePose): CoasterTransition {
-  return { phase: 'approach', elapsed: 0, exitRequested: false, captured: false, from: [...from], fromYaw: yaw,
+  return { phase: 'approach', elapsed: 0, exitRequested: false, skipRequested: false, captured: false, from: [...from], fromYaw: yaw,
     frame: { root: [...from], yaw, speed: 0, clip: 'Idle', seatWeight: 0, seat: pose.seat } };
 }
 export function captureCoasterStart(t: CoasterTransition, root: Vec3, yaw: number) {
@@ -100,6 +101,15 @@ export function coasterTransitionDuration(t: CoasterTransition): number {
 }
 const order: CoasterBoardingPhase[] = ['approach', 'step-in', 'turn-in', 'sit', 'settle', 'riding', 'stand', 'turn-out', 'step-out', 'walk-out', 'complete'];
 export function returnCoasterToStation(t: CoasterTransition) { if (t.phase === 'riding') { t.phase = 'stand'; t.elapsed = 0; } }
+/** An occupied moving train may skip its loop, but must keep the normal station exit. */
+export function requestCoasterSkip(t: CoasterTransition) {
+  if (!t.captured || t.phase !== 'riding' || t.skipRequested) return false;
+  t.skipRequested = true; return true;
+}
+export function finishSkippedCoasterTravel(t: CoasterTransition, dt: number, frozen: boolean) {
+  if (!t.captured || t.phase !== 'riding' || !t.skipRequested || frozen || !Number.isFinite(dt) || dt <= 0 || dt > .25) return false;
+  t.skipRequested = false; returnCoasterToStation(t); return true;
+}
 export function advanceCoasterTransition(t: CoasterTransition, dt: number, frozen: boolean, pose: AttractionRidePose) {
   if (!t.captured || frozen || !Number.isFinite(dt) || dt <= 0 || dt > .25) return t.frame;
   if (t.phase !== 'riding' && t.phase !== 'complete') {

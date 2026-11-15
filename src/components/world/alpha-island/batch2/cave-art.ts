@@ -2,6 +2,8 @@ import { BufferGeometry, Float32BufferAttribute, IcosahedronGeometry, LatheGeome
 import { AlphaBuilder } from '../alpha-art';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2Segment } from '../alpha-batch2-layout';
 import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW } from './cave-state';
+import { alphaGroundHeight } from '../alpha-terrain';
+import { createCaveEnvelopeGeometry, createCaveFloorFoundation } from './cave-envelope';
 import type { Vec3 } from '../../types';
 
 const ROUTES = [ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END];
@@ -45,7 +47,10 @@ function prism(points: Vec3[]) {
 }
 export function createCaveArt() {
   const solid = new AlphaBuilder(), detail = new AlphaBuilder(), seams = new AlphaBuilder(), floor = new AlphaBuilder();
-  floor.add(createCaveFloorGeometry(),'stone');
+  const walkingFloor=createCaveFloorGeometry();
+  solid.add(createCaveEnvelopeGeometry(alphaGroundHeight),'stone');
+  solid.add(createCaveFloorFoundation(walkingFloor),'stone');
+  floor.add(walkingFloor,'stone');
   for (const [routeIndex, path] of ROUTES.entries()) for (let i=1;i<path.length;i++) {
     const a=path[i-1],b=path[i],dx=b[0]-a[0],dz=b[2]-a[2],len=Math.hypot(dx,dz),nx=-dz/len,nz=dx/len,n=Math.ceil(len/1.9);
     for(let j=0;j<n;j++) {

@@ -37,8 +37,7 @@ export function batch2PathDistance(x:number,z:number) {
   return Math.min(...ALPHA_BATCH2_PATHS.map(p=>batch2Segment(x,z,p).distance));
 }
 export function batch2PlantClearance(x:number,z:number) {
-  const a=ALPHA_SHALLOWS,b=ALPHA_WATERWHEEL;
+  const b=ALPHA_WATERWHEEL;
   return batch2PathDistance(x,z)<3.2 ||
-    (Math.abs(x-a.center[0])<a.size[0]/2+1&&Math.abs(z-a.center[2])<a.size[1]/2+1)||
     (Math.abs(x-b.center[0])<b.size[0]/2+1&&Math.abs(z-b.center[2])<b.size[1]/2+1);
 }

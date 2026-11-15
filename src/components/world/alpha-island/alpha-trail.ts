@@ -1,13 +1,13 @@
 import { ALPHA_STATIONS, alphaLocal } from './alpha-layout';
-import { ALPHA_SHALLOWS, ALPHA_WATERWHEEL, ALPHA_CAVE_PATH } from './alpha-batch2-layout';
+import { ALPHA_WATERWHEEL, ALPHA_CAVE_PATH } from './alpha-batch2-layout';
 
 const copy = (zh: string, en: string) => ({ zh, en });
 /** Paper-map suggestions, never a required order or a second completion store. */
 export const ALPHA_TRAIL_STOPS = [
   { n: 1, name: copy('渡口小屋', 'Ferry lodge'), point: ALPHA_STATIONS.lodge,
-    hint: copy('摇响门口铜铃，看看沙盘上的山路。出屋后沿山路去石滩，也可以先自由逛逛。', 'Ring the door bell and trace the mountain on the sand table. The uphill path leads to the shallows; explore at your own pace.') },
-  { n: 2, name: copy('符文石滩', 'Rune shallows'), point: ALPHA_SHALLOWS.center,
-    hint: copy('靠近石槽推拢符文石，试着拼出一座桥。旁边始终有可走的浅水便道，两条路都通向语法树。', 'Push the rune stones along their grooves to make a bridge. The shallow bypass stays open; both routes lead to the Grammar Tree.') },
+    hint: copy('摇响门口铜铃，看看沙盘上的山路。出屋后可以沿海侧步道去语法树，也可以先自由逛逛。', 'Ring the door bell and trace the mountain on the sand table. Follow the coastal path toward the Grammar Tree, or explore at your own pace.') },
+  { n: 2, name: copy('海侧步道', 'Coastal path'), point: [-36,12,-56],
+    hint: copy('沿山坡上的步道看海，继续向东便能走到语法树。', 'Follow the hillside path above the sea; continue east toward the Grammar Tree.') },
   { n: 3, name: copy('语法树', 'Grammar tree'), point: ALPHA_STATIONS.tree,
     hint: copy('拉动树根钟绳，留意树枝的反应。接着可选水车或回声洞，两路最终都回到风口。', 'Pull the rope by the roots and watch the branches respond. Choose the waterwheel or the echo cave next; both paths rejoin at the wind slope.') },
   { n: 5, name: copy('三闸水车', 'Waterwheel'), point: ALPHA_WATERWHEEL.center,

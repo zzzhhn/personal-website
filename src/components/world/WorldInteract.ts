@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { Vec3 } from './types';
 import { useWorldStore } from './store';
+import type { PickupApproach } from './pickup-approach';
 
 /**
  * World interactables (PRD §3.3: one E press, one action, one visible result, <= 10 s, no submenu).
@@ -19,6 +20,8 @@ export interface Interactable {
   kind: InteractKind;
   /** Optional facing requirement: player must be within this yaw window of the object front. */
   enabled?: () => boolean;
+  /** Optional short, collision-checked walk before invoking the original physical action. */
+  approach?: PickupApproach;
   onInteract: () => void;
 }
 
@@ -70,6 +73,7 @@ export function interactableProxy(initial: Interactable, read: () => Interactabl
   return {
     id, get position(){return current()?.position??initial.position;}, get radius(){return current()?.radius??initial.radius;},
     get label(){return current()?.label??initial.label;}, get kind(){return current()?.kind??initial.kind;},
+    get approach(){return current()?.approach;},
     enabled:()=>{const item=current();return !!item&&(item.enabled?.()??true);},
     onInteract:()=>current()?.onInteract(),
   };

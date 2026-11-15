@@ -4,7 +4,7 @@ import { useWorldStore } from '../store';
 import { COASTER_DURATION, COASTER_DISPLAY_SECONDS, coasterPhase, coasterVisibleView, type CoasterView } from './coaster-track';
 import { INTENT_TARGETS, intentInReach, type IntentTarget } from './intent-stations';
 import { findIntentTask, type IntentText } from './intent-tasks';
-import { activateIntentTarget, intentContact, resetIntentVisit, stopIntentRide, useIntentStore } from './intent-state';
+import { activateIntentTarget, intentContact, resetIntentVisit, skipIntentRide, stopIntentRide, useIntentStore } from './intent-state';
 import { INTENT_COASTER } from './attraction-layout';
 import type { CoasterBoardingPhase } from './coaster-transition';
 import { resetAttractionLook } from './attraction-camera';
@@ -66,8 +66,9 @@ function WorldIntentHud() {
     <progress value={s.rideSecond} max={COASTER_DURATION} aria-label={t('乘坐进度', 'Ride progress')} />
     {viewControls}<button type="button" onClick={resetAttractionLook}>{t('视角归位', 'Reset view')}</button>
     <p><small>{t('拖拽自由观察 · 滚轮缩放 · 手柄右摇杆转头', 'Drag to look · scroll to zoom · right stick to look')}</small></p>
+    {s.ridePhase === 'riding' && <button type="button" className="intent-primary" onClick={skipIntentRide}>{t('跳过行程并回站', 'Skip travel and return to station')}</button>}
     <button type="button" className="intent-primary" disabled={s.exitRequested || ['stand', 'turn-out', 'step-out', 'walk-out', 'complete'].includes(s.ridePhase ?? '')} onClick={stopIntentRide}>{s.exitRequested ? t('已登记，回站后下车', 'Exit requested. Leaving at the station') : s.ridePhase === 'riding' ? t('回站后下车', 'Leave at the station') : t('取消本次发车并下车', 'Cancel departure and step out')}</button>
-    <small>{t('Esc／手柄 Start 暂停；手柄 B 申请下车。行驶中会完成当前回路，恢复后从原处继续。', 'Esc / Start pauses; B requests an exit. A moving train completes its loop. Resume from the same point.')}</small>
+    <small>{t('Esc／手柄 Start 暂停；手柄 B 申请下车。可跳过行程，停稳后沿踏步下车。', 'Esc / Start pauses; B requests an exit. Skip travel to stop at the station, then leave via the steps.')}</small>
   </aside>;
   const primaryText = target === 'chest' ? s.progress.keyTaken ? t('钥匙已在身上', 'You have the key') : s.progress.chestOpen ? t('拿起钥匙', 'Take the key') : t('掀开宝箱', 'Open the chest')
     : target === 'gate' ? t('用钥匙开门', 'Unlock the gate') : t('沿踏步登车', 'Board using the steps');

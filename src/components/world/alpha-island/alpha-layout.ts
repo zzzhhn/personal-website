@@ -2,7 +2,7 @@ import type { Vec3 } from '../types';
 
 /** Alpha batch 1 survey r1. Metres; +X east, -Z north. All route datums are surface/rail
  * points, NOT standing capsule centres. Transport author owns seat offsets and timing. */
-export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r7-20261115';
+export const ALPHA_LAYOUT_REVISION = 'alpha-scene-r8-20261115';
 export const ALPHA_ORIGIN: Vec3 = [235, 0, 190];
 export const ALPHA_YAW = 0;
 /** Shared assembled datum: crank axis stays connected to the wind-gate crossbar. */
@@ -23,7 +23,9 @@ export const ALPHA_MAIN_PATH: Vec3[] = [
  [27,38,-34],[25,38,-20],[55,40,-12],[60,46,8],[65,52,30],[60,58,53],[40,64,68],[10,68,76],[-20,72,65],[-22,73,35],[-2,73,20],[25,73,28],
  [25,73,33],[29,76,42],[26,76,46],[19,76,46],[7,80,58],[2,83,48],[2,83,39],[-7,83,43],
 ];
-export const ALPHA_BYPASS_PATH: Vec3[] = [[-42,18,-29],[-27,20,-17],[-9,23,-29],[-4,26,-45],[10,32,-56],[25,35,-54],[19,38,-42]];
+// This shorter route enters the cave at its mouth. The retired diagonal spur
+// cut through the cave's side wall below its floor; the main outdoor trail remains open.
+export const ALPHA_BYPASS_PATH: Vec3[] = [[-42,18,-29],[-27,20,-17],[-15,24,-35],[-10,26,-42],[0,29,-48],[10,32,-56],[25,35,-54],[19,38,-42]];
 export interface AlphaSocket {
  id: string; ground: Vec3; yaw: number; size: Vec3;
  /** Clear cuboid above ground [width,height,length], local +Z forward. */

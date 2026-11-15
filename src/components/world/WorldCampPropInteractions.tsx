@@ -9,6 +9,8 @@ import { bookStack, type Place } from './WorldCampContentLayout';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
 import type { Vec3 } from './types';
+import { PICKUP_DISCOVERY_RADIUS, pickupStandingRing, type PickupApproach } from './pickup-approach';
+import { campPropReachAt } from './camp-prop-interactions';
 
 type Labels = { en: string; zh: string };
 const PALM_CONTACT = .06;
@@ -114,14 +116,19 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
   useCancelOnUnmount(playable ? key : '');
 
   const reach = gym ? CAMP_DUMBBELL_REACH : .66;
-  const localGrip = (b: RapierRigidBody) => {
+  const localGrip = (b: RapierRigidBody, actor = campPropActor.position) => {
     if (!gym) return SUITCASE_GRIP;
     const p = b.translation();
-    return campDumbbellGrip([p.x, p.y, p.z], b.rotation(), campPropActor.position);
+    return campDumbbellGrip([p.x, p.y, p.z], b.rotation(), actor);
   };
   const pickupTarget = (b: RapierRigidBody) => {
     const grip = localGrip(b), point = bodyGrip(b, grip);
     return canReachCampProp(point, reach) ? { grip, point } : null;
+  };
+  const pickupApproach: PickupApproach = {
+    target: () => { const b = body.current; return b?.isValid() ? bodyGrip(b, localGrip(b)) : anchor; },
+    ready: position => { const b = body.current; return !!b?.isValid() && campPropReachAt(position, bodyGrip(b, localGrip(b, position)), reach); },
+    candidates: position => pickupStandingRing(pickupApproach.target(), position, gym ? .48 : .52),
   };
   const begin = () => {
     const b = body.current;
@@ -261,12 +268,13 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
     : phase.current?.phase === 'reach' ? { en: 'Cancel reach', zh: '取消取用' }
       : suitcase ? { en: 'Let go', zh: '放开拉杆' } : { en: 'Curl dumbbell', zh: '举哑铃' };
   useInteractable(playable ? {
-    id: key, position: anchor, radius: .9, kind: 'exhibit', get label() { return label(); },
+    id: key, position: anchor, radius: PICKUP_DISCOVERY_RADIUS-.2, kind: 'exhibit', get label() { return label(); },
+    get approach() { return isActive(key) ? undefined : pickupApproach; },
     enabled: () => {
       if (isActive(key)) return true;
       if (pendingDrop.current) return false;
       const b = body.current;
-      return !!b && b.isValid() && pickupTarget(b) !== null;
+      return !!b && b.isValid() && campPropActor.available;
     },
     onInteract: () => {
       const p = phase.current;
@@ -351,10 +359,11 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
   const local = useMemo(() => new Vector3(), []);
   const pegClearance = useMemo(() => new Vector3(1, 0, 0).transformDirection(frame).multiplyScalar(.14), [frame]);
   const actionId = (index: number) => `camp-prop-tool-${index}`;
+  const canTakeAt = (index: number, position: Vec3) => campPropReachAt(position, grips[index], .66)
+    && local.fromArray(position).applyMatrix4(inverse).x > .29;
   const canTake = (index: number) => {
     if (play.current?.index === index) return true;
-    const a = campPropActor.position;
-    return canReachCampProp(grips[index], .66) && local.fromArray(a).applyMatrix4(inverse).x > .29;
+    return campPropActor.available && campPropActor.grounded && canTakeAt(index, campPropActor.position);
   };
   const act = (index: number) => {
     const p = play.current;
@@ -427,15 +436,18 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
   return <group matrix={frame} matrixAutoUpdate={false} name="camp-content-C11-tools" userData={{ assetId: 'C11', shadowDynamic: true }}>
     <group ref={wall}>{children}</group>
     <group ref={carried} name="camp-carried-tool" />
-    {positions.map((position, index) => <ToolAction key={index} id={actionId(index)} position={position} index={index} play={play}
-      enabled={() => canTake(index)} onInteract={() => act(index)} />)}
+    {positions.map((position, index) => <ToolAction key={index} id={actionId(index)} position={grips[index]} index={index} play={play}
+      enabled={() => campPropActor.available && (!play.current || play.current.index === index)}
+      approach={{ target: () => grips[index], ready: position => canTakeAt(index, position),
+        candidates: from => [[position[0], from[1], position[2]]] }} onInteract={() => act(index)} />)}
   </group>;
 }
 
-function ToolAction({ id, position, index, play, enabled, onInteract }: {
-  id: string; position: Vec3; index: number; play: RefObject<ToolPlay | null>; enabled: () => boolean; onInteract: () => void;
+function ToolAction({ id, position, index, play, enabled, approach, onInteract }: {
+  id: string; position: Vec3; index: number; play: RefObject<ToolPlay | null>; enabled: () => boolean; approach: PickupApproach; onInteract: () => void;
 }) {
-  useInteractable({ id, position, radius: .75, kind: 'exhibit', enabled, onInteract, get label() {
+  useInteractable({ id, position, radius: PICKUP_DISCOVERY_RADIUS, kind: 'exhibit', enabled, onInteract,
+    get approach() { return play.current?.index === index ? undefined : approach; }, get label() {
     const tool = CAMP_TOOL_GRIPS[index], returning = play.current?.index === index;
     return returning ? { en: `Return ${tool.en.toLowerCase()}`, zh: `归位${tool.zh}` }
       : { en: `Take ${tool.en.toLowerCase()}`, zh: `取用${tool.zh}` };
@@ -518,7 +530,11 @@ export function CampJournal({ anchor }: { anchor: Vec3 }) {
     }
   };
   useInteractable({
-    id: BOOK_KEY, position: anchor, radius: 1.55, kind: 'exhibit',
+    id: BOOK_KEY, position: anchor, radius: PICKUP_DISCOVERY_RADIUS, kind: 'exhibit',
+    get approach() { return isActive(BOOK_KEY) ? undefined : {
+      target: () => anchor, ready: (position: Vec3) => campPropReachAt(position, anchor, 1.3),
+      candidates: (position: Vec3) => pickupStandingRing(anchor, position, 1.1),
+    }; },
     get label() {
       return !isActive(BOOK_KEY) ? { en: 'Read journal', zh: '读手记' }
         : state.current.page === BOOK_PAGES.length - 1 ? { en: 'Finish reading', zh: '结束阅读' }

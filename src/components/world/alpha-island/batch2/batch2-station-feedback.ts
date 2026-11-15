@@ -1,6 +1,8 @@
 import type { ShallowsState } from './shallows-state';
 import type { CaveState } from './cave-state';
 import { PLAYER_HALF_HEIGHT,PLAYER_RADIUS } from '../../actor-physics';
+import type { PickupApproach } from '../../pickup-approach';
+import type { Vec3 } from '../../types';
 
 type Notice = { zh: string; en: string };
 export const createShallowsArrivalReceipts = () => ({ resets: -1, stones: new Set<number>(), bridge: false });
@@ -31,11 +33,15 @@ export const CAVE_LAMP_LABELS = {
   return: Object.freeze({ zh: '把矿灯挂回原挂钩', en: 'Hang the miner lamp back' }),
 };
 /** The rack projects +X. Only its front standing strip is both capsule-clear and
- * reachable by the measured G24 palm. The wider 1.35 m prompt is guidance only. */
+ * reachable by the measured G24 palm. Discovery walks here before taking the lamp. */
 export function caveLampPickupReach(position: readonly number[], hook: readonly number[], grounded: boolean) {
   const dx=position[0]-hook[0],dz=position[2]-hook[2];
   const gripHeight=hook[1]-(position[1]-PLAYER_HALF_HEIGHT-PLAYER_RADIUS);
   return grounded&&dx>=.43-1e-6&&Math.abs(dz)<=.25&&Math.hypot(dx,dz)<=.6&&gripHeight>=.9&&gripHeight<=1.4;
+}
+export function caveLampApproach(hook: Vec3): PickupApproach {
+  return {target:()=>hook,ready:position=>caveLampPickupReach(position,hook,true),
+    candidates:from=>[0,.12,-.12,.22,-.22].map(dz=>[hook[0]+.5,from[1],hook[2]+dz] as Vec3)};
 }
 export const caveLampInteraction = (lamp: CaveState['lamp'], ownsHand: boolean, canReach = true) =>
   lamp === 'rack' ? canReach ? 'take' : 'approach' : lamp === 'carried' && ownsHand ? 'return' : null;

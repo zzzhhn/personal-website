@@ -37,6 +37,7 @@ export class TransportDriver implements RideDriver {
   phase: TransportPhase='approach';
   frame: RideActorFrame;
   u: number; velocity=0; elapsed=0; captured=false; exitRequested=false; disposed=false;
+  skipRequested=false;
   blockedMotion=false; private movementGuard:((from:Vec3,to:Vec3)=>boolean)|null=null;private cancelledAt:Vec3|null=null;
   setMovementGuard(guard:(from:Vec3,to:Vec3)=>boolean){this.movementGuard=guard;
     if(this.captured&&this.phase==='approach'&&this.elapsed===0&&distance(this.frame.root,this.from)<1e-8)this.enter=this.joinBoarding();}
@@ -66,6 +67,11 @@ export class TransportDriver implements RideDriver {
     if(this.phase==='approach'&&this.captured){this.destination=this.source;this.cancelledAt=[...this.frame.root];this.phase='complete';this.elapsed=0;this.frame={...this.frame,root:[...this.cancelledAt],speed:0,clip:'Idle'};return;}
     // Cable/ferry return physically along the same route; sled has no safe mid-slope landing.
     if(this.phase==='riding'&&this.route.kind!=='sled'){this.destination=this.source;this.direction=this.source===0?-1:1;}
+  }
+  /** Skip only the travel clock. The surveyed terminal egress and its guards still run. */
+  requestSkip(){
+    if(this.disposed||!this.captured||this.phase!=='riding'||this.skipRequested)return false;
+    this.skipRequested=true;return true;
   }
   dispose(_reason:'complete'|'recovery'){if(this.disposed)return;this.disposed=true;this.movementGuard=null;this.release();}
   private duration(){switch(this.phase){case'approach':return Math.max(.25,pathLength(this.enter)/1.35);case'turn-in':case'turn-out':return .7;case'sit':case'stand':return 1.35;case'walk-out':return Math.max(.3,pathLength(this.leave)/1.35);default:return Infinity;}}
@@ -106,11 +112,14 @@ export class TransportDriver implements RideDriver {
     let walking:ReturnType<TransportDriver['walk']>|undefined;
     if(this.phase==='approach'||this.phase==='walk-out')walking=this.walk(dt,this.phase==='approach'?this.enter:this.leave);
     else if(this.phase==='riding'){
+      if(this.skipRequested){this.u=this.destination;this.velocity=0;this.skipRequested=false;this.next();}
+      else {
       const acceleration=1/(this.route.duration*2),distance=Math.abs(this.destination-this.u);
       const wanted=this.direction*Math.min(1/this.route.duration,Math.sqrt(2*acceleration*distance));
       this.velocity+=Math.max(-acceleration*dt,Math.min(acceleration*dt,wanted-this.velocity));
       this.u=Math.max(0,Math.min(1,this.u+this.velocity*dt));
       if((this.direction>0&&this.u>=this.destination)||(this.direction<0&&this.u<=this.destination)){this.u=this.destination;this.velocity=0;this.next();}
+      }
     }else if(this.phase!=='complete'){this.elapsed+=dt;if(this.elapsed>=this.duration()){if(this.phase==='stand'&&this.exitBlocked)this.elapsed=this.duration();else this.next();}}
     const sample=this.sample(),q=Math.min(1,this.elapsed/this.duration()),k=smooth(q);
     let root=transportWorld(this.route.terminals[this.phase==='approach'||this.phase==='turn-in'||this.phase==='sit'?this.source:this.destination].boarding.at(-1)!,this.route.transform);

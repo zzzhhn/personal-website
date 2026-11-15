@@ -48,9 +48,10 @@ export function cancelCampPropInteraction(reason = 'manual'): boolean {
 }
 
 export const horizontalCampReach = (a: Vec3, b: Vec3) => Math.hypot(a[0] - b[0], a[2] - b[2]);
+export const campPropReachAt = (position: Vec3, target: Vec3, distance: number) =>
+  horizontalCampReach(position, target) <= distance && Math.abs(position[1] - target[1]) < 1.35;
 export const canReachCampProp = (target: Vec3, distance: number) => campPropActor.available && campPropActor.grounded
-  && horizontalCampReach(campPropActor.position, target) <= distance
-  && Math.abs(campPropActor.position[1] - target[1]) < 1.35;
+  && campPropReachAt(campPropActor.position, target, distance);
 
 export const CAMP_DUMBBELL_REACH = .62;
 const BAR_CENTRE_Y = .1001;

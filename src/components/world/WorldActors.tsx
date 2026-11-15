@@ -31,6 +31,7 @@ import { AttractionCameraObstruction } from './attractions/attraction-camera-obs
 import { AttractionCabinCamera } from './attractions/attraction-camera-cabin';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
+import { findPickupStand, pickupGroundRoute, pickupApproachMotion, PICKUP_APPROACH_TIMEOUT } from './pickup-approach';
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
@@ -337,6 +338,7 @@ export default function WorldActors() {
   const cars = useRef(new Map<VehicleId,Car>());
   /** Interactable in reach this physics step (set before E handling). */
   const nearbyItem = useRef<Interactable|null>(null);
+  const pickupApproach = useRef<{ item: Interactable; stand: Vec3; elapsed: number } | null>(null);
   /** Seat id the body was last snapped to (store.seat), where it sat down from, and the seated body point. */
   const seatHeld = useRef<string|null>(null);
   const seatFrom = useRef<Vec3|null>(null);
@@ -446,12 +448,14 @@ export default function WorldActors() {
   }
 
   function clearInput() {
+    pickupApproach.current=null;
     keys.current.forEach(key=>releasedKeys.current.add(key));keys.current.clear();resetPad.current=true;
     pad.current.move=[0,0];pad.current.look=[0,0];pad.current.throttle=0;pad.current.brake=0;pad.current.sprint=false;
     actions.current={interact:false,jump:false,recover:false};debugDrive.current=null;moveIntent.current='idle';guideTargetSpeed.current=0;moveInput.current=[0,0];
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
   }
   function clearPlayerMotion(hardCut=false) {
+    pickupApproach.current=null;
     cancelIbdPack(true);
     cancelExchangeBodyAction();
     if(hardCut)cancelExchangePlay('recovery');
@@ -694,8 +698,8 @@ export default function WorldActors() {
     else c.pitch=.12;
   }
   useEffect(() => {
-    const releaseAction=()=>releaseGuideActionHand();
-    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.activeVehicle||s.seat||s.card||s.factoryStation)releaseAction();});
+    const releaseAction=()=>{pickupApproach.current=null;releaseGuideActionHand();};
+    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||s.factoryStation||s.poolInspect||s.shot||s.clubMode)releaseAction();});
     const hiddenAction=()=>{if(document.hidden)releaseAction();};
     document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
     const down=(event:KeyboardEvent) => {
@@ -1103,7 +1107,16 @@ export default function WorldActors() {
         actorNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
         return;
       }
-      if(active)exit();else if(item){item.onInteract();}else if(nearby)enter(nearby);
+      if(active)exit();else if(item){
+        if(pickupApproach.current?.item.id===item.id){pickupApproach.current=null;return;}
+        const approach=item.approach;
+        if(approach){
+          const from:Vec3=[playerPosition.x,playerPosition.y,playerPosition.z];
+          const stand=findPickupStand(world,rapier,player.current!,from,approach);
+          if(!stand){actorNotice('取用位置被挡住了，请从旁边靠近。','The pickup spot is blocked. Approach from the side.');return;}
+          pickupApproach.current={item,stand,elapsed:0};
+        }else{pickupApproach.current=null;item.onInteract();}
+      }else if(nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
     if(actions.current.interact){interactNow(nearbyItem.current);actions.current.interact=false;}
@@ -1155,6 +1168,7 @@ export default function WorldActors() {
       const p=player.current.translation(),velocity=player.current.linvel();
       const ground=playerSupport(world,rapier,player.current);
       grounded.current=ground?.grounded??false;
+      campPropActor.grounded=grounded.current;
       mineActor.grounded = grounded.current;
       exchangeActor.grounded = grounded.current;
       ibdInspectionActor.grounded = grounded.current;
@@ -1243,6 +1257,7 @@ export default function WorldActors() {
       const inspecting=ibdInspectionBody.action;
       const trading=exchangeBody.action??inspecting;
       const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried || !!operating;
+      if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!campPropActor.available||attractionRide.active))pickupApproach.current=null;
       const handFacing=guideActionHand.facing??campPropHand.facing;
       if (handFacing && campPropActor.available && magnitude <= .05) {
         const focus=handFacing;
@@ -1271,6 +1286,29 @@ export default function WorldActors() {
         guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*10,dt*10);
         moveIntent.current=approaching?'walk':'idle';
       }
+      const pickup=pickupApproach.current;
+      if(pickup){
+        const approach=pickup.item.approach,position:Vec3=[p.x,p.y,p.z];
+        pickup.elapsed+=dt;
+        const ready=!!approach&&grounded.current&&approach.ready(position);
+        const invalid=!approach||(pickup.item.enabled&&!pickup.item.enabled())||!grounded.current;
+        const blocked=!invalid&&(!sight(pickup.item)||(!ready&&!pickupGroundRoute(world,rapier,player.current,position,pickup.stand)));
+        if(invalid||blocked||pickup.elapsed>PICKUP_APPROACH_TIMEOUT){
+          pickupApproach.current=null;
+          if(blocked||pickup.elapsed>PICKUP_APPROACH_TIMEOUT)actorNotice('没有走到可取用的位置，请换一侧再试。','Could not reach the pickup spot. Try another side.');
+        }else{
+          const motion=pickupApproachMotion(position,pickup.stand,approach!.target(),ready);
+          vx=motion.vx;vz=motion.vz;
+          guideYaw.current+=clamp(angleDelta(guideYaw.current,motion.yaw),-dt*10,dt*10);
+          moveIntent.current=Math.hypot(vx,vz)>.05?'walk':'idle';
+          if(ready&&Math.abs(angleDelta(guideYaw.current,motion.yaw))<.12&&Math.hypot(velocity.x,velocity.z)<.18){
+            pickupApproach.current=null;
+            campPropActor.yaw=guideYaw.current;
+            mineActor.position=[...position];mineActor.yaw=guideYaw.current;
+            pickup.item.onInteract();
+          }
+        }
+      }
       if (magnitude>.05 && !locked) {
         const desiredYaw=Math.atan2(-vz,vx);
         const difference=Math.atan2(Math.sin(desiredYaw-guideYaw.current),Math.cos(desiredYaw-guideYaw.current));
@@ -1295,7 +1333,7 @@ export default function WorldActors() {
       tickIbdCoilInspection(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
-      const eligible=!seat&&!locked&&grounded.current&&!useAlphaMineStore.getState().carried&&!railVault.current;
+      const eligible=!seat&&!locked&&!pickupApproach.current&&grounded.current&&!useAlphaMineStore.getState().carried&&!railVault.current;
       vaultPreview.current.elapsed+=dt;
       if(!eligible){vaultPreview.current.plan=null;vaultPreview.current.x=Infinity;}
       else if(vaultPreview.current.elapsed>=.18){

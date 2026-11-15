@@ -15,7 +15,8 @@ import type { Vec3 } from '../../types';
 import { caveChime, caveChimeTarget, caveLampRack, caveMinerLamp, caveMural, caveScaffold, createCaveArt } from './cave-art';
 import { createCaveAudio } from './cave-audio';
 import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
-import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice } from './batch2-station-feedback';
+import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice,caveLampApproach } from './batch2-station-feedback';
+import { PICKUP_DISCOVERY_RADIUS } from '../../pickup-approach';
 import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
 const OWNER='alpha-echo-cave';
 const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
@@ -69,10 +70,11 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     const w=useWorldStore.getState(),p=campPropActor.position;
     return !!lampAction()&&campPropActor.available&&
       !w.paused&&!w.shot&&!w.card&&!w.activeVehicle&&!w.seat&&!w.poolInspect&&!document.hidden&&
-      Math.hypot(p[0]-LAMP_HOOK[0],p[2]-LAMP_HOOK[2])<=1.35&&Math.abs(p[1]-LAMP_HOOK[1])<=2.5;
+      Math.hypot(p[0]-LAMP_HOOK[0],p[2]-LAMP_HOOK[2])<=PICKUP_DISCOVERY_RADIUS&&Math.abs(p[1]-LAMP_HOOK[1])<=2.5;
   };
-  useInteractable({id:'alpha-cave-miner-lamp',position:LAMP_HOOK,radius:1.35,kind:'exhibit',
-    get label(){return CAVE_LAMP_LABELS[lampAction()??'take'];},
+  useInteractable({id:'alpha-cave-miner-lamp',position:LAMP_HOOK,radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
+    get label(){return CAVE_LAMP_LABELS[lampAction()==='return'?'return':'take'];},
+    get approach(){return state.current.lamp==='rack'?caveLampApproach(LAMP_HOOK):undefined;},
     enabled:canUseLamp,onInteract:()=>{
       if(!canUseLamp())return;
       const action=lampAction();

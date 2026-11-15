@@ -3,6 +3,7 @@ import type { Interactable } from '../WorldInteract';
 import type { Vec3 } from '../types';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics';
 import { alphaWorld, ALPHA_WIND_GATE_Y } from './alpha-layout';
+import type { PickupApproach } from '../pickup-approach';
 
 type Notice = { zh: string; en: string };
 const TARGETS: Record<AlphaAction, Vec3> = {
@@ -55,6 +56,21 @@ export function alphaHandReach(position: readonly number[], target: readonly num
 }
 export const alphaActionCanReach = (kind: 'wind'|'lantern', position: readonly number[], grounded: boolean, wind = 0) =>
   alphaHandReach(position,alphaWorld(alphaActionTarget(kind,wind)),grounded);
+/** Authored front-side operating areas, then validated against the current physical floor. */
+export function alphaPickupApproach(kind: 'wind'|'lantern'|'stone', wind = 0): PickupApproach {
+  const target = alphaWorld(alphaActionTarget(kind, wind));
+  const stoneStand = alphaWorld([1.45,83,39.675]);
+  return {
+    target: () => target,
+    ready: position => kind === 'stone'
+      ? Math.hypot(position[0]-stoneStand[0],position[2]-stoneStand[2])<=.12
+        && Math.abs(position[1]-PLAYER_HALF_HEIGHT-PLAYER_RADIUS-stoneStand[1])<.12
+      : alphaActionCanReach(kind, position, true, wind),
+    candidates: from => kind === 'stone' ? [[stoneStand[0],from[1],stoneStand[2]]]
+      : kind === 'lantern' ? [0,.1,-.1].map(dx=>[target[0]+dx,from[1],target[2]-.53] as Vec3)
+        : [0,.1,-.1].flatMap(dz=>[.5,.44,.56].map(dx=>[target[0]+dx,from[1],target[2]+dz] as Vec3)),
+  };
+}
 export const alphaActionLabel = (kind: AlphaAction, reachable: boolean, wind = 0): Notice =>
   !reachable?APPROACH[kind]:kind==='wind'?WIND_LABELS[wind]:LABELS[kind];
 export function alphaActionNotice(kind: AlphaAction, wind = 0): Notice {
