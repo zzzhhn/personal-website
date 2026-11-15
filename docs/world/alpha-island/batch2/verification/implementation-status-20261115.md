@@ -16,9 +16,11 @@ The existing static trail-lamp transforms are now initialized once. Bell changes
 
 ## Candidate entry points
 
-- `http://127.0.0.1:4343/world/?start=alpha-shallows&quality=high`
-- `http://127.0.0.1:4343/world/?start=alpha-waterwheel&quality=high`
-- `http://127.0.0.1:4343/world/?start=alpha-cave&quality=high`
+- `http://127.0.0.1:4343/world/?start=alpha-shallows&quality=balanced`
+- `http://127.0.0.1:4343/world/?start=alpha-waterwheel&quality=balanced`
+- `http://127.0.0.1:4343/world/?start=alpha-cave&quality=balanced`
+
+Latest user direction: all arrivals default to Balanced. The store initializes Balanced and the Canvas initially caps DPR at 1.5; players can explicitly select High in settings. Earlier High/DPR2 evidence remains historical, not a new startup requirement.
 
 These are public playtest arrivals on permanent support, not QA completion/teleport overrides. Default `/world/` still starts at camp. The new interactions must be operated by the player.
 
@@ -33,4 +35,4 @@ These are public playtest arrivals on permanent support, not QA completion/telep
 
 ## Remaining concise review
 
-View all three stations in daylight and midnight; push a stone and reset from a safe location; change the three gates and walk the waterfall passage; carry the lamp through the fork, ring a chime, cancel and leave. Check the original branch junctions and a short comparable High/DPR2 frame sample. Do not repeat the full historical transport matrix merely to promote these new modules. Ferry final egress was observed previously; cable and sled ordinary-entry acceptance remain separately pending.
+View all three stations in daylight and midnight; push a stone and reset from a safe location; change the three gates and walk the waterfall passage; carry the lamp through the fork, ring a chime, cancel and leave. Check the original branch junctions and a short comparable Balanced frame sample (the latest user-selected startup quality). Do not repeat the full historical transport matrix merely to promote these new modules. Ferry final egress was observed previously; cable and sled ordinary-entry acceptance remain separately pending.
