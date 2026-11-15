@@ -36,6 +36,7 @@ import { worldResumeProbe } from './world-resume-probe';
 import { createResumeTimeBoundary } from './world-resume-time';
 import WorldMaterialWarmup from './WorldMaterialWarmup';
 import AlphaLocalLights from './alpha-island/AlphaLocalLights';
+import { worldArrivalBlocked } from './world-arrival-readiness';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldAlphaIsland = lazy(() => import('./alpha-island/WorldAlphaIsland'));
@@ -161,6 +162,9 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
         frameSample.count = Math.min(frameSample.count + 1, frameSample.values.length);
       }
     }
+    // The player stays disabled while its lazy district has no real collider.
+    // Collider registration can finish while paused; activation waits for Physics.
+    if (worldArrivalBlocked()) { frames.current = 0; invalidate(); return; }
     frames.current++;
     // Loading may finish while paused; still deliver the existing ready signal.
     if (frames.current < 3) invalidate();

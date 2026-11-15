@@ -15,7 +15,9 @@ import type { Vec3 } from '../../types';
 import { caveChime, caveChimeTarget, caveLampRack, caveMinerLamp, caveMural, caveScaffold, createCaveArt } from './cave-art';
 import { createCaveAudio } from './cave-audio';
 import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
+import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice } from './batch2-station-feedback';
 const OWNER='alpha-echo-cave';
+const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
 type Parts={finish:AlphaFinish;geometry:BufferGeometry}[];
 function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:boolean;glow?:boolean}) {
   const materials=useMemo(()=>parts.map(p=>{const m=alphaMaterial(p.finish);
@@ -53,13 +55,30 @@ export default function AlphaEchoCave() {
     rings.current.forEach(r=>{if(r)r.visible=false;});chimeRefs.current.forEach(g=>{if(g)g.rotation.z=0;});cancelling.current=false;
   }
   const pick=()=>{
-    if(state.current.lamp!=='rack')return;
+    if(state.current.lamp!=='rack'||!caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded))return;
     cancelAlphaHand();cancelCampPropInteraction('cave-lamp');releaseGuideActionHand();
-    const grip=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
+    const grip=[...LAMP_HOOK] as Vec3;
     target.current=grip;state.current.lamp='reaching';state.current.reachTime=0;
     Object.assign(guideActionHand,{owner:OWNER,target:grip,facing:grip,mode:'grip',cancel});
   };
-  useInteractable({id:'alpha-cave-miner-lamp',position:alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]),radius:1.35,kind:'exhibit',label:{zh:'从挂钩取矿灯',en:'Take the miner lamp'},enabled:()=>state.current.lamp==='rack',onInteract:pick});
+  const lampAction=()=>caveLampInteraction(state.current.lamp,guideActionHand.owner===OWNER,
+    caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded));
+  const canUseLamp=()=>{
+    const w=useWorldStore.getState(),p=campPropActor.position;
+    return !!lampAction()&&campPropActor.available&&
+      !w.paused&&!w.shot&&!w.card&&!w.activeVehicle&&!w.seat&&!w.poolInspect&&!document.hidden&&
+      Math.hypot(p[0]-LAMP_HOOK[0],p[2]-LAMP_HOOK[2])<=1.35&&Math.abs(p[1]-LAMP_HOOK[1])<=2.5;
+  };
+  useInteractable({id:'alpha-cave-miner-lamp',position:LAMP_HOOK,radius:1.35,kind:'exhibit',
+    get label(){return CAVE_LAMP_LABELS[lampAction()??'take'];},
+    enabled:canUseLamp,onInteract:()=>{
+      if(!canUseLamp())return;
+      const action=lampAction();
+      if(action==='return'){
+        cancel();useWorldStore.setState({toast:{zh:'矿灯已挂回。',en:'The miner lamp is back on its hook.',at:performance.now()}});
+      }else if(action==='take')pick();
+      else useWorldStore.setState({toast:{zh:'靠近挂架伸出矿灯的一侧，再按 E 取灯。',en:'Move to the lamp side of the rack, then press E to take it.',at:performance.now()}});
+    }});
   const ring=(index:CaveChime)=>{
     const w=useWorldStore.getState();if(w.paused||document.hidden||!startCaveEcho(state.current,index))return;
     sequence.current=caveEchoSequence(index);audio.play(sequence.current);
@@ -92,6 +111,8 @@ export default function AlphaEchoCave() {
     const error=palm&&t?Math.hypot(palm[0]-t[0],palm[1]-t[1],palm[2]-t[2]):Infinity;
     const was=s.lamp;tickCaveState(s,delta,error);
     if(was==='reaching'&&s.lamp==='rack'){cancel();return;}
+    const pickupNotice=caveLampPickupNotice(was,s.lamp);
+    if(pickupNotice)useWorldStore.setState({toast:{...pickupNotice,at:performance.now()}});
     if(rackLamp.current)rackLamp.current.visible=s.lamp!=='carried';
     if(handLamp.current){handLamp.current.visible=s.lamp==='carried'&&!!palm;if(palm){const p=alphaLocal(palm);handLamp.current.position.set(p[0],p[1]-.76,p[2]);handLamp.current.rotation.y=campPropActor.yaw;}}
     alphaCaveLight.active=s.lamp==='carried'&&!!palm;

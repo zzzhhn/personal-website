@@ -16,6 +16,7 @@ import { createShallowsState,SHALLOWS_BYPASS,SHALLOWS_STONE_COUNT,SHALLOWS_STONE
   shallowsStonePosition,shallowsComplete,shallowsSweepClear,pushShallowsStone,stepShallowsStone,
   canResetShallows,resetShallows,type ShallowsState } from './shallows-state';
 import type { Vec3 } from '../../types';
+import { createShallowsArrivalReceipts,takeShallowsArrival,SHALLOWS_SLOT_NOTICE,SHALLOWS_BRIDGE_NOTICE } from './batch2-station-feedback';
 
 type CraftPart={finish:AlphaFinish;geometry:BufferGeometry};
 type ShallowsProps={onVisit?:()=>void;onCompleteChange?:(complete:boolean)=>void};
@@ -28,8 +29,9 @@ function Craft({parts,name}:{parts:CraftPart[];name:string}) {
   useEffect(()=>()=>{parts.forEach(p=>p.geometry.dispose());materials.forEach(m=>m.dispose());},[parts,materials]);
   return <group name={name}>{parts.map(p=><mesh key={p.finish} geometry={p.geometry} material={materials.get(p.finish)} castShadow receiveShadow/>)}</group>;
 }
-function RuneStone({index,state,request}:{index:number;state:ShallowsState;request:(i:number)=>void}) {
+function RuneStone({index,state,request,onArrival}:{index:number;state:ShallowsState;request:(i:number)=>void;onArrival:(i:number,error:number)=>boolean}) {
   const body=useRef<RapierRigidBody>(null),parts=useMemo(()=>createShallowsRuneStone(index),[index]);
+  const confirmedReset=useRef(-1);
   const moving=state.active===index,p=shallowsStonePosition(index,state.progress[index]),side=index%2?1:-1;
   const handle:Vec3=[p[0],SHALLOWS_DECK_Y+.3,p[2]+side*.8];
   useInteractable({id:`alpha-shallows-stone-${index}`,position:alphaWorld(handle),radius:1.15,kind:'exhibit',
@@ -37,7 +39,14 @@ function RuneStone({index,state,request}:{index:number;state:ShallowsState;reque
     enabled:()=>state.active===null&&state.progress[index]<1&&campPropActor.available&&campPropActor.grounded&&
       !guideActionHand.owner&&!useAlphaStore.getState().carried&&shallowsSweepClear(index,state.progress[index],1,playerLocal()),
     onInteract:()=>request(index)});
-  useFrame(()=>{if(moving&&body.current){const q=alphaWorld(shallowsStonePosition(index,state.progress[index]));body.current.setNextKinematicTranslation({x:q[0],y:q[1],z:q[2]});}});
+  useFrame(()=>{
+    if(!body.current)return;
+    if(moving){const q=alphaWorld(shallowsStonePosition(index,state.progress[index]));body.current.setNextKinematicTranslation({x:q[0],y:q[1],z:q[2]});}
+    if(state.progress[index]===1&&confirmedReset.current!==state.resets){
+      const end=alphaWorld(shallowsStonePosition(index,1)),actual=body.current.translation();
+      if(onArrival(index,Math.hypot(actual.x-end[0],actual.y-end[1],actual.z-end[2])))confirmedReset.current=state.resets;
+    }
+  });
   return <RigidBody ref={body} name={`alpha-shallows-rune-${index}`}
     type={moving?'kinematicPosition':'fixed'} position={p} colliders={false}
     userData={moving?{solid:true,assetId:`alpha-shallows-moving-${index}`}:{surface:true,solid:true,assetId:`alpha-shallows-stone-${index}`}}>
@@ -68,6 +77,15 @@ export default function AlphaShallows({onVisit,onCompleteChange}:ShallowsProps={
   const state=useRef(createShallowsState()).current,site=useMemo(createShallowsSite,[]),leverParts=useMemo(createShallowsLever,[]),clock=useRef(0),waterClock=useRef({value:0}).current;
   const [,render]=useState(0),pending=useRef<{index:number;age:number;contact:number}|null>(null),visited=useRef(false),complete=useRef(false),lever=useRef<Group>(null);
   const callbacks=useRef({onVisit,onCompleteChange});callbacks.current={onVisit,onCompleteChange};
+  const arrivals=useRef(createShallowsArrivalReceipts()).current;
+  const confirmArrival=(index:number,error:number)=>{
+    const w=useWorldStore.getState(),actor=playerLocal();
+    if(!campPropActor.available||w.paused||w.shot||w.card||w.activeVehicle||w.seat||w.poolInspect||document.hidden||
+      Math.hypot(actor[0]-ALPHA_SHALLOWS.center[0],actor[2]-ALPHA_SHALLOWS.center[2])>=28)return false;
+    const arrival=takeShallowsArrival(arrivals,state,index,error);
+    if(arrival)useWorldStore.setState({toast:{...(arrival.bridge?SHALLOWS_BRIDGE_NOTICE:SHALLOWS_SLOT_NOTICE),at:performance.now()}});
+    return arrivals.resets===state.resets&&arrivals.stones.has(index);
+  };
   const release=()=>{pending.current=null;if(guideActionHand.owner===HAND_OWNER)releaseGuideActionHand();};
   const request=(index:number)=>{
     const w=useWorldStore.getState();if(w.paused||w.card||w.shot||document.hidden||state.active!==null||pending.current)return;
@@ -115,7 +133,7 @@ export default function AlphaShallows({onVisit,onCompleteChange}:ShallowsProps={
       {SHALLOWS_BYPASS.map((p,i)=><CuboidCollider key={i} position={p} args={[.69,.24,.9]} friction={.9}/>)}
       {[-1,1].map(side=><CuboidCollider key={side} position={[ALPHA_SHALLOWS.center[0]+side*7.2,SHALLOWS_DECK_Y-.25,ALPHA_SHALLOWS.center[2]-1]} args={[1.275,.25,1.125]}/>)}
     </RigidBody>
-    {Array.from({length:SHALLOWS_STONE_COUNT},(_,i)=><RuneStone key={i} index={i} state={state} request={request}/>)}
+    {Array.from({length:SHALLOWS_STONE_COUNT},(_,i)=><RuneStone key={i} index={i} state={state} request={request} onArrival={confirmArrival}/>)}
     <group ref={lever} position={resetPoint}><Craft name="alpha-shallows-reset-lever" parts={leverParts}/></group>
   </group>;
 }

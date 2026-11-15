@@ -2,7 +2,10 @@ import type { Vec3 } from '../../types';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2Segment } from '../alpha-batch2-layout.ts';
 
 export const CAVE_ECHO_SECONDS = 4.8;
-export const CAVE_LAMP_HOME: Vec3 = [-17.3, 24, -34.8];
+// Inside the existing cave floor, left of the through-route. The full .82 x .75 m
+// base footprint samples y=24.149722..24.391727 on its actual triangles; bury its
+// .09 m lower round-over rather than leaving the old rack outside the portal floor.
+export const CAVE_LAMP_HOME: Vec3 = [-16.05, 24.049, -36.5];
 export const CAVE_CHIME_ANCHOR: Vec3 = [-7.1, 26.1, -39.3];
 export const CAVE_CHIME_YAW = -.46;
 /** WORLD pose consumed by the existing two light slots; no renderer dependency. */

@@ -2,9 +2,9 @@ import { rideFootRouteClear } from './rides/ride-clearance';
 import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-hand';
 import { localWindPace } from './rides/local-wind';
 import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
-import { ALPHA_BATCH2_ARRIVALS } from './alpha-island/alpha-batch2-layout';
+import { namedAlphaArrival, holdWorldArrival, alphaTerrainColliderMounted, activatePlayerArrival } from './world-arrival-readiness';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
@@ -317,6 +317,14 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
 
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
+  const alphaArrivalGround = useMemo(() => namedAlphaArrival(new URLSearchParams(window.location.search).get('start')), []);
+  const [arrivalActive, setArrivalActive] = useState(!alphaArrivalGround);
+  const arrivalPending = useRef(!!alphaArrivalGround);
+  const releaseArrival = useRef<(() => void) | null>(null);
+  const bindPlayer = useCallback((body: RapierRigidBody | null) => {
+    player.current = body;
+    if (body && !arrivalActive) body.setEnabled(false);
+  }, [arrivalActive]);
   const rideHeld=useRef(false),rideExitCheck=useRef({revision:-1,next:0}),rideLandingProbe=useRef<{foot:Vec3;landing:Vec3|null;delta:number|null}|null>(null);
   const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
   const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
@@ -367,8 +375,7 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
-    const mountain=start&&Object.hasOwn(ALPHA_BATCH2_ARRIVALS,start)?ALPHA_BATCH2_ARRIVALS[start]:undefined;
-    if(mountain){const p=alphaWorld(mountain);return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
+    if(alphaArrivalGround){const p=alphaArrivalGround;return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
     if(LAYOUT_V4&&start==='factory')return [FACTORY.entrance[0],FACTORY.entrance[1]+PLAYER_CENTER_HEIGHT,FACTORY.entrance[2]];
     if(LAYOUT_V4&&import.meta.env.DEV&&start?.startsWith('factory-')){
       const station=FACTORY_STATIONS.find(s=>s.id===start.slice(8));
@@ -405,6 +412,15 @@ export default function WorldActors() {
     // Paused arrivals and fixed shots have no physics publication to activate nearby facilities.
     useWorldStore.setState({ position: [...arrival], zone: alphaContainsWorld(arrival)?'alpha':inFactory(arrival[0],arrival[2])?'factory':LAYOUT_V4 ? zoneAtV4(arrival[0], arrival[2]) : 'camp' });
   }, [arrival]);
+  useLayoutEffect(() => {
+    if (!alphaArrivalGround || arrivalActive) return;
+    const blocked = () => !alphaTerrainColliderMounted(world, colliderStates);
+    const release = holdWorldArrival(blocked);
+    // WorldActors may resolve after SceneLifecycle's first three frames.
+    if (blocked()) useWorldStore.setState(s => ({ ready: false, loading: { ...s.loading, phase: 'scene' } }));
+    releaseArrival.current = release;
+    return () => { release(); if (releaseArrival.current === release) releaseArrival.current = null; };
+  }, [alphaArrivalGround, arrivalActive, world, colliderStates]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
@@ -946,6 +962,18 @@ export default function WorldActors() {
   useAfterPhysicsStep(()=>{if(player.current)clearPlayerSlopeGravity(player.current);});
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
+    if (arrivalPending.current && alphaArrivalGround) {
+      if (!alphaTerrainColliderMounted(world, colliderStates)) return;
+      const landing = activatePlayerArrival(world, rapier, player.current, alphaArrivalGround, WATER_Y);
+      if (!landing) return;
+      arrivalPending.current = false;
+      releaseArrival.current?.(); releaseArrival.current = null;
+      clearInput(); grounded.current = false; wetPlayer.current = 0;
+      portalTravel.current.previous = landing; cameraReady.current = false; target.current.set(...landing);
+      useWorldStore.setState({ position: landing, zone: 'alpha' });
+      setArrivalActive(true);
+      return;
+    }
     physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
@@ -1598,7 +1626,7 @@ export default function WorldActors() {
       </RigidBody>}
     </>}
     {VEHICLES.map(spec=><Vehicle key={spec.id} spec={spec} cars={cars} impact={impact}/>)}
-    <RigidBody ref={player} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
+    <RigidBody ref={bindPlayer} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
       {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>

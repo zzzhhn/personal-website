@@ -11,7 +11,7 @@ import type { AlphaFinish } from '../alpha-art';
 import { useAlphaStore } from '../alpha-state';
 import { ALPHA_WATERWHEEL } from '../alpha-batch2-layout';
 import { buildSluiceCrank, buildSluicePanel, buildWaterwheelFlowers, buildWaterwheelFrame, buildWaterwheelRotor, waterwheelFoundationContacts, waterwheelFoundationExtensions, SLUICE_X, WATERWHEEL_CENTER } from './waterwheel-art';
-import { cycleWaterwheelGate, getWaterwheelSnapshot, subscribeWaterwheel, type WaterwheelSnapshot } from './waterwheel-state';
+import { cycleWaterwheelGate, getWaterwheelSnapshot, subscribeWaterwheel, createWaterwheelIrrigation, stepWaterwheelIrrigation, completeWaterwheelIrrigation, type WaterwheelSnapshot } from './waterwheel-state';
 
 type CraftParts = { finish: AlphaFinish; geometry: BufferGeometry }[];
 function Craft({ parts, materials, name }: { parts: CraftParts; materials: Map<AlphaFinish, MeshStandardMaterial>; name: string }) {
@@ -24,20 +24,20 @@ const stationWorld = alphaWorld(ALPHA_WATERWHEEL.center);
 const flowMessages = {
   still: { zh: '水流停下了。再开一点，让轮斗接住水。', en: 'The flow stops. Open a sluice a little to fill the buckets.' },
   low: { zh: '水流太小，轮斗还接不满。', en: 'A trickle turns the wheel, but cannot fill the buckets.' },
-  balanced: { zh: '轮斗稳稳接住水，花带得到了灌溉。瀑布后露出了一条小路。', en: 'The buckets fill steadily and water the flowers. A path appears behind the waterfall.' },
+  balanced: { zh: '水流稳下来了，等轮斗把水提上去。', en: 'The flow settles. Watch the buckets lift the water.' },
   spill: { zh: '水太急，轮斗把水甩出去了。试着关小一道闸门。', en: 'The wheel races and spills its water. Try reducing one sluice.' },
 };
-function SluiceInteraction({ index, snapshot, onChange }: { index: 0 | 1 | 2; snapshot: WaterwheelSnapshot; onChange: (next: WaterwheelSnapshot, firstBalanced: boolean) => void }) {
+function SluiceInteraction({ index, snapshot, onChange }: { index: 0 | 1 | 2; snapshot: WaterwheelSnapshot; onChange: () => void }) {
   const opening = snapshot.gates[index];
   useInteractable({ id: `alpha-waterwheel-sluice-${index}`, kind: 'exhibit', radius: 1.65,
     position: alphaWorld(atStation([SLUICE_X[index], 1.6, 2.72])),
     label: { zh: `${gateNameZh[index]}闸门：${openingZh[opening]} · 转动把手`, en: `${gateNameEn[index]} sluice: ${openingEn[opening]} · turn handle` },
     enabled: () => { const a = useAlphaStore.getState(), w = useWorldStore.getState(); return !a.action && !a.carried && !w.paused && !w.shot; },
     onInteract: () => {
-      const previous = getWaterwheelSnapshot(), next = cycleWaterwheelGate(index);
+      const next = cycleWaterwheelGate(index);
       const message = flowMessages[next.flow.mode];
       useWorldStore.setState({ toast: { ...message, at: performance.now() } });
-      onChange(next, !previous.everBalanced && next.everBalanced);
+      onChange();
     },
   });
   return null;
@@ -49,6 +49,7 @@ function SluiceInteraction({ index, snapshot, onChange }: { index: 0 | 1 | 2; sn
 export default function AlphaWaterwheel({ onVisit, onBalanced }: { onVisit?: () => void; onBalanced?: () => void } = {}) {
   const snapshot = useSyncExternalStore(subscribeWaterwheel, getWaterwheelSnapshot, getWaterwheelSnapshot);
   const rotor = useRef<Group>(null), gates = useRef<(Group | null)[]>([]), cranks = useRef<(Group | null)[]>([]), bucketWater = useRef<InstancedMesh>(null), spray = useRef<InstancedMesh>(null), streams = useRef<(Mesh | null)[]>([]), curtain = useRef<(Mesh | null)[]>([]), flowers = useRef<Group>(null), irrigation = useRef<Group>(null);
+  const irrigationProgress = useRef(createWaterwheelIrrigation(snapshot.everBalanced));
   const animation = useRef({ time: 0, speed: 2.25, fill: .18, flower: 0, reveal: 0, angle: 0, gates: [2, 2, 2] });
   const built = useMemo(() => {
     const foundations = waterwheelFoundationContacts(), extensions = waterwheelFoundationExtensions(foundations);
@@ -71,8 +72,15 @@ export default function AlphaWaterwheel({ onVisit, onBalanced }: { onVisit?: () 
     a.time += dt; const ease = 1 - Math.exp(-dt * 3.8);
     a.speed += (flow.radiansPerSecond - a.speed) * ease;
     a.fill += (flow.bucketFill - a.fill) * ease;
-    a.flower += ((flow.irrigating ? 1 : 0) - a.flower) * Math.min(dt * .55, 1);
-    a.reveal += ((flow.passageRevealed ? 1 : 0) - a.reveal) * ease;
+    const nearPlayer = Math.hypot(w.position[0] - stationWorld[0], w.position[1] - stationWorld[1], w.position[2] - stationWorld[2]) < 28;
+    const canWater = nearPlayer && !w.card && !w.poolInspect && !w.activeVehicle && !w.seat;
+    const completed = stepWaterwheelIrrigation(irrigationProgress.current, flow, a.fill, a.speed, dt, canWater);
+    a.flower = irrigationProgress.current.bloom;
+    a.reveal = irrigationProgress.current.reveal;
+    if (completed && completeWaterwheelIrrigation()) {
+      useWorldStore.setState({ toast: { zh: '提上来的水浇开了崖花，瀑布后的小路露出来了。', en: 'The lifted water opens the cliff flowers and reveals the waterfall path.', at: performance.now() } });
+      onBalanced?.();
+    }
     a.angle = (a.angle - a.speed * dt) % (Math.PI * 2);
     if (rotor.current) rotor.current.rotation.z = a.angle;
     for (let i = 0; i < 3; i++) {
@@ -110,9 +118,9 @@ export default function AlphaWaterwheel({ onVisit, onBalanced }: { onVisit?: () 
     }
     built.petal.color.copy(built.dryColor).lerp(built.bloomColor, a.flower);
     if (flowers.current) { flowers.current.scale.y = .87 + a.flower * .13; flowers.current.position.y = 5.88 * (1 - flowers.current.scale.y); }
-    if (irrigation.current) irrigation.current.visible = a.flower > .07;
+    if (irrigation.current) irrigation.current.visible = flow.mode === 'balanced' && irrigationProgress.current.water > 0;
   });
-  const onChange = (_next: WaterwheelSnapshot, firstBalanced: boolean) => { onVisit?.(); if (firstBalanced) onBalanced?.(); };
+  const onChange = () => { onVisit?.(); };
   const petals = useMemo(() => new Map(built.materials).set('paper', built.petal), [built]);
   return <group name="alpha-station5-three-sluices-waterwheel" position={ALPHA_WATERWHEEL.center}>
     <Craft parts={built.frame} materials={built.materials} name="alpha-wheel-footings-axle-headrace-and-stone-arch" />
