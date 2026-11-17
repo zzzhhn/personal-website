@@ -22,6 +22,7 @@ import { findPickupStand, pickupGroundRoute, pickupApproachMotion, PICKUP_APPROA
 import { createInteractionOfferResolver, type InteractionOfferContext } from './interaction-offer';
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
+import type { GuidePresentationFactory } from './guide-presentation';
 import WorldVehicleVisual from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, resetPlayerBody } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
@@ -247,7 +248,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
 type GuideVehicleTransition = { id: VehicleId; side: DoorSide; phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number; exitPosition?:Vec3 } | null;
-function GuideVisual({ ride, cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { ride: ActorRide; cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
+function GuideVisual({ presentation, ride, cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { presentation: GuidePresentationFactory; ride: ActorRide; cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
   const probeGround=(x:number,z:number,fromY:number)=>{
@@ -293,12 +294,12 @@ function GuideVisual({ ride, cars, body, grounded, yaw, targetSpeed, intent, jum
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
     const ridePose=ride.active?ride.pose:null;
     return {attraction:ridePose?ride.actor:null,seat:ridePose&&ride.seatOnly?{position:ridePose.seat,yaw:ridePose.yaw,orientation:ridePose.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
-      ...actorActivities.animation()};
+      frozen:st.paused||st.poolInspect||!!st.shot,...actorActivities.animation()};
   };
-  return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
+  return <WorldGuide key={resetId} presentation={presentation} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
 }
 
-export default function WorldActors({sites,ride}: {sites: ActorSites;ride: ActorRide}) {
+export default function WorldActors({sites,ride,presentation}: {sites: ActorSites;ride: ActorRide;presentation: GuidePresentationFactory}) {
   const player = useRef<RapierRigidBody>(null);
   const entry = useMemo(() => sites.arrival(window.location.search,import.meta.env.DEV), [sites]);
   const arrival=entry.position;
@@ -1593,7 +1594,7 @@ export default function WorldActors({sites,ride}: {sites: ActorSites;ride: Actor
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual ride={ride} cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson||rideHeld.current} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
+        <GuideVisual presentation={presentation} ride={ride} cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson||rideHeld.current} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
       </group>
     </RigidBody>
   </>;
