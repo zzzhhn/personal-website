@@ -4,12 +4,12 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL } from './attraction-layout';
 import { clipArrivalJunction, roadRail, type SiteMesh, type SitePoint } from './coaster-arrival-site';
-import { meshHeight, terrainHeight } from '../WorldLandform';
+import { requireMeshHeight } from '../WorldLandform';
 import { useWorldStore } from '../store';
 import { approachEdgeSkirts } from './attraction-approach-edges';
 
 /** Follow the physical triangles, including the ridge's snapped crease vertices. */
-const approachHeight = (x:number,z:number) => meshHeight(x,z)??terrainHeight(x,z);
+const approachHeight = requireMeshHeight;
 function siteGeometry(data:SiteMesh) {
   const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(data.positions,3));g.setIndex(data.indices);g.computeVertexNormals();return g;
 }
@@ -48,7 +48,25 @@ export default function WorldAttractionApproach() {
     const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;return texture;
   },[lang]);
   useEffect(()=>()=>sign.dispose(),[sign]);
-  const built=useMemo(()=>{
+  const built=useMemo(buildAttractionApproachGeometry,[]);
+  useEffect(()=>()=>{built.meshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});built.walk.dispose();},[built]);
+  return <group name="north-attractions-approach" userData={{noOcclusionFade:true}}>
+    {built.meshes.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
+    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
+      <TrimeshCollider args={[built.meshes[0].positions,built.meshes[0].indices]} friction={.9}/>
+    </RigidBody>
+    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'coaster-arrival-walk'}}>
+      <TrimeshCollider args={[built.walk.getAttribute('position').array as Float32Array,built.walkIndices]} friction={.9}/>
+    </RigidBody>
+    {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,approachHeight(x,z),z]}>
+      <mesh position={[0,1.2,0]} castShadow><boxGeometry args={[.14,2.4,.14]}/><meshStandardMaterial color='#63543e' roughness={.9}/></mesh>
+      <mesh position={[0,2.4,0]}><planeGeometry args={[4.2,1.75]}/><meshBasicMaterial map={sign} toneMapped={false}/></mesh>
+    </group>)}
+  </group>;
+}
+
+/** Same geometry consumed by rendering and physics; usable without mounting React. */
+export function buildAttractionApproachGeometry() {
     const asphalt:BufferGeometry[]=[],edge:BufferGeometry[]=[],paint:BufferGeometry[]=[];
     for(const [roadIndex,path] of ATTRACTION_ROAD_SAMPLES.entries()){
       const points=path.map(([x,z])=>new Vector3(x,0,z));
@@ -83,19 +101,4 @@ export default function WorldAttractionApproach() {
       top.dispose();sides.dispose();
     });
     return {meshes,walk,walkIndices:new Uint32Array(walk.index!.array)};
-  },[]);
-  useEffect(()=>()=>{built.meshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});built.walk.dispose();},[built]);
-  return <group name="north-attractions-approach" userData={{noOcclusionFade:true}}>
-    {built.meshes.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
-    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
-      <TrimeshCollider args={[built.meshes[0].positions,built.meshes[0].indices]} friction={.9}/>
-    </RigidBody>
-    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'coaster-arrival-walk'}}>
-      <TrimeshCollider args={[built.walk.getAttribute('position').array as Float32Array,built.walkIndices]} friction={.9}/>
-    </RigidBody>
-    {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,approachHeight(x,z),z]}>
-      <mesh position={[0,1.2,0]} castShadow><boxGeometry args={[.14,2.4,.14]}/><meshStandardMaterial color='#63543e' roughness={.9}/></mesh>
-      <mesh position={[0,2.4,0]}><planeGeometry args={[4.2,1.75]}/><meshBasicMaterial map={sign} toneMapped={false}/></mesh>
-    </group>)}
-  </group>;
 }

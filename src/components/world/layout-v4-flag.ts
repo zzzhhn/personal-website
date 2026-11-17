@@ -1,13 +1,13 @@
 /**
- * Layout v4 switch and the light data that the shared layout.ts swaps in under the flag. Kept free of
- * geometry work so the default (v3) entry pays nothing for v4. Heavy v4 geometry: layout-v4.ts.
- * Switch: `?layout=v4`. The main thread flips DEFAULT_V4 after the parallel sessions deliver.
+ * Current browser layout and light shared data. Historical v3 is retained only
+ * for Node authoring/comparison tools; its finite terrain cannot host today's venues.
+ * Old browser links must not select that terrain under the current scene assembly.
  */
 import type { Vec3, VehicleId } from './types';
 
 const DEFAULT_V4 = true;
 const query = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('layout') : null;
-export const LAYOUT_V4 = query === 'v4' || (DEFAULT_V4 && query !== 'v3');
+export const LAYOUT_V4 = import.meta.env?.SSR === false || query === 'v4' || (DEFAULT_V4 && query !== 'v3');
 
 export type P2 = [number, number];
 export const ROAD_Y = 1.14;

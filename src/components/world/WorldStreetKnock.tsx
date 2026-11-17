@@ -23,7 +23,7 @@ import { knockablesV4, OBSTACLES_V4, type Knockable, type KnockKind as LayoutKin
 import type { GreyboxKey } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import { night } from './WorldNight';
-import { terrainHeight } from './WorldLandform';
+import { meshHeight } from './WorldLandform';
 import { StreetClaim } from './WorldStreetStatic';
 import * as A from './WorldStreetAssets';
 import {craftTimberBeam} from './WorldRailCraft';
@@ -179,8 +179,9 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     lamps.forEach((s, i) => {
       p.copy(head).applyMatrix4(homeMatrix(s.item));
       // Lens overhang can sit over a different road height than the lamp footing.
-      o.position.set(p.x, Math.max(s.item.position[1],terrainHeight(p.x,p.z)) + .055, p.z);
-      o.scale.setScalar(s.phase === 'home' ? 1 : 0); o.updateMatrix();
+      const ground = meshHeight(p.x,p.z);
+      o.position.set(p.x, ground === null ? 0 : Math.max(s.item.position[1],ground) + .055, p.z);
+      o.scale.setScalar(s.phase === 'home' && ground !== null ? 1 : 0); o.updateMatrix();
       m.setMatrixAt(i, o.matrix);
     });
     m.instanceMatrix.needsUpdate = true; m.computeBoundingSphere();

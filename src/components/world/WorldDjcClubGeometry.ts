@@ -1,7 +1,7 @@
 import { BufferGeometry, Float32BufferAttribute, Color, Vector2, Vector3, Quaternion, BoxGeometry, CylinderGeometry, SphereGeometry, TorusGeometry, ShapeUtils } from 'three';
 import { CLUB, CLUB_POOL, CLUB_DAYBEDS, CLUB_WALKWAYS, CLUB_PALMS, CLUB_SOFT_PLANTS, CLUB_LANTERNS, clubScatterBlocked } from './djc-club-layout';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import { terrainHeight } from './WorldLandform';
+import { requireMeshHeight } from './WorldLandform';
 import { DJC_BAR_DANCE_JOIN } from './djc-bar-layout';
 import { djcWalkwayOutline, djcWalkwaySupports, djcPoolRimAccess, djcPoolInnerReturn } from './facility-site-contact';
 
@@ -251,7 +251,7 @@ export function buildDjcClubGeometry({
   };
   const rect = (x0:number,x1:number,z0:number,z1:number,y:number):V3[]=>[[x0,y,z0],[x1,y,z0],[x1,y,z1],[x0,y,z1]];
   const supportHeight=(x:number,z:number)=>{
-    let y=terrainHeight(x,z);const p=surface.positions;
+    let y=requireMeshHeight(x,z);const p=surface.positions;
     for(let i=0;i<p.length;i+=9){const ax=p[i],az=p[i+2],bx=p[i+3],bz=p[i+5],cx=p[i+6],cz=p[i+8],d=(bz-cz)*(ax-cx)+(cx-bx)*(az-cz);if(Math.abs(d)<1e-9)continue;
       const a=((bz-cz)*(x-cx)+(cx-bx)*(z-cz))/d,b=((cz-az)*(x-cx)+(ax-cx)*(z-cz))/d,c=1-a-b;if(Math.min(a,b,c)>=-1e-6)y=Math.max(y,a*p[i+1]+b*p[i+4]+c*p[i+7]);}
     return y;
@@ -277,7 +277,7 @@ export function buildDjcClubGeometry({
     // Triangulate the simple paving outline with Three's ear-cut tessellator below.
     const outline=djcWalkwayOutline(p);
     pavedOutline(outline);
-    const piles=djcWalkwaySupports(outline,terrainHeight);
+    const piles=djcWalkwaySupports(outline,requireMeshHeight);
     if(piles.positions.length){solidTriangles(piles.positions);add('wood',fromTriangles(piles.positions),C.edge);}
   }
   // Meet the refined deck at its south edge. The old approach continued under the
@@ -687,7 +687,7 @@ export function buildDjcClubGeometry({
   // Pinnate palm crowns: a slender rachis and ten separated pairs of folded
   // leaflets replace the old solid triangular fans, preserving the original crown envelope.
   for(const [cx,cz,h,phase] of CLUB_PALMS) {
-    const base=terrainHeight(cx,cz),top:V3=[cx+.6*Math.sin(phase),base+h,cz+.6*Math.cos(phase)];
+    const base=requireMeshHeight(cx,cz),top:V3=[cx+.6*Math.sin(phase),base+h,cz+.6*Math.cos(phase)];
     for(let i=0;i<7;i++) {
       const at=(t:number):V3=>[cx+.6*Math.sin(phase)*t*t,base+h*t,cz+.6*Math.cos(phase)*t*t];
       rod('wood',at(i/7),at((i+1)/7),.16-.065*i/7,i%2?'#74634a':'#857251',true);
@@ -711,24 +711,24 @@ export function buildDjcClubGeometry({
   // Eight planted islands retain open gaps. Each has a restrained agave core,
   // two offset broad-leaf fans and one low tuft, rooted to the sampled terrain.
   for(const [group,[x,z]]of CLUB_SOFT_PLANTS.entries()) {
-    const base=terrainHeight(x,z),phase=group*2.39996;
+    const base=requireMeshHeight(x,z),phase=group*2.39996;
     for(let i=0;i<6;i++){
       const a=i*TAU/6+phase,h=.65+(i%3)*.14,w=.15,root:V3=[x,base+.015,z],tip:V3=[x+Math.cos(a)*.85,base+h,z+Math.sin(a)*.85];
       groundLeaf([...root,x+Math.sin(a)*w,base+.3,z-Math.cos(a)*w,...tip,...root,...tip,x-Math.sin(a)*w,base+.3,z+Math.cos(a)*w],i%3?'#6f7e4a':'#859359',root,1.1,.35);
     }
     for(let clump=0;clump<2;clump++){
-      const theta=phase+clump*2.4,rx=x+.58*Math.cos(theta),rz=z+.58*Math.sin(theta),root:V3=[rx,terrainHeight(rx,rz)+.015,rz];
+      const theta=phase+clump*2.4,rx=x+.58*Math.cos(theta),rz=z+.58*Math.sin(theta),root:V3=[rx,requireMeshHeight(rx,rz)+.015,rz];
       for(let leaf=0;leaf<5;leaf++){
         const a=theta+leaf*TAU/5,reach=.58+(leaf%2)*.15,height=(clump?1.12:1.6)-leaf*.065,width=clump?.19:.27,points:number[]=[];
         const p=(t:number,side:number):V3=>{
           const r=reach*Math.pow(t,1.35),w=width*Math.sin(Math.PI*Math.max(0,(t-.18)/.82)),px=rx+Math.cos(a)*r+Math.sin(a)*w*side,pz=rz+Math.sin(a)*r-Math.cos(a)*w*side;
-          return[px,Math.max(terrainHeight(px,pz)+.015,root[1]+height*Math.sin(t*Math.PI*.78)+(side===0?w*.2:0)),pz];
+          return[px,Math.max(requireMeshHeight(px,pz)+.015,root[1]+height*Math.sin(t*Math.PI*.78)+(side===0?w*.2:0)),pz];
         };
         for(let i=0;i<6;i++)for(const side of [-1,1]){const t=i/6,u=(i+1)/6;points.push(...p(t,0),...p(u,side),...p(t,side),...p(t,0),...p(u,0),...p(u,side));}
         groundLeaf(points,leaf%2?'#547956':'#71905d',root,height,.5);
       }
     }
-    const tx=x+.75*Math.cos(phase+3.8),tz=z+.75*Math.sin(phase+3.8),root:V3=[tx,terrainHeight(tx,tz)+.015,tz];
+    const tx=x+.75*Math.cos(phase+3.8),tz=z+.75*Math.sin(phase+3.8),root:V3=[tx,requireMeshHeight(tx,tz)+.015,tz];
     for(let leaf=0;leaf<12;leaf++){
       const a=phase+leaf*2.39996,h=.38+(leaf%4)*.075,reach=.36+(leaf%3)*.08,w=.026,mid:V3=[tx+Math.cos(a)*reach*.35,root[1]+h*.82,tz+Math.sin(a)*reach*.35],tip:V3=[tx+Math.cos(a)*reach,root[1]+h*.68,tz+Math.sin(a)*reach];
       const l:V3=[mid[0]+Math.sin(a)*w,mid[1],mid[2]-Math.cos(a)*w],r:V3=[mid[0]-Math.sin(a)*w,mid[1],mid[2]+Math.cos(a)*w];

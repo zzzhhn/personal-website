@@ -5,7 +5,7 @@ import { Color, Ray, Vector3 } from 'three';
 import { buildDjcClubGeometry, buildDjcMirrorGeometry, buildDjcSpotsGeometry,DJC_CLUB_SEATS,DJC_DAYBED_TOP,DJC_MIRROR_RADIUS } from './WorldDjcClubGeometry.ts';
 import { CLUB, CLUB_POOL, CLUB_DAYBEDS, CLUB_PALMS, CLUB_SOFT_PLANTS, clubScatterBlocked } from './djc-club-layout.ts';
 import { CLUB_LIGHTS } from './WorldClubLighting.ts';
-import { terrainHeight } from './WorldLandform.ts';
+import { requireMeshHeight } from './WorldLandform.ts';
 
 const club=buildDjcClubGeometry(),mirror=buildDjcMirrorGeometry(),spots=buildDjcSpotsGeometry();
 const all=[...Object.values(club.batches),club.pool,mirror,spots];
@@ -181,10 +181,10 @@ test('six palm crowns have separated small folded leaflets with fixed crown root
     a.fromBufferAttribute(p,i);b.fromBufferAttribute(p,i+1);c.fromBufferAttribute(p,i+2);
     const area=b.clone().sub(a).cross(c.clone().sub(a)).length()/2;assert.ok(area>1e-7,'no collapsed leaf triangles');
     if(a.y<4)continue;
-    const palm=CLUB_PALMS.findIndex(([x,z,h,phase])=>Math.hypot(a.x-x-.6*Math.sin(phase),a.z-z-.6*Math.cos(phase))<3.3&&Math.abs(a.y-terrainHeight(x,z)-h)<2.2);
+    const palm=CLUB_PALMS.findIndex(([x,z,h,phase])=>Math.hypot(a.x-x-.6*Math.sin(phase),a.z-z-.6*Math.cos(phase))<3.3&&Math.abs(a.y-requireMeshHeight(x,z)-h)<2.2);
     assert.ok(palm>=0);counts[palm]++;assert.ok(area<.08,'crown is split into narrow blades rather than a solid fan');
     for(let j=i;j<i+3;j++){
-      const [x,z,h,phase]=CLUB_PALMS[palm],distance=Math.hypot(p.getX(j)-x-.6*Math.sin(phase),p.getY(j)-terrainHeight(x,z)-h,p.getZ(j)-z-.6*Math.cos(phase));
+      const [x,z,h,phase]=CLUB_PALMS[palm],distance=Math.hypot(p.getX(j)-x-.6*Math.sin(phase),p.getY(j)-requireMeshHeight(x,z)-h,p.getZ(j)-z-.6*Math.cos(phase));
       if(distance<.001){assert.equal(wind.getX(j),0);roots[palm]++;}
       if(distance>2.3&&wind.getX(j)>.4)tips[palm]++;
     }
@@ -197,9 +197,9 @@ test('eight planted islands have layered terrain-rooted soft leaves clear of cir
   for(let i=0;i<p.count;i++){
     const x=p.getX(i),y=p.getY(i),z=p.getZ(i);if(y>4)continue;
     assert.equal(clubScatterBlocked(x,z),false,'soft leaves retain the paving and approach clearance');
-    assert.ok(y>=terrainHeight(x,z)-.001,'soft leaves do not emerge from below or float above their sampled root');
+    assert.ok(y>=requireMeshHeight(x,z)-.001,'soft leaves do not emerge from below or float above their sampled root');
     let nearest=0;for(let j=1;j<groups.length;j++)if(Math.hypot(x-CLUB_SOFT_PLANTS[j][0],z-CLUB_SOFT_PLANTS[j][1])<Math.hypot(x-CLUB_SOFT_PLANTS[nearest][0],z-CLUB_SOFT_PLANTS[nearest][1]))nearest=j;
-    const match=c=>Math.abs(colors.getX(i)-c.r)+Math.abs(colors.getY(i)-c.g)+Math.abs(colors.getZ(i)-c.b)<1e-5,group=groups[nearest],height=y-terrainHeight(x,z);
+    const match=c=>Math.abs(colors.getX(i)-c.r)+Math.abs(colors.getY(i)-c.g)+Math.abs(colors.getZ(i)-c.b)<1e-5,group=groups[nearest],height=y-requireMeshHeight(x,z);
     if(broad.some(match))group.broad++;if(match(fine))group.fine++;
     if(height<.02&&wind.getX(i)===0)group.root++;if(height>.25&&height<.65)group.low++;if(height>1.1)group.high++;
   }

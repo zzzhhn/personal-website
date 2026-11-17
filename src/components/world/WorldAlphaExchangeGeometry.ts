@@ -8,7 +8,7 @@ import { buildExchangeInteriorCraft } from './alpha-exchange-interior-craft';
 import { buildExchangeGalleryCraft } from './alpha-exchange-gallery-craft';
 import { buildExchangeClearingCraft } from './alpha-exchange-clearing-craft';
 import type { Vec3 } from './types';
-import { terrainHeight } from './WorldLandform';
+import { requireMeshHeight } from './WorldLandform';
 import { exchangeGroundSkirt } from './facility-site-contact';
 
 export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
@@ -69,7 +69,7 @@ export function buildAlphaExchangeGeometry() {
     }
     slab.outline.forEach((a,i)=>{if(!slab.walls[i])return;const b=slab.outline[(i+1)%slab.outline.length],p:Vec3=[a[0],slab.y,a[1]],q:Vec3=[b[0],slab.y,b[1]],r:Vec3=[b[0],slab.y-slab.depth,b[1]],s:Vec3=[a[0],slab.y-slab.depth,a[1]];walls.push(...p,...q,...r,...p,...r,...s);});
     raw(top,slab.color,'surface',[0,.09,1]);raw(bottom,slab.color);raw(walls,slab.color);
-    raw(exchangeGroundSkirt(slab,ALPHA_EXCHANGE_ORIGIN,terrainHeight),slab.color);
+    raw(exchangeGroundSkirt(slab,ALPHA_EXCHANGE_ORIGIN,requireMeshHeight),slab.color);
   }
   for(const b of exchangeBoxes())add(new BoxGeometry(...b.size),b.color,b.center,b.rotation??[0,0,0],b.surface?'surface':'solid');
   // Broad visible steps are complemented by continuous entrance and pit side routes.

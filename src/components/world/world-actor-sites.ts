@@ -9,7 +9,7 @@ import { CLUB, CLUB_POOL, CLUB_CAPE } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES, IBD_FOOTPRINT } from './attractions/attraction-layout';
 import { namedAlphaArrival, alphaTerrainColliderMounted } from './world-arrival-readiness';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
-import { nearestDryPoint, terrainHeight } from './WorldLandform';
+import { nearestDryPoint, requireMeshHeight } from './WorldLandform';
 import { roadLandingCandidates } from './world-travel';
 import { WORLD_PORTALS } from './world-portals';
 import type { Vec3 } from './types';
@@ -76,7 +76,7 @@ export function worldActorArrival(search: string, development: boolean, layoutV4
     if(start==='exchange')return bodyPoint([ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1],ALPHA_EXCHANGE_ORIGIN[2]+2.4]);
     if(development&&start==='club-dance')return bodyPoint(CLUB.dance);
     if(development&&start==='club-decks')return bodyPoint([31,2,55]);
-    if(development&&start==='club-view')return bodyPoint([CLUB.terrace[0],terrainHeight(CLUB.terrace[0],55),55]);
+    if(development&&start==='club-view')return bodyPoint([CLUB.terrace[0],requireMeshHeight(CLUB.terrace[0],55),55]);
     if(development&&start==='club-water')return bodyPoint([CLUB.pool[0],CLUB_POOL.floorHeight(CLUB.pool[0],55),55]);
     if(portal)return bodyPoint(portal.entryApproachCandidates[0]);
     if(qaStart==='wade')return [-26,-.3,106];

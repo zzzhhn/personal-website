@@ -12,7 +12,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CuboidCollider, InstancedRigidBodies, RigidBody, TrimeshCollider, useRapier, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, BufferGeometry, Color, Float32BufferAttribute, Group, InstancedMesh, MeshStandardMaterial, Object3D, Sphere, Vector3 } from 'three';
 import {
-  decorV4, knockablesV4, LANDFORM_HAS_RIDGE, layoutQaV4, nearestRoadPointV4, pavedV4, ridgeHeightV4, RIDGE_V4, solidsV4,
+  decorV4, knockablesV4, layoutQaV4, nearestRoadPointV4, pavedV4, RIDGE_V4, solidsV4,
   type DecorBox, type Knockable, type KnockKind, type PavedPoly, type SolidBox,
 } from './layout-v4';
 import { nearestDryPoint } from './WorldLandform';
@@ -23,10 +23,6 @@ import { night } from './WorldNight';
 import { windUniforms } from './WorldWind';
 import { useClaimStore, useIsClaimed, type GreyboxKey } from './WorldVisualClaims';
 import type { Vec3 } from './types';
-
-/** Until WorldLandform evaluates ridgeHeightV4 itself (docs/world/quality-v3/map-v4/integration/), the
- * ridge is a local terrain patch with the same surface / solid collider split. */
-const RIDGE_PATCH = !LANDFORM_HAS_RIDGE;
 
 type Arrays = { pos: number[]; nrm: number[]; col: number[]; glow?: number[] };
 /** Four spatial chunks (west/east of x = -30, north/south of z = -20) so every district draw is
@@ -188,54 +184,6 @@ function Windmill() {
   return <group name="v4-windmill-G29" position={[cx, hub, cz]}>
     <mesh castShadow position={[-.4, 0, 0]}><boxGeometry args={[2.2, 1.1, 1.2]} /><meshStandardMaterial color="#E6DCCB" roughness={1} /></mesh>
     <group ref={rotor} position={[-1.65, 0, 0]}><mesh castShadow geometry={blades} material={material} /></group>
-  </group>;
-}
-
-/* ------------------------------------------------------------------ ridge patch (temporary) */
-
-function ridgePatch() {
-  const [cx, cz] = RIDGE_V4.center, R = RIDGE_V4.footR + .6, step = .5, n = Math.ceil(2 * R / step);
-  const x0 = cx - n * step / 2, z0 = cz - n * step / 2, H: number[] = [];
-  for (let j = 0; j <= n; j++) for (let i = 0; i <= n; i++) H.push(ridgeHeightV4(x0 + i * step, z0 + j * step) ?? .985);
-  const vis: Arrays = { pos: [], nrm: [], col: [] }, surf: number[] = [], solid: number[] = [], pos: number[] = [];
-  const grass = new Color('#7E8C3E'), earth = new Color('#A7835A'), c = new Color(), cos25 = Math.cos(25 * Math.PI / 180);
-  const v = (i: number, j: number): Vec3 => [x0 + i * step, H[j * (n + 1) + i], z0 + j * step];
-  const tri = (a: Vec3, b: Vec3, d: Vec3) => {
-    const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2], wx = d[0] - a[0], wy = d[1] - a[1], wz = d[2] - a[2];
-    let nx = uy * wz - uz * wy, ny = uz * wx - ux * wz, nz = ux * wy - uy * wx;
-    if (ny < 0) { nx = -nx; ny = -ny; nz = -nz; [b, d] = [d, b]; }
-    const l = Math.hypot(nx, ny, nz) || 1; nx /= l; ny /= l; nz /= l;
-    c.copy(grass).lerp(earth, Math.min(1, Math.max(0, (cos25 + .05 - ny) * 6)));
-    const base = pos.length / 3;
-    for (const p of [a, b, d]) { vis.pos.push(...p); vis.nrm.push(nx, ny, nz); vis.col.push(c.r, c.g, c.b); pos.push(...p); }
-    (ny >= cos25 ? surf : solid).push(base, base + 1, base + 2);
-  };
-  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
-    const mx = x0 + (i + .5) * step - cx, mz = z0 + (j + .5) * step - cz;
-    if (Math.hypot(mx, mz) > R) continue;
-    tri(v(i, j), v(i, j + 1), v(i + 1, j)); tri(v(i + 1, j), v(i, j + 1), v(i + 1, j + 1));
-  }
-  const g = new BufferGeometry();
-  g.setAttribute('position', new Float32BufferAttribute(vis.pos, 3));
-  g.setAttribute('normal', new Float32BufferAttribute(vis.nrm, 3));
-  g.setAttribute('color', new Float32BufferAttribute(vis.col, 3));
-  g.computeBoundingSphere();
-  const P = new Float32Array(pos);
-  return { geometry: g, positions: P, surface: new Uint32Array(surf), solid: new Uint32Array(solid) };
-}
-
-function RidgePatch() {
-  const patch = useMemo(ridgePatch, []);
-  const material = useMemo(() => new MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 1 }), []);
-  useEffect(() => () => { patch.geometry.dispose(); material.dispose(); }, [patch, material]);
-  return <group name="v4-ridge-patch">
-    <RigidBody name="v4-ridge-surface" type="fixed" colliders={false} userData={{ surface: true }}>
-      <TrimeshCollider name="v4-ridge-surface-top" args={[patch.positions, patch.surface]} friction={.95} restitution={0} />
-    </RigidBody>
-    {patch.solid.length > 0 && <RigidBody name="v4-ridge-solid" type="fixed" colliders={false} userData={{ solid: true }}>
-      <TrimeshCollider name="v4-ridge-solid-faces" args={[patch.positions, patch.solid]} friction={.65} restitution={.05} />
-    </RigidBody>}
-    <mesh name="v4-ridge-patch-mesh" geometry={patch.geometry} material={material} receiveShadow userData={{ surface: true }} />
   </group>;
 }
 
@@ -415,7 +363,6 @@ export default memo(function WorldDistricts() {
     <Solids />
     <Decor />
     {!windmill && <Windmill />}
-    {RIDGE_PATCH && <RidgePatch />}
     {!knockable && <Knockables />}
     <DistrictsDebug />
   </group>;

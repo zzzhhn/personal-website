@@ -326,6 +326,7 @@ export function terrainBaseHeight(x: number, z: number) {
   return LAYOUT_V4 ? clubGroundHeight(pave(h, x, z),x,z) : h;
 }
 export function terrainHeight(x: number, z: number) {
+  if (import.meta.env?.SSR === false) throw new Error('Mainland authoring height is unavailable at runtime; query the built mesh');
   const coast = coastHeight(x, z), camp = campHillHeight(x, z), cap = roadCap(x, z);
   // Round the hill foot onto flat ground (<= 10 cm rise within ~1 m of the foot, grass slopes
   // only; rock terraces and the road embankment keep a crisp foot).
@@ -594,6 +595,8 @@ export function requireMeshGround(x: number, z: number) {
   if (!ground) throw new RangeError(`No mainland terrain triangle at (${x}, ${z})`);
   return ground;
 }
+
+export const requireMeshHeight = (x: number, z: number) => requireMeshGround(x, z).height;
 
 export function createTerrainGeometry() {
   const t = buildTerrain(), geometry = new BufferGeometry();

@@ -1,7 +1,7 @@
 /** G15: three independent shallow light-wood billboards, outside road/sidewalk envelopes. */
 import { useEffect, useMemo } from 'react';
 import { ROADS_V4, pointAt, polylineLength, paveHalf, onPavement, solidsV4, solidDistance, knockablesV4, FOUNDATIONS_V4 } from './layout-v4';
-import { meshHeight, terrainHeight } from './WorldLandform';
+import { meshHeight, requireMeshHeight } from './WorldLandform';
 import StreetKnockables, { type Item } from './WorldStreetKnock';
 import { FONT, paintAtlas, cellOf } from './WorldStreetMaterial';
 const COPY = [
@@ -21,12 +21,22 @@ export default function StreetBillboards() {
       g.font = `600 37px ${FONT}`; g.fillText(c.en, 68, h * .56, w * .63);
       g.font = `500 24px ${FONT}`; g.fillText('BOBBY’S ISLAND', 68, h * .82);
     } })));
-    const items: Item[] = COPY.map((c, i) => {
+    return { items: billboardPlacements(rects), atlas };
+  }, []);
+  useEffect(() => () => built.atlas?.dispose(), [built]);
+  return <StreetKnockables set="billboard" customItems={built.items} customAtlas={built.atlas} />;
+}
+
+export function billboardPlacements(rects = COPY.map((_, i) => [0, i * 640, 1280, 640] as [number, number, number, number])): Item[] {
+    return COPY.map((c, i) => {
       const road = ROADS_V4.find(r => r.id === c.road)!;
       const off = (paveHalf(road.cls) + 2) * c.side;
       const clear = (x: number, z: number, dx: number, dz: number) => {
         // Check the full board/feet envelope against ALL paved polygons, not just its chosen road.
-        for (const u of [-1.55, 0, 1.55]) for (const v of [-.65, 0, .65]) if (onPavement([x + dx * u + dz * v, z + dz * u - dx * v])) return false;
+        for (const u of [-1.55, 0, 1.55]) for (const v of [-.65, 0, .65]) {
+          const px = x + dx * u + dz * v, pz = z + dz * u - dx * v;
+          if (onPavement([px,pz]) || meshHeight(px,pz) === null) return false;
+        }
         if (solidsV4().some(s => solidDistance([x, z], s) < 1.8)) return false;
         if (FOUNDATIONS_V4.some(f => solidDistance([x, z], { ...f, yaw: 0 }) < 1.8)) return false;
         return !knockablesV4().some(k => Math.hypot(k.position[0] - x, k.position[2] - z) < 2.2);
@@ -39,10 +49,6 @@ export default function StreetBillboards() {
       }
       if (!chosen) throw new Error('No clear G15 road shoulder at ' + road.id);
       const { x, z, nx, nz } = chosen;
-      return { id: 'billboard-' + i, kind: 'billboard', position: [x, meshHeight(x, z) ?? terrainHeight(x, z), z], yaw: Math.atan2(nx, nz), road: road.id, cell: cellOf(rects[i]), label: c.zh + ' / ' + c.en };
+      return { id: 'billboard-' + i, kind: 'billboard', position: [x, requireMeshHeight(x, z), z], yaw: Math.atan2(nx, nz), road: road.id, cell: cellOf(rects[i]), label: c.zh + ' / ' + c.en };
     });
-    return { items, atlas };
-  }, []);
-  useEffect(() => () => built.atlas?.dispose(), [built]);
-  return <StreetKnockables set="billboard" customItems={built.items} customAtlas={built.atlas} />;
 }

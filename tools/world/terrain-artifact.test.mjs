@@ -127,7 +127,19 @@ if (!variant) {
       const browser = await import(pathToFileURL(output).href);
       assert.throws(() => browser.buildTerrain(), /must be loaded/);
       browser.installTerrainArtifact(artifact);
+      if (variant === 'v3') {
+        // Old URLs use today's scene and therefore must require today's terrain.
+        // The historical artifact still passes serialization/physics checks above.
+        assert.throws(()=>browser.buildTerrain(),/must be loaded/);
+        const current=manifest.v4,buf=gunzipSync(await readFile(path.join(root,'public',current.url)));
+        const v4=decodeTerrainArtifact(buf.buffer.slice(buf.byteOffset,buf.byteOffset+buf.byteLength),'v4');
+        browser.installTerrainArtifact(v4);
+        assert.equal(browser.buildTerrain(),v4.terrain);
+        assert.throws(()=>browser.terrainHeight(0,0),/authoring height is unavailable/);
+        return;
+      }
       assert.equal(browser.buildTerrain(), artifact.terrain);
+      assert.throws(()=>browser.terrainHeight(0,0),/authoring height is unavailable/);
       const before = authored.createTerrainGeometry(), after = browser.createTerrainGeometry();
       for (const key of ['position', 'normal']) assert.deepEqual(bytes(before.getAttribute(key).array), bytes(after.getAttribute(key).array));
       assert.deepEqual(bytes(before.index.array), bytes(after.index.array));

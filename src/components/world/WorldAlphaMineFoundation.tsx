@@ -2,14 +2,14 @@ import { useEffect, useMemo } from 'react';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ALPHA_MINE_CONNECTOR } from './alpha-mine-layout';
 import { mineFoundationSurface } from './alpha-mine-foundation';
-import { terrainHeight } from './WorldLandform';
+import { requireMeshHeight } from './WorldLandform';
 import { ParkGeo, mergeBatch, parkMaterial } from './WorldParkKit';
 import { mineFoundationVisibleSurface, useMineFloorCoverage } from './mine-floor-coverage';
 import { useIsClaimed } from './WorldVisualClaims';
 
 /** Continuous low quarry earth and its graded island boundary, plus the approach markers. */
 export default function WorldAlphaMineFoundation() {
-  const apron=useMemo(()=>mineFoundationSurface(terrainHeight),[]);
+  const apron=useMemo(()=>mineFoundationSurface(requireMeshHeight),[]);
   const coverage=useMineFloorCoverage(),claimed=useIsClaimed('alpha-mine-floor');
   const visible=useMemo(()=>mineFoundationVisibleSurface(apron,claimed?coverage:[]),[apron,coverage,claimed]);
   const geometry = useMemo(() => {
