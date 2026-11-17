@@ -20,7 +20,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | --- | --- | --- |
 | Terrain authority | Build-produced, versioned mesh data drives render, physics, placement and support queries; full-map contact/clearance scan from those same triangles; no runtime placement fallback to authoring heights | Not migrated; existing real-mesh queries located |
 | Collision provenance | Visible meshes explicitly classified solid/pushable/soft/none, coverage fails on omissions, geometry/transform provenance connects colliders to visible assets | Not migrated; mixed implementations confirmed |
-| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry implemented; Alpha six actions, cave lamp, camp props and mine actions migrated; exchange, inspection and other adapters pending |
+| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry and accepted completion implemented for Alpha, cave, camp, mine, exchange and inspection; whole-registry audit and venue approach unification pending |
 | Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Not migrated; current coupling confirmed |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | Not migrated; behavior tests added for first change, visual suite pending |
 | Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Pending actual target device; do not substitute this machine |
@@ -68,6 +68,14 @@ Mine equip, scan, strike, pickup and deposit now use the common accepted-action 
 Deposit still has separate release and arrival events. Cancellation during flight restores the same ore; pool comparison results and recovery shelves retain their previous behavior. Missing or stale ore-release samples fall back to a finite local carry socket. Hand/contact errors remain diagnostic, and the existing G24 visual-reach tests remain intact.
 
 Verification: 52 passed and one pre-existing skipped asset-socket test across accepted-action, alpha-mine-state, mine-pickup-approach, guide-mine, world-recovery, alpha-mine-physics and alpha-mine-online. TypeScript and the eight-route production build passed. No browser, rendered motion, target-device performance or full-world completion is claimed. No model, material, lighting or quality changes.
+
+## Batch 5: exchange, inspection and crane completion
+
+Exchange and IBD inspection now use the same accepted-action commit clock as camp and mine. Exact render sample IDs/timestamps, palm reachability and palm distance no longer authorize business transitions. Existing real stand/yaw alignment, approach timeout, grounded support, actor availability/mode, callback generation/revision checks and cancellation remain. Callbacks still commit at most once, including rejected or thrown callbacks.
+
+Crane motion now requires the current operation token/round, committed operator action, live physical stance/support and the correct held command. It no longer requires a palm sample from the latest render. Blocked cargo paths, release of input, pause, changed round, lost ground and cancellation still prevent motion; cargo must land before the operation is credited. Inspection retains its real jaw-gap check, tray presentation/retraction, original-pocket identity and return-before-evidence rule.
+
+Verification: 62 behavioral/controller/rig tests passed across exchange motion/play, G24 exchange and inspection rigs, inspection motion, pack play and crane control. This includes the complete three-leg crane route without any rendered palm samples, live support rechecking before the next actor tick, pause, invalid samples, callback rejection and fitted-jaw measurement. TypeScript and the eight-route production build passed; the existing chunk-size warning remains. Visual pose tests remain separate from logical completion. No asset/material/lighting changes or player acceptance claimed.
 
 ## Next work
 

@@ -1,5 +1,6 @@
 import { PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
 import type { Vec3 } from '../types.ts';
+import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from '../accepted-action';
 
 export type IbdInspectionActionKind = 'pickup' | 'measure' | 'return' | 'empty' | 'coil-check' | 'crane-control';
 /** Ownership and stock identity belong to the yard controller. This is only the held silhouette. */
@@ -8,7 +9,7 @@ export interface IbdInspectionAnchor { stand: Vec3; yaw: number; leftTarget: Vec
 export interface IbdInspectionAction {
   id: number; kind: IbdInspectionActionKind; phase: 'approach' | 'perform'; elapsed: number;
   duration: number; contactAt: number; reachStartAt: number; recoverDuration: number;
-  anchor: IbdInspectionAnchor; committed: boolean; contactWait: number;
+  anchor: IbdInspectionAnchor; committed: boolean; commitClock: AcceptedAction;
   actorMode: string; released?: boolean;
 }
 export interface IbdInspectionVisualSockets {
@@ -47,6 +48,14 @@ function clearSample() {
     leftContactError: Infinity, rightContactError: Infinity, contactError: Infinity });
 }
 export const ibdInspectionBodyBusy = () => ibdInspectionBody.action !== null;
+/** Live physical ownership/support, shared by the action clock and the crane mechanism. */
+export function ibdInspectionActionAligned(action: IbdInspectionAction) {
+  return ibdInspectionBody.action === action && ibdInspectionActor.available && ibdInspectionActor.grounded
+    && ibdInspectionActor.mode === action.actorMode && pointValid(ibdInspectionActor.position)
+    && Number.isFinite(ibdInspectionActor.yaw) && standHeight(action.anchor) <= .25
+    && standDistance(action.anchor) <= IBD_INSPECTION_STAND_TOLERANCE
+    && Math.abs(angleDelta(ibdInspectionActor.yaw, action.anchor.yaw)) <= IBD_INSPECTION_YAW_TOLERANCE;
+}
 
 /** Reserve a physical reach. The caller walks/turns the actor and owns slot, piece and jaw-gap validation. */
 export function beginIbdInspectionAction(kind: IbdInspectionActionKind, anchor: IbdInspectionAnchor,
@@ -60,7 +69,7 @@ export function beginIbdInspectionAction(kind: IbdInspectionActionKind, anchor: 
     || ((kind==='measure'||kind==='return') && !ibdInspectionBody.carried)
     || ((kind==='pickup'||kind==='empty'||kind==='coil-check'||kind==='crane-control') && !!ibdInspectionBody.carried)) return false;
   const timing=IBD_INSPECTION_TIMING[kind], id=++sequence;
-  ibdInspectionBody.action={ id,kind,phase:'approach',elapsed:0,...timing,committed:false,contactWait:0,
+  ibdInspectionBody.action={ id,kind,phase:'approach',elapsed:0,...timing,committed:false,commitClock:acceptAction(timing.contactAt),
     actorMode:ibdInspectionActor.mode,
     anchor:{stand:[...anchor.stand],yaw:anchor.yaw,leftTarget:[...anchor.leftTarget],rightTarget:[...anchor.rightTarget],
       ...(anchor.focus?{focus:[...anchor.focus] as Vec3}:{})} };
@@ -71,9 +80,10 @@ export function cancelIbdInspectionAction(): void {
   const action=ibdInspectionBody.action;
   if (!action) return;
   const cancel=callbacks?.id===action.id?callbacks.cancel:undefined;
+  cancelAcceptedAction(action.commitClock);
   ibdInspectionBody.action=null; callbacks=null; clearSample(); cancel?.();
 }
-/** Fixed physics clock. A paused frame is inert, including contact waits. */
+/** Fixed physics clock. A paused frame is inert; render contact is diagnostic only. */
 export function advanceIbdInspectionAction(dt: number, paused=false): void {
   const action=ibdInspectionBody.action;
   if (!action || paused || !Number.isFinite(dt) || dt<=0) return;
@@ -81,8 +91,7 @@ export function advanceIbdInspectionAction(dt: number, paused=false): void {
     || !pointValid(ibdInspectionActor.position) || !Number.isFinite(ibdInspectionActor.yaw)
     || standHeight(action.anchor)>.25 || standDistance(action.anchor)>1.1) { cancelIbdInspectionAction(); return; }
   const step=Math.min(dt,.05);
-  const aligned=standDistance(action.anchor)<=IBD_INSPECTION_STAND_TOLERANCE
-    && Math.abs(angleDelta(ibdInspectionActor.yaw,action.anchor.yaw))<=IBD_INSPECTION_YAW_TOLERANCE;
+  const aligned=ibdInspectionActionAligned(action);
   if (action.phase==='approach') {
     action.elapsed+=step;
     if (aligned) { action.phase='perform'; action.elapsed=0; clearSample(); }
@@ -90,26 +99,10 @@ export function advanceIbdInspectionAction(dt: number, paused=false): void {
     return;
   }
   if (!aligned) { cancelIbdInspectionAction(); return; }
-  const sockets=ibdInspectionVisualSockets;
-  const currentSample=sockets.valid && sockets.sampledId===action.id
-    && Number.isFinite(sockets.sampledElapsed) && Math.abs(sockets.sampledElapsed-action.elapsed)<1e-5;
-  if (currentSample && !sockets.reachable) { cancelIbdInspectionAction(); return; }
   if (!action.committed) {
     action.elapsed=Math.min(action.contactAt,action.elapsed+step);
-    if (action.elapsed<action.contactAt) return;
-    const errorValid=(error:number)=>Number.isFinite(error)&&error>=0&&error<=IBD_INSPECTION_CONTACT_TOLERANCE;
-    const sampled=sockets.valid && sockets.reachable && sockets.sampledId===action.id
-      && Number.isFinite(sockets.sampledElapsed) && Math.abs(sockets.sampledElapsed-action.contactAt)<1e-5
-      && pointValid(sockets.leftHand) && pointValid(sockets.rightHand)
-      && errorValid(sockets.leftContactError) && errorValid(sockets.rightContactError)
-      // Recompute from the sampled palms as well: a claimed error cannot substitute for contact.
-      && errorValid(Math.hypot(...sockets.leftHand.map((v,i)=>v-action.anchor.leftTarget[i])))
-      && errorValid(Math.hypot(...sockets.rightHand.map((v,i)=>v-action.anchor.rightTarget[i])));
-    if (!sampled) {
-      action.contactWait+=step;
-      if (action.contactWait>=.45) cancelIbdInspectionAction();
-      return;
-    }
+    if (!advanceAcceptedAction(action.commitClock,step,true)) return;
+    action.elapsed=action.contactAt;
     action.committed=true;
     const accepted=callbacks?.id===action.id?callbacks.contact():false;
     if (accepted===false && ibdInspectionBody.action===action) cancelIbdInspectionAction();

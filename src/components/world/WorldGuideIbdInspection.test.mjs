@@ -147,7 +147,7 @@ test('pickup/empty hands wait for mechanical presentation; return/empty clear be
     const end=layer.apply(a,null);assert.ok(distance(cleared.leftHand,end.leftHand)<1e-8);assert.ok(distance(cleared.rightHand,end.rightHand)<1e-8);
   }layer.dispose();
 });
-test('pause repeats an identical pose; real sampled G24 palms drive pickup, measurement, return and empty contacts',()=>{
+test('pause repeats an identical pose; real G24 animation accompanies accepted pickup, measure, return and empty actions',()=>{
   cancelIbdInspectionAction();ibdInspectionBody.carried=null;
   Object.assign(ibdInspectionActor,{position:[0,PLAYER_CENTER_HEIGHT,0],yaw:0,grounded:true,available:true,mode:'guide'});
   const layer=new GuideIbdInspectionLayer(rig());let contacts=0;

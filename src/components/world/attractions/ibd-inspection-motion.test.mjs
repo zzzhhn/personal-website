@@ -25,7 +25,7 @@ test('reserves only valid grounded reaches and legal held state without moving o
   tick(300);assert.deepEqual(ibdInspectionActor.position,position);assert.equal(ibdInspectionActor.yaw,0);assert.equal(ibdInspectionBody.carried,null);
   fixture({spec:'M8'});assert.equal(beginIbdInspectionAction('pickup',anchor,()=>{}),false);assert.equal(beginIbdInspectionAction('empty',anchor,()=>{}),false);
 });
-test('all four actions commit once through the two-hand gate and the caller owns carrying',()=>{
+test('all four accepted actions commit once and the caller owns carrying',()=>{
   for(const kind of['pickup','measure','return','empty']){
     const carried=kind==='measure'||kind==='return'?{spec:'M6'}:null;fixture(carried);let contacts=0;
     assert.ok(beginIbdInspectionAction(kind,anchor,()=>{contacts++;}));tick(300);
@@ -47,26 +47,25 @@ test('approach requires real position and yaw; timeout cancels',()=>{
   assert.equal(ibdInspectionBody.action.phase,'approach');ibdInspectionActor.position[0]=0;ibdInspectionActor.yaw=.4;tick(40);
   assert.equal(ibdInspectionBody.action.phase,'approach');tick(50);assert.equal(ibdInspectionBody.action,null);assert.equal(cancel,1);
 });
-test('stale id/time, invalid palms, either miss, unreachable reach and fabricated error reject contact',()=>{
+test('stale id/time, missing palms and imprecise render reach cannot veto accepted work',()=>{
   const cases=[{sampledId:-1},{sampledElapsed:0},{valid:false},{reachable:false},
     {leftContactError:.026},{rightContactError:.026},{leftContactError:NaN},{rightContactError:-1},
     {leftHand:[100,1,0]},{rightHand:[100,1,0]},{leftHand:[NaN,1,0]}];
   for(const bad of cases){fixture({spec:'M8'});let contacts=0,cancels=0;
     assert.ok(beginIbdInspectionAction('measure',anchor,()=>contacts++,()=>cancels++));tick();
     for(let i=0;i<150&&ibdInspectionBody.action;i++){sample(bad);advanceIbdInspectionAction(1/60);}
-    assert.equal(contacts,0,JSON.stringify(bad));assert.equal(cancels,1);assert.equal(ibdInspectionBody.action,null);
+    assert.equal(contacts,1,JSON.stringify(bad));assert.equal(cancels,0);assert.equal(ibdInspectionBody.action,null);
   }
 });
-test('clock holds for an exact render sample and pause cannot advance or commit',()=>{
-  fixture();let contacts=0;assert.ok(beginIbdInspectionAction('empty',anchor,()=>contacts++));tick();tick(130,false);
-  const a=ibdInspectionBody.action;assert.equal(a.elapsed,a.contactAt);sample();const before=structuredClone(a);
+test('pause cannot advance or commit and unpausing completes without render samples',()=>{
+  fixture();let contacts=0;assert.ok(beginIbdInspectionAction('empty',anchor,()=>contacts++));tick();tick(120,false);
+  const a=ibdInspectionBody.action;assert.ok(a.elapsed<a.contactAt);const before=structuredClone(a);
   for(let i=0;i<60;i++)advanceIbdInspectionAction(1/60,true);
-  assert.deepEqual(a,before);assert.equal(contacts,0);advanceIbdInspectionAction(1/60);assert.equal(contacts,1);tick(200);
+  assert.deepEqual(a,before);assert.equal(contacts,0);tick(10,false);assert.equal(contacts,1);tick(200,false);
 });
-test('cancel, lost footing, changed mode/stand, unavailable actor and lost reach have no late callback',()=>{
+test('cancel, lost footing, changed mode/stand and unavailable actor have no late callback',()=>{
   for(const interrupt of[()=>cancelIbdInspectionAction(),()=>{ibdInspectionActor.grounded=false;},
-    ()=>{ibdInspectionActor.mode='vehicle';},()=>{ibdInspectionActor.available=false;},()=>{ibdInspectionActor.position[0]=.2;},
-    ()=>{sample({reachable:false});}]){
+    ()=>{ibdInspectionActor.mode='vehicle';},()=>{ibdInspectionActor.available=false;},()=>{ibdInspectionActor.position[0]=.2;}]){
     fixture({spec:'M6'});let contacts=0,cancels=0;assert.ok(beginIbdInspectionAction('return',anchor,()=>contacts++,()=>cancels++));tick();tick(10);
     const old=ibdInspectionBody.action;interrupt();advanceIbdInspectionAction(1/60);tick(130,false);
     Object.assign(ibdInspectionVisualSockets,{valid:true,reachable:true,sampledId:old.id,sampledElapsed:old.contactAt,leftContactError:0,rightContactError:0,

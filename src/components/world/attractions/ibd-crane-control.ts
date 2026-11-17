@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { ibdWorld } from './ibd-yard-layout.ts';
 import type { IbdYardGame } from './ibd-yard-game.ts';
 import { beginIbdInspectionAction, cancelIbdInspectionAction, advanceIbdInspectionAction,
-  ibdInspectionBody, ibdInspectionVisualSockets, IBD_INSPECTION_CONTACT_TOLERANCE } from './ibd-inspection-motion.ts';
+  ibdInspectionBody, ibdInspectionActionAligned } from './ibd-inspection-motion.ts';
 import type { Vec3 } from '../types.ts';
 
 export type CraneDirection = 'raise'|'travel'|'lower';
@@ -41,6 +41,7 @@ export function setCraneInput(direction:CraneDirection|null) {
 }
 /** Called on the existing actor clock. Joystick meshes and palm targets share these angles. */
 export function tickCraneControl(dt:number) {
+  if(!Number.isFinite(dt)||dt<=0)return;
   const a=ibdInspectionBody.action;if(a?.kind!=='crane-control')return;
   const held=useIbdCraneControl.getState().held,k=Math.min(1,Math.max(0,dt)*16);
   craneControl.leftAngle+=((held==='raise'?-.18:held==='lower'?.18:0)-craneControl.leftAngle)*k;
@@ -48,7 +49,8 @@ export function tickCraneControl(dt:number) {
   a.anchor.leftTarget=ibdWorld(craneGripTarget(0,craneControl.leftAngle));
   a.anchor.rightTarget=ibdWorld(craneGripTarget(1,craneControl.rightAngle));
   advanceIbdInspectionAction(dt);
-  const ready=!!ibdInspectionBody.action?.committed&&!craneControl.done;
+  const active=ibdInspectionBody.action;
+  const ready=!!active&&active.kind==='crane-control'&&active.committed&&ibdInspectionActionAligned(active)&&!craneControl.done;
   if(useIbdCraneControl.getState().ready!==ready)useIbdCraneControl.setState({ready});
 }
 /** The mechanism may only advance the current route leg while the operator holds it. */
@@ -57,10 +59,9 @@ export function craneMayAdvance(game:IbdYardGame,progress:number) {
   craneControl.progress=progress;
   const stage=Math.min(2,Math.floor(progress*3+1e-7)),s=useIbdCraneControl.getState();
   if(stage!==s.stage&&!craneControl.done){useIbdCraneControl.setState({stage,held:null,wrong:false});return false;}
-  const a=ibdInspectionBody.action,v=ibdInspectionVisualSockets;
+  const a=ibdInspectionBody.action;
   return s.ready&&s.held===CRANE_STEPS[stage]&&a?.kind==='crane-control'&&a.committed&&!a.released
-    &&v.valid&&v.reachable&&v.sampledId===a.id&&Math.abs(v.sampledElapsed-a.elapsed)<1e-5
-    &&[v.leftHand,v.rightHand].every((p,i)=>p.every(Number.isFinite)&&Math.hypot(...p.map((n,j)=>n-(i?a.anchor.rightTarget:a.anchor.leftTarget)[j]))<=IBD_INSPECTION_CONTACT_TOLERANCE);
+    &&ibdInspectionActionAligned(a);
 }
 export function craneLanded() {
   if(craneControl.done)return;

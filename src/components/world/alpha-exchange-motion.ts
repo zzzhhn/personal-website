@@ -1,12 +1,13 @@
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import type { Vec3 } from './types.ts';
+import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from './accepted-action';
 
 export type ExchangeActionKind = 'pickup' | 'insert' | 'adjust' | 'seal' | 'ring' | 'collect' | 'review';
 export type ExchangeCarried = 'ticket' | 'receipt' | null;
 export interface ExchangeAnchor { stand: Vec3; yaw: number; target: Vec3 }
 export interface ExchangeBodyAction {
   id: number; kind: ExchangeActionKind; phase: 'approach' | 'perform'; elapsed: number;
-  duration: number; contactAt: number; anchor: ExchangeAnchor; committed: boolean; contactWait: number;
+  duration: number; contactAt: number; anchor: ExchangeAnchor; committed: boolean; commitClock: AcceptedAction;
 }
 export interface ExchangeVisualSockets {
   valid: boolean; contactError: number; sampledId: number | null; sampledElapsed: number;
@@ -47,7 +48,7 @@ export function beginExchangeBodyAction(kind: ExchangeActionKind, anchor: Exchan
     || standDistance(anchor) > 1.1 || standHeight(anchor) > .25) return false;
   const [duration, contactAt] = TIMING[kind], id = ++sequence;
   exchangeBody.action = { id, kind, phase: 'approach', elapsed: 0, duration, contactAt,
-    anchor: { stand: [...anchor.stand], yaw: anchor.yaw, target: [...anchor.target] }, committed: false, contactWait: 0 };
+    anchor: { stand: [...anchor.stand], yaw: anchor.yaw, target: [...anchor.target] }, committed: false, commitClock: acceptAction(contactAt) };
   callbacks = { id, contact: onContact, cancel: onCancel }; clearSample();
   return true;
 }
@@ -57,6 +58,7 @@ export function cancelExchangeBodyAction(): void {
   const action = exchangeBody.action;
   if (!action) return;
   const cancel = callbacks?.id === action.id ? callbacks.cancel : undefined;
+  cancelAcceptedAction(action.commitClock);
   exchangeBody.action = null; callbacks = null; clearSample(); cancel?.();
 }
 
@@ -78,16 +80,8 @@ export function advanceExchangeBodyAction(dt: number): void {
   if (!aligned) { cancelExchangeBodyAction(); return; }
   if (!action.committed) {
     action.elapsed = Math.min(action.contactAt, action.elapsed + step);
-    if (action.elapsed < action.contactAt) return;
-    const sockets = exchangeVisualSockets;
-    const sampled = sockets.valid && sockets.sampledId === action.id
-      && Number.isFinite(sockets.sampledElapsed) && Math.abs(sockets.sampledElapsed - action.contactAt) < 1e-5
-      && Number.isFinite(sockets.contactError) && sockets.contactError >= 0 && sockets.contactError <= EXCHANGE_CONTACT_TOLERANCE;
-    if (!sampled) {
-      action.contactWait += step;
-      if (action.contactWait >= .45) cancelExchangeBodyAction();
-      return;
-    }
+    if (!advanceAcceptedAction(action.commitClock, step, true)) return;
+    action.elapsed = action.contactAt;
     // Mark before invoking user code: a thrown callback is visible and is never retried.
     action.committed = true;
     const accepted = callbacks?.id === action.id ? callbacks.contact() : false;

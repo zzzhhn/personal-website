@@ -83,13 +83,16 @@ test('paused closure is inert; aborting it puts the unmeasured sample back witho
   const inspection=useIbdYardStore.getState().game.packInspections['parts-a'];
   assert.equal(inspection.held,null);assert.equal(inspection.measurement,null);assert.equal(inspection.slots[0].complete,false);
 });
-test('closing the tool without rendered hand contact never produces a reading',()=>{
+test('fitted jaws produce a reading without a rendered hand sample and retain the original pocket',()=>{
   setup();requestIbdPackContact();finish();requestIbdPackContact();
   ibdInspectionVisualSockets.valid=false;
   for(let i=0;i<180;i++)tickIbdPackInspection(1/60);
   assert.equal(ibdInspectionBody.action,null);
-  assert.equal(useIbdYardStore.getState().game.packInspections['parts-a'].measurement,null);
-  assert.equal(useIbdPackPlay.getState().feedback,'interrupted');
+  const inspection=useIbdYardStore.getState().game.packInspections['parts-a'];
+  assert.equal(inspection.measurement,'M8');assert.equal(inspection.held,0);
+  assert.equal(inspection.slots[0].complete,false,'measurement alone cannot replace returning the sample');
+  assert.equal(ibdPackVisual.jaw,ibdPackInspectAnchors('M8',.54).diameter);
+  assert.notEqual(useIbdPackPlay.getState().feedback,'interrupted');
   cancelIbdPack(true);
 });
 test('hard recovery clears only inspection work and does not cancel unrelated cargo motion',()=>{

@@ -53,13 +53,27 @@ test('three held legs land cargo before releasing hands and granting the move on
   assert.equal(game.pending,null);assert.deepEqual(game.core.moved,['coil-front']);assert.equal(ibdInspectionBody.action,null);assert.equal(craneControl.token,null);
   finishIbdAction(game.revision);assert.equal(useIbdYardStore.getState().game,game);
 });
-test('pause, blocked path and missing live palms hold position without catching up',()=>{
+test('pause and blocked path hold position; missing render palms do not stall valid control input',()=>{
   setup();ready();setCraneInput('raise');ticks(35);const before=clock.elapsed;
   useWorldStore.setState({paused:true});ticks(200);assert.equal(clock.elapsed,before);assert.equal(useIbdCraneControl.getState().held,null);
   useWorldStore.setState({paused:false});ticks(30);assert.equal(clock.elapsed,before);
   setCraneInput('raise');blocked=true;ticks(200);assert.equal(clock.elapsed,before);
   blocked=false;ticks(60);assert.ok(clock.elapsed>before&&clock.elapsed<2.2);
-  const stopped=clock.elapsed;ticks(10,false);assert.equal(clock.elapsed,stopped);
+  const stopped=clock.elapsed;ticks(10,false);assert.ok(clock.elapsed>stopped);
+});
+test('without any palm samples the full crane route still needs three correct held commands',()=>{
+  setup();ticks(50,false);assert.equal(useIbdCraneControl.getState().ready,true);
+  for(const command of ['raise','travel','lower']){setCraneInput(command);ticks(170,false);}
+  ticks(40,false);assert.deepEqual(useIbdYardStore.getState().game.core.moved,['coil-front']);
+  assert.equal(useIbdYardStore.getState().game.pending,null);
+});
+test('the mechanism rechecks live support and ownership before the next actor tick',()=>{
+  setup();ready();setCraneInput('raise');
+  const game=useIbdYardStore.getState().game;
+  assert.equal(craneMayAdvance(game,0),true);
+  ibdInspectionActor.grounded=false;assert.equal(craneMayAdvance(game,0),false);
+  ibdInspectionActor.grounded=true;ibdInspectionActor.position=[...ibdInspectionActor.position];ibdInspectionActor.position[0]+=.2;
+  assert.equal(craneMayAdvance(game,0),false);
 });
 test('cancel, unavailable actor, lost ground and round change discard the old operation',()=>{
   for(const mode of['cancel','unavailable','airborne','new-round']){

@@ -74,7 +74,7 @@ export function requestIbdPackContact(kind?: IbdInspectionActionKind) {
     if (!next) return false;
     ibdInspectionBody.carried=next.held===null?null:{spec};
     useIbdPackPlay.setState({feedback:next.notice,gap:ibdPackVisual.jaw});
-    // Keep the contact gate even though the tool now stops itself at the actual shaft surface.
+    // Keep the physical jaw-gap check even though the tool stops itself at the shaft surface.
     return after!==game || (action==='measure'&&next.notice==='clamp-misaligned');
   },()=>{ useIbdPackPlay.setState({busy:false,feedback:'interrupted',gap:ibdPackVisual.jaw});
     if(!ibdInspectionBody.carried)ibdPackVisual.retracting=true; });
@@ -85,7 +85,7 @@ export function requestIbdPackContact(kind?: IbdInspectionActionKind) {
   }else useIbdPackPlay.setState({feedback:'move-closer'});
   return started;
 }
-/** Soft cancellation returns the held piece with the same hand contact; recovery may clear it off-screen. */
+/** Soft cancellation returns the held piece through its action; recovery may clear it off-screen. */
 export function cancelIbdPack(hard=false) {
   if(!useIbdPackPlay.getState().pack&&!ibdInspectionBody.action&&!ibdInspectionBody.carried)return;
   cancelRequested=true;

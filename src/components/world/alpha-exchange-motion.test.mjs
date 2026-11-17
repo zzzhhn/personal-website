@@ -45,7 +45,7 @@ test('approach waits for real position and heading and cancels after two seconds
   tick(130); assert.equal(exchangeBody.action, null); assert.equal(cancels, 1); assert.equal(contacts, 1);
 });
 
-test('matching contact sample commits once and carrying changes only at confirmed contact', () => {
+test('accepted action commits once and carrying changes only at its completion point', () => {
   fixture(); let contacts = 0;
   for (const [kind, before, after] of [['pickup', null, 'ticket'], ['insert', 'ticket', null], ['collect', null, 'receipt']]) {
     assert.equal(exchangeBody.carried, before);
@@ -56,7 +56,7 @@ test('matching contact sample commits once and carrying changes only at confirme
   tick(100); assert.equal(contacts, 3);
 });
 
-test('wrong id, stale elapsed, invalid sockets and excessive or nonfinite error cannot commit', () => {
+test('wrong id, stale elapsed, missing sockets and imprecise IK do not veto an accepted action', () => {
   for (const bad of [{ sampledId: -1 }, { sampledElapsed: 0 }, { valid: false }, { contactError: .101 }, { contactError: Infinity }, { contactError: NaN }, { contactError: -1 }]) {
     fixture(); let contacts = 0, cancels = 0;
     assert.ok(beginExchangeBodyAction('pickup', anchor, () => contacts++, () => cancels++));
@@ -66,19 +66,19 @@ test('wrong id, stale elapsed, invalid sockets and excessive or nonfinite error 
       Object.assign(exchangeVisualSockets, { valid: true, sampledId: action.id, sampledElapsed: action.contactAt, contactError: 0 }, bad);
       tick(1, false);
     }
-    assert.equal(contacts, 0, JSON.stringify(bad)); assert.equal(cancels, 1); assert.equal(exchangeBody.action, null);
-    assert.equal(exchangeBody.carried, null);
+    assert.equal(contacts, 1, JSON.stringify(bad)); assert.equal(cancels, 0); assert.equal(exchangeBody.action, null);
+    assert.equal(exchangeBody.carried, 'ticket');
   }
 });
 
-test('contact clock holds until a render samples the exact pose, without accepting a future sample early', () => {
+test('a future render sample cannot commit early and absent rendering cannot stall completion', () => {
   fixture(); let contacts = 0;
   assert.ok(beginExchangeBodyAction('ring', anchor, () => contacts++)); tick();
   const action = exchangeBody.action;
-  tick(20, false); assert.equal(contacts, 0);
-  tick(20, false); assert.equal(action.elapsed, action.contactAt); assert.equal(contacts, 0);
   Object.assign(exchangeVisualSockets, { valid: true, sampledId: action.id, sampledElapsed: action.contactAt, contactError: .1 });
-  tick(1, false); assert.equal(contacts, 1);
+  tick(20, false); assert.equal(contacts, 0);
+  exchangeVisualSockets.valid=false;
+  tick(20, false); assert.equal(contacts, 1);
   tick(100); assert.equal(contacts, 1);
 });
 
