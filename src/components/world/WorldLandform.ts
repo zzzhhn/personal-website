@@ -554,15 +554,21 @@ function seawallEnds() {
 /** Height of the rendered/collided triangles at (x, z); null where there is no terrain mesh.
  * Nodes are jittered/snapped by <= 0.26 m, so the containing triangle is searched among the
  * neighbouring cells using the real vertex positions. */
-export function meshHeight(x: number, z: number): number | null {
+export function meshGroundSample(x: number, z: number): { height: number; normalY: number } | null {
+  if (!Number.isFinite(x) || !Number.isFinite(z)) return null;
   const t = buildTerrain(), P = t.positions, ci = Math.floor((x - GRID.minX) / CELL), cj = Math.floor((z - GRID.minZ) / CELL);
   const node = (i: number, j: number) => t.vertexOf[j * NODES_X + i] * 3;
   const inTri = (a: number, b: number, c: number) => {
+    if (a < 0 || b < 0 || c < 0) return null;
     const d = (P[b] - P[a]) * (P[c + 2] - P[a + 2]) - (P[c] - P[a]) * (P[b + 2] - P[a + 2]);
-    if (Math.abs(d) < 1e-12) return null;
+    if (!Number.isFinite(d) || Math.abs(d) < 1e-12) return null;
     const u = ((x - P[a]) * (P[c + 2] - P[a + 2]) - (P[c] - P[a]) * (z - P[a + 2])) / d;
     const v = ((P[b] - P[a]) * (z - P[a + 2]) - (x - P[a]) * (P[b + 2] - P[a + 2])) / d;
-    return u >= -1e-6 && v >= -1e-6 && u + v <= 1 + 1e-6 ? P[a + 1] + (P[b + 1] - P[a + 1]) * u + (P[c + 1] - P[a + 1]) * v : null;
+    if (u < -1e-6 || v < -1e-6 || u + v > 1 + 1e-6) return null;
+    const by = P[b + 1] - P[a + 1], cy = P[c + 1] - P[a + 1];
+    const gx = (by * (P[c + 2] - P[a + 2]) - cy * (P[b + 2] - P[a + 2])) / d;
+    const gz = ((P[b] - P[a]) * cy - (P[c] - P[a]) * by) / d;
+    return { height: P[a + 1] + by * u + cy * v, normalY: 1 / Math.hypot(gx, 1, gz) };
   };
   for (const [oi, oj] of [[0, 0], [-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]]) {
     let i = ci + oi, j = cj + oj;
@@ -576,6 +582,17 @@ export function meshHeight(x: number, z: number): number | null {
     if (h !== null) return h;
   }
   return null;
+}
+
+export function meshHeight(x: number, z: number): number | null {
+  return meshGroundSample(x, z)?.height ?? null;
+}
+
+/** Required placements must have real support; never extrapolate beyond the mesh. */
+export function requireMeshGround(x: number, z: number) {
+  const ground = meshGroundSample(x, z);
+  if (!ground) throw new RangeError(`No mainland terrain triangle at (${x}, ${z})`);
+  return ground;
 }
 
 export function createTerrainGeometry() {
@@ -668,21 +685,18 @@ export const shoreUniforms = () => ({
 
 /* ------------------------------------------------------------------ helpers for QA / runtime */
 
-const slopeDegAt = (x: number, z: number) => {
-  const e = .25, gx = (terrainHeight(x + e, z) - terrainHeight(x - e, z)) / (2 * e), gz = (terrainHeight(x, z + e) - terrainHeight(x, z - e)) / (2 * e);
-  return Math.atan(Math.hypot(gx, gz)) * 180 / Math.PI;
-};
 /** Nearest walkable dry point (>= 0.6 m above the water, <= 20 deg) for water recovery. */
 export function nearestDryPoint(x: number, z: number): [number, number, number] | null {
   for (let r = 0; r <= 60; r += .5) {
     const n = Math.max(1, Math.round(TAU * r / .5));
     let best: [number, number, number] | null = null, bestScore = Infinity;
     for (let k = 0; k < n; k++) {
-      const a = k / n * TAU, px = x + Math.cos(a) * r, pz = z + Math.sin(a) * r, h = terrainHeight(px, pz);
+      const a = k / n * TAU, px = x + Math.cos(a) * r, pz = z + Math.sin(a) * r;
+      const ground = meshGroundSample(px, pz);
+      if (!ground || ground.height < WATER_Y + .6 || ground.normalY < Math.cos(deg(20))) continue;
       const coast = effectiveCoastFrame(px, pz);
-      if (h < WATER_Y + .6 || coast.town >= .5 && coast.topDistance > -.5) continue;
-      if (slopeDegAt(px, pz) > 20) continue;
-      if (r < bestScore) { bestScore = r; best = [px, h, pz]; }
+      if (coast.town >= .5 && coast.topDistance > -.5) continue;
+      if (r < bestScore) { bestScore = r; best = [px, ground.height, pz]; }
     }
     if (best) return best;
   }
@@ -788,7 +802,9 @@ export function pathDistance(x: number, z: number) {
 const PATH_HALF = .75;
 
 /** CPU ground classification shared by vertex colours and scatter (so tufts sit on grass). */
-export function groundSample(x: number, z: number, h = terrainHeight(x, z), slopeY = 1) {
+export function groundSample(x: number, z: number, h?: number, slopeY?: number) {
+  if (h === undefined) { const ground = requireMeshGround(x, z); h = ground.height; slopeY ??= ground.normalY; }
+  slopeY ??= 1;
   if(LAYOUT_V4&&CLUB_POOL.contains(x,z))return {kind:'stone' as GroundKind,colour:srgb('#8fa9a2'),grass:0};
   const g = groundSampleBase(x, z, h, slopeY);
   const mineEdge=mineEdgeDistance(x,z);
@@ -807,7 +823,7 @@ export function groundSample(x: number, z: number, h = terrainHeight(x, z), slop
   }
   return g;
 }
-function groundSampleBase(x: number, z: number, h = terrainHeight(x, z), slopeY = 1): { kind: GroundKind; colour: RGB; grass: number } {
+function groundSampleBase(x: number, z: number, h: number, slopeY: number): { kind: GroundKind; colour: RGB; grass: number } {
   if (LAYOUT_V4 && z < -54 && x < -4 && x > -56) {
     // North hill dirt road (part of the height field): packed earth, two wheel ruts, grassy crown,
     // ragged grass edges.
@@ -903,9 +919,7 @@ export function grassCandidates(blockers: ScatterBlocker[]) {
 /** Incremental form: step(budgetMs) processes whole lattice rows until the budget is spent and
  * returns true when finished, so the runtime can spread the ~1 s build over idle frames. */
 export function grassCandidateJob(blockers: ScatterBlocker[]) {
-  const cell = .5, out: number[] = [], t = buildTerrain();
-  // Lattice heights (the rendered mesh nodes) give the slope cheaply; coarse flat blocks are NaN inside.
-  const node = (i: number, j: number) => { const v = t.nodeHeight[j * NODES_X + i]; return Number.isNaN(v) ? GROUND_Y : v; };
+  const cell = .5, out: number[] = [];
   const zEnd = GRID.minZ + GRID.nz * CELL, xEnd = GRID.minX + GRID.nx * CELL;
   let z = GRID.minZ;
   const row = (z: number) => {
@@ -916,9 +930,6 @@ export function grassCandidateJob(blockers: ScatterBlocker[]) {
       if(LAYOUT_V4&&(attractionScatterBlocked(px,pz)||pz<-125&&hash2(ix,iz,97)>.32))continue;
       // The western cape keeps broad lawn clumps without multiplying dense blades over its whole area.
       if(LAYOUT_V4&&(factoryScatterBlocked(px,pz)||px<-115&&factoryCapeDistance(px,pz)<0&&hash2(ix,iz,98)>.32))continue;
-      const ni = clamp(Math.round((px - GRID.minX) / CELL), 1, GRID.nx - 1), nj = clamp(Math.round((pz - GRID.minZ) / CELL), 1, GRID.nz - 1);
-      const h0 = node(ni, nj);
-      if (h0 < WATER_Y + .6) continue;
       // Clumped density 0.8-4 per m2 (cheap reject first; the score is stable for thinning).
       const clump = smoothstep(.38, .72, .65 * valueNoise(px / 6.5, pz / 6.5, 56) + .35 * valueNoise(px / 2.2, pz / 2.2, 57));
       const roll = hash2(ix, iz, 93);
@@ -928,10 +939,9 @@ export function grassCandidateJob(blockers: ScatterBlocker[]) {
       if(LAYOUT_V4&&clubScatterBlocked(px,pz))continue;
       if (PADS.some(([qx, qz]) => Math.hypot(px - qx, pz - qz) < 2.3)) continue;
       if (TENTS.some(([x0, z0, x1, z1]) => px > x0 - .4 && px < x1 + .4 && pz > z0 - .4 && pz < z1 + .4)) continue;
-      const gx = (node(ni + 1, nj) - node(ni - 1, nj)) / (2 * CELL), gz = (node(ni, nj + 1) - node(ni, nj - 1)) / (2 * CELL);
-      const slopeY = 1 / Math.hypot(gx, 1, gz);
-      if (slopeY < WALKABLE_NORMAL_Y) continue;
-      const h = meshHeight(px, pz) ?? h0;
+      const ground = meshGroundSample(px, pz);
+      if (!ground || ground.height < WATER_Y + .6 || ground.normalY < WALKABLE_NORMAL_Y) continue;
+      const { height: h, normalY: slopeY } = ground;
       const g = groundSample(px, pz, h, slopeY);
       if (g.kind !== 'grass' || g.grass < .45) continue;
       const w = mix(.2, 1, clump) * smoothstep(.45, .85, g.grass), keep = roll / Math.max(w, 1e-3);
@@ -964,12 +974,11 @@ export function scatterCandidates(blockers: ScatterBlocker[]) {
     if(LAYOUT_V4&&clubScatterBlocked(px,pz))continue;
     if (PADS.some(([qx, qz]) => Math.hypot(px - qx, pz - qz) < 2.4)) continue;
     if (TENTS.some(([x0, z0, x1, z1]) => px > x0 - .5 && px < x1 + .5 && pz > z0 - .5 && pz < z1 + .5)) continue;
-    const h = terrainHeight(px, pz), e = .3;
-    const gx = (terrainHeight(px + e, pz) - terrainHeight(px - e, pz)) / (2 * e), gz = (terrainHeight(px, pz + e) - terrainHeight(px, pz - e)) / (2 * e);
-    const slopeY = 1 / Math.hypot(gx, 1, gz);
-    if (slopeY < WALKABLE_NORMAL_Y) continue;
+    const ground = meshGroundSample(px, pz);
+    if (!ground || ground.normalY < WALKABLE_NORMAL_Y) continue;
+    const { height: h, normalY: slopeY } = ground;
     const g = groundSample(px, pz, h, slopeY), roll = hash2(ix, iz, 53), yaw = hash2(ix, iz, 54) * TAU, size = hash2(ix, iz, 55);
-    const y = meshHeight(px, pz) ?? h;
+    const y = h;
     if (g.kind === 'grass' && g.grass > .5) {
       // Clumps: 0.5 per m2 between patches, up to 2.0 per m2 (and larger tufts) inside them.
       const clump = smoothstep(.42, .72, .65 * valueNoise(px / 6.5, pz / 6.5, 56) + .35 * valueNoise(px / 2.2, pz / 2.2, 57));

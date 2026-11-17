@@ -195,6 +195,16 @@ New checks prove bit-identical Alpha geometry and deterministic serialization, m
 
 No 4341 promotion or target-device performance claim. Whole-map surface identity, collider provenance, core separation and the visual atlas remain open.
 
+## Batch 18: mainland scatter, recovery and water query authority
+
+The mainland triangle query now returns both height and the physical face normal. It retains the original fine/coarse diagonal and snapped/jittered neighbor search; invalid coordinates, absent vertices and absent mesh return `null`. Required ground classification throws explicitly when support is absent. Render vertex-color generation continues to pass its existing vertex heights and shading normals, so it does not change material classification through the new default query.
+
+Grass, clumps and pebbles now accept candidates only on actual terrain triangles and filter slope using those same faces. The old analytical finite-difference slope and missing-mesh/lattice-height fallbacks are removed. Water recovery also selects dry points on real triangles below the existing 20-degree limit; its subsequent physical capsule checks remain necessary. Ocean contact now consults both mainland and Alpha terrain, avoiding sea effects on Alpha's dry land. Explicit mine basin and club pool levels remain authoritative; absent terrain means open sea, and invalid coordinates produce no water contact.
+
+Verification: both layout artifact suites pass, with real Rapier height/normal comparisons at interior samples and triangle centroids, sampled grass/clump/pebble roots, and dry recovery candidates. A first V3 normal check landed exactly on a shared vertex; normals there are not unique, so face-normal comparisons now sample interiors rather than assuming one edge normal. Existing browser-mode checks retain render-array/material parity and check explicit missing-ground rejection. Six water interaction checks and four mine-layout checks pass, followed by both artifact subprocess suites, two map checks and three recovery checks in the final run. TypeScript and the eight-route production build pass with the existing chunk-size warning. All three terrain binary entries/hashes are unchanged, packaged hashes match, and both maps change only their source fingerprints.
+
+Vegetation acceptance can change locally because the real slope now controls eligibility. This has not received ordinary-view or target-device acceptance and is not a performance claim. Materials, models, lighting and Balanced defaults are unchanged; 4341 remains unchanged. Remaining mainland analytical runtime callers include exchange skirts, mine foundations, club supports/nature, attraction approach edges, billboards, knocked street props and the club-view arrival. Independently authored floors, collider provenance and the global contact scan remain open.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

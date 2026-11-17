@@ -75,13 +75,46 @@ if (!variant) {
       let hits = 0;
       const { minX, minZ, nx, nz } = authored.GRID;
       for (let i = 0; i < 160; i++) {
-        const x = minX + ((i * 7919) % (nx * 50)) / 100, z = minZ + ((i * 3571) % (nz * 50)) / 100;
+        const x = minX + ((i * 7919) % (nx * 50)) / 100 + .013487, z = minZ + ((i * 3571) % (nz * 50)) / 100 + .021379;
         const ray = new R.Ray({ x, y: 200, z }, { x: 0, y: -1, z: 0 });
         const [a, b] = worlds.map(w => w.castRayAndGetNormal(ray, 500, true));
         assert.equal(Boolean(a), Boolean(b));
-        if (a) { hits++; assert.equal(a.timeOfImpact, b.timeOfImpact); assert.deepEqual(a.normal, b.normal); }
+        const ground = authored.meshGroundSample(x, z);
+        assert.equal(Boolean(ground), Boolean(b), `mesh support at ${x},${z}`);
+        if (a) {
+          hits++; assert.equal(a.timeOfImpact, b.timeOfImpact); assert.deepEqual(a.normal, b.normal);
+          assert.ok(Math.abs(ground.height - (200 - b.timeOfImpact)) < .0002, `height at ${x},${z}`);
+          assert.ok(Math.abs(ground.normalY - b.normal.y) < .0002, `normal at ${x},${z}`);
+        }
       }
       assert.ok(hits > 10);
+      // Centroids exercise both fine/coarse and snapped/jittered faces without
+      // ambiguity between the two normals at a shared triangle edge.
+      const t = artifact.terrain, p = t.positions;
+      for (let k = 0; k < t.indices.length; k += Math.max(3, Math.floor(t.indices.length / 1800) * 3)) {
+        const ids = [...t.indices.slice(k, k + 3)].map(v => v * 3);
+        const x = ids.reduce((s,v) => s + p[v],0) / 3, z = ids.reduce((s,v) => s + p[v+2],0) / 3;
+        const g = authored.meshGroundSample(x,z);
+        const hit = worlds[1].castRayAndGetNormal(new R.Ray({x,y:200,z},{x:0,y:-1,z:0}),500,true);
+        assert.ok(g && hit, `triangle ${k / 3} has physical support`);
+        assert.ok(Math.abs(g.height - (200-hit.timeOfImpact)) < .0003);
+        assert.ok(Math.abs(g.normalY - hit.normal.y) < .0003);
+      }
+      const grass = authored.grassCandidates([]), scatter = authored.scatterCandidates([]);
+      for (const [values,stride,label] of [[grass,6,'grass'],[scatter.grass,5,'clump'],[scatter.pebbles,5,'pebble']]) {
+        assert.ok(values.length > 0, `${label} survives mesh migration`);
+        for (let k=0;k<values.length;k+=Math.max(1,Math.floor(values.length/stride/120))*stride) {
+          const [x,y,z]=values.slice(k,k+3),hit=worlds[1].castRayAndGetNormal(new R.Ray({x,y:200,z},{x:0,y:-1,z:0}),500,true);
+          assert.ok(hit && Math.abs(y-(200-hit.timeOfImpact))<.001, `${label} grounded at ${x},${z}`);
+          assert.ok(hit.normal.y>=authored.WALKABLE_NORMAL_Y-.001, `${label} follows real slope`);
+        }
+      }
+      for (const [x,z] of [[-35,35],[0,0],[-42,18],[70,10]]) {
+        const point=authored.nearestDryPoint(x,z); assert.ok(point, `recovery near ${x},${z}`);
+        const hit=worlds[1].castRayAndGetNormal(new R.Ray({x:point[0],y:200,z:point[2]},{x:0,y:-1,z:0}),500,true);
+        assert.ok(hit && Math.abs(point[1]-(200-hit.timeOfImpact))<.001);
+        assert.ok(hit.normal.y>=Math.cos(20*Math.PI/180)-.001);
+      }
     } finally { worlds.forEach(w => w.free()); globalThis.window = layoutWindow; }
   });
   test('browser build fails closed before loading, then shares exact render and height-query arrays', async () => {
@@ -104,6 +137,12 @@ if (!variant) {
       for (let i = 0; i < 1200; i++) {
         const x = minX + ((i * 7919) % (nx * 50)) / 100, z = minZ + ((i * 3571) % (nz * 50)) / 100;
         assert.equal(browser.meshHeight(x, z), authored.meshHeight(x, z));
+        assert.deepEqual(browser.meshGroundSample(x,z),authored.meshGroundSample(x,z));
+      }
+      for (const [x,z] of [[NaN,0],[0,Infinity],[1e6,1e6]]) {
+        assert.equal(browser.meshGroundSample(x,z),null);
+        assert.throws(()=>browser.requireMeshGround(x,z),/No mainland terrain triangle/);
+        assert.throws(()=>browser.groundSample(x,z),/No mainland terrain triangle/);
       }
       before.dispose(); after.dispose();
       browser.installTerrainArtifact({ ...artifact, grid: { ...artifact.grid, minX: 999 } });

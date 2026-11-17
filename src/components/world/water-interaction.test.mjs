@@ -6,6 +6,7 @@ import { waterSurfaceAt } from './WorldWaterSurfaces.ts';
 import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout.ts';
 import { CLUB_POOL } from './djc-club-layout.ts';
 import { WATER_Y } from './layout.ts';
+import { ALPHA_ORIGIN } from './alpha-island/alpha-layout.ts';
 const actor = (x, bottom, y = bottom + .85) => ({ id: 'player', kind: 'player', x, z: 0, y, bottom, radius: .45 });
 const surface = x => x >= 0 ? 1.35 : null;
 test('entry emits once, walking creates a wake, idle and a frozen clock create nothing', () => {
@@ -41,6 +42,9 @@ test('mine, club and sea use distinct elevations and dry ground has no water', (
   assert.equal(waterSurfaceAt(CLUB_POOL.center[0],CLUB_POOL.center[2],basin),CLUB_POOL.waterY);
   assert.equal(waterSurfaceAt(500,500,basin),WATER_Y);
   assert.equal(waterSurfaceAt(-35,35,basin),null);
+  assert.equal(waterSurfaceAt(ALPHA_ORIGIN[0]-64,ALPHA_ORIGIN[2]-40,basin),null,'dry Alpha lodge is not ocean');
+  assert.equal(waterSurfaceAt(NaN,0,basin),null);
+  assert.equal(waterSurfaceAt(0,Infinity,basin),null);
 });
 test('thrown objects share bounded impact storage with footfalls', () => {
   const s = new WaterContactSystem();
