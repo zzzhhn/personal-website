@@ -1,6 +1,21 @@
 import type { Vec3 } from '../types';
-import type { AttractionRidePose } from '../attractions/attraction-ride';
 import type { RegionPassage } from '../region-passage';
+
+/** Passenger and camera coordinates supplied by a scene, in world space. */
+export interface RidePose {
+  seat: Vec3;
+  /** Guide forward is (cos(yaw), 0, -sin(yaw)); rotation uses local +X forward and +Y up. */
+  yaw: number;
+  orientation?: [number,number,number,number];
+  cameraPosition: Vec3;
+  cameraTarget: Vec3;
+  /** Optional verified open-side view portal for an enclosed cabin. */
+  cameraSweepOrigin?: Vec3;
+  /** Full-roll views use the vehicle up axis; comfort views remain world-up. */
+  cameraUp?: Vec3;
+  firstPerson: boolean;
+  fov: number;
+}
 
 export interface RideActorFrame {
   stairs?: boolean;
@@ -63,7 +78,7 @@ export interface TransportRoute {
 export interface TransportSample {
   vehicle: Vec3; yaw: number; orientation: [number, number, number, number];
   cablePitch?: number;
-  pose: AttractionRidePose;
+  pose: RidePose;
 }
 
 const supportSamplers=new Map<string,(x:number,z:number)=>number|null>();

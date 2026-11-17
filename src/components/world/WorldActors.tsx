@@ -13,10 +13,10 @@ import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamer
 import { CAMP_SPAWN, VEHICLES, WATER_Y } from './layout';
 import { actorActivities, activityApproachMotion } from './actor-activities';
 import { useWorldStore, type NearbyInteract } from './store';
-import { attractionRide, attractionActorFrame, captureAttractionStart, attractionPhase, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
-import { AttractionCameraOrientation, attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
-import { AttractionCameraObstruction } from './attractions/attraction-camera-obstruction';
-import { AttractionCabinCamera } from './attractions/attraction-camera-cabin';
+import type { ActorRide } from './rides/actor-ride';
+import { RideCameraOrientation, rideCameraPose, rideCameraSweepOrigin, rideLook, turnRideLook, zoomRideLook } from './rides/ride-camera';
+import { RideCameraObstruction } from './rides/ride-camera-obstruction';
+import { RideCabinCamera } from './rides/ride-camera-cabin';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import { findPickupStand, pickupGroundRoute, pickupApproachMotion, PICKUP_APPROACH_TIMEOUT } from './pickup-approach';
 import { createInteractionOfferResolver, type InteractionOfferContext } from './interaction-offer';
@@ -247,7 +247,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
 type GuideVehicleTransition = { id: VehicleId; side: DoorSide; phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number; exitPosition?:Vec3 } | null;
-function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
+function GuideVisual({ ride, cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { ride: ActorRide; cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
   const probeGround=(x:number,z:number,fromY:number)=>{
@@ -291,14 +291,14 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
     let vehicle:null|{id:VehicleId;phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[];frame?:GuideVehicleFrame}=null;
     if(tr){const car=cars.current.get(tr.id);vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:car?cabinAnchor(car,tr.side):tr.cabin,yaw:tr.yaw,approach:tr.approach,frame:car?{...cabinFrame(car,tr.side),groundY:tr.door[1]}:undefined};}
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
-    const ride=attractionRide.active?attractionRide.pose:null;
-    return {attraction:ride?attractionActorFrame():null,seat:ride&&!attractionRide.transition&&!attractionRide.driver?{position:ride.seat,yaw:ride.yaw,orientation:ride.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
+    const ridePose=ride.active?ride.pose:null;
+    return {attraction:ridePose?ride.actor:null,seat:ridePose&&ride.seatOnly?{position:ridePose.seat,yaw:ridePose.yaw,orientation:ridePose.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
       ...actorActivities.animation()};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
 }
 
-export default function WorldActors({sites}: {sites: ActorSites}) {
+export default function WorldActors({sites,ride}: {sites: ActorSites;ride: ActorRide}) {
   const player = useRef<RapierRigidBody>(null);
   const entry = useMemo(() => sites.arrival(window.location.search,import.meta.env.DEV), [sites]);
   const arrival=entry.position;
@@ -372,9 +372,9 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
-  const attractionObstruction = useRef(new AttractionCameraObstruction());
-  const attractionOrientation = useRef(new AttractionCameraOrientation());
-  const attractionCabin = useRef(new AttractionCabinCamera());
+  const attractionObstruction = useRef(new RideCameraObstruction());
+  const attractionOrientation = useRef(new RideCameraOrientation());
+  const attractionCabin = useRef(new RideCabinCamera());
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
   const cam = useRef<CameraRig>({ yaw: entry.cameraYaw, pitch: entry.cameraPitch, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
@@ -417,7 +417,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
   }
   function relocatePlayer(position:Vec3) {
     if(!player.current)return;
-    releaseGuideActionHand();endAttractionRide();rideHeld.current=false;
+    releaseGuideActionHand();ride.cancel();rideHeld.current=false;
     clearPlayerMotion(true);clearInput();grounded.current=false;
     player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
     portalTravel.current.previous=position;
@@ -450,7 +450,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     return true;
   }
   function returnToCamp() {
-    releaseGuideActionHand();endAttractionRide();rideHeld.current=false;
+    releaseGuideActionHand();ride.cancel();rideHeld.current=false;
     const vehicle=useWorldStore.getState().activeVehicle;
     return returnPlayerToCamp(player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
@@ -666,7 +666,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
-      if(attractionRide.active)return;
+      if(ride.active)return;
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
       releasedKeys.current.delete(event.code);
       const activityKey=actorActivities.keyboard({code:event.code,repeat:event.repeat});
@@ -692,8 +692,8 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     const wheel=(event:WheelEvent)=>{
       const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || actorActivities.inputOwner()) return;
       event.preventDefault();
-      if(attractionRide.active){
-        if(!attractionRide.pose.firstPerson){const step=event.deltaMode===1?event.deltaY*33:event.deltaMode===2?event.deltaY*400:event.deltaY;zoomAttractionLook(step*WHEEL_ZOOM);}
+      if(ride.active){
+        if(!ride.pose.firstPerson){const step=event.deltaMode===1?event.deltaY*33:event.deltaMode===2?event.deltaY*400:event.deltaY;zoomRideLook(step*WHEEL_ZOOM);}
         return;
       }
       const c=cam.current;
@@ -705,7 +705,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     // Mouse look: drag with any button, or move freely while the pointer is locked (double-click).
     let drag:{id:number;x:number;y:number}|null=null;
     const look=(dx:number,dy:number,k:number)=>{
-      if(attractionRide.active){turnAttractionLook(dx*k,dy*k);return;}
+      if(ride.active){turnRideLook(dx*k,dy*k);return;}
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
@@ -923,7 +923,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       occlusion.current.dispose();
       clearWheelFixture();clearRideObstacle();
     };
-  },[world,rapier,gl,colliderStates]);
+  },[world,rapier,gl,colliderStates,ride]);
 
   useAfterPhysicsStep(()=>{if(player.current)clearPlayerSlopeGravity(player.current);});
   useBeforePhysicsStep(()=>{
@@ -942,50 +942,50 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
-    if(attractionRide.active){
+    if(ride.active){
       actorActivities.sync({available:false});
       releaseGuideActionHand();
       if(!rideHeld.current){
         const start=player.current.translation();
         // Select a clear joining leg before validating the complete boarding route.
-        attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&passageRoute(passage,[from,to],PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,[from,to]));
-        captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current,passage);
-        const route=attractionRide.driver?.boardingPath;
-        if(route&&(!passageRoute(passage,route,PLAYER_RADIUS)||!rideFootRouteClear(world,rapier,player.current,route))){endAttractionRide();actorNotice('登乘通道尚未就绪或被挡住了，请在站台稍候。','The boarding path is not ready or blocked. Please wait on the platform.');return;}
+        ride.setMovementGuard((from,to)=>!!player.current&&passageRoute(passage,[from,to],PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,[from,to]));
+        ride.capture([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current,passage);
+        const route=ride.boardingPath;
+        if(route&&(!passageRoute(passage,route,PLAYER_RADIUS)||!rideFootRouteClear(world,rapier,player.current,route))){ride.cancel();actorNotice('登乘通道尚未就绪或被挡住了，请在站台稍候。','The boarding path is not ready or blocked. Please wait on the platform.');return;}
         clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
       }
       const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
       if(gp.connected&&gp.buttons[9]&&!before[9]){useWorldStore.setState({paused:true});return;}
-      if(gp.connected&&gp.buttons[1]&&!before[1])requestAttractionExit();
+      if(gp.connected&&gp.buttons[1]&&!before[1])ride.requestExit();
       stepWorldVehicles(dt);
-      const driver=attractionRide.driver,check=rideExitCheck.current;
-      if(driver?.phase==='stand'&&driver.egressPath){check.next-=dt;if(check.revision!==attractionRide.revision||check.next<=0){const clear=passageRoute(passage,driver.egressPath,PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,driver.egressPath);driver.setExitBlocked?.(!clear);if(!clear&&check.revision!==attractionRide.revision)actorNotice('下车通道尚未就绪或被挡住了，留在车内等候，或返回营地。','The exit is not ready or blocked. Wait inside, or return to camp.');check.revision=attractionRide.revision;check.next=.5;}}
-      const pose=attractionRide.pose,actor=attractionActorFrame(),root=actor?.root??pose.seat;
+      const egress=ride.egressPath,check=rideExitCheck.current;
+      if(egress){check.next-=dt;if(check.revision!==ride.revision||check.next<=0){const clear=passageRoute(passage,egress,PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,egress);ride.setExitBlocked(!clear);if(!clear&&check.revision!==ride.revision)actorNotice('下车通道尚未就绪或被挡住了，留在车内等候，或返回营地。','The exit is not ready or blocked. Wait inside, or return to camp.');check.revision=ride.revision;check.next=.5;}}
+      const pose=ride.pose,actor=ride.actor,root=actor?.root??pose.seat;
       const p:Vec3=[root[0],root[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT,root[2]];
       resetBody(player.current,p);guideYaw.current=actor?.yaw??pose.yaw;grounded.current=true;
       guideTargetSpeed.current=actor?.speed??0;moveIntent.current=actor&&actor.speed>.05?'walk':'idle';actorActivities.sync({available:false});
-      if(attractionPhase()==='complete'){
+      if(ride.complete){
         // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
         // it never selects a different platform position or silently sends them to camp.
         const landing=passage.at(root,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y):null;
         rideLandingProbe.current={foot:[...root],landing,delta:landing?landing[1]-PLAYER_CENTER_HEIGHT-root[1]:null};
         if(landing&&Math.abs(landing[1]-PLAYER_CENTER_HEIGHT-root[1])<.12){
-          completeAttractionRide();rideHeld.current=false;player.current.setEnabled(true);
+          ride.finish();rideHeld.current=false;player.current.setEnabled(true);
           clearInput();guideMovementLock.current=false;portalTravel.current.previous=p;
           useWorldStore.setState({position:p,speed:0});
         }
         return;
       }
       publishedTime.current+=dt;
-      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:sites.rideZone(p,!!attractionRide.driver)});}
+      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:ride.zone(p)});}
       return;
     }
     if(rideHeld.current){
       if((rescueRetry.current.get('ride')??0)>0){stepWorldVehicles(dt);return;}
       rescueRetry.current.set('ride',1);
-      const p=attractionRide.exit;
+      const p=ride.exit;
       const candidates:Vec3[]=[p,[p[0]+2,p[1],p[2]],[p[0]-2,p[1],p[2]],...sites.recoveryCandidates(p)];
       const landing=findSafePlayerLanding(world,rapier,player.current,candidates.filter(v=>passage.at(v,PLAYER_RADIUS)),WATER_Y);
       if(!landing){noticeRegionWaiting();stepWorldVehicles(dt);return;}
@@ -1048,7 +1048,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
           && !actorActivities.busy() && !railVault.current
           && actorActivities.allowsInteraction(item.id)
           && passage.at(item.position,PLAYER_RADIUS)
-          && (!item.approach || (grounded.current && !actorActivities.carrying() && !attractionRide.active));
+          && (!item.approach || (grounded.current && !actorActivities.carrying() && !ride.active));
       },
       visible: sight,
       findStand: approach => {
@@ -1208,7 +1208,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       actorActivities.input(magnitude > .05, actions.current.jump);
       const stance=actorActivities.approach();
       const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
-      if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!unoccupied||attractionRide.active))pickupApproach.current=null;
+      if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.current=null;
       const handFacing=guideActionHand.facing??actorActivities.idleFacing();
       if (handFacing && unoccupied && !operating && magnitude <= .05) {
         const focus=handFacing;
@@ -1385,7 +1385,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
 
   useFrame((_,delta)=>{
     const state=useWorldStore.getState();
-    if(!attractionRide.active||state.shot||state.poolInspect){
+    if(!ride.active||state.shot||state.poolInspect){
       attractionObstruction.current.clear();attractionOrientation.current.clear();attractionCabin.current.clear();
     }
     if (state.shot) {
@@ -1408,35 +1408,35 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       if(guideView.current)guideView.current.visible=true;
       occlusion.current.update(scene,camera,target.current,delta);cameraReady.current=false;return;
     }
-    if(attractionRide.active){
-      if(pad.current.connected)turnAttractionLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
-      const pose=attractionCameraPose(attractionRide.pose);
+    if(ride.active){
+      if(pad.current.connected)turnRideLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
+      const pose=rideCameraPose(ride.pose);
       const desired=new Vector3(...pose.cameraPosition),pivot=new Vector3(...pose.cameraTarget);
       if(pose.firstPerson&&pose.orientation){
         const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
         const placement=attractionCabin.current.step(world,rapier,pose,radius,delta,
-          `${attractionRide.revision}:${attractionPhase()}`,player.current??undefined);
+          ride.lifecycle,player.current??undefined);
         if(!placement.safe){
           // Keep the last verified view; never move a fixed cabin eye through scenery.
-          if(!state.paused)console.warn('Coaster cabin clearance failed',placement);
+          if(!state.paused)console.warn('Ride cabin clearance failed',placement);
           useWorldStore.setState({paused:true});return;
         }
         desired.copy(placement.position);
       }else attractionCabin.current.clear();
       if(!pose.orientation)attractionObstruction.current.clear();
-      if(!pose.firstPerson&&(pose.orientation||attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
+      if(!pose.firstPerson&&(pose.orientation||rideLook.yaw||rideLook.pitch||rideLook.zoom!==1)){
         const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
         const swept=pose.orientation
-          ?attractionObstruction.current.step(world,rapier,pose,radius,delta,`${attractionRide.revision}:${attractionPhase()}`,player.current??undefined)
-          :sweepCamera(world,rapier,attractionCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
+          ?attractionObstruction.current.step(world,rapier,pose,radius,delta,ride.lifecycle,player.current??undefined)
+          :sweepCamera(world,rapier,rideCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
         desired.set(swept.position.x,swept.position.y,swept.position.z);
-        if(attractionObstruction.current.debug()?.validOrigin===false&&attractionRide.driver)requestAttractionExit();
+        if(attractionObstruction.current.debug()?.validOrigin===false)ride.viewBlocked();
         const diff=new Vector3(...pose.cameraPosition).sub(pivot).normalize();
         const safeTarget=cameraLookTarget(desired,pivot,[diff.x,diff.y,diff.z]);
         pivot.set(safeTarget.x,safeTarget.y,safeTarget.z);
       }else attractionObstruction.current.clear();
       camera.position.copy(desired);
-      camera.up.copy(attractionOrientation.current.step(pose,desired,pivot,delta,String(attractionRide.revision)));
+      camera.up.copy(attractionOrientation.current.step(pose,desired,pivot,delta,String(ride.revision)));
       camera.lookAt(pivot);
       if(camera instanceof PerspectiveCamera&&camera.fov!==pose.fov){camera.fov=pose.fov;camera.updateProjectionMatrix();}
       if(guideView.current)guideView.current.visible=!pose.firstPerson;
@@ -1593,7 +1593,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson||rideHeld.current} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
+        <GuideVisual ride={ride} cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson||rideHeld.current} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
       </group>
     </RigidBody>
   </>;
