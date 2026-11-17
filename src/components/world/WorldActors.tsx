@@ -12,12 +12,8 @@ import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
 import { actorActivities, activityApproachMotion } from './actor-activities';
 import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
-import { ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_INSPECTION_STAND_TOLERANCE } from './attractions/ibd-inspection-motion';
-import { cancelIbdPack, tickIbdPackInspection, useIbdPackPlay } from './attractions/ibd-pack-play';
-import { tickIbdCoilInspection } from './attractions/ibd-yard-store';
 import { factoryActor, closeFactoryStation, clearFactoryInput, useFactoryStore } from './factory/factory-store';
 import { FACTORY, FACTORY_STATIONS, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS, factoryStation, factoryWorld, inFactory } from './factory/factory-layout';
-import { ibdPackHome, ibdWorld } from './attractions/ibd-yard-layout';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
@@ -457,7 +453,6 @@ export default function WorldActors() {
   function clearPlayerMotion(hardCut=false) {
     pickupApproach.current=null;
     actorActivities.interrupt(hardCut?'recovery':'motion');
-    cancelIbdPack(true);
     if(player.current)clearPlayerSlopeGravity(player.current);
     vault.current=null;railVault.current=null;vaultPreview.current.plan=null;useWorldStore.setState({canVault:false});guideMovementLock.current=false;turnBeforeMove.current=false;
     if(!hardCut)return;
@@ -1055,20 +1050,18 @@ export default function WorldActors() {
     const playerPosition=player.current.translation();
     const activityAvailable = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
     actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
-      grounded:grounded.current,available:activityAvailable&&!state.factoryStation&&!guideTransition.current
-        &&!ibdInspectionBodyBusy()&&!ibdInspectionBody.carried});
+      grounded:grounded.current,available:activityAvailable&&!state.factoryStation&&!guideTransition.current,
+      mode:active?'vehicle':'guide'});
     const unoccupied=activityAvailable&&!actorActivities.busy()&&!actorActivities.carrying()&&!guideTransition.current;
-    Object.assign(ibdInspectionActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
-      grounded:grounded.current,available:unoccupied&&!state.factoryStation,mode:active?'vehicle':'guide'});
     Object.assign(factoryActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],grounded:grounded.current,
-      available:unoccupied&&!ibdInspectionBodyBusy()&&!ibdInspectionBody.carried
+      available:unoccupied
         &&!attractionRide.active&&!currentCampPropInteraction()&&!guideActionHand.target});
     campPropActor.position[0]=playerPosition.x;
     campPropActor.position[1]=playerPosition.y;
     campPropActor.position[2]=playerPosition.z;
     campPropActor.yaw=guideYaw.current;
     campPropActor.grounded=grounded.current;
-    campPropActor.available=unoccupied&&!ibdInspectionBodyBusy()&&!ibdInspectionBody.carried
+    campPropActor.available=unoccupied
       &&!state.factoryStation&&!attractionRide.active&&!state.paused&&!state.poolInspect;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
@@ -1090,7 +1083,7 @@ export default function WorldActors() {
         const current = useWorldStore.getState();
         return !current.paused && !current.poolInspect && !current.activeVehicle && !current.seat
           && !current.card && !current.clubMode && !current.factoryStation && !guideTransition.current
-          && !actorActivities.busy() && !railVault.current && !ibdInspectionBodyBusy()
+          && !actorActivities.busy() && !railVault.current
           && actorActivities.allowsInteraction(item.id)
           && (!item.approach || (grounded.current && campPropActor.available && !attractionRide.active));
       },
@@ -1110,7 +1103,7 @@ export default function WorldActors() {
       if(now.clubMode){useWorldStore.setState({clubMode:null});return;}
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
-      if (actorActivities.busy() || railVault.current || ibdInspectionBodyBusy()) return;
+      if (actorActivities.busy() || railVault.current) return;
       if (item && !actorActivities.allowsInteraction(item.id)) {
         const notice=actorActivities.notice('interaction');
         if(notice)actorNotice(notice.zh,notice.en);
@@ -1177,7 +1170,6 @@ export default function WorldActors() {
       grounded.current=ground?.grounded??false;
       campPropActor.grounded=grounded.current;
       actorActivities.sync({grounded:grounded.current});
-      ibdInspectionActor.grounded = grounded.current;
       if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
         step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
         capsuleSupport:ground?{gap:ground.gap,normal:asTuple(ground.normal),centerY:ground.centerY}:null};
@@ -1258,10 +1250,8 @@ export default function WorldActors() {
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
       actorActivities.input(magnitude > .05);
-      const inspecting=ibdInspectionBody.action;
-      const stance=actorActivities.approach()??(inspecting?{stand:inspecting.anchor.stand,yaw:inspecting.anchor.yaw,
-        moving:inspecting.phase==='approach',stopDistance:IBD_INSPECTION_STAND_TOLERANCE*.5}:null);
-      const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.busy() || !!inspecting || !!ibdInspectionBody.carried || !!operating;
+      const stance=actorActivities.approach();
+      const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
       if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!campPropActor.available||attractionRide.active))pickupApproach.current=null;
       const handFacing=guideActionHand.facing??campPropHand.facing;
       if (handFacing && campPropActor.available && magnitude <= .05) {
@@ -1290,7 +1280,6 @@ export default function WorldActors() {
           [stance.stand[0],stance.stand[1]+PLAYER_CENTER_HEIGHT,stance.stand[2]]));
         if(!route){
           actorActivities.interrupt('blocked');
-          if(inspecting)cancelIbdPack(true);
           actorNotice('站位路线被挡住了，请换一侧再试。','The standing position is blocked. Try another side.');
           vx=0;vz=0;moveIntent.current='idle';
         }else if(motion){
@@ -1339,9 +1328,6 @@ export default function WorldActors() {
       actorActivities.sync({yaw:guideYaw.current});
       campPropActor.yaw = guideYaw.current;
       actorActivities.advance(dt);
-      ibdInspectionActor.yaw=guideYaw.current;
-      tickIbdPackInspection(dt);
-      tickIbdCoilInspection(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
       const eligible=!seat&&!locked&&!pickupApproach.current&&grounded.current&&!actorActivities.carrying()&&!railVault.current;
@@ -1482,16 +1468,14 @@ export default function WorldActors() {
       if(guideView.current)guideView.current.visible=true;
       occlusion.current.update(scene,camera,target.current,delta);cameraReady.current=false;return;
     }
-    const inspectionPack=useIbdPackPlay.getState().pack;
-    if(inspectionPack&&!state.activeVehicle){
-      // Frame the actual tray, hands and jaws. The same scene and collision sweep remain active.
-      const home=ibdWorld(ibdPackHome(inspectionPack));
-      const pivot=new Vector3(home[0],home[1]+.45,home[2]+1.65);
-      const desired=new Vector3(home[0]-2.7,home[1]+2.8,home[2]+4);
+    const activityView=actorActivities.camera();
+    if(activityView&&!state.activeVehicle){
+      // Scenes supply framing; collision, smoothing and visibility remain core behavior.
+      const pivot=new Vector3(...activityView.target),desired=new Vector3(...activityView.eye);
       const swept=sweepCamera(world,rapier,pivot,desired,.18,player.current??undefined,col=>!col.isSensor());
-      camera.position.lerp(new Vector3(swept.position.x,swept.position.y,swept.position.z),1-Math.exp(-delta*7));
-      target.current.lerp(pivot,1-Math.exp(-delta*7));camera.up.set(0,1,0);camera.lookAt(target.current);
-      if(camera instanceof PerspectiveCamera&&camera.fov!==42){camera.fov=42;camera.updateProjectionMatrix();}
+      camera.position.lerp(new Vector3(swept.position.x,swept.position.y,swept.position.z),1-Math.exp(-delta*activityView.smoothing));
+      target.current.lerp(pivot,1-Math.exp(-delta*activityView.smoothing));camera.up.set(0,1,0);camera.lookAt(target.current);
+      if(camera instanceof PerspectiveCamera&&camera.fov!==activityView.fov){camera.fov=activityView.fov;camera.updateProjectionMatrix();}
       if(guideView.current)guideView.current.visible=true;
       occlusion.current.update(scene,camera,target.current,delta);cameraReady.current=false;return;
     }

@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
+import { registerIbdActivity } from './ibd-actor-activity';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { useInteractable } from '../WorldInteract';
 import { IBD_YARD } from './attraction-layout.ts';
@@ -45,6 +46,7 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
 
 /** Mount inside the existing Canvas/Physics. Origin and ground contract come only from IBD_YARD. */
 export default memo(function WorldIbdYard({ active = true }: { active?: boolean }) {
+  useEffect(() => registerIbdActivity(), []);
   const environment = useDjcFurnitureEnvironment();
   const previousNight = useRef(-1);
   const data = useMemo(() => {

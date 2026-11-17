@@ -1,12 +1,14 @@
 import type { Vec3 } from './types';
 
-export type ActorActivityPose = { position: Vec3; yaw: number; grounded: boolean; available: boolean };
+export type ActorActivityPose = { position: Vec3; yaw: number; grounded: boolean; available: boolean; mode?: 'guide' | 'vehicle' };
 export type ActivityNotice = { zh: string; en: string };
 export type ActivityInterruption = 'motion' | 'recovery' | 'blocked';
 export interface ActivityApproach { stand: Vec3; yaw: number; moving: boolean; stopDistance: number }
+export interface ActivityCamera { target: Vec3; eye: Vec3; fov: number; smoothing: number; priority: number }
 export interface ActorActivityState {
   busy: boolean;
   carrying: boolean;
+  movementLocked?: boolean;
   facing?: Vec3;
   approach?: ActivityApproach;
   allowsInteraction?: (id: string) => boolean;
@@ -22,6 +24,7 @@ export interface ActorActivity {
   command: (name: 'put-down') => boolean;
   interrupt: (reason: ActivityInterruption) => void;
   dispose: () => void;
+  camera?: () => ActivityCamera | null;
 }
 
 export function createActorActivities() {
@@ -63,7 +66,20 @@ export function createActorActivities() {
       return null;
     },
     busy: () => current().some(({ entry }) => entry.read().busy),
+    movementLocked: () => current().some(({entry}) => { const state=entry.read(); return state.busy || state.movementLocked; }),
     carrying: () => current().some(({ entry }) => entry.read().carrying),
+    camera() {
+      let selected: ActivityCamera | null=null;
+      for(const slot of current()){
+        if(entries.get(slot.entry.id)!==slot)continue;
+        const view=slot.entry.camera?.();
+        if(!view || view.target.length!==3 || view.eye.length!==3 || !view.target.every(Number.isFinite)
+          || !view.eye.every(Number.isFinite) || !Number.isFinite(view.fov) || view.fov<=0 || view.fov>=180
+          || !Number.isFinite(view.smoothing) || view.smoothing<=0 || !Number.isFinite(view.priority))continue;
+        if(!selected || view.priority>selected.priority)selected=view;
+      }
+      return selected;
+    },
     facing() {
       for (const { entry } of current()) {
         const state = entry.read();

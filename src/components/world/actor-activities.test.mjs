@@ -69,6 +69,26 @@ test('stance motion walks toward the anchor then settles to its authored heading
   assert.equal(activityApproachMotion([1,1,0],{...stance,yaw:Infinity}),null);
 });
 
+test('carried samples can lock locomotion without blocking their next registered interaction',()=>{
+  const registry=createActorActivities();
+  const release=registry.register(activity('sample',{read:()=>({busy:false,carrying:true,movementLocked:true})}));
+  assert.equal(registry.busy(),false);assert.equal(registry.movementLocked(),true);
+  assert.equal(registry.allowsInteraction('return-sample'),true);
+  release();assert.equal(registry.movementLocked(),false);
+});
+
+test('scene cameras use explicit priority, reject invalid views and disappear with their registration',()=>{
+  const registry=createActorActivities();
+  const base={target:[0,1,0],eye:[0,3,4],fov:50,smoothing:6,priority:10};
+  registry.register(activity('base',{camera:()=>base}));
+  const high={...base,fov:42,priority:20};
+  const release=registry.register(activity('inspection',{camera:()=>high}));
+  registry.register(activity('invalid',{camera:()=>({...base,eye:[NaN,0,0],priority:100})}));
+  assert.deepEqual(registry.camera(),high);
+  release();assert.deepEqual(registry.camera(),base);
+  base.fov=180;assert.equal(registry.camera(),null);
+});
+
 function mineScene(){
   resetMineSession();Object.assign(mineActor,{moving:false,available:false,grounded:false,restTarget:null});
   const registry=createActorActivities(),release=registerMineActivity(registry);
