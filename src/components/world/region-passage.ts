@@ -12,6 +12,29 @@ export interface RegionPassage {
   allows:(from:Vec3,to:Vec3,radius?:number)=>boolean;
 }
 
+/** Unlike terrain-only broad phases, the bounds expand with the caller's hull. */
+export function polygonPassageFootprint(points:readonly (readonly [number,number])[]):PassageRegion['contains'] {
+  const minX=Math.min(...points.map(p=>p[0])),maxX=Math.max(...points.map(p=>p[0]));
+  const minZ=Math.min(...points.map(p=>p[1])),maxZ=Math.max(...points.map(p=>p[1]));
+  return ([x,,z],radius)=>{
+    if(x<minX-radius||x>maxX+radius||z<minZ-radius||z>maxZ+radius)return false;
+    let inside=false;
+    for(let i=0,j=points.length-1;i<points.length;j=i++) {
+      const a=points[j],b=points[i],dx=b[0]-a[0],dz=b[1]-a[1],length=dx*dx+dz*dz;
+      const t=length?Math.max(0,Math.min(1,((x-a[0])*dx+(z-a[1])*dz)/length)):0;
+      if(Math.hypot(x-a[0]-dx*t,z-a[1]-dz*t)<=radius)return true;
+      if((a[1]>z)!==(b[1]>z)&&x<(b[0]-a[0])*(z-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+    }
+    return inside;
+  };
+}
+
+/** Boarding/egress paths must check every leg, including a stationary endpoint. */
+export function passageRoute(passage:RegionPassage,points:readonly Vec3[],radius:number):boolean {
+  return points.length>0&&passage.at(points[0],radius)
+    &&points.slice(1).every((point,i)=>passage.allows(points[i],point,radius));
+}
+
 /** This is a loading boundary, not a collision substitute. Real Rapier sweeps
  * still decide walls, support and slopes after the region is available. */
 export function createRegionPassage(regions:readonly PassageRegion[],

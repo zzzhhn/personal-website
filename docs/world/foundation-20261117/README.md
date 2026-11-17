@@ -6,7 +6,7 @@ The user supplied an external architecture review and asked to improve the exist
 
 Do not call this program complete after a local repair. The five pipeline changes below remain the completion checklist. The external review's performance promises and estimated percentage of prevented bugs are hypotheses, not acceptance evidence.
 
-## Verified findings
+## Baseline findings
 
 - `WorldActors.tsx` currently gates prompt discovery by radius and visibility, then searches a safe pickup stance only on E. A visible object across a floor gap can therefore advertise an action that cannot start.
 - `WorldActors.tsx` directly imports mine, exchange, IBD, factory and Alpha state/layout; availability cascades across venue singletons. This remains architectural debt.
@@ -147,6 +147,18 @@ Unavailable district groups stop horizontal motion and show a rate-limited prepa
 
 Verification: 41 tests passed across segment crossing/radius/corner cases, all seven production footprint contracts, V3 omission of absent attractions, live Rapier readiness loss, bounded negative-cache retries, positive-cache handle access counts, an actual walking body stopping at a cold boundary then continuing without teleportation, interaction offers, pickup routes, arrivals and recovery. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. This is not a target-device performance result. Vehicle dynamics, ride transit/egress, forced external-body displacement, detailed town/park interior fixtures and load-error recovery still need coverage; the all-region readiness objective is not complete. 4341 remains unchanged.
 
+## Batch 14: vehicle passage and boarding/egress readiness
+
+Raycast vehicles now test their post-engine/suspension horizontal motion against the injected regional passage contract before physics integration. The loading envelope covers exported hull vertices, legacy body bounds and extended wheels for arbitrary orientation. It is computed once per vehicle and does not replace its normal contact colliders. A cold boundary stops horizontal velocity while retaining suspension/gravity; the same input resumes when colliders are ready. Unoccupied rolling vehicles use the same gate. Vehicle road recovery candidates must also be ready.
+
+Mine, factory and IBD passage footprints now use their authored polygons with radius-dependent bounds. Their terrain helper broad phases had fixed margins that could reject a query before a larger vehicle's envelope was considered. This changes loading checks only, not terrain, geometry, material or physics support surfaces.
+
+Car entry checks the full approach/cabin path and car envelope. Door animations pause if their required region becomes unavailable; exits recheck readiness before restoring the capsule. Transport boarding and walking egress combine live region readiness with the existing physical route checks, and completed rides require both readiness and physical support at the exact endpoint. Interrupted rides search ready, physically safe recovery candidates instead of unconditionally enabling the actor at camp; failed recovery retries are capped at once per second.
+
+Verification: 83 tests passed across the new vehicle/polygon/path cases, real Rapier engine impulses and envelope stopping/resumption, delayed transport walk-out, regional readiness, arrivals, transport drivers/skip, driving dynamics, door animation, capsule safe landing and actual transport boarding geometry. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. These are technical checks, not target-device performance or visual acceptance. Model/material/lighting assets and Balanced startup are unchanged. 4341 is unchanged.
+
+Still pending: the independent ride transit clocks (including skip destination admission), forced external-body displacement, collider loss underneath an already-present actor, detailed town/park interior fixture coverage and load-error recovery. The complete terrain/provenance/core/atlas migration remains open; this batch does not claim all-region readiness is finished.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
@@ -155,4 +167,4 @@ Verification: 41 tests passed across segment crossing/radius/corner cases, all s
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
 
-The user requested GitHub consolidation on 2026-11-17. Batches 1–8 were consolidated into main through `79581acc`; batch 9 follows after its technical checks. The broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.
+The user requested GitHub consolidation on 2026-11-17. Batches 1–13 were verified on main through `a2a64a2c`; batch 14 follows after the technical checks recorded above. The broader foundation program remains incomplete. 4341 remains on its prior candidate. User visual/feel review remains separate from technical checks.

@@ -3,7 +3,8 @@ import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-ha
 import { localWindPace } from './rides/local-wind';
 import { holdWorldArrival, activateReadyArrival } from './world-arrival-readiness';
 import type { ActorSites } from './actor-sites';
-import { passageVelocity } from './region-passage';
+import { passageVelocity, passageRoute } from './region-passage';
+import { vehiclePassageRadius } from './vehicle-passage';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -46,7 +47,7 @@ type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicl
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
   /** L1 hull colliders active: suspension rays only rest on fixed bodies (DESIGN 6). */
-  hulls: boolean;
+  hulls: boolean; passageRadius:number;
   lights: { brake: boolean; reverse: boolean };
   doors: VehicleDoorState; driverSide: DoorSide;
   /** Continuous driver inputs after the keyboard ramp (-1..1); QA drive() bypasses the ramp. */
@@ -201,7 +202,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     const controller = world.createVehicleController(body.current);
     configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension / spec.mass);
     if(spec.id==='coupe')configureCoupeSuspension(controller);
-    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
+    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,passageRadius:vehiclePassageRadius(spec.size,hullEntry),steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
     cars.current.set(spec.id,car);
     return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); if(spec.id==='coupe')publishDrivingTelemetry(null); };
   },[world,spec,cars,lowCom,hullShapes]);
@@ -474,6 +475,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     }
     const car = cars.current.get(id);
     if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || actorActivities.inputOwner() || guideTransition.current) return false;
+    if(!passage.at(asTuple(car.body.translation()),car.passageRadius)){noticeRegionWaiting();return false;}
     if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('等车停稳再上车。','Wait for the vehicle to stop.');return false;}
     if(!vehicleDoorUpright(car.body.rotation())){actorNotice('车辆倾覆，先扶正再上车。','Right the tipped vehicle before entering.');return false;}
     {
@@ -494,6 +496,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
           for(const point of route){if(!playerRouteClear(world,rapier,player.current,previous,point)){clear=false;break;}previous=point;}
           if(!clear)continue;
         }
+        if(!passageRoute(passage,[asTuple(p),...route.map(asTuple),cabinAnchor(car,sg)],PLAYER_RADIUS))continue;
         let distance=0,previous=p;for(const point of route){distance+=Math.hypot(point.x-previous.x,point.z-previous.z);previous=point;}
         const approachSeconds=Math.max(VEHICLE_TRANSITION_S*.3,distance/1.7);
         car.driverSide=sg;car.doors.side=sg;
@@ -532,6 +535,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       const ground=origin.y-hit.timeOfImpact;
       if (ground<WATER_Y+.15) continue;
       const candidate={x:origin.x,y:ground+PLAYER_CENTER_HEIGHT,z:origin.z};
+      if(!passageRoute(passage,[cabinAnchor(car,side),asTuple(candidate)],PLAYER_RADIUS))continue;
       let blocked=false;
       world.intersectionsWithShape(candidate,{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
         ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current,collider=>!collider.isSensor());
@@ -561,6 +565,12 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     car.flipped=0; car.wet=0; clearPlayerMotion(true);clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
   }
 
+  function noticeRegionWaiting() {
+    const now=performance.now();
+    if(now-regionNoticeAt.current<=2500)return;
+    regionNoticeAt.current=now;
+    actorNotice('前方区域正在准备，请稍候。','The area ahead is preparing. Please wait.');
+  }
   /** Suspension and recovery belong to the world, even when the player is on a ride. */
   function stepWorldVehicles(dt:number,active?:Car,throttle=0,steer=0,transitioning=false,debugging=false,brake=false,handbrake=false,boost=false) {
     cars.current.forEach(car=>{
@@ -607,6 +617,14 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
         for(let o=colliderStates.get(c.handle)?.object;o;o=o.parent??undefined)if(o.userData.surface)return true;
         return !!(c.parent()?.userData as {surface?:boolean}|undefined)?.surface;
       });
+      // updateVehicle has applied engine/suspension impulses. Gate that resulting
+      // motion before physics integration, retaining vertical suspension/gravity.
+      const motion=passageVelocity(passage,asTuple(car.body.translation()),car.body.linvel(),dt,car.passageRadius);
+      if(motion.blocked){
+        car.body.setLinvel(motion.velocity,true);
+        for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,car.spec.mass*.035);}
+        if(driven){car.lights.brake=true;if(Math.abs(throttle)>.01||Math.abs(speed)>.01)noticeRegionWaiting();}
+      }
       const wheelShape=wheelGeometry(car.spec.size);
       car.guards.forEach((guard,i)=>{
         if(!guard)return;const p=wheelShape.points[i];
@@ -622,7 +640,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
       if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
         rescueRetry.current.set(car.spec.id,1);
-        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)),WATER_Y);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)).filter(v=>passage.at(v.position,car.passageRadius)),WATER_Y);
         if(landing){
           if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
           resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
@@ -934,10 +952,10 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       if(!rideHeld.current){
         const start=player.current.translation();
         // Select a clear joining leg before validating the complete boarding route.
-        attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&rideFootRouteClear(world,rapier,player.current,[from,to]));
+        attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&passageRoute(passage,[from,to],PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,[from,to]));
         captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
         const route=attractionRide.driver?.boardingPath;
-        if(route&&!rideFootRouteClear(world,rapier,player.current,route)){endAttractionRide();actorNotice('登乘通道被挡住了，请在站台稍候。','The boarding path is blocked. Please wait on the platform.');return;}
+        if(route&&(!passageRoute(passage,route,PLAYER_RADIUS)||!rideFootRouteClear(world,rapier,player.current,route))){endAttractionRide();actorNotice('登乘通道尚未就绪或被挡住了，请在站台稍候。','The boarding path is not ready or blocked. Please wait on the platform.');return;}
         clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
@@ -947,7 +965,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       if(gp.connected&&gp.buttons[1]&&!before[1])requestAttractionExit();
       stepWorldVehicles(dt);
       const driver=attractionRide.driver,check=rideExitCheck.current;
-      if(driver?.phase==='stand'&&driver.egressPath){check.next-=dt;if(check.revision!==attractionRide.revision||check.next<=0){const clear=rideFootRouteClear(world,rapier,player.current,driver.egressPath);driver.setExitBlocked?.(!clear);if(!clear&&check.revision!==attractionRide.revision)actorNotice('下车通道被挡住了，留在车内等候，或返回营地。','The exit is blocked. Wait inside, or return to camp.');check.revision=attractionRide.revision;check.next=.5;}}
+      if(driver?.phase==='stand'&&driver.egressPath){check.next-=dt;if(check.revision!==attractionRide.revision||check.next<=0){const clear=passageRoute(passage,driver.egressPath,PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,driver.egressPath);driver.setExitBlocked?.(!clear);if(!clear&&check.revision!==attractionRide.revision)actorNotice('下车通道尚未就绪或被挡住了，留在车内等候，或返回营地。','The exit is not ready or blocked. Wait inside, or return to camp.');check.revision=attractionRide.revision;check.next=.5;}}
       const pose=attractionRide.pose,actor=attractionActorFrame(),root=actor?.root??pose.seat;
       const p:Vec3=[root[0],root[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT,root[2]];
       resetBody(player.current,p);guideYaw.current=actor?.yaw??pose.yaw;grounded.current=true;
@@ -955,7 +973,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       if(attractionPhase()==='complete'){
         // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
         // it never selects a different platform position or silently sends them to camp.
-        const landing=findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y);
+        const landing=passage.at(root,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y):null;
         rideLandingProbe.current={foot:[...root],landing,delta:landing?landing[1]-PLAYER_CENTER_HEIGHT-root[1]:null};
         if(landing&&Math.abs(landing[1]-PLAYER_CENTER_HEIGHT-root[1])<.12){
           completeAttractionRide();rideHeld.current=false;player.current.setEnabled(true);
@@ -969,21 +987,27 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       return;
     }
     if(rideHeld.current){
+      if((rescueRetry.current.get('ride')??0)>0){stepWorldVehicles(dt);return;}
+      rescueRetry.current.set('ride',1);
       const p=attractionRide.exit;
-      const landing=findSafePlayerLanding(world,rapier,player.current,[p,[p[0]+2,p[1],p[2]],[p[0]-2,p[1],p[2]]],WATER_Y);
-      relocatePlayer(landing??CAMP_SPAWN);
+      const candidates:Vec3[]=[p,[p[0]+2,p[1],p[2]],[p[0]-2,p[1],p[2]],...sites.recoveryCandidates(p)];
+      const landing=findSafePlayerLanding(world,rapier,player.current,candidates.filter(v=>passage.at(v,PLAYER_RADIUS)),WATER_Y);
+      if(!landing){noticeRegionWaiting();stepWorldVehicles(dt);return;}
+      relocatePlayer(landing);
     }
     portalTravel.current.cooldown=Math.max(0,portalTravel.current.cooldown-dt);
     if(guideTransition.current){
       const tr=guideTransition.current;
-      if(!holdDoorForQA.current)tr.elapsed+=dt;
+      const routeReady=passageRoute(passage,[...(tr.approach??[]),tr.door,tr.cabin],PLAYER_RADIUS);
+      if(!holdDoorForQA.current&&routeReady)tr.elapsed+=dt;
+      if(!routeReady)noticeRegionWaiting();
       const doorCar=cars.current.get(tr.id);
       if(doorCar)doorCar.doors.openness=guideVehicleSample(tr.phase,guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds)).doorOpen;
       if(guideTransition.current.elapsed>=(guideTransition.current.duration??VEHICLE_TRANSITION_S)){
         if(doorCar)doorCar.doors.openness=0;
         if(tr.phase==='exit'&&tr.exitPosition){
           // Revalidate after the animation: another object may have occupied the exit meanwhile.
-          const landing=findSafePlayerLanding(world,rapier,player.current,[tr.exitPosition.map((v,i)=>i===1?v-PLAYER_CENTER_HEIGHT:v) as Vec3],WATER_Y);
+          const landing=passage.at(tr.exitPosition,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[tr.exitPosition.map((v,i)=>i===1?v-PLAYER_CENTER_HEIGHT:v) as Vec3],WATER_Y):null;
           if(landing){
             if(doorCar)guideYaw.current=heading(guideVehicleOrientation(cabinFrame(doorCar,tr.side),guideVehicleSample('exit',.7),Math.PI,new Quaternion()));
             resetBody(player.current,landing);player.current.setEnabled(true);portalTravel.current.previous=landing;useWorldStore.setState({activeVehicle:null,speed:0});
@@ -1323,11 +1347,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
         player.current.setLinvel(passageMotion.velocity,true);
         railVault.current=null;vault.current=null;pickupApproach.current=null;
         guideTargetSpeed.current=0;moveIntent.current='idle';
-        const now=performance.now();
-        if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01&&now-regionNoticeAt.current>2500) {
-          regionNoticeAt.current=now;
-          actorNotice('前方区域正在准备，请稍候。','The area ahead is preparing. Please wait.');
-        }
+        if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01)noticeRegionWaiting();
       }
       const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,WATER_Y);
       wetPlayer.current=wet.submergedSeconds;
