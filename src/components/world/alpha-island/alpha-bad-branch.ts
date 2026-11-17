@@ -1,7 +1,7 @@
 import type {RigidBody,World} from '@dimforge/rapier3d-compat';
 import {Quaternion,Vector3} from 'three';
 import {ALPHA_MAIN_PATH,alphaLocal} from './alpha-layout';
-import {alphaHeight} from './alpha-terrain';
+import {alphaGroundHeight as alphaHeight} from './alpha-terrain';
 import type {Vec3} from '../types';
 export type BranchPhase='attached'|'waiting'|'fallen'|'reset-wait';
 export const alphaBadBranchProbe={phase:'attached' as BranchPhase,position:[0,0,0] as Vec3,velocity:[0,0,0] as Vec3,home:[0,0,0] as Vec3,worldTime:0,droppedAt:-100,age:0,drops:0,resets:0,playerContacts:0,pathMargin:Infinity,minPathMargin:Infinity,restoreBlocked:false,dropBlocked:false};

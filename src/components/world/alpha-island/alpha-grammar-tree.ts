@@ -1,7 +1,7 @@
 import { BufferGeometry, CatmullRomCurve3, Float32BufferAttribute, Triangle, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { ALPHA_MAIN_PATH,ALPHA_STATIONS } from './alpha-layout';
-import { alphaHeight } from './alpha-terrain';
+import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
 import type { Vec3 } from '../types';
 
 type Kind = 'trunk' | 'root' | 'bough' | 'twig' | 'arm';

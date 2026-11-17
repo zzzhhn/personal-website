@@ -1,6 +1,6 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
 import { transportBoardingGeometry } from '../../rides/transport-boarding';
-import { alphaHeight,alphaTerrainData } from '../alpha-terrain';
+import { alphaGroundHeight as alphaHeight,alphaGroundSample } from '../alpha-terrain';
 import { alphaPierDecks } from '../alpha-mainland-pier';
 import {meshHeight} from '../../WorldLandform';
 import {WATER_Y} from '../../layout';
@@ -59,7 +59,17 @@ export function alphaFerryRoute():TransportRoute {
   const bridge:Vec3[]=[];const count=Math.max(2,Math.ceil(distance/.4));
   for(let i=0;i<=count;i++){const u=i/count,x=door[0]+(edge[0]-door[0])*u,z=door[2]+(edge[2]-door[2])*u,y=door[1]+(edge[1]-door[1])*u,ground=index===1?alphaHeight(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]):-Infinity;bridge.push([x,Math.max(y,Math.min(edge[1],ground+.006)),z]);}
   const simplified:Vec3[]=[];for(const point of bridge){simplified.push(point);while(simplified.length>=3){const n=simplified.length,a=new Vector3(...simplified[n-3]),b=new Vector3(...simplified[n-2]),c=new Vector3(...simplified[n-1]);if(b.clone().sub(a).cross(c.clone().sub(b)).lengthSq()>1e-12)break;simplified.splice(n-2,1);}}
-  t.boarding=[t.safeExit,...simplified.slice().reverse(),...stair,inside];t.gangwayStart=1;t.gangwayEnd=simplified.length;t.egress=[inside,...stair.slice().reverse(),...simplified,t.safeExit];
+  // Survey the island walk across the actual hill, rather than a flat chord through it.
+  // This is pedestrian terrain outside the fixed gangway; do not build another floor over it.
+  const approach:Vec3[]=[];
+  const walkSteps=index===1?Math.max(1,Math.ceil(Math.hypot(t.safeExit[0]-edge[0],t.safeExit[2]-edge[2])/.3)):1;
+  for(let i=0;i<walkSteps;i++){
+    const u=i/walkSteps,x=t.safeExit[0]+(edge[0]-t.safeExit[0])*u,z=t.safeExit[2]+(edge[2]-t.safeExit[2])*u;
+    const base=t.safeExit[1]+(edge[1]-t.safeExit[1])*u;
+    approach.push([x,index===1?Math.max(base,alphaHeight(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]))+.006:base,z]);
+  }
+  t.safeExit=approach[0];
+  t.boarding=[...approach,...simplified.slice().reverse(),...stair,inside];t.gangwayStart=approach.length;t.gangwayEnd=approach.length+simplified.length-1;t.egress=[inside,...stair.slice().reverse(),...simplified,...approach.slice().reverse()];
  }
  return route;
 }
@@ -69,11 +79,10 @@ export function alphaTransportBoardingFootprints(includeFerry=false){return (inc
 /** Actual source mesh interpolation and physical pier tops, in world coordinates.
  * The ferry has identity transform; passing scene-local alphaHeight directly would sample
  * a different mountain and plant boots through/above its real mainland platform. */
-let ferryTerrain:ReturnType<typeof alphaTerrainData>|null=null;
 export function alphaFerryGroundHeight(x:number,z:number):number|null {
  let y=meshHeight(x,z)??-Infinity;
- const d=ferryTerrain??=alphaTerrainData(),p=d.positions,lx=x-ALPHA_ORIGIN[0],lz=z-ALPHA_ORIGIN[2],x0=p[0],x1=p[d.nx*3],z0=p[2],z1=p[d.nz*(d.nx+1)*3+2],gx=(lx-x0)/(x1-x0)*d.nx,gz=(lz-z0)/(z1-z0)*d.nz;
- if(gx>=0&&gx<d.nx&&gz>=0&&gz<d.nz){const i=Math.floor(gx),j=Math.floor(gz),u=gx-i,v=gz-j,a=j*(d.nx+1)+i,h00=p[a*3+1],h10=p[(a+1)*3+1],h01=p[(a+d.nx+1)*3+1],h11=p[(a+d.nx+2)*3+1];y=Math.max(y,u+v<=1?h00+(h10-h00)*u+(h01-h00)*v:h11+(h01-h11)*(1-u)+(h10-h11)*(1-v));}
+ const island=alphaGroundSample(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]);
+ if(island)y=Math.max(y,island.height);
  for(const deck of alphaPierDecks)if(Math.abs(x-deck.p[0])<=deck.size[0]/2&&Math.abs(z-deck.p[2])<=deck.size[2]/2)y=Math.max(y,deck.p[1]+deck.size[1]/2);
  return y>=WATER_Y+.18?y:null;
 }

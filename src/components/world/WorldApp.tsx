@@ -20,11 +20,13 @@ import './world.css';
 const Runtime = lazy(async () => {
   const { attachLoadProgress } = await import('./WorldLoadProgress');
   attachLoadProgress();
-  const [{ loadTerrainArtifact }, { default: manifest }, { LAYOUT_V4 }] = await Promise.all([
+  const [{ loadTerrainArtifact, downloadTerrainArtifact }, { default: manifest }, { LAYOUT_V4 }, alpha] = await Promise.all([
     import('./load-terrain-artifact'), import('./terrain-artifacts.generated.json'), import('./layout-v4-flag'),
+    import('./alpha-island/alpha-terrain-artifact'),
   ]);
   const variant = LAYOUT_V4 ? 'v4' : 'v3';
   await loadTerrainArtifact(variant, manifest[variant]);
+  alpha.installAlphaTerrain(alpha.decodeAlphaTerrain(await downloadTerrainArtifact(manifest.alpha)));
   return import('./WorldRuntime');
 });
 const IbdHud=memo(lazy(()=>import('./attractions/WorldIbdHud')));

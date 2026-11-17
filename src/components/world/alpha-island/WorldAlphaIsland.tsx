@@ -17,6 +17,6 @@ import AlphaMainlandPier from './AlphaMainlandPier';
 import AlphaDebug from './AlphaDebug';
 import AlphaWaterwheel from './batch2/AlphaWaterwheel';
 import AlphaEchoCave from './batch2/AlphaEchoCave';
-import { alphaHeight } from './alpha-terrain';
+import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
 const islandTransports = [...ALPHA_TRANSPORT_ROUTES, alphaFerryRoute()];
 export default function WorldAlphaIsland(){useFrame(()=>{Object.assign(localWind,{center:[254,38,148],radius:14,strength:useAlphaStore.getState().wind,direction:[1,.15]});alphaMaterialUniforms.night.value=night.value;alphaMaterialUniforms.time.value=alphaMotion.time;});useEffect(()=>()=>{cancelAlphaHand();localWind.strength=0;localWind.radius=0;},[]);return <><group name="alpha-island-batch2" position={ALPHA_ORIGIN}><AlphaTerrain/><AlphaScenery/><AlphaNature/><AlphaInteractions/><AlphaCloudSea/><AlphaWaterwheel/><AlphaEchoCave/></group><AlphaMainlandPier/><AlphaTransports routes={islandTransports} groundHeight={alphaHeight}/><AlphaDebug/></>;}

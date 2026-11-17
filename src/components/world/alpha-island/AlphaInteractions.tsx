@@ -8,7 +8,7 @@ import { guideActionHand as campPropHand } from '../rides/guide-action-hand';
 import { ALPHA_ORIGIN,ALPHA_STATIONS,alphaLocal,alphaWorld,alphaContainsWorld,ALPHA_MAIN_PATH } from './alpha-layout';
 import { alphaMotion,useAlphaStore,startAlphaHand,advanceAlphaHand,cancelAlphaHand,canReleaseAlphaLantern,releaseAlphaLantern,visitAlphaStation,saveAlphaProgress,ALPHA_LANTERN_CAP,ALPHA_LANTERN_LIFETIME,type AlphaAction } from './alpha-state';
 import { ALPHA_SHALLOWS,ALPHA_WATERWHEEL,ALPHA_CAVE_PATH } from './alpha-batch2-layout';
-import { alphaHeight } from './alpha-terrain';
+import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
 import { alphaMaterial } from './alpha-materials';
 import { alphaLanternGeometry } from './alpha-art';
 import { primeAlphaAudio,ringAlphaBell,stopAlphaAudio } from './alpha-audio';

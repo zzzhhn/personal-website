@@ -1,6 +1,7 @@
 import { CatmullRomCurve3,Vector3 } from 'three';
 import { ALPHA_BERTH_BASIN, ALPHA_ORIGIN, ALPHA_MAIN_PATH, ALPHA_BYPASS_PATH, ALPHA_SOCKETS, ALPHA_CABLE_PATH, ALPHA_SLED_PATH, alphaWorld } from './alpha-layout.ts';
 import type { Vec3 } from '../types';
+import { requireAlphaTerrain } from './alpha-terrain-artifact';
 import { ALPHA_BATCH2_PATHS, ALPHA_WATERWHEEL, ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2PathDistance, batch2Segment } from './alpha-batch2-layout';
 const cableCurve=new CatmullRomCurve3(ALPHA_CABLE_PATH.map(p=>new Vector3(...p)),false,'centripetal');
 const cableSamples=Array.from({length:193},(_,i)=>{const p=cableCurve.getPointAt(i/192);return [p.x,Math.max(38,Math.min(73,p.y)),p.z] as Vec3;});
@@ -29,8 +30,10 @@ export function alphaBaseHeight(x:number,z:number) {
  const fit=sum/weights,shoulder=(2.7*alphaNoise(x*.85,z*.85)+.85*Math.sin(fit*.62+alphaNoise(x,z)*.5))*smooth(4,13,near);
  return -4+land*(sum/weights+4+shoulder);
 }
-export function alphaSurfaceNormalY(x:number,z:number){const e=.65,dx=(alphaHeight(x+e,z)-alphaHeight(x-e,z))/(2*e),dz=(alphaHeight(x,z+e)-alphaHeight(x,z-e))/(2*e);return 1/Math.hypot(dx,1,dz);}
+export function alphaSurfaceNormalY(x:number,z:number){return alphaGroundSample(x,z)?.normalY ?? 0;}
+/** Authoring only. Runtime placement uses the installed mesh through alphaGroundHeight. */
 export function alphaHeight(x:number,z:number) {
+ if(import.meta.env?.SSR===false)throw new Error('Alpha authoring height is unavailable at runtime; query the built mesh');
  let h=alphaBaseHeight(x,z);
  const p=nearestAlphaSegment(x,z,ALPHA_MAIN_PATH),b=nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH);
  let n=p.distance<b.distance?p:b;
@@ -94,9 +97,10 @@ export function alphaHeight(x:number,z:number) {
  return h;
 }
 export const alphaPathDistance=(x:number,z:number)=>Math.min(nearestAlphaSegment(x,z,ALPHA_MAIN_PATH).distance,nearestAlphaSegment(x,z,ALPHA_BYPASS_PATH).distance,batch2PathDistance(x,z));
-type AlphaTerrainData={positions:Float32Array;surface:Uint32Array;solid:Uint32Array;indices:Uint32Array;nx:number;nz:number};
+export type AlphaTerrainData={positions:Float32Array;surface:Uint32Array;solid:Uint32Array;indices:Uint32Array;nx:number;nz:number};
 let runtimeTerrain:AlphaTerrainData|null=null;
 export function alphaTerrainData(step=1.5):AlphaTerrainData {
+ if(import.meta.env?.SSR===false){if(step!==1.5)throw new Error('Runtime Alpha terrain resolution is build-defined');return requireAlphaTerrain();}
  if(step===1.5&&runtimeTerrain)return runtimeTerrain;
  const nx=Math.ceil(196/step),nz=Math.ceil(228/step),positions=new Float32Array((nx+1)*(nz+1)*3),surface:number[]=[],solid:number[]=[],indices:number[]=[];
  for(let j=0;j<=nz;j++)for(let i=0;i<=nx;i++){const x=-98+i*196/nx,z=-114+j*228/nz,k=(j*(nx+1)+i)*3;positions.set([x,alphaHeight(x,z),z],k);}
@@ -110,11 +114,20 @@ export function alphaTerrainData(step=1.5):AlphaTerrainData {
 /** Placement samples the exact triangles used by both visible ground and Rapier.
  * Cached source arrays are shared read-only; no raycast or extra mesh is allocated. */
 export function alphaGroundHeight(x:number,z:number) {
- if(x< -98||x>98||z< -114||z>114)return alphaHeight(x,z);
+ const sample=alphaGroundSample(x,z);
+ if(!sample)throw new RangeError(`No Alpha terrain at ${x},${z}`);
+ return sample.height;
+}
+/** Null is an explicit absence of mesh, never an analytical terrain fallback. */
+export function alphaGroundSample(x:number,z:number):{height:number;normalY:number}|null {
+ if(!Number.isFinite(x)||!Number.isFinite(z)||x< -98||x>98||z< -114||z>114)return null;
  const d=alphaTerrainData(),p=d.positions;
  const i=Math.min(d.nx-1,Math.floor((x+98)/196*d.nx)),j=Math.min(d.nz-1,Math.floor((z+114)/228*d.nz));
  const a=(j*(d.nx+1)+i)*3,b=a+3,c=a+(d.nx+1)*3,e=c+3;
  const u=(x-p[a])/(p[b]-p[a]),v=(z-p[a+2])/(p[c+2]-p[a+2]);
- return u+v<=1?p[a+1]*(1-u-v)+p[b+1]*u+p[c+1]*v:p[b+1]*(1-v)+p[c+1]*(1-u)+p[e+1]*(u+v-1);
+ const first=u+v<=1;
+ const height=first?p[a+1]*(1-u-v)+p[b+1]*u+p[c+1]*v:p[b+1]*(1-v)+p[c+1]*(1-u)+p[e+1]*(u+v-1);
+ const dx=(first?p[b+1]-p[a+1]:p[e+1]-p[c+1])/(p[b]-p[a]),dz=(first?p[c+1]-p[a+1]:p[e+1]-p[b+1])/(p[c+2]-p[a+2]);
+ return {height,normalY:1/Math.hypot(dx,1,dz)};
 }
-export function alphaShoreline():[number,number][] {return Array.from({length:128},(_,i)=>{const a=i/128*Math.PI*2;let lo=0,hi=135;for(let k=0;k<14;k++){const r=(lo+hi)/2;if(alphaHeight(Math.cos(a)*r,Math.sin(a)*r)>-.7)lo=r;else hi=r;}const p=alphaWorld([Math.cos(a)*lo,0,Math.sin(a)*lo]);return [p[0],p[2]];});}
+export function alphaShoreline():[number,number][] {return Array.from({length:128},(_,i)=>{const a=i/128*Math.PI*2;let lo=0,hi=135;for(let k=0;k<20;k++){const r=(lo+hi)/2;if((alphaGroundSample(Math.cos(a)*r,Math.sin(a)*r)?.height??-Infinity)>-.7)lo=r;else hi=r;}const p=alphaWorld([Math.cos(a)*lo,0,Math.sin(a)*lo]);return [p[0],p[2]];});}

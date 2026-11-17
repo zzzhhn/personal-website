@@ -3,6 +3,13 @@ import { decodeTerrainArtifact, installTerrainArtifact, type TerrainVariant } fr
 export interface TerrainArtifactEntry { url: string; bytes: number; rawBytes: number; sha256: string }
 /** Fetch and validate before importing scene modules, some of which precompute placements. */
 export async function loadTerrainArtifact(variant: TerrainVariant, entry: TerrainArtifactEntry, fetcher: typeof fetch = fetch) {
+  const artifact = decodeTerrainArtifact(await downloadTerrainArtifact(entry, fetcher), variant);
+  installTerrainArtifact(artifact);
+  return artifact;
+}
+
+/** Shared transport validation for independently authored terrain regions. */
+export async function downloadTerrainArtifact(entry: TerrainArtifactEntry, fetcher: typeof fetch = fetch): Promise<ArrayBuffer> {
   const response = await fetcher(`${entry.url}?v=${entry.sha256}`);
   if (!response.ok) throw new Error(`Terrain download failed (${response.status})`);
   const compressed = await response.arrayBuffer();
@@ -13,7 +20,5 @@ export async function loadTerrainArtifact(variant: TerrainVariant, entry: Terrai
   const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream('gzip'));
   const raw = await new Response(stream).arrayBuffer();
   if (raw.byteLength !== entry.rawBytes) throw new Error('Terrain decompression length mismatch');
-  const artifact = decodeTerrainArtifact(raw, variant);
-  installTerrainArtifact(artifact);
-  return artifact;
+  return raw;
 }

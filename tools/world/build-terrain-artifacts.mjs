@@ -19,7 +19,7 @@ export async function ensureTerrainArtifacts({ check = false } = {}) {
   let previous;
   try { previous = JSON.parse(await readFile(manifestFile, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
   let valid = previous?.sourceHash === sourceHash;
-  if (valid) for (const variant of ['v4', 'v3']) {
+  if (valid) for (const variant of ['v4', 'v3', 'alpha']) {
     const entry = previous[variant];
     try {
       const bytes = await readFile(path.join(root, 'public', entry.url));
@@ -30,7 +30,7 @@ export async function ensureTerrainArtifacts({ check = false } = {}) {
   if (check) throw new Error('Stale or missing terrain artifacts: run node tools/world/build-terrain-artifacts.mjs');
   const manifest = { version: 1, sourceHash };
   await mkdir(path.join(root, 'public/assets/world/terrain'), { recursive: true });
-  for (const variant of ['v4', 'v3']) {
+  for (const variant of ['v4', 'v3', 'alpha']) {
     const { stdout } = await run(process.execPath, [script, `--variant=${variant}`], { cwd: root, maxBuffer: 8192 });
     manifest[variant] = JSON.parse(stdout);
   }
@@ -41,16 +41,24 @@ export async function ensureTerrainArtifacts({ check = false } = {}) {
 if (process.argv[1] && path.resolve(process.argv[1]) === script) {
   const variant = process.argv.find(a => a.startsWith('--variant='))?.split('=')[1];
   if (variant) {
-    if (!['v3', 'v4'].includes(variant)) throw new Error('Unknown terrain variant');
+    if (!['v3', 'v4', 'alpha'].includes(variant)) throw new Error('Unknown terrain variant');
     globalThis.window = { location: { search: `?layout=${variant}` } };
     const { register } = await import('node:module');
     register('./alpha-mine-tests/loader.mjs', import.meta.url);
-    const { buildTerrain, GRID, CELL } = await import('../../src/components/world/WorldLandform.ts');
-    const { encodeTerrainArtifact, decodeTerrainArtifact } = await import('../../src/components/world/terrain-artifact.ts');
-    const raw = encodeTerrainArtifact({ terrain: buildTerrain(), grid: GRID, cell: CELL, variant });
-    decodeTerrainArtifact(raw, variant);
+    let raw;
+    if (variant === 'alpha') {
+      const { alphaTerrainData } = await import('../../src/components/world/alpha-island/alpha-terrain.ts');
+      const { encodeAlphaTerrain, decodeAlphaTerrain } = await import('../../src/components/world/alpha-island/alpha-terrain-artifact.ts');
+      raw = encodeAlphaTerrain(alphaTerrainData());
+      decodeAlphaTerrain(raw);
+    } else {
+      const { buildTerrain, GRID, CELL } = await import('../../src/components/world/WorldLandform.ts');
+      const { encodeTerrainArtifact, decodeTerrainArtifact } = await import('../../src/components/world/terrain-artifact.ts');
+      raw = encodeTerrainArtifact({ terrain: buildTerrain(), grid: GRID, cell: CELL, variant });
+      decodeTerrainArtifact(raw, variant);
+    }
     const bytes = gzipSync(new Uint8Array(raw), { level: 9 });
-    const url = `/assets/world/terrain/mainland-${variant}.bin.gz`;
+    const url = `/assets/world/terrain/${variant === 'alpha' ? 'alpha' : 'mainland-' + variant}.bin.gz`;
     await atomic(path.join(root, 'public', url), bytes);
     process.stdout.write(JSON.stringify({ url, bytes: bytes.length, rawBytes: raw.byteLength, sha256: sha(bytes) }));
   } else {

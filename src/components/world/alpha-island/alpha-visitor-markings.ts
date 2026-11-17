@@ -1,14 +1,14 @@
 import {BufferGeometry,Color,Float32BufferAttribute,ShapeUtils,Vector2} from 'three';
 import {ALPHA_ORIGIN} from './alpha-layout';
-import {alphaHeight} from './alpha-terrain';
+import {alphaTerrainData} from './alpha-terrain';
 import {alphaVisitorDirections} from './alpha-visitor-path';
 type P={x:number;z:number};type Node=P&{y:number};
 const cross=(a:P,b:P,p:P)=>(b.x-a.x)*(p.z-a.z)-(b.z-a.z)*(p.x-a.x);
 function clip(poly:P[],a:P,b:P){const out:P[]=[];for(let i=0;i<poly.length;i++){const p=poly[i],q=poly[(i+1)%poly.length],u=cross(a,b,p),v=cross(a,b,q),inside=u>=-1e-9,next=v>=-1e-9;if(inside)out.push(p);if(inside!==next){const t=u/(u-v);out.push({x:p.x+(q.x-p.x)*t,z:p.z+(q.z-p.z)*t});}}return out;}
 /** Paint is clipped to the exact1.5m terrain triangles, then raised6mm. This is
  * an overlay only: no terrain/collider edits, ray targets, textures or light slots. */
-export function createAlphaVisitorMarkings(){const positions:number[]=[],colors:number[]=[],nx=Math.ceil(196/1.5),nz=Math.ceil(228/1.5),sx=196/nx,sz=228/nz,cache=new Map<string,Node>();
- const node=(i:number,j:number)=>{const key=i+','+j;let n=cache.get(key);if(!n){const x=-98+i*sx,z=-114+j*sz;n={x:Math.fround(x)+ALPHA_ORIGIN[0],y:Math.fround(alphaHeight(x,z)),z:Math.fround(z)+ALPHA_ORIGIN[2]};cache.set(key,n);}return n;};
+export function createAlphaVisitorMarkings(){const positions:number[]=[],colors:number[]=[],data=alphaTerrainData(),{nx,nz}=data,sx=196/nx,sz=228/nz,cache=new Map<string,Node>();
+ const node=(i:number,j:number)=>{const key=i+','+j;let n=cache.get(key);if(!n){const k=(j*(nx+1)+i)*3,p=data.positions;n={x:p[k]+ALPHA_ORIGIN[0],y:p[k+1],z:p[k+2]+ALPHA_ORIGIN[2]};cache.set(key,n);}return n;};
  const outline=[new Vector2(0,.58),new Vector2(-.31,.06),new Vector2(-.095,.06),new Vector2(-.095,-.48),new Vector2(.095,-.48),new Vector2(.095,.06),new Vector2(.31,.06)],faces=ShapeUtils.triangulateShape(outline,[]),markers=alphaVisitorDirections();
  for(const mark of markers){const [fx,fz]=mark.forward,polygon=outline.map(p=>({x:mark.p[0]+fz*p.x+fx*p.y,z:mark.p[1]-fx*p.x+fz*p.y})),color=new Color(mark.kind==='main'?'#f0dfb4':'#cbb894');
   for(const face of faces){const tri=face.map(i=>polygon[i]),loX=Math.min(...tri.map(p=>p.x)),hiX=Math.max(...tri.map(p=>p.x)),loZ=Math.min(...tri.map(p=>p.z)),hiZ=Math.max(...tri.map(p=>p.z));
