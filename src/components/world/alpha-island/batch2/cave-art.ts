@@ -5,6 +5,7 @@ import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW } from './cave-state';
 import { alphaGroundHeight } from '../alpha-terrain';
 import { createCaveEnvelopeGeometry, createCaveFloorFoundation } from './cave-envelope';
 import type { Vec3 } from '../../types';
+import { classifyCaveParts, requireCaveArtifact, type CaveArt } from './cave-artifact';
 
 const ROUTES = [ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END];
 // Inner portal is 7.3 m wide; even the shoulders begin 5.6 m above grade.
@@ -45,7 +46,8 @@ function prism(points: Vec3[]) {
   const g = new BufferGeometry(); g.setAttribute('position', new Float32BufferAttribute(points.flat(),3));
   g.setIndex(FACES.flatMap((_,i)=>i%3===0?[FACES[i],FACES[i+2],FACES[i+1]]:[])); g.computeVertexNormals(); return g;
 }
-export function createCaveArt() {
+export function createCaveArt(): CaveArt {
+  if (import.meta.env?.SSR === false) return requireCaveArtifact();
   const solid = new AlphaBuilder(), detail = new AlphaBuilder(), seams = new AlphaBuilder(), floor = new AlphaBuilder();
   const walkingFloor=createCaveFloorGeometry();
   solid.add(createCaveEnvelopeGeometry(alphaGroundHeight),'stone');
@@ -90,7 +92,7 @@ export function createCaveArt() {
   const q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw),cap:Vec3=[end[0]+Math.sin(yaw)*1.05,end[1]+3.2,end[2]+Math.cos(yaw)*1.05];
   solid.box('stone',cap,[7.5,6.4,1.3],.18,q);
   const muralPosition:Vec3=[end[0]+Math.sin(yaw)*.37,end[1],end[2]+Math.cos(yaw)*.37];
-  return { solid:solid.finish(),floor:floor.finish(),detail:detail.finish(),seams:seams.finish(),muralPosition,muralYaw:yaw+Math.PI };
+  return { solid:classifyCaveParts('solid',solid.finish()),floor:classifyCaveParts('floor',floor.finish()),detail:classifyCaveParts('detail',detail.finish()),seams:classifyCaveParts('seams',seams.finish()),muralPosition,muralYaw:yaw+Math.PI };
 }
 export function caveScaffold() {
   const b=new AlphaBuilder();

@@ -19,10 +19,12 @@ import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickup
 import { PICKUP_DISCOVERY_RADIUS } from '../../pickup-approach';
 import { heldPropPoint } from '../../accepted-action';
 import { startCaveLamp } from './cave-state';
+import { surfaceColliderBuffers, type StaticSurface } from '../../static-surface-asset';
+import type { CavePart } from './cave-artifact';
 import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
 const OWNER='alpha-echo-cave';
 const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
-type Parts={finish:AlphaFinish;geometry:BufferGeometry}[];
+type Parts=({finish:AlphaFinish;geometry:BufferGeometry}&Partial<StaticSurface>)[];
 function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:boolean;glow?:boolean}) {
   const materials=useMemo(()=>parts.map(p=>{const m=alphaMaterial(p.finish);
     if(wet&&p.finish==='stone'){m.color.set('#777c78');m.roughness=.71;}
@@ -30,11 +32,19 @@ function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:b
     if(glow&&(p.finish==='metal'||p.finish==='glass')){m.emissive.set('#e9a45a');m.emissiveIntensity=p.finish==='glass'?.65:.22;}
     return m;}),[parts,wet,glow]);
   useEffect(()=>()=>{materials.forEach(m=>m.dispose());},[materials]);
-  return <group name={name}>{parts.map((p,i)=><mesh key={p.finish} geometry={p.geometry} material={materials[i]} castShadow receiveShadow/>)}</group>;
+  return <group name={name}>{parts.map((p,i)=><mesh key={p.finish} geometry={p.geometry} material={materials[i]} userData={p.id?{surfaceId:p.id,collision:p.collision,surfaceRole:p.role}:undefined} castShadow receiveShadow/>)}</group>;
 }
-function SameMeshCollider({geometry}:{geometry:BufferGeometry}) {
-  const buffers=useMemo(()=>({v:new Float32Array(geometry.getAttribute('position').array),i:geometry.index?new Uint32Array(geometry.index.array):new Uint32Array(Array.from({length:geometry.getAttribute('position').count},(_,i)=>i))}),[geometry]);
-  return <TrimeshCollider args={[buffers.v,buffers.i]} friction={.9}/>;
+function SameMeshCollider({part}:{part:CavePart}) {
+  const buffers=useMemo(()=>surfaceColliderBuffers(part),[part]);
+  return buffers?<group name={`${part.id}/collider`} userData={{surfaceId:part.id,collision:part.collision,surfaceRole:part.role}}>
+    <TrimeshCollider args={[buffers.vertices,buffers.indices]} friction={.9}/>
+  </group>:null;
+}
+function StaticCraft({parts,name,bodyName,wet=false}:{parts:CavePart[];name:string;bodyName:string;wet?:boolean}) {
+  return <RigidBody type="fixed" colliders={false} userData={{solid:parts.some(p=>p.role==='enclosure'),surface:parts.some(p=>p.role==='floor')}} name={bodyName}>
+    <Craft parts={parts} name={name} wet={wet}/>
+    {parts.map(p=><SameMeshCollider key={p.id} part={p}/>)}
+  </RigidBody>;
 }
 function ChimeInteraction({index,onRing,enabled}:{index:CaveChime;onRing:(n:CaveChime)=>void;enabled:()=>boolean}) {
   useInteractable({id:`alpha-cave-chime-${index}`,position:alphaWorld(caveChimeTarget(index)),radius:1.45,kind:'exhibit',
@@ -167,12 +177,10 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     chimeRefs.current.forEach((g,i)=>{if(g)g.rotation.z=echoFromChime.current&&i===s.chime&&s.echoAge<2.5?Math.sin(s.echoAge*19)*Math.exp(-s.echoAge*1.8)*.15:0;});
   });
   return <group name="alpha-echo-cave-station-6">
-    <Craft parts={built.solid} name="alpha-cave-thick-faceted-rock-shell"/>
-    <Craft parts={built.floor} name="alpha-cave-walkable-graded-floor" wet/>
+    <StaticCraft parts={built.solid} name="alpha-cave-thick-faceted-rock-shell" bodyName="alpha-cave-solid-rock"/>
+    <StaticCraft parts={built.floor} name="alpha-cave-walkable-graded-floor" bodyName="alpha-cave-floor-support" wet/>
     <Craft parts={built.detail} name="alpha-cave-gravel-wetstone-moss" wet/>
     <Craft parts={built.seams} name="alpha-cave-warm-mineral-bedding" glow/>
-    <RigidBody type="fixed" colliders={false} userData={{solid:true}} name="alpha-cave-solid-rock">{built.solid.map(p=><SameMeshCollider key={p.finish} geometry={p.geometry}/>)}</RigidBody>
-    <RigidBody type="fixed" colliders={false} userData={{surface:true}} name="alpha-cave-floor-support">{built.floor.map(p=><SameMeshCollider key={p.finish} geometry={p.geometry}/>)}</RigidBody>
     <group position={CAVE_LAMP_HOME}><Craft parts={rack} name="alpha-cave-forged-lamp-hook"/><group ref={rackLamp} position={[.32,.72,0]}><Craft parts={lamp} name="alpha-cave-racked-miner-lamp" glow/></group>
       <RigidBody type="fixed" colliders={false} userData={{solid:true}}><CuboidCollider position={[0,.18,0]} args={[.41,.18,.375]}/><CuboidCollider position={[0,.98,0]} args={[.08,.68,.08]}/></RigidBody>
     </group>

@@ -13,7 +13,7 @@ const world = path.join(root, 'src/components/world');
 const roots = ['WorldLandform.ts', 'layout.ts', 'layout-v4.ts', 'alpha-mine-layout.ts', 'alpha-exchange-layout.ts', 'djc-club-layout.ts', 'factory/factory-layout.ts', 'attractions/attraction-layout.ts', 'attractions/coaster-track.ts', 'alpha-island/alpha-terrain.ts', 'alpha-island/alpha-visitor-path.ts', 'alpha-island/alpha-batch2-layout.ts', 'world-destinations.ts'];
 
 /** Fingerprint the complete local source graph, so a terrain helper edit cannot leave an old map. */
-export function snapshotInputs() {
+export function snapshotInputs(extraRoots = []) {
   const files = new Set([script]);
   function visit(file) {
     if (files.has(file)) return;
@@ -26,7 +26,7 @@ export function snapshotInputs() {
       visit(dependency);
     }
   }
-  roots.forEach(file => visit(path.join(world, file)));
+  [...roots, ...extraRoots].forEach(file => visit(path.join(world, file)));
   const sources = [...files].sort();
   const hash = createHash('sha256');
   for (const file of sources) hash.update(path.relative(root, file)).update('\0').update(readFileSync(file)).update('\0');
