@@ -1,11 +1,12 @@
 import { BufferGeometry, Float32BufferAttribute, IcosahedronGeometry, LatheGeometry, Quaternion, TorusGeometry, Vector2, Vector3 } from 'three';
 import { AlphaBuilder } from '../alpha-art';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2Segment } from '../alpha-batch2-layout';
-import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW } from './cave-state';
+import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, CAVE_LAMP_HOME } from './cave-state';
 import { alphaGroundHeight } from '../alpha-terrain';
 import { createCaveEnvelopeGeometry, createCaveFloorFoundation } from './cave-envelope';
 import type { Vec3 } from '../../types';
-import { classifyCaveParts, requireCaveArtifact, type CaveArt } from './cave-artifact';
+import { classifyCaveParts, requireCaveArtifact, requireCaveParts, type CaveArt, type CavePart } from './cave-artifact';
+import { castStaticSurface } from '../../static-surface-asset';
 
 const ROUTES = [ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END];
 // Inner portal is 7.3 m wide; even the shoulders begin 5.6 m above grade.
@@ -92,12 +93,32 @@ export function createCaveArt(): CaveArt {
   const q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw),cap:Vec3=[end[0]+Math.sin(yaw)*1.05,end[1]+3.2,end[2]+Math.cos(yaw)*1.05];
   solid.box('stone',cap,[7.5,6.4,1.3],.18,q);
   const muralPosition:Vec3=[end[0]+Math.sin(yaw)*.37,end[1],end[2]+Math.cos(yaw)*.37];
-  return { solid:classifyCaveParts('solid',solid.finish()),floor:classifyCaveParts('floor',floor.finish()),detail:classifyCaveParts('detail',detail.finish()),seams:classifyCaveParts('seams',seams.finish()),muralPosition,muralYaw:yaw+Math.PI };
+  return { solid:classifyCaveParts('solid',solid.finish()),floor:classifyCaveParts('floor',floor.finish()),detail:classifyCaveParts('detail',detail.finish()),seams:classifyCaveParts('seams',seams.finish()),
+    rack:caveLampRack(),scaffold:caveScaffold(),lamp:caveMinerLamp(),mural:caveMural(),chime0:caveChime(0),chime1:caveChime(1),chime2:caveChime(2),muralPosition,muralYaw:yaw+Math.PI,
+    rackPosition:[...CAVE_LAMP_HOME],scaffoldPosition:[...CAVE_CHIME_ANCHOR],scaffoldYaw:CAVE_CHIME_YAW };
 }
-export function caveScaffold() {
+export function caveScaffold(): CavePart[] {
+  if (import.meta.env?.SSR === false) return requireCaveParts('scaffold');
   const b=new AlphaBuilder();
+  // Keep the original .38 m top and all timber/chime anchors. Only the buried
+  // foot depth follows the actual floor/terrain triangles under its footprint.
+  const floor=createCaveFloorGeometry(),surfaces=classifyCaveParts('floor',[{finish:'stone',geometry:floor}]);
+  const footBottom=(x:number)=>{
+    let bottom=0;
+    for(let i=0;i<=4;i++)for(let j=0;j<=4;j++){
+      const lx=x-.32+i*.16,lz=-.37+j*.185;
+      const wx=CAVE_CHIME_ANCHOR[0]+Math.cos(CAVE_CHIME_YAW)*lx+Math.sin(CAVE_CHIME_YAW)*lz;
+      const wz=CAVE_CHIME_ANCHOR[2]-Math.sin(CAVE_CHIME_YAW)*lx+Math.cos(CAVE_CHIME_YAW)*lz;
+      const hit=castStaticSurface(surfaces,wx,CAVE_CHIME_ANCHOR[1]+2,wz,-1,10,'floor');
+      const support=Math.max(hit?.height??-Infinity,alphaGroundHeight(wx,wz));
+      bottom=Math.min(bottom,support-CAVE_CHIME_ANCHOR[1]-.035);
+    }
+    return bottom;
+  };
+  const bottoms=[footBottom(-1.12),footBottom(1.12)];floor.dispose();
   for(const x of [-1.12,1.12]) {
-    b.box('stone',[x,.19,0],[.64,.38,.74],.09);b.beam('wood',[x,.3,0],[x,3.55,0],.23,.29);
+    const bottom=bottoms[x<0?0:1];
+    b.box('stone',[x,(.38+bottom)/2,0],[.64,.38-bottom,.74],.09);b.beam('wood',[x,.3,0],[x,3.55,0],.23,.29);
     b.beam('darkwood',[x,.35,.16],[x,1.05,-.43],.13);
     b.beam('wood',[x,2.85,0],[x*.55,3.48,0],.14);
     for(const y of [.45,3.4])b.box('metal',[x,y,.165],[.28,.055,.035],.01);
@@ -108,9 +129,12 @@ export function caveScaffold() {
     b.add(new TorusGeometry(.11,.025,6,12),'metal',[x,3.36,.04]);
     b.beam('rope',[x,3.27,.05],[x,3.05,.05],.023);
   }
-  return b.finish();
+  return classifyCaveParts('scaffold',b.finish());
 }
-export function caveChime(index:number) {
+export function caveChime(index:number): CavePart[] {
+  if(index!==0&&index!==1&&index!==2)throw new RangeError('Unknown cave chime');
+  const group=`chime${index}` as 'chime0'|'chime1'|'chime2';
+  if (import.meta.env?.SSR === false) return requireCaveParts(group);
   const b=new AlphaBuilder(),height=.78+index*.07;
   // Profile returns along the inside wall: visible lip, hollow body and solid crown.
   const profile=[[0,0],[.12,0],[.2,-.08],[.23,-.2],[.23,-height],[.25,-height-.035],[.25,-height-.09],
@@ -118,21 +142,24 @@ export function caveChime(index:number) {
   b.add(new LatheGeometry(profile,14),'metal');
   for(const y of [-.22,-height+.14,-height-.04])b.add(new TorusGeometry(.235,.015,5,14),'metal',[0,y,0],new Quaternion().setFromAxisAngle(new Vector3(1,0,0),Math.PI/2));
   b.beam('rope',[0,-.1,0],[0,-1.65,0],.018);b.cyl('darkwood',[0,-1.65,0],.06,.18);
-  b.cyl('metal',[0,-height+.08,0],.055,.18);return b.finish();
+  b.cyl('metal',[0,-height+.08,0],.055,.18);return classifyCaveParts(group,b.finish());
 }
-export function caveMinerLamp() {
+export function caveMinerLamp(): CavePart[] {
+  if (import.meta.env?.SSR === false) return requireCaveParts('lamp');
   const b=new AlphaBuilder();b.cyl('darkwood',[0,.04,0],.2,.08);b.cyl('metal',[0,.1,0],.2,.035);
   b.cyl('glass',[0,.28,0],.135,.33);b.cyl('metal',[0,.47,0],.2,.075,.15);b.cyl('roof',[0,.54,0],.11,.055);
   for(const angle of [0,Math.PI/2,Math.PI,Math.PI*1.5])b.beam('metal',[Math.cos(angle)*.165,.12,Math.sin(angle)*.165],[Math.cos(angle)*.165,.48,Math.sin(angle)*.165],.025);
   b.add(new TorusGeometry(.17,.025,6,14,Math.PI),'metal',[0,.59,0]);
-  return b.finish();
+  return classifyCaveParts('lamp',b.finish());
 }
-export function caveLampRack() {
+export function caveLampRack(): CavePart[] {
+  if (import.meta.env?.SSR === false) return requireCaveParts('rack');
   const b=new AlphaBuilder();b.box('stone',[0,.18,0],[.82,.36,.75],.09);b.beam('darkwood',[0,.3,0],[0,1.65,0],.16);
   b.beam('wood',[0,1.58,0],[.36,1.58,0],.1);b.beam('wood',[0,1.3,0],[.3,1.58,0],.075);
-  b.add(new TorusGeometry(.07,.02,5,10),'metal',[.32,1.48,0]);return b.finish();
+  b.add(new TorusGeometry(.07,.02,5,10),'metal',[.32,1.48,0]);return classifyCaveParts('rack',b.finish());
 }
-export function caveMural() {
+export function caveMural(): CavePart[] {
+  if (import.meta.env?.SSR === false) return requireCaveParts('mural');
   const b=new AlphaBuilder();
   // Image-like relief uses the rock face as its backing, rather than a floating sign.
   const lines:Vec3[][]=[[[ -2.4,2.3,.035],[-.9,3.7,.035],[.4,2.3,.035]],[[.2,2.3,.035],[1.1,3.1,.035],[2.4,2.3,.035]]];
@@ -140,7 +167,7 @@ export function caveMural() {
   for(const line of lines)for(let i=1;i<line.length;i++)b.beam('metal',line[i-1],line[i],.045);
   b.add(new TorusGeometry(.33,.035,5,14),'metal',[1.45,3.9,.035]);
   for(let i=0;i<8;i++){const a=i*Math.PI/4;b.beam('metal',[1.45+Math.cos(a)*.47,3.9+Math.sin(a)*.47,.035],[1.45+Math.cos(a)*.66,3.9+Math.sin(a)*.66,.035],.03);}
-  return b.finish();
+  return classifyCaveParts('mural',b.finish());
 }
 export function caveChimeTarget(index:number):Vec3 {
   const x=(index-1)*.65;

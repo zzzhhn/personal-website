@@ -5,7 +5,8 @@ import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { findPickupStand, pickupGroundRoute, pickupApproachMotion, pickupStandingRing, PICKUP_DISCOVERY_RADIUS } from './pickup-approach.ts';
 import { interactableProxy, registerInteractable, nearestInteractable } from './WorldInteract.ts';
 import { caveLampApproach, caveLampPickupReach } from './alpha-island/batch2/batch2-station-feedback.ts';
-import { createCaveFloorGeometry } from './alpha-island/batch2/cave-art.ts';
+import { createCaveFloorGeometry, caveLampRack } from './alpha-island/batch2/cave-art.ts';
+import { surfaceColliderBuffers } from './static-surface-asset.ts';
 import { CAVE_LAMP_HOME } from './alpha-island/batch2/cave-state.ts';
 import { alphaPickupApproach, alphaActionTarget } from './alpha-island/alpha-action-reach.ts';
 import { alphaGroundHeight, alphaTerrainData } from './alpha-island/alpha-terrain.ts';
@@ -130,19 +131,19 @@ function supportedActor(world, x, z, surfaceY) {
 const bodyPosition=body=>{const p=body.translation();return [p.x,p.y,p.z];};
 
 test('the actual cave floor and rack colliders admit a short natural lamp approach', () => {
-  const geometry=createCaveFloorGeometry(),positions=geometry.attributes.position.array,indices=geometry.index.array;
+  const geometry=createCaveFloorGeometry(),positions=geometry.attributes.position.array,indices=geometry.index.array,rack=caveLampRack();
   const world=new R.World({x:0,y:-9.81,z:0});
   try {
     world.createCollider(R.ColliderDesc.trimesh(new Float32Array(positions),new Uint32Array(indices)));
-    world.createCollider(R.ColliderDesc.cuboid(.41,.18,.375).setTranslation(CAVE_LAMP_HOME[0],CAVE_LAMP_HOME[1]+.18,CAVE_LAMP_HOME[2]));
-    world.createCollider(R.ColliderDesc.cuboid(.08,.68,.08).setTranslation(CAVE_LAMP_HOME[0],CAVE_LAMP_HOME[1]+.98,CAVE_LAMP_HOME[2]));
+    const rackBody=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...CAVE_LAMP_HOME));
+    for(const part of rack){const buffers=surfaceColliderBuffers(part);if(buffers)world.createCollider(R.ColliderDesc.trimesh(buffers.vertices,buffers.indices),rackBody);}
     const hook=[CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]];
     const body=supportedActor(world,hook[0]+1.6,hook[2],CAVE_LAMP_HOME[1]+.35),from=bodyPosition(body);
     const lamp=caveLampApproach(hook),stand=findPickupStand(world,R,body,from,lamp);
     assert.equal(lamp.ready(from),false);assert.ok(stand,'natural lamp-side discovery must find a supported grip stance');
     assert.equal(lamp.ready(stand),true);assert.deepEqual(bodyPosition(body),from);
     assert.ok(stand[0]-(CAVE_LAMP_HOME[0]+.41)>=PLAYER_RADIUS-.001,'preserve the rack base collision');
-  } finally {world.free();geometry.dispose();}
+  } finally {world.free();geometry.dispose();rack.forEach(p=>p.geometry.dispose());}
 });
 
 function addActualTerrainPatch(world,x,z) {

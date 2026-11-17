@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceHash": "2fa061a83bff8abc1ee3334386f8beaced40f4ed7d34a0bfbf6685a7546fa987",
+  "sourceHash": "b77002e6739c6275832326c6f75057a8b3ecdceb307eec1f3a5c4243846c9e1a",
   "v4": {
     "url": "/assets/world/terrain/mainland-v4.bin.gz",
     "bytes": 8061861,
@@ -21,8 +21,8 @@
   },
   "cave": {
     "url": "/assets/world/terrain/cave.bin.gz",
-    "bytes": 597876,
-    "rawBytes": 4156984,
-    "sha256": "8ba00e74278a35b3130bfd5e79637eb0c72aeb6e394ccb6faded6adfbd155025"
+    "bytes": 919482,
+    "rawBytes": 7675816,
+    "sha256": "179957b8b7b88896dfe094c97f21caddf83d44b22ff2117dbaa05ea17217f6a0"
   }
 }

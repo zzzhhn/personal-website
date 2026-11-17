@@ -3,6 +3,7 @@ import { BufferAttribute, BufferGeometry } from 'three';
 export type CollisionClass = 'solid' | 'pushable' | 'soft' | 'none';
 export interface StaticSurface {
   id: string;
+  space: string;
   collision: CollisionClass;
   role: 'floor' | 'enclosure' | 'decoration';
   reason: string;
@@ -26,9 +27,9 @@ export function encodeStaticSurfaces(surfaces: StaticSurface[], metadata: unknow
     });
     const index = s.geometry.index ? Uint32Array.from(s.geometry.index.array) : new Uint32Array();
     payload.push(index);
-    return { id: s.id, collision: s.collision, role: s.role, reason: s.reason, attributes, indices: index.length };
+    return { id: s.id, space: s.space, collision: s.collision, role: s.role, reason: s.reason, attributes, indices: index.length };
   });
-  const header = new TextEncoder().encode(JSON.stringify({ version: 1, metadata, records }));
+  const header = new TextEncoder().encode(JSON.stringify({ version: 2, metadata, records }));
   check(header.length <= 65536);
   const buffer = new ArrayBuffer(align(8 + header.length) + payload.reduce((n, a) => n + a.byteLength, 0));
   const view = new DataView(buffer); view.setUint32(0, MAGIC, true); view.setUint32(4, header.length, true);
@@ -46,7 +47,7 @@ export function decodeStaticSurfaces(buffer: ArrayBuffer): { surfaces: StaticSur
   const view = new DataView(buffer), size = view.getUint32(4, true);
   check(view.getUint32(0, true) === MAGIC && size <= 65536 && size + 8 <= buffer.byteLength);
   const h = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(new Uint8Array(buffer, 8, size)));
-  check(h.version === 1 && Array.isArray(h.records) && h.records.length > 0 && h.records.length <= 256);
+  check(h.version === 2 && Array.isArray(h.records) && h.records.length > 0 && h.records.length <= 256);
   let offset = align(8 + size);
   const read = (length: number, index = false) => {
     check(Number.isSafeInteger(length) && length >= 0 && offset + length * 4 <= buffer.byteLength);
@@ -57,6 +58,7 @@ export function decodeStaticSurfaces(buffer: ArrayBuffer): { surfaces: StaticSur
   try {
     for (const r of h.records) {
       check(typeof r.id === 'string' && r.id.length > 0 && !ids.has(r.id)); ids.add(r.id);
+      check(typeof r.space === 'string' && r.space.trim().length > 0);
       // Dynamic pushables belong in a dynamic-asset contract, never a static trimesh.
       check(['solid', 'soft', 'none'].includes(r.collision));
       check(['floor', 'enclosure', 'decoration'].includes(r.role));
@@ -64,7 +66,7 @@ export function decodeStaticSurfaces(buffer: ArrayBuffer): { surfaces: StaticSur
       check(r.role === 'decoration' || r.collision === 'solid');
       check(Array.isArray(r.attributes) && r.attributes.length > 0 && r.attributes.length <= 16);
       const geometry = new BufferGeometry(), names = new Set<string>();
-      surfaces.push({ id: r.id, collision: r.collision, role: r.role, reason: r.reason, geometry });
+      surfaces.push({ id: r.id, space: r.space, collision: r.collision, role: r.role, reason: r.reason, geometry });
       for (const a of r.attributes) {
         check(typeof a.name === 'string' && /^[a-zA-Z][a-zA-Z0-9_]*$/.test(a.name) && !names.has(a.name)); names.add(a.name);
         check(Number.isSafeInteger(a.itemSize) && a.itemSize >= 1 && a.itemSize <= 4 && a.length > 0 && a.length % a.itemSize === 0);
@@ -101,6 +103,8 @@ export function surfaceColliderBuffers(surface: StaticSurface) {
  * Return source identity and original triangle for contact-scan provenance. */
 export function castStaticSurface(surfaces: StaticSurface[], x: number, y: number, z: number, direction: -1 | 1, distance: number, role?: StaticSurface['role']) {
   if (![x, y, z, distance].every(Number.isFinite) || distance < 0 || (direction !== -1 && direction !== 1)) return null;
+  const spaces = new Set(surfaces.filter(s => s.collision === 'solid' && (!role || s.role === role)).map(s => s.space));
+  if (spaces.size > 1) throw new Error('Surface survey requires one coordinate space; apply instance transforms before combining assets');
   let result: { id: string; role: StaticSurface['role']; triangle: number; height: number; normalY: number; distance: number } | null = null;
   for (const s of surfaces) {
     if (s.collision !== 'solid' || (role && s.role !== role)) continue;

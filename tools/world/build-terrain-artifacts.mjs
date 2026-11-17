@@ -48,10 +48,10 @@ if (process.argv[1] && path.resolve(process.argv[1]) === script) {
     let raw;
     if (variant === 'cave') {
       const { createCaveArt } = await import('../../src/components/world/alpha-island/batch2/cave-art.ts');
-      const { encodeCaveArtifact, decodeCaveArtifact } = await import('../../src/components/world/alpha-island/batch2/cave-artifact.ts');
+      const { encodeCaveArtifact, decodeCaveArtifact, CAVE_PART_GROUPS } = await import('../../src/components/world/alpha-island/batch2/cave-artifact.ts');
       const art = createCaveArt(); raw = encodeCaveArtifact(art);
       const decoded = decodeCaveArtifact(raw);
-      for (const a of [art, decoded]) for (const key of ['solid', 'floor', 'detail', 'seams']) a[key].forEach(p => p.geometry.dispose());
+      for (const a of [art, decoded]) for (const key of CAVE_PART_GROUPS) a[key].forEach(p => p.geometry.dispose());
     } else if (variant === 'alpha') {
       const { alphaTerrainData } = await import('../../src/components/world/alpha-island/alpha-terrain.ts');
       const { encodeAlphaTerrain, decodeAlphaTerrain } = await import('../../src/components/world/alpha-island/alpha-terrain-artifact.ts');

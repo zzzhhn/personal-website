@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { BufferGeometry, DoubleSide, Group, Mesh, MeshBasicMaterial, Vector3 } from 'three';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
+import { DoubleSide, Group, Mesh, MeshBasicMaterial, Vector3 } from 'three';
 import { useInteractable } from '../../WorldInteract';
 import { useWorldStore } from '../../store';
 import { useWorldAudioSettings } from '../../world-audio-settings';
@@ -10,21 +10,20 @@ import { guideActionHand, releaseGuideActionHand } from '../../rides/guide-actio
 import { cancelAlphaHand } from '../alpha-state';
 import { alphaLocal, alphaWorld } from '../alpha-layout';
 import { alphaMaterial } from '../alpha-materials';
-import type { AlphaFinish } from '../alpha-art';
 import type { Vec3 } from '../../types';
-import { caveChime, caveChimeTarget, caveLampRack, caveMinerLamp, caveMural, caveScaffold, createCaveArt } from './cave-art';
+import { caveChimeTarget, createCaveArt } from './cave-art';
 import { createCaveAudio } from './cave-audio';
-import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
+import { CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
 import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice,caveLampApproach } from './batch2-station-feedback';
 import { PICKUP_DISCOVERY_RADIUS } from '../../pickup-approach';
 import { heldPropPoint } from '../../accepted-action';
 import { startCaveLamp } from './cave-state';
-import { surfaceColliderBuffers, type StaticSurface } from '../../static-surface-asset';
+import { surfaceColliderBuffers } from '../../static-surface-asset';
 import type { CavePart } from './cave-artifact';
 import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
 const OWNER='alpha-echo-cave';
 const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
-type Parts=({finish:AlphaFinish;geometry:BufferGeometry}&Partial<StaticSurface>)[];
+type Parts=CavePart[];
 function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:boolean;glow?:boolean}) {
   const materials=useMemo(()=>parts.map(p=>{const m=alphaMaterial(p.finish);
     if(wet&&p.finish==='stone'){m.color.set('#777c78');m.roughness=.71;}
@@ -32,11 +31,11 @@ function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:b
     if(glow&&(p.finish==='metal'||p.finish==='glass')){m.emissive.set('#e9a45a');m.emissiveIntensity=p.finish==='glass'?.65:.22;}
     return m;}),[parts,wet,glow]);
   useEffect(()=>()=>{materials.forEach(m=>m.dispose());},[materials]);
-  return <group name={name}>{parts.map((p,i)=><mesh key={p.finish} geometry={p.geometry} material={materials[i]} userData={p.id?{surfaceId:p.id,collision:p.collision,surfaceRole:p.role}:undefined} castShadow receiveShadow/>)}</group>;
+  return <group name={name}>{parts.map((p,i)=><mesh key={p.finish} geometry={p.geometry} material={materials[i]} userData={{surfaceId:p.id,surfaceSpace:p.space,collision:p.collision,surfaceRole:p.role,collisionReason:p.reason}} castShadow receiveShadow/>)}</group>;
 }
 function SameMeshCollider({part}:{part:CavePart}) {
   const buffers=useMemo(()=>surfaceColliderBuffers(part),[part]);
-  return buffers?<group name={`${part.id}/collider`} userData={{surfaceId:part.id,collision:part.collision,surfaceRole:part.role}}>
+  return buffers?<group name={`${part.id}/collider`} userData={{surfaceId:part.id,surfaceSpace:part.space,collision:part.collision,surfaceRole:part.role}}>
     <TrimeshCollider args={[buffers.vertices,buffers.indices]} friction={.9}/>
   </group>:null;
 }
@@ -55,7 +54,7 @@ function ChimeInteraction({index,onRing,enabled}:{index:CaveChime;onRing:(n:Cave
 /** Mount once inside the existing ALPHA_ORIGIN group. Floor, shell and solid
  * collision share the authored mesh. No cap or collider covers the daylight exit. */
 export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;onComplete?:()=>void}={}) {
-  const built=useMemo(createCaveArt,[]),rack=useMemo(caveLampRack,[]),lamp=useMemo(caveMinerLamp,[]),scaffold=useMemo(caveScaffold,[]),mural=useMemo(caveMural,[]),chimes=useMemo(()=>[0,1,2].map(caveChime),[]);
+  const built=useMemo(createCaveArt,[]),{rack,lamp,scaffold,mural}=built,chimes=useMemo(()=>[built.chime0,built.chime1,built.chime2],[built]);
   const state=useRef(createCaveState()),audio=useMemo(createCaveAudio,[]),handLamp=useRef<Group>(null),rackLamp=useRef<Group>(null),rings=useRef<(Mesh|null)[]>([]),chimeRefs=useRef<(Group|null)[]>([]);
   const echoFromChime=useRef(true);
   const sequence=useRef(caveEchoSequence(0)),target=useRef<Vec3|null>(null),cancelling=useRef(false);
@@ -181,17 +180,15 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     <StaticCraft parts={built.floor} name="alpha-cave-walkable-graded-floor" bodyName="alpha-cave-floor-support" wet/>
     <Craft parts={built.detail} name="alpha-cave-gravel-wetstone-moss" wet/>
     <Craft parts={built.seams} name="alpha-cave-warm-mineral-bedding" glow/>
-    <group position={CAVE_LAMP_HOME}><Craft parts={rack} name="alpha-cave-forged-lamp-hook"/><group ref={rackLamp} position={[.32,.72,0]}><Craft parts={lamp} name="alpha-cave-racked-miner-lamp" glow/></group>
-      <RigidBody type="fixed" colliders={false} userData={{solid:true}}><CuboidCollider position={[0,.18,0]} args={[.41,.18,.375]}/><CuboidCollider position={[0,.98,0]} args={[.08,.68,.08]}/></RigidBody>
+    <group position={built.rackPosition}><StaticCraft parts={rack} name="alpha-cave-forged-lamp-hook" bodyName="alpha-cave-lamp-rack-solid"/><group ref={rackLamp} position={[.32,.72,0]}><Craft parts={lamp} name="alpha-cave-racked-miner-lamp" glow/></group>
     </group>
     <group ref={handLamp} visible={false}><Craft parts={lamp} name="alpha-cave-held-miner-lamp" glow/></group>
-    <group position={CAVE_CHIME_ANCHOR} rotation={[0,CAVE_CHIME_YAW,0]}>
-      <Craft parts={scaffold} name="alpha-cave-joined-timber-chime-frame"/>
+    <group position={built.scaffoldPosition} rotation={[0,built.scaffoldYaw,0]}>
+      <StaticCraft parts={scaffold} name="alpha-cave-joined-timber-chime-frame" bodyName="alpha-cave-chime-frame-solid"/>
       {chimes.map((parts,i)=><group key={i} ref={g=>{chimeRefs.current[i]=g;}} position={[(i-1)*.65,3.05,.05]}><Craft parts={parts} name={`alpha-cave-bronze-chime-${i}`}/></group>)}
-      <RigidBody type="fixed" colliders={false} userData={{solid:true}}>{[-1.12,1.12].map(x=><group key={x}><CuboidCollider position={[x,.19,0]} args={[.32,.19,.37]}/><CuboidCollider position={[x,1.93,0]} args={[.115,1.63,.145]}/></group>)}<CuboidCollider position={[0,3.56,0]} args={[1.325,.13,.175]}/></RigidBody>
     </group>
     <group position={built.muralPosition} rotation={[0,built.muralYaw,0]}><Craft parts={mural} name="alpha-cave-carved-mountain-water-sun-mural" glow/></group>
     {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring} enabled={canExplore}/>)}
-    {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
+    {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`} userData={{surfaceId:`alpha-cave/echo-ring/${i}`,surfaceSpace:'alpha-cave/echo-ring',collision:'none',surfaceRole:'decoration',collisionReason:'Transient camera-facing echo guide; no physical obstruction'}}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
   </group>;
 }
