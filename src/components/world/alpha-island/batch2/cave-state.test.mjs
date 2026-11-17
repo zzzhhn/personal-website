@@ -2,17 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
 import { existsSync } from 'node:fs';
-import { createCaveState, cancelCaveState, tickCaveState, startCaveEcho, caveEchoSequence, caveRingPulse, caveNear, CAVE_ECHO_SECONDS } from './cave-state.ts';
+import { createCaveState, startCaveLamp, cancelCaveState, tickCaveState, startCaveEcho, caveEchoSequence, caveRingPulse, caveNear, CAVE_ECHO_SECONDS } from './cave-state.ts';
 
-test('lamp requires measured hand contact; interruption and failed reach return it to hook',()=>{
-  const s=createCaveState();s.lamp='reaching';tickCaveState(s,.08,Infinity);assert.equal(s.lamp,'reaching');
-  tickCaveState(s,.08,.04);assert.equal(s.lamp,'carried');cancelCaveState(s);assert.equal(s.lamp,'rack');
-  assert.equal(s.echoAge,CAVE_ECHO_SECONDS);s.lamp='reaching';for(let i=0;i<40;i++)tickCaveState(s,.08,Infinity);
-  assert.equal(s.lamp,'rack');
+test('an accepted lamp pickup completes after its short animation; a lost safe stance cancels',()=>{
+  const s=createCaveState();assert.equal(startCaveLamp(s),true);assert.equal(startCaveLamp(s),false);
+  tickCaveState(s,.08,true);assert.equal(s.lamp,'reaching');
+  for(let i=0;i<4;i++)tickCaveState(s,.08,true);
+  assert.equal(s.lamp,'carried');cancelCaveState(s);assert.equal(s.lamp,'rack');
+  assert.equal(s.echoAge,CAVE_ECHO_SECONDS);startCaveLamp(s);tickCaveState(s,.08,false);
+  for(let i=0;i<40;i++)tickCaveState(s,.08,true);
+  assert.equal(s.lamp,'rack','no delayed pickup after leaving the rack');
 });
 test('echo directions differ, delayed rings agree with audio events and hit rate is bounded',()=>{
   const s=createCaveState();assert.equal(startCaveEcho(s,0),true);assert.equal(startCaveEcho(s,1),false);
-  for(let i=0;i<10;i++)tickCaveState(s,.08,Infinity);assert.equal(startCaveEcho(s,2),true);
+  for(let i=0;i<10;i++)tickCaveState(s,.08);assert.equal(startCaveEcho(s,2),true);
   const through=caveEchoSequence(0),dull=caveEchoSequence(2);assert.equal(through.length,4);assert.equal(dull.length,4);
   assert.deepEqual(through.at(-1).position,[10,33.7,-56]);assert.deepEqual(dull.at(-1).position,[-19,29.2,-49]);
   for(const echo of [...through,...dull]){assert.equal(caveRingPulse(echo.delay-.01,echo.delay),null);assert.ok(caveRingPulse(echo.delay,echo.delay));assert.equal(caveRingPulse(echo.delay+1.11,echo.delay),null);}

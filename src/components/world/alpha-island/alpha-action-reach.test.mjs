@@ -108,18 +108,18 @@ test('first cairn addition retains its original arc and has a supported planted 
   console.log(JSON.stringify({firstStoneStand:stand,maxPalmError:maxError,contactThreshold:.06}));
 });
 
-test('carry release stays at the live player position and rejects cancellation, missing palms and foreign owners',()=>{
-  let position=[226.35,83.82,231.17],carried=true,owner='alpha-island',target=[226.8,84.16,231.41],palm=[...target],count=0;
-  const canRelease=()=>carried&&alphaMeasuredHandError(palm,target,owner)<=.14;
+test('carry release uses the live player anchor and preserves ownership and single use without a palm gate',()=>{
+  let position=[226.35,83.82,231.17],carried=true,owner='alpha-island',count=0;
+  const canRelease=()=>carried&&owner==='alpha-island';
   const item=alphaLanternReleaseInteraction(()=>position,canRelease,()=>{count++;carried=false;});
   const first=item.position;
-  position=[250,84,250];target=alphaLanternCarryTarget(position,Math.PI/3);palm=[...target];
+  position=[250,84,250];
   assert.deepEqual(item.position,position);assert.notEqual(item.position,first);
   assert.deepEqual(first,[226.35,83.82,231.17],'previous anchor is a snapshot');
-  for(const invalid of [()=>{palm=null;},()=>{palm=[...target];owner='alpha-echo-cave';},()=>{owner='alpha-island';palm=[target[0]+.15,target[1],target[2]];}]){
+  for(const invalid of [()=>{owner='alpha-echo-cave';},()=>{owner='alpha-island';carried=false;}]){
     invalid();assert.equal(item.enabled(),false);item.onInteract();assert.equal(count,0);
   }
-  palm=[...target];assert.equal(item.enabled(),true);item.onInteract();assert.equal(count,1);
+  carried=true;assert.equal(item.enabled(),true);item.onInteract();assert.equal(count,1);
   item.onInteract();assert.equal(count,1,'one carried lantern releases once');
 });
 

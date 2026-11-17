@@ -20,7 +20,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | --- | --- | --- |
 | Terrain authority | Build-produced, versioned mesh data drives render, physics, placement and support queries; full-map contact/clearance scan from those same triangles; no runtime placement fallback to authoring heights | Not migrated; existing real-mesh queries located |
 | Collision provenance | Visible meshes explicitly classified solid/pushable/soft/none, coverage fails on omissions, geometry/transform provenance connects colliders to visible assets | Not migrated; mixed implementations confirmed |
-| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | First entry-point migration implemented; venue action internals still pending |
+| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry implemented; Alpha six actions and cave lamp migrated; camp, mine and other adapters pending |
 | Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Not migrated; current coupling confirmed |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | Not migrated; behavior tests added for first change, visual suite pending |
 | Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Pending actual target device; do not substitute this machine |
@@ -29,7 +29,7 @@ Do not call this program complete after a local repair. The five pipeline change
 
 `interaction-offer.ts` supplies the shared eligibility query used by E discovery, Q selection, and activation. It checks live actor ownership, object enablement, distance, height, visibility and a safe stance. The generic resolver imports venue types/state nowhere. Physics stance searches cache for at most 120 ms while the actor and target remain nearly stationary; activation always rechecks. Regular signs incur no stance search.
 
-This removes one concrete false prompt, not all interaction failure modes. A dynamic obstacle can invalidate an offer after it was drawn; E must then recheck and report the changed route, not teleport through the obstacle. Existing post-approach palm-contact logic and its timeouts still need migration. No claim of universal action success is made until those adapters are migrated and exercised.
+This removes one concrete false prompt, not all interaction failure modes. A dynamic obstacle can invalidate an offer after it was drawn; E must then recheck and report the changed route, not teleport through the obstacle. Post-approach palm-contact logic is being migrated in batches below. No claim of universal action success is made until all adapters are migrated and exercised.
 
 Behavior verification covers a real Rapier floor gap, its supported counterpart, blocked/unblocked offers, Q selection, actor locks, changed target positions, adapter replacement, invalid coordinates, cache bounds and activation revalidation. Existing pickup/collision tests remain useful. Do not delete them merely because the review proposed fewer tests.
 
@@ -40,6 +40,18 @@ Behavior verification covers a real Rapier floor gap, its supported counterpart,
 - `npm run build`: passed after the final cache correction, eight routes built.
 - No new textures, models, lights, passes or quality changes. No browser/player or M3 Air performance acceptance claimed. Existing runtime chunk-size warning is unresolved.
 - Live-getter adapters are explicitly tested so allocating a new approach descriptor on read cannot defeat the 120 ms probe cache. A changed stance predicate invalidates a cached positive result; an explicit activation always bypasses the cache.
+
+## Batch 2: accepted action lifecycle
+
+`accepted-action.ts` separates logical completion from IK telemetry. An accepted action has a finite local animation duration, one commit edge, and a terminal cancellation state. It has no venue, React, physics or rendering dependency. Callers must still supply live eligibility; the clock does not authorize remote interaction or bypass a collider.
+
+Migrated: Alpha bell, sand table, tree rope, wind gate, cairn stone, paper lantern, and the cave miner lamp. Existing safe-stance approach gates remain. The six Alpha effects now commit in `alpha-state.ts`, where they are behavior-tested independently of the rendered hand. Walking away before completion, losing ground, cancelling or a foreign hand owner prevents the effect. Stone placement keeps its original arc. Paper lantern release requires a current held object and owner, not a palm-error threshold. No new textures, lights or quality changes.
+
+Held lanterns use the authored hand socket if the animation sample is temporarily unavailable, so their logical ownership does not become an invisible prop or a missing light. This fallback and state behavior are tested; rendered timing/attachment quality still requires player review.
+
+Verification: 46 behavioral/physical/rig tests passed across `accepted-action`, `interaction-offer`, `interact-lifecycle`, `pickup-approach`, `alpha-state`, `alpha-action-reach`, `alpha-batch2-lifecycle`, `cave-state`, `cave-lamp-reach` and `batch2-station-feedback`. TypeScript and the production build passed (eight routes; existing large-chunk warning remains). The pre-existing palm-contact tests for **visual reach** remain useful, while tests that required logical pickup failure on missing palm have been replaced with accepted completion/cancellation tests.
+
+Still pending: camp dumbbell and suitcase pickup/hold, tools and remaining venue-specific actions. Camp journal already completes without a palm-contact predicate but still needs the broader registry/lifecycle migration. This is not evidence that the global interaction contract is finished.
 
 ## Next work
 

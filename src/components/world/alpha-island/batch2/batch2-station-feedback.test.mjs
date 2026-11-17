@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createShallowsArrivalReceipts,takeShallowsArrival,CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupNotice } from './batch2-station-feedback.ts';
 import { createShallowsState,pushShallowsStone,stepShallowsStone,resetShallows,shallowsStonePosition,SHALLOWS_DECK_Y } from './shallows-state.ts';
-import { createCaveState,tickCaveState,cancelCaveState } from './cave-state.ts';
+import { createCaveState,startCaveLamp,tickCaveState,cancelCaveState } from './cave-state.ts';
 
 const safe=[-43.6,12.82,-58.45];
 const finishStone=(state,index)=>{
@@ -52,21 +52,23 @@ test('bridge confirmation waits for every actual body pose even if all logical s
   assert.equal(takeShallowsArrival(receipts,state,6,0).bridge,true);
 });
 
-test('lamp operation hint requires real palm contact and never fires on timeout, cancellation or later carry frames',()=>{
+test('lamp operation hint fires once on accepted completion, never on cancellation or later carry frames',()=>{
   const state=createCaveState();
-  const tick=error=>{const was=state.lamp;tickCaveState(state,.08,error);return caveLampPickupNotice(was,state.lamp);};
-  state.lamp='reaching';
-  for(let i=0;i<40;i++)assert.equal(tick(Infinity),null);
+  const tick=eligible=>{const was=state.lamp;tickCaveState(state,.08,eligible);return caveLampPickupNotice(was,state.lamp);};
+  startCaveLamp(state);
+  assert.equal(tick(false),null);
+  for(let i=0;i<40;i++)assert.equal(tick(true),null);
   assert.equal(state.lamp,'rack');
-  state.lamp='reaching';state.reachTime=0;
-  assert.equal(tick(.13),null);
-  assert.ok(tick(.04));assert.equal(state.lamp,'carried');
-  assert.equal(tick(.04),null);
+  startCaveLamp(state);
+  for(let i=0;i<4;i++)assert.equal(tick(true),null);
+  assert.ok(tick(true));assert.equal(state.lamp,'carried');
+  assert.equal(tick(true),null);
   const was=state.lamp;cancelCaveState(state);
   assert.equal(caveLampPickupNotice(was,state.lamp),null);
-  state.lamp='reaching';cancelCaveState(state);
+  startCaveLamp(state);cancelCaveState(state);
   assert.equal(caveLampPickupNotice('reaching',state.lamp),null);
-  state.lamp='reaching';assert.ok(tick(.04),'pickup can be completed again after cancellation');
+  startCaveLamp(state);for(let i=0;i<4;i++)tick(true);
+  assert.ok(tick(true),'pickup can be completed again after cancellation');
 });
 
 test('live lamp labels use distinct immutable snapshots and return requires ownership of the carried lamp',()=>{

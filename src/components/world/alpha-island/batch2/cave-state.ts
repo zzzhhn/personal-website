@@ -1,6 +1,7 @@
 import type { Vec3 } from '../../types';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, batch2Segment } from '../alpha-batch2-layout.ts';
 import { createCaveExploration, startCaveExploration, cancelCaveExploration } from './cave-exploration';
+import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from '../../accepted-action';
 
 export const CAVE_ECHO_SECONDS = 4.8;
 // Inside the existing cave floor, left of the through-route. The full .82 x .75 m
@@ -32,24 +33,29 @@ export function caveNear(position: readonly number[], margin = 0) {
     Math.hypot(position[0] - CAVE_CHIME_ANCHOR[0], position[2] - CAVE_CHIME_ANCHOR[2])) < 6.5 + margin
     && position[1] > 19 && position[1] < 43;
 }
-export const createCaveState = () => ({ lamp: 'rack' as 'rack' | 'reaching' | 'carried', reachTime: 0,
+export const createCaveState = () => ({ lamp: 'rack' as 'rack' | 'reaching' | 'carried', pickup: null as AcceptedAction | null,
   echoAge: CAVE_ECHO_SECONDS, chime: 0 as CaveChime, revision: 0, exploration: createCaveExploration() });
 export type CaveState = ReturnType<typeof createCaveState>;
+export function startCaveLamp(s: CaveState) {
+  if (s.lamp !== 'rack') return false;
+  s.pickup = acceptAction(); s.lamp = 'reaching';
+  return true;
+}
 export function cancelCaveState(s: CaveState) {
-  s.lamp = 'rack'; s.reachTime = 0; s.echoAge = CAVE_ECHO_SECONDS; s.revision++;
+  cancelAcceptedAction(s.pickup); s.pickup = null;
+  s.lamp = 'rack'; s.echoAge = CAVE_ECHO_SECONDS; s.revision++;
   cancelCaveExploration(s.exploration);
 }
 export function startCaveEcho(s: CaveState, chime: CaveChime) {
   if (s.echoAge < .65) return false;
   s.chime = chime; s.echoAge = 0; s.revision++; startCaveExploration(s.exploration, chime); return true;
 }
-export function tickCaveState(s: CaveState, dt: number, handError: number) {
+export function tickCaveState(s: CaveState, dt: number, pickupEligible = true) {
   dt = Math.max(0, Math.min(.08, Number.isFinite(dt) ? dt : 0));
   s.echoAge = Math.min(CAVE_ECHO_SECONDS, s.echoAge + dt);
   if (s.lamp === 'reaching') {
-    s.reachTime += dt;
-    if (handError < .12) { s.lamp = 'carried'; s.revision++; }
-    else if (s.reachTime > 3) { s.lamp = 'rack'; s.revision++; }
+    if (!s.pickup || !pickupEligible) { cancelAcceptedAction(s.pickup); s.lamp = 'rack'; s.revision++; }
+    else if (advanceAcceptedAction(s.pickup, dt, true)) { s.lamp = 'carried'; s.revision++; }
   }
 }
 export function caveRingPulse(age: number, delay: number) {

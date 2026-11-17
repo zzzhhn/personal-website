@@ -17,6 +17,8 @@ import { createCaveAudio } from './cave-audio';
 import { CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
 import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice,caveLampApproach } from './batch2-station-feedback';
 import { PICKUP_DISCOVERY_RADIUS } from '../../pickup-approach';
+import { heldPropPoint } from '../../accepted-action';
+import { startCaveLamp } from './cave-state';
 import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
 const OWNER='alpha-echo-cave';
 const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
@@ -61,7 +63,7 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     if(state.current.lamp!=='rack'||!caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded))return;
     cancelAlphaHand();cancelCampPropInteraction('cave-lamp');releaseGuideActionHand();
     const grip=[...LAMP_HOOK] as Vec3;
-    target.current=grip;state.current.lamp='reaching';state.current.reachTime=0;
+    target.current=grip;startCaveLamp(state.current);
     Object.assign(guideActionHand,{owner:OWNER,target:grip,facing:grip,mode:'grip',cancel});
   };
   const lampAction=()=>caveLampInteraction(state.current.lamp,guideActionHand.owner===OWNER,
@@ -133,15 +135,16 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
       }
     }
     const palm=guideActionHand.owner===OWNER?guideActionHand.palm:null,t=target.current;
-    const error=palm&&t?Math.hypot(palm[0]-t[0],palm[1]-t[1],palm[2]-t[2]):Infinity;
-    const was=s.lamp;tickCaveState(s,delta,error);
+    const was=s.lamp;tickCaveState(s,delta,
+      s.lamp!=='reaching'||caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded));
     if(was==='reaching'&&s.lamp==='rack'){cancel();return;}
     const pickupNotice=caveLampPickupNotice(was,s.lamp);
     if(pickupNotice)useWorldStore.setState({toast:{...pickupNotice,at:performance.now()}});
     if(rackLamp.current)rackLamp.current.visible=s.lamp!=='carried';
-    if(handLamp.current){handLamp.current.visible=s.lamp==='carried'&&!!palm;if(palm){const p=alphaLocal(palm);handLamp.current.position.set(p[0],p[1]-.76,p[2]);handLamp.current.rotation.y=campPropActor.yaw;}}
-    alphaCaveLight.active=s.lamp==='carried'&&!!palm;
-    if(alphaCaveLight.active&&palm){alphaCaveLight.position[0]=palm[0];alphaCaveLight.position[1]=palm[1]-.43;alphaCaveLight.position[2]=palm[2];alphaCaveLight.intensity=7.5;}
+    const held=t?heldPropPoint(palm,t):null;
+    if(handLamp.current){handLamp.current.visible=s.lamp==='carried'&&!!held;if(held){const p=alphaLocal(held);handLamp.current.position.set(p[0],p[1]-.76,p[2]);handLamp.current.rotation.y=campPropActor.yaw;}}
+    alphaCaveLight.active=s.lamp==='carried'&&!!held;
+    if(alphaCaveLight.active&&held){alphaCaveLight.position[0]=held[0];alphaCaveLight.position[1]=held[1]-.43;alphaCaveLight.position[2]=held[2];alphaCaveLight.intensity=7.5;}
     else alphaCaveLight.intensity=0;
     if(s.echoAge<CAVE_ECHO_SECONDS){
       camera.getWorldDirection(forward);up.set(0,1,0).applyQuaternion(camera.quaternion);audio.listener(camera.position.toArray(),forward.toArray(),up.toArray());

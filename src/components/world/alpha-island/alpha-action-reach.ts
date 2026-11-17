@@ -44,8 +44,8 @@ export function alphaStonePlacementTarget(stones: number, progress: number): Vec
   return [1+Math.sin(stones*2.3)*r*f,83.35+(.12+Math.floor(stones/8)*.19+.08-.35)*f+Math.sin(Math.PI*f)*.55,
     40+(-.8+Math.cos(stones*2.3)*r)*f];
 }
-/** Conservative height-dependent G24 envelope. The wider discovery radius never
- * starts an action. Completion still requires the original measured .06 m palm contact. */
+/** Conservative height-dependent G24 staging envelope. The wider discovery radius never
+ * starts an action. Once staged, the accepted action owns success; IK only poses the hand. */
 export function alphaHandReach(position: readonly number[], target: readonly number[], grounded: boolean) {
   if(!grounded||![...position,...target].every(Number.isFinite))return false;
   const height=target[1]-(position[1]-PLAYER_HALF_HEIGHT-PLAYER_RADIUS);
