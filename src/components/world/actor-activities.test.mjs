@@ -7,6 +7,29 @@ import { beginMineAction, mineActor, mineVisualSockets, resetMineSession, useAlp
 const idle=()=>({busy:false,carrying:false});
 const activity=(id,patch={})=>({id,read:idle,sync(){},input(){},advance(){},command(){return false;},interrupt(){},dispose(){},...patch});
 
+test('dismissal uses explicit priority and consumes only the first live handler that acts',()=>{
+  const registry=createActorActivities(),calls=[];let held=true,operating=true;
+  assert.equal(registry.dismiss(),false);
+  registry.register(activity('console',{dismiss:{priority:10,run:()=>{calls.push('console');const acted=operating;operating=false;return acted;}}}));
+  registry.register(activity('item',{dismiss:{priority:30,run:()=>{calls.push('item');const acted=held;held=false;return acted;}}}));
+  registry.register(activity('inactive',{dismiss:{priority:20,run:()=>{calls.push('inactive');return false;}}}));
+  assert.equal(registry.dismiss(),true);assert.deepEqual(calls,['item']);assert.equal(operating,true);
+  calls.length=0;assert.equal(registry.dismiss(),true);assert.deepEqual(calls,['item','inactive','console']);
+  assert.equal(registry.dismiss(),false);
+});
+
+test('dismissal skips removed leases and defers reentrant registrations until the next event',()=>{
+  const registry=createActorActivities(),calls=[];let removeOld,replace=true;
+  const old=activity('replaced',{dismiss:{priority:10,run:()=>{calls.push('old');return true;}}});
+  registry.register(activity('first',{dismiss:{priority:30,run:()=>{
+    if(replace){replace=false;removeOld();registry.register(activity('replaced',{dismiss:{priority:10,run:()=>{calls.push('new');return true;}}}));}
+    return false;
+  }}}));
+  removeOld=registry.register(old);
+  assert.equal(registry.dismiss(),false);assert.deepEqual(calls,[]);
+  removeOld();assert.equal(registry.dismiss(),true);assert.deepEqual(calls,['new']);
+});
+
 test('an empty core has no venue policy; live registrations supply restrictions and input handling',()=>{
   const registry=createActorActivities();
   assert.equal(registry.busy(),false);assert.equal(registry.carrying(),false);

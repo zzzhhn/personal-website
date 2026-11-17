@@ -44,6 +44,8 @@ export interface ActorActivity {
   keyboard?: (key: ActivityKey) => ActivityKeyResult;
   interact?: () => boolean;
   animation?: () => ActivityAnimation | null;
+  /** Escape consumes at most one live activity before the global UI handles it. */
+  dismiss?: { priority: number; run: () => boolean };
 }
 
 export function createActorActivities() {
@@ -90,6 +92,13 @@ export function createActorActivities() {
       const owner = current().find(({entry}) => entry.read().inputOwner);
       for (const slot of owner ? [owner] : current())
         if (entries.get(slot.entry.id) === slot && slot.entry.interact?.()) return true;
+      return false;
+    },
+    dismiss() {
+      const candidates = current().filter(({entry}) => entry.dismiss && Number.isFinite(entry.dismiss.priority))
+        .sort((a, b) => b.entry.dismiss!.priority - a.entry.dismiss!.priority);
+      for (const slot of candidates)
+        if (entries.get(slot.entry.id) === slot && slot.entry.dismiss!.run()) return true;
       return false;
     },
     animation(): ActivityAnimation {

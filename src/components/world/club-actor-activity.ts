@@ -47,6 +47,7 @@ export function registerClubActivity(registry: ActorActivities = actorActivities
       }
     },
     interact: leave,
+    dismiss: {priority:10,run:leave},
     animation() {
       const state = useWorldStore.getState();
       return state.clubMode === 'dance'

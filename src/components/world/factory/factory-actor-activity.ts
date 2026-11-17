@@ -23,6 +23,10 @@ export function registerFactoryActivity(registry: ActorActivities = actorActivit
       }
     },
     input(){},advance(){},command:()=>false,clearInput:clearFactoryInput,
+    dismiss:{priority:20,run(){
+      if(!useWorldStore.getState().factoryStation)return false;
+      closeFactoryStation();return true;
+    }},
     interrupt(reason){
       clearFactoryInput();
       if(reason==='recovery'||reason==='blocked')closeFactoryStation();

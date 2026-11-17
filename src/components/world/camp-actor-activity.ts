@@ -29,6 +29,7 @@ export function createCampActivity(): ActorActivity {
       if(!campPropActor.available)release();
     },
     input(){},advance(){},command(){return false;},
+    dismiss:{priority:30,run:()=>cancelCampPropInteraction()},
     clearInput(reason){if(reason==='owner-change')release();},
     interrupt:release,
     dispose(){campPropActor.available=false;release();},

@@ -1,8 +1,7 @@
 import { create } from 'zustand';
-import { cancelAlphaHand } from './alpha-island/alpha-state';
 import type { Lang, Vec3, VehicleId } from './types';
 import { TIME_PRESETS, type TimePreset, type Weather } from './world-climate.ts';
-import { cancelCampPropInteraction } from './camp-prop-interactions';
+import { actorActivities } from './actor-activities';
 import { guideActionHand,releaseGuideActionHand } from './rides/guide-action-hand';
 /** Content card opened by an interactable (rendered by WorldCards). `id` selects the content source. */
 export interface WorldCard { kind: 'project' | 'experience' | 'about' | 'note'; id: string; page?: number }
@@ -58,17 +57,18 @@ export const useWorldStore = create<WorldState>(() => ({
   ready: false, zoom: 1, quality: 'balanced', shot: null, waypoint: null, interactPick: null,
   loading: { phase: 'runtime', loaded: 0, total: 0, active: false, failed: 0 },
 }));
-export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturnRequest: s.campReturnRequest + 1, clubMode:null, factoryStation:null }));
+export function requestCampReturn() {
+  releaseGuideActionHand();
+  actorActivities.interrupt('recovery');
+  useWorldStore.setState(s => ({ campReturnRequest: s.campReturnRequest + 1 }));
+}
 export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
-  if (cancelAlphaHand()) return;
   if (guideActionHand.owner) { releaseGuideActionHand(); return; }
-  if (cancelCampPropInteraction()) return;
+  if (actorActivities.dismiss()) return;
   const state=useWorldStore.getState();
-  if(state.factoryStation)useWorldStore.setState({factoryStation:null});
-  else if(state.clubMode)useWorldStore.setState({clubMode:null});
-  else if(state.poolInspect)useWorldStore.setState({poolInspect:false});
+  if(state.poolInspect)useWorldStore.setState({poolInspect:false});
   else if(state.card&&!state.paused)useWorldStore.setState({card:null});
   else useWorldStore.setState({paused:!state.paused});
 }

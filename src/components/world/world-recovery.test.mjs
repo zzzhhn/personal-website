@@ -7,8 +7,9 @@ import { useAlphaMineStore, mineActor, mineVisualSockets } from './alpha-mine-st
 import { useMineOnline } from './alpha-mine-online.ts';
 import { returnPlayerToCamp } from './world-recovery.ts';
 import { registerMineActivity } from './alpha-mine-activity.ts';
+import { registerClubActivity } from './club-actor-activity.ts';
 let releaseActivity;
-test.beforeEach(()=>{releaseActivity=registerMineActivity();});
+test.beforeEach(()=>{const mine=registerMineActivity(),club=registerClubActivity();releaseActivity=()=>{club();mine();};});
 test.afterEach(()=>releaseActivity());
 await RAPIER.init();
 const initialWorld=structuredClone(useWorldStore.getState()),initialMine=structuredClone(useAlphaMineStore.getState());

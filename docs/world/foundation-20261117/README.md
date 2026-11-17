@@ -277,6 +277,16 @@ Verification: six new checks plus 52 existing checks pass. One existing optional
 
 TypeScript and the eight-route production build pass with the existing large-chunk warning. Terrain/map freshness checks pass without regeneration: 76 terrain sources and 66 map sources; all generated payloads remain unchanged. No model, material, light, music, quality default or route timing changes. Browser/player feel and M3 Air Safari measurements remain pending. 4341 is not promoted by this batch.
 
+## Batch 25: scene-owned dismissal and recovery cleanup
+
+The global UI store no longer imports Alpha action state or camp prop physics. Escape first releases the generic hand owner through its callback, then asks the existing activity registry to dismiss one live activity, then handles inspection/card/map UI. Camp, factory and Club adapters own their cleanup and explicit priority, preserving the existing exit order independently of scene mount order. Removed or replaced registration leases cannot consume the same event; reentrant new registrations wait for the next event. Alpha cancellation uses the same hand-release callback already installed by `startAlphaHand`, including the carried paper lantern.
+
+`requestCampReturn` now releases the generic hand and interrupts mounted activities before publishing the return request. This cleanup works without a physics/render tick while paused. Actual body relocation remains with the existing recovery subscriber; only completed relocation resumes the world. The recovery helper no longer hard-codes Club state. Repeated recovery notification does not release the same camp object twice, and mine ore/progress preservation remains covered.
+
+Verification: 48 checks pass across dismissal, registration, real Alpha hand completion/cancellation, camp/Club/factory adapters and real Rapier recovery. Cases cover the complete layered Escape order, factory held-input cleanup, card-under-pause behavior, replacement/unregistration during dismissal, synchronous cleanup before request observers, carried ore/results, interrupted pickup/deposit and the disabled driver capsule. The bundled store includes the generic activity registry and no venue implementation, terrain/layout or actor-physics dependency. This is a runtime boundary; venue state fields/type declarations still reside in the shared store and the complete controller boundary remains unfinished.
+
+TypeScript and the eight-route production build pass; the existing large-chunk warning remains. Terrain and map freshness checks pass unchanged (76 and 66 sources). No models, materials, lights, music, default Balanced quality or route timing change. 4341 is unchanged; no browser/player or M3 Air Safari acceptance claimed.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

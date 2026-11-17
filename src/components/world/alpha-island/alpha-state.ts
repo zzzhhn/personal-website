@@ -45,7 +45,7 @@ export function advanceAlphaHand(dt:number,position:Vec3,eligible:boolean):{kind
  if(kind!=='lantern')cancelAlphaHand();
  return {kind,wind};
 }
-/** Shared store Esc calls this before opening pause. A cancelled carried lantern returns to rack. */
+/** The scene-owned hand release calls this before opening pause. A cancelled lantern returns to its rack. */
 export function cancelAlphaHand(){const s=useAlphaStore.getState();if(!s.action&&!s.carried)return false;if(campPropHand.target===alphaMotion.handTarget){campPropHand.target=null;campPropHand.facing=null;campPropHand.palm=null;campPropHand.owner=null;campPropHand.cancel=null;}cancelAcceptedAction(alphaMotion.actionClock);alphaMotion.actionClock=null;alphaMotion.acceptedAt=null;alphaMotion.handTarget=null;alphaMotion.handError=Infinity;useAlphaStore.setState({action:null,carried:false,revision:s.revision+1});return true;}
 export function canReleaseAlphaLantern(){const s=useAlphaStore.getState();return s.carried&&s.action==='lantern'&&campPropHand.owner==='alpha-island'&&!!alphaMotion.handTarget&&campPropHand.target===alphaMotion.handTarget;}
 export function releaseAlphaLantern(position:Vec3){if(!canReleaseAlphaLantern()||!position.every(Number.isFinite))return false;const id=alphaMotion.nextLantern++;if(alphaMotion.lanterns.length>=ALPHA_LANTERN_CAP)alphaMotion.lanterns.shift();alphaMotion.lanterns.push({id,age:0,position:[...position],drift:(id%5-2)*.035});cancelAlphaHand();return true;}
