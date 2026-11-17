@@ -62,10 +62,16 @@ export function guideFactoryStation(from:FactoryStationId,to:FactoryStationId){
   const target=factoryWorld(route[1]??factoryStation(to).at);
   useWorldStore.setState({waypoint:[target[0],target[2]]});
 }
-export function openFactoryStation(id:FactoryStationId){
+export function canOpenFactoryStation(id:FactoryStationId){
   const w=useWorldStore.getState(),station=factoryStation(id),p=factoryWorld(station.at),a=factoryActor;
-  if(!a.available||!a.grounded||w.paused||w.activeVehicle||w.seat||w.card||w.poolInspect||w.clubMode||w.factoryStation)return false;
+  if(!useFactoryStore.getState().active||!a.available||!a.grounded||!a.position.every(Number.isFinite)
+    ||w.paused||w.activeVehicle||w.seat||w.card||w.poolInspect||w.clubMode||w.shot||w.factoryStation
+    ||(typeof document!=='undefined'&&document.hidden))return false;
   if(Math.hypot(a.position[0]-p[0],a.position[2]-p[2])>station.radius||Math.abs(a.position[1]-p[1])>2)return false;
+  return true;
+}
+export function openFactoryStation(id:FactoryStationId){
+  if(!canOpenFactoryStation(id))return false;
   clearFactoryInput();useFactoryStore.setState({notice:null,route:null,dispatchView:'dock'});useWorldStore.setState({factoryStation:id,nearbyInteract:null,nearbyVehicle:null});return true;
 }
 export function factoryStationActions(game:FactoryGame,id:FactoryStationId){
@@ -86,7 +92,8 @@ export function factoryStationActions(game:FactoryGame,id:FactoryStationId){
 }
 export function startFactoryOperation(action:FactoryAction){
   const w=useWorldStore.getState(),s=useFactoryStore.getState();
-  if(!w.factoryStation||w.paused||w.poolInspect||!s.active||s.game.pending)return false;
+  if(!w.factoryStation||w.paused||w.poolInspect||!s.active||s.game.pending||!factoryActor.available||!factoryActor.grounded||!factoryActor.position.every(Number.isFinite)
+    ||w.activeVehicle||w.seat||w.card||w.clubMode||w.shot||(typeof document!=='undefined'&&document.hidden))return false;
   const stand=factoryWorld(factoryStation(w.factoryStation).at);
   if(Math.hypot(factoryActor.position[0]-stand[0],factoryActor.position[2]-stand[2])>.25)return false;
   const legal=factoryStationActions(s.game,w.factoryStation).some(a=>JSON.stringify(a)===JSON.stringify(action));

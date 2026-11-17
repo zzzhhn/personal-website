@@ -89,6 +89,14 @@ test('scene cameras use explicit priority, reject invalid views and disappear wi
   base.fov=180;assert.equal(registry.camera(),null);
 });
 
+test('input ownership identifies the console and input resets fan out only to current registrations',()=>{
+  const registry=createActorActivities();let consoleId='first',clears=0;
+  const release=registry.register(activity('room',{read:()=>({busy:true,carrying:false,inputOwner:consoleId}),clearInput:()=>clears++}));
+  assert.equal(registry.inputOwner(),'room:first');consoleId='second';assert.equal(registry.inputOwner(),'room:second');
+  registry.clearInput();assert.equal(clears,1);release();registry.clearInput();assert.equal(clears,1);
+  assert.equal(registry.inputOwner(),null);
+});
+
 function mineScene(){
   resetMineSession();Object.assign(mineActor,{moving:false,available:false,grounded:false,restTarget:null});
   const registry=createActorActivities(),release=registerMineActivity(registry);

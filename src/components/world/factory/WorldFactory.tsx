@@ -1,4 +1,5 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
+import { registerFactoryActivity } from './factory-actor-activity';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody, CuboidCollider, TrimeshCollider } from '@react-three/rapier';
 import { Mesh, type PointLight } from 'three';
@@ -11,7 +12,7 @@ import { FACTORY, FACTORY_STATIONS, factoryStation, factoryWorld, inFactory, typ
 import { buildFactoryGeometry, FACTORY_PALETTE, type FactoryLamp } from './factory-geometry';
 import { bakeFactoryLight, createFactoryMaterial } from './factory-lighting';
 import { FACTORY_STATION_NAMES } from './factory-copy';
-import { useFactoryStore, openFactoryStation, closeFactoryStation, loadFactorySave, tickFactoryOperation, clearFactoryInput, connectFactoryWorld, factoryControl } from './factory-store';
+import { useFactoryStore, canOpenFactoryStation, openFactoryStation, closeFactoryStation, loadFactorySave, tickFactoryOperation, clearFactoryInput, connectFactoryWorld, factoryControl } from './factory-store';
 import { createFactoryConveyors } from './factory-conveyor';
 import { buildFactoryWorklife } from './factory-worklife';
 import WorldFactoryMechanisms from './WorldFactoryMechanisms';
@@ -23,7 +24,7 @@ import WorldFactoryArchive from './WorldFactoryArchive';
 function Station({id,active}:{id:FactoryStationId;active:boolean}){
   const s=factoryStation(id),label=FACTORY_STATION_NAMES[id];
   useInteractable(active?{id:`factory-${id}`,kind:'exhibit',position:factoryWorld(s.at),radius:s.radius,
-    label:{zh:label[0],en:label[1]},enabled:()=>!useWorldStore.getState().factoryStation,
+    label:{zh:label[0],en:label[1]},enabled:()=>canOpenFactoryStation(id),
     onInteract:()=>{openFactoryStation(id);}}:null);
   return null;
 }
@@ -56,6 +57,7 @@ function WorkLights({lamps,active}:{lamps:FactoryLamp[];active:boolean}){
     name={`factory-work-light-${i}`} color="#FFE3AE" intensity={0} distance={10} decay={2} castShadow={false}/>)}</>;
 }
 export default memo(function WorldFactory({active}:{active:boolean}){
+  useEffect(()=>registerFactoryActivity(),[]);
   const roof=useRef<Mesh>(null);
   const data=useMemo(()=>{
     const built=buildFactoryGeometry();

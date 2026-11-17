@@ -60,6 +60,18 @@ test('a short supported route finds a grip stance without moving the body', () =
   } finally {f.free();}
 });
 
+test('a workstation can validate its explicit 2.1 m offer without widening ordinary pickup routes',()=>{
+  const f=fixture();
+  try{
+    const candidate=[-.45,H,0];
+    assert.equal(pickupGroundRoute(f.world,R,f.body,f.from(),candidate),null);
+    assert.ok(pickupGroundRoute(f.world,R,f.body,f.from(),candidate,2.1));
+    for(const limit of [NaN,Infinity,0,-1,4])assert.equal(pickupGroundRoute(f.world,R,f.body,f.from(),candidate,limit),null);
+    f.world.createCollider(R.ColliderDesc.cuboid(.08,1,2).setTranslation(.6,1,0));f.world.step();
+    assert.equal(pickupGroundRoute(f.world,R,f.body,f.from(),candidate,2.1),null);
+  }finally{f.free();}
+});
+
 test('a full capsule wall or low ceiling prevents pickup approach', () => {
   for(const obstacle of [
     w=>w.createCollider(R.ColliderDesc.cuboid(.06,1,3).setTranslation(1,1,0)),

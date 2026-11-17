@@ -26,9 +26,10 @@ type Physics = Pick<typeof Rapier, 'Ball' | 'Capsule'>;
 const vector = (p: Vec3) => ({ x: p[0], y: p[1], z: p[2] });
 /** Sample the same connected floor in short segments. A high shelf, other storey, steep slope,
  * missing floor, wall or low ceiling rejects the route. Queries never move the actual body. */
-export function pickupGroundRoute(world: World, rapier: Physics, body: RigidBody, from: Vec3, candidate: Vec3): Vec3 | null {
+export function pickupGroundRoute(world: World, rapier: Physics, body: RigidBody, from: Vec3, candidate: Vec3, maxDistance=2): Vec3 | null {
   const distance = Math.hypot(candidate[0] - from[0], candidate[2] - from[2]);
-  if (!from.every(Number.isFinite) || !candidate.every(Number.isFinite) || distance > 2) return null;
+  if (!from.every(Number.isFinite) || !candidate.every(Number.isFinite) || !Number.isFinite(maxDistance)
+    || maxDistance<=0 || maxDistance>3 || distance > maxDistance) return null;
   const support = playerSupport(world, rapier, body, vector(from), true);
   if (!support?.grounded) return null;
   const count = Math.max(1, Math.ceil(distance / .14));

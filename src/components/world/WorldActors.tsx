@@ -12,8 +12,7 @@ import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
 import { actorActivities, activityApproachMotion } from './actor-activities';
 import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
-import { factoryActor, closeFactoryStation, clearFactoryInput, useFactoryStore } from './factory/factory-store';
-import { FACTORY, FACTORY_STATIONS, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS, factoryStation, factoryWorld, inFactory } from './factory/factory-layout';
+import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory } from './factory/factory-layout';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
@@ -444,6 +443,7 @@ export default function WorldActors() {
   }
 
   function clearInput() {
+    actorActivities.clearInput();
     pickupApproach.current=null;
     keys.current.forEach(key=>releasedKeys.current.add(key));keys.current.clear();resetPad.current=true;
     pad.current.move=[0,0];pad.current.look=[0,0];pad.current.throttle=0;pad.current.brake=0;pad.current.sprint=false;
@@ -460,7 +460,6 @@ export default function WorldActors() {
     cars.current.forEach(car=>{car.doors.openness=0;});
     seatHeld.current=null;seatFrom.current=null;seatBody.current=null;
     useWorldStore.setState({seat:null});
-    closeFactoryStation();
     // Recovery is a cut: rebuild only the guide state from the cached GLTF, so old Sit/Air
     // phases, root offsets and IK anchors cannot re-arm the movement lock at the new position.
     setGuideResetId(id=>id+1);
@@ -522,7 +521,7 @@ export default function WorldActors() {
       return false;
     }
     const car = cars.current.get(id);
-    if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || useWorldStore.getState().factoryStation || guideTransition.current) return false;
+    if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || actorActivities.inputOwner() || guideTransition.current) return false;
     if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('等车停稳再上车。','Wait for the vehicle to stop.');return false;}
     if(!vehicleDoorUpright(car.body.rotation())){actorNotice('车辆倾覆，先扶正再上车。','Right the tipped vehicle before entering.');return false;}
     {
@@ -694,7 +693,7 @@ export default function WorldActors() {
   }
   useEffect(() => {
     const releaseAction=()=>{pickupApproach.current=null;releaseGuideActionHand();};
-    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||s.factoryStation||s.poolInspect||s.shot||s.clubMode)releaseAction();});
+    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||actorActivities.inputOwner()||s.poolInspect||s.shot||s.clubMode)releaseAction();});
     const hiddenAction=()=>{if(document.hidden)releaseAction();};
     document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
     const down=(event:KeyboardEvent) => {
@@ -702,7 +701,7 @@ export default function WorldActors() {
       if(attractionRide.active)return;
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
       releasedKeys.current.delete(event.code);
-      if(state.factoryStation){if(['KeyW','KeyA','KeyS','KeyD','KeyE','Space'].includes(event.code))event.preventDefault();return;}
+      if(actorActivities.inputOwner()){if(['KeyW','KeyA','KeyS','KeyD','KeyE','Space'].includes(event.code))event.preventDefault();return;}
       if(state.clubMode==='dance'&&['Digit1','Digit2'].includes(event.code)){
         event.preventDefault();useWorldStore.setState({danceStep:event.code==='Digit1'?0:1});return;
       }
@@ -727,7 +726,7 @@ export default function WorldActors() {
     // Continuous scroll zoom (exponential, ~12 % per notch). Scrolling out of first person returns to the
     // nearest third-person distance; scrolling never enters first person (V does).
     const wheel=(event:WheelEvent)=>{
-      const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || state.clubMode==='dj' || state.factoryStation) return;
+      const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || state.clubMode==='dj' || actorActivities.inputOwner()) return;
       event.preventDefault();
       if(attractionRide.active){
         if(!attractionRide.pose.firstPerson){const step=event.deltaMode===1?event.deltaY*33:event.deltaMode===2?event.deltaY*400:event.deltaY;zoomAttractionLook(step*WHEEL_ZOOM);}
@@ -746,7 +745,7 @@ export default function WorldActors() {
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
-    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj'||!!st.factoryStation;};
+    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj'||!!actorActivities.inputOwner();};
     const pointerDown=(e:PointerEvent)=>{
       if(blocked()||document.pointerLockElement===gl.domElement)return;
       drag={id:e.pointerId,x:e.clientX,y:e.clientY};
@@ -768,11 +767,13 @@ export default function WorldActors() {
     const hidden=()=>{if(document.hidden) clearInput();};
     window.addEventListener('keydown',down); window.addEventListener('keyup',up); window.addEventListener('blur',clearInput);
     document.addEventListener('visibilitychange',hidden); gl.domElement.addEventListener('wheel',wheel,{passive:false});
+    let inputOwner=actorActivities.inputOwner();
     const unsubscribe=useWorldStore.subscribe((state,previous)=>{
       if(state.campReturnRequest!==previous.campReturnRequest){returnToCamp();return;}
-      if(state.factoryStation!==previous.factoryStation){
-        clearInput();clearFactoryInput();drag=null;
-        if(state.factoryStation){cancelCampPropInteraction('factory-console');if(document.pointerLockElement===gl.domElement)document.exitPointerLock?.();}
+      const nextOwner=actorActivities.inputOwner();
+      if(nextOwner!==inputOwner){
+        inputOwner=nextOwner;clearInput();drag=null;
+        if(nextOwner){cancelCampPropInteraction('activity-input');if(document.pointerLockElement===gl.domElement)document.exitPointerLock?.();}
       }
       if(state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot || state.clubMode!==previous.clubMode){
         clearInput();drag=null;if((state.paused||state.poolInspect||state.clubMode==='dj')&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
@@ -977,7 +978,6 @@ export default function WorldActors() {
     const dt=world.timestep || PHYSICS_STEP;
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(attractionRide.active){
-      factoryActor.available=false;
       campPropActor.available=false;
       releaseGuideActionHand();cancelCampPropInteraction();
       if(!rideHeld.current){
@@ -1050,19 +1050,16 @@ export default function WorldActors() {
     const playerPosition=player.current.translation();
     const activityAvailable = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
     actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
-      grounded:grounded.current,available:activityAvailable&&!state.factoryStation&&!guideTransition.current,
-      mode:active?'vehicle':'guide'});
+      grounded:grounded.current,available:activityAvailable&&!guideTransition.current,
+      mode:active?'vehicle':'guide',handsOccupied:!!currentCampPropInteraction()||!!guideActionHand.target});
     const unoccupied=activityAvailable&&!actorActivities.busy()&&!actorActivities.carrying()&&!guideTransition.current;
-    Object.assign(factoryActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],grounded:grounded.current,
-      available:unoccupied
-        &&!attractionRide.active&&!currentCampPropInteraction()&&!guideActionHand.target});
     campPropActor.position[0]=playerPosition.x;
     campPropActor.position[1]=playerPosition.y;
     campPropActor.position[2]=playerPosition.z;
     campPropActor.yaw=guideYaw.current;
     campPropActor.grounded=grounded.current;
     campPropActor.available=unoccupied
-      &&!state.factoryStation&&!attractionRide.active&&!state.paused&&!state.poolInspect;
+      &&!actorActivities.inputOwner()&&!attractionRide.active&&!state.paused&&!state.poolInspect;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
     // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
@@ -1082,7 +1079,7 @@ export default function WorldActors() {
       available: item => {
         const current = useWorldStore.getState();
         return !current.paused && !current.poolInspect && !current.activeVehicle && !current.seat
-          && !current.card && !current.clubMode && !current.factoryStation && !guideTransition.current
+          && !current.card && !current.clubMode && !actorActivities.inputOwner() && !guideTransition.current
           && !actorActivities.busy() && !railVault.current
           && actorActivities.allowsInteraction(item.id)
           && (!item.approach || (grounded.current && campPropActor.available && !attractionRide.active));
@@ -1092,14 +1089,14 @@ export default function WorldActors() {
         [playerPosition.x, playerPosition.y, playerPosition.z], approach) : null,
     });
     const promptContext = offerContext();
-    const reach=active||seated||carded||state.clubMode||state.factoryStation?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,
+    const reach=active||seated||carded||state.clubMode||actorActivities.inputOwner()?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,
       item => !!interactionOffers.resolve(item, promptContext),state.interactPick);
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
-    if(seated||carded||state.factoryStation)nearby=null;
+    if(seated||carded||actorActivities.inputOwner())nearby=null;
     const interactNow=(item:Interactable|null)=>{
       const now=useWorldStore.getState();
-      if(now.factoryStation)return;
+      if(actorActivities.inputOwner())return;
       if(now.clubMode){useWorldStore.setState({clubMode:null});return;}
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
@@ -1182,7 +1179,7 @@ export default function WorldActors() {
         const consoleYaw=Math.atan2(p.z-CLUB.console[2],CLUB.console[0]-p.x);
         guideYaw.current+=clamp(angleDelta(guideYaw.current,consoleYaw),-dt*WALK_TURN,dt*WALK_TURN);
       }
-      const operating=useWorldStore.getState().factoryStation;
+      const operating=actorActivities.inputOwner();
       if(operating){rx=0;rz=0;actions.current.jump=false;}
       if(useWorldStore.getState().clubMode==='dance'&&(Math.hypot(rx,rz)>.05||actions.current.jump))useWorldStore.setState({clubMode:null});
       let rm=Math.hypot(rx,rz);if(rm>1){rx/=rm;rz/=rm;rm=1;}
@@ -1266,18 +1263,11 @@ export default function WorldActors() {
       }
       const windPace=localWindPace([p.x,p.y,p.z],[wx,wz],running);
       let vx=locked?0:wx*speed*windPace,vz=locked?0:wz*speed*windPace;
-      if(operating){
-        const station=factoryStation(operating),stand=factoryWorld(station.at),dx=stand[0]-p.x,dz=stand[2]-p.z,d=Math.hypot(dx,dz);
-        if(d>.04){const pace=Math.min(1.4,d*4);vx=dx/d*pace;vz=dz/d*pace;}
-        const desired=d>.24?Math.atan2(-dz,dx):station.yaw-Math.PI/2;
-        guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*10,dt*10);
-        moveIntent.current=d>.04?'walk':'idle';
-      }
       if(stance){
         actions.current.jump=false;
         const position:Vec3=[p.x,p.y,p.z],motion=activityApproachMotion(position,stance);
         const route=motion&&(!motion.moving||pickupGroundRoute(world,rapier,player.current,position,
-          [stance.stand[0],stance.stand[1]+PLAYER_CENTER_HEIGHT,stance.stand[2]]));
+          [stance.stand[0],stance.stand[1]+PLAYER_CENTER_HEIGHT,stance.stand[2]],stance.routeLimit??2));
         if(!route){
           actorActivities.interrupt('blocked');
           actorNotice('站位路线被挡住了，请换一侧再试。','The standing position is blocked. Try another side.');
@@ -1442,32 +1432,6 @@ export default function WorldActors() {
       return;
     }
     if (state.paused || state.poolInspect) return;
-    if(state.factoryStation&&!state.activeVehicle){
-      const station=factoryStation(state.factoryStation),home=factoryWorld(station.machine);
-      let pivot=new Vector3(home[0],home[1]+1.15,home[2]),desired=new Vector3(home[0],home[1]+5.8,home[2]+9.5);
-      const workView=FACTORY_WORK_VIEWS[station.id];
-      if(workView){pivot.set(...factoryWorld(workView.target));desired.set(...factoryWorld(workView.eye));}
-      if(station.id==='assembly'||station.id==='finish'){
-        pivot.set(home[0]+.6,home[1]+.6,home[2]);
-        desired.set(home[0]+4.2,home[1]+3.8,home[2]+6);
-      }
-      if(station.id==='release'){
-        const view=FACTORY_DISPATCH_VIEWS[useFactoryStore.getState().dispatchView];
-        pivot.set(...factoryWorld(view.target));
-        desired.set(...factoryWorld(view.eye));
-      }
-      if(station.id==='test'||station.id==='compare'){
-        const x=FACTORY.origin[0]+(station.id==='compare'?68.5:59);
-        pivot=new Vector3(x,FACTORY.origin[1]+1.8,FACTORY.origin[2]+3);
-        desired=new Vector3(x,FACTORY.origin[1]+(station.id==='compare'?19:11),FACTORY.origin[2]+(station.id==='compare'?29:20));
-      }
-      const swept=sweepCamera(world,rapier,pivot,desired,.18,player.current??undefined,col=>!col.isSensor());
-      camera.position.lerp(new Vector3(swept.position.x,swept.position.y,swept.position.z),1-Math.exp(-delta*6));
-      target.current.lerp(pivot,1-Math.exp(-delta*6));camera.up.set(0,1,0);camera.lookAt(target.current);
-      if(camera instanceof PerspectiveCamera&&camera.fov!==50){camera.fov=50;camera.updateProjectionMatrix();}
-      if(guideView.current)guideView.current.visible=true;
-      occlusion.current.update(scene,camera,target.current,delta);cameraReady.current=false;return;
-    }
     const activityView=actorActivities.camera();
     if(activityView&&!state.activeVehicle){
       // Scenes supply framing; collision, smoothing and visibility remain core behavior.

@@ -1,14 +1,18 @@
 import type { Vec3 } from './types';
 
-export type ActorActivityPose = { position: Vec3; yaw: number; grounded: boolean; available: boolean; mode?: 'guide' | 'vehicle' };
+export type ActorActivityPose = { position: Vec3; yaw: number; grounded: boolean; available: boolean; mode?: 'guide' | 'vehicle'; handsOccupied?: boolean };
 export type ActivityNotice = { zh: string; en: string };
 export type ActivityInterruption = 'motion' | 'recovery' | 'blocked';
-export interface ActivityApproach { stand: Vec3; yaw: number; moving: boolean; stopDistance: number }
+export interface ActivityApproach {
+  stand: Vec3; yaw: number; moving: boolean; stopDistance: number;
+  maxSpeed?: number; turnDistance?: number; routeLimit?: number;
+}
 export interface ActivityCamera { target: Vec3; eye: Vec3; fov: number; smoothing: number; priority: number }
 export interface ActorActivityState {
   busy: boolean;
   carrying: boolean;
   movementLocked?: boolean;
+  inputOwner?: string;
   facing?: Vec3;
   approach?: ActivityApproach;
   allowsInteraction?: (id: string) => boolean;
@@ -25,6 +29,7 @@ export interface ActorActivity {
   interrupt: (reason: ActivityInterruption) => void;
   dispose: () => void;
   camera?: () => ActivityCamera | null;
+  clearInput?: () => void;
 }
 
 export function createActorActivities() {
@@ -54,6 +59,14 @@ export function createActorActivities() {
         { occupiedElsewhere: owners.some(slot => slot.entry !== entry) }));
     },
     input(moving: boolean) { visit(entry => entry.input(moving)); },
+    clearInput() { visit(entry => entry.clearInput?.()); },
+    inputOwner() {
+      for(const {entry} of current()){
+        const owner=entry.read().inputOwner;
+        if(owner)return `${entry.id}:${owner}`;
+      }
+      return null;
+    },
     advance(dt: number) {
       if (Number.isFinite(dt) && dt > 0) visit(entry => entry.advance(dt));
     },
@@ -106,12 +119,15 @@ export const actorActivities = createActorActivities();
 
 /** All scene-owned stance actions use this motion rule; the physics caller validates the route. */
 export function activityApproachMotion(position: Vec3, approach: ActivityApproach) {
+  const maxSpeed=approach.maxSpeed??1.5,turnDistance=approach.turnDistance??.22;
   if(position.length!==3 || approach.stand.length!==3 || !position.every(Number.isFinite)
     || !approach.stand.every(Number.isFinite) || !Number.isFinite(approach.yaw)
-    || !Number.isFinite(approach.stopDistance) || approach.stopDistance<0) return null;
+    || !Number.isFinite(approach.stopDistance) || approach.stopDistance<0
+    || !Number.isFinite(maxSpeed) || maxSpeed<=0 || maxSpeed>3
+    || !Number.isFinite(turnDistance) || turnDistance<0) return null;
   const dx=approach.stand[0]-position[0],dz=approach.stand[2]-position[2],distance=Math.hypot(dx,dz);
   const moving=approach.moving && distance>Math.max(.001,approach.stopDistance);
-  const pace=moving?Math.min(1.5,distance*4):0;
+  const pace=moving?Math.min(maxSpeed,distance*4):0;
   return {vx:moving?dx/distance*pace:0,vz:moving?dz/distance*pace:0,moving,
-    yaw:moving&&distance>.22?Math.atan2(-dz,dx):approach.yaw};
+    yaw:moving&&distance>turnDistance?Math.atan2(-dz,dx):approach.yaw};
 }
