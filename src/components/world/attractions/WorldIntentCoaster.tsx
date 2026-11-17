@@ -76,7 +76,7 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
         <TrimeshCollider args={[structure.track.vertices, structure.track.indices]} friction={.9} />
       </RigidBody>
       <RigidBody type="fixed" colliders={false} userData={{ surface: true, solid: true, assetId: 'coaster-relief' }}>
-        <TrimeshCollider args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
+        <TrimeshCollider name="coaster-relief-surface" args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
       </RigidBody>
     </>}
   </group><WorldCoasterVegetation /></>;
@@ -157,7 +157,7 @@ function CoasterTrain({ active }: { active: boolean }) {
 
 function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
   return <>
-    {[true, false].map(surface => <RigidBody key={String(surface)} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
+    {[true, false].map(surface => <RigidBody key={String(surface)} name={surface?'coaster-station-surfaces':'coaster-station-solids'} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
       {colliders.filter(c => !!c.surface === surface).map((c, i) => c.hull
         ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
         : <CuboidCollider key={i} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}

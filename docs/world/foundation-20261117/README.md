@@ -131,6 +131,14 @@ The initial arrival descriptor supplies its actual collider-readiness predicate 
 
 Verification: 23 behavior tests passed, including public arrivals, all factory console and vehicle development gates, QA-only portal/rail/exit fixtures, authored initial camera angles, regional precedence, recovery ordering, cold Alpha collider registration and physical activation, actual upper-island terrain support and world recovery. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. Assets, materials, lighting, default quality and 4341 were not changed. Club performance state and ride-specific controller dependencies remain; this is partial core separation, not completion of the foundation objective.
 
+## Batch 12: live collider readiness for ordinary arrivals
+
+Ordinary initial arrivals now keep the player body disabled until the actual fixed, enabled, nonsensor mainland surface and steep-face trimeshes are registered. Named factory, IBD, coaster, mine, exchange and club entries additionally require their independently mounted structural/support collider groups. Coaster station and relief collider names were made explicit without changing geometry. Invalid or production-disabled debug destinations resolve their requirements from the actual camp fallback, so an unknown start cannot wait for an unrelated district.
+
+The readiness inspector checks both the mounted Three object ancestry and current Rapier handles, with shape and optional distinct-handle counts. A stale scene node, dynamic body, sensor, disabled collider, wrong shape or partial required group set cannot release loading. Existing Alpha named arrivals keep their terrain predicate and the physical support/escape query. Ordinary entries retain their authored initial body pose and resume normal dynamic grounding after registration. Deliberate development QA fixtures retain their prior bypass; named Alpha entries still keep their support protection under QA.
+
+Verification: 20 behavior tests passed, including all required-group arrival cases, rejected debug fallbacks, partial mount/lost collider handling, Alpha support activation and a real Rapier cold-start body held for 120 physics steps then released to normal floor contact. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. No visual, material or quality changes; no 4341 promotion. This closes the initial-arrival race for the listed entries, not the whole region-entry objective: ordinary walking/driving/ride boundary readiness, detailed internal fixture coverage and graceful district-load failure recovery remain pending.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

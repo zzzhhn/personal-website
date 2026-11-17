@@ -13,6 +13,20 @@ import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { roadLandingCandidates } from './world-travel';
 import { WORLD_PORTALS } from './world-portals';
 import type { Vec3 } from './types';
+import { mountedCollidersReady, FIXED_TRIMESH, type ColliderRequirement } from './collider-readiness';
+
+/** Named collider groups belong to the independently mounted district, not its visual asset load. */
+export function arrivalColliderRequirements(start: string | null, layoutV4=LAYOUT_V4): ColliderRequirement[] {
+  const mesh=(name:string):ColliderRequirement=>({name,shape:FIXED_TRIMESH});
+  const requirements=[mesh('island-terrain-surface-top'),mesh('island-terrain-solid-faces')];
+  if(layoutV4 && (start==='factory'||start?.startsWith('factory-')))requirements.push(mesh('factory-collision'));
+  if(layoutV4 && start==='ibd')requirements.push(mesh('ibd-yard-architecture'));
+  if(layoutV4 && start==='coaster')requirements.push({name:'coaster-station-surfaces'},mesh('coaster-relief-surface'));
+  if(start==='alpha'||start==='brain')requirements.push(mesh('alpha-mine-surface'),mesh('alpha-mine-solid'));
+  if(start==='exchange')requirements.push(mesh('alpha-exchange-surface'),mesh('alpha-exchange-solid'));
+  if(start?.startsWith('club'))requirements.push(mesh('djc-surface-same-mesh'),mesh('djc-solid-same-mesh'));
+  return requirements;
+}
 
 const bodyPoint = (ground: Vec3): Vec3 => [ground[0],ground[1]+PLAYER_CENTER_HEIGHT,ground[2]];
 const attractionRoads=ATTRACTION_ROAD_SAMPLES.map(path=>path.map(([x,z])=>[x,1.045,z] as Vec3));
@@ -26,6 +40,7 @@ export function worldActorArrival(search: string, development: boolean, layoutV4
   const qaStart=development&&params.get('qa')==='1'?start:null;
   const portal=WORLD_PORTALS.find(p=>qaStart===`portal-${p.id}`);
   const ground=namedAlphaArrival(start);
+  let resolvedStart=start;
   const yaw=portal?Math.PI/2+portal.yaw:qaStart==='brain-rail'||start==='ibd'||start==='coaster'?Math.PI/2:start?.startsWith('club')?-Math.PI/2:0;
   const position=():Vec3=>{
     if(ground)return bodyPoint(ground);
@@ -54,12 +69,16 @@ export function worldActorArrival(search: string, development: boolean, layoutV4
       const vehicle=VEHICLES.find(v=>v.id===start);
       if(vehicle)return bodyPoint([vehicle.position[0],vehicle.position[1],vehicle.position[2]+2]);
     }
+    resolvedStart=null;
     return [...CAMP_SPAWN];
   };
   const club=start?.startsWith('club'),attraction=start==='ibd'||start==='coaster';
   const cameraYaw=portal?Math.PI/2-portal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attraction?Math.PI/2:qaStart==='club-view'?0:club?-Math.PI/2:CAMERA_DEFAULT_YAW;
   const cameraPitch=qaStart==='exchange-gallery'?.4554:club?.4:CAMERA_DEFAULT_PITCH;
-  return {position:position(),yaw,cameraYaw,cameraPitch,ground,collidersReady:ground?alphaTerrainColliderMounted:()=>true};
+  const initialPosition=position(),requirements=arrivalColliderRequirements(resolvedStart,layoutV4);
+  return {position:initialPosition,yaw,cameraYaw,cameraPitch,ground,
+    waitForColliders:!!ground||!qaStart,
+    collidersReady:ground?alphaTerrainColliderMounted:(world,states)=>mountedCollidersReady(world,states,requirements)};
 }
 
 export function worldActorZone(position:Vec3,fallback?:ActorZone,layoutV4=LAYOUT_V4):ActorZone {

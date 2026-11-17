@@ -1,7 +1,7 @@
 import { rideFootRouteClear } from './rides/ride-clearance';
 import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-hand';
 import { localWindPace } from './rides/local-wind';
-import { holdWorldArrival, activatePlayerArrival } from './world-arrival-readiness';
+import { holdWorldArrival, activateReadyArrival } from './world-arrival-readiness';
 import type { ActorSites } from './actor-sites';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
@@ -301,9 +301,9 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
 export default function WorldActors({sites}: {sites: ActorSites}) {
   const player = useRef<RapierRigidBody>(null);
   const entry = useMemo(() => sites.arrival(window.location.search,import.meta.env.DEV), [sites]);
-  const arrivalGround=entry.ground,arrival=entry.position;
-  const [arrivalActive, setArrivalActive] = useState(!arrivalGround);
-  const arrivalPending = useRef(!!arrivalGround);
+  const arrival=entry.position;
+  const [arrivalActive, setArrivalActive] = useState(!entry.waitForColliders);
+  const arrivalPending = useRef(entry.waitForColliders);
   const releaseArrival = useRef<(() => void) | null>(null);
   const bindPlayer = useCallback((body: RapierRigidBody | null) => {
     player.current = body;
@@ -359,14 +359,14 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     useWorldStore.setState({ position: [...arrival], zone: sites.zone(arrival,'camp') });
   }, [arrival,sites]);
   useLayoutEffect(() => {
-    if (!arrivalGround || arrivalActive) return;
+    if (!entry.waitForColliders || arrivalActive) return;
     const blocked = () => !entry.collidersReady(world, colliderStates);
     const release = holdWorldArrival(blocked);
     // WorldActors may resolve after SceneLifecycle's first three frames.
     if (blocked()) useWorldStore.setState(s => ({ ready: false, loading: { ...s.loading, phase: 'scene' } }));
     releaseArrival.current = release;
     return () => { release(); if (releaseArrival.current === release) releaseArrival.current = null; };
-  }, [entry, arrivalGround, arrivalActive, world, colliderStates]);
+  }, [entry, arrivalActive, world, colliderStates]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
@@ -911,9 +911,8 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
   useAfterPhysicsStep(()=>{if(player.current)clearPlayerSlopeGravity(player.current);});
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
-    if (arrivalPending.current && arrivalGround) {
-      if (!entry.collidersReady(world, colliderStates)) return;
-      const landing = activatePlayerArrival(world, rapier, player.current, arrivalGround, WATER_Y);
+    if (arrivalPending.current) {
+      const landing=activateReadyArrival(entry,world,colliderStates,rapier,player.current,WATER_Y);
       if (!landing) return;
       arrivalPending.current = false;
       releaseArrival.current?.(); releaseArrival.current = null;

@@ -10,6 +10,7 @@ export interface ActorArrival {
   yaw: number;
   cameraYaw: number;
   cameraPitch: number;
+  waitForColliders: boolean;
   /** Ground anchor requiring actual collider registration before activating the body. */
   ground: Vec3 | null;
   collidersReady: (world: Pick<World,'getCollider'>, states: ReadonlyMap<number,{object:Object3D}>) => boolean;
