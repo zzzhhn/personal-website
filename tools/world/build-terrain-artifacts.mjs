@@ -23,7 +23,8 @@ export async function ensureTerrainArtifacts({ check = false } = {}) {
     const entry = previous[variant];
     try {
       const bytes = await readFile(path.join(root, 'public', entry.url));
-      if (bytes.length !== entry.bytes || sha(bytes) !== entry.sha256 || gunzipSync(bytes).length !== entry.rawBytes) valid = false;
+      const raw = gunzipSync(bytes);
+      if (bytes.length !== entry.bytes || sha(bytes) !== entry.sha256 || raw.length !== entry.rawBytes || sha(raw) !== entry.rawSha256) valid = false;
     } catch { valid = false; }
   }
   if (valid) return { sources: [...inputs.sources, script], changed: false };
@@ -72,7 +73,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === script) {
     const bytes = gzipSync(new Uint8Array(raw), { level: 9 });
     const url = `/assets/world/terrain/${['alpha', 'cave', 'waterwheel'].includes(variant) ? variant : 'mainland-' + variant}.bin.gz`;
     await atomic(path.join(root, 'public', url), bytes);
-    process.stdout.write(JSON.stringify({ url, bytes: bytes.length, rawBytes: raw.byteLength, sha256: sha(bytes) }));
+    process.stdout.write(JSON.stringify({ url, bytes: bytes.length, rawBytes: raw.byteLength, sha256: sha(bytes), rawSha256: sha(new Uint8Array(raw)) }));
   } else {
     const { sources, changed } = await ensureTerrainArtifacts({ check: process.argv.includes('--check') });
     console.log(JSON.stringify({ sources: sources.length, changed }));

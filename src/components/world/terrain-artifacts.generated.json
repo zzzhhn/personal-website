@@ -1,34 +1,39 @@
 {
   "version": 1,
-  "sourceHash": "c8b55b8482ce360f173665ebdf3ba0ef70e1425f84aedd0b86731d68f15d1093",
+  "sourceHash": "a1e058a9423b52d1751d0ffe7123dd44e75a08cc3dc58c8bbfe9b636d56ac1d0",
   "v4": {
     "url": "/assets/world/terrain/mainland-v4.bin.gz",
     "bytes": 8061861,
     "rawBytes": 32386060,
-    "sha256": "283d97a7d753cba92fd7c7483787b814e15f0bbc1e8256e0419c2f0a52132bf1"
+    "sha256": "283d97a7d753cba92fd7c7483787b814e15f0bbc1e8256e0419c2f0a52132bf1",
+    "rawSha256": "aa159059e66ee2b3a2c30ebdc0068eccce027ac4483b066ca7c68d93c492ee80"
   },
   "v3": {
     "url": "/assets/world/terrain/mainland-v3.bin.gz",
     "bytes": 1480609,
     "rawBytes": 4894024,
-    "sha256": "627043635659f589935e4bc46fa52440d02113ecf019bd5563dad50d5331f36e"
+    "sha256": "627043635659f589935e4bc46fa52440d02113ecf019bd5563dad50d5331f36e",
+    "rawSha256": "89b9b3573cfbb83ee79ea893155717f5793847348d23ca5441654f4d3ae2865c"
   },
   "alpha": {
     "url": "/assets/world/terrain/alpha.bin.gz",
     "bytes": 364306,
     "rawBytes": 1198224,
-    "sha256": "ac5fba115d9ca31943c1df8027ea5937c025533f682ed1428099b1d460937311"
+    "sha256": "ac5fba115d9ca31943c1df8027ea5937c025533f682ed1428099b1d460937311",
+    "rawSha256": "b994fe2011f578380c14386f5401c3404642bf630548f90c90d2ff2934dd8045"
   },
   "cave": {
     "url": "/assets/world/terrain/cave.bin.gz",
     "bytes": 919482,
     "rawBytes": 7675816,
-    "sha256": "179957b8b7b88896dfe094c97f21caddf83d44b22ff2117dbaa05ea17217f6a0"
+    "sha256": "179957b8b7b88896dfe094c97f21caddf83d44b22ff2117dbaa05ea17217f6a0",
+    "rawSha256": "34dd7d606d263bc5b9ee3697bf1705f6fda06c55ff4380e24e45ece9cf12a8a3"
   },
   "waterwheel": {
     "url": "/assets/world/terrain/waterwheel.bin.gz",
     "bytes": 1175556,
     "rawBytes": 15561588,
-    "sha256": "2c959b52d51418db442988244d02cfb56ad3be1039aaa1694b8841ecb3801a5e"
+    "sha256": "2c959b52d51418db442988244d02cfb56ad3be1039aaa1694b8841ecb3801a5e",
+    "rawSha256": "95eb209a4b445cb8e06a290856a222939b2e10397d7f035943802154254cab69"
   }
 }

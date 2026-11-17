@@ -309,6 +309,14 @@ Verification: 35 tests pass. New checks include exact artifact attributes/pivots
 
 Cost and limits: fixed mesh collision uses 38,544 triangles. The additional artifact is 1,175,556 compressed bytes / 15,561,588 decoded bytes, before runtime geometry clones and physics allocation. The four earlier terrain/cave payload records are unchanged. No target-device speed or memory improvement is claimed. Global collision coverage, remaining independent surfaces, visual atlas and M3 Air Safari acceptance are still unfinished. Default Balanced quality is unchanged. Per the user's 2026-11-17 instruction, this batch is committed and pushed after technical verification; 4341 is not updated and no next batch is started.
 
+## Loading regression: HTTP-decoded gzip, 2026-11-18
+
+After checkpoint `569b874c`, the user's Safari showed the application error boundary instead of the world. A real Chrome reproduction reported `Terrain download length mismatch` before runtime import. The preview server sends `.bin.gz` with `Content-Encoding: gzip`; browser Fetch automatically decompresses that response, but the loader assumed `arrayBuffer()` always held compressed bytes. Curl/Python resource checks and the earlier `new Response(compressed)` fixtures did not exercise HTTP decoding. A passing production build and downloadable assets had therefore missed a blocking runtime defect.
+
+The manifest now records SHA-256 for both compressed and decoded bytes. The loader accepts a verified compressed body and decompresses it, or accepts an already decoded body only after checking its exact decoded size and SHA-256. It never trusts the compressed Content-Length as the received body size, and never skips integrity validation. All five existing payload URLs, sizes and compressed hashes remain unchanged; no model, material, collider or quality changes are involved.
+
+`tools/world/terrain-download.test.mjs` uses an actual local HTTP server to test both opaque gzip and Content-Encoding gzip through Fetch, plus corruption, truncation, absent decoded integrity metadata and HTTP failures. Its regression cases failed before the fix and pass afterward. The mainland V3/V4 artifact suites also pass (five top-level test entries total). TypeScript, artifact/map freshness and the eight-route production build pass (9.29 s). The production loader also successfully downloads and validates all four current-world payloads through the actual 4343 preview server using Fetch. Keep real browser startup validation separate from build/resource verification: Safari post-fix verification was initially blocked by the locked Mac. This is a loading hotfix, not a new foundation batch; 4341 remains untouched.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
