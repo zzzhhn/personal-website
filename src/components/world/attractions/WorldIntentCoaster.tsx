@@ -9,10 +9,13 @@ import { Group, PointLight } from 'three';
 import { useWorldStore } from '../store';
 import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, updateAttractionRide } from './attraction-ride';
-import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH, COASTER_GATE_Z } from './coaster-track';
+import { coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH, COASTER_GATE_Z } from './coaster-track';
 import { createCoasterStructure, type CoasterCollider } from './coaster-geometry';
 import { activateIntentTarget, intentRideClock, intentRideQaHold, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
-import { advanceCoasterTransition, finishSkippedCoasterTravel, returnCoasterToStation } from './coaster-transition';
+import { advanceCoasterTransition, COASTER_BOARDING } from './coaster-transition';
+import { advanceReadyCoaster, coasterStationReady } from './coaster-passage';
+import { passageRoute } from '../region-passage';
+import { PLAYER_RADIUS } from '../actor-physics';
 import { resetAttractionLook } from './attraction-camera';
 import WorldIntentDevices from './WorldIntentDevices';
 import WorldCoasterTrainCraft from './WorldCoasterTrainCraft';
@@ -94,25 +97,25 @@ function CoasterTrain({ active }: { active: boolean }) {
     return () => { audio.current = null; release(); };
   }, [active]);
   const presented = useRef({ u: NaN, view: '' });
+  const readinessNotice=useRef(-Infinity);
   useFrame((_, dt) => {
     if (!active) return;
     const w = useWorldStore.getState(), s = useIntentStore.getState();
     const transition = attractionRide.transition;
     const owned = s.riding && attractionRide.active && intentRideClock.revision === attractionRide.revision && !!transition;
     const frozen = w.paused || w.poolInspect || !!w.shot || document.hidden;
+    let blocked=false;
     if (s.riding && !owned) { clearIntentRide(); }
     if (owned && transition.phase === 'riding') {
       const qaHold = import.meta.env.DEV && intentRideQaHold.revision === attractionRide.revision && intentRideQaHold.second !== null;
-      if (finishSkippedCoasterTravel(transition, dt, frozen || qaHold)) {
-        Object.assign(intentRideClock, { elapsed: COASTER_DURATION, riding: false });
+      if (qaHold) intentRideClock.elapsed = intentRideQaHold.second!;
+      const result=advanceReadyCoaster(intentRideClock,transition,attractionRide.passage,dt,active,frozen||qaHold,document.hidden,true,attractionRide.revision);
+      blocked=result.blocked;Object.assign(intentRideClock,result.clock);
+      if (result.skipped) {
         resetAttractionLook();
         useIntentStore.setState({ rideSecond: COASTER_DURATION });
       }
-      if (qaHold) intentRideClock.elapsed = intentRideQaHold.second!;
-      const next = advanceCoaster(intentRideClock, dt, active, frozen || qaHold, document.hidden, true, attractionRide.revision);
-      Object.assign(intentRideClock, next);
-      if (!next.riding && next.elapsed >= COASTER_DURATION) {
-        returnCoasterToStation(transition);
+      if (!result.clock.riding && result.clock.elapsed >= COASTER_DURATION) {
         useIntentStore.setState({ rideSecond: COASTER_DURATION });
       }
     }
@@ -120,7 +123,10 @@ function CoasterTrain({ active }: { active: boolean }) {
     if (owned) {
       const wasRiding = transition.phase === 'riding';
       const pose = coasterRidePose(u, wasRiding ? s.view : 'chase');
-      advanceCoasterTransition(transition, dt, frozen, pose);
+      const ready=wasRiding||coasterStationReady(attractionRide.passage)
+        &&(transition.phase!=='approach'||!!attractionRide.passage&&passageRoute(attractionRide.passage,[transition.from,COASTER_BOARDING.approach],PLAYER_RADIUS));
+      blocked=blocked||!ready;
+      advanceCoasterTransition(transition, dt, frozen||!ready, pose);
       if (!wasRiding && transition.phase === 'riding') Object.assign(intentRideClock, { elapsed: 0, riding: true });
       if (transition.phase !== 'riding') {
         // Boarding remains visible even when the selected on-track view is first person.
@@ -129,6 +135,10 @@ function CoasterTrain({ active }: { active: boolean }) {
       updateAttractionRide(pose);
       if (s.ridePhase !== transition.phase || s.exitRequested !== transition.exitRequested)
         useIntentStore.setState({ ridePhase: transition.phase, exitRequested: transition.exitRequested });
+    }
+    if(blocked&&!frozen&&performance.now()-readinessNotice.current>2500){
+      readinessNotice.current=performance.now();
+      useWorldStore.setState({toast:{zh:'前方区域正在准备，请稍候。',en:'The area ahead is preparing. Please wait.',at:readinessNotice.current}});
     }
     const moved = presented.current.u !== u;
     if (moved) cars.current.forEach((car, i) => {

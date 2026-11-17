@@ -1,5 +1,6 @@
 import type { Vec3 } from '../types';
 import type { AttractionRidePose } from '../attractions/attraction-ride';
+import type { RegionPassage } from '../region-passage';
 
 export interface RideActorFrame {
   stairs?: boolean;
@@ -18,6 +19,7 @@ export interface RideDriver {
   readonly phase: string;
   readonly frame: RideActorFrame;
   capture(root: Vec3, yaw: number): void;
+  setPassage(passage:RegionPassage):void;
   requestExit(): void;
   readonly boardingPath?: Vec3[];
   readonly egressPath?: Vec3[];

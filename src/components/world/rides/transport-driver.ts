@@ -1,6 +1,9 @@
 import type { Vec3 } from '../types';
 import type { RideActorFrame, RideDriver, TransportRoute } from './ride-contract';
 import { pathLength, sampleTransport, transportCurve, transportWorld } from './transport-route.ts';
+import type { RegionPassage } from '../region-passage';
+import { PLAYER_RADIUS } from '../actor-physics';
+import { rideDestinationReady, rideSegmentReady } from './ride-passage';
 const smooth = (u:number)=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
 const mixAngle=(a:number,b:number,u:number)=>a+Math.atan2(Math.sin(b-a),Math.cos(b-a))*u;
 const heading=(a:Vec3,b:Vec3)=>Math.atan2(a[2]-b[2],b[0]-a[0]);
@@ -38,6 +41,11 @@ export class TransportDriver implements RideDriver {
   frame: RideActorFrame;
   u: number; velocity=0; elapsed=0; captured=false; exitRequested=false; disposed=false;
   skipRequested=false;
+  private passage:RegionPassage|null=null;
+  setPassage(passage:RegionPassage){this.passage=passage;}
+  private get passageRadius(){return Math.max(...this.route.terminals.map(t=>Math.hypot(...t.clearance)/2));}
+  private destinationReady(){return !this.passage||rideDestinationReady(this.passage,
+    transportWorld(this.terminal.vehicle,this.route.transform),this.passageRadius,this.egressPath,PLAYER_RADIUS);}
   blockedMotion=false; private movementGuard:((from:Vec3,to:Vec3)=>boolean)|null=null;private cancelledAt:Vec3|null=null;
   setMovementGuard(guard:(from:Vec3,to:Vec3)=>boolean){this.movementGuard=guard;
     if(this.captured&&this.phase==='approach'&&this.elapsed===0&&distance(this.frame.root,this.from)<1e-8)this.enter=this.joinBoarding();}
@@ -73,7 +81,7 @@ export class TransportDriver implements RideDriver {
     if(this.disposed||!this.captured||this.phase!=='riding'||this.skipRequested)return false;
     this.skipRequested=true;return true;
   }
-  dispose(_reason:'complete'|'recovery'){if(this.disposed)return;this.disposed=true;this.movementGuard=null;this.release();}
+  dispose(_reason:'complete'|'recovery'){if(this.disposed)return;this.disposed=true;this.movementGuard=null;this.passage=null;this.release();}
   private duration(){switch(this.phase){case'approach':return Math.max(.25,pathLength(this.enter)/1.35);case'turn-in':case'turn-out':return .7;case'sit':case'stand':return 1.35;case'walk-out':return Math.max(.3,pathLength(this.leave)/1.35);default:return Infinity;}}
   private next(){this.elapsed=0;
     switch(this.phase){
@@ -112,13 +120,21 @@ export class TransportDriver implements RideDriver {
     let walking:ReturnType<TransportDriver['walk']>|undefined;
     if(this.phase==='approach'||this.phase==='walk-out')walking=this.walk(dt,this.phase==='approach'?this.enter:this.leave);
     else if(this.phase==='riding'){
-      if(this.skipRequested){this.u=this.destination;this.velocity=0;this.skipRequested=false;this.next();}
+      if(this.skipRequested){
+        if(!this.destinationReady()){this.blockedMotion=true;this.velocity=0;return this.sample();}
+        this.u=this.destination;this.velocity=0;this.skipRequested=false;this.next();
+      }
       else {
       const acceleration=1/(this.route.duration*2),distance=Math.abs(this.destination-this.u);
       const wanted=this.direction*Math.min(1/this.route.duration,Math.sqrt(2*acceleration*distance));
-      this.velocity+=Math.max(-acceleration*dt,Math.min(acceleration*dt,wanted-this.velocity));
-      this.u=Math.max(0,Math.min(1,this.u+this.velocity*dt));
-      if((this.direction>0&&this.u>=this.destination)||(this.direction<0&&this.u<=this.destination)){this.u=this.destination;this.velocity=0;this.next();}
+      const velocity=this.velocity+Math.max(-acceleration*dt,Math.min(acceleration*dt,wanted-this.velocity));
+      const u=Math.max(0,Math.min(1,this.u+velocity*dt));
+      const arrived=(this.direction>0&&u>=this.destination)||(this.direction<0&&u<=this.destination);
+      if(this.passage&&(!rideSegmentReady(this.passage,
+        at=>transportWorld(this.curve.getPointAt(at).toArray() as Vec3,this.route.transform),this.u,u,this.curve.getLength(),this.passageRadius)
+        ||arrived&&!this.destinationReady())){this.blockedMotion=true;this.velocity=0;return this.sample();}
+      this.velocity=velocity;this.u=u;
+      if(arrived){this.u=this.destination;this.velocity=0;this.next();}
       }
     }else if(this.phase!=='complete'){this.elapsed+=dt;if(this.elapsed>=this.duration()){if(this.phase==='stand'&&this.exitBlocked)this.elapsed=this.duration();else this.next();}}
     const sample=this.sample(),q=Math.min(1,this.elapsed/this.duration()),k=smooth(q);

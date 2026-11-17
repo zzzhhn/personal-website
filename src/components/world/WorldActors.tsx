@@ -953,7 +953,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
         const start=player.current.translation();
         // Select a clear joining leg before validating the complete boarding route.
         attractionRide.driver?.setMovementGuard?.((from,to)=>!!player.current&&passageRoute(passage,[from,to],PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,[from,to]));
-        captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
+        captureAttractionStart([start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current,passage);
         const route=attractionRide.driver?.boardingPath;
         if(route&&(!passageRoute(passage,route,PLAYER_RADIUS)||!rideFootRouteClear(world,rapier,player.current,route))){endAttractionRide();actorNotice('登乘通道尚未就绪或被挡住了，请在站台稍候。','The boarding path is not ready or blocked. Please wait on the platform.');return;}
         clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);

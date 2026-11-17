@@ -159,6 +159,18 @@ Verification: 83 tests passed across the new vehicle/polygon/path cases, real Ra
 
 Still pending: the independent ride transit clocks (including skip destination admission), forced external-body displacement, collider loss underneath an already-present actor, detailed town/park interior fixture coverage and load-error recovery. The complete terrain/provenance/core/atlas migration remains open; this batch does not claim all-region readiness is finished.
 
+## Batch 15: occupied ride transit and skip admission
+
+The actor-to-ride capture bridge now injects the current region passage contract before the ride captures the actor. Ride completion/recovery/new ownership clears that reference. Transport drivers inspect their proposed arc-distance interval before committing progress, velocity or phase. Curved intervals use midpoint envelopes expanded by the remaining half arc, including vehicle clearance, rather than a chord that can miss a region at a bend. A denied step retains the actor frame and vehicle/camera sample, resets travel velocity and resumes from the held position when ready.
+
+Queued skips inspect the destination vehicle envelope and surveyed egress path. They remain queued while denied, honor pause/hidden/stale-frame freezes and re-evaluate the destination after cancellation. They do not test an imaginary straight corridor through the map. Existing physical egress and final support checks still run afterward.
+
+The legacy coaster adapter now admits its clock through the same generic arc check for each of its three carriages. Station return, skip and station-phase progress require current station readiness. No readiness provider means the production coaster holds until capture supplies it. QA capture holds remain deliberate development-only overrides. Transport status now distinguishes an unavailable route from a physical obstruction in its existing wait message.
+
+Verification: 37 tests passed, including curved crossings missed by chords, body/egress destination admission, every shipped ferry/cable/sled direction under the production footprint rules, delayed skip and normal transit, cancellation after a denied skip, bridge lifecycle, the rear coaster carriage, pause/hidden/invalid frames, and the last station-arrival frame. Existing skip, transition, vehicle passage and driver checks also passed. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. No models, materials, lighting or Balanced defaults changed; no 4341 promotion or target-device performance claim.
+
+Still pending: empty transport repositioning clocks, forced external-body displacement, collider loss beneath an already-present actor, detailed interior fixture readiness and load-failure recovery. The terrain authority, collision provenance and visual atlas work remain incomplete.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
@@ -167,4 +179,4 @@ Still pending: the independent ride transit clocks (including skip destination a
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
 
-The user requested GitHub consolidation on 2026-11-17. Batches 1–13 were verified on main through `a2a64a2c`; batch 14 follows after the technical checks recorded above. The broader foundation program remains incomplete. 4341 remains on its prior candidate. User visual/feel review remains separate from technical checks.
+The user requested GitHub consolidation on 2026-11-17. Batches 1–14 were verified on main through `7fe3cae0`; batch 15 follows after the technical checks recorded above. The broader foundation program remains incomplete. 4341 remains on its prior candidate. User visual/feel review remains separate from technical checks.
