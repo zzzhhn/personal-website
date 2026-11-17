@@ -4,20 +4,19 @@ import { useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-th
 import { BufferAttribute, BufferGeometry, CanvasTexture, DoubleSide, Group, Mesh, SRGBColorSpace, Vector3, type Matrix4 } from 'three';
 import { UI } from '../../lib/i18n';
 import { PLAYER_CENTER_HEIGHT, rotateVector, yawRotation } from './actor-physics';
-import { CAMP_DUMBBELL_REACH, CAMP_TOOL_GRIPS, campDumbbellDrop, campDumbbellGrip, campMissingSignalTime, campPalmTouches, campPropActor, campPropHand, campPushablePrompt, campSuitcaseHandleZ, campSuitcasePull, campSuitcaseTowTarget, campSuitcaseTurn, canReachCampProp, cancelCampPropInteraction, currentCampPropInteraction, holdCampDumbbell, horizontalCampReach, nearestCampToolLane, readCampPropActivity, startCampPropInteraction } from './camp-prop-interactions';
+import { CAMP_DUMBBELL_REACH, CAMP_TOOL_GRIPS, campDumbbellDrop, campDumbbellGrip, campMissingSignalTime, campPropActor, campPropHand, campPushablePrompt, campSuitcaseHandleZ, campSuitcasePull, campSuitcaseTowTarget, campSuitcaseTurn, canReachCampProp, cancelCampPropInteraction, currentCampPropInteraction, holdCampDumbbell, horizontalCampReach, nearestCampToolLane, readCampPropActivity, startCampPropInteraction } from './camp-prop-interactions';
 import { bookStack, type Place } from './WorldCampContentLayout';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
 import type { Vec3 } from './types';
 import { PICKUP_DISCOVERY_RADIUS, pickupStandingRing, type PickupApproach } from './pickup-approach';
 import { campPropReachAt } from './camp-prop-interactions';
+import { campPushCommand, campToolCommand, campJournalCommand, campJournalReachAt, campHeldBodyPose, type CampPushPhase } from './camp-prop-interactions';
+import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, heldPropPoint, type AcceptedAction } from './accepted-action';
 
 type Labels = { en: string; zh: string };
-const PALM_CONTACT = .06;
 // A shape query can miss at the instant a dumbbell collider is removed or at a stone seam.
-// A missing render sample can also span the rig's .22 s blend as it reacquires the grip.
 const HELD_SUPPORT_GRACE = .18;
-const HELD_PALM_GRACE = .28;
 const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n));
 const smooth = (n: number) => { const t = clamp(n, 0, 1); return t * t * (3 - 2 * t); };
 const blend = (a: Vec3, b: Vec3, amount: number): Vec3 => [
@@ -89,12 +88,11 @@ function bodyGrip(body: RapierRigidBody, local: Vec3): Vec3 {
   return [p.x + x, p.y + y, p.z + z];
 }
 
-type PushPhase = 'reach' | 'held' | 'curl' | 'lower' | 'drag';
 type PushPlay = {
-  phase: PushPhase;
+  phase: CampPushPhase;
+  pickupAction: AcceptedAction;
   age: number;
   offGroundFor: number;
-  palmMissingFor: number;
   pickup: Vec3;
   grip: Vec3;
   drop?: ReturnType<typeof holdCampDumbbell>;
@@ -141,13 +139,14 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
       if (!b.isValid()) return null;
       const t = b.translation(), collider = b.collider(0);
       return {
-        phase: p?.phase ?? 'released', age: p?.age ?? 0, offGroundFor: p?.offGroundFor ?? 0, palmMissingFor: p?.palmMissingFor ?? 0,
+        phase: p?.phase ?? 'released', age: p?.age ?? 0, offGroundFor: p?.offGroundFor ?? 0,
         bodyX: t.x, bodyY: t.y, bodyZ: t.z, colliderEnabled: collider.isEnabled(), sensor: collider.isSensor(),
         collisionGroups: collider.collisionGroups(), solverGroups: collider.solverGroups(),
       };
     }, release: () => {
       const was = phase.current;
       phase.current = null;
+      cancelAcceptedAction(was?.pickupAction ?? null);
       if (!was || !b.isValid()) return;
       const drop = was.drop;
       if (drop) {
@@ -165,7 +164,7 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
         resetDisplacement();
       }
     } });
-    phase.current = { phase: 'reach', age: 0, offGroundFor: 0, palmMissingFor: 0, pickup, grip: [...grip] };
+    phase.current = { phase: 'reach', pickupAction: acceptAction(), age: 0, offGroundFor: 0, pickup, grip: [...grip] };
     aim(pickup, 'reach');
   };
 
@@ -197,8 +196,7 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
     play.age += dt;
     if (play.phase === 'reach') {
       aim(currentGrip, 'reach');
-      if (play.age > 1.6) { cancelCampPropInteraction('grip-timeout'); notice(gripFailure); return; }
-      if (play.age < .15 || !campPalmTouches(currentGrip, PALM_CONTACT)) return;
+      if (!advanceAcceptedAction(play.pickupAction, dt, true)) return;
       if (gym) {
         play.pickup = currentGrip;
         play.drop = holdCampDumbbell(b, rapier.RigidBodyType);
@@ -226,12 +224,6 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
       const actorDx = a[0] - drag.actor[0], actorDz = a[2] - drag.actor[2];
       setPoint(drag.actor, ...a);
       if (!campPropActor.grounded) return;
-      play.palmMissingFor = campMissingSignalTime(play.palmMissingFor, campPalmTouches(handTarget, .13), dt);
-      if (play.palmMissingFor > .46) {
-        cancelCampPropInteraction('lost-palm');
-        notice({ en: 'The handle slipped free', zh: '拉杆脱手了' });
-        return;
-      }
       const target = campSuitcaseTowTarget(caseX, caseZ, campPropActor.yaw);
       const v = b.linvel(), speed = Math.hypot(actorDx, actorDz) / dt;
       const feed = Math.min(1, 2 / Math.max(.001, speed)) / dt;
@@ -241,25 +233,16 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
       return;
     }
 
-    play.palmMissingFor = campMissingSignalTime(play.palmMissingFor, !!campPropHand.palm, dt);
-    if (play.palmMissingFor > HELD_PALM_GRACE) { cancelCampPropInteraction('lost-palm'); return; }
     const dip = play.phase === 'curl' ? Math.sin(Math.PI * clamp(play.age / .96, 0, 1)) : 0;
     const lifted = carryPoint(-.025 + .41 * dip, .24 + .09 * dip);
     const target = play.phase === 'lower'
       ? blend(lifted, carryPoint(-PLAYER_CENTER_HEIGHT + .135, .52), smooth(play.age / .62))
       : blend(play.pickup, lifted, smooth(play.age / .4));
     aim(target, 'grip', null);
-    const palm = campPropHand.palm;
-    if (palm) {
-      const yaw = yawRotation(campPropActor.yaw);
-      const [x, y, z] = rotateVector(grip, yaw);
-      const ease = 1 - Math.exp(-24 * dt);
-      b.setNextKinematicTranslation({
-        x: p.x + (palm[0] - x - p.x) * ease, y: p.y + (palm[1] - y - p.y) * ease, z: p.z + (palm[2] - z - p.z) * ease,
-      });
-      b.setNextKinematicRotation(yaw);
-    }
-    if (play.phase === 'lower' && (play.age > 1 || (play.age > .63 && campPalmTouches(target, PALM_CONTACT)))) cancelCampPropInteraction('set-down');
+    const pose = campHeldBodyPose(p, grip, campPropHand.palm, target, campPropActor.yaw, dt);
+    b.setNextKinematicTranslation(pose.position);
+    b.setNextKinematicRotation(pose.rotation);
+    if (play.phase === 'lower' && play.age > .63) cancelCampPropInteraction('set-down');
     if (play.phase === 'curl' && play.age >= .96) { play.phase = 'held'; play.age = 1; play.pickup = lifted; }
   });
 
@@ -271,16 +254,17 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
     id: key, position: anchor, radius: PICKUP_DISCOVERY_RADIUS-.2, kind: 'exhibit', get label() { return label(); },
     get approach() { return isActive(key) ? undefined : pickupApproach; },
     enabled: () => {
-      if (isActive(key)) return true;
+      if (isActive(key)) return campPushCommand(phase.current) !== null;
       if (pendingDrop.current) return false;
       const b = body.current;
       return !!b && b.isValid() && campPropActor.available;
     },
     onInteract: () => {
       const p = phase.current;
-      if (!isActive(key) || !p) begin();
-      else if (p.phase === 'reach' || p.phase === 'drag') cancelCampPropInteraction(p.phase === 'reach' ? 'cancel-reach' : 'let-go');
-      else if (p.phase === 'held' && p.age > .40) { p.phase = 'curl'; p.age = 0; p.pickup = carryPoint(-.025); }
+      const command = campPushCommand(isActive(key) ? p : null);
+      if (command === 'take') begin();
+      else if (command === 'cancel' || command === 'release') cancelCampPropInteraction(command === 'cancel' ? 'cancel-reach' : 'let-go');
+      else if (command === 'curl' && p) { p.phase = 'curl'; p.age = 0; p.pickup = carryPoint(-.025); }
     },
   } : null);
   useInteractable(gym ? {
@@ -349,7 +333,7 @@ function takeTool(root: Group, carried: Group, lane: number, centres: readonly n
   return pieces;
 }
 
-type ToolPlay = { index: number; phase: 'reach' | 'held' | 'return'; age: number; pieces: ToolPiece[]; clearNotice?: () => void };
+type ToolPlay = { index: number; phase: 'reach' | 'held' | 'return'; pickupAction: AcceptedAction; age: number; pieces: ToolPiece[]; clearNotice?: () => void };
 
 export function CampToolWall({ frame, centres, children }: { frame: Matrix4; centres: readonly number[]; children: ReactNode }) {
   const wall = useRef<Group>(null), carried = useRef<Group>(null), play = useRef<ToolPlay | null>(null);
@@ -368,8 +352,9 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
   const act = (index: number) => {
     const p = play.current;
     if (p?.index === index) {
-      if (p.phase === 'held') { p.phase = 'return'; p.age = 0; }
-      else if (p.phase === 'reach') cancelCampPropInteraction('cancel-reach');
+      const command = campToolCommand(p.phase);
+      if (command === 'return') { p.phase = 'return'; p.age = 0; }
+      else if (command === 'cancel') cancelCampPropInteraction('cancel-reach');
       return;
     }
     if (!canTake(index) || !wall.current || !carried.current) return;
@@ -380,6 +365,7 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
     }, release: () => {
       const previous = play.current;
       play.current = null;
+      cancelAcceptedAction(previous?.pickupAction ?? null);
       previous?.clearNotice?.();
       for (const part of previous?.pieces ?? []) {
         part.source.geometry = part.original;
@@ -390,7 +376,7 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
       obj.position.set(0, 0, 0);
       obj.rotation.set(0, 0, 0);
     } });
-    play.current = { index, phase: 'reach', age: 0, pieces: [] };
+    play.current = { index, phase: 'reach', pickupAction: acceptAction(), age: 0, pieces: [] };
     aim(grips[index], 'reach');
   };
   useEffect(() => () => { if (play.current) cancelCampPropInteraction('unmounted'); }, []);
@@ -406,29 +392,24 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
     }
     p.age += Math.min(delta, .05);
     if (p.phase === 'reach') {
-      if (p.age > 1.5) {
-        cancelCampPropInteraction('grip-timeout');
-        notice({ en: 'Step closer to the tool wall', zh: '再靠近一点取用工具' });
-        return;
-      }
-      if (p.age < .14 || !campPalmTouches(grip, PALM_CONTACT)) return;
+      if (!advanceAcceptedAction(p.pickupAction, Math.min(delta, .05), true)) return;
       p.pieces = takeTool(root, obj, p.index, centres);
       if (!p.pieces.length) { cancelCampPropInteraction('tool-geometry-missing'); return; }
       p.phase = 'held'; p.age = 0;
       const category = (lang: 'en' | 'zh') => UI.about.techCategories[lang][p.index].items.filter(item => !item.endsWith(':')).join(' · ');
       p.clearNotice = notice({ en: category('en'), zh: category('zh') });
     }
-    const palm = campPropHand.palm;
     const lifted = carryPoint(.08, .38);
     const offPeg: Vec3 = [grip[0] + pegClearance.x, grip[1] + .025, grip[2] + pegClearance.z];
     if (p.phase === 'return') {
       const amount = smooth((p.age - .28) / .34);
       aim(p.age < .28 ? blend(lifted, offPeg, smooth(p.age / .28)) : blend(offPeg, grip, amount), 'grip', grip);
-      if (p.age > 1.2 || (p.age > .62 && campPalmTouches(grip, PALM_CONTACT))) { cancelCampPropInteraction('tool-returned'); return; }
+      if (p.age > .62) { cancelCampPropInteraction('tool-returned'); return; }
     } else {
       aim(p.age < .20 ? blend(grip, offPeg, smooth(p.age / .20)) : blend(offPeg, lifted, smooth((p.age - .20) / .33)), 'grip', grip);
     }
-    if (palm) {
+    const palm = heldPropPoint(campPropHand.palm, campPropHand.target ?? grip);
+    {
       const from = local.fromArray(palm).applyMatrix4(inverse);
       obj.position.set(from.x + .006, from.y - CAMP_TOOL_GRIPS[p.index].y, from.z - centres[p.index]);
     }
@@ -437,7 +418,8 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
     <group ref={wall}>{children}</group>
     <group ref={carried} name="camp-carried-tool" />
     {positions.map((position, index) => <ToolAction key={index} id={actionId(index)} position={grips[index]} index={index} play={play}
-      enabled={() => campPropActor.available && (!play.current || play.current.index === index)}
+      enabled={() => campPropActor.available && !!wall.current && !!carried.current
+        && (!play.current || (play.current.index === index && campToolCommand(play.current.phase) !== null))}
       approach={{ target: () => grips[index], ready: position => canTakeAt(index, position),
         candidates: from => [[position[0], from[1], position[2]]] }} onInteract={() => act(index)} />)}
   </group>;
@@ -449,6 +431,7 @@ function ToolAction({ id, position, index, play, enabled, approach, onInteract }
   useInteractable({ id, position, radius: PICKUP_DISCOVERY_RADIUS, kind: 'exhibit', enabled, onInteract,
     get approach() { return play.current?.index === index ? undefined : approach; }, get label() {
     const tool = CAMP_TOOL_GRIPS[index], returning = play.current?.index === index;
+    if (returning && campToolCommand(play.current!.phase) === 'cancel') return { en: 'Cancel reach', zh: '取消取用' };
     return returning ? { en: `Return ${tool.en.toLowerCase()}`, zh: `归位${tool.zh}` }
       : { en: `Take ${tool.en.toLowerCase()}`, zh: `取用${tool.zh}` };
   } });
@@ -509,8 +492,9 @@ export function CampJournal({ anchor }: { anchor: Vec3 }) {
   };
   const read = () => {
     const s = state.current;
-    if (!isActive(BOOK_KEY)) {
-      if (!canReachCampProp(anchor, 1.55)) return;
+    const command = campJournalCommand(isActive(BOOK_KEY), s.page, s.turn, BOOK_PAGES.length);
+    if (command === 'open') {
+      if (!campPropActor.available || !campPropActor.grounded || !campJournalReachAt(campPropActor.position, anchor, 1.55)) return;
       startCampPropInteraction({ id: BOOK_KEY, anchor, inspect: () => ({ page: s.page, turn: s.turn }), release: () => {
         s.clearNotice?.(); s.clearNotice = undefined;
         s.page = s.turn = s.display = -1;
@@ -519,20 +503,18 @@ export function CampJournal({ anchor }: { anchor: Vec3 }) {
       s.page = 0;
       updatePage(0);
       if (pages.current) pages.current.visible = true;
-    } else if (s.turn < 0) {
-      if (s.page === BOOK_PAGES.length - 1) cancelCampPropInteraction('journal-finished');
-      else {
+    } else if (command === 'finish') cancelCampPropInteraction('journal-finished');
+    else if (command === 'turn') {
         const lang = useWorldStore.getState().lang;
         drawJournalPage(turningPaper.canvas, BOOK_PAGES[s.page][lang], s.page, lang === 'zh');
         turningPaper.texture.needsUpdate = true;
         s.page++; s.turn = 0;
-      }
     }
   };
   useInteractable({
     id: BOOK_KEY, position: anchor, radius: PICKUP_DISCOVERY_RADIUS, kind: 'exhibit',
     get approach() { return isActive(BOOK_KEY) ? undefined : {
-      target: () => anchor, ready: (position: Vec3) => campPropReachAt(position, anchor, 1.3),
+      target: () => anchor, ready: (position: Vec3) => campJournalReachAt(position, anchor, 1.3),
       candidates: (position: Vec3) => pickupStandingRing(anchor, position, 1.1),
     }; },
     get label() {
@@ -540,14 +522,14 @@ export function CampJournal({ anchor }: { anchor: Vec3 }) {
         : state.current.page === BOOK_PAGES.length - 1 ? { en: 'Finish reading', zh: '结束阅读' }
           : { en: 'Turn page', zh: '翻页' };
     },
-    enabled: () => campPropActor.available,
+    enabled: () => campPropActor.available
+      && campJournalCommand(isActive(BOOK_KEY), state.current.page, state.current.turn, BOOK_PAGES.length) !== null,
     onInteract: read,
   });
   useFrame((_, delta) => {
     if (!isActive(BOOK_KEY)) return;
     if (!campPropActor.available) { cancelCampPropInteraction('actor-unavailable'); return; }
-    if (horizontalCampReach(campPropActor.position, anchor) > 1.7
-      || Math.abs(campPropActor.position[1] - anchor[1]) > .7) { cancelCampPropInteraction('out-of-reach'); return; }
+    if (!campJournalReachAt(campPropActor.position, anchor, 1.7)) { cancelCampPropInteraction('out-of-reach'); return; }
     const s = state.current, pivot = leaf.current, backing = left.current;
     if (!pivot || !backing) return;
     if (s.turn < 0) { pivot.visible = false; backing.visible = s.page > 0; return; }

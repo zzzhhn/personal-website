@@ -1,6 +1,7 @@
 import type { RigidBody, RigidBodyType, Vector, World } from '@dimforge/rapier3d-compat';
 import { angleDelta, rotateVector, yawRotation, type Rotation } from './actor-physics';
 import type { Vec3 } from './types';
+import { heldPropPoint } from './accepted-action';
 
 /** Live actor and palm samples, kept outside React and the HUD store. */
 export const campPropActor = { position: [0, 0, 0] as Vec3, yaw: 0, grounded: false, available: false };
@@ -18,6 +19,22 @@ interface CampPropInteraction {
 let active: CampPropInteraction | null = null;
 let lastCancel: (ReturnType<typeof campPropSnapshot> & { reason: string; afterState?: ReturnType<NonNullable<CampPropInteraction['inspect']>> }) | null = null;
 export const currentCampPropInteraction = () => active;
+
+export type CampPushPhase = 'reach' | 'held' | 'curl' | 'lower' | 'drag';
+/** The same command determines both the advertised prompt and the E handler. */
+export function campPushCommand(play: { phase: CampPushPhase; age: number } | null) {
+  if (!play) return 'take';
+  if (play.phase === 'reach') return 'cancel';
+  if (play.phase === 'drag') return 'release';
+  if (play.phase === 'held' && play.age > .4) return 'curl';
+  return null;
+}
+export function campToolCommand(phase: 'reach' | 'held' | 'return' | null) {
+  return phase === null ? 'take' : phase === 'reach' ? 'cancel' : phase === 'held' ? 'return' : null;
+}
+export function campJournalCommand(active: boolean, page: number, turn: number, pages: number) {
+  return !active ? 'open' : turn >= 0 ? null : page >= pages - 1 ? 'finish' : 'turn';
+}
 
 function campPropSnapshot() {
   const { target, palm, mode } = campPropHand;
@@ -50,8 +67,25 @@ export function cancelCampPropInteraction(reason = 'manual'): boolean {
 export const horizontalCampReach = (a: Vec3, b: Vec3) => Math.hypot(a[0] - b[0], a[2] - b[2]);
 export const campPropReachAt = (position: Vec3, target: Vec3, distance: number) =>
   horizontalCampReach(position, target) <= distance && Math.abs(position[1] - target[1]) < 1.35;
+/** Reading starts and remains on the same vertical band; only horizontal reach has hysteresis. */
+export const campJournalReachAt = (position: Vec3, target: Vec3, distance: number) =>
+  [...position, ...target].every(Number.isFinite)
+  && horizontalCampReach(position, target) <= distance && Math.abs(position[1] - target[1]) <= .7;
 export const canReachCampProp = (target: Vec3, distance: number) => campPropActor.available && campPropActor.grounded
   && campPropReachAt(campPropActor.position, target, distance);
+
+/** Shared by the live kinematic hold and the Rapier regression. Missing IK output follows the
+ * authored carry socket; it never switches a held weight back to a dynamic body. */
+export function campHeldBodyPose(from: Vector, grip: Vec3, palm: Vec3 | null, socket: Vec3, actorYaw: number, dt: number) {
+  const point = heldPropPoint(palm, socket), rotation = yawRotation(actorYaw);
+  const [x, y, z] = rotateVector(grip, rotation);
+  const ease = 1 - Math.exp(-24 * Math.max(0, Number.isFinite(dt) ? dt : 0));
+  return { rotation, position: {
+    x: from.x + (point[0] - x - from.x) * ease,
+    y: from.y + (point[1] - y - from.y) * ease,
+    z: from.z + (point[2] - z - from.z) * ease,
+  } };
+}
 
 export const CAMP_DUMBBELL_REACH = .62;
 const BAR_CENTRE_Y = .1001;

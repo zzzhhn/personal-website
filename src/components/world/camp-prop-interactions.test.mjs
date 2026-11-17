@@ -3,10 +3,76 @@ import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import R from '@dimforge/rapier3d-compat';
 import { angleDelta, rotateVector, yawRotation } from './actor-physics.ts';
+import { acceptAction, advanceAcceptedAction, cancelAcceptedAction } from './accepted-action.ts';
+import { campPushCommand, campToolCommand, campJournalCommand, campJournalReachAt, campHeldBodyPose } from './camp-prop-interactions.ts';
 import {
   CAMP_DUMBBELL_REACH, campDumbbellDrop, campDumbbellGrip, campMissingSignalTime, campPalmTouches, campPropActor, campPropHand, campPushablePrompt, campSuitcaseHandleZ, campSuitcasePull, campSuitcaseTowTarget, campSuitcaseTurn, canReachCampProp,
   cancelCampPropInteraction, currentCampPropInteraction, holdCampDumbbell, nearestCampToolLane, readCampPropActivity, startCampPropInteraction,
 } from './camp-prop-interactions.ts';
+
+test('camp prompts only advertise executable commands during reach, hold, return and page turns', () => {
+  assert.equal(campPushCommand(null), 'take');
+  assert.equal(campPushCommand({ phase: 'reach', age: .1 }), 'cancel');
+  assert.equal(campPushCommand({ phase: 'held', age: .1 }), null);
+  assert.equal(campPushCommand({ phase: 'held', age: .5 }), 'curl');
+  assert.equal(campPushCommand({ phase: 'curl', age: .5 }), null);
+  assert.equal(campPushCommand({ phase: 'lower', age: .3 }), null);
+  assert.equal(campPushCommand({ phase: 'drag', age: 1 }), 'release');
+  assert.equal(campToolCommand('reach'), 'cancel');
+  assert.equal(campToolCommand('held'), 'return');
+  assert.equal(campToolCommand('return'), null);
+  assert.equal(campJournalCommand(false, -1, -1, 4), 'open');
+  assert.equal(campJournalCommand(true, 1, .3, 4), null);
+  assert.equal(campJournalCommand(true, 1, -1, 4), 'turn');
+  assert.equal(campJournalCommand(true, 3, -1, 4), 'finish');
+});
+
+test('a journal stance accepted for opening stays within the same reading height band', () => {
+  const book = [0, 1, 0];
+  for (const y of [.3, .5, 1, 1.5, 1.7]) {
+    const actor = [1.1, y, 0];
+    if (campJournalReachAt(actor, book, 1.3)) assert.equal(campJournalReachAt(actor, book, 1.7), true);
+  }
+  assert.equal(campJournalReachAt([1.1, 2.1, 0], book, 1.3), false,
+    'the former 1.35 m opening gate admitted a stance that the .7 m reading gate immediately cancelled');
+});
+
+test('an accepted dumbbell pickup tolerates absent palm samples and restores a safe physical body on release', async () => {
+  await R.init();
+  const world = new R.World({ x: 0, y: -9.81, z: 0 });
+  try {
+    world.createCollider(R.ColliderDesc.cuboid(4, .1, 4).setTranslation(0, -.1, 0));
+    const body = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(.5, .2, 0));
+    const collider = world.createCollider(R.ColliderDesc.cuboid(.2, .1, .12), body);
+    const pickup = acceptAction(), grip = [0, .1, 0], socket = [.5, 1.1, 0];
+    let drop = null, commits = 0;
+    for (let i = 0; i < 90; i++) {
+      if (advanceAcceptedAction(pickup, 1 / 60, true)) { drop = holdCampDumbbell(body, R.RigidBodyType); commits++; }
+      if (drop) {
+        const pose = campHeldBodyPose(body.translation(), grip, null, socket, Math.PI / 3, 1 / 60);
+        body.setNextKinematicTranslation(pose.position); body.setNextKinematicRotation(pose.rotation);
+      }
+      world.step();
+    }
+    assert.equal(commits, 1); assert.equal(body.bodyType(), R.RigidBodyType.KinematicPositionBased);
+    assert.equal(collider.isEnabled(), false);
+    const p = body.translation(), rotated = rotateVector(grip, body.rotation());
+    assert.ok(Math.hypot(p.x + rotated[0] - socket[0], p.y + rotated[1] - socket[1], p.z + rotated[2] - socket[2]) < .005);
+    const safe = campDumbbellDrop(world, body, [0, .82, 0], [.5, .2, 0], 0);
+    assert.ok(safe); drop(safe);
+    assert.equal(body.bodyType(), R.RigidBodyType.Dynamic); assert.equal(collider.isEnabled(), true);
+  } finally { world.free(); }
+});
+
+test('cancelled camp reach cannot acquire a body after a newer session takes over', () => {
+  const pickup = acceptAction(); let acquired = 0;
+  startCampPropInteraction({ id: 'old-pickup', anchor: [0, 0, 0], release: () => cancelAcceptedAction(pickup) });
+  advanceAcceptedAction(pickup, .08, true);
+  startCampPropInteraction({ id: 'new-tool', anchor: [0, 0, 0], release() {} });
+  for (let i = 0; i < 20; i++) acquired += Number(advanceAcceptedAction(pickup, .08, true));
+  assert.equal(acquired, 0); assert.equal(currentCampPropInteraction().id, 'new-tool');
+  cancelCampPropInteraction();
+});
 
 test('a camp prop can take over and release only its own session, clearing stale palm contact', () => {
   const released = [];

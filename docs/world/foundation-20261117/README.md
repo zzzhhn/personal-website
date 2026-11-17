@@ -20,7 +20,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | --- | --- | --- |
 | Terrain authority | Build-produced, versioned mesh data drives render, physics, placement and support queries; full-map contact/clearance scan from those same triangles; no runtime placement fallback to authoring heights | Not migrated; existing real-mesh queries located |
 | Collision provenance | Visible meshes explicitly classified solid/pushable/soft/none, coverage fails on omissions, geometry/transform provenance connects colliders to visible assets | Not migrated; mixed implementations confirmed |
-| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry implemented; Alpha six actions and cave lamp migrated; camp, mine and other adapters pending |
+| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry implemented; Alpha six actions, cave lamp and camp props migrated; mine and other adapters pending |
 | Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Not migrated; current coupling confirmed |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | Not migrated; behavior tests added for first change, visual suite pending |
 | Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Pending actual target device; do not substitute this machine |
@@ -51,7 +51,15 @@ Held lanterns use the authored hand socket if the animation sample is temporaril
 
 Verification: 46 behavioral/physical/rig tests passed across `accepted-action`, `interaction-offer`, `interact-lifecycle`, `pickup-approach`, `alpha-state`, `alpha-action-reach`, `alpha-batch2-lifecycle`, `cave-state`, `cave-lamp-reach` and `batch2-station-feedback`. TypeScript and the production build passed (eight routes; existing large-chunk warning remains). The pre-existing palm-contact tests for **visual reach** remain useful, while tests that required logical pickup failure on missing palm have been replaced with accepted completion/cancellation tests.
 
-Still pending: camp dumbbell and suitcase pickup/hold, tools and remaining venue-specific actions. Camp journal already completes without a palm-contact predicate but still needs the broader registry/lifecycle migration. This is not evidence that the global interaction contract is finished.
+Camp migration follows below. Mine and remaining venue-specific actions are still pending. This is not evidence that the global interaction contract is finished.
+
+## Batch 3: camp interaction consistency
+
+Camp dumbbell, suitcase and tool pickup now use the accepted-action clock instead of requiring a sampled palm contact. Missing palm samples use the authored carry socket for held dumbbells and tools. Suitcases retain their dynamic bodies and physical wall blocking; dumbbells retain collision isolation while held and the existing safe-drop restoration. Losing support, walking out of reach and session takeover still cancel the action.
+
+Camp command helpers now drive both prompt availability and E execution. Busy curl, lowering, tool-return and page-turn phases no longer advertise a no-op command. Journal opening and continued reading share the same vertical reach band, avoiding immediate cancellation after an accepted opening.
+
+Verification: 34 tests passed across accepted-action, interaction-offer, interact-lifecycle, pickup-approach and camp-prop-interactions, including a real Rapier pickup without palm samples, safe body restoration, suitcase turning/wall blocking and tool-geometry lane coverage. TypeScript and the production build passed (eight routes; the existing large-chunk warning remains). These results do not certify rendered attachment quality or player feel. No models, textures, lighting or quality settings changed.
 
 ## Next work
 
@@ -61,4 +69,4 @@ Still pending: camp dumbbell and suitcase pickup/hold, tools and remaining venue
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
 
-4341 and GitHub main remain the last accepted technical candidate until each new batch passes relevant checks. User visual/feel review remains separate from those checks.
+The user requested GitHub consolidation on 2026-11-17. Batches 1–3 are being consolidated into main after technical checks; the broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.
