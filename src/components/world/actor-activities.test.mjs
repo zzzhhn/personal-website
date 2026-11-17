@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createActorActivities } from './actor-activities.ts';
+import { createActorActivities, activityApproachMotion } from './actor-activities.ts';
 import { registerMineActivity } from './alpha-mine-activity.ts';
 import { beginMineAction, mineActor, mineVisualSockets, resetMineSession, useAlphaMineStore } from './alpha-mine-state.ts';
 
@@ -47,6 +47,26 @@ test('pose updates are isolated between regions and invalid time/coordinates are
   assert.deepEqual(position,[1,2,3]);assert.deepEqual(received[0].position,[1,2,3]);
   registry.sync({position:[NaN,2,3]});registry.sync({yaw:Infinity});assert.equal(received.length,1);
   for(const dt of [NaN,Infinity,-1,0])registry.advance(dt);assert.equal(ticks,0);
+});
+
+test('occupation excludes the current owner and is stable across cancellation during a sync',()=>{
+  const registry=createActorActivities(),seen=[];let busy=true;
+  registry.register(activity('owner',{read:()=>({busy,carrying:false}),sync:(pose,context)=>{seen.push(['owner',context.occupiedElsewhere]);busy=false;}}));
+  registry.register(activity('other',{sync:(pose,context)=>seen.push(['other',context.occupiedElsewhere])}));
+  registry.sync({available:true});assert.deepEqual(seen,[['owner',false],['other',true]]);
+  seen.length=0;registry.sync({available:true});assert.deepEqual(seen,[['owner',false],['other',false]]);
+});
+
+test('stance motion walks toward the anchor then settles to its authored heading without division by zero',()=>{
+  const stance={stand:[0,0,0],yaw:Math.PI/2,moving:true,stopDistance:.04};
+  const far=activityApproachMotion([1,1,0],stance);
+  assert.equal(far.vx,-1.5);assert.equal(Math.abs(far.vz),0);assert.equal(far.moving,true);
+  const near=activityApproachMotion([.1,1,0],stance);assert.equal(near.yaw,Math.PI/2);assert.equal(near.vx,-.4);
+  const stopped=activityApproachMotion([.02,1,0],stance);assert.equal(stopped.vx,0);assert.equal(stopped.moving,false);
+  assert.equal(activityApproachMotion([0,1,0],{...stance,stopDistance:0}).vx,0);
+  assert.equal(activityApproachMotion([1,1,0],{...stance,moving:false}).vx,0);
+  assert.equal(activityApproachMotion([NaN,1,0],stance),null);
+  assert.equal(activityApproachMotion([1,1,0],{...stance,yaw:Infinity}),null);
 });
 
 function mineScene(){

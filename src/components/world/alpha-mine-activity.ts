@@ -20,7 +20,10 @@ export function registerMineActivity(registry: ActorActivities = actorActivities
           : { zh: '先在矿场暂存台按 F 放下矿石，再使用其他设施。', en: 'Set the ore on a mine shelf with F before using another attraction.' },
       };
     },
-    sync(pose) { Object.assign(mineActor, pose); },
+    sync(pose, context) {
+      Object.assign(mineActor, pose);
+      if(pose.available!==undefined) mineActor.available=pose.available&&!context.occupiedElsewhere;
+    },
     input(moving) {
       mineActor.moving = moving;
       const action = useAlphaMineStore.getState().action;

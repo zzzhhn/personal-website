@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react';
+import { registerExchangeActivity } from './alpha-exchange-activity';
 import { useFrame } from '@react-three/fiber';
 import { TrimeshCollider, RigidBody } from '@react-three/rapier';
 import { CanvasTexture, CircleGeometry, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace } from 'three';
@@ -36,6 +37,7 @@ function ProjectInput({ projectId }: { projectId?: string }) {
 
 /** One finite replay, physical contacts and one event-driven 1024² display atlas. Mounting never fetches. */
 export default function WorldAlphaExchange({ projectId }: { projectId?: string }) {
+  useEffect(() => registerExchangeActivity(), []);
   const state = useExchangePlay(), zh = useWorldStore(s => s.lang === 'zh');
   const built = useMemo(() => {
     const architecture = buildAlphaExchangeGeometry();

@@ -21,7 +21,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | Terrain authority | Build-produced, versioned mesh data drives render, physics, placement and support queries; full-map contact/clearance scan from those same triangles; no runtime placement fallback to authoring heights | Not migrated; existing real-mesh queries located |
 | Collision provenance | Visible meshes explicitly classified solid/pushable/soft/none, coverage fails on omissions, geometry/transform provenance connects colliders to visible assets | Not migrated; mixed implementations confirmed |
 | Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry and accepted completion implemented for Alpha, cave, camp, mine, exchange and inspection; whole-registry audit and venue approach unification pending |
-| Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Actor activity registry introduced; mine state/input/clock/recovery migrated; other venue logic, start metadata, cameras and collider readiness still pending |
+| Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Mine and exchange actor behavior registered by scenes; common stance motion and owner-aware occupation implemented; other venue logic, start metadata, cameras and collider readiness still pending |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | Not migrated; behavior tests added for first change, visual suite pending |
 | Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Pending actual target device; do not substitute this machine |
 
@@ -85,6 +85,16 @@ Registration has a lease identity: replacing an adapter disposes the previous re
 
 Verification: 42 tests passed across the registry/mine adapter, mine state, executable offers, interaction lifecycle, pickup approach and world recovery. Includes actual registered mine equip/scan/strike, movement cancellation, F-key put-down, mid-flight interruption/unmount, stale cleanup and invalid frame data. TypeScript and the eight-route production build passed; the existing chunk-size warning remains. This is a first functional dependency-inversion slice, not completed core separation: mine start-position metadata and other venue stores still occur in `WorldActors`; other venue registrants and general approach ownership are next.
 
+## Batch 7: exchange registration and shared stance movement
+
+The exchange scene now registers its own actor pose, accepted-action clock, stance request, carried-ticket state, hall-boundary cleanup and interruption lifecycle. `WorldActors` no longer imports exchange motion/play state. Exchange start metadata remains in the core pending the arrival/configuration migration.
+
+Registry synchronization snapshots active ownership before notifying adapters. A venue's own action or carried item does not make it unavailable; a different occupied venue does. Mine and exchange use this rule, replacing their asymmetric availability cascade. Recovery explicitly identifies its interruption reason, allowing exchange to return its ticket while mine preserves its ore. Ordinary motion interruption only cancels the exchange action. Unmount clears pending exchange callbacks and visual samples.
+
+Scene stance descriptors feed one generic walking/heading calculation, also used by the not-yet-migrated IBD action. The actor checks the real supported floor route before moving, stopping with feedback when obstructed. This does not yet consolidate every prompt, stance reservation and execution path. Registry carrying state now prevents entering a vehicle or vaulting while holding an exchange ticket; leaving the hall clears that session as before.
+
+Verification: 81 tests passed across activity registration, actual exchange/mine adapters, exchange motion/play, mine state, world recovery, real Rapier pickup routes and IBD inspection/pack/crane regressions. Includes owner exclusion, stable occupation snapshots during cancellation, walking/heading settlement, zero-distance/invalid input, no-render exchange completion, interruption, boundary cleanup and unmount. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. These results do not prove whole-world visual/feel/performance acceptance. No model, material, lighting or startup-quality changes.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
@@ -93,4 +103,4 @@ Verification: 42 tests passed across the registry/mine adapter, mine state, exec
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
 
-The user requested GitHub consolidation on 2026-11-17. Batches 1–5 were consolidated into main through `2cd88eaa`; batch 6 is ready for consolidation with the checks above. The broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.
+The user requested GitHub consolidation on 2026-11-17. Batches 1–6 were consolidated into main through `506829f8`; batch 7 is ready for consolidation with the checks above. The broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.

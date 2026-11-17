@@ -8,7 +8,7 @@ import { actorActivities } from './actor-activities';
 export function returnPlayerToCamp(player: RigidBody | null, driven: RigidBody | undefined,
   clearTransient: () => void, resetCamera: () => void) {
   if (!player) return false;
-  actorActivities.interrupt(); // Each region preserves its owned items before the relocation.
+  actorActivities.interrupt('recovery'); // Each region preserves its owned items before the relocation.
   if (driven) stopActorBody(driven);
   clearTransient();
   player.setEnabled(true); resetActorBody(player, CAMP_SPAWN);
