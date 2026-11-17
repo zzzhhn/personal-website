@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { ALPHA_FACTORS, type AlphaFactorId } from './alpha-mine-data.ts';
+import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from './accepted-action';
 
 export type MinePoint = [number, number, number];
 export type MineActionKind = 'equip' | 'scan' | 'strike' | 'pickup' | 'deposit';
 export interface MineAction {
   kind: MineActionKind; elapsed: number; duration: number; target: MinePoint;
-  origin: MinePoint; factorId?: AlphaFactorId; contact: boolean; bay?: 0 | 1; contactWait?: number;
+  origin: MinePoint; factorId?: AlphaFactorId; contact: boolean; bay?: 0 | 1; commitClock: AcceptedAction;
 }
 export interface MineVein { revealed: boolean; hits: number; collected: boolean }
 interface MineState {
@@ -35,21 +36,40 @@ const CONTACT: Record<MineActionKind, number> = { equip: .48, scan: 1.05, strike
 export function mineCanReach(target: MinePoint, radius = 2.2, facing = false) {
   const [x, y, z] = mineActor.position;
   const dx = target[0] - x, dz = target[2] - z;
-  if (!mineActor.available || !mineActor.grounded || Math.abs(target[1] - y) > 1.65 || Math.hypot(dx, dz) > radius) return false;
+  if (![...target, x, y, z, radius, mineActor.yaw].every(Number.isFinite) || radius < 0
+    || !mineActor.available || !mineActor.grounded || Math.abs(target[1] - y) > 1.65 || Math.hypot(dx, dz) > radius) return false;
   if (!facing || Math.hypot(dx, dz) < .1) return true;
   const targetYaw = Math.atan2(-dz, dx);
   return Math.abs(Math.atan2(Math.sin(targetYaw - mineActor.yaw), Math.cos(targetYaw - mineActor.yaw))) < .48;
 }
-export function beginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId, bay?: 0 | 1) {
-  const s = useAlphaMineStore.getState();
-  if (s.action || !mineCanReach(target, kind === 'deposit' ? 4.2 : kind === 'strike' ? 1.3 : 2.4)) return false;
+function actionStateAllows(s: MineState, kind: MineActionKind, factorId?: AlphaFactorId) {
+  if (factorId && !s.veins[factorId]) return false;
+  if (kind === 'equip' && (s.equipped || s.carried)) return false;
   if (kind !== 'equip' && !s.equipped) return false;
   if (kind === 'scan' && (!factorId || s.carried || s.veins[factorId].revealed)) return false;
   if (kind === 'strike' && (!factorId || s.carried || !s.veins[factorId].revealed || s.veins[factorId].hits >= 3)) return false;
   if (kind === 'pickup' && (!factorId || s.carried || (s.dropped?.factorId !== factorId && !s.recovered.includes(factorId) && (s.veins[factorId].hits < 3 || s.veins[factorId].collected)))) return false;
   if (kind === 'deposit' && (!factorId || s.carried !== factorId)) return false;
-  const origin: MinePoint = mineVisualSockets.valid ? [...mineVisualSockets.rightHand] : [mineActor.position[0], mineActor.position[1] + .5, mineActor.position[2]];
-  useAlphaMineStore.setState({ notice: null, action: { kind, elapsed: 0, duration: DURATIONS[kind], target: [...target], origin, factorId, contact: false, bay } });
+  return true;
+}
+/** Semantic eligibility is shared by discovery and execution; pickup stances are resolved by
+ * the registry before execution, so discovery does not impose the final hand distance. */
+export function mineActionAvailable(kind: MineActionKind, factorId?: AlphaFactorId) {
+  const s = useAlphaMineStore.getState();
+  return mineActor.available && mineActor.grounded && !mineActor.moving && !s.action && actionStateAllows(s, kind, factorId);
+}
+export function canBeginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId) {
+  return mineActionAvailable(kind, factorId)
+    && mineCanReach(target, kind === 'deposit' ? 4.2 : kind === 'strike' ? 1.3 : 2.4);
+}
+function carriedOrigin(): MinePoint {
+  const [x, y, z] = mineActor.position, yaw = mineActor.yaw;
+  return [x + Math.cos(yaw) * .35, y + .25, z - Math.sin(yaw) * .35];
+}
+export function beginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId, bay?: 0 | 1) {
+  if (!canBeginMineAction(kind, target, factorId)) return false;
+  const origin = carriedOrigin();
+  useAlphaMineStore.setState({ notice: null, action: { kind, elapsed: 0, duration: DURATIONS[kind], target: [...target], origin, factorId, contact: false, bay, commitClock: acceptAction(CONTACT[kind]) } });
   return true;
 }
 
@@ -58,6 +78,7 @@ export function cancelMineAction() {
   if (!s.action) return;
   // A released stone remains recoverable if navigation interrupts its flight.
   const a = s.action;
+  cancelAcceptedAction(a.commitClock);
   useAlphaMineStore.setState({ action: null, ...(a.kind === 'deposit' && a.contact && a.factorId ? { carried: a.factorId } : {}) });
 }
 export function putDownMineOre() {
@@ -65,12 +86,15 @@ export function putDownMineOre() {
   if (!s.carried || s.action || s.dropped) return false;
   const target = mineActor.restTarget;
   if (!target || !mineCanReach(target, .8)) { mineNotice('靠近池边暂存台或矿脉接石台，再按 F 放下。', 'Approach a pool shelf or seam ledge, then press F to set it down.'); return false; }
-  useAlphaMineStore.setState({ notice: null, action: {kind:'deposit',elapsed:0,duration:1.4,target,origin:[...mineVisualSockets.oreRelease],factorId:s.carried,contact:false} });
-  return true;
+  return beginMineAction('deposit', target, s.carried);
+}
+export function canResetMineVeins() {
+  const s = useAlphaMineStore.getState();
+  return !s.carried && !s.dropped && !s.action;
 }
 export function resetMineVeins() {
   const s = useAlphaMineStore.getState();
-  if (s.carried || s.dropped || s.action) return false;
+  if (!canResetMineVeins()) return false;
   useAlphaMineStore.setState({ veins: freshVeins(), recovered: [], cycle: s.cycle + 1 });
   mineNotice('新一轮勘探已准备好，池里的结果继续保留。', 'Fresh seams are ready. Your pool results remain.');
   return true;
@@ -79,29 +103,19 @@ export function resetMineVeins() {
 /** Called once per physics step. Elapsed is a transient pose clock; only transitions publish. */
 export function advanceMineAction(dt: number) {
   const s = useAlphaMineStore.getState(), a = s.action;
-  if (!a || dt <= 0) return;
+  if (!a || !Number.isFinite(dt) || dt <= 0) return;
   if (!mineActor.available || (!a.contact && mineActor.moving)) { cancelMineAction(); return; }
-  a.elapsed = Math.min(a.duration, a.elapsed + Math.min(dt, .05));
-  if (!a.contact && a.elapsed >= CONTACT[a.kind]) {
+  const step = Math.min(dt, .05);
+  a.elapsed = Math.min(a.duration, a.elapsed + step);
+  if (!a.contact && advanceAcceptedAction(a.commitClock, step,
+    mineActor.grounded && actionStateAllows(s, a.kind, a.factorId))) {
     const reach = mineCanReach(a.target, a.kind === 'deposit' ? 4.2 : a.kind === 'strike' ? 1.35 : 2.4, a.kind === 'strike');
     if (!reach) { cancelMineAction(); mineNotice('靠近同一层的岩面，再对准试试。', 'Move closer on this level and face the seam.'); return; }
-    if (a.kind !== 'scan') {
-      const sockets = mineVisualSockets;
-      // Let the render solve this exact contact pose before physics commits the event.
-      // This also works when several fixed physics steps run in one rendered frame.
-      const sampled = sockets.valid && sockets.assetsReady && sockets.sampledActionKind === a.kind
-        && Math.abs(sockets.sampledElapsed - CONTACT[a.kind]) < .0001;
-      if (!sampled) {
-        a.elapsed = CONTACT[a.kind]; a.contactWait = (a.contactWait ?? 0) + Math.min(dt, .05);
-        if (a.contactWait > .5) { cancelMineAction(); mineNotice('工具动作还没准备好，请稍后重试。', 'The tool pose is not ready yet. Please try again.'); }
-        return;
-      }
-      const error = a.kind === 'strike' ? sockets.contactError : sockets.rightReachError;
-      Object.assign(mineContactEvidence,{kind:a.kind,factor:a.factorId??'',accepted:error<=.16&&(a.kind!=='strike'||sockets.leftReachError<=.16),error,leftError:sockets.leftReachError,sampledElapsed:sockets.sampledElapsed});
-      if (error > .16 || (a.kind === 'strike' && sockets.leftReachError > .16)) {
-        cancelMineAction(); mineNotice('还差一点距离，请再靠近目标。', 'Just out of reach. Move a little closer.'); return;
-      }
-    }
+    // Render contact is diagnostic only. A missing/stale IK sample cannot veto an accepted action.
+    const sockets = mineVisualSockets;
+    Object.assign(mineContactEvidence, { kind: a.kind, factor: a.factorId ?? '', accepted: true,
+      error: a.kind === 'strike' ? sockets.contactError : sockets.rightReachError,
+      leftError: sockets.leftReachError, sampledElapsed: sockets.sampledElapsed });
     a.contact = true;
     const id = a.factorId;
     if (a.kind === 'equip') useAlphaMineStore.setState({ equipped: true });
@@ -114,10 +128,13 @@ export function advanceMineAction(dt: number) {
       useAlphaMineStore.setState({ carried: id, dropped: s.dropped?.factorId === id ? null : s.dropped, recovered: s.recovered.filter(v=>v!==id), veins: { ...s.veins, [id]: { ...s.veins[id], collected: true } } });
     }
     if (a.kind === 'deposit' && id) {
-      if (mineVisualSockets.valid) a.origin = [...mineVisualSockets.oreRelease];
+      a.origin = sockets.valid && sockets.sampledActionKind === a.kind
+        && Math.abs(sockets.sampledElapsed - a.elapsed) <= .12 && sockets.oreRelease.every(Number.isFinite)
+        ? [...sockets.oreRelease] : carriedOrigin();
       useAlphaMineStore.setState({ carried: null });
     }
   }
+  if (!a.contact && a.commitClock.status === 'cancelled') { cancelMineAction(); return; }
   if (a.elapsed >= a.duration) {
     if (a.kind === 'deposit' && a.factorId) {
       if (a.bay === undefined) {

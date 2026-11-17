@@ -3,7 +3,7 @@ import { pickupStandingRing, type PickupApproach } from './pickup-approach';
 import type { Vec3 } from './types';
 
 /** G24's existing mine crouch reaches .7 m shelf ore and the 1.05 m rack grip.
- * Shelf stances leave room for the solid tray; the action still measures .16 m hand contact. */
+ * Shelf stances leave room for the solid tray. IK contact remains a visual check, not an action gate. */
 export function minePickupApproach(readTarget: () => Vec3, kind: 'ore'|'tools' = 'ore'): PickupApproach {
   return {
     target: readTarget,

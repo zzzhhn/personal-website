@@ -6,7 +6,7 @@ import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { ALPHA_FACTORS, type AlphaFactorId } from './alpha-mine-data';
 import { ALPHA_MINE_ORIGIN, mineLocalToWorld } from './alpha-mine-layout';
-import { beginMineAction, cancelMineAction, mineActor, mineCanReach, mineNotice, resetMineVeins, useAlphaMineStore, type MinePoint } from './alpha-mine-state';
+import { beginMineAction, canBeginMineAction, canResetMineVeins, cancelMineAction, mineActionAvailable, mineActor, mineCanReach, mineNotice, resetMineVeins, useAlphaMineStore, type MinePoint } from './alpha-mine-state';
 import { useMineManifest, type MineManifest } from './alpha-mine-assets';
 import { releaseMineOnline, requestMineBacktest, useMineOnline } from './alpha-mine-online';
 import WorldMinePool from './WorldMinePool';
@@ -91,8 +91,12 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
   useInteractable({ id:`alpha-mine-${m.id}`, position:target, radius:depleted?PICKUP_DISCOVERY_RADIUS:v.revealed?1.3:2.1, kind:'exhibit',
     approach:depleted?minePickupApproach(()=>oreRest):undefined,
     label: depleted ? { zh:`拾起${factor.label}`, en:`Pick up ${factor.labelEn}` } : !s.equipped ? {zh:'先在入口取工具',en:'Collect the tools at the entrance'} : !v.revealed ? {zh:'辨认这条矿线',en:'Read this seam'} : {zh:`挥镐 · ${v.hits}/3`,en:`Chip the seam · ${v.hits}/3`},
-    enabled: () => !useAlphaMineStore.getState().carried && !useAlphaMineStore.getState().veins[factor.id].collected
-      && (depleted?mineActor.available&&!useAlphaMineStore.getState().action:mineCanReach(target,v.revealed?1.35:2.2)),
+    enabled: () => {
+      const now = useAlphaMineStore.getState();
+      if (!now.equipped) return !now.action && mineCanReach(target, 2.2);
+      return depleted ? mineActionAvailable('pickup', factor.id)
+        : canBeginMineAction(v.revealed ? 'strike' : 'scan', target, factor.id);
+    },
     onInteract: () => {
       if (!s.equipped) { mineNotice('工具在入口左边的架上。','The tool rack is on the left of the entrance.'); return; }
       beginMineAction(depleted?'pickup':v.revealed?'strike':'scan',target,factor.id);
@@ -116,7 +120,8 @@ function MineRack({ manifest, detector, pickaxe }: { manifest: MineManifest; det
   },[detector,manifest]);
   useInteractable({ id:'alpha-mine-tools',position:target,radius:equipped?.85:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
     approach:equipped?undefined:minePickupApproach(()=>target,'tools'),
-    enabled:()=>mineActor.available&&!useAlphaMineStore.getState().action&&!useAlphaMineStore.getState().carried,
+    enabled:()=>useAlphaMineStore.getState().equipped
+      ? mineActor.available && canResetMineVeins() : mineActionAvailable('equip'),
     label:equipped?{zh:'开始新一轮勘探',en:'Begin a fresh exploration'}:{zh:'取探测器和镐',en:'Collect detector & pickaxe'},
     onInteract:()=>{ if(equipped) resetMineVeins(); else { parkAudio.cue('scan',.35); beginMineAction('equip',target); } },
   });
@@ -131,7 +136,7 @@ function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: nu
   const anchor=poolShelf(manifest,index), rock=useOre(ore,factor.id);
   useInteractable({id:`alpha-mine-recovery-${index}`,position:mineLocalToWorld(anchor),radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
     approach:minePickupApproach(()=>mineLocalToWorld(anchor)),
-    label:{zh:`取回${factor.label}`,en:`Retrieve ${factor.labelEn}`},enabled:()=>mineActor.available&&!useAlphaMineStore.getState().action&&useAlphaMineStore.getState().recovered.includes(factor.id)&&!useAlphaMineStore.getState().carried,
+    label:{zh:`取回${factor.label}`,en:`Retrieve ${factor.labelEn}`},enabled:()=>useAlphaMineStore.getState().recovered.includes(factor.id)&&mineActionAvailable('pickup',factor.id),
     onInteract:()=>beginMineAction('pickup',mineLocalToWorld(anchor),factor.id),
   });
   return <group>
@@ -147,6 +152,8 @@ function PoolBay({ manifest, bay }: { manifest: MineManifest; bay: 0|1 }) {
   const anchor: MinePoint=[basin.center[0]+offset,.83,basin.center[2]+3.35];
   const target=mineLocalToWorld([basin.impact[0]+offset*.45,basin.waterY,basin.impact[2]]);
   useInteractable({id:`alpha-mine-pool-${bay}`,position:mineLocalToWorld(anchor),radius:1.2,kind:'exhibit',
+    enabled:()=>{const s=useAlphaMineStore.getState();return s.carried
+      ? canBeginMineAction('deposit',target,s.carried) : mineActor.available&&!s.action;},
     label:carried?{zh:`投入 ${bay?'B':'A'} 位 · 替换此处结果`,en:`Cast into ${bay?'B':'A'} · replace this result`}:status==='ready'?{zh:'检视回测池',en:'Inspect results'}:status==='error'?{zh:'重试这块矿石的回测',en:'Retry this ore’s backtest'}:status==='loading'?{zh:'矿石正在回测',en:'Backtest in progress'}:{zh:'带一块矿石来试试',en:'Bring an ore to test'},
     onInteract:()=>{const s=useAlphaMineStore.getState(),id=s.carried,existing=s.bays[bay];
       if(id)beginMineAction('deposit',target,id,bay);
@@ -177,7 +184,7 @@ function MineLooseOre({ source }: { source: Object3D }) {
   const rock=useOre(source,id ?? 'REVERSAL_5');
   useInteractable(s.dropped?{id:'alpha-mine-dropped',position:s.dropped.position,radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
     approach:minePickupApproach(()=>useAlphaMineStore.getState().dropped?.position??s.dropped!.position),
-    enabled:()=>mineActor.available&&!!useAlphaMineStore.getState().dropped&&!useAlphaMineStore.getState().action&&!useAlphaMineStore.getState().carried,
+    enabled:()=>{const drop=useAlphaMineStore.getState().dropped;return !!drop&&mineActionAvailable('pickup',drop.factorId);},
     label:{zh:'拾回矿石',en:'Retrieve the ore'},onInteract:()=>{
     const drop=useAlphaMineStore.getState().dropped; if(drop) beginMineAction('pickup',drop.position,drop.factorId);
   }}:null);

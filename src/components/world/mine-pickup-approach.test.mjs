@@ -52,7 +52,7 @@ function handError(stand,target,kind='ore') {
   finally {layer.dispose();}
 }
 
-test('each real mine ore tray has a clear short approach with the unchanged G24 contact limit',()=>{
+test('each real mine ore tray has a clear short approach with the existing G24 visual reach',()=>{
   for(const vein of layout.veins) {
     const world=new R.World({x:0,y:0,z:0});
     try {
@@ -60,7 +60,7 @@ test('each real mine ore tray has a clear short approach with the unchanged G24 
       const target=mineLocalToWorld(vein.oreRest),from=mineLocalToWorld([vein.oreRest[0],vein.level+H+.001,vein.oreRest[2]+1.6]);
       const body=actor(world,from),pickup=minePickupApproach(()=>target),stand=findPickupStand(world,R,body,from,pickup);
       assert.equal(pickup.ready(from),false);assert.ok(stand,`${vein.id}: no capsule-clear pickup stance`);
-      assert.equal(pickup.ready(stand),true);assert.ok(handError(stand,target)<=.16,`${vein.id}: original physical hand contact still required`);
+      assert.equal(pickup.ready(stand),true);assert.ok(handError(stand,target)<=.16,`${vein.id}: the accepted stance must still support the existing hand animation`);
       assert.equal(pickup.ready([stand[0],stand[1]+3,stand[2]]),false,'never accept the storey above');
     } finally {world.free();}
   }

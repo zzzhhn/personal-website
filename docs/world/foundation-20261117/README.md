@@ -20,7 +20,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | --- | --- | --- |
 | Terrain authority | Build-produced, versioned mesh data drives render, physics, placement and support queries; full-map contact/clearance scan from those same triangles; no runtime placement fallback to authoring heights | Not migrated; existing real-mesh queries located |
 | Collision provenance | Visible meshes explicitly classified solid/pushable/soft/none, coverage fails on omissions, geometry/transform provenance connects colliders to visible assets | Not migrated; mixed implementations confirmed |
-| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry implemented; Alpha six actions, cave lamp and camp props migrated; mine and other adapters pending |
+| Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry implemented; Alpha six actions, cave lamp, camp props and mine actions migrated; exchange, inspection and other adapters pending |
 | Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Not migrated; current coupling confirmed |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | Not migrated; behavior tests added for first change, visual suite pending |
 | Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Pending actual target device; do not substitute this machine |
@@ -61,6 +61,14 @@ Camp command helpers now drive both prompt availability and E execution. Busy cu
 
 Verification: 34 tests passed across accepted-action, interaction-offer, interact-lifecycle, pickup-approach and camp-prop-interactions, including a real Rapier pickup without palm samples, safe body restoration, suitcase turning/wall blocking and tool-geometry lane coverage. TypeScript and the production build passed (eight routes; the existing large-chunk warning remains). These results do not certify rendered attachment quality or player feel. No models, textures, lighting or quality settings changed.
 
+## Batch 4: mine actions without render-clock vetoes
+
+Mine equip, scan, strike, pickup and deposit now use the common accepted-action clock. Removed the exact-render-timestamp rendezvous and half-second contact timeout. Spatial reach, strike facing, grounded support, moving-away cancellation and current ore availability remain enforced. Live semantic availability is shared by offers and action entry; the rack no longer advertises a reset while loose ore blocks it. Nonfinite positions and time cannot poison a transaction.
+
+Deposit still has separate release and arrival events. Cancellation during flight restores the same ore; pool comparison results and recovery shelves retain their previous behavior. Missing or stale ore-release samples fall back to a finite local carry socket. Hand/contact errors remain diagnostic, and the existing G24 visual-reach tests remain intact.
+
+Verification: 52 passed and one pre-existing skipped asset-socket test across accepted-action, alpha-mine-state, mine-pickup-approach, guide-mine, world-recovery, alpha-mine-physics and alpha-mine-online. TypeScript and the eight-route production build passed. No browser, rendered motion, target-device performance or full-world completion is claimed. No model, material, lighting or quality changes.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
@@ -69,4 +77,4 @@ Verification: 34 tests passed across accepted-action, interaction-offer, interac
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
 
-The user requested GitHub consolidation on 2026-11-17. Batches 1–3 are being consolidated into main after technical checks; the broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.
+The user requested GitHub consolidation on 2026-11-17. Batches 1–3 were consolidated into main at `726bd074`; batch 4 follows after the checks above. The broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.

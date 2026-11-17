@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { advanceMineAction, beginMineAction, cancelMineAction, mineActor, mineVisualSockets, putDownMineOre, resetMineSession, resetMineVeins, useAlphaMineStore } from './alpha-mine-state.ts';
+import { advanceMineAction, beginMineAction, canBeginMineAction, canResetMineVeins, cancelMineAction, mineActionAvailable, mineActor, mineVisualSockets, putDownMineOre, resetMineSession, resetMineVeins, useAlphaMineStore } from './alpha-mine-state.ts';
 
 const point=[1,0,0], id='REVERSAL_5';
 function fixture(){resetMineSession();Object.assign(mineActor,{position:[0,0,0],yaw:0,grounded:true,moving:false,available:true,restTarget:[.55,.7,0]});Object.assign(mineVisualSockets,{valid:true,assetsReady:true,contactError:0,rightReachError:0,leftReachError:0});}
@@ -8,7 +8,7 @@ function advance(seconds){for(let t=0;t<seconds;t+=1/60){const a=useAlphaMineSto
 function equipped(){fixture();assert.ok(beginMineAction('equip',point));advance(1);assert.equal(useAlphaMineStore.getState().equipped,true);}
 function collected(){equipped();assert.ok(beginMineAction('scan',point,id));advance(1.2);for(let i=0;i<3;i++){assert.ok(beginMineAction('strike',point,id));advance(1.2);}assert.ok(beginMineAction('pickup',point,id));advance(1);}
 
-test('three physical contacts produce one recoverable ore, never one per input/frame',()=>{
+test('three accepted strikes produce one recoverable ore, never one per input/frame',()=>{
   equipped();assert.equal(beginMineAction('strike',point,id),false);
   assert.ok(beginMineAction('scan',point,id));advance(1.2);
   for(let i=0;i<3;i++){
@@ -73,16 +73,16 @@ test('three ores can replace either result without losing recovered stones or bl
   assert.ok(beginMineAction('pickup',useAlphaMineStore.getState().dropped.position,ids[0]));advance(1);
   assert.equal(useAlphaMineStore.getState().carried,ids[0]);
 });
-test('mining requires a solved asset contact; distant or stale poses cannot award ore',()=>{
+test('an accepted strike commits despite missing, stale or imprecise render contact',()=>{
   equipped();assert.ok(beginMineAction('scan',point,id));advance(1.2);
-  mineVisualSockets.contactError=.3;assert.ok(beginMineAction('strike',point,id));advance(1.2);
-  assert.equal(useAlphaMineStore.getState().veins[id].hits,0);
-  mineVisualSockets.contactError=0;mineVisualSockets.assetsReady=false;
-  assert.ok(beginMineAction('strike',point,id));advance(1.2);
-  assert.equal(useAlphaMineStore.getState().veins[id].hits,0);
+  Object.assign(mineVisualSockets,{valid:false,assetsReady:false,contactError:Infinity,rightReachError:Infinity,leftReachError:Infinity,sampledActionKind:null,sampledElapsed:0});
+  assert.ok(beginMineAction('strike',point,id));
+  for(let i=0;i<80;i++)advanceMineAction(1/60);
+  assert.equal(useAlphaMineStore.getState().veins[id].hits,1);
+  assert.equal(useAlphaMineStore.getState().action,null);
 });
 
-test('a 30 Hz render waits at the exact contact pose across multiple physics steps',()=>{
+test('sparse render samples do not stall the physics action clock',()=>{
   equipped();assert.ok(beginMineAction('scan',point,id));advance(1.2);
   assert.ok(beginMineAction('strike',point,id));
   for(let frame=0;frame<45;frame++){
@@ -92,4 +92,50 @@ test('a 30 Hz render waits at the exact contact pose across multiple physics ste
     advanceMineAction(1/60);advanceMineAction(1/60);
   }
   assert.equal(useAlphaMineStore.getState().veins[id].hits,1);
+  assert.equal(useAlphaMineStore.getState().action,null);
+});
+
+test('prompt eligibility follows executable state for tools, seams and fresh exploration',()=>{
+  fixture();assert.equal(mineActionAvailable('pickup',id),false);
+  assert.equal(canBeginMineAction('equip',point),true);
+  assert.ok(beginMineAction('equip',point));
+  assert.equal(mineActionAvailable('equip'),false);assert.equal(beginMineAction('equip',point),false);
+  advance(1);assert.equal(mineActionAvailable('equip'),false);
+  assert.equal(canBeginMineAction('scan',point,id),true);assert.ok(beginMineAction('scan',point,id));advance(1.2);
+  assert.equal(canBeginMineAction('scan',point,id),false);
+  assert.equal(canBeginMineAction('strike',[1.31,0,0],id),false);
+  assert.equal(beginMineAction('strike',[1.31,0,0],id),false);
+  useAlphaMineStore.setState({dropped:{factorId:id,position:point}});
+  assert.equal(canResetMineVeins(),false);assert.equal(resetMineVeins(),false);
+  useAlphaMineStore.setState({dropped:null});assert.equal(canResetMineVeins(),true);
+});
+
+test('loss of support or ore availability cancels a pending action without a delayed effect',()=>{
+  for(const invalidate of [()=>{mineActor.grounded=false;},()=>{useAlphaMineStore.setState({carried:'ROC20_RANK'});}]){
+    equipped();useAlphaMineStore.setState({recovered:[id]});assert.ok(beginMineAction('pickup',point,id));
+    advance(.2);invalidate();advance(.1);
+    assert.equal(useAlphaMineStore.getState().action,null);
+    mineActor.grounded=true;advance(1);
+    assert.notEqual(useAlphaMineStore.getState().carried,id);
+    assert.deepEqual(useAlphaMineStore.getState().recovered,[id]);
+  }
+});
+
+test('deposit without render samples uses a local finite origin and cancellation restores the same ore',()=>{
+  collected();Object.assign(mineVisualSockets,{valid:false,oreRelease:[NaN,NaN,NaN]});
+  assert.ok(beginMineAction('deposit',point,id,0));advance(.6);
+  const a=useAlphaMineStore.getState().action;
+  assert.equal(a.contact,true);assert.ok(a.origin.every(Number.isFinite));
+  assert.ok(Math.hypot(...a.origin)<1);assert.equal(useAlphaMineStore.getState().carried,null);
+  cancelMineAction();advance(2);
+  assert.equal(useAlphaMineStore.getState().carried,id);assert.deepEqual(useAlphaMineStore.getState().bays,[null,null]);
+});
+
+test('nonfinite positions and time cannot enter or poison the action lifecycle',()=>{
+  fixture();assert.equal(canBeginMineAction('equip',[NaN,0,0]),false);
+  assert.equal(beginMineAction('equip',[Infinity,0,0]),false);
+  assert.ok(beginMineAction('equip',point));const a=useAlphaMineStore.getState().action;
+  for(const dt of [NaN,Infinity,-1,0])advanceMineAction(dt);
+  assert.equal(a.elapsed,0);assert.equal(a.contact,false);advance(1);
+  assert.equal(useAlphaMineStore.getState().equipped,true);
 });
