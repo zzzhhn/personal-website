@@ -32,6 +32,7 @@ import { AttractionCabinCamera } from './attractions/attraction-camera-cabin';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import { findPickupStand, pickupGroundRoute, pickupApproachMotion, PICKUP_APPROACH_TIMEOUT } from './pickup-approach';
+import { createInteractionOfferResolver, type InteractionOfferContext } from './interaction-offer';
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
@@ -338,6 +339,7 @@ export default function WorldActors() {
   const cars = useRef(new Map<VehicleId,Car>());
   /** Interactable in reach this physics step (set before E handling). */
   const nearbyItem = useRef<Interactable|null>(null);
+  const interactionOffers = useMemo(createInteractionOfferResolver, []);
   const pickupApproach = useRef<{ item: Interactable; stand: Vec3; elapsed: number } | null>(null);
   /** Seat id the body was last snapped to (store.seat), where it sat down from, and the seated body point. */
   const seatHeld = useRef<string|null>(null);
@@ -1092,7 +1094,23 @@ export default function WorldActors() {
         c=>!c.isSensor()&&!(c.parent()?.userData as {interactable?:string}|undefined)?.interactable&&!(c.parent()?.userData as {vehicle?:string}|undefined)?.vehicle);
       return !hit;
     };
-    const reach=active||seated||carded||state.clubMode||state.factoryStation?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight,state.interactPick);
+    const offerContext = (): InteractionOfferContext => ({
+      position: [playerPosition.x, playerPosition.y, playerPosition.z], now: performance.now() / 1000,
+      available: item => {
+        const current = useWorldStore.getState();
+        return !current.paused && !current.poolInspect && !current.activeVehicle && !current.seat
+          && !current.card && !current.clubMode && !current.factoryStation && !guideTransition.current
+          && !mineBusy() && !railVault.current && !exchangeBodyBusy() && !ibdInspectionBodyBusy()
+          && (!useAlphaMineStore.getState().carried || item.id.startsWith('alpha-mine-'))
+          && (!item.approach || (grounded.current && campPropActor.available && !attractionRide.active));
+      },
+      visible: sight,
+      findStand: approach => player.current ? findPickupStand(world, rapier, player.current,
+        [playerPosition.x, playerPosition.y, playerPosition.z], approach) : null,
+    });
+    const promptContext = offerContext();
+    const reach=active||seated||carded||state.clubMode||state.factoryStation?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,
+      item => !!interactionOffers.resolve(item, promptContext),state.interactPick);
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
     if(seated||carded||state.factoryStation)nearby=null;
@@ -1109,12 +1127,10 @@ export default function WorldActors() {
       }
       if(active)exit();else if(item){
         if(pickupApproach.current?.item.id===item.id){pickupApproach.current=null;return;}
-        const approach=item.approach;
-        if(approach){
-          const from:Vec3=[playerPosition.x,playerPosition.y,playerPosition.z];
-          const stand=findPickupStand(world,rapier,player.current!,from,approach);
-          if(!stand){actorNotice('取用位置被挡住了，请从旁边靠近。','The pickup spot is blocked. Approach from the side.');return;}
-          pickupApproach.current={item,stand,elapsed:0};
+        const offer=interactionOffers.resolve(item,offerContext(),true);
+        if(!offer){actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;}
+        if(offer.stand){
+          pickupApproach.current={item,stand:offer.stand,elapsed:0};
         }else{pickupApproach.current=null;item.onInteract();}
       }else if(nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
