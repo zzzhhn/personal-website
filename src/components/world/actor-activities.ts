@@ -8,6 +8,9 @@ export interface ActivityApproach {
   maxSpeed?: number; turnDistance?: number; routeLimit?: number;
 }
 export interface ActivityCamera { target: Vec3; eye: Vec3; fov: number; smoothing: number; priority: number }
+export type ActivityKey = { code: string; repeat: boolean };
+export type ActivityKeyResult = 'handled' | 'blocked' | undefined;
+export type ActivityAnimation = { dance: 0 | 1 | null; danceBeat: number };
 export interface ActorActivityState {
   busy: boolean;
   carrying: boolean;
@@ -18,6 +21,9 @@ export interface ActorActivityState {
   sprintAllowed?: boolean;
   movementLocked?: boolean;
   inputOwner?: string;
+  /** Changes clear held controls even when the activity does not own movement. */
+  inputContext?: string;
+  blocksOffers?: boolean;
   facing?: Vec3;
   approach?: ActivityApproach;
   allowsInteraction?: (id: string) => boolean;
@@ -28,13 +34,16 @@ export interface ActorActivity {
   id: string;
   read: () => ActorActivityState;
   sync: (pose: Partial<ActorActivityPose>, context: { occupiedElsewhere: boolean }) => void;
-  input: (moving: boolean) => void;
+  input: (moving: boolean, jumping?: boolean) => void;
   advance: (dt: number) => void;
   command: (name: 'put-down') => boolean;
   interrupt: (reason: ActivityInterruption) => void;
   dispose: () => void;
   camera?: () => ActivityCamera | null;
   clearInput?: (reason: 'reset' | 'owner-change') => void;
+  keyboard?: (key: ActivityKey) => ActivityKeyResult;
+  interact?: () => boolean;
+  animation?: () => ActivityAnimation | null;
 }
 
 export function createActorActivities() {
@@ -63,7 +72,33 @@ export function createActorActivities() {
       visit(entry => entry.sync({ ...pose, ...(pose.position ? { position: [...pose.position] as Vec3 } : {}) },
         { occupiedElsewhere: owners.some(slot => slot.entry !== entry) }));
     },
-    input(moving: boolean) { visit(entry => entry.input(moving)); },
+    input(moving: boolean, jumping = false) { visit(entry => entry.input(moving, jumping)); },
+    inputContext: () => JSON.stringify(current().flatMap(({entry}) => {
+      const context = entry.read().inputContext;
+      return context ? [[entry.id, context]] : [];
+    })),
+    blocksOffers: () => current().some(({entry}) => entry.read().blocksOffers),
+    keyboard(key: ActivityKey): ActivityKeyResult {
+      const owner = current().find(({entry}) => entry.read().inputOwner);
+      for (const slot of owner ? [owner] : current()) {
+        if (entries.get(slot.entry.id) !== slot) continue;
+        const result = slot.entry.keyboard?.(key);
+        if (result) return result;
+      }
+    },
+    interact() {
+      const owner = current().find(({entry}) => entry.read().inputOwner);
+      for (const slot of owner ? [owner] : current())
+        if (entries.get(slot.entry.id) === slot && slot.entry.interact?.()) return true;
+      return false;
+    },
+    animation(): ActivityAnimation {
+      for (const {entry} of current()) {
+        const pose = entry.animation?.();
+        if (pose && (pose.dance === 0 || pose.dance === 1 || pose.dance === null) && Number.isFinite(pose.danceBeat)) return pose;
+      }
+      return {dance: null, danceBeat: 0};
+    },
     clearInput(reason: 'reset' | 'owner-change' = 'reset') { visit(entry => entry.clearInput?.(reason)); },
     locomotion() {
       let speedLimit=Infinity,sprintAllowed=true;

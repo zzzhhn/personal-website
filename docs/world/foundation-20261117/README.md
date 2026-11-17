@@ -245,6 +245,16 @@ Final verification: all 32 checks pass across cave artifacts, pickup approach, c
 
 Cost: 5,932 triangles now represent the rack/frame collision geometry. Cave payload is 919,482 compressed bytes / 7,675,816 decoded bytes, an increase of 321,606 compressed bytes from Batch 20. Render quality and triangle detail are not reduced; no target-device performance improvement is claimed. Other terrain artifacts are unchanged. Global classification enforcement, full-map support/clearance scanning, ordinary-view atlas and M3 Air Safari acceptance remain pending. 4341 is not promoted by this batch.
 
+## Batch 22: scene-owned Club controls and animation state
+
+Club now registers an actor activity when its scene mounts. `WorldActors` no longer imports Club layout/audio or reads `clubMode`, dance-step state or Club interaction IDs. The scene adapter supplies dance animation/beat, console facing, input ownership, held-input context changes, interaction exit and keyboard handling. Generic keyboard dispatch only visits the current input owner when one exists; an unrelated console cannot accidentally unlock Club audio. Audio enable remains synchronous within the DOM keyboard callback, before the later interaction frame.
+
+DJ owns movement/look input but retains E and gamepad interaction exit. Dance permits locomotion, switches steps on 1/2 and ends on movement or jump. Both modes hide unrelated offers and reserve the actor from other venue adapters without disabling their own valid pose. The shared facing path retains the console's 9 rad/s turn cap. Returning, recovery, unavailable actor poses and scene disposal release mode ownership. Existing scene-local proximity/audio cleanup remains in place.
+
+Input-owner and input-context snapshots are recorded before cleanup, because releasing a held prop can synchronously publish another store update. Entering a blocking activity context also releases held camp props. Existing adapters retain their one-argument movement handlers and put-down commands; interaction exit is an optional separate callback, so adding it cannot invoke a legacy put-down handler by accident.
+
+Verification: 59 behavioral checks pass across Club activity/audio, the shared registry, camp, factory, IBD, exchange and interaction offers. Seven new Club tests cover synchronous audio enable, repeated E, both dance steps and silent audio, movement/jump exit, console exit, foreign input ownership, mine-availability handoff and unmount. TypeScript and the eight-route production build pass with the existing chunk-size warning. This is technical evidence, not real-browser audio gesture or player-feel acceptance. No geometry, material, lighting, music asset or quality-default change is included; 4341 is unchanged. Core isolation remains incomplete because ride/attraction control and other global presentation dependencies still need review.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

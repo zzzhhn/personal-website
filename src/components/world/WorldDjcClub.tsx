@@ -15,6 +15,7 @@ import { PLAYER_CENTER_HEIGHT } from './actor-physics';
 import { playerRouteClear } from './player-motion';
 import { playerSupport } from './player-ground';
 import type { Vec3 } from './types';
+import { registerClubActivity } from './club-actor-activity';
 
 const available = () => { const s = useWorldStore.getState(); return !s.activeVehicle && !s.seat && !s.card && !s.clubMode && !useAlphaMineStore.getState().carried; };
 /** A daybed is approached on its front ramp, already near cushion height, never from the pool below. */
@@ -46,6 +47,7 @@ function DaybedSeat({seat}:{seat:DjcClubSeat}) {
   return null;
 }
 export default function WorldDjcClub() {
+  useEffect(() => registerClubActivity(), []);
   useFrame(() => { if (isWorldRunning()) clubAudio.tick(); });
   useEffect(() => {
     const release = clubAudio.retain();
