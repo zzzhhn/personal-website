@@ -20,6 +20,11 @@ import './world.css';
 const Runtime = lazy(async () => {
   const { attachLoadProgress } = await import('./WorldLoadProgress');
   attachLoadProgress();
+  const [{ loadTerrainArtifact }, { default: manifest }, { LAYOUT_V4 }] = await Promise.all([
+    import('./load-terrain-artifact'), import('./terrain-artifacts.generated.json'), import('./layout-v4-flag'),
+  ]);
+  const variant = LAYOUT_V4 ? 'v4' : 'v3';
+  await loadTerrainArtifact(variant, manifest[variant]);
   return import('./WorldRuntime');
 });
 const IbdHud=memo(lazy(()=>import('./attractions/WorldIbdHud')));

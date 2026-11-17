@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "sourceHash": "f419545e3265efa633d8ad8255e7053b8b7fa76d0b305581822e42b0f7b362b2",
+  "v4": {
+    "url": "/assets/world/terrain/mainland-v4.bin.gz",
+    "bytes": 8061861,
+    "rawBytes": 32386060,
+    "sha256": "283d97a7d753cba92fd7c7483787b814e15f0bbc1e8256e0419c2f0a52132bf1"
+  },
+  "v3": {
+    "url": "/assets/world/terrain/mainland-v3.bin.gz",
+    "bytes": 1480609,
+    "rawBytes": 4894024,
+    "sha256": "627043635659f589935e4bc46fa52440d02113ecf019bd5563dad50d5331f36e"
+  }
+}

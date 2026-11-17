@@ -1,12 +1,14 @@
 import { ensureMapSnapshots } from './world-map-snapshot.mjs';
+import { ensureTerrainArtifacts } from './build-terrain-artifacts.mjs';
 
 /** Run before Vite reads the lightweight map import; never generate terrain in the browser. */
 export function worldMapSnapshotPlugin() {
   let sources = new Set();
   let pending = Promise.resolve();
   const refresh = () => pending = pending.catch(() => {}).then(async () => {
+    const terrain = await ensureTerrainArtifacts();
     const result = await ensureMapSnapshots();
-    sources = new Set(result.sources);
+    sources = new Set([...result.sources, ...terrain.sources]);
     return result;
   });
   return {

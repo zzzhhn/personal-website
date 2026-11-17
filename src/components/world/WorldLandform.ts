@@ -9,6 +9,7 @@ import { CLUB_CAPE, CLUB_POOL, clubCapeDistance, clubScatterBlocked, meshWaterli
 import { attractionCapeDistance, attractionScatterBlocked, attractionCliffCoastHeight } from './attractions/attraction-layout';
 import { factoryCapeDistance, factoryScatterBlocked } from './factory/factory-layout';
 import { coasterInfieldHeight } from './attractions/coaster-terrain-relief';
+import { requireTerrainArtifact } from './terrain-artifact';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -387,6 +388,7 @@ export interface Terrain {
 
 let terrainCache: Terrain | null = null;
 export function buildTerrain(): Terrain {
+  if (import.meta.env?.SSR === false) return requireTerrainArtifact(LAYOUT_V4 ? 'v4' : 'v3', GRID, CELL);
   if (terrainCache) return terrainCache;
   const t0 = typeof performance !== 'undefined' ? performance.now() : Date.now();
   const pos: number[] = [], idx: number[] = [];
