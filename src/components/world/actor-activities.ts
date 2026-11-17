@@ -11,6 +11,11 @@ export interface ActivityCamera { target: Vec3; eye: Vec3; fov: number; smoothin
 export interface ActorActivityState {
   busy: boolean;
   carrying: boolean;
+  /** Reserves the actor from other activities without blocking this activity's commands or walking. */
+  occupied?: boolean;
+  idleFacing?: Vec3;
+  speedLimit?: number;
+  sprintAllowed?: boolean;
   movementLocked?: boolean;
   inputOwner?: string;
   facing?: Vec3;
@@ -29,7 +34,7 @@ export interface ActorActivity {
   interrupt: (reason: ActivityInterruption) => void;
   dispose: () => void;
   camera?: () => ActivityCamera | null;
-  clearInput?: () => void;
+  clearInput?: (reason: 'reset' | 'owner-change') => void;
 }
 
 export function createActorActivities() {
@@ -54,12 +59,29 @@ export function createActorActivities() {
       if (pose.position && (pose.position.length !== 3 || !pose.position.every(Number.isFinite))
         || pose.yaw !== undefined && !Number.isFinite(pose.yaw)) return;
       // Snapshot ownership before any adapter can cancel itself during synchronization.
-      const owners = current().filter(({entry}) => { const state=entry.read(); return state.busy || state.carrying; });
+      const owners = current().filter(({entry}) => { const state=entry.read(); return state.busy || state.carrying || state.occupied; });
       visit(entry => entry.sync({ ...pose, ...(pose.position ? { position: [...pose.position] as Vec3 } : {}) },
         { occupiedElsewhere: owners.some(slot => slot.entry !== entry) }));
     },
     input(moving: boolean) { visit(entry => entry.input(moving)); },
-    clearInput() { visit(entry => entry.clearInput?.()); },
+    clearInput(reason: 'reset' | 'owner-change' = 'reset') { visit(entry => entry.clearInput?.(reason)); },
+    locomotion() {
+      let speedLimit=Infinity,sprintAllowed=true;
+      for(const {entry} of current()) {
+        const state=entry.read();
+        if(state.speedLimit!==undefined && Number.isFinite(state.speedLimit) && state.speedLimit>=0)
+          speedLimit=Math.min(speedLimit,state.speedLimit);
+        if(state.sprintAllowed===false)sprintAllowed=false;
+      }
+      return {speedLimit,sprintAllowed};
+    },
+    idleFacing() {
+      for(const {entry} of current()) {
+        const facing=entry.read().idleFacing;
+        if(facing?.length===3 && facing.every(Number.isFinite))return facing;
+      }
+      return null;
+    },
     inputOwner() {
       for(const {entry} of current()){
         const owner=entry.read().inputOwner;

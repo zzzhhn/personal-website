@@ -41,7 +41,6 @@ import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, seatedCameraOrigin, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
-import { campPropActor, campPropHand, cancelCampPropInteraction, currentCampPropInteraction } from './camp-prop-interactions';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
 import WorldDrivingFeedback from './WorldDrivingFeedback';
@@ -773,7 +772,7 @@ export default function WorldActors() {
       const nextOwner=actorActivities.inputOwner();
       if(nextOwner!==inputOwner){
         inputOwner=nextOwner;clearInput();drag=null;
-        if(nextOwner){cancelCampPropInteraction('activity-input');if(document.pointerLockElement===gl.domElement)document.exitPointerLock?.();}
+        if(nextOwner){actorActivities.clearInput('owner-change');if(document.pointerLockElement===gl.domElement)document.exitPointerLock?.();}
       }
       if(state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot || state.clubMode!==previous.clubMode){
         clearInput();drag=null;if((state.paused||state.poolInspect||state.clubMode==='dj')&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
@@ -978,8 +977,8 @@ export default function WorldActors() {
     const dt=world.timestep || PHYSICS_STEP;
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(attractionRide.active){
-      campPropActor.available=false;
-      releaseGuideActionHand();cancelCampPropInteraction();
+      actorActivities.sync({available:false});
+      releaseGuideActionHand();
       if(!rideHeld.current){
         const start=player.current.translation();
         // Select a clear joining leg before validating the complete boarding route.
@@ -1051,15 +1050,8 @@ export default function WorldActors() {
     const activityAvailable = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
     actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:activityAvailable&&!guideTransition.current,
-      mode:active?'vehicle':'guide',handsOccupied:!!currentCampPropInteraction()||!!guideActionHand.target});
+      mode:active?'vehicle':'guide',handsOccupied:!!guideActionHand.target});
     const unoccupied=activityAvailable&&!actorActivities.busy()&&!actorActivities.carrying()&&!guideTransition.current;
-    campPropActor.position[0]=playerPosition.x;
-    campPropActor.position[1]=playerPosition.y;
-    campPropActor.position[2]=playerPosition.z;
-    campPropActor.yaw=guideYaw.current;
-    campPropActor.grounded=grounded.current;
-    campPropActor.available=unoccupied
-      &&!actorActivities.inputOwner()&&!attractionRide.active&&!state.paused&&!state.poolInspect;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
     // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
@@ -1082,7 +1074,7 @@ export default function WorldActors() {
           && !current.card && !current.clubMode && !actorActivities.inputOwner() && !guideTransition.current
           && !actorActivities.busy() && !railVault.current
           && actorActivities.allowsInteraction(item.id)
-          && (!item.approach || (grounded.current && campPropActor.available && !attractionRide.active));
+          && (!item.approach || (grounded.current && !actorActivities.carrying() && !attractionRide.active));
       },
       visible: sight,
       findStand: approach => player.current ? findPickupStand(world, rapier, player.current,
@@ -1165,7 +1157,6 @@ export default function WorldActors() {
       const p=player.current.translation(),velocity=player.current.linvel();
       const ground=playerSupport(world,rapier,player.current);
       grounded.current=ground?.grounded??false;
-      campPropActor.grounded=grounded.current;
       actorActivities.sync({grounded:grounded.current});
       if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
         step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
@@ -1238,20 +1229,17 @@ export default function WorldActors() {
         if(spot)resetBody(player.current,spot);
         player.current.setEnabled(true);
       }
-      const pullingCase=campPropHand.mode==='grip'&&currentCampPropInteraction()?.id==='camp-prop-suitcase';
-      const caseHandle=pullingCase?campPropHand.target:null;
-      // Let the rolling body catch up before a stretched arm becomes a broken grip.
-      const towPace=caseHandle?clamp((.62-Math.hypot(caseHandle[0]-p.x,caseHandle[2]-p.z))/.12,0,1):1;
-      const speed=(seat?0:pullingCase?2*towPace:running?6.2:3.6)*magnitude;
-      moveIntent.current=magnitude>.05?(running&&!pullingCase?'run':'walk'):'idle';
+      const locomotion=actorActivities.locomotion(),sprinting=running&&locomotion.sprintAllowed;
+      const speed=(seat?0:Math.min(locomotion.speedLimit,sprinting?6.2:3.6))*magnitude;
+      moveIntent.current=magnitude>.05?(sprinting?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
       actorActivities.input(magnitude > .05);
       const stance=actorActivities.approach();
       const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
-      if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!campPropActor.available||attractionRide.active))pickupApproach.current=null;
-      const handFacing=guideActionHand.facing??campPropHand.facing;
-      if (handFacing && campPropActor.available && magnitude <= .05) {
+      if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!unoccupied||attractionRide.active))pickupApproach.current=null;
+      const handFacing=guideActionHand.facing??actorActivities.idleFacing();
+      if (handFacing && unoccupied && !operating && magnitude <= .05) {
         const focus=handFacing;
         const desired=Math.atan2(-(focus[2]-p.z),focus[0]-p.x);
         guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*8,dt*8);
@@ -1295,7 +1283,6 @@ export default function WorldActors() {
           moveIntent.current=Math.hypot(vx,vz)>.05?'walk':'idle';
           if(ready&&Math.abs(angleDelta(guideYaw.current,motion.yaw))<.12&&Math.hypot(velocity.x,velocity.z)<.18){
             pickupApproach.current=null;
-            campPropActor.yaw=guideYaw.current;
             actorActivities.sync({position,yaw:guideYaw.current});
             pickup.item.onInteract();
           }
@@ -1316,7 +1303,6 @@ export default function WorldActors() {
       } else turnBeforeMove.current=false;
       guideTargetSpeed.current=Math.hypot(vx,vz);
       actorActivities.sync({yaw:guideYaw.current});
-      campPropActor.yaw = guideYaw.current;
       actorActivities.advance(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.

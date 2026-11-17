@@ -13,6 +13,7 @@ import { PICKUP_DISCOVERY_RADIUS, pickupStandingRing, type PickupApproach } from
 import { campPropReachAt } from './camp-prop-interactions';
 import { campPushCommand, campToolCommand, campJournalCommand, campJournalReachAt, campHeldBodyPose, type CampPushPhase } from './camp-prop-interactions';
 import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, heldPropPoint, type AcceptedAction } from './accepted-action';
+import { registerCampActivity } from './camp-actor-activity';
 
 type Labels = { en: string; zh: string };
 // A shape query can miss at the instant a dumbbell collider is removed or at a stone seam.
@@ -36,6 +37,7 @@ function useCancelOnUnmount(id: string) {
 
 /** Release even when paused physics has already stopped, including a return to camp from Esc. */
 export function CampPropSession() {
+  useEffect(() => registerCampActivity(), []);
   useEffect(() => {
     const unsubscribe = useWorldStore.subscribe((state, previous) => {
       const prop = currentCampPropInteraction();
