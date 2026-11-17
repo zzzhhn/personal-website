@@ -2,18 +2,19 @@ import { PLAYER_CENTER_HEIGHT, CAMERA_DEFAULT_YAW, CAMERA_DEFAULT_PITCH } from '
 import type { ActorArrival, ActorSites, ActorZone } from './actor-sites';
 import { CAMP_SPAWN, ROAD_POINTS, VEHICLES } from './layout';
 import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
-import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
-import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
-import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory } from './factory/factory-layout';
-import { CLUB, CLUB_POOL } from './djc-club-layout';
-import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES } from './attractions/attraction-layout';
+import { ALPHA_MINE_ORIGIN, mineEdgeDistance } from './alpha-mine-layout';
+import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
+import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory, factoryFootprintDistance } from './factory/factory-layout';
+import { CLUB, CLUB_POOL, CLUB_CAPE } from './djc-club-layout';
+import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES, ibdFootprintDistance } from './attractions/attraction-layout';
 import { namedAlphaArrival, alphaTerrainColliderMounted } from './world-arrival-readiness';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { roadLandingCandidates } from './world-travel';
 import { WORLD_PORTALS } from './world-portals';
 import type { Vec3 } from './types';
-import { mountedCollidersReady, FIXED_TRIMESH, type ColliderRequirement } from './collider-readiness';
+import { mountedCollidersReady, createColliderReadinessProbe, FIXED_TRIMESH, type ColliderRequirement } from './collider-readiness';
+import { createRegionPassage, type PassageRegion } from './region-passage';
 
 /** Named collider groups belong to the independently mounted district, not its visual asset load. */
 export function arrivalColliderRequirements(start: string | null, layoutV4=LAYOUT_V4): ColliderRequirement[] {
@@ -27,6 +28,25 @@ export function arrivalColliderRequirements(start: string | null, layoutV4=LAYOU
   if(start?.startsWith('club'))requirements.push(mesh('djc-surface-same-mesh'),mesh('djc-solid-same-mesh'));
   return requirements;
 }
+
+export function worldPassageRegions(layoutV4=LAYOUT_V4):PassageRegion[] {
+  const box=(b:{minX:number;maxX:number;minZ:number;maxZ:number})=>(p:Vec3,r:number)=>
+    p[0]>=b.minX-r&&p[0]<=b.maxX+r&&p[2]>=b.minZ-r&&p[2]<=b.maxZ+r;
+  const district=(id:string,contains:PassageRegion['contains']):PassageRegion=>
+    ({id,contains,requirements:arrivalColliderRequirements(id,layoutV4).slice(2)});
+  return [
+    {id:'alpha-island',contains:alphaContainsWorld,requirements:[{name:'alpha-terrain-patch',shape:FIXED_TRIMESH,count:2}]},
+    district('brain',(p,r)=>mineEdgeDistance(p[0],p[2])<=r),
+    district('exchange',box(ALPHA_EXCHANGE_FOOTPRINT)),
+    district('club',(p,r)=>(Math.hypot((p[0]-CLUB_CAPE.center[0])/CLUB_CAPE.radii[0],(p[2]-CLUB_CAPE.center[1])/CLUB_CAPE.radii[1])-1)*Math.min(...CLUB_CAPE.radii)<=r),
+    ...(layoutV4?[
+      district('factory',(p,r)=>factoryFootprintDistance(p[0],p[2])<=r),
+      district('ibd',(p,r)=>ibdFootprintDistance(p[0],p[2])<=r),
+      district('coaster',box(INTENT_COASTER.bounds)),
+    ]:[]),
+  ];
+}
+const passageRegions=worldPassageRegions(),mainlandRequirements=arrivalColliderRequirements(null);
 
 const bodyPoint = (ground: Vec3): Vec3 => [ground[0],ground[1]+PLAYER_CENTER_HEIGHT,ground[2]];
 const attractionRoads=ATTRACTION_ROAD_SAMPLES.map(path=>path.map(([x,z])=>[x,1.045,z] as Vec3));
@@ -87,6 +107,7 @@ export function worldActorZone(position:Vec3,fallback?:ActorZone,layoutV4=LAYOUT
 }
 
 export const worldActorSites: ActorSites = {
+  passage:(world,states)=>createRegionPassage(passageRegions,createColliderReadinessProbe(world,states),mainlandRequirements),
   arrival:worldActorArrival,
   zone:worldActorZone,
   roadCandidates:worldRoadLandingCandidates,

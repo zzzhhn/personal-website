@@ -3,6 +3,7 @@ import type { Object3D } from 'three';
 import type { Vec3 } from './types';
 import type { useWorldStore } from './store';
 import type { roadLandingCandidates } from './world-travel';
+import type { RegionPassage } from './region-passage';
 
 export type ActorZone = ReturnType<typeof useWorldStore.getState>['zone'];
 export interface ActorArrival {
@@ -22,4 +23,5 @@ export interface ActorSites {
   rideZone: (position: Vec3, hasDriver: boolean) => ActorZone;
   recoveryCandidates: (position: Vec3) => Vec3[];
   roadCandidates: (position: Vec3) => ReturnType<typeof roadLandingCandidates>;
+  passage: (world: Pick<World,'getCollider'>, states: ReadonlyMap<number,{object:Object3D}>) => RegionPassage;
 }

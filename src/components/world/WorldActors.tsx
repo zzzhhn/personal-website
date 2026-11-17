@@ -3,6 +3,7 @@ import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-ha
 import { localWindPace } from './rides/local-wind';
 import { holdWorldArrival, activateReadyArrival } from './world-arrival-readiness';
 import type { ActorSites } from './actor-sites';
+import { passageVelocity } from './region-passage';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -348,6 +349,8 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
   const activeVehicle = useWorldStore(s=>s.activeVehicle);
   const firstPerson = useWorldStore(s=>s.zoom===3);
   const { world, rapier, colliderStates } = useRapier();
+  const passage=useMemo(()=>sites.passage(world,colliderStates),[sites,world,colliderStates]);
+  const regionNoticeAt=useRef(-Infinity);
   const { camera, scene, gl } = useThree();
   const clearance = useRef<ReturnType<typeof createPlayerClearance> | null>(null);
   useEffect(() => {
@@ -996,7 +999,8 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
     // Evaluate proximity at physics frequency; UI publication is throttled separately.
     let nearby:VehicleId|null=null,nearest=3.8;
     const playerPosition=player.current.translation();
-    const activityAvailable = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
+    const activityAvailable = !active && !state.seat && !state.card && !state.clubMode && !railVault.current
+      &&passage.at(asTuple(playerPosition),PLAYER_RADIUS);
     actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:activityAvailable&&!guideTransition.current,
       mode:active?'vehicle':'guide',handsOccupied:!!guideActionHand.target});
@@ -1023,11 +1027,15 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
           && !current.card && !current.clubMode && !actorActivities.inputOwner() && !guideTransition.current
           && !actorActivities.busy() && !railVault.current
           && actorActivities.allowsInteraction(item.id)
+          && passage.at(item.position,PLAYER_RADIUS)
           && (!item.approach || (grounded.current && !actorActivities.carrying() && !attractionRide.active));
       },
       visible: sight,
-      findStand: approach => player.current ? findPickupStand(world, rapier, player.current,
-        [playerPosition.x, playerPosition.y, playerPosition.z], approach) : null,
+      findStand: approach => {
+        if(!player.current)return null;
+        const position=asTuple(playerPosition),stand=findPickupStand(world,rapier,player.current,position,approach);
+        return stand&&passage.allows(position,stand,PLAYER_RADIUS)?stand:null;
+      },
     });
     const promptContext = offerContext();
     const reach=active||seated||carded||state.clubMode||actorActivities.inputOwner()?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,
@@ -1203,7 +1211,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
       if(stance){
         actions.current.jump=false;
         const position:Vec3=[p.x,p.y,p.z],motion=activityApproachMotion(position,stance);
-        const route=motion&&(!motion.moving||pickupGroundRoute(world,rapier,player.current,position,
+        const route=motion&&passage.allows(position,stance.stand,PLAYER_RADIUS)&&(!motion.moving||pickupGroundRoute(world,rapier,player.current,position,
           [stance.stand[0],stance.stand[1]+PLAYER_CENTER_HEIGHT,stance.stand[2]],stance.routeLimit??2));
         if(!route){
           actorActivities.interrupt('blocked');
@@ -1221,7 +1229,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
         pickup.elapsed+=dt;
         const ready=!!approach&&grounded.current&&approach.ready(position);
         const invalid=!approach||(pickup.item.enabled&&!pickup.item.enabled())||!grounded.current;
-        const blocked=!invalid&&(!sight(pickup.item)||(!ready&&!pickupGroundRoute(world,rapier,player.current,position,pickup.stand)));
+        const blocked=!invalid&&(!sight(pickup.item)||!passage.allows(position,pickup.stand,PLAYER_RADIUS)||(!ready&&!pickupGroundRoute(world,rapier,player.current,position,pickup.stand)));
         if(invalid||blocked||pickup.elapsed>PICKUP_APPROACH_TIMEOUT){
           pickupApproach.current=null;
           if(blocked||pickup.elapsed>PICKUP_APPROACH_TIMEOUT)actorNotice('没有走到可取用的位置，请换一侧再试。','Could not reach the pickup spot. Try another side.');
@@ -1309,11 +1317,23 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
         grounded.current=false;jumpSeq.current++;
       }
       }
+      const nextVelocity=player.current.linvel();
+      const passageMotion=passageVelocity(passage,asTuple(p),nextVelocity,dt,PLAYER_RADIUS);
+      if(passageMotion.blocked) {
+        player.current.setLinvel(passageMotion.velocity,true);
+        railVault.current=null;vault.current=null;pickupApproach.current=null;
+        guideTargetSpeed.current=0;moveIntent.current='idle';
+        const now=performance.now();
+        if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01&&now-regionNoticeAt.current>2500) {
+          regionNoticeAt.current=now;
+          actorNotice('前方区域正在准备，请稍候。','The area ahead is preparing. Please wait.');
+        }
+      }
       const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,WATER_Y);
       wetPlayer.current=wet.submergedSeconds;
       if((wet.shouldRescue||p.y< -80)&&!(rescueRetry.current.get('player')??0)){
         rescueRetry.current.set('player',1);
-        const candidates=sites.recoveryCandidates(asTuple(p));
+        const candidates=sites.recoveryCandidates(asTuple(p)).filter(point=>passage.at(point,PLAYER_RADIUS));
         const landing=findSafePlayerLanding(world,rapier,player.current,candidates,WATER_Y);
         if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
       }
@@ -1327,7 +1347,7 @@ export default function WorldActors({sites}: {sites: ActorSites}) {
           let transferred=false;
           for(let i=0;i<destinations.length;i++){
             const destination=destinations[(i+start)%destinations.length];
-            const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates,WATER_Y);
+            const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates.filter(point=>passage.at(point,PLAYER_RADIUS)),WATER_Y);
             if(!landing)continue;
             relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
             useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:sites.zone(landing,destination.id==='camp'?'camp':'park')});

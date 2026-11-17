@@ -139,6 +139,14 @@ The readiness inspector checks both the mounted Three object ancestry and curren
 
 Verification: 20 behavior tests passed, including all required-group arrival cases, rejected debug fallbacks, partial mount/lost collider handling, Alpha support activation and a real Rapier cold-start body held for 120 physics steps then released to normal floor contact. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. No visual, material or quality changes; no 4341 promotion. This closes the initial-arrival race for the listed entries, not the whole region-entry objective: ordinary walking/driving/ride boundary readiness, detailed internal fixture coverage and graceful district-load failure recovery remain pending.
 
+## Batch 13: on-foot regional passage and ready destinations
+
+World assembly now supplies a passage gate for the Alpha island, mainland mine, exchange, club, factory, IBD and coaster footprints. Walking and jump/vault horizontal velocity, automatic pickup/console stance routes, interaction offer targets, rescue candidates and portal destinations consult that gate. The core receives only the generic contract. Short movements test the whole segment with capsule padding and a conservative sampling margin; teleports test their destination rather than inventing a walkable corridor across the island. Existing Rapier route, support and capsule checks still decide actual physical clearance.
+
+Unavailable district groups stop horizontal motion and show a rate-limited preparation message. Loading completion removes the gate automatically. The readiness probe caches only required handles, revalidates positive results live, and retries missing groups at most every 100 ms unless the mounted inventory changes first. Disable/removal/renaming of a previously accepted collider invalidates readiness immediately. Initial-arrival handling remains separate; these passage checks do not modify assets or material treatment.
+
+Verification: 41 tests passed across segment crossing/radius/corner cases, all seven production footprint contracts, V3 omission of absent attractions, live Rapier readiness loss, bounded negative-cache retries, positive-cache handle access counts, an actual walking body stopping at a cold boundary then continuing without teleportation, interaction offers, pickup routes, arrivals and recovery. TypeScript and the eight-route production build passed; the existing large-chunk warning remains. This is not a target-device performance result. Vehicle dynamics, ride transit/egress, forced external-body displacement, detailed town/park interior fixtures and load-error recovery still need coverage; the all-region readiness objective is not complete. 4341 remains unchanged.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
