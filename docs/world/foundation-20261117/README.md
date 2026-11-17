@@ -21,7 +21,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | Terrain authority | Build-produced, versioned mesh data drives render, physics, placement and support queries; full-map contact/clearance scan from those same triangles; no runtime placement fallback to authoring heights | Not migrated; existing real-mesh queries located |
 | Collision provenance | Visible meshes explicitly classified solid/pushable/soft/none, coverage fails on omissions, geometry/transform provenance connects colliders to visible assets | Not migrated; mixed implementations confirmed |
 | Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry and accepted completion implemented for Alpha, cave, camp, mine, exchange and inspection; whole-registry audit and venue approach unification pending |
-| Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Not migrated; current coupling confirmed |
+| Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Actor activity registry introduced; mine state/input/clock/recovery migrated; other venue logic, start metadata, cameras and collider readiness still pending |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | Not migrated; behavior tests added for first change, visual suite pending |
 | Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Pending actual target device; do not substitute this machine |
 
@@ -77,6 +77,14 @@ Crane motion now requires the current operation token/round, committed operator 
 
 Verification: 62 behavioral/controller/rig tests passed across exchange motion/play, G24 exchange and inspection rigs, inspection motion, pack play and crane control. This includes the complete three-leg crane route without any rendered palm samples, live support rechecking before the next actor tick, pause, invalid samples, callback rejection and fitted-jaw measurement. TypeScript and the eight-route production build passed; the existing chunk-size warning remains. Visual pose tests remain separate from logical completion. No asset/material/lighting changes or player acceptance claimed.
 
+## Batch 6: first registered actor activity
+
+`actor-activities.ts` is a venue-independent registry for live pose/input, action ticking, movement occupation, facing, carried-item interaction policy, commands and interruption. `alpha-mine-activity.ts` implements that contract and is registered by the mine scene. `WorldActors` no longer imports mine state or directly handles ore identity, the mine action clock, mine movement cancellation or the F-key operation. `world-recovery` uses registered interruptions and pose synchronization instead of importing mine state.
+
+Registration has a lease identity: replacing an adapter disposes the previous registration, but its eventual old cleanup cannot remove the replacement, even if the adapter object is reused. Tick snapshots skip entries unregistered by an earlier callback. Pose arrays are copied per recipient. Unmount/interruption cancels an in-flight deposit before restoring the actor, preserving the carried ore; scene-owned state remains with the scene.
+
+Verification: 42 tests passed across the registry/mine adapter, mine state, executable offers, interaction lifecycle, pickup approach and world recovery. Includes actual registered mine equip/scan/strike, movement cancellation, F-key put-down, mid-flight interruption/unmount, stale cleanup and invalid frame data. TypeScript and the eight-route production build passed; the existing chunk-size warning remains. This is a first functional dependency-inversion slice, not completed core separation: mine start-position metadata and other venue stores still occur in `WorldActors`; other venue registrants and general approach ownership are next.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
@@ -85,4 +93,4 @@ Verification: 62 behavioral/controller/rig tests passed across exchange motion/p
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
 
-The user requested GitHub consolidation on 2026-11-17. Batches 1–3 were consolidated into main at `726bd074`; batch 4 follows after the checks above. The broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.
+The user requested GitHub consolidation on 2026-11-17. Batches 1–5 were consolidated into main through `2cd88eaa`; batch 6 is ready for consolidation with the checks above. The broader foundation program remains incomplete. 4341 remains on its prior candidate for this Git-only handoff. User visual/feel review remains separate from technical checks.

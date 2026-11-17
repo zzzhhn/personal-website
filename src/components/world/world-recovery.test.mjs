@@ -6,6 +6,10 @@ import { useWorldStore, requestCampReturn, handleWorldEscape } from './store.ts'
 import { useAlphaMineStore, mineActor, mineVisualSockets } from './alpha-mine-state.ts';
 import { useMineOnline } from './alpha-mine-online.ts';
 import { returnPlayerToCamp } from './world-recovery.ts';
+import { registerMineActivity } from './alpha-mine-activity.ts';
+let releaseActivity;
+test.beforeEach(()=>{releaseActivity=registerMineActivity();});
+test.afterEach(()=>releaseActivity());
 await RAPIER.init();
 const initialWorld=structuredClone(useWorldStore.getState()),initialMine=structuredClone(useAlphaMineStore.getState());
 const id='REVERSAL_5';

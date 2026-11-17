@@ -9,7 +9,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
-import { advanceMineAction, cancelMineAction, mineActor, mineBusy, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
+import { actorActivities } from './actor-activities';
 import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { advanceExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exchangeBody, exchangeBodyBusy } from './alpha-exchange-motion';
@@ -458,6 +458,7 @@ export default function WorldActors() {
   }
   function clearPlayerMotion(hardCut=false) {
     pickupApproach.current=null;
+    actorActivities.interrupt();
     cancelIbdPack(true);
     cancelExchangeBodyAction();
     if(hardCut)cancelExchangePlay('recovery');
@@ -524,8 +525,9 @@ export default function WorldActors() {
     });
   }
   function enter(id: VehicleId) {
-    if (useAlphaMineStore.getState().carried || mineBusy()) {
-      actorNotice('先按 F 放下矿石，再上车。', 'Press F to put the ore down before entering.');
+    if (actorActivities.carrying() || actorActivities.busy()) {
+      const notice=actorActivities.notice('vehicle');
+      if(notice)actorNotice(notice.zh,notice.en);
       return false;
     }
     const car = cars.current.get(id);
@@ -719,7 +721,7 @@ export default function WorldActors() {
       keys.current.add(event.code);
       if (!event.repeat) {
         if (event.code === 'KeyF' && !state.card && !state.activeVehicle && player.current) {
-          if (putDownMineOre()) event.preventDefault();
+          if (actorActivities.command('put-down')) event.preventDefault();
         }
         if (event.code==='KeyE') {
           if(!state.clubMode&&['djc-club-dance','djc-club-decks'].includes(state.nearbyInteract?.id??''))void clubAudio.enable();
@@ -1007,7 +1009,7 @@ export default function WorldActors() {
       const pose=attractionRide.pose,actor=attractionActorFrame(),root=actor?.root??pose.seat;
       const p:Vec3=[root[0],root[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT,root[2]];
       resetBody(player.current,p);guideYaw.current=actor?.yaw??pose.yaw;grounded.current=true;
-      guideTargetSpeed.current=actor?.speed??0;moveIntent.current=actor&&actor.speed>.05?'walk':'idle';mineActor.available=false;
+      guideTargetSpeed.current=actor?.speed??0;moveIntent.current=actor&&actor.speed>.05?'walk':'idle';actorActivities.sync({available:false});
       if(attractionPhase()==='complete'){
         // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
         // it never selects a different platform position or silently sends them to camp.
@@ -1055,21 +1057,20 @@ export default function WorldActors() {
     // Evaluate proximity at physics frequency; UI publication is throttled separately.
     let nearby:VehicleId|null=null,nearest=3.8;
     const playerPosition=player.current.translation();
-    mineActor.position = [playerPosition.x, playerPosition.y, playerPosition.z];
-    mineActor.yaw = guideYaw.current;
-    mineActor.grounded = grounded.current;
-    mineActor.available = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
+    const activityAvailable = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
+    actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
+      grounded:grounded.current,available:activityAvailable&&!state.factoryStation});
     exchangeActor.position = [playerPosition.x, playerPosition.y, playerPosition.z];
     exchangeActor.yaw = guideYaw.current;
     exchangeActor.grounded = grounded.current;
-    exchangeActor.available = mineActor.available && !mineBusy() && !useAlphaMineStore.getState().carried && !guideTransition.current;
+    exchangeActor.available = activityAvailable && !actorActivities.busy() && !actorActivities.carrying() && !guideTransition.current;
     Object.assign(ibdInspectionActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:exchangeActor.available&&!exchangeBody.action&&!exchangeBody.carried,mode:active?'vehicle':'guide'});
     if(ibdInspectionBodyBusy()||ibdInspectionBody.carried)exchangeActor.available=false;
     Object.assign(factoryActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],grounded:grounded.current,
       available:exchangeActor.available&&!exchangeBody.action&&!exchangeBody.carried&&!guideTransition.current
         &&!attractionRide.active&&!currentCampPropInteraction()&&!guideActionHand.target});
-    if(state.factoryStation){mineActor.available=false;exchangeActor.available=false;ibdInspectionActor.available=false;}
+    if(state.factoryStation){exchangeActor.available=false;ibdInspectionActor.available=false;}
     campPropActor.position[0]=playerPosition.x;
     campPropActor.position[1]=playerPosition.y;
     campPropActor.position[2]=playerPosition.z;
@@ -1100,8 +1101,8 @@ export default function WorldActors() {
         const current = useWorldStore.getState();
         return !current.paused && !current.poolInspect && !current.activeVehicle && !current.seat
           && !current.card && !current.clubMode && !current.factoryStation && !guideTransition.current
-          && !mineBusy() && !railVault.current && !exchangeBodyBusy() && !ibdInspectionBodyBusy()
-          && (!useAlphaMineStore.getState().carried || item.id.startsWith('alpha-mine-'))
+          && !actorActivities.busy() && !railVault.current && !exchangeBodyBusy() && !ibdInspectionBodyBusy()
+          && actorActivities.allowsInteraction(item.id)
           && (!item.approach || (grounded.current && campPropActor.available && !attractionRide.active));
       },
       visible: sight,
@@ -1120,9 +1121,10 @@ export default function WorldActors() {
       if(now.clubMode){useWorldStore.setState({clubMode:null});return;}
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
-      if (mineBusy() || railVault.current || exchangeBodyBusy() || ibdInspectionBodyBusy()) return;
-      if (useAlphaMineStore.getState().carried && item && !item.id.startsWith('alpha-mine-')) {
-        actorNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
+      if (actorActivities.busy() || railVault.current || exchangeBodyBusy() || ibdInspectionBodyBusy()) return;
+      if (item && !actorActivities.allowsInteraction(item.id)) {
+        const notice=actorActivities.notice('interaction');
+        if(notice)actorNotice(notice.zh,notice.en);
         return;
       }
       if(active)exit();else if(item){
@@ -1185,7 +1187,7 @@ export default function WorldActors() {
       const ground=playerSupport(world,rapier,player.current);
       grounded.current=ground?.grounded??false;
       campPropActor.grounded=grounded.current;
-      mineActor.grounded = grounded.current;
+      actorActivities.sync({grounded:grounded.current});
       exchangeActor.grounded = grounded.current;
       ibdInspectionActor.grounded = grounded.current;
       if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
@@ -1267,12 +1269,10 @@ export default function WorldActors() {
       moveIntent.current=magnitude>.05?(running&&!pullingCase?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
-      mineActor.moving = magnitude > .05;
-      const mining = useAlphaMineStore.getState().action;
-      if (mining && !mining.contact && magnitude > .05) cancelMineAction();
+      actorActivities.input(magnitude > .05);
       const inspecting=ibdInspectionBody.action;
       const trading=exchangeBody.action??inspecting;
-      const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried || !!operating;
+      const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.busy() || !!trading || !!ibdInspectionBody.carried || !!operating;
       if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!campPropActor.available||attractionRide.active))pickupApproach.current=null;
       const handFacing=guideActionHand.facing??campPropHand.facing;
       if (handFacing && campPropActor.available && magnitude <= .05) {
@@ -1280,8 +1280,9 @@ export default function WorldActors() {
         const desired=Math.atan2(-(focus[2]-p.z),focus[0]-p.x);
         guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*8,dt*8);
       }
-      if (mining && mineBusy()) {
-        const desired = Math.atan2(-(mining.target[2] - p.z), mining.target[0] - p.x);
+      const activityFacing=actorActivities.facing();
+      if (activityFacing) {
+        const desired = Math.atan2(-(activityFacing[2] - p.z), activityFacing[0] - p.x);
         guideYaw.current += clamp(Math.atan2(Math.sin(desired - guideYaw.current), Math.cos(desired - guideYaw.current)), -dt * 10, dt * 10);
       }
       const windPace=localWindPace([p.x,p.y,p.z],[wx,wz],running);
@@ -1320,7 +1321,7 @@ export default function WorldActors() {
           if(ready&&Math.abs(angleDelta(guideYaw.current,motion.yaw))<.12&&Math.hypot(velocity.x,velocity.z)<.18){
             pickupApproach.current=null;
             campPropActor.yaw=guideYaw.current;
-            mineActor.position=[...position];mineActor.yaw=guideYaw.current;
+            actorActivities.sync({position,yaw:guideYaw.current});
             pickup.item.onInteract();
           }
         }
@@ -1339,9 +1340,9 @@ export default function WorldActors() {
         if (turnBeforeMove.current) { vx=0; vz=0; }
       } else turnBeforeMove.current=false;
       guideTargetSpeed.current=Math.hypot(vx,vz);
-      mineActor.yaw = guideYaw.current;
+      actorActivities.sync({yaw:guideYaw.current});
       campPropActor.yaw = guideYaw.current;
-      advanceMineAction(dt);
+      actorActivities.advance(dt);
       exchangeActor.yaw=guideYaw.current;
       advanceExchangeBodyAction(dt);
       ibdInspectionActor.yaw=guideYaw.current;
@@ -1349,7 +1350,7 @@ export default function WorldActors() {
       tickIbdCoilInspection(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
-      const eligible=!seat&&!locked&&!pickupApproach.current&&grounded.current&&!useAlphaMineStore.getState().carried&&!railVault.current;
+      const eligible=!seat&&!locked&&!pickupApproach.current&&grounded.current&&!actorActivities.carrying()&&!railVault.current;
       vaultPreview.current.elapsed+=dt;
       if(!eligible){vaultPreview.current.plan=null;vaultPreview.current.x=Infinity;}
       else if(vaultPreview.current.elapsed>=.18){

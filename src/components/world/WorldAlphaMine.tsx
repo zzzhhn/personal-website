@@ -7,6 +7,7 @@ import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { ALPHA_FACTORS, type AlphaFactorId } from './alpha-mine-data';
 import { ALPHA_MINE_ORIGIN, mineLocalToWorld } from './alpha-mine-layout';
 import { beginMineAction, canBeginMineAction, canResetMineVeins, cancelMineAction, mineActionAvailable, mineActor, mineCanReach, mineNotice, resetMineVeins, useAlphaMineStore, type MinePoint } from './alpha-mine-state';
+import { registerMineActivity } from './alpha-mine-activity';
 import { useMineManifest, type MineManifest } from './alpha-mine-assets';
 import { releaseMineOnline, requestMineBacktest, useMineOnline } from './alpha-mine-online';
 import WorldMinePool from './WorldMinePool';
@@ -306,6 +307,7 @@ class MineGuard extends Component<{children:ReactNode},{failed:boolean}> {
   render(){return this.state.failed?null:this.props.children;}
 }
 export default function WorldAlphaMine({content}:{content:WorldContent}) {
+  useEffect(() => registerMineActivity(), []);
   useEffect(()=>{
     const release=parkAudio.retain();
     const unsubscribe=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.card&&!p.card)||(s.poolInspect&&!p.poolInspect)||s.activeVehicle)cancelMineAction();});
