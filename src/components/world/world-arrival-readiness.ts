@@ -1,17 +1,9 @@
 import { type RigidBody, type World } from '@dimforge/rapier3d-compat';
 import type { Object3D } from 'three';
-import { ALPHA_BATCH2_ARRIVALS } from './alpha-island/alpha-batch2-layout';
-import { alphaWorld } from './alpha-island/alpha-layout';
 import { findSafePlayerLanding } from './safe-landing';
 import { resetPlayerBody } from './player-ground';
 import type { Vec3 } from './types';
-import { mountedCollidersReady, FIXED_TRIMESH } from './collider-readiness';
 import type { ActorArrival } from './actor-sites';
-
-/** Named public Alpha arrivals wait for their independently lazy district. */
-export function namedAlphaArrival(start: string | null): Vec3 | null {
-  return start && Object.hasOwn(ALPHA_BATCH2_ARRIVALS, start) ? alphaWorld(ALPHA_BATCH2_ARRIVALS[start]) : null;
-}
 
 const blockers = new Map<object, () => boolean>();
 /** Loading waits for collider registration, not for Physics to run. This permits
@@ -23,13 +15,6 @@ export function holdWorldArrival(blocked: () => boolean) {
   return () => { if (held) { held = false; blockers.delete(token); } };
 }
 export const worldArrivalBlocked = () => [...blockers.values()].some(blocked => blocked());
-
-/** A decoded asset or rendered mesh is insufficient. Require the district's real
- * fixed, enabled, non-sensor trimesh in Rapier and its mounted collider-state tree. */
-export function alphaTerrainColliderMounted(world: Pick<World, 'getCollider'>,
-  colliderStates: ReadonlyMap<number, { object: Object3D }>) {
-  return mountedCollidersReady(world,colliderStates,[{name:'alpha-terrain-patch',shape:FIXED_TRIMESH}]);
-}
 
 /** Called only during the initial held arrival, independently of the ready flag.
  * The existing real support-ring, capsule and escape queries own acceptance.

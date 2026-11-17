@@ -4,7 +4,8 @@ import { createRequire } from 'node:module';
 import { playerSupport, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, resetPlayerBody } from './player-ground.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { CAMP_SPAWN } from './layout.ts';
-import { returnPlayerToCamp } from './world-recovery.ts';
+import { recoverActor } from './world-recovery.ts';
+import { worldActorHome } from './world-actor-sites.ts';
 const require = createRequire(import.meta.url);
 const { default: R } = await import(require.resolve('@dimforge/rapier3d-compat', { paths: [require.resolve('@react-three/rapier')] }));
 await R.init();
@@ -56,7 +57,7 @@ test('camp recovery clears pending support through the shared transient cleanup 
   const { world, body, arm } = fixture();
   try {
     arm(); let resetCamera = 0;
-    returnPlayerToCamp(body, undefined, () => clearPlayerSlopeGravity(body), () => resetCamera++);
+    recoverActor(worldActorHome,body, undefined, () => clearPlayerSlopeGravity(body), () => resetCamera++);
     clearPlayerSlopeGravity(body); zero(body.userForce());
     assert.equal(resetCamera, 1); assert.equal(body.isEnabled(), true);
     for (let i = 0; i < 60; i++) world.step();

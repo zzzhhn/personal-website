@@ -1,11 +1,19 @@
 import type { World } from '@dimforge/rapier3d-compat';
 import type { Object3D } from 'three';
-import type { Vec3 } from './types';
+import type { Vec3, VehiclePlacement, Bi } from './types';
+import type { PortalOpening } from './portal-crossing';
 import type { useWorldStore } from './store';
 import type { roadLandingCandidates } from './world-travel';
 import type { RegionPassage } from './region-passage';
 
 export type ActorZone = ReturnType<typeof useWorldStore.getState>['zone'];
+export interface ActorHome { position: Vec3; zone: ActorZone; notice: Bi }
+export interface ActorPortal extends PortalOpening {
+  id: string;
+  arrivalCandidates: readonly Vec3[];
+  fallbackZone: ActorZone;
+  notice: Bi;
+}
 export interface ActorArrival {
   position: Vec3;
   yaw: number;
@@ -18,6 +26,10 @@ export interface ActorArrival {
 }
 /** Supplied by world assembly, not imported from venues by the actor controller. */
 export interface ActorSites {
+  readonly home: ActorHome;
+  readonly waterY: number;
+  readonly vehicles: readonly VehiclePlacement[];
+  readonly portals: readonly ActorPortal[];
   arrival: (search: string, development: boolean) => ActorArrival;
   zone: (position: Vec3, fallback?: ActorZone) => ActorZone;
   rideZone: (position: Vec3, hasDriver: boolean) => ActorZone;

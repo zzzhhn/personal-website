@@ -1,13 +1,13 @@
 import { PLAYER_CENTER_HEIGHT, CAMERA_DEFAULT_YAW, CAMERA_DEFAULT_PITCH } from './actor-physics';
-import type { ActorArrival, ActorSites, ActorZone } from './actor-sites';
-import { CAMP_SPAWN, ROAD_POINTS, VEHICLES } from './layout';
+import type { ActorArrival, ActorSites, ActorZone, ActorHome } from './actor-sites';
+import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
 import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
 import { ALPHA_MINE_ORIGIN, ALPHA_MINE_FOOTPRINT_POINTS } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory, FACTORY_FOOTPRINT } from './factory/factory-layout';
 import { CLUB, CLUB_POOL, CLUB_CAPE } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES, IBD_FOOTPRINT } from './attractions/attraction-layout';
-import { namedAlphaArrival, alphaTerrainColliderMounted } from './world-arrival-readiness';
+import { namedAlphaArrival, alphaTerrainColliderMounted } from './alpha-island/alpha-arrival';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
 import { nearestDryPoint, requireMeshHeight } from './WorldLandform';
 import { roadLandingCandidates } from './world-travel';
@@ -106,7 +106,18 @@ export function worldActorZone(position:Vec3,fallback?:ActorZone,layoutV4=LAYOUT
   return alphaContainsWorld(position)?'alpha':inFactory(x,z)?'factory':layoutV4?zoneAtV4(x,z):fallback??(x>35?'park':x< -15?'camp':'town');
 }
 
+export const worldActorHome: ActorHome = {position:CAMP_SPAWN,zone:'camp',
+  notice:{en:'Back at camp. Your ore and research are kept.',zh:'已回到营地，矿石与研究进度已保留。'}};
+const portalNames = {
+  camp:{zh:'营地',en:'camp'},mine:{zh:'WorldQuant 矿场',en:'WorldQuant quarry'},
+  park:{zh:'项目广场',en:'project plaza'},yard:{zh:'物资清点场',en:'Inventory yard'},
+  coaster:{zh:'意图过山车',en:'Intent coaster'},
+};
 export const worldActorSites: ActorSites = {
+  home:worldActorHome,waterY:WATER_Y,vehicles:VEHICLES,
+  portals:WORLD_PORTALS.map(portal=>({...portal,fallbackZone:portal.id==='camp'?'camp':'park',
+    notice:{zh:`已抵达${portalNames[portal.id].zh}。离开门口后可再次穿行。`,
+      en:`Arrived at ${portalNames[portal.id].en}. Walk away to rearm the gate.`}})),
   passage:(world,states)=>createRegionPassage(passageRegions,createColliderReadinessProbe(world,states),mainlandRequirements),
   arrival:worldActorArrival,
   zone:worldActorZone,

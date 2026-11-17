@@ -1,5 +1,9 @@
 export type Vec3 = [number, number, number];
 export type VehicleId = 'offroad' | 'coupe' | 'van';
+export interface VehiclePlacement {
+  id: VehicleId; position: Vec3; yaw: number; size: Vec3; color: string;
+  mass: number; engineForce: number; grip: number; suspension: number;
+}
 export type Lang = 'en' | 'zh';
 /** Bilingual string pair (site convention: `{ en, zh }`). */
 export interface Bi { en: string; zh: string }

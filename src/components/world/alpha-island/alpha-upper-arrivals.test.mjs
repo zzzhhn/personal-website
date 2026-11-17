@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { alphaTerrainData } from './alpha-terrain.ts';
 import { ALPHA_ORIGIN } from './alpha-layout.ts';
-import { namedAlphaArrival, activatePlayerArrival } from '../world-arrival-readiness.ts';
+import { activatePlayerArrival } from '../world-arrival-readiness.ts';
+import { namedAlphaArrival } from './alpha-arrival.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics.ts';
 await R.init();
 

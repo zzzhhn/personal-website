@@ -1,4 +1,5 @@
-import type { Vec3, VehicleId } from './types';
+import type { Vec3, VehiclePlacement } from './types';
+export type { VehiclePlacement } from './types';
 import { LAYOUT_V4, BUILDINGS_V4, FOUNDATIONS_V4, OUTLINE_V4, TREES_V4, VEHICLE_POSITIONS_V4, WORLD_SHOTS_V4 } from './layout-v4-flag.ts';
 import { NETWORK_WALK_V4 } from './layout-v4.ts';
 
@@ -17,10 +18,6 @@ export const CAMP_CENTER: Vec3 = [-42, 4.8, 30];
 /** Capsule spawn centre; camp surface is y=4.8. */
 export const CAMP_SPAWN: Vec3 = [-42, 5.85, 35];
 
-export interface VehiclePlacement {
-  id: VehicleId; position: Vec3; yaw: number; size: Vec3; color: string;
-  mass: number; engineForce: number; grip: number; suspension: number;
-}
 /** Positions are road surface heights. Actors add chassis/clearance offset.
  * Suspension is spring force coefficient in N/m; grip is dimensionless. */
 const VEHICLES_V3: VehiclePlacement[] = [

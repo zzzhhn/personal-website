@@ -10,7 +10,6 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
-import { CAMP_SPAWN, VEHICLES, WATER_Y } from './layout';
 import { actorActivities, activityApproachMotion } from './actor-activities';
 import { useWorldStore, type NearbyInteract } from './store';
 import type { ActorRide } from './rides/actor-ride';
@@ -20,7 +19,7 @@ import { RideCabinCamera } from './rides/ride-camera-cabin';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import { findPickupStand, pickupGroundRoute, pickupApproachMotion, PICKUP_APPROACH_TIMEOUT } from './pickup-approach';
 import { createInteractionOfferResolver, type InteractionOfferContext } from './interaction-offer';
-import type { Vec3, VehicleId } from './types';
+import type { Vec3, VehicleId, VehiclePlacement } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import type { GuidePresentationFactory } from './guide-presentation';
 import WorldVehicleVisual from './WorldVehicleVisual';
@@ -29,19 +28,19 @@ import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityCh
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
 import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
 import { portalRearmed } from './world-travel';
-import { WORLD_PORTALS, portalCrossing } from './world-portals';
+import { portalCrossing } from './portal-crossing';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, seatedCameraOrigin, sweepCamera } from './camera-collision';
-import { returnPlayerToCamp } from './world-recovery';
+import { recoverActor } from './world-recovery';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
 import WorldDrivingFeedback from './WorldDrivingFeedback';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, needsVehicleRighting, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
-type VehicleSpec = (typeof VEHICLES)[number];
+type VehicleSpec = VehiclePlacement;
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
@@ -300,6 +299,7 @@ function GuideVisual({ presentation, ride, cars, body, grounded, yaw, targetSpee
 }
 
 export default function WorldActors({sites,ride,presentation}: {sites: ActorSites;ride: ActorRide;presentation: GuidePresentationFactory}) {
+  const {home,waterY,vehicles,portals}=sites;
   const player = useRef<RapierRigidBody>(null);
   const entry = useMemo(() => sites.arrival(window.location.search,import.meta.env.DEV), [sites]);
   const arrival=entry.position;
@@ -453,13 +453,13 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   function returnToCamp() {
     releaseGuideActionHand();ride.cancel();rideHeld.current=false;
     const vehicle=useWorldStore.getState().activeVehicle;
-    return returnPlayerToCamp(player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
+    return recoverActor(home,player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
       nearbyItem.current=null;guideYaw.current=0;publishedTime.current=0;
-      portalTravel.current={previous:CAMP_SPAWN,cooldown:2,armed:false};
+      portalTravel.current={previous:home.position,cooldown:2,armed:false};
       cars.current.forEach(car=>{for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,0);}});
     },()=>{
-      cameraReady.current=false;target.current.set(...CAMP_SPAWN);impact.current=0;lastCarYaw.current=null;
+      cameraReady.current=false;target.current.set(...home.position);impact.current=0;lastCarYaw.current=null;
       if(guideView.current)guideView.current.visible=true;
       Object.assign(cam.current,{yaw:CAMERA_DEFAULT_YAW,pitch:CAMERA_DEFAULT_PITCH,actual:CAMERA_PRESETS[1],distance:CAMERA_PRESETS[1],desiredDistance:CAMERA_PRESETS[1],
         firstPerson:false,collided:false,hitDistance:null,mode:'walk',recentering:false,driveManualZoom:false,lastManual:-Infinity,fov:50});
@@ -532,7 +532,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         collider=>!collider.isSensor() && collider.parent()?.handle!==car.body.handle);
       if (!hit || hit.normal.y<.65) continue;
       const ground=origin.y-hit.timeOfImpact;
-      if (ground<WATER_Y+.15) continue;
+      if (ground<waterY+.15) continue;
       const candidate={x:origin.x,y:ground+PLAYER_CENTER_HEIGHT,z:origin.z};
       if(!passageRoute(passage,[cabinAnchor(car,side),asTuple(candidate)],PLAYER_RADIUS))continue;
       let blocked=false;
@@ -636,10 +636,10 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       // when the body centre sinks: v4 beaches shelve gently, and a car parked in ~1 m of sea must still
       // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
       const p=car.body.translation(),floor=p.y+rotateVector([0,-car.spec.size[1]*.29,0],car.body.rotation())[1];
-      car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
+      car.wet=advanceTimer(car.wet,p.y<waterY||floor<waterY-.05,dt);
       if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
         rescueRetry.current.set(car.spec.id,1);
-        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)).filter(v=>passage.at(v.position,car.passageRadius)),WATER_Y);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)).filter(v=>passage.at(v.position,car.passageRadius)),waterY);
         if(landing){
           if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
           resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
@@ -910,7 +910,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       },
       drive:(input,seconds=1)=>{debugDrive.current={input,remaining:seconds};},
       flip:(id=useWorldStore.getState().activeVehicle ?? 'offroad',side=false)=>{const car=cars.current.get(id);if(!car)return false;const q=new Quaternion().setFromEuler(new Euler(side?Math.PI/2:Math.PI,heading(car.body.rotation()),0,'YXZ'));car.body.setRotation(q,true);car.body.setTranslation({...car.body.translation(),y:car.body.translation().y+1},true);car.body.setLinvel({x:0,y:0,z:0},true);car.body.setAngvel({x:0,y:0,z:0},true);car.flipped=0;return true;},
-      water:(id)=>{if(id || useWorldStore.getState().activeVehicle){const car=cars.current.get(id ?? useWorldStore.getState().activeVehicle!);if(!car)return false;if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[110,WATER_Y-1,85]);car.wet=0;return true;}if(!player.current)return false;relocatePlayer([110,WATER_Y-1,85]);return true;},
+      water:(id)=>{if(id || useWorldStore.getState().activeVehicle){const car=cars.current.get(id ?? useWorldStore.getState().activeVehicle!);if(!car)return false;if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[110,waterY-1,85]);car.wet=0;return true;}if(!player.current)return false;relocatePlayer([110,waterY-1,85]);return true;},
     };
     debugTarget=api;
     return ()=>{
@@ -930,7 +930,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     if (arrivalPending.current) {
-      const landing=activateReadyArrival(entry,world,colliderStates,rapier,player.current,WATER_Y);
+      const landing=activateReadyArrival(entry,world,colliderStates,rapier,player.current,waterY);
       if (!landing) return;
       arrivalPending.current = false;
       releaseArrival.current?.(); releaseArrival.current = null;
@@ -970,7 +970,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(ride.complete){
         // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
         // it never selects a different platform position or silently sends them to camp.
-        const landing=passage.at(root,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y):null;
+        const landing=passage.at(root,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[root],waterY):null;
         rideLandingProbe.current={foot:[...root],landing,delta:landing?landing[1]-PLAYER_CENTER_HEIGHT-root[1]:null};
         if(landing&&Math.abs(landing[1]-PLAYER_CENTER_HEIGHT-root[1])<.12){
           ride.finish();rideHeld.current=false;player.current.setEnabled(true);
@@ -988,7 +988,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       rescueRetry.current.set('ride',1);
       const p=ride.exit;
       const candidates:Vec3[]=[p,[p[0]+2,p[1],p[2]],[p[0]-2,p[1],p[2]],...sites.recoveryCandidates(p)];
-      const landing=findSafePlayerLanding(world,rapier,player.current,candidates.filter(v=>passage.at(v,PLAYER_RADIUS)),WATER_Y);
+      const landing=findSafePlayerLanding(world,rapier,player.current,candidates.filter(v=>passage.at(v,PLAYER_RADIUS)),waterY);
       if(!landing){noticeRegionWaiting();stepWorldVehicles(dt);return;}
       relocatePlayer(landing);
     }
@@ -1004,7 +1004,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         if(doorCar)doorCar.doors.openness=0;
         if(tr.phase==='exit'&&tr.exitPosition){
           // Revalidate after the animation: another object may have occupied the exit meanwhile.
-          const landing=passage.at(tr.exitPosition,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[tr.exitPosition.map((v,i)=>i===1?v-PLAYER_CENTER_HEIGHT:v) as Vec3],WATER_Y):null;
+          const landing=passage.at(tr.exitPosition,PLAYER_RADIUS)?findSafePlayerLanding(world,rapier,player.current,[tr.exitPosition.map((v,i)=>i===1?v-PLAYER_CENTER_HEIGHT:v) as Vec3],waterY):null;
           if(landing){
             if(doorCar)guideYaw.current=heading(guideVehicleOrientation(cabinFrame(doorCar,tr.side),guideVehicleSample('exit',.7),Math.PI,new Quaternion()));
             resetBody(player.current,landing);player.current.setEnabled(true);portalTravel.current.previous=landing;useWorldStore.setState({activeVehicle:null,speed:0});
@@ -1190,7 +1190,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
             const floor=world.castRayAndGetNormal(new rapier.Ray({x:q[0],y:q[1]+.5,z:q[2]},{x:0,y:-1,z:0}),3,true,
               undefined,undefined,undefined,player.current,c=>!c.isSensor()&&(!c.parent()||c.parent()!.isFixed()));
             if(!floor||floor.normal.y<.91)continue;
-            const floorY=q[1]+.5-floor.timeOfImpact;if(floorY<WATER_Y+.15)continue;
+            const floorY=q[1]+.5-floor.timeOfImpact;if(floorY<waterY+.15)continue;
             q[1]=floorY+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.01;
             if(free(q)){spot=q;break;}
           }
@@ -1286,13 +1286,13 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         const preview=vaultPreview.current;
         if(Math.hypot(p.x-preview.x,p.z-preview.z)>.08||Math.abs(guideYaw.current-preview.yaw)>.08||preview.colliders!==world.colliders.len()||(preview.plan&&preview.elapsed>=1)){
           preview.elapsed=0;preview.x=p.x;preview.z=p.z;preview.yaw=guideYaw.current;preview.colliders=world.colliders.len();
-          preview.plan=findRailVault(world,rapier,player.current,{x:Math.cos(guideYaw.current),y:0,z:-Math.sin(guideYaw.current)},WATER_Y);
+          preview.plan=findRailVault(world,rapier,player.current,{x:Math.cos(guideYaw.current),y:0,z:-Math.sin(guideYaw.current)},waterY);
         }
       }
       const canVault=!!vaultPreview.current.plan;
       if(useWorldStore.getState().canVault!==canVault)useWorldStore.setState({canVault});
       if(actions.current.jump&&eligible){
-        const plan=findRailVault(world,rapier,player.current,{x:magnitude>.05?wx:Math.cos(guideYaw.current),y:0,z:magnitude>.05?wz:-Math.sin(guideYaw.current)},WATER_Y);
+        const plan=findRailVault(world,rapier,player.current,{x:magnitude>.05?wx:Math.cos(guideYaw.current),y:0,z:magnitude>.05?wz:-Math.sin(guideYaw.current)},waterY);
         if(plan){railVault.current={...plan,elapsed:0};vault.current=null;actions.current.jump=false;}
       }
       const transfer=railVault.current;
@@ -1327,7 +1327,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       // Local 12.5 m/s² gravity and 5 m/s launch give an approximately 1 m,
       // 0.8 s hop. Horizontal momentum is retained at the input edge.
       if(actions.current.jump && grounded.current && !locked){
-        const hop=magnitude>.05?findLowVault(world,rapier,player.current,{x:wx,y:0,z:wz},WATER_Y):null;
+        const hop=magnitude>.05?findLowVault(world,rapier,player.current,{x:wx,y:0,z:wz},waterY):null;
         vault.current=hop?{...hop,remaining:hop.duration}:null;
         player.current.setLinvel({x:hop?.vx??velocity.x,y:hop?.vy??5,z:hop?.vz??velocity.z},true);
         grounded.current=false;jumpSeq.current++;
@@ -1341,30 +1341,29 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         guideTargetSpeed.current=0;moveIntent.current='idle';
         if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01)noticeRegionWaiting();
       }
-      const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,WATER_Y);
+      const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,waterY);
       wetPlayer.current=wet.submergedSeconds;
       if((wet.shouldRescue||p.y< -80)&&!(rescueRetry.current.get('player')??0)){
         rescueRetry.current.set('player',1);
         const candidates=sites.recoveryCandidates(asTuple(p)).filter(point=>passage.at(point,PLAYER_RADIUS));
-        const landing=findSafePlayerLanding(world,rapier,player.current,candidates,WATER_Y);
+        const landing=findSafePlayerLanding(world,rapier,player.current,candidates,waterY);
         if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
       }
       const travel=portalTravel.current,now=asTuple(player.current.translation());
-      if(!travel.armed&&portalRearmed(travel.cooldown,now,WORLD_PORTALS))travel.armed=true;
+      if(!travel.armed&&portalRearmed(travel.cooldown,now,portals))travel.armed=true;
       if(travel.armed&&travel.previous&&!seat&&!locked&&!state.card&&!railVault.current){
-        const source=WORLD_PORTALS.find(g=>portalCrossing(g,travel.previous!,now,PLAYER_RADIUS,PLAYER_HALF_HEIGHT));
+        const source=portals.find(g=>portalCrossing(g,travel.previous!,now,PLAYER_RADIUS,PLAYER_HALF_HEIGHT));
         if(source){
-          const destinations=WORLD_PORTALS.filter(g=>g.id!==source.id),start=Math.floor(Math.random()*destinations.length);
+          const destinations=portals.filter(g=>g.id!==source.id),start=Math.floor(Math.random()*destinations.length);
           travel.armed=false;travel.cooldown=2;
           let transferred=false;
           for(let i=0;i<destinations.length;i++){
             const destination=destinations[(i+start)%destinations.length];
-            const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates.filter(point=>passage.at(point,PLAYER_RADIUS)),WATER_Y);
+            const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates.filter(point=>passage.at(point,PLAYER_RADIUS)),waterY);
             if(!landing)continue;
             relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
-            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:sites.zone(landing,destination.id==='camp'?'camp':'park')});
-            const zh={camp:'营地',mine:'WorldQuant 矿场',park:'项目广场',yard:'物资清点场',coaster:'意图过山车'},en={camp:'camp',mine:'WorldQuant quarry',park:'project plaza',yard:'Inventory yard',coaster:'Intent coaster'};
-            actorNotice(`已抵达${zh[destination.id]}。离开门口后可再次穿行。`,`Arrived at ${en[destination.id]}. Walk away to rearm the gate.`);
+            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:sites.zone(landing,destination.fallbackZone)});
+            actorNotice(destination.notice.zh,destination.notice.en);
             transferred=true;
             break;
           }
@@ -1481,7 +1480,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     // The disabled seated capsule stays a standing body-height above the seat. Aim at the actual
     // seated body instead: fresh GLB runtime samples put the helmet centre at +0.884-0.956 m.
     // Keep the sweep above the chair back; the orbit view frames the chest separately below.
-    const targetY=cameraSeat?cameraSeat.position[1]+.92:Math.max(p.y,WATER_Y)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65);
+    const targetY=cameraSeat?cameraSeat.position[1]+.92:Math.max(p.y,waterY)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65);
     const dir=orbitDirection(c.yaw,c.pitch);
     const exclude=car?.body??player.current??undefined;
     const radius=camera instanceof PerspectiveCamera
@@ -1492,7 +1491,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const ud=b.userData as {vehicle?:string;obstacle?:boolean}|undefined;
       return !ud?.obstacle&&!(ud?.vehicle&&b.handle===car?.body.handle);
     };
-    const bodyOrigin={x:p.x,y:Math.max(p.y,WATER_Y),z:p.z};
+    const bodyOrigin={x:p.x,y:Math.max(p.y,waterY),z:p.z};
     const origin=cameraSeat?seatedCameraOrigin(world,rapier,bodyOrigin,cameraSeat.yaw,radius,exclude,solid):bodyOrigin;
     const desiredTarget=new Vector3(origin.x,targetY,origin.z);
     if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;cameraShoulder.current={offset:0,previous:null};}
@@ -1544,7 +1543,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const pos=new Vector3(from.x+dir[0]*c.actual,from.y+dir[1]*c.actual,from.z+dir[2]*c.actual);
       // Never raycast from above every storey to "lift" the camera: that teleports through cave roofs.
       // If water/shake changes the swept goal, validate the correction too, before applying it.
-      const originalY=pos.y;pos.y=Math.max(pos.y,WATER_Y+.3);
+      const originalY=pos.y;pos.y=Math.max(pos.y,waterY+.3);
       impact.current *= Math.exp(-delta * 12);
       if (impact.current > .001) pos.y += Math.sin(performance.now() * .07) * impact.current;
       if(pos.y!==originalY){const corrected=sweepCamera(world,rapier,from,pos,radius,exclude,solid);
@@ -1588,7 +1587,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
           <><CuboidCollider args={lane.kind==='post'?[.12,.3,.06]:[2,1.2,.1]}/><mesh castShadow><boxGeometry args={lane.kind==='post'?[.24,.6,.12]:[4,2.4,.2]}/><meshStandardMaterial color="#b66050"/></mesh></>}
       </RigidBody>}
     </>}
-    {VEHICLES.map(spec=><Vehicle key={spec.id} spec={spec} cars={cars} impact={impact}/>)}
+    {vehicles.map(spec=><Vehicle key={spec.id} spec={spec} cars={cars} impact={impact}/>)}
     <RigidBody ref={bindPlayer} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
       {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}

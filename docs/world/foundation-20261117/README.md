@@ -287,6 +287,16 @@ Verification: 48 checks pass across dismissal, registration, real Alpha hand com
 
 TypeScript and the eight-route production build pass; the existing large-chunk warning remains. Terrain and map freshness checks pass unchanged (76 and 66 sources). No models, materials, lights, music, default Balanced quality or route timing change. 4341 is unchanged; no browser/player or M3 Air Safari acceptance claimed.
 
+## Batch 26: injected map configuration and generic mobility boundary
+
+World assembly now supplies home recovery, water level, vehicle placements and portal geometry/arrival messages through `ActorSites`. Original positions, vehicle physics values, portal openings, destination candidates and messages remain unchanged. Portal capsule crossing lives in a generic module; the world catalog reexports the same calculation. Alpha named arrivals and terrain readiness move into an Alpha adapter, while initial-arrival activation retains the real support, capsule and regional-readiness checks.
+
+`recoverActor` uses the supplied home position, zone and notice, clears real body motion and delegates activity cleanup as before. This preserves the existing authored-home recovery behavior; it does not add or claim a new safe-ground search for the home location. Shared store venue fields, controller size and debug fixture coordinates remain further separation work.
+
+Verification: 36 behavioral/dependency checks pass, including both portal directions, blocked openings, all original world placements, custom recovery coordinates, real Rapier body reset, unavailable player handling and regional arrivals. The complete `WorldActors` runtime bundle includes the real physics and visual modules but no venue, terrain-authoring or map-layout implementation. This is a runtime import boundary, not a claim that all venue state types have left the shared store.
+
+TypeScript and the eight-route production build pass (9.12 s); the existing large-chunk warning remains. Terrain and map source fingerprints are regenerated and freshness checks pass with 76/66 sources. All four terrain payload records and both map contents are unchanged after excluding source fingerprints. Models, materials, lighting, music and Balanced defaults are preserved. 4341 is unchanged; no browser/player-feel or M3 Air Safari acceptance is claimed.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

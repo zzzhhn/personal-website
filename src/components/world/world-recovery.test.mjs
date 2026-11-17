@@ -5,7 +5,8 @@ import { CAMP_SPAWN } from './layout.ts';
 import { useWorldStore, requestCampReturn, handleWorldEscape } from './store.ts';
 import { useAlphaMineStore, mineActor, mineVisualSockets } from './alpha-mine-state.ts';
 import { useMineOnline } from './alpha-mine-online.ts';
-import { returnPlayerToCamp } from './world-recovery.ts';
+import { recoverActor } from './world-recovery.ts';
+import { worldActorHome } from './world-actor-sites.ts';
 import { registerMineActivity } from './alpha-mine-activity.ts';
 import { registerClubActivity } from './club-actor-activity.ts';
 let releaseActivity;
@@ -39,7 +40,7 @@ test('return request synchronously recovers from a pit while paused, clearing se
     body.setEnabled(false);body.setLinvel({x:8,y:-12,z:3},true);body.addForce({x:100,y:0,z:20},true);
     useWorldStore.setState({paused:true,clubMode:'dance',poolInspect:true,seat:{id:'bench',position:[-100,-6,-80],yaw:1},card:{kind:'note',id:'qa'},nearbyVehicle:'coupe',canRecover:true});
     const unsubscribe=useWorldStore.subscribe((s,p)=>{
-      if(s.campReturnRequest!==p.campReturnRequest)returnPlayerToCamp(body,undefined,()=>{transient++;},()=>{camera++;});
+      if(s.campReturnRequest!==p.campReturnRequest)recoverActor(worldActorHome,body,undefined,()=>{transient++;},()=>{camera++;});
     });
     requestCampReturn();unsubscribe(); // No world.step or render was required to service the request.
     assert.ok(atCamp(body));assert.equal(body.isEnabled(),true);
@@ -61,7 +62,7 @@ test('carried ore, seam progress, shelf ore, pool selections and accepted online
     useAlphaMineStore.setState({equipped:true,carried:id,veins,bays:[id,'ROC20_RANK'],dropped:{factorId:'LOW_STD_20',position:[1,.7,1]},recovered:['ROC20_RANK']});
     const before=structuredClone(useAlphaMineStore.getState());
     Object.assign(mineActor,{moving:true,available:true,grounded:true,restTarget:[1,2,3]});mineVisualSockets.valid=true;
-    returnPlayerToCamp(body,undefined,()=>{},()=>{});
+    recoverActor(worldActorHome,body,undefined,()=>{},()=>{});
     assert.deepEqual(useAlphaMineStore.getState(),before);
     assert.equal(useMineOnline.getState().factors[id].result,result);
     assert.equal(mineActor.moving,false);assert.equal(mineActor.restTarget,null);assert.equal(mineVisualSockets.valid,false);
@@ -72,7 +73,7 @@ for(const kind of ['strike','pickup','deposit'])test(`return during ${kind} canc
   try {
     useAlphaMineStore.setState({equipped:true,carried:kind==='pickup'?id:null,
       action:{kind,elapsed:.6,duration:1.4,target:[1,.7,0],origin:[0,1,0],factorId:id,contact:true,bay:0}});
-    returnPlayerToCamp(body,undefined,()=>{},()=>{});
+    recoverActor(worldActorHome,body,undefined,()=>{},()=>{});
     assert.equal(useAlphaMineStore.getState().action,null);
     assert.equal(useAlphaMineStore.getState().carried,kind==='strike'?null:id);
   }finally{world.free();}
@@ -84,7 +85,7 @@ test('return exits a disabled driver capsule and stops the driven car without re
     world.createCollider(RAPIER.ColliderDesc.cuboid(.5,.5,.5).setMass(1000),car);
     car.setLinvel({x:20,y:2,z:4},true);car.setAngvel({x:0,y:5,z:0},true);car.addForce({x:300,y:0,z:20},true);
     body.setEnabled(false);useWorldStore.setState({activeVehicle:'coupe',paused:true});
-    returnPlayerToCamp(body,car,()=>{},()=>{});
+    recoverActor(worldActorHome,body,car,()=>{},()=>{});
     assert.equal(useWorldStore.getState().activeVehicle,null);assert.equal(body.isEnabled(),true);
     assert.deepEqual(Object.values(car.translation()),[1,2,3]);assert.deepEqual(Object.values(car.linvel()),[0,0,0]);
     assert.deepEqual(Object.values(car.angvel()),[0,0,0]);world.step();assert.deepEqual(Object.values(car.translation()),[1,2,3]);
