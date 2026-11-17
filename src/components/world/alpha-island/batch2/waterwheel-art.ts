@@ -1,13 +1,13 @@
-import { CylinderGeometry, Quaternion, SphereGeometry, Vector3 } from 'three';
+import { BoxGeometry, CylinderGeometry, Quaternion, SphereGeometry, Vector3 } from 'three';
 import { AlphaBuilder } from '../alpha-art';
 import type { Vec3 } from '../../types';
 import { ALPHA_WATERWHEEL } from '../alpha-batch2-layout';
 import { alphaGroundHeight } from '../alpha-terrain';
+import { classifyWaterwheelParts, type WaterwheelArt } from './waterwheel-artifact';
+export { WATERWHEEL_CENTER, SLUICE_X } from './waterwheel-layout';
 
 const turnZ = (a: number) => new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), a);
 const axleQ = new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), Math.PI / 2);
-export const WATERWHEEL_CENTER: Vec3 = [-5.3, 3.17, -1.5];
-export const SLUICE_X = [-1.9, 1.1, 4.1] as const;
 
 export interface WaterwheelFoundation {
   id: string; x: number; z: number; width: number; depth: number;
@@ -66,7 +66,7 @@ export function buildWaterwheelRotor() {
   return b.finish();
 }
 
-export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts()) {
+export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(), drain?:AlphaBuilder) {
   const b = new AlphaBuilder();
   // Four footings carry the upper headrace. Lower bearing piers flank the wheel.
   for (const z of [-2.85, -.15]) {
@@ -100,7 +100,7 @@ export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(
   b.box('darkwood', [1.9, 6.2, -2.31], [9.5, .16, 1.18], .03, turnZ(.032));
   for (const x of [-.9, 6.1]) b.beam('wood', [x, 5.8, -2.95], [x, 6.5, -2.95], .18);
   // A stepped stone drain crosses the passage floor without a raised trip edge.
-  for (let i = 0; i < 11; i++) b.box('stone', [-2.22 + i * 1.09, -.04, -4.1], [1.07, .16, 2.58], .045);
+  for (let i = 0; i < 11; i++) (drain??b).box('stone', [-2.22 + i * 1.09, -.04, -4.1], [1.07, .16, 2.58], .045);
   for (const x of [-1.9, 1.1, 4.1]) {
     // Three low sluice gates lie across the discharge race, each with a reachable crank.
     for (const side of [-.65, .65]) {
@@ -144,4 +144,22 @@ export function buildWaterwheelFlowers() {
     petals.add(new SphereGeometry(.052, 6, 4), 'metal', [x, y + h + .035, z]);
   }
   return { stems: stems.finish(), petals: petals.finish() };
+}
+
+/** Build-time source only. Preserve every authored attribute and local pivot. */
+export function createWaterwheelArt():WaterwheelArt {
+  const flower=buildWaterwheelFlowers(),drain=new AlphaBuilder();
+  const frame=buildWaterwheelFrame(waterwheelFoundationContacts(),drain);
+  const floor=new BoxGeometry(1,1,1);
+  // Keep local shader coordinates; the scene applies one shared mesh/collider transform.
+  floor.clearGroups();
+  return {
+    frame:classifyWaterwheelParts('frame',frame),
+    drain:classifyWaterwheelParts('drain',drain.finish()),
+    wheel:classifyWaterwheelParts('wheel',buildWaterwheelRotor()),
+    panel:classifyWaterwheelParts('panel',buildSluicePanel()),
+    crank:classifyWaterwheelParts('crank',buildSluiceCrank()),
+    stems:classifyWaterwheelParts('stems',flower.stems),petals:classifyWaterwheelParts('petals',flower.petals),
+    floor:classifyWaterwheelParts('floor',[{finish:'stone',geometry:floor}]),
+  };
 }

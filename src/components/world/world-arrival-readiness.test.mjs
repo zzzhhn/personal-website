@@ -6,7 +6,7 @@ import { holdWorldArrival, worldArrivalBlocked, activatePlayerArrival } from './
 import { namedAlphaArrival, alphaTerrainColliderMounted } from './alpha-island/alpha-arrival.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { updateHeadSubmersion } from './safe-landing.ts';
-import { worldActorArrival } from './world-actor-sites.ts';
+import { worldActorArrival, arrivalColliderRequirements } from './world-actor-sites.ts';
 await R.init();
 
 function scene() {
@@ -54,6 +54,12 @@ test('cold Alpha arrival cannot fall or enter rescue before its actual terrain c
     const mounted=terrain(world);
     assert.equal(alphaTerrainColliderMounted(world,states),false,'asset/mesh availability alone is not collider registration');
     states.set(mounted.collider.handle,mounted.state);
+    assert.equal(entry.collidersReady(world,states),false,'waterwheel structure has its own readiness gate');
+    for(const requirement of arrivalColliderRequirements('alpha-waterwheel'))for(let i=0;i<(requirement.count??1);i++) {
+      const parent=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(1000+i,0,1000));
+      const collider=world.createCollider(R.ColliderDesc.trimesh(new Float32Array([0,0,0,1,0,0,0,0,1]),new Uint32Array([0,2,1])),parent);
+      const group=new Object3D(),object=new Object3D();group.name=requirement.name;group.add(object);states.set(collider.handle,{object});
+    }
     assert.equal(entry.collidersReady(world,states),true);
     assert.equal(alphaTerrainColliderMounted(world,states),true,'the real fixed Rapier trimesh is registered');
     assert.equal(worldArrivalBlocked(),false,'paused loading can finish without waiting for an enabled actor or Physics');

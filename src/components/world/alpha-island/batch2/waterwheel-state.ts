@@ -76,6 +76,6 @@ export function stepWaterwheelIrrigation(state: WaterwheelIrrigation, flow: Wate
 /** Island-local corridor contract, surface datums. Terrain must remain <=24.
  * North and south bypasses stay independent of all sluice states. */
 export const WATERWHEEL_PASSAGE = {
-  west: [-29.8, 24.04, 4.5] as const, east: [-21.8, 24.04, 4.5] as const,
-  bounds: { minX: -29.8, maxX: -21.8, minZ: 3.6, maxZ: 6.2, floorY: 24.04, ceilingY: 28.9 },
+  west: [-29.8, 24.03, 4.5] as const, east: [-21.8, 24.03, 4.5] as const,
+  bounds: { minX: -29.8, maxX: -21.8, minZ: 3.6, maxZ: 6.2, floorY: 24.03, ceilingY: 28.9 },
 } as const;

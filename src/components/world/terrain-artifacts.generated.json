@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "sourceHash": "50793f8f65bb4fef60a2471e67aeaf180b16253688af30fd13434077cdd46fa4",
+  "sourceHash": "c8b55b8482ce360f173665ebdf3ba0ef70e1425f84aedd0b86731d68f15d1093",
   "v4": {
     "url": "/assets/world/terrain/mainland-v4.bin.gz",
     "bytes": 8061861,
@@ -24,5 +24,11 @@
     "bytes": 919482,
     "rawBytes": 7675816,
     "sha256": "179957b8b7b88896dfe094c97f21caddf83d44b22ff2117dbaa05ea17217f6a0"
+  },
+  "waterwheel": {
+    "url": "/assets/world/terrain/waterwheel.bin.gz",
+    "bytes": 1175556,
+    "rawBytes": 15561588,
+    "sha256": "2c959b52d51418db442988244d02cfb56ad3be1039aaa1694b8841ecb3801a5e"
   }
 }

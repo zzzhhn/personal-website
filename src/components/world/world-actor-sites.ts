@@ -8,6 +8,8 @@ import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory, FACTORY_FOOTPRINT }
 import { CLUB, CLUB_POOL, CLUB_CAPE } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES, IBD_FOOTPRINT } from './attractions/attraction-layout';
 import { namedAlphaArrival, alphaTerrainColliderMounted } from './alpha-island/alpha-arrival';
+import { ALPHA_WATERWHEEL } from './alpha-island/alpha-batch2-layout';
+import { WATERWHEEL_FRAME_BODY, WATERWHEEL_FLOOR_BODY } from './alpha-island/batch2/waterwheel-layout';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
 import { nearestDryPoint, requireMeshHeight } from './WorldLandform';
 import { roadLandingCandidates } from './world-travel';
@@ -26,6 +28,7 @@ export function arrivalColliderRequirements(start: string | null, layoutV4=LAYOU
   if(start==='alpha'||start==='brain')requirements.push(mesh('alpha-mine-surface'),mesh('alpha-mine-solid'));
   if(start==='exchange')requirements.push(mesh('alpha-exchange-surface'),mesh('alpha-exchange-solid'));
   if(start?.startsWith('club'))requirements.push(mesh('djc-surface-same-mesh'),mesh('djc-solid-same-mesh'));
+  if(start==='alpha-waterwheel')requirements.push({...mesh(WATERWHEEL_FRAME_BODY),count:4},mesh(WATERWHEEL_FLOOR_BODY));
   return requirements;
 }
 
@@ -36,6 +39,10 @@ export function worldPassageRegions(layoutV4=LAYOUT_V4):PassageRegion[] {
     ({id,contains,requirements:arrivalColliderRequirements(id,layoutV4).slice(2)});
   return [
     {id:'alpha-island',contains:alphaContainsWorld,requirements:[{name:'alpha-terrain-patch',shape:FIXED_TRIMESH,count:2}]},
+    district('alpha-waterwheel',(p,r)=>{
+      const c=alphaWorld(ALPHA_WATERWHEEL.center);
+      return Math.abs(p[0]-c[0])<=ALPHA_WATERWHEEL.size[0]/2+r&&Math.abs(p[2]-c[2])<=ALPHA_WATERWHEEL.size[1]/2+r;
+    }),
     district('brain',polygonPassageFootprint(ALPHA_MINE_FOOTPRINT_POINTS)),
     district('exchange',box(ALPHA_EXCHANGE_FOOTPRINT)),
     district('club',(p,r)=>(Math.hypot((p[0]-CLUB_CAPE.center[0])/CLUB_CAPE.radii[0],(p[2]-CLUB_CAPE.center[1])/CLUB_CAPE.radii[1])-1)*Math.min(...CLUB_CAPE.radii)<=r),
@@ -98,7 +105,9 @@ export function worldActorArrival(search: string, development: boolean, layoutV4
   const initialPosition=position(),requirements=arrivalColliderRequirements(resolvedStart,layoutV4);
   return {position:initialPosition,yaw,cameraYaw,cameraPitch,ground,
     waitForColliders:!!ground||!qaStart,
-    collidersReady:ground?alphaTerrainColliderMounted:(world,states)=>mountedCollidersReady(world,states,requirements)};
+    collidersReady:ground?(world,states)=>alphaTerrainColliderMounted(world,states)
+      &&(start!=='alpha-waterwheel'||mountedCollidersReady(world,states,requirements))
+      :(world,states)=>mountedCollidersReady(world,states,requirements)};
 }
 
 export function worldActorZone(position:Vec3,fallback?:ActorZone,layoutV4=LAYOUT_V4):ActorZone {

@@ -14,12 +14,12 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 async function atomic(file, bytes) { await writeFile(`${file}.tmp`, bytes); await rename(`${file}.tmp`, file); }
 
 export async function ensureTerrainArtifacts({ check = false } = {}) {
-  const inputs = snapshotInputs(['alpha-island/batch2/cave-art.ts']);
+  const inputs = snapshotInputs(['alpha-island/batch2/cave-art.ts','alpha-island/batch2/waterwheel-art.ts']);
   const sourceHash = sha(inputs.sourceHash + await readFile(script, 'utf8'));
   let previous;
   try { previous = JSON.parse(await readFile(manifestFile, 'utf8')); } catch (e) { if (e.code !== 'ENOENT') throw e; }
   let valid = previous?.sourceHash === sourceHash;
-  if (valid) for (const variant of ['v4', 'v3', 'alpha', 'cave']) {
+  if (valid) for (const variant of ['v4', 'v3', 'alpha', 'cave', 'waterwheel']) {
     const entry = previous[variant];
     try {
       const bytes = await readFile(path.join(root, 'public', entry.url));
@@ -30,7 +30,7 @@ export async function ensureTerrainArtifacts({ check = false } = {}) {
   if (check) throw new Error('Stale or missing terrain artifacts: run node tools/world/build-terrain-artifacts.mjs');
   const manifest = { version: 1, sourceHash };
   await mkdir(path.join(root, 'public/assets/world/terrain'), { recursive: true });
-  for (const variant of ['v4', 'v3', 'alpha', 'cave']) {
+  for (const variant of ['v4', 'v3', 'alpha', 'cave', 'waterwheel']) {
     const { stdout } = await run(process.execPath, [script, `--variant=${variant}`], { cwd: root, maxBuffer: 8192 });
     manifest[variant] = JSON.parse(stdout);
   }
@@ -41,12 +41,18 @@ export async function ensureTerrainArtifacts({ check = false } = {}) {
 if (process.argv[1] && path.resolve(process.argv[1]) === script) {
   const variant = process.argv.find(a => a.startsWith('--variant='))?.split('=')[1];
   if (variant) {
-    if (!['v3', 'v4', 'alpha', 'cave'].includes(variant)) throw new Error('Unknown terrain variant');
+    if (!['v3', 'v4', 'alpha', 'cave', 'waterwheel'].includes(variant)) throw new Error('Unknown terrain variant');
     globalThis.window = { location: { search: `?layout=${variant}` } };
     const { register } = await import('node:module');
     register('./alpha-mine-tests/loader.mjs', import.meta.url);
     let raw;
-    if (variant === 'cave') {
+    if (variant === 'waterwheel') {
+      const { createWaterwheelArt } = await import('../../src/components/world/alpha-island/batch2/waterwheel-art.ts');
+      const { encodeWaterwheelArtifact, decodeWaterwheelArtifact } = await import('../../src/components/world/alpha-island/batch2/waterwheel-artifact.ts');
+      const art = createWaterwheelArt(); raw = encodeWaterwheelArtifact(art);
+      const decoded = decodeWaterwheelArtifact(raw);
+      for (const a of [art, decoded]) Object.values(a).flat().forEach(p => p.geometry.dispose());
+    } else if (variant === 'cave') {
       const { createCaveArt } = await import('../../src/components/world/alpha-island/batch2/cave-art.ts');
       const { encodeCaveArtifact, decodeCaveArtifact, CAVE_PART_GROUPS } = await import('../../src/components/world/alpha-island/batch2/cave-artifact.ts');
       const art = createCaveArt(); raw = encodeCaveArtifact(art);
@@ -64,7 +70,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === script) {
       decodeTerrainArtifact(raw, variant);
     }
     const bytes = gzipSync(new Uint8Array(raw), { level: 9 });
-    const url = `/assets/world/terrain/${['alpha', 'cave'].includes(variant) ? variant : 'mainland-' + variant}.bin.gz`;
+    const url = `/assets/world/terrain/${['alpha', 'cave', 'waterwheel'].includes(variant) ? variant : 'mainland-' + variant}.bin.gz`;
     await atomic(path.join(root, 'public', url), bytes);
     process.stdout.write(JSON.stringify({ url, bytes: bytes.length, rawBytes: raw.byteLength, sha256: sha(bytes) }));
   } else {
