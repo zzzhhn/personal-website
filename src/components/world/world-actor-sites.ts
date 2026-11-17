@@ -1,0 +1,81 @@
+import { PLAYER_CENTER_HEIGHT, CAMERA_DEFAULT_YAW, CAMERA_DEFAULT_PITCH } from './actor-physics';
+import type { ActorArrival, ActorSites, ActorZone } from './actor-sites';
+import { CAMP_SPAWN, ROAD_POINTS, VEHICLES } from './layout';
+import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
+import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
+import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
+import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory } from './factory/factory-layout';
+import { CLUB, CLUB_POOL } from './djc-club-layout';
+import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES } from './attractions/attraction-layout';
+import { namedAlphaArrival, alphaTerrainColliderMounted } from './world-arrival-readiness';
+import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
+import { nearestDryPoint, terrainHeight } from './WorldLandform';
+import { roadLandingCandidates } from './world-travel';
+import { WORLD_PORTALS } from './world-portals';
+import type { Vec3 } from './types';
+
+const bodyPoint = (ground: Vec3): Vec3 => [ground[0],ground[1]+PLAYER_CENTER_HEIGHT,ground[2]];
+const attractionRoads=ATTRACTION_ROAD_SAMPLES.map(path=>path.map(([x,z])=>[x,1.045,z] as Vec3));
+export function worldRoadLandingCandidates(p:Vec3) {
+  return [roadLandingCandidates(p,ROAD_POINTS),...attractionRoads.map(path=>roadLandingCandidates(p,path))].flat()
+    .sort((a,b)=>Math.hypot(a.position[0]-p[0],a.position[2]-p[2])-Math.hypot(b.position[0]-p[0],b.position[2]-p[2]));
+}
+
+export function worldActorArrival(search: string, development: boolean, layoutV4=LAYOUT_V4): ActorArrival {
+  const params=new URLSearchParams(search),start=params.get('start');
+  const qaStart=development&&params.get('qa')==='1'?start:null;
+  const portal=WORLD_PORTALS.find(p=>qaStart===`portal-${p.id}`);
+  const ground=namedAlphaArrival(start);
+  const yaw=portal?Math.PI/2+portal.yaw:qaStart==='brain-rail'||start==='ibd'||start==='coaster'?Math.PI/2:start?.startsWith('club')?-Math.PI/2:0;
+  const position=():Vec3=>{
+    if(ground)return bodyPoint(ground);
+    if(layoutV4&&start==='factory')return bodyPoint(FACTORY.entrance);
+    if(layoutV4&&development&&start?.startsWith('factory-')) {
+      const station=FACTORY_STATIONS.find(s=>s.id===start.slice(8));
+      if(station)return bodyPoint(factoryWorld(station.at));
+    }
+    if(start==='town')return bodyPoint([14,1.2,-2.5]);
+    if(start==='tent')return bodyPoint([-42,4.8,20]);
+    if(start==='ibd'||start==='coaster')return bodyPoint((start==='ibd'?IBD_YARD:INTENT_COASTER).entrance);
+    if(start==='club')return bodyPoint([CLUB.spawn[0],1,CLUB.spawn[2]]);
+    if(start==='exchange')return bodyPoint([ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1],ALPHA_EXCHANGE_ORIGIN[2]+2.4]);
+    if(development&&start==='club-dance')return bodyPoint(CLUB.dance);
+    if(development&&start==='club-decks')return bodyPoint([31,2,55]);
+    if(development&&start==='club-view')return bodyPoint([CLUB.terrace[0],terrainHeight(CLUB.terrace[0],55),55]);
+    if(development&&start==='club-water')return bodyPoint([CLUB.pool[0],CLUB_POOL.floorHeight(CLUB.pool[0],55),55]);
+    if(portal)return bodyPoint(portal.entryApproachCandidates[0]);
+    if(qaStart==='wade')return [-26,-.3,106];
+    if(qaStart==='exchange-gallery')return bodyPoint([48.3,1.14+5.2,-92.6]);
+    if(qaStart==='brain-exit')return [-81.23,1.82,-90.28];
+    if(qaStart==='brain-rail')return bodyPoint([ALPHA_MINE_ORIGIN[0]+8,ALPHA_MINE_ORIGIN[1],ALPHA_MINE_ORIGIN[2]+.16]);
+    if(qaStart==='camp-bench')return [-37.05,6.5,33.535];
+    if(start==='alpha'||start==='brain')return bodyPoint([ALPHA_MINE_ORIGIN[0],ALPHA_MINE_ORIGIN[1],ALPHA_MINE_ORIGIN[2]+.5]);
+    if(development) {
+      const vehicle=VEHICLES.find(v=>v.id===start);
+      if(vehicle)return bodyPoint([vehicle.position[0],vehicle.position[1],vehicle.position[2]+2]);
+    }
+    return [...CAMP_SPAWN];
+  };
+  const club=start?.startsWith('club'),attraction=start==='ibd'||start==='coaster';
+  const cameraYaw=portal?Math.PI/2-portal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attraction?Math.PI/2:qaStart==='club-view'?0:club?-Math.PI/2:CAMERA_DEFAULT_YAW;
+  const cameraPitch=qaStart==='exchange-gallery'?.4554:club?.4:CAMERA_DEFAULT_PITCH;
+  return {position:position(),yaw,cameraYaw,cameraPitch,ground,collidersReady:ground?alphaTerrainColliderMounted:()=>true};
+}
+
+export function worldActorZone(position:Vec3,fallback?:ActorZone,layoutV4=LAYOUT_V4):ActorZone {
+  const [x,,z]=position;
+  return alphaContainsWorld(position)?'alpha':inFactory(x,z)?'factory':layoutV4?zoneAtV4(x,z):fallback??(x>35?'park':x< -15?'camp':'town');
+}
+
+export const worldActorSites: ActorSites = {
+  arrival:worldActorArrival,
+  zone:worldActorZone,
+  roadCandidates:worldRoadLandingCandidates,
+  rideZone:(p,hasDriver)=>alphaContainsWorld(p)?'alpha':hasDriver?'shore':'coaster',
+  recoveryCandidates(p) {
+    const dry=nearestDryPoint(p[0],p[2]);
+    return [...(alphaContainsWorld(p,25)?ALPHA_SAFE_GROUND.map(alphaWorld)
+      .sort((a,b)=>Math.hypot(a[0]-p[0],a[2]-p[2])-Math.hypot(b[0]-p[0],b[2]-p[2])):[]),
+      ...(dry?[dry]:[]),...worldRoadLandingCandidates(p).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
+  },
+};

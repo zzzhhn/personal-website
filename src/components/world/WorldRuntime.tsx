@@ -5,6 +5,7 @@ import { Physics, useRapier } from '@react-three/rapier';
 import WorldEnvironment from './WorldEnvironment';
 import WorldObstacles from './WorldObstacles';
 import WorldActors, { worldActorDebug } from './WorldActors';
+import { worldActorSites } from './world-actor-sites';
 import { useWorldStore } from './store';
 import { CAMP_SPAWN, LAYOUT_V4, ROAD_POINTS, VEHICLES, WORLD_SHOTS } from './layout';
 import { trackPortfolioEvent } from '../../lib/analytics';
@@ -290,7 +291,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       {import.meta.env.DEV && <ResumeProbeBridge />}
       <NightClock />
       <WorldWeather />
-      <WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors />
+      <WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors sites={worldActorSites} />
       {/* Each district suspends on its own GLBs without holding back the island or the player. */}
       <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>

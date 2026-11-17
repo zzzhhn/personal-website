@@ -5,6 +5,7 @@ import { Object3D } from 'three';
 import { namedAlphaArrival, holdWorldArrival, worldArrivalBlocked, alphaTerrainColliderMounted, activatePlayerArrival } from './world-arrival-readiness.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { updateHeadSubmersion } from './safe-landing.ts';
+import { worldActorArrival } from './world-actor-sites.ts';
 await R.init();
 
 function scene() {
@@ -36,7 +37,10 @@ test('arrival blockers clean up idempotently across strict remounts and independ
 
 test('cold Alpha arrival cannot fall or enter rescue before its actual terrain collider mounts',()=>{
   const {world,body,ground}=scene(),states=new Map();
-  const release=holdWorldArrival(()=>!alphaTerrainColliderMounted(world,states));
+  const entry=worldActorArrival('?start=alpha-waterwheel',false);
+  assert.deepEqual(entry.ground,ground);
+  assert.equal(entry.collidersReady(world,states),false);
+  const release=holdWorldArrival(()=>!entry.collidersReady(world,states));
   try {
     const original={...body.translation()};let wet=0,rescues=0;
     assert.equal(worldArrivalBlocked(),true);
@@ -49,6 +53,7 @@ test('cold Alpha arrival cannot fall or enter rescue before its actual terrain c
     const mounted=terrain(world);
     assert.equal(alphaTerrainColliderMounted(world,states),false,'asset/mesh availability alone is not collider registration');
     states.set(mounted.collider.handle,mounted.state);
+    assert.equal(entry.collidersReady(world,states),true);
     assert.equal(alphaTerrainColliderMounted(world,states),true,'the real fixed Rapier trimesh is registered');
     assert.equal(worldArrivalBlocked(),false,'paused loading can finish without waiting for an enabled actor or Physics');
     assert.equal(activatePlayerArrival(world,R,body,ground,-.7),null,'spatial queries still wait for their first actual pipeline update');

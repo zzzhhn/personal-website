@@ -1,23 +1,17 @@
 import { rideFootRouteClear } from './rides/ride-clearance';
 import { guideActionHand, releaseGuideActionHand } from './rides/guide-action-hand';
 import { localWindPace } from './rides/local-wind';
-import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
-import { namedAlphaArrival, holdWorldArrival, alphaTerrainColliderMounted, activatePlayerArrival } from './world-arrival-readiness';
+import { holdWorldArrival, activatePlayerArrival } from './world-arrival-readiness';
+import type { ActorSites } from './actor-sites';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
-import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
+import { CAMP_SPAWN, VEHICLES, WATER_Y } from './layout';
 import { actorActivities, activityApproachMotion } from './actor-activities';
-import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
-import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
-import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory } from './factory/factory-layout';
-import { nearestDryPoint, terrainHeight } from './WorldLandform';
-import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
-import { CLUB, CLUB_POOL } from './djc-club-layout';
-import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES } from './attractions/attraction-layout';
+import { CLUB } from './djc-club-layout';
 import { attractionRide, attractionActorFrame, captureAttractionStart, attractionPhase, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
 import { AttractionCameraOrientation, attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
 import { AttractionCameraObstruction } from './attractions/attraction-camera-obstruction';
@@ -33,7 +27,7 @@ import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearP
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
 import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
-import { roadLandingCandidates, portalRearmed } from './world-travel';
+import { portalRearmed } from './world-travel';
 import { WORLD_PORTALS, portalCrossing } from './world-portals';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
@@ -47,11 +41,6 @@ import WorldDrivingFeedback from './WorldDrivingFeedback';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, needsVehicleRighting, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
-const attractionRecoveryRoads=ATTRACTION_ROAD_SAMPLES.map(path=>path.map(([x,z])=>[x,1.045,z] as Vec3));
-function allRoadLandingCandidates(p:Vec3){
-  return [roadLandingCandidates(p,ROAD_POINTS),...attractionRecoveryRoads.map(path=>roadLandingCandidates(p,path))].flat()
-    .sort((a,b)=>Math.hypot(a.position[0]-p[0],a.position[2]-p[2])-Math.hypot(b.position[0]-p[0],b.position[2]-p[2]));
-}
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
@@ -309,23 +298,19 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
 }
 
-export default function WorldActors() {
+export default function WorldActors({sites}: {sites: ActorSites}) {
   const player = useRef<RapierRigidBody>(null);
-  const alphaArrivalGround = useMemo(() => namedAlphaArrival(new URLSearchParams(window.location.search).get('start')), []);
-  const [arrivalActive, setArrivalActive] = useState(!alphaArrivalGround);
-  const arrivalPending = useRef(!!alphaArrivalGround);
+  const entry = useMemo(() => sites.arrival(window.location.search,import.meta.env.DEV), [sites]);
+  const arrivalGround=entry.ground,arrival=entry.position;
+  const [arrivalActive, setArrivalActive] = useState(!arrivalGround);
+  const arrivalPending = useRef(!!arrivalGround);
   const releaseArrival = useRef<(() => void) | null>(null);
   const bindPlayer = useCallback((body: RapierRigidBody | null) => {
     player.current = body;
     if (body && !arrivalActive) body.setEnabled(false);
   }, [arrivalActive]);
   const rideHeld=useRef(false),rideExitCheck=useRef({revision:-1,next:0}),rideLandingProbe=useRef<{foot:Vec3;landing:Vec3|null;delta:number|null}|null>(null);
-  const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
-  const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
-  const clubArrival=new URLSearchParams(window.location.search).get('start')?.startsWith('club')??false;
-  const attractionArrival=['ibd','coaster'].includes(new URLSearchParams(window.location.search).get('start')??'');
-  const qaFacing=qaPortal?Math.PI/2+qaPortal.yaw:qaStart==='brain-rail'||attractionArrival?Math.PI/2:clubArrival?-Math.PI/2:0;
-  const guideYaw = useRef(qaFacing);
+  const guideYaw = useRef(entry.yaw);
   const guideTargetSpeed = useRef(0);
   const turnBeforeMove = useRef(false);
   const cars = useRef(new Map<VehicleId,Car>());
@@ -369,54 +354,19 @@ export default function WorldActors() {
     const controller = createPlayerClearance(world); clearance.current = controller;
     return () => { clearance.current = null; world.removeCharacterController(controller); };
   }, [world]);
-  const arrival = useMemo<Vec3>(()=>{
-    const start=new URLSearchParams(window.location.search).get('start');
-    if(alphaArrivalGround){const p=alphaArrivalGround;return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
-    if(LAYOUT_V4&&start==='factory')return [FACTORY.entrance[0],FACTORY.entrance[1]+PLAYER_CENTER_HEIGHT,FACTORY.entrance[2]];
-    if(LAYOUT_V4&&import.meta.env.DEV&&start?.startsWith('factory-')){
-      const station=FACTORY_STATIONS.find(s=>s.id===start.slice(8));
-      if(station){const p=factoryWorld(station.at);return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
-    }
-    if(start==='town')return [14,1.2+PLAYER_CENTER_HEIGHT,-2.5];
-    if(start==='tent')return [-42,4.8+PLAYER_CENTER_HEIGHT,20];
-    if(start==='ibd'||start==='coaster'){
-      const p=(start==='ibd'?IBD_YARD:INTENT_COASTER).entrance;
-      return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];
-    }
-    if(start==='club')return [CLUB.spawn[0],1+PLAYER_CENTER_HEIGHT,CLUB.spawn[2]];
-    if(start==='exchange')return [ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_EXCHANGE_ORIGIN[2]+2.4];
-    if(import.meta.env.DEV&&start==='club-dance')return [CLUB.dance[0],CLUB.dance[1]+PLAYER_CENTER_HEIGHT,CLUB.dance[2]];
-    if(import.meta.env.DEV&&start==='club-decks')return [31,2+PLAYER_CENTER_HEIGHT,55];
-    if(import.meta.env.DEV&&start==='club-view')return [CLUB.terrace[0],terrainHeight(CLUB.terrace[0],55)+PLAYER_CENTER_HEIGHT,55];
-    if(import.meta.env.DEV&&start==='club-water')return [CLUB.pool[0],CLUB_POOL.floorHeight(CLUB.pool[0],55)+PLAYER_CENTER_HEIGHT,55];
-    if(qaPortal){const p=qaPortal.entryApproachCandidates[0];return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
-    if(qaStart==='wade')return [-26,-.3,106];
-    if(qaStart==='exchange-gallery')return [48.3,1.14+5.2+PLAYER_CENTER_HEIGHT,-92.6];
-    // Reproduce the reported low-floor exit through the visible QA URL, without moving a live player.
-    if(import.meta.env.DEV&&start==='brain-exit'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-81.23,1.82,-90.28];
-    if(import.meta.env.DEV&&start==='brain-rail'&&new URLSearchParams(window.location.search).get('qa')==='1')return [ALPHA_MINE_ORIGIN[0]+8,ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.16];
-    if(import.meta.env.DEV&&start==='camp-bench'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-37.05,6.5,33.535];
-    if(start==='alpha'||start==='brain')return [ALPHA_MINE_ORIGIN[0],ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.5];
-    if(start==='exchange')return [ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_EXCHANGE_ORIGIN[2]+.5];
-    if(import.meta.env.DEV&&['coupe','offroad','van'].includes(start??'')){
-      const coupe=VEHICLES.find(v=>v.id===start)!;
-      return [coupe.position[0],coupe.position[1]+PLAYER_CENTER_HEIGHT,coupe.position[2]+2];
-    }
-    return CAMP_SPAWN;
-  },[]);
   useEffect(() => {
     // Paused arrivals and fixed shots have no physics publication to activate nearby facilities.
-    useWorldStore.setState({ position: [...arrival], zone: alphaContainsWorld(arrival)?'alpha':inFactory(arrival[0],arrival[2])?'factory':LAYOUT_V4 ? zoneAtV4(arrival[0], arrival[2]) : 'camp' });
-  }, [arrival]);
+    useWorldStore.setState({ position: [...arrival], zone: sites.zone(arrival,'camp') });
+  }, [arrival,sites]);
   useLayoutEffect(() => {
-    if (!alphaArrivalGround || arrivalActive) return;
-    const blocked = () => !alphaTerrainColliderMounted(world, colliderStates);
+    if (!arrivalGround || arrivalActive) return;
+    const blocked = () => !entry.collidersReady(world, colliderStates);
     const release = holdWorldArrival(blocked);
     // WorldActors may resolve after SceneLifecycle's first three frames.
     if (blocked()) useWorldStore.setState(s => ({ ready: false, loading: { ...s.loading, phase: 'scene' } }));
     releaseArrival.current = release;
     return () => { release(); if (releaseArrival.current === release) releaseArrival.current = null; };
-  }, [alphaArrivalGround, arrivalActive, world, colliderStates]);
+  }, [entry, arrivalGround, arrivalActive, world, colliderStates]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
@@ -425,7 +375,7 @@ export default function WorldActors() {
   const attractionCabin = useRef(new AttractionCabinCamera());
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
-  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attractionArrival?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
+  const cam = useRef<CameraRig>({ yaw: entry.cameraYaw, pitch: entry.cameraPitch, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
   const pad = useRef<PadState>({ connected: false, move: [0,0], look: [0,0], throttle: 0, brake: 0, sprint: false, buttons: [] });
   const moveInput = useRef<[number,number]>([0,0]);
@@ -669,7 +619,7 @@ export default function WorldActors() {
       car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
       if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
         rescueRetry.current.set(car.spec.id,1);
-        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,allRoadLandingCandidates(asTuple(p)),WATER_Y);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)),WATER_Y);
         if(landing){
           if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
           resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
@@ -961,15 +911,15 @@ export default function WorldActors() {
   useAfterPhysicsStep(()=>{if(player.current)clearPlayerSlopeGravity(player.current);});
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
-    if (arrivalPending.current && alphaArrivalGround) {
-      if (!alphaTerrainColliderMounted(world, colliderStates)) return;
-      const landing = activatePlayerArrival(world, rapier, player.current, alphaArrivalGround, WATER_Y);
+    if (arrivalPending.current && arrivalGround) {
+      if (!entry.collidersReady(world, colliderStates)) return;
+      const landing = activatePlayerArrival(world, rapier, player.current, arrivalGround, WATER_Y);
       if (!landing) return;
       arrivalPending.current = false;
       releaseArrival.current?.(); releaseArrival.current = null;
       clearInput(); grounded.current = false; wetPlayer.current = 0;
       portalTravel.current.previous = landing; cameraReady.current = false; target.current.set(...landing);
-      useWorldStore.setState({ position: landing, zone: 'alpha' });
+      useWorldStore.setState({ position: landing, zone: sites.zone(landing) });
       setArrivalActive(true);
       return;
     }
@@ -1013,7 +963,7 @@ export default function WorldActors() {
         return;
       }
       publishedTime.current+=dt;
-      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:alphaContainsWorld(p)?'alpha':attractionRide.driver?'shore':'coaster'});}
+      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:sites.rideZone(p,!!attractionRide.driver)});}
       return;
     }
     if(rideHeld.current){
@@ -1364,8 +1314,7 @@ export default function WorldActors() {
       wetPlayer.current=wet.submergedSeconds;
       if((wet.shouldRescue||p.y< -80)&&!(rescueRetry.current.get('player')??0)){
         rescueRetry.current.set('player',1);
-        const dry=nearestDryPoint(p.x,p.z);
-        const candidates:Vec3[]=[...(alphaContainsWorld([p.x,p.y,p.z],25)?ALPHA_SAFE_GROUND.map(alphaWorld).sort((a,b)=>Math.hypot(a[0]-p.x,a[2]-p.z)-Math.hypot(b[0]-p.x,b[2]-p.z)):[]),...(dry?[dry]:[]),...allRoadLandingCandidates(asTuple(p)).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
+        const candidates=sites.recoveryCandidates(asTuple(p));
         const landing=findSafePlayerLanding(world,rapier,player.current,candidates,WATER_Y);
         if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
       }
@@ -1382,7 +1331,7 @@ export default function WorldActors() {
             const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates,WATER_Y);
             if(!landing)continue;
             relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
-            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:alphaContainsWorld(landing)?'alpha':inFactory(landing[0],landing[2])?'factory':LAYOUT_V4?zoneAtV4(landing[0],landing[2]):destination.id==='camp'?'camp':'park'});
+            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:sites.zone(landing,destination.id==='camp'?'camp':'park')});
             const zh={camp:'营地',mine:'WorldQuant 矿场',park:'项目广场',yard:'物资清点场',coaster:'意图过山车'},en={camp:'camp',mine:'WorldQuant quarry',park:'project plaza',yard:'Inventory yard',coaster:'Intent coaster'};
             actorNotice(`已抵达${zh[destination.id]}。离开门口后可再次穿行。`,`Arrived at ${en[destination.id]}. Walk away to rearm the gate.`);
             transferred=true;
@@ -1400,7 +1349,7 @@ export default function WorldActors() {
       publishedTime.current=0;
       const item=nearbyItem.current,prev=useWorldStore.getState().nearbyInteract;
       const nearbyInteract:NearbyInteract|null=item&&!active?(prev?.id===item.id&&prev.label.zh===item.label.zh&&prev.label.en===item.label.en&&prev.kind===item.kind?prev:{id:item.id,label:item.label,kind:item.kind}):null;
-      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:alphaContainsWorld([p.x,p.y,p.z])?'alpha':inFactory(p.x,p.z)?'factory':LAYOUT_V4?zoneAtV4(p.x,p.z):p.x>35?'park':p.x< -15?'camp':'town'});
+      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:sites.zone(asTuple(p))});
     }
   });
 
