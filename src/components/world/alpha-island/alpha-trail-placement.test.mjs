@@ -1,0 +1,235 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
+import { createRequire } from 'node:module';
+import { act,createElement as h } from 'react';
+import * as THREE from 'three';
+import { MeshBVH,acceleratedRaycast } from 'three-mesh-bvh';
+import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
+import R from '@dimforge/rapier3d-compat';
+import { PLAYER_HALF_HEIGHT,PLAYER_RADIUS,PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
+import { createAlphaPathFence } from './alpha-path-fence.ts';
+import * as art from './alpha-art.ts';
+import * as layout from './alpha-layout.ts';
+import * as terrain from './alpha-terrain.ts';
+import * as rocks from './alpha-rocks.ts';
+import * as materials from './alpha-materials.ts';
+import * as placement from './alpha-trail-placement.ts';
+import * as cairns from './alpha-summit-cairns.ts';
+import * as ownedVisual from '../useOwnedWorldVisual.ts';
+import { decodeAlphaTerrain } from './alpha-terrain-artifact.ts';
+
+const fiber=createRequire(import.meta.url)('@react-three/fiber');
+fiber.extend(THREE);
+globalThis.IS_REACT_ACT_ENVIRONMENT=true;
+const round=n=>+n.toFixed(6);
+const load=compileWorldComponent(new URL('./AlphaScenery.tsx',import.meta.url));
+
+function survey(){
+ const manifest=JSON.parse(readFileSync(new URL('../terrain-artifacts.generated.json',import.meta.url),'utf8'));
+ const packed=gunzipSync(readFileSync(new URL('../../../../public'+manifest.alpha.url,import.meta.url)));
+ const d=decodeAlphaTerrain(packed.buffer.slice(packed.byteOffset,packed.byteOffset+packed.byteLength)),cached=terrain.alphaTerrainData(),g=new THREE.BufferGeometry();
+ for(const key of ['positions','indices','surface','solid'])assert.deepEqual(cached[key],d[key],`placement terrain differs from shipping artifact: ${key}`);
+ g.setAttribute('position',new THREE.Float32BufferAttribute(d.positions,3));g.setIndex(Array.from(d.indices));
+ g.boundsTree=new MeshBVH(g);
+ const material=new THREE.MeshBasicMaterial(),mesh=new THREE.Mesh(g,material);mesh.raycast=acceleratedRaycast;
+ mesh.position.fromArray(layout.ALPHA_ORIGIN);mesh.updateMatrixWorld(true);
+ const ray=new THREE.Raycaster();ray.firstHitOnly=true;
+ return {height(x,z){ray.set(new THREE.Vector3(x,200,z),new THREE.Vector3(0,-1,0));const hit=ray.intersectObject(mesh)[0];assert.ok(hit,'terrain must exist');return hit.point.y;},dispose(){g.dispose();material.dispose();}};
+}
+
+async function mount(){
+ const motion={time:0,bellAt:-100},empty=()=>null;
+ const canvas=()=>({getContext:()=>new Proxy({},{get:()=>()=>{}})});
+ const rapier={RigidBody:({children,position,name,userData})=>h('group',{position,name,userData},children),CuboidCollider:()=>null,
+  TrimeshCollider:({args})=>h('group',{userData:{colliderArgs:args}}),ConvexHullCollider:()=>null};
+ const Fence=compileWorldComponent(new URL('./AlphaPathFence.tsx',import.meta.url))({
+  '@react-three/rapier':rapier,'./alpha-path-fence':{createAlphaPathFence},'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
+ }).default;
+ const Component=load({
+  './alpha-art':art,'./alpha-layout':layout,'./alpha-terrain':terrain,'./alpha-rocks':rocks,
+  './alpha-materials':materials,'./alpha-trail-placement':placement,
+  './alpha-summit-cairns':cairns,'../useOwnedWorldVisual':ownedVisual,
+  './AlphaGrammarTree':empty,'./AlphaVisitorWayfinding':empty,'./AlphaPathFence':Fence,
+  './alpha-state':{alphaMotion:motion,useAlphaStore:{getState:()=>({wind:0})}},
+  '@react-three/rapier':rapier,
+ },{createElement:canvas}).default;
+ const root=fiber.createRoot({}),camera=new THREE.PerspectiveCamera();
+ await root.configure({gl:{render(){},setSize(){},setPixelRatio(){},capabilities:{getMaxAnisotropy:()=>4}},camera,frameloop:'never',dpr:1,size:{width:320,height:200,top:0,left:0}});
+ let store;
+ await act(async()=>{store=root.render(h('group',{position:layout.ALPHA_ORIGIN},h(Component)));});
+ const scene=store.getState().scene;scene.updateMatrixWorld(true);
+ return {scene,motion,advance:async time=>act(async()=>{motion.time=time;store.getState().advance(time,false);}),dispose:async()=>act(async()=>root.unmount())};
+}
+
+test('shipping Alpha trail fixtures meet their terrain, collision and clearance contracts',async t=>{
+ await R.init();
+ const ground=survey(),mounted=await mount(),{scene,motion}=mounted;
+ try{
+  await t.test('four actual pole rims are embedded and the night-readable boards clear the terrain',async()=>{
+   const poles=[];scene.traverse(node=>{if(node.isMesh&&node.geometry.type==='CylinderGeometry'&&node.parent.children.some(child=>child.isMesh&&child.material.map?.isCanvasTexture))poles.push(node);});
+   assert.equal(poles.length,4);
+   const evidence=[];
+   for(const [i,pole]of poles.entries()){
+    const pos=pole.geometry.attributes.position;pole.geometry.computeBoundingBox();
+    let maxGap=-Infinity,minGap=Infinity,checks=0;
+    for(let k=0;k<pos.count;k++){
+     const point=new THREE.Vector3().fromBufferAttribute(pos,k);
+     if(point.y>pole.geometry.boundingBox.min.y+1e-5)continue;
+     point.applyMatrix4(pole.matrixWorld);const gap=point.y-ground.height(point.x,point.z);
+     maxGap=Math.max(maxGap,gap);minGap=Math.min(minGap,gap);checks++;
+    }
+    assert.ok(checks>8);assert.ok(maxGap<=-.0249,`sign ${i} pole rim floats: ${maxGap}`);assert.ok(minGap>-.12,`sign ${i} excessively buried: ${minGap}`);
+    const board=pole.parent.children.find(child=>child.isMesh&&child.material.map?.isCanvasTexture);
+    assert.ok(board.material.emissiveMap?.isCanvasTexture,'lettering retains its separate night texture');
+    let boardClearance=Infinity;
+    for(let k=0;k<board.geometry.attributes.position.count;k++){
+     const point=new THREE.Vector3().fromBufferAttribute(board.geometry.attributes.position,k).applyMatrix4(board.matrixWorld);
+     boardClearance=Math.min(boardClearance,point.y-ground.height(point.x,point.z));
+    }
+    assert.ok(boardClearance>.3,`sign ${i} board buried: ${boardClearance}`);
+    evidence.push({sign:i,maxRimGap:round(maxGap),minRimGap:round(minGap),boardClearance:round(boardClearance)});
+   }
+   const nightBefore=materials.alphaMaterialUniforms.night.value;
+   try{
+    materials.alphaMaterialUniforms.night.value=1;await mounted.advance(0);
+    for(const pole of poles){const board=pole.parent.children.find(child=>child.isMesh&&child.material.map?.isCanvasTexture);assert.ok(board.material.emissiveIntensity>.4,'night text illumination must update');}
+   }finally{materials.alphaMaterialUniforms.night.value=nightBefore;}
+   t.diagnostic(JSON.stringify({signs:evidence}));
+  });
+
+  await t.test('nine actual stone lower bevels stay buried and instance lights remain aligned through the bell sequence',async()=>{
+   const lamps=scene.getObjectByName('alpha-timber-trail-lamps'),lights=scene.getObjectByName('alpha-trail-lamp-sequence');
+   assert.ok(lamps&&lights?.isInstancedMesh);assert.equal(lights.count,9);
+   const stone=lamps.children.find(mesh=>mesh.material.name==='alpha-stone-v1');assert.ok(stone);
+   const position=stone.geometry.attributes.position,index=stone.geometry.index;
+   const vertices=Array.from({length:position.count},(_,k)=>new THREE.Vector3().fromBufferAttribute(position,k).applyMatrix4(stone.matrixWorld));
+   const matrix=new THREE.Matrix4(),evidence=[];
+   for(let i=0;i<lights.count;i++){
+    lights.getMatrixAt(i,matrix);matrix.premultiply(lights.matrixWorld);
+    const center=new THREE.Vector3().setFromMatrixPosition(matrix),scale=new THREE.Vector3().setFromMatrixScale(matrix);
+    const height=ground.height(center.x,center.z);
+    assert.ok(Math.abs(center.y-height-1.5)<1e-5,'light must remain on its post');
+    assert.ok(scale.distanceTo(new THREE.Vector3(.25,.28,.25))<1e-6,'light volume changed');
+    const inside=p=>Math.abs(p.x-center.x)<.191&&Math.abs(p.z-center.z)<.191;
+    const foot=vertices.filter(inside);assert.ok(foot.length>0);
+    const bottom=Math.min(...foot.map(p=>p.y)),top=Math.max(...foot.map(p=>p.y));
+    assert.ok(Math.abs(top-height-.24)<1e-5,'stone top must meet the post');
+    let gap=-Infinity,checks=0;
+    for(let k=0;k<(index?.count??vertices.length);k+=3){
+     const a=vertices[index?index.getX(k):k],b=vertices[index?index.getX(k+1):k+1],c=vertices[index?index.getX(k+2):k+2];
+     if(![a,b,c].every(inside))continue;
+     for(let u=0;u<=3;u++)for(let v=0;v<=3-u;v++){
+      const point=a.clone().multiplyScalar(1-(u+v)/3).addScaledVector(b,u/3).addScaledVector(c,v/3);
+      if(point.y<=bottom+.04001){gap=Math.max(gap,point.y-ground.height(point.x,point.z));checks++;}
+     }
+    }
+    assert.ok(checks>=100);assert.ok(gap<=-.0099,`lamp ${i} lower bevel exposed: ${gap}`);
+    for(const finish of ['wood','roof']){
+     const mesh=lamps.children.find(node=>node.material.name===`alpha-${finish}-v1`);assert.ok(mesh);
+     const nearby=[];for(let k=0;k<mesh.geometry.attributes.position.count;k++){
+      const p=new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,k).applyMatrix4(mesh.matrixWorld);
+      if(Math.abs(p.x-center.x)<.21&&Math.abs(p.z-center.z)<.21)nearby.push(p.y);
+     }
+     assert.ok(nearby.length>0,`lamp ${i} ${finish} missing`);
+     if(finish==='wood')assert.ok(Math.abs(Math.max(...nearby)-center.y)<1e-5,'post top must meet the glowing volume');
+     else assert.ok(Math.abs((Math.min(...nearby)+Math.max(...nearby))/2-center.y-.18)<1e-5,'roof must cover the glowing volume');
+    }
+    evidence.push({lamp:i,maxLowerBevelGap:round(gap),checks,lightHeight:round(center.y-height)});
+   }
+   assert.equal(lights.material.emissiveIntensity,.5);
+   const initialMatrices=lights.instanceMatrix.array.slice(),dark=new THREE.Color('#5a5544'),lit=new THREE.Color('#ffd893'),color=new THREE.Color();
+   motion.bellAt=0;
+   for(const [time,count]of [[.1,1],[.4,2],[2.1,9],[28.1,0]]){
+    await mounted.advance(time);
+    for(let i=0;i<lights.count;i++){
+     lights.getColorAt(i,color);const expected=i<count?lit:dark;
+     assert.ok(Math.hypot(color.r-expected.r,color.g-expected.g,color.b-expected.b)<1e-6,`lamp ${i} color at ${time}`);
+    }
+    assert.deepEqual(lights.instanceMatrix.array,initialMatrices,'bell animation must not move the glowing volumes');
+   }
+   t.diagnostic(JSON.stringify({lamps:evidence,bellSequenceLitCounts:[1,2,9,0]}));
+  });
+
+  await t.test('every guard span stops a walking capsule and admits a ray through the opening', () => {
+   const fence=scene.getObjectByName('alpha-path-fence');
+   assert.ok(fence?.userData.solid);
+   const world=new R.World({x:0,y:-9.81,z:0});
+   try{
+    const meshes=[];
+    fence.traverse(node=>{if(node.isMesh)meshes.push(node);});
+    assert.equal(meshes.length,3);
+    for(const mesh of meshes){
+     assert.equal(mesh.userData.collision,'solid');
+     const collider=mesh.parent.children.find(node=>node.userData.colliderArgs);
+     assert.ok(collider,mesh.name+' has no physics');
+     assert.deepEqual(collider.matrixWorld.toArray(),mesh.matrixWorld.toArray());
+     const [positions,indices]=collider.userData.colliderArgs;
+     assert.equal(positions,mesh.geometry.attributes.position.array);
+     assert.equal(indices.length,mesh.geometry.attributes.position.count);
+     for(const [i,index] of indices.entries())assert.equal(index,i);
+     const at=new THREE.Vector3(),q=new THREE.Quaternion(),scale=new THREE.Vector3();
+     collider.matrixWorld.decompose(at,q,scale);
+     assert.deepEqual(scale.toArray(),[1,1,1]);
+     world.createCollider(R.ColliderDesc.trimesh(positions,indices).setTranslation(at.x,at.y,at.z).setRotation(q));
+    }
+    world.step();
+    const {spans,parts}=createAlphaPathFence();
+    parts.forEach(p=>p.geometry.dispose());
+    assert.ok(spans.length>0);
+    let checkedFeet=0;
+    for(const {a,b} of spans){
+     const start=new THREE.Vector3(...layout.alphaWorld(a)),end=new THREE.Vector3(...layout.alphaWorld(b));
+     const mid=start.clone().lerp(end,.5);
+     const d=end.clone().sub(start),across=new THREE.Vector3(-d.z,0,d.x).normalize();
+     const origin=mid.clone().addScaledVector(across,-1);
+     const hitAt=height=>world.castRay(new R.Ray({...origin,y:mid.y+height},across),2,true);
+     assert.ok(hitAt(.94),'upper rail');assert.ok(hitAt(.48),'lower rope');assert.equal(hitAt(.71),null,'opening');
+     assert.ok(world.castShape({...origin,y:mid.y+PLAYER_CENTER_HEIGHT},{x:0,y:0,z:0,w:1},
+       across,new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),.004,2,false),'player must stay behind guard');
+     for(const p of [start,end]){
+      const wood=meshes.find(m=>m.name.endsWith('/wood'));
+      const pos=wood.geometry.attributes.position,ring=[];
+      for(let i=0;i<pos.count;i++){
+       const v=new THREE.Vector3().fromBufferAttribute(pos,i).applyMatrix4(wood.matrixWorld);
+       if(Math.hypot(v.x-p.x,v.z-p.z)<.097 && v.y<p.y)ring.push(v);
+      }
+      assert.ok(ring.length>=12,'post bottom missing');
+      for(const v of ring)assert.ok(v.y<=ground.height(v.x,v.z)+.0002,'floating post foot');
+      checkedFeet++;
+     }
+    }
+    t.diagnostic(JSON.stringify({guardSpans:spans.length,checkedFeet}));
+   }finally{world.free();}
+  });
+
+  await t.test('the base of every summit cairn meets the terrain and each upper stone rests on the visible facet below',()=>{
+   const stones=scene.getObjectByName('alpha-summit-decorative-cairn-instances');
+   assert.ok(stones?.isInstancedMesh);assert.equal(stones.userData.collision,'none');
+   const prior=new THREE.Mesh(stones.geometry,stones.material),matrix=new THREE.Matrix4();
+   const position=new THREE.Vector3(),last=new THREE.Vector3(),down=new THREE.Vector3(0,-1,0);
+   const ray=new THREE.Raycaster();
+   let baseCount=0,stackedCount=0,maxGap=-Infinity,minGap=Infinity;
+   for(let i=0;i<stones.count;i++){
+    stones.getMatrixAt(i,matrix);matrix.premultiply(stones.matrixWorld);
+    position.setFromMatrixPosition(matrix);
+    const bottom=new THREE.Vector3(0,-1,0).applyMatrix4(matrix);
+    let support;
+    if(i===0||Math.hypot(last.x-position.x,last.z-position.z)>1){
+     support=ground.height(bottom.x,bottom.z);baseCount++;
+    }else{
+     ray.set(new THREE.Vector3(bottom.x,position.y+1,bottom.z),down);
+     const hit=ray.intersectObject(prior,false)[0];
+     assert.ok(hit,'stone '+i+' has no supporting facet');support=hit.point.y;stackedCount++;
+    }
+    const gap=bottom.y-support;
+    assert.ok(gap<=.0001&&gap>=-.025,'stone '+i+' vertical separation '+gap);
+    minGap=Math.min(minGap,gap);maxGap=Math.max(maxGap,gap);
+    last.copy(position);prior.matrixWorld.copy(matrix);
+   }
+   assert.ok(baseCount>0 && stackedCount>baseCount);
+   t.diagnostic(JSON.stringify({baseCount,stackedCount,minGap:round(minGap),maxGap:round(maxGap)}));
+  });
+ }finally{await mounted.dispose();ground.dispose();}
+});

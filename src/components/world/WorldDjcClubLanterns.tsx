@@ -1,5 +1,5 @@
 import { Component, Suspense, useMemo, useRef, useState, type ReactNode } from 'react';
-import { useOwnedDjcVisual } from './useOwnedDjcVisual';
+import { useOwnedWorldVisual } from './useOwnedWorldVisual';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import type { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -14,7 +14,7 @@ function PoolLanternAsset(){
   const environment=useDjcFurnitureEnvironment(),renderer=useThree(s=>s.gl);
   const maxAnisotropy=useMemo(()=>renderer.capabilities.getMaxAnisotropy(),[renderer]);
   const visual=useMemo(()=>createDjcPoolLanternVisual(gltf.scene,environment,maxAnisotropy),[gltf,environment,maxAnisotropy]);
-  useOwnedDjcVisual(visual);
+  useOwnedWorldVisual(visual);
   useFrame(()=>visual.setNight(night.value));
   return <primitive object={visual.root} dispose={null}/>;
 }

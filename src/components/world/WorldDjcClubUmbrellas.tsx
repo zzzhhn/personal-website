@@ -1,5 +1,5 @@
 import { Component, Suspense, useMemo, useRef, useState, type ReactNode } from 'react';
-import { useOwnedDjcVisual } from './useOwnedDjcVisual';
+import { useOwnedWorldVisual } from './useOwnedWorldVisual';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import type { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -12,7 +12,7 @@ function UmbrellaAsset(){
   const gltf=useLoader(GLTFLoader,DJC_UMBRELLA_ASSET,withWorldAssetDecoder),environment=useDjcFurnitureEnvironment();
   const renderer=useThree(s=>s.gl),anisotropy=useMemo(()=>renderer.capabilities.getMaxAnisotropy(),[renderer]);
   const visual=useMemo(()=>createDjcUmbrellaVisual(gltf.scene,environment,anisotropy),[gltf,environment,anisotropy]);
-  useOwnedDjcVisual(visual);
+  useOwnedWorldVisual(visual);
   useFrame(()=>visual.setNight(night.value));
   return <primitive object={visual.root} dispose={null}/>;
 }

@@ -35,6 +35,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:coaster-scene
+      - run: npm run check:grounding
       - name: Verify terrain downloads, boarding masks and venue asset lifecycles
         run: node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 tools/world/terrain-download.test.mjs tools/world/alpha-boarding-mask.test.mjs src/components/world/venue-asset-residency.test.mjs
       - run: npm run build

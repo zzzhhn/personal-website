@@ -4,12 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node tools/world/check-club-audio.mjs && node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-name-pattern=declared.collision src/components/world/alpha-island/alpha-mainland-pier.test.mjs",
+    "prebuild": "node tools/world/check-club-audio.mjs && node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-name-pattern=declared.collision src/components/world/alpha-island/alpha-mainland-pier.test.mjs && node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/alpha-island/alpha-trail-placement.test.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
     "check:coaster-scene": "node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 src/components/world/attractions/coaster-craft-promotion.test.mjs src/components/world/attractions/coaster-chest-runtime.test.mjs src/components/world/attractions/coaster-gate-craft-lifecycle.test.mjs",
-    "check:grounding": "node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 tools/world/terrain-artifact.test.mjs tools/world/alpha-terrain-artifact.test.mjs tools/world/cave-surface-artifact.test.mjs tools/world/waterwheel-surface-artifact.test.mjs tools/world/mainland-placement.test.mjs src/components/world/alpha-island/alpha-mainland-pier.test.mjs",
+    "check:grounding": "node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 tools/world/terrain-artifact.test.mjs tools/world/alpha-terrain-artifact.test.mjs tools/world/cave-surface-artifact.test.mjs tools/world/waterwheel-surface-artifact.test.mjs tools/world/mainland-placement.test.mjs src/components/world/alpha-island/alpha-mainland-pier.test.mjs src/components/world/alpha-island/alpha-trail-placement.test.mjs",
     "capture:evalforge": "bash scripts/capture-evalforge-previews.sh"
   },
   "dependencies": {

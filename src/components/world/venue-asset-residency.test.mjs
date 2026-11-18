@@ -5,7 +5,7 @@ import { act, createElement as h, StrictMode } from 'react';
 import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PerspectiveCamera } from 'three';
 import { compileWorldComponent } from '../../../tools/world/alpha-mine-tests/component-host.mjs';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
-import { useOwnedDjcVisual } from './useOwnedDjcVisual.ts';
+import { useOwnedWorldVisual } from './useOwnedWorldVisual.ts';
 import { CLUB } from './djc-club-layout.ts';
 import { IBD_YARD } from './attractions/attraction-layout.ts';
 import * as lamps from './djc-pool-lantern-visual.ts';
@@ -58,7 +58,7 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     const pending = new Promise(resolve => { release = resolve; });
     const Component = compileWorldComponent(new URL('./' + entry + '.tsx', import.meta.url))({
       [visualImport]: visualModule,
-      './useOwnedDjcVisual': { useOwnedDjcVisual },
+      './useOwnedWorldVisual': { useOwnedWorldVisual },
       './ibd-static-craft-visual': equipment,
       './attraction-layout': { IBD_YARD },
       './djc-club-layout': { CLUB },
@@ -182,7 +182,7 @@ test('the Club bar keeps the far model and both fixed bodies during a suspended 
       observe(proxy.roof);
       return proxy;
     } },
-    './useOwnedDjcVisual': { useOwnedDjcVisual },
+    './useOwnedWorldVisual': { useOwnedWorldVisual },
     './WorldAssetDecoder': { withWorldAssetDecoder() {} },
     './WorldNight': { night: { value: 0 } },
     './WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment() { environments++; return null; } },

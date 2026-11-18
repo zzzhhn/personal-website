@@ -1,6 +1,6 @@
 import { Component, Suspense, startTransition, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
-import { useOwnedDjcVisual } from './useOwnedDjcVisual';
+import { useOwnedWorldVisual } from './useOwnedWorldVisual';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import type { Group, Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -18,7 +18,7 @@ function BarAsset({ url, environment, opaque, textures, sceneTransmission }: { u
     const resolved = uri ? new URL(uri, `https://world.local${url}`).href : undefined;
     return shareDjcBarTexture(texture, resolved, textures);
   }, sceneTransmission), [gltf, opaque, environment, textures, url, sceneTransmission]);
-  useOwnedDjcVisual(visual);
+  useOwnedWorldVisual(visual);
   useFrame(() => { for (const m of visual.materials) m.envMapIntensity = .35 * (1 - night.value * .88); });
   return <primitive object={visual.root} dispose={null} />;
 }
@@ -67,7 +67,7 @@ export default function WorldDjcClubBar() {
   const [active, setActive] = useState(() => distance() <= DJC_BAR_NEAR_PREFETCH), activated = useRef(active);
   const shouldPrefetch = useMemo(createDjcBarPrefetchCheck, []);
   const proxy = useMemo(buildDjcBarProxy, []);
-  useOwnedDjcVisual(proxy.roof);
+  useOwnedWorldVisual(proxy.roof);
   useFrame(() => {
     const d = distance();
     if (!activated.current && shouldPrefetch(camera, d)) { activated.current = true; setActive(true); }

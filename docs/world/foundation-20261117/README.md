@@ -503,3 +503,11 @@ The venue residency suite mounts the shipping React components under React Three
 The same replay also triggered an early disposal of the north bar's fallback roof geometry, and independently of the materials of its mounted far model. Both now use the same release rule. A real Suspense transition keeps the far GLB visible while the near GLB is pending, releases its private materials after replacement and preserves the two fixed-body registrations across both detail boundaries. The remaining camera checks sample the actual prefetch rule at the camp pose and the viewport edge.
 
 The atlas build now exercises all eight scene cases, the terrain loader's real HTTP gzip regression and the Alpha boarding mask capacity regression before capture.
+
+## Alpha trail furniture and summit cairns
+
+The wind sign's post was 1.23 m above its own ground and the grammar sign was buried by 0.43 m. Three trail-lamp plinths had more than 9 cm of daylight under their lower edge. All four signs now use the ground under the pole footprint. Each of the nine lamps extends its original stone base into the low side of the slope, preserving the assembled roof and light positions. A scene test measures their actual vertices against the shipped Alpha terrain triangles, including the lower bevels and the positions of the lights during the bell sequence.
+
+All five trail guard spans used to block a ray through the empty space between the handrail and lower rope. The timber, collars and rope now share their visible triangles with the fixed Rapier body. Shape queries through the opening pass on all five spans, both rails still stop rays, and the assembled guard still blocks the player capsule. The ten post bases meet the slope.
+
+At the summit the fixed vertical increment left 138 gaps between stones, the largest measuring at least 6.88 cm. All 69 base stones now sample terrain under their own centre. Each of the 207 upper stones samples the actual facet below it and overlaps by 1.2 cm. The 276 stones still render as one instanced mesh. Two fixed camera pairs cover the wind sign and summit cairns. The trail suite is part of check:grounding and production prebuild.
