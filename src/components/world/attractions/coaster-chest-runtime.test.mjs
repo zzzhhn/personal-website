@@ -1,11 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
-import { jsx as reactJsx, jsxs as reactJsxs, Fragment } from 'react/jsx-runtime';
-import { Matrix4, Mesh, MeshStandardMaterial, Vector3 } from 'three';
+import * as jsxRuntime from 'react/jsx-runtime';
+import { Matrix4, Mesh, Vector3 } from 'three';
 import { createCoasterChestRuntime, CHEST_OPEN_LID } from './coaster-chest-runtime.ts';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
 
@@ -165,72 +164,87 @@ test('two full-resolution opaque shadow carriers retain all triangles at closed,
   } finally { pack.dispose(); }
 });
 
-test('baseline component cleanup actually disposes materials still reused by StrictMode effect replay', () => {
-  const sourceText = execFileSync('git', ['show', 'b75c474:src/components/world/attractions/WorldCoasterChestTransfer.tsx'], { encoding: 'utf8' });
-  const js = ts.transpileModule(sourceText, {
-    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
-  }).outputText;
-  const ast = ts.createSourceFile('baseline.js', js, ts.ScriptTarget.Latest, true);
-  const functionText = name => ast.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === name).getText(ast);
-  const legacy = new Function('Mesh', 'MeshStandardMaterial', 'indexName',
-    functionText('requireNode') + '\n' + functionText('makeChest') + '\nreturn makeChest;'
-  )(Mesh, MeshStandardMaterial, i => String(i + 1).padStart(2, '0'))(source);
-  const effects = [];
-  const env = {
-    useGLTF: () => ({ scene: source }), assetUrl: 'unused', useMemo: f => f(), makeChest: () => legacy,
-    useDjcFurnitureEnvironment: () => null, useRef: x => ({ current: x }), useLayoutEffect: f => f(),
-    useEffect: f => effects.push(f), useFrame: () => {}, night: { value: 0 },
-    OPEN_LID: -1.3, OPEN_SHACKLE: -1.12, SHACKLE_LIFT: .058, _jsx: (type, props) => ({ type, props }),
-  };
-  new Function(...Object.keys(env), `return (${functionText('ChestModel')});`)(...Object.values(env))({ open: false, passed: [] });
-  let disposals = 0;
-  legacy.materials.forEach(m => m.addEventListener('dispose', () => disposals++));
-  effects[0]()();
-  effects[0]();
-  assert.equal(disposals, legacy.materials.length, 'baseline replay really reuses disposed materials');
-});
+// Load the entire shipping component through its normal export. Only its host
+// hooks, stores and URL import are supplied by the fixture.
+const compiledComponent = ts.transpileModule(readFileSync(new URL('./WorldCoasterChestTransfer.tsx', import.meta.url), 'utf8'), {
+  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
+}).outputText;
 
-test('component retains the exact paused lid easing callback', () => {
-  const baseline = execFileSync('git', ['show', 'b75c474:src/components/world/attractions/WorldCoasterChestTransfer.tsx'], { encoding: 'utf8' });
-  const current = readFileSync(new URL('./WorldCoasterChestTransfer.tsx', import.meta.url), 'utf8');
-  const ast = text => ts.createSourceFile('component.tsx', text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const a = ast(baseline), b = ast(current);
-  const declaration = (tree, name) => tree.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === name);
-  const frame = tree => {
-    let result;
-    function find(node) {
-      if (ts.isCallExpression(node) && node.expression.getText(tree) === 'useFrame') result = node.getText(tree);
-      ts.forEachChild(node, find);
-    }
-    find(declaration(tree, 'ChestModel'));
-    return result;
+function elementsIn(value) {
+  if (!value || typeof value !== 'object') return [];
+  return [value, ...[value.props?.children].flat(Infinity).flatMap(elementsIn)];
+}
+
+function chestFixture(progress) {
+  const effects = [], events = [], state = { paused: false }, doc = { hidden: false };
+  const geometry = { dispose() {} };
+  const fixture = { effects, events, state, doc, geometry };
+  const dependencies = {
+    'react/jsx-runtime': jsxRuntime,
+    react: { Suspense: 'suspense', useMemo: f => f(), useEffect: f => effects.push(f),
+      useRef: current => ({ current }), useLayoutEffect: f => f() },
+    '@react-three/fiber': { useFrame: callback => { fixture.frame = callback; } },
+    '@react-three/drei': { useGLTF: () => gltf },
+    '../store': { useWorldStore: { getState: () => state } },
+    '../WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment: () => null },
+    '../WorldNight': { night: { value: 0 } },
+    './coaster-device-geometry': { createIntentKey: () => geometry },
+    './coaster-track': { coasterWorld: ([x, y, z]) => [x + 50, y + 1, z - 195], COASTER_GATE_Z: 56 },
+    './intent-state': { useIntentStore: selector => selector({ progress }), activateIntentTarget: target => events.push(target) },
+    './WorldIntentSurface': { WorldIntentReflectiveSurface: 'reflective-surface' },
+    './coaster-chest-runtime': { CHEST_OPEN_LID, createCoasterChestRuntime: scene => (fixture.pack = createCoasterChestRuntime(scene)) },
   };
-  assert.equal(frame(a), frame(b).replaceAll('CHEST_OPEN_LID', 'OPEN_LID'));
+  const load = id => {
+    if (id.endsWith('.glb?url')) return { default: 'fixture.glb' };
+    assert.ok(Object.hasOwn(dependencies, id), `Missing component dependency ${id}`);
+    return dependencies[id];
+  };
+  const exports = {};
+  new Function('require', 'exports', 'document', compiledComponent)(load, exports, doc);
+  fixture.render = exports.default;
+  fixture.mountModel = () => {
+    const suspense = elementsIn(fixture.render()).find(element => element.type === 'suspense');
+    const element = suspense.props.children;
+    effects.length = 0;
+    return element.type(element.props);
+  };
+  return fixture;
+}
+
+test('lid opens and closes smoothly, and holds its pose when paused, hidden or resuming after a long frame', () => {
+  for (const open of [true, false]) {
+    const fixture = chestFixture({ chestOpen: open, passed: [] });
+    fixture.mountModel();
+    const { lid } = fixture.pack;
+    try {
+      const target = open ? CHEST_OPEN_LID : 0, start = open ? 0 : CHEST_OPEN_LID;
+      assert.equal(lid.rotation.x, target, 'mount restores saved progress');
+      lid.rotation.x = start;
+      fixture.state.paused = true;
+      fixture.frame(null, 1 / 60);
+      assert.equal(lid.rotation.x, start);
+      fixture.state.paused = false;
+      fixture.doc.hidden = true;
+      fixture.frame(null, 1 / 60);
+      assert.equal(lid.rotation.x, start);
+      fixture.doc.hidden = false;
+      fixture.frame(null, 1);
+      assert.equal(lid.rotation.x, start);
+      for (let i = 1; i <= 30; i++) {
+        fixture.frame(null, 1 / 60);
+        near([lid.rotation.x], [target + (start - target) * Math.exp(-7 * i / 60)]);
+      }
+    } finally { fixture.pack.dispose(); }
+  }
 });
 
 test('actual chest output preserves pickup/gate visibility, both key transforms and chest click for default and supplied key visuals', () => {
-  const js = ts.transpileModule(readFileSync(new URL('./WorldCoasterChestTransfer.tsx', import.meta.url), 'utf8'), {
-    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
-  }).outputText;
-  const ast = ts.createSourceFile('chest.js', js, ts.ScriptTarget.Latest, true);
-  const declaration = ast.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === 'WorldCoasterChestTransfer');
-  const fn = declaration.getText(ast).replace(/^export\s+default\s+/, '');
-  const jsx = reactJsx;
-  const list = value => value && typeof value === 'object'
-    ? [value, ...[value.props?.children].flat(Infinity).flatMap(list)] : [];
-  const offset = [50, 1, -195], gateZ = 56;
   for (const supplied of [false, true]) for (const chestOpen of [false, true])
     for (const keyTaken of [false, true]) for (const gateOpen of [false, true]) {
       const progress = { chestOpen, keyTaken, gateOpen, passed: [] };
-      const events = [], geometry = { dispose() {} }, visual = jsx('authored-key', {});
-      const env = {
-        useIntentStore: selector => selector({ progress }), useMemo: f => f(), createIntentKey: () => geometry, useEffect: () => {},
-        coasterWorld: p => p.map((v, i) => v + offset[i]), COASTER_GATE_Z: gateZ,
-        activateIntentTarget: target => events.push(target), _jsx: jsx, _jsxs: reactJsxs, _Fragment: Fragment,
-        Suspense: 'Suspense', ChestModel: 'ChestModel', WorldIntentReflectiveSurface: 'reflective-surface',
-      };
-      const Component = new Function(...Object.keys(env), `return (${fn});`)(...Object.values(env));
-      const output = Component(supplied ? { keyVisual: visual } : undefined), elements = list(output);
+      const { events, geometry, render } = chestFixture(progress);
+      const visual = jsxRuntime.jsx('authored-key', {});
+      const output = render(supplied ? { keyVisual: visual } : undefined), elements = elementsIn(output);
       const interaction = elements.find(o => o.type === 'group' && o.props.onClick);
       assert.deepEqual(interaction.props.position, [42, 1, -135.5]);
       let stopped = 0;
@@ -254,20 +268,9 @@ test('actual chest output preserves pickup/gate visibility, both key transforms 
 });
 
 test('actual component effect survives StrictMode cleanup/replay and finally releases each owned resource once', async () => {
-  const js = ts.transpileModule(readFileSync(new URL('./WorldCoasterChestTransfer.tsx', import.meta.url), 'utf8'), {
-    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
-  }).outputText;
-  const ast = ts.createSourceFile('component.js', js, ts.ScriptTarget.Latest, true);
-  const fn = ast.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === 'ChestModel');
-  const effects = []; let pack;
-  const env = {
-    useGLTF: () => ({ scene: source }), assetUrl: 'unused', useMemo: f => f(),
-    createCoasterChestRuntime: s => (pack = createCoasterChestRuntime(s)),
-    useDjcFurnitureEnvironment: () => null, useRef: x => ({ current: x }), useLayoutEffect: f => f(),
-    useEffect: f => effects.push(f), useFrame: () => {}, night: { value: 0 },
-    CHEST_OPEN_LID, _jsx: (type, props) => ({ type, props }),
-  };
-  new Function(...Object.keys(env), `return (${fn.getText(ast)});`)(...Object.values(env))({ open: false, passed: [] });
+  const fixture = chestFixture({ chestOpen: false, passed: [] });
+  fixture.mountModel();
+  const { pack, effects } = fixture;
   const counts = new Map();
   const owned = [...pack.resources.geometry, ...pack.resources.materials, ...pack.resources.instances];
   owned.forEach(item => item.addEventListener('dispose', () => counts.set(item, (counts.get(item) || 0) + 1)));

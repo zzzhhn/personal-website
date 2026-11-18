@@ -392,3 +392,17 @@ Median interval was 44 ms, p95 was 85 ms, p99 was 205 ms, and 60 intervals
 exceeded 50 ms. No uncaught JavaScript error was recorded. This single foreground
 camp route is a performance baseline; frame intervals include the whole browser
 loop and do not isolate GPU cost or represent other districts.
+
+The coaster chest regression now exercises the current shipped component as a
+whole through its default export. Its tests cover both hinge directions,
+paused/hidden/long-frame holds, all seven task bits, visible key placements,
+click dispatch and StrictMode resource ownership. The suite no longer reads
+an old Git revision or compares callback source text. Removing the pause guard
+in a temporary copy made the new behavioral case fail.
+
+A separate instrumented Safari sample recorded 329 draw submissions and
+1,224,303 triangles at the end of the short camp walk. Of these, 195 submissions
+and 606,803 triangles came from the three sun-shadow passes. The page had a
+visibility transition on this diagnostic run, so its timing is excluded from
+the foreground baseline. These counts identify a profiling target; they do not
+measure how much frame time the shadows consume.
