@@ -6,7 +6,7 @@ import { advanceExchangeBodyAction, beginExchangeBodyAction, cancelExchangeBodyA
 const anchor = { stand: [0,0,0], yaw: 0, target: [.5,1,0] };
 function fixture() {
   cancelExchangeBodyAction(); exchangeBody.carried = null;
-  Object.assign(exchangeActor, { position: [0,PLAYER_CENTER_HEIGHT,0], yaw: 0, grounded: true, available: true });
+  Object.assign(exchangeActor, { groundRoute:(_from,to)=>[to[0],to[1]+PLAYER_CENTER_HEIGHT,to[2]], position: [0,PLAYER_CENTER_HEIGHT,0], yaw: 0, grounded: true, available: true });
   Object.assign(exchangeVisualSockets, { valid: false, sampledId: null, sampledElapsed: 0, contactError: Infinity });
 }
 function tick(count = 1, sample = true) {

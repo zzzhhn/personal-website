@@ -1,11 +1,10 @@
 import { create } from 'zustand';
 import { createExchangeRound, reduceExchangeRound, type ExchangeRound, type ExchangeRoundReceipt } from './alpha-exchange-round.ts';
-import { beginExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exchangeBody,
+import { beginExchangeBodyAction, cancelExchangeBodyAction, canApproachExchangeStand, exchangeBody,
   type ExchangeAnchor, type ExchangeActionKind } from './alpha-exchange-motion.ts';
 import { ringExchange, releaseExchange, useAlphaExchange } from './alpha-exchange-state.ts';
 import { EXCHANGE_PLAY_STATIONS, EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout.ts';
 import { exchangeWorld } from './alpha-exchange-layout.ts';
-import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import { exchangeArchiveCatalog, type ExchangeDay, type ExchangeArchiveTicket } from './alpha-exchange-data.ts';
 import type { Vec3 } from './types.ts';
 import { useWorldStore } from './store.ts';
@@ -23,7 +22,7 @@ interface PlayDependencies {
   history: () => HistoryState; load: () => Promise<void>; release: () => void;
   begin: typeof beginExchangeBodyAction; cancel: () => void;
   busy?: () => boolean;
-  reachable: (anchor: ExchangeAnchor) => boolean;
+  reachable: (anchor: ExchangeAnchor, fresh?: boolean) => boolean;
   carried: () => 'ticket' | 'receipt' | null; clearCarry: () => void;
   anchor: (station: ExchangePlayStationId, units?: number, archiveIndex?: number) => ExchangeAnchor;
 }
@@ -54,14 +53,14 @@ export function createExchangePlayController(deps: PlayDependencies) {
     if (station === 'desk') return round.phase === 'selecting' || round.phase === 'ticket' && !state.ticketReturned && deps.carried() === 'ticket';
     return station === 'bell' ? round.phase === 'sealed' : round.phase === 'clearing';
   };
-  function canRequest(station: ExchangePlayStationId) {
-    return allowed(station) && deps.reachable(deps.anchor(station));
+  function canRequest(station: ExchangePlayStationId, fresh = false) {
+    return allowed(station) && deps.reachable(deps.anchor(station), fresh);
   }
   function contact(kind: ExchangeActionKind, station: ExchangePlayStationId, units?: number,
     selection?: ExchangeArchiveTicket, archiveIndex?: number) {
     const before = store.getState(), round = before.round, phase = round?.phase, requestGeneration = generation;
     const anchor = deps.anchor(station, units, archiveIndex), sourceAtRequest = catalogSource;
-    if (!deps.reachable(anchor)) return false;
+    if (!deps.reachable(anchor, true)) return false;
     return deps.begin(kind, anchor, () => {
       const live = store.getState();
       if (generation !== requestGeneration || live.round !== round || live.round?.phase !== phase
@@ -98,7 +97,7 @@ export function createExchangePlayController(deps: PlayDependencies) {
     });
   }
   async function archive() {
-    if (!canRequest('archive')) return false;
+    if (!canRequest('archive', true)) return false;
     const before = store.getState();
     if (deps.history().phase === 'open') {
       const catalog = refreshCatalog();
@@ -128,19 +127,19 @@ export function createExchangePlayController(deps: PlayDependencies) {
   function requestTicket(id: string) {
     if (!allowed('archive') || deps.history().phase !== 'open') return false;
     const catalog = refreshCatalog(), index = catalog.findIndex(ticket => ticket.id === id);
-    if (index < 1 || !canRequestTicket(id)) return false;
+    if (index < 1) return false;
     return contact('pickup', 'archive', undefined, catalog[index], index - 1);
   }
   function request(station: ExchangePlayStationId): boolean | Promise<boolean> {
     if (station === 'archive') return archive();
-    if (!canRequest(station)) return false;
+    if (!allowed(station)) return false;
     return contact(station === 'desk' ? store.getState().round?.phase === 'ticket' ? 'insert' : 'seal'
       : station === 'bell' ? 'ring' : station === 'review' ? 'review' : 'collect', station);
   }
   function adjust(units: number) {
     const round = store.getState().round;
     if (round?.phase !== 'selecting' || !Number.isInteger(units) || units < 0 || units > 50 || units % 10 !== 0
-      || round.targetUnits === units || !canRequest('desk')) return false;
+      || round.targetUnits === units || !allowed('desk')) return false;
     return contact('adjust', 'desk', units);
   }
   function cancel(_reason?: string) {
@@ -168,12 +167,11 @@ const play = createExchangePlayController({ history: useAlphaExchange.getState, 
   begin: beginExchangeBodyAction, cancel: cancelExchangeBodyAction, anchor: exchangePlayAnchor,
   busy: () => exchangeBody.action !== null,
   carried: () => exchangeBody.carried, clearCarry: () => { exchangeBody.carried = null; },
-  reachable: anchor => {
+  reachable: (anchor, fresh) => {
     const world = useWorldStore.getState();
     return !world.paused && !world.card && !world.shot && !world.poolInspect && !world.activeVehicle && !world.seat
-      && !world.clubMode && !(typeof document !== 'undefined' && document.hidden) && exchangeActor.available && exchangeActor.grounded
-      && Math.hypot(exchangeActor.position[0] - anchor.stand[0], exchangeActor.position[2] - anchor.stand[2]) <= 1.1
-      && Math.abs(exchangeActor.position[1] - PLAYER_CENTER_HEIGHT - anchor.stand[1]) <= .25;
+      && !world.clubMode && !(typeof document !== 'undefined' && document.hidden)
+      && canApproachExchangeStand(anchor, fresh);
   },
 });
 export const useExchangePlay = play.store;

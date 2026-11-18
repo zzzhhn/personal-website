@@ -1,4 +1,5 @@
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
+import { canReachActivityStand, type GroundRouteQuery } from './activity-ground-route';
 import type { Vec3 } from './types.ts';
 import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from './accepted-action';
 
@@ -13,11 +14,14 @@ export interface ExchangeVisualSockets {
   valid: boolean; contactError: number; sampledId: number | null; sampledElapsed: number;
   rightHand: Vec3; leftHand: Vec3;
 }
-export const exchangeActor = { position: [0, 0, 0] as Vec3, yaw: 0, grounded: false, available: false };
+export const exchangeActor = { position: [0, 0, 0] as Vec3, yaw: 0, grounded: false, available: false,
+  groundRoute: undefined as GroundRouteQuery | undefined };
 export const exchangeVisualSockets: ExchangeVisualSockets = {
   valid: false, contactError: Infinity, sampledId: null, sampledElapsed: 0, rightHand: [0,0,0], leftHand: [0,0,0],
 };
 export const exchangeBody = { action: null as ExchangeBodyAction | null, carried: null as ExchangeCarried };
+export const EXCHANGE_APPROACH_STOP = .04;
+const EXCHANGE_APPROACH_RADIUS = 1.1;
 export const EXCHANGE_APPROACH_TIMEOUT = 2;
 export const EXCHANGE_CONTACT_TOLERANCE = .1;
 export const EXCHANGE_STAND_TOLERANCE = .07;
@@ -33,6 +37,11 @@ function standDistance(anchor: ExchangeAnchor) {
   return Math.hypot(exchangeActor.position[0] - anchor.stand[0], exchangeActor.position[2] - anchor.stand[2]);
 }
 function standHeight(anchor: ExchangeAnchor) { return Math.abs(exchangeActor.position[1] - PLAYER_CENTER_HEIGHT - anchor.stand[1]); }
+export function canApproachExchangeStand(anchor: ExchangeAnchor, fresh = false) {
+  return exchangeActor.available && exchangeActor.grounded && standDistance(anchor) <= EXCHANGE_APPROACH_RADIUS
+    && standHeight(anchor) <= .25 && canReachActivityStand(exchangeActor.position, anchor.stand,
+      EXCHANGE_APPROACH_RADIUS, EXCHANGE_APPROACH_STOP, exchangeActor.groundRoute, fresh);
+}
 function clearSample() {
   exchangeVisualSockets.valid = false; exchangeVisualSockets.sampledId = null; exchangeVisualSockets.contactError = Infinity;
 }
@@ -42,10 +51,10 @@ export const exchangeBodyBusy = () => exchangeBody.action !== null;
 /** A request only reserves an action. The physics controller owns actual walking and heading. */
 export function beginExchangeBodyAction(kind: ExchangeActionKind, anchor: ExchangeAnchor,
   onContact: () => boolean | void, onCancel?: () => void): boolean {
-  if (exchangeBodyBusy() || !exchangeActor.available || !exchangeActor.grounded || !pointValid(exchangeActor.position)
+  if (exchangeBodyBusy() || !pointValid(exchangeActor.position)
     || !Number.isFinite(exchangeActor.yaw) || !anchor || !pointValid(anchor.stand) || !pointValid(anchor.target)
     || !Number.isFinite(anchor.yaw) || !TIMING[kind] || typeof onContact !== 'function'
-    || standDistance(anchor) > 1.1 || standHeight(anchor) > .25) return false;
+    || !canApproachExchangeStand(anchor, true)) return false;
   const [duration, contactAt] = TIMING[kind], id = ++sequence;
   exchangeBody.action = { id, kind, phase: 'approach', elapsed: 0, duration, contactAt,
     anchor: { stand: [...anchor.stand], yaw: anchor.yaw, target: [...anchor.target] }, committed: false, commitClock: acceptAction(contactAt) };
@@ -67,7 +76,7 @@ export function advanceExchangeBodyAction(dt: number): void {
   const action = exchangeBody.action;
   if (!action || !Number.isFinite(dt) || dt <= 0) return;
   if (!exchangeActor.available || !exchangeActor.grounded || !pointValid(exchangeActor.position) || !Number.isFinite(exchangeActor.yaw)
-    || standHeight(action.anchor) > .25 || standDistance(action.anchor) > 1.1) { cancelExchangeBodyAction(); return; }
+    || standHeight(action.anchor) > .25 || standDistance(action.anchor) > EXCHANGE_APPROACH_RADIUS) { cancelExchangeBodyAction(); return; }
   const step = Math.min(dt, .05);
   const aligned = standDistance(action.anchor) <= EXCHANGE_STAND_TOLERANCE
     && Math.abs(angleDelta(exchangeActor.yaw, action.anchor.yaw)) <= EXCHANGE_YAW_TOLERANCE;

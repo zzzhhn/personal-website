@@ -1,6 +1,6 @@
 import { actorActivities, type ActorActivities, type ActivityInterruption } from './actor-activities';
 import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
-import { advanceExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exchangeBody,
+import { advanceExchangeBodyAction, cancelExchangeBodyAction, EXCHANGE_APPROACH_STOP, exchangeActor, exchangeBody,
   exchangeVisualSockets } from './alpha-exchange-motion';
 import { cancelExchangePlay } from './alpha-exchange-play';
 
@@ -15,7 +15,7 @@ export function registerExchangeActivity(registry: ActorActivities = actorActivi
     read(){
       const action=exchangeBody.action;
       return {busy:!!action,carrying:!!exchangeBody.carried,
-        approach:action?{stand:action.anchor.stand,yaw:action.anchor.yaw,moving:action.phase==='approach',stopDistance:.04}:undefined,
+        approach:action?{stand:action.anchor.stand,yaw:action.anchor.yaw,moving:action.phase==='approach',stopDistance:EXCHANGE_APPROACH_STOP}:undefined,
         notice:()=>({zh:'请先完成或退出当前交易，再上车。',en:'Finish or leave the current exchange session before entering.'})};
     },
     sync(pose,context){
@@ -29,7 +29,7 @@ export function registerExchangeActivity(registry: ActorActivities = actorActivi
     },
     input(){},advance:advanceExchangeBodyAction,command:()=>false,interrupt,
     dispose(){
-      interrupt('recovery');exchangeActor.available=false;
+      interrupt('recovery');exchangeActor.available=false;exchangeActor.groundRoute=undefined;
       Object.assign(exchangeVisualSockets,{valid:false,sampledId:null,sampledElapsed:0,contactError:Infinity});
     },
   });

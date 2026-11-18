@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { createActorActivities, activityApproachMotion } from './actor-activities.ts';
 import { registerExchangeActivity } from './alpha-exchange-activity.ts';
 import { registerMineActivity } from './alpha-mine-activity.ts';
-import { exchangePlayAnchor, cancelExchangePlay } from './alpha-exchange-play.ts';
+import { exchangePlayAnchor, cancelExchangePlay, canRequestExchangePlay, requestExchangePlay, useExchangePlay } from './alpha-exchange-play.ts';
 import { beginExchangeBodyAction, exchangeActor, exchangeBody, exchangeVisualSockets } from './alpha-exchange-motion.ts';
 import { resetMineSession, mineActor, useAlphaMineStore } from './alpha-mine-state.ts';
+import { useWorldStore } from './store.ts';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout.ts';
 
@@ -13,7 +14,7 @@ function fixture(){
   cancelExchangePlay('test');resetMineSession();
   const registry=createActorActivities(),release=registerExchangeActivity(registry),anchor=exchangePlayAnchor('archive');
   const position=[anchor.stand[0],anchor.stand[1]+PLAYER_CENTER_HEIGHT,anchor.stand[2]];
-  const sync=patch=>registry.sync({position,yaw:anchor.yaw,grounded:true,available:true,...patch});
+  const sync=patch=>registry.sync({position,groundRoute:(_from,to)=>[to[0],to[1]+PLAYER_CENTER_HEIGHT,to[2]],yaw:anchor.yaw,grounded:true,available:true,...patch});
   sync();
   return {registry,release,anchor,position,sync};
 }
@@ -64,4 +65,21 @@ test('unmount invalidates the pending callback, carried silhouette and visual sa
   exchangeVisualSockets.valid=true;f.release();f.registry.advance(1);
   assert.equal(contacts,0);assert.equal(exchangeBody.action,null);assert.equal(exchangeBody.carried,null);
   assert.equal(exchangeActor.available,false);assert.equal(exchangeVisualSockets.valid,false);
+});
+
+
+test('ring activation checks the current passage even when the previous bell offer is stale', () => {
+  const f = fixture();
+  try {
+    const bell = exchangePlayAnchor('bell');
+    const end = [bell.stand[0], bell.stand[1] + PLAYER_CENTER_HEIGHT, bell.stand[2]];
+    useWorldStore.setState({ paused: false });
+    useExchangePlay.setState({ round: { phase: 'sealed' } });
+    for (const passable of [false, true]) {
+      f.sync({ position: [end[0], end[1], end[2] + .6],
+        groundRoute: (_from, _to, _limit, fresh) => (fresh ? passable : !passable) ? end : null });
+      assert.equal(canRequestExchangePlay('bell'), !passable);
+      assert.equal(requestExchangePlay('bell'), passable);
+    }
+  } finally { f.release(); }
 });
