@@ -63,7 +63,12 @@ def shoot(page, select, shot):
             if attempt == 5:
                 raise
     camera = page.evaluate("window.__worldDebug.reviewCamera()")
-    data = page.locator("canvas").screenshot(style=HIDE_UI, timeout=30000)
+    # The canvas fills this fixed viewport. Element screenshots unnecessarily
+    # scroll it and wait for extra animation frames on software renderers.
+    bounds = page.locator("canvas").bounding_box()
+    if bounds != {"x": 0, "y": 0, **VIEWPORT}:
+        raise RuntimeError(f"Canvas does not cover the capture viewport: {bounds}")
+    data = page.screenshot(style=HIDE_UI, timeout=120000)
     image = Image.open(io.BytesIO(data)).convert("RGB")
     if image.size != tuple(VIEWPORT.values()) or max(ImageStat.Stat(image).stddev) < 2:
         raise RuntimeError(f"Empty or incorrectly sized render at {shot}")
