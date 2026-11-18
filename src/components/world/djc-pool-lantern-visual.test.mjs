@@ -1,10 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
 import { BoxGeometry, Group, Matrix4, Mesh, MeshStandardMaterial, SRGBColorSpace, Texture, Vector3 } from 'three';
 import { buildDjcClubGeometry } from './WorldDjcClubGeometry.ts';
-import { CLUB, CLUB_POOL } from './djc-club-layout.ts';
+import { CLUB_POOL } from './djc-club-layout.ts';
 import { DJC_POOL_LANTERN_ENABLED, DJC_POOL_LANTERN_POSITIONS, createDjcPoolLanternVisual, djcPoolLanternCandidate } from './djc-pool-lantern-visual.ts';
 
 const disposeGeometry=g=>{for(const geometry of [...Object.values(g.batches),...Object.values(g.daybeds),...Object.values(g.poolLanterns),g.pool])geometry.dispose();};
@@ -99,20 +97,4 @@ test('normal play uses the refined lanterns and only explicit QA enables the leg
   assert.equal(djcPoolLanternCandidate(''),true);assert.equal(djcPoolLanternCandidate('?djcLanterns=legacy'),true);
   assert.equal(djcPoolLanternCandidate('?qa=1'),true);assert.equal(djcPoolLanternCandidate('?qa=1&djcLanterns=candidate'),true);
   assert.equal(djcPoolLanternCandidate('?qa=1&djcLanterns=legacy'),false);
-});
-
-test('distant candidate mounts only the fallback and first approach activates its asset once',()=>{
-  const js=ts.transpileModule(readFileSync(new URL('./WorldDjcClubLanterns.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const ast=ts.createSourceFile('lantern.js',js,ts.ScriptTarget.Latest,true);
-  const declaration=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text==='WorldDjcClubLanterns');
-  assert.ok(declaration);
-  const text=declaration.getText(ast),camera={position:new Vector3(CLUB.pool[0]+110,2,CLUB.pool[2])},frames=[],writes=[],refs=[];
-  const marker=()=>null,env={CLUB,useThree:select=>select({camera}),useRef:v=>{const r={current:v};refs.push(r);return r;},useState:init=>[init(),v=>writes.push(v)],useFrame:fn=>frames.push(fn),PoolLanternBoundary:marker,Suspense:marker,PoolLanternAsset:marker,_jsx:(type,props)=>({type,props})};
-  const component=new Function(...Object.keys(env),`return (${text.slice(text.indexOf('function'))});`)(...Object.values(env));
-  const tree=component({fallback:'original-lanterns'});
-  assert.equal(tree.props.children,'original-lanterns','no GLB or private environment component mounts remotely');
-  const group={visible:true};refs[0].current=group;
-  camera.position.x=CLUB.pool[0]+89;frames.forEach(fn=>fn());assert.deepEqual(writes,[true]);
-  camera.position.x=CLUB.pool[0]+85;frames.forEach(fn=>fn());assert.deepEqual(writes,[true]);
-  camera.position.x=CLUB.pool[0]+181;frames.forEach(fn=>fn());assert.equal(group.visible,false);
 });

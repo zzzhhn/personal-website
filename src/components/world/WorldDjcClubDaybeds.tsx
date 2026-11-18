@@ -1,4 +1,5 @@
-import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Component, Suspense, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useOwnedDjcVisual } from './useOwnedDjcVisual';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import type { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -13,7 +14,7 @@ function DaybedAsset(){
   const renderer=useThree(s=>s.gl);
   const maxAnisotropy=useMemo(()=>renderer.capabilities.getMaxAnisotropy(),[renderer]);
   const visual=useMemo(()=>createDjcDaybedVisual(gltf.scene,environment,maxAnisotropy),[gltf,environment,maxAnisotropy]);
-  useEffect(()=>()=>visual.dispose(),[visual]);
+  useOwnedDjcVisual(visual);
   useFrame(()=>visual.setNight(night.value));
   return <primitive object={visual.root} dispose={null}/>;
 }

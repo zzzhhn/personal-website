@@ -1,4 +1,5 @@
-import { Component, Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Component, Suspense, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useOwnedDjcVisual } from './useOwnedDjcVisual';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import type { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -11,10 +12,7 @@ function FurnitureAsset(){
   const gltf=useLoader(GLTFLoader,DJC_FURNITURE_ASSET,withWorldAssetDecoder),environment=useDjcFurnitureEnvironment();
   const renderer=useThree(s=>s.gl),anisotropy=useMemo(()=>renderer.capabilities.getMaxAnisotropy(),[renderer]);
   const visual=useMemo(()=>createDjcFurnitureVisual(gltf.scene,environment,anisotropy),[gltf,environment,anisotropy]);
-  const lifetime=useMemo(()=>({users:0}),[visual]);
-  useEffect(()=>{lifetime.users++;return ()=>{
-    lifetime.users--;queueMicrotask(()=>{if(lifetime.users===0)visual.dispose();});
-  };},[visual,lifetime]);
+  useOwnedDjcVisual(visual);
   useFrame(()=>visual.setNight(night.value));
   return <primitive object={visual.root} dispose={null}/>;
 }

@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
 import { Box3,BoxGeometry,Group,Mesh,MeshStandardMaterial,Raycaster,Texture,Vector3 } from 'three';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
 import { createIbdStaticCraft,ibdStaticCraftLegacy,IBD_STATIC_CRAFT_ROOTS } from './ibd-static-craft-visual.ts';
@@ -41,15 +39,6 @@ test('all 14 placements batch by borrowed physical material and cleanup is idemp
   assert.equal(batch.material.map,texture);assert.equal(batch.material.roughness,.47);assert.equal(batch.material.metalness,.76);assert.equal(digest(geometry.attributes.position.array),before);
   let own=0,borrowed=0;batch.geometry.addEventListener('dispose',()=>own++);for(const value of [geometry,material,texture])value.addEventListener('dispose',()=>borrowed++);
   data.dispose();data.dispose();assert.equal(own,1);assert.equal(borrowed,0);geometry.dispose();material.dispose();texture.dispose();
-});
-test('actual StaticAsset effect survives StrictMode cleanup/replay and disposes after final release',async()=>{
-  const js=ts.transpileModule(readFileSync(new URL('./WorldIbdStaticCraft.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const ast=ts.createSourceFile('static.js',js,ts.ScriptTarget.Latest,true),fn=ast.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text==='StaticAsset');
-  let effect,disposals=0;const data={users:0,group:{},dispose(){disposals++;}};
-  const env={useLoader:()=>({scene:{}}),GLTFLoader:()=>{},IBD_STATIC_CRAFT_ASSET:'asset',withWorldAssetDecoder:()=>{},useMemo:fn=>fn(),createIbdStaticCraft:()=>data,useDjcFurnitureEnvironment:()=>null,useRef:value=>({current:value}),updateIbdCraftEnvironment:()=>{},useFrame:()=>{},useEffect:fn=>{effect=fn;},_jsx:(type,props)=>({type,props})};
-  const component=new Function(...Object.keys(env),`return (${fn.getText(ast)});`)(...Object.values(env));component({uniform:{value:0}});
-  const firstCleanup=effect();firstCleanup();const finalCleanup=effect();await Promise.resolve();assert.equal(data.users,1);assert.equal(disposals,0);
-  finalCleanup();await Promise.resolve();assert.equal(data.users,0);assert.equal(disposals,1);
 });
 test('actual portable three-family pack preserves original inspection/utility/control envelopes and owns batching resources',async t=>{
   const gltf=await readWorldCraftGltf(['public/assets/world/ibd/static-craft/static-craft-v1.glb']);

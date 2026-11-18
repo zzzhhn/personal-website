@@ -1,7 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
 import { Box3, BoxGeometry, Group, Matrix4, Mesh, MeshStandardMaterial, Raycaster, Vector3 } from 'three';
 import { buildIbdPack, buildIbdPackShell } from './ibd-pack-geometry.ts';
 import { createIbdCratePart, IBD_CRATE_LID_PIVOT, ibdCrateLegacy } from './ibd-crate-visual.ts';
@@ -43,33 +41,6 @@ test('legacy crate comparison requires explicit QA opt-in',()=>{
   assert.equal(ibdCrateLegacy('?ibdCrates=legacy'),false);
   assert.equal(ibdCrateLegacy('?qa=1&ibdCrates=legacy'),true);
   assert.equal(ibdCrateLegacy('?qa=1'),false);
-});
-
-test('the actual crate wrapper mounts only one visual branch for distance, legacy, loading and error states',()=>{
-  const js=ts.transpileModule(readFileSync(new URL('./WorldIbdCratePart.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const ast=ts.createSourceFile('crate.js',js,ts.ScriptTarget.Latest,true),fn=ast.statements.find(node=>ts.isFunctionDeclaration(node)&&node.name?.text==='WorldIbdCratePart');
-  const boundary=ast.statements.find(node=>ts.isClassDeclaration(node)&&node.name?.text==='CrateBoundary');
-  const marker=()=>{},effect=[],env={useState:initial=>[initial,()=>{}],useEffect:fn=>effect.push(fn),CrateBoundary:marker,Suspense:marker,CrateAsset:marker,_jsx:(type,props)=>({type,props})};
-  const component=new Function(...Object.keys(env),`return (${fn.getText(ast).replace(/^export default /,'')});`)(...Object.values(env));
-  const fallback={type:'legacy-shell'};
-  assert.equal(component({part:'Shell',fallback,active:false,legacy:false}),fallback);
-  assert.equal(component({part:'Shell',fallback,active:true,legacy:true}),fallback);
-  const candidate=component({part:'Shell',fallback,active:true,legacy:false});
-  assert.equal(candidate.props.fallback,fallback);assert.equal(candidate.props.children.props.fallback,fallback);
-  assert.equal(candidate.props.children.props.children.props.part,'Shell');
-  const Boundary=new Function('Component',`return (${boundary.getText(ast)});`)(class{constructor(props){this.props=props;}});
-  const instance=new Boundary({fallback,children:'candidate'});assert.equal(instance.render(),'candidate');
-  instance.state=Boundary.getDerivedStateFromError();assert.equal(instance.render(),fallback);
-});
-
-test('actual native crate material owner survives StrictMode replay and disposes only after its final release',async()=>{
-  const js=ts.transpileModule(readFileSync(new URL('./WorldIbdCratePart.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const ast=ts.createSourceFile('crate.js',js,ts.ScriptTarget.Latest,true),fn=ast.statements.find(node=>ts.isFunctionDeclaration(node)&&node.name?.text==='CrateAsset');
-  let effect,disposals=0;const data={users:0,root:{},materials:[],dispose(){disposals++;}};
-  const env={useLoader:()=>({scene:{}}),GLTFLoader:()=>{},IBD_CRATE_ASSET:'asset',withWorldAssetDecoder:()=>{},useMemo:fn=>fn(),createIbdCrateVisual:()=>data,useDjcFurnitureEnvironment:()=>null,useRef:value=>({current:value}),updateIbdCraftEnvironment:()=>{},useFrame:()=>{},night:{value:0},useEffect:fn=>{effect=fn;},_jsx:(type,props)=>({type,props})};
-  const component=new Function(...Object.keys(env),`return (${fn.getText(ast)});`)(...Object.values(env));component({part:'Shell'});
-  const firstCleanup=effect();firstCleanup();const finalCleanup=effect();await Promise.resolve();assert.equal(data.users,1);assert.equal(disposals,0);
-  finalCleanup();await Promise.resolve();assert.equal(data.users,0);assert.equal(disposals,1);
 });
 
 test('actual crate keeps all fork channels, support pads and the existing lid sweep envelope',async t=>{

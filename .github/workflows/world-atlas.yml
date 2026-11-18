@@ -35,6 +35,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:coaster-scene
+      - name: Verify terrain downloads and Club and freight asset lifecycles
+        run: node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 tools/world/terrain-download.test.mjs src/components/world/venue-asset-residency.test.mjs
       - run: npm run build
       - uses: actions/upload-artifact@v4
         with:

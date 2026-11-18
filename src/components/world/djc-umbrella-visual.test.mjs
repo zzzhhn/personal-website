@@ -1,7 +1,5 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
 import { Box3, BoxGeometry, Group, Matrix4, Mesh, MeshStandardMaterial, Texture, Vector3 } from 'three';
 import { buildDjcClubGeometry } from './WorldDjcClubGeometry.ts';
 import { createDjcUmbrellaVisual, DJC_UMBRELLA_PLACEMENTS, djcUmbrellaLegacy } from './djc-umbrella-visual.ts';
@@ -56,20 +54,6 @@ test('shared reflection target survives effect replay, then disposes once after 
   replay.release();await Promise.resolve();assert.equal(disposals,1);
   const remount=retainDjcFurnitureEnvironment(renderer,create);assert.equal(builds,2);remount.release();await Promise.resolve();assert.equal(disposals,2);
   texture.dispose();
-});
-
-test('the actual umbrella effect retains owned GPU data across StrictMode replay and releases on final unmount',async()=>{
-  const js=ts.transpileModule(readFileSync(new URL('./WorldDjcClubUmbrellas.tsx',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const ast=ts.createSourceFile('umbrella.js',js,ts.ScriptTarget.Latest,true),declaration=ast.statements.find(node=>ts.isFunctionDeclaration(node)&&node.name?.text==='UmbrellaAsset');
-  const source=new Group(),geometry=new BoxGeometry(),material=new MeshStandardMaterial();source.add(new Mesh(geometry,material));
-  const effects=[],environment={useLoader:()=>({scene:source}),GLTFLoader:null,DJC_UMBRELLA_ASSET:'unused',withWorldAssetDecoder:null,useDjcFurnitureEnvironment:()=>null,
-    useThree:select=>select({gl:{capabilities:{getMaxAnisotropy:()=>1}}}),useMemo:fn=>fn(),useEffect:fn=>effects.push(fn),useFrame:()=>{},
-    createDjcUmbrellaVisual,night:{value:0},_jsx:(type,props)=>({type,props})};
-  const component=new Function(...Object.keys(environment),`return (${declaration.getText(ast)});`)(...Object.values(environment)),tree=component();
-  let disposals=0;tree.props.object.children[0].material.addEventListener('dispose',()=>disposals++);
-  const firstCleanup=effects[0]();firstCleanup();const finalCleanup=effects[0]();await Promise.resolve();assert.equal(disposals,0);
-  finalCleanup();await Promise.resolve();assert.equal(disposals,1);assert.equal(tree.props.dispose,null);
-  geometry.dispose();material.dispose();
 });
 
 test('legacy parasols require explicit QA opt-in',()=>{
