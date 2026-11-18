@@ -11,12 +11,12 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { actorActivities, activityApproachMotion } from './actor-activities';
-import { useWorldStore, type NearbyInteract } from './store';
+import { useWorldStore } from './store';
 import type { ActorRide } from './rides/actor-ride';
 import { RideCameraOrientation, rideCameraPose, rideCameraSweepOrigin, rideLook, turnRideLook, zoomRideLook } from './rides/ride-camera';
 import { RideCameraObstruction } from './rides/ride-camera-obstruction';
 import { RideCabinCamera } from './rides/ride-camera-cabin';
-import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
+import { cycleInteractPick, nearestInteractable, publishInteractionPrompt, resolvePromptTarget, type Interactable } from './WorldInteract';
 import { findPickupStand, pickupGroundRoute } from './pickup-approach';
 import { createInteractionApproach, createInteractionOfferResolver, interactionVisible, type InteractionOfferContext } from './interaction-offer';
 import type { Vec3, VehicleId, VehiclePlacement } from './types';
@@ -326,7 +326,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const keys = useRef(new Set<string>());
   const releasedKeys = useRef(new Set<string>());
   const resetPad = useRef(false);
-  const actions = useRef({interact:false,jump:false,recover:false});
+  type PromptAtPress = Pick<ReturnType<typeof useWorldStore.getState>, 'nearbyInteract' | 'nearbyVehicle'>;
+  const actions = useRef<{interact: PromptAtPress | null; jump: boolean; recover: boolean}>({interact:null,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
   const grounded = useRef(false);
   const supportDecision = useRef<Record<string, unknown> | null>(null);
@@ -399,7 +400,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     pickupApproach.cancel();
     keys.current.forEach(key=>releasedKeys.current.add(key));keys.current.clear();resetPad.current=true;
     pad.current.move=[0,0];pad.current.look=[0,0];pad.current.throttle=0;pad.current.brake=0;pad.current.sprint=false;
-    actions.current={interact:false,jump:false,recover:false};debugDrive.current=null;moveIntent.current='idle';guideTargetSpeed.current=0;moveInput.current=[0,0];
+    actions.current={interact:null,jump:false,recover:false};debugDrive.current=null;moveIntent.current='idle';guideTargetSpeed.current=0;moveInput.current=[0,0];
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
   }
   function clearPlayerMotion(hardCut=false) {
@@ -680,7 +681,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
           if (actorActivities.command('put-down')) event.preventDefault();
         }
         if (event.code==='KeyE') {
-          actions.current.interact=true;
+          actions.current.interact={nearbyInteract:state.nearbyInteract,nearbyVehicle:state.nearbyVehicle};
         }
         if (event.code==='Space') actions.current.jump=true;
         if (event.code==='KeyR') actions.current.recover=true;
@@ -1057,26 +1058,28 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
     if(seated||carded||actorActivities.inputOwner())nearby=null;
-    const interactNow=(item:Interactable|null)=>{
+    const interactNow=(shown: PromptAtPress = useWorldStore.getState())=>{
       const now=useWorldStore.getState();
       if(actorActivities.interact())return;
       if(actorActivities.inputOwner())return;
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
       if (actorActivities.busy() || railVault.current) return;
-      if (item && !actorActivities.allowsInteraction(item.id)) {
+      const prompt = shown.nearbyInteract;
+      if (prompt && !actorActivities.allowsInteraction(prompt.id)) {
         const notice=actorActivities.notice('interaction');
         if(notice)actorNotice(notice.zh,notice.en);
         return;
       }
-      if(active)exit();else if(item){
-        if(!pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true))){
+      if(active)exit();else if(prompt){
+        const item = resolvePromptTarget(prompt);
+        if(!item || !pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true),()=>resolvePromptTarget(prompt)===item)){
           actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;
         }
-      }else if(nearby)enter(nearby);
+      }else if(nearby && shown.nearbyVehicle===nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
-    if(actions.current.interact){interactNow(nearbyItem.current);actions.current.interact=false;}
+    if(actions.current.interact){interactNow(actions.current.interact);actions.current.interact=null;}
     if(useWorldStore.getState().paused||useWorldStore.getState().poolInspect)return;
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
@@ -1093,7 +1096,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(edge(12))cycleInteractPick(-1);
       if(edge(13))cycleInteractPick(1);
       if(edge(0)&&!actorActivities.inputOwner())actions.current.jump=true;
-      if(edge(3))interactNow(nearbyItem.current);
+      if(edge(3))interactNow();
       if(edge(1))actions.current.recover=true;
       if(edge(8))cycleCamera();
       if(edge(9)){useWorldStore.setState({paused:true});return;}
@@ -1359,9 +1362,10 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     publishedTime.current+=dt;
     if(publishedTime.current>.09){
       publishedTime.current=0;
-      const item=nearbyItem.current,prev=useWorldStore.getState().nearbyInteract;
-      const nearbyInteract:NearbyInteract|null=item&&!active?(prev?.id===item.id&&prev.label.zh===item.label.zh&&prev.label.en===item.label.en&&prev.kind===item.kind?prev:{id:item.id,label:item.label,kind:item.kind}):null;
-      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:sites.zone(asTuple(p))});
+      const previous=useWorldStore.getState();
+      const nearbyInteract=publishInteractionPrompt(active?null:nearbyItem.current,previous.nearbyInteract,previous.interactPick);
+      const interactPick=nearbyInteract?.choices.some(row=>row.id===previous.interactPick)?previous.interactPick:null;
+      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,interactPick,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:sites.zone(asTuple(p))});
     }
   });
 

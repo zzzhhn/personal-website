@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { Vec3 } from './types';
-import { useWorldStore } from './store';
+import { useWorldStore, type InteractionChoice, type NearbyInteract } from './store';
 import type { PickupApproach } from './pickup-approach';
 
 /**
@@ -30,7 +30,17 @@ let reachableNow: { item: Interactable; distance: number }[] = [];
 export const interactables = () => registry.values();
 /** The same line-of-sight checked list used by the physics controller, also used by the prompt. */
 export const reachableInteractables = () => reachableNow.filter(c => registry.get(c.item.id) === c.item && (!c.item.enabled || c.item.enabled())).map(c => c.item);
-export function registerInteractable(item: Interactable) { const id=item.id; registry.set(id, item); return () => { if (registry.get(id) === item) registry.delete(id); }; }
+const registrations = new WeakMap<Interactable, number>();
+let nextRegistration = 0;
+const isRegisteredInteractable = (item: Interactable) => registry.get(item.id) === item;
+export function registerInteractable(item: Interactable) {
+  const generation = ++nextRegistration;
+  registry.set(item.id, item);
+  registrations.set(item, generation);
+  return () => {
+    if (isRegisteredInteractable(item) && registrations.get(item) === generation) registry.delete(item.id);
+  };
+}
 
 /** QA-only listing (?qa=1): ids, kinds, positions and labels of every registered interactable. */
 if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1') {
@@ -56,14 +66,40 @@ export function nearestInteractable(x: number, y: number, z: number, reachable?:
   return reachableNow.find(c => c.item.id === preferred) ?? reachableNow[0] ?? null;
 }
 
-/** Keyboard Q and standard-gamepad D-pad choose from the exact same reachable list. */
+function sameChoice(row: InteractionChoice, item: Interactable) {
+  const label = item.label;
+  return row.registration === registrations.get(item) && row.kind === item.kind
+    && row.label.en === label.en && row.label.zh === label.zh;
+}
+
+/** Publish the selected row and its alternatives together, at the HUD refresh cadence. */
+export function publishInteractionPrompt(primary: Interactable | null, previous: NearbyInteract | null, preferred?: string | null): NearbyInteract | null {
+  if (!primary) return null;
+  const reachable = reachableInteractables();
+  if (!reachable.includes(primary)) return null;
+  primary = reachable.find(item => item.id === preferred) ?? primary;
+  const items = reachable.slice(0, 4);
+  if (!items.includes(primary)) items[items.length - 1] = primary;
+  if (previous && previous.id === primary.id && previous.choices.length === items.length
+    && items.every((item, i) => sameChoice(previous.choices[i], item))) return previous;
+  const choices = items.map(item => ({id:item.id, kind:item.kind, label:{...item.label}, registration:registrations.get(item)!}));
+  return {...choices[items.indexOf(primary)], choices};
+}
+
+/** A new physics ranking cannot redirect the command attached to the displayed row. */
+export function resolvePromptTarget(row: InteractionChoice) {
+  const item = registry.get(row.id);
+  return item && sameChoice(row, item) ? item : null;
+}
+
 export function cycleInteractPick(step = 1) {
-  const s = useWorldStore.getState();
-  if (s.paused || s.card || s.seat || s.activeVehicle || s.clubMode || s.factoryStation || !s.nearbyInteract) return;
-  const ids = reachableInteractables().slice(0, 4).map(i => i.id);
-  if (ids.length < 2) return;
-  const at = Math.max(0, ids.indexOf(s.interactPick ?? s.nearbyInteract.id));
-  useWorldStore.setState({ interactPick: ids[(at + step + ids.length) % ids.length] });
+  const s = useWorldStore.getState(), prompt = s.nearbyInteract;
+  if (s.paused || s.card || s.seat || s.activeVehicle || s.clubMode || s.factoryStation || !prompt) return;
+  const {choices} = prompt;
+  if (choices.length < 2) return;
+  const at = choices.findIndex(row => row.id === prompt.id);
+  const next = choices[(at + step + choices.length) % choices.length];
+  useWorldStore.setState({ interactPick: next.id, nearbyInteract: {...next, choices} });
 }
 
 /** Stable identity survives the render-to-effect-cleanup gap when an item disappears. */
@@ -82,9 +118,9 @@ export function interactableProxy(initial: Interactable, read: () => Interactabl
 export function useInteractable(item: Interactable | null) {
   const ref = useRef(item);
   ref.current = item;
-  const id = item?.id, key = item ? `${item.position.join(',')}|${item.radius ?? ''}|${item.kind}` : '';
+  const id = item?.id;
   useEffect(() => {
     if (!id || !ref.current) return;
     return registerInteractable(interactableProxy(ref.current,()=>ref.current));
-  }, [id, key]);
+  }, [id]);
 }

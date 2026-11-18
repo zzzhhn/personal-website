@@ -12,7 +12,6 @@ import { INTENT_TARGETS } from './intent-stations';
 import { COASTER_BOARDING } from './coaster-transition';
 import { worldActorDebug } from '../WorldActors';
 import { PLAYER_CENTER_HEIGHT } from '../actor-physics';
-import { reachableInteractables } from '../WorldInteract';
 import { WORKSHOP_TARGETS, workshopTarget } from './intent-workshop-layout';
 import { useWorkshopStore } from './intent-workshop-runtime';
 
@@ -55,7 +54,10 @@ export default function CarPerformanceReview() {
     };bar.append(destination);
     button('QA 现场交互',()=>{
       const w=useWorldStore.getState();if(w.paused)return;
-      reachableInteractables().find(item=>item.id===w.nearbyInteract?.id)?.onInteract();invalidate();
+      if(!w.nearbyInteract)return;
+      window.dispatchEvent(new KeyboardEvent('keydown',{code:'KeyE',key:'e'}));
+      window.dispatchEvent(new KeyboardEvent('keyup',{code:'KeyE',key:'e'}));
+      invalidate();
     });
     button('QA 工坊读数',()=>{
       const workshop=useWorkshopStore.getState(), station=scene.getObjectByName('coaster-station-craft');

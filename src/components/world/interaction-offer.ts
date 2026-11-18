@@ -73,15 +73,15 @@ export function createInteractionOfferResolver() {
 
 /** Own the interval between selecting a reachable item and invoking its action. */
 export function createInteractionApproach() {
-  let pending: { item: Interactable; stand: Vec3; elapsed: number } | null = null;
+  let pending: { item: Interactable; stand: Vec3; elapsed: number; stillSelected?: () => boolean } | null = null;
   return {
     get active() { return pending !== null; },
     cancel() { pending = null; },
-    request(item: Interactable, resolve: () => InteractionOffer | null) {
-      if (pending?.item === item) return true;
+    request(item: Interactable, resolve: () => InteractionOffer | null, stillSelected?: () => boolean) {
+      if (pending?.item === item && pending.stillSelected?.() !== false) return true;
       const offer = resolve();
       if (!offer) return false;
-      pending = offer.stand ? { item, stand: offer.stand, elapsed: 0 } : null;
+      pending = offer.stand ? { item, stand: offer.stand, elapsed: 0, stillSelected } : null;
       if (!pending) item.onInteract();
       return true;
     },
@@ -89,7 +89,7 @@ export function createInteractionApproach() {
       routeClear: (item: Interactable, stand: Vec3, ready: boolean) => boolean) {
       if (!pending) return null;
       const { item, stand } = pending, approach = item.approach;
-      if (!approach || !grounded || item.enabled?.() === false) { pending = null; return null; }
+      if (!approach || !grounded || pending.stillSelected?.() === false || item.enabled?.() === false) { pending = null; return null; }
       pending.elapsed += dt;
       const ready = approach.ready(position);
       if (pending.elapsed > PICKUP_APPROACH_TIMEOUT || !routeClear(item, stand, ready)) {

@@ -4,7 +4,7 @@ import R from '@dimforge/rapier3d-compat';
 import { createInteractionApproach, createInteractionOfferResolver } from './interaction-offer.ts';
 import { findPickupStand, pickupStandingRing } from './pickup-approach.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
-import { registerInteractable, nearestInteractable, reachableInteractables } from './WorldInteract.ts';
+import { registerInteractable, nearestInteractable, reachableInteractables, publishInteractionPrompt, resolvePromptTarget } from './WorldInteract.ts';
 
 const H = PLAYER_HALF_HEIGHT + PLAYER_RADIUS;
 const approach = {
@@ -126,5 +126,23 @@ test('real Rapier floor gap hides pickup despite unobstructed line of sight; sup
       assert.equal(!!resolver.resolve(item, ctx), !gap);
       assert.equal(!!resolver.resolve(item, ctx, true), !gap);
     } finally { world.free(); }
+  }
+});
+
+test('a changed command or a newly mounted rack cannot finish an older approach', () => {
+  for (const change of ['command', 'replacement']) {
+    const rack = {...item, label:{en:'Take',zh:'领取'}};
+    const release = registerInteractable(rack);
+    let cleanup;
+    try {
+      const chosen = nearestInteractable(1.2,H,0).item;
+      const prompt = publishInteractionPrompt(chosen, null);
+      const driver = createInteractionApproach();
+      driver.request(rack, () => ({item:rack,stand:[.5,H,0]}), () => resolvePromptTarget(prompt) === rack);
+      if (change === 'command') rack.label = {en:'Return',zh:'归还'};
+      else cleanup = registerInteractable({...rack});
+      assert.equal(driver.step(1/60,[.5,H,0],Math.PI,0,true,()=>true),null);
+      assert.equal(driver.active,false);
+    } finally {cleanup?.(); release();}
   }
 });

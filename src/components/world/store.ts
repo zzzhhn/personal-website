@@ -6,7 +6,8 @@ import { guideActionHand,releaseGuideActionHand } from './rides/guide-action-han
 /** Content card opened by an interactable (rendered by WorldCards). `id` selects the content source. */
 export interface WorldCard { kind: 'project' | 'experience' | 'about' | 'note'; id: string; page?: number }
 /** Interactable currently in reach (prompt shown by the HUD). */
-export interface NearbyInteract { id: string; label: { en: string; zh: string }; kind: string }
+export interface InteractionChoice { id: string; label: { en: string; zh: string }; kind: string; registration: number }
+export interface NearbyInteract extends InteractionChoice { choices: readonly InteractionChoice[] }
 interface WorldState {
   lang: Lang;
   light: TimePreset;

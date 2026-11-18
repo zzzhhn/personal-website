@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
-import { cycleInteractPick, reachableInteractables, type Interactable } from './WorldInteract';
+import { cycleInteractPick } from './WorldInteract';
 import { resolveCard } from './WorldCardContent';
 import { trackPortfolioEvent } from '../../lib/analytics';
 import type { WorldContent } from './types';
@@ -23,21 +23,6 @@ function useDevice(showPrompt: boolean) {
   return device;
 }
 
-/** Other interactables in reach besides the one WorldActors selected (same radius / 2.5 m height gate). Only
- * offered while WorldActors reports a reachable target, so the list never appears beside a wall on its own. */
-function nearbyCandidates(position: [number, number, number], primary: string | undefined): Interactable[] {
-  if (!primary) return [];
-  const out: { item: Interactable; d: number }[] = [];
-  for (const item of reachableInteractables()) {
-    if (item.enabled && !item.enabled()) continue;
-    const [x, y, z] = item.position;
-    if (Math.abs(y - position[1]) > 2.5) continue;
-    const d = Math.hypot(x - position[0], z - position[2]);
-    if (d <= (item.radius ?? 2.2)) out.push({ item, d });
-  }
-  return out.sort((a, b) => a.d - b.d).map(c => c.item).slice(0, 4);
-}
-
 function KeyCap({ device, k }: { device: Device; k: 'E' | 'Q' }) {
   return device === 'pad' ? <kbd className={`world-key world-key-pad${k === 'E' ? ' is-y' : ''}`}>{k === 'E' ? 'Y' : '↕'}</kbd> : <kbd className='world-key'>{k}</kbd>;
 }
@@ -55,15 +40,8 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   const seat = useWorldStore(s => s.seat);
   const paused = useWorldStore(s => s.paused || s.poolInspect);
   const shot = useWorldStore(s => s.shot);
-  const pick = useWorldStore(s => s.interactPick);
-  const position = useWorldStore(s => s.position);
   const device = useDevice(!paused && !shot && !card && !driving && !seat && !!(nearby || nearbyVehicle || canVault));
   const t = worldText[lang];
-  const candidates = card || driving || seat ? [] : nearbyCandidates(position, nearby?.id);
-  const ids = candidates.map(c => c.id).join('|');
-  const chosen = candidates.find(c => c.id === pick) ?? null;
-  // A pick only lives while its object stays in the list.
-  useEffect(() => { if (pick && !ids.split('|').includes(pick)) useWorldStore.setState({ interactPick: null }); }, [ids, pick]);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       const s = useWorldStore.getState();
@@ -78,10 +56,9 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   if (driving || seat) return null;
   if (canVault) return <div className='world-prompt' aria-live='polite'><ul><li className='is-active'><kbd className='world-key world-vault-key'>{device==='pad'?'A':lang==='zh'?'空格':'Space'}</kbd><span>{t.vault}</span></li></ul></div>;
   if (nearby) {
-    const active = chosen?.id ?? nearby.id;
-    const rows = candidates.length > 1 ? candidates.map(c => ({ id: c.id, label: c.label[lang] })) : [{ id: nearby.id, label: nearby.label[lang] }];
+    const rows = nearby.choices;
     return <div className='world-prompt' aria-live='polite'>
-      <ul>{rows.map(r => <li key={r.id} className={r.id === active ? 'is-active' : ''}>{r.id === active ? <KeyCap device={device} k='E' /> : <span className='world-key-gap' />}<span className='world-prompt-label'>{r.id === 'G28-menu' && <small>{t.entryLandmark}</small>}<span>{r.label}</span></span></li>)}</ul>
+      <ul>{rows.map(r => <li key={r.id} className={r.id === nearby.id ? 'is-active' : ''}>{r.id === nearby.id ? <KeyCap device={device} k='E' /> : <span className='world-key-gap' />}<span className='world-prompt-label'>{r.id === 'G28-menu' && <small>{t.entryLandmark}</small>}<span>{r.label[lang]}</span></span></li>)}</ul>
       {rows.length > 1 && <p><KeyCap device={device} k='Q' />{t.switchTarget}</p>}
     </div>;
   }
