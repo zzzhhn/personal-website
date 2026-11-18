@@ -2,6 +2,7 @@ import { Box3, BufferAttribute, BufferGeometry, DynamicDrawUsage, Frustum, Insta
 import { SunLight } from 'three/examples/jsm/lights/SunLight.js';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import type { SunLightShadow } from 'three/examples/jsm/lights/SunLightShadow.js';
+import { ShadowViewSweep } from './shadow-view-sweep';
 import { SHADOW_BUDGET, budgetZoneOf, type ShadowTier } from './WorldQuality';
 import { setQaRenderer, worldLightsFrame } from './WorldLights';
 import { sceneWorkProbe } from './world-scene-work';
@@ -831,26 +832,10 @@ function meshSphere(c: Caster, out: Sphere) {
   return out;
 }
 /** View frustum of the frame being shadowed (set in updateCascades). */
-const viewFrustum = new Frustum(), viewMatrix = new Matrix4();
+const viewSweep = new ShadowViewSweep(LIGHT_Z), viewMatrix = new Matrix4();
 let viewValid = false;
 /** Fixed QA shots fit every cascade to the whole island: only c0 draws (c1/c2 lie inside it), so it uses the coarse cells. */
 let wideMode = false;
-const sweepSphere = new Sphere();
-/** Can any shadow of this caster be on screen? Its shadow lies along -sun from the caster down to sea
- * level (a receiver is always lower than the caster on the light ray), so the swept sphere from the
- * caster to that depth must touch the view frustum. Sampled with overlapping spheres. */
-function shadowVisible(x: number, y: number, z: number, radius: number) {
-  if (!viewValid) return true;
-  const along = Math.max(0, (y + radius + .7) / SIN_ELEVATION), step = Math.max(radius * 1.5, .5);
-  const n = Math.min(40, Math.ceil(along / step));
-  sweepSphere.radius = radius + step * .5;
-  for (let i = 0; i <= n; i++) {
-    const t = Math.min(along, i * step);
-    sweepSphere.center.set(x - LIGHT_Z.x * t, y - LIGHT_Z.y * t, z - LIGHT_Z.z * t);
-    if (viewFrustum.intersectsSphere(sweepSphere)) return true;
-  }
-  return false;
-}
 /** Does a world sphere's light-space footprint belong in cascade k? */
 function inCascade(k: number, x: number, y: number, z: number, radius: number, chunk = false) {
   if (k === 2 && !chunk && radius < FAR_MIN_RADIUS) return false;
@@ -862,7 +847,7 @@ function inCascade(k: number, x: number, y: number, z: number, radius: number, c
     const f = windows[j];
     if (Math.abs(r - f.r) + m < f.hr * INTERIOR && Math.abs(u - f.u) + m < f.hu * INTERIOR) return false;
   }
-  return shadowVisible(x, y, z, radius);
+  return !viewValid || viewSweep.intersects(x, y, z, radius);
 }
 
 function chunkInCascade(k: number, chunk: Chunk) {
@@ -873,7 +858,7 @@ function chunkInCascade(k: number, chunk: Chunk) {
     if (r0 - pad > f.r - f.hr * INTERIOR && r1 + pad < f.r + f.hr * INTERIOR && u0 - pad > f.u - f.hu * INTERIOR && u1 + pad < f.u + f.hu * INTERIOR) return false;
   }
   const s = chunk.sphere;
-  return shadowVisible(s.center.x, s.center.y, s.center.z, s.radius);
+  return !viewValid || viewSweep.intersects(s.center.x, s.center.y, s.center.z, s.radius);
 }
 
 /** Compact in source order and upload only when a selected matrix changes. */
@@ -1029,7 +1014,7 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
   const f = options.focus;
   viewCamera.updateMatrixWorld();
   viewMatrix.multiplyMatrices(viewCamera.projectionMatrix, viewCamera.matrixWorldInverse);
-  viewFrustum.setFromProjectionMatrix(viewMatrix);
+  viewSweep.update(viewMatrix);
   viewValid = !wide; wideMode = wide;
   // Ground look direction (unit, horizontal) and the visible ground span along it, measured from the camera:
   // bottom-centre and top-centre view rays against the focus height (top capped at 110 m, fog starts at 140 m).

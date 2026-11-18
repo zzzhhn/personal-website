@@ -406,3 +406,39 @@ and 606,803 triangles came from the three sun-shadow passes. The page had a
 visibility transition on this diagnostic run, so its timing is excluded from
 the foreground baseline. These counts identify a profiling target; they do not
 measure how much frame time the shadows consume.
+
+## Sun-shadow visibility on the camp route
+
+To isolate sun-map update cost, a Safari 26.5 QA session on the 16 GB M3 Air
+loaded Balanced at 1710 × 927 CSS pixels and 1955 × 1060 drawing pixels. It
+waited for all eight district roots, stopped time progression and exercised a
+warm-up plus six foreground runs. Each run reset to the camp spawn, held W
+for eight metres and S for eight metres (distance from the real player map
+marker). In order, the modes were normal, held, held, normal, held, normal.
+For held runs the temporary probe disabled only updates to the existing sun
+shadow map. It restored updates between runs and checked one real frame per
+run: 110 main-pass draws throughout and zero sun draws when held. Each run
+remained visible with no uncaught JS error. These warmed inputs differ from
+the startup-and-walk baseline above.
+
+| Bounds check | Sun updates | FPS per run | Median of per-run p95 intervals |
+| --- | --- | --- | --- |
+| Original, b00b41a0 | Normal | 23.3, 24.2, 24.3 | 46 ms |
+| Original | Held | 29.9, 31.1, 29.4 | 38 ms |
+| Continuous sweep | Normal | 24.1, 25.6, 25.3 | 43 ms |
+| Continuous sweep | Held | 26.1, 30.7, 28.4 | 42 ms |
+
+The previous per-caster and per-chunk visibility test sampled at most 41
+spheres along the sunlight ray. For a small caster those samples can end after
+20 metres while its shadow reaches the camera much farther along the ray.
+The continuous check clips the full travel interval against six camera planes
+expanded by the caster radius. Per-plane travel rates are shared across casters.
+This preserves dynamic sun updates, the cascade resolutions and the materials.
+
+The regression suite includes an elevated caster 70 metres upstream, orthographic
+ray-box comparisons and independent perspective-camera witnesses. All 39 shadow
+and render-policy cases passed. The local atlas retained the same camera pose,
+projection and exposure at all 16 sites; the largest mean difference in any
+channel on any of the 32 tiles was 0.72/255 against b00b41a0. The A/B supports
+profiling sun updates further. The small before/after FPS difference and the
+variation between held runs do not establish an island-wide frame-rate gain.
