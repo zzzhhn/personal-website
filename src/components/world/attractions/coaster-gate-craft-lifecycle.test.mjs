@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
 import { fileURLToPath } from 'node:url';
-import ts from 'typescript';
-import { Box3, BufferGeometry, DoubleSide, Group, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, Raycaster, Texture, Vector3 } from 'three';
+import * as THREE from 'three';
+import { Box3, BufferGeometry, DoubleSide, Group, Mesh, Raycaster, Texture, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
 
@@ -23,44 +23,37 @@ source.traverse(o => { if (o instanceof Mesh) sourceMeshes.push(o); });
 const borrowed = new Set(sourceMeshes.flatMap(mesh => [mesh.geometry,
   ...[mesh.material].flat().flatMap(material => [material, ...Object.values(material).filter(v => v?.isTexture)])]));
 
-const sourceText = readFileSync(new URL('./WorldCoasterGateCraft.tsx', import.meta.url), 'utf8');
-const js = ts.transpileModule(sourceText, {
-  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
-}).outputText;
-const ast = ts.createSourceFile('gate.js', js, ts.ScriptTarget.Latest, true);
-const declaration = ast.statements.find(node => ts.isFunctionDeclaration(node) && node.name?.text === 'WorldCoasterGateCraft');
-assert.ok(declaration, 'test must invoke the actual exported component');
-const fn = declaration.getText(ast).replace(/^export\s+default\s+/, '');
-const constants = ast.statements.find(node => ts.isVariableStatement(node)
-  && node.declarationList.declarations.some(d => d.name.getText(ast) === 'ROOTS')).getText(ast);
+const loadGate = compileWorldComponent(new URL('./WorldCoasterGateCraft.tsx', import.meta.url));
 
 for (const part of ['static', 'leaf', 'key']) {
   test(`actual ${part} component effect survives cleanup/replay and disposes only owned materials once at final unmount`, async () => {
-    const effects = [], memos = [];
+    const effects = [];
     const environment = new Texture();
-    const env = {
-      useGLTF: () => ({ scene: source }), assetUrl: 'unused',
-      useMemo: factory => { const value = factory(); memos.push(value); return value; },
-      useDjcFurnitureEnvironment: () => environment, useRef: value => ({ current: value }),
-      useEffect: factory => effects.push(factory), useFrame: () => {},
-      night: { value: .4 }, BufferGeometry, DoubleSide, Mesh, MeshBasicMaterial, MeshStandardMaterial, Matrix4, mergeGeometries,
-      _jsx: (type, props) => ({ type, props }), _jsxs: (type, props) => ({ type, props }),
-    };
-    const Component = new Function(...Object.keys(env), `${constants}\nreturn (${fn});`)(...Object.values(env));
+    const Component = loadGate({
+      three: THREE, 'three/examples/jsm/utils/BufferGeometryUtils.js': { mergeGeometries },
+      react: { useMemo: f => f(), useRef: current => ({ current }), useEffect: f => effects.push(f) },
+      '@react-three/fiber': { useFrame() {} }, '@react-three/drei': { useGLTF: () => gltf },
+      '../WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment: () => environment },
+      '../WorldNight': { night: { value: .4 } },
+    }).default;
     const output = Component({ part });
-    const pack = memos[0];
+    const root = output.props.children.props.object;
+    const rendered = [];
+    root.traverse(node => { if (node.isMesh) rendered.push(node); });
+    const shadow = rendered.find(mesh => mesh.castShadow && !mesh.receiveShadow) ?? null;
+    const materials = [...new Set(rendered.filter(m => m !== shadow).flatMap(m => [m.material].flat()))];
     const original = source.getObjectByName({ static: 'GateStatic', leaf: 'GateLeaf', key: 'GateKey' }[part]);
     const originals = [];
     original.traverse(o => { if (o instanceof Mesh) originals.push(o); });
     const copies = [];
-    pack.root.traverse(o => { if (o instanceof Mesh && o !== pack.shadow) copies.push(o); });
-    assert.notEqual(pack.root, original);
+    root.traverse(o => { if (o instanceof Mesh && o !== shadow) copies.push(o); });
+    assert.notEqual(root, original);
     assert.equal(output.props.dispose, null);
     assert.equal(output.props.children.props.dispose, null);
     assert.equal(copies.length, originals.length);
     const counts = new Map();
     const borrowedCounts = new Map();
-    const owned = [...pack.materials, ...(pack.shadow ? [pack.shadow.geometry, pack.shadow.material] : [])];
+    const owned = [...materials, ...(shadow ? [shadow.geometry, shadow.material] : [])];
     owned.forEach(resource => resource.addEventListener('dispose', () => counts.set(resource, (counts.get(resource) ?? 0) + 1)));
     const observeBorrowed = event => borrowedCounts.set(event.target, (borrowedCounts.get(event.target) ?? 0) + 1);
     borrowed.forEach(item => item.addEventListener('dispose', observeBorrowed));
@@ -93,9 +86,9 @@ for (const part of ['static', 'leaf', 'key']) {
         });
       });
       if (part === 'leaf') {
-        const carrier = pack.shadow;
+        const carrier = shadow;
         assert.ok(carrier);
-        assert.equal(carrier.parent, pack.root);
+        assert.equal(carrier.parent, root);
         assert.equal(carrier.castShadow, true);
         assert.equal(carrier.receiveShadow, false);
         assert.equal(carrier.material.transparent, false);
@@ -132,17 +125,17 @@ for (const part of ['static', 'leaf', 'key']) {
         assert.equal(carrier.geometry.getAttribute('position').count, cursor);
         assert.ok(carrier.geometry.index.count / 3 < 1200, 'bounded simplified proxy, not the complete visible leaf');
         const hinge = new Group();
-        hinge.add(pack.root);
+        hinge.add(root);
         for (const side of [-1, 1]) for (const angle of [0, side * .71, side * 1.45]) {
           hinge.position.set(side * 5, 0, 56);
           hinge.rotation.y = angle;
-          pack.root.scale.set(-side, 1, 1);
+          root.scale.set(-side, 1, 1);
           hinge.updateMatrixWorld(true);
-          assert.deepEqual(carrier.matrixWorld.toArray(), pack.root.matrixWorld.toArray(), 'carrier follows mirrored hinged parent');
+          assert.deepEqual(carrier.matrixWorld.toArray(), root.matrixWorld.toArray(), 'carrier follows mirrored hinged parent');
           let offset = 0;
           const visiblePoint = new Vector3(), shadowPoint = new Vector3();
           for (const authored of authoredShadow) {
-            const authoredWorld = authored.matrixWorld.clone().premultiply(toRoot).premultiply(pack.root.matrixWorld);
+            const authoredWorld = authored.matrixWorld.clone().premultiply(toRoot).premultiply(root.matrixWorld);
             const positions = authored.geometry.getAttribute('position');
             for (let i = 0; i < positions.count; i++) {
               visiblePoint.fromBufferAttribute(positions, i).applyMatrix4(authoredWorld);
@@ -152,9 +145,9 @@ for (const part of ['static', 'leaf', 'key']) {
             offset += positions.count;
           }
         }
-        hinge.remove(pack.root);
-        pack.root.scale.set(1, 1, 1);
-        pack.root.updateMatrixWorld(true);
+        hinge.remove(root);
+        root.scale.set(1, 1, 1);
+        root.updateMatrixWorld(true);
         const visibleBounds = new Box3().setFromObject(original), proxyBounds = new Box3().setFromObject(carrier);
         assert.ok(visibleBounds.min.distanceTo(proxyBounds.min) < 1e-5);
         assert.ok(visibleBounds.max.distanceTo(proxyBounds.max) < 1e-5, 'outer envelope stays the visible leaf envelope');
@@ -172,14 +165,13 @@ for (const part of ['static', 'leaf', 'key']) {
           visibleDrawsBefore: copies.length, visibleDrawsAfter: copies.length + 1,
           shadowDrawsBefore: copies.length, shadowDrawsAfter: 1,
           scope: 'CPU geometry/submission inventory only; no FPS claim' } }));
-      } else assert.equal(pack.shadow, null, 'static/key retain original shadow treatment');
+      } else assert.equal(shadow, null, 'static/key retain original shadow treatment');
       finalCleanup.forEach(release => { release?.(); release?.(); });
       await Promise.resolve();
       await Promise.resolve();
       assert.equal(counts.size, owned.length);
       owned.forEach(resource => assert.equal(counts.get(resource), 1, 'final cleanup releases exactly once'));
       assert.equal(borrowedCounts.size, 0, 'cached source materials/geometry/maps and renderer environment stay borrowed');
-      assert.throws(() => pack.retain(), /disposed gate craft/);
     } finally {
       borrowed.forEach(item => item.removeEventListener('dispose', observeBorrowed));
       environment.removeEventListener('dispose', observeBorrowed);

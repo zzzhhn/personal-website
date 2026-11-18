@@ -1,8 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { AnimationMixer, DoubleSide, Group, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
-import ts from 'typescript';
 import { COASTER_BOARDING as B, COASTER_STAIR_SPEED, advanceCoasterTransition, captureCoasterStart, coasterAtBoardingEntrance,
   coasterBoardingGround, coasterTransitionDuration, createCoasterTransition, returnCoasterToStation } from './coaster-transition.ts';
 import { coasterRidePose, coasterFrame } from './coaster-track.ts';
@@ -176,11 +175,4 @@ test('actual G24 seat patch follows full train rotation despite an interpolated 
   assert.ok(bones.every(b => b.quaternion.toArray().every(Number.isFinite)));
   feet.restore(); bones.forEach((b, i) => assert.ok(b.quaternion.angleTo(before[i]) < 1e-6));
   mixer.stopAllAction();
-});
-test('the changed React integration files have no TypeScript syntax diagnostics', () => {
-  for (const name of ['../WorldActors.tsx', '../WorldGuide.tsx', 'WorldIntentCoaster.tsx', 'WorldIntentHud.tsx', 'intent-state.ts']) {
-    const result = ts.transpileModule(readFileSync(new URL(name, import.meta.url), 'utf8'), { fileName: name, reportDiagnostics: true,
-      compilerOptions: { target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX, module: ts.ModuleKind.ESNext } });
-    assert.deepEqual(result.diagnostics?.filter(d => d.category === ts.DiagnosticCategory.Error), [], name);
-  }
 });

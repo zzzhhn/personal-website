@@ -1,21 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { registerHooks } from 'node:module';
+import '../../../../tools/world/alpha-mine-tests/register.mjs';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
-import { jsx as reactJsx, jsxs as reactJsxs, Fragment } from 'react/jsx-runtime';
-registerHooks({ resolve(specifier, context, next) {
-  try { return next(specifier, context); }
-  catch (error) { if (specifier.startsWith('.') && !/\.[a-z]+$/i.test(specifier)) return next(specifier+'.ts',context); throw error; }
-} });
-const { createCoasterStructure } = await import('./coaster-geometry.ts');
+import { Group } from 'three';
+import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
+const { createCoasterStructure, CoasterBatch, addCoasterBuildingArt } = await import('./coaster-geometry.ts');
 const { packCoasterStructure, unpackCoasterStructure } = await import('./coaster-structure-transfer.ts');
-const { COASTER_ARCHITECTURE_CRAFT } = await import('./coaster-craft-promotion.ts');
+const promotion=await import('./coaster-craft-promotion.ts');
 const hash = a => createHash('sha256').update(Buffer.from(a.buffer,a.byteOffset,a.byteLength)).digest('hex');
-const read = file => readFileSync(new URL(file,import.meta.url),'utf8');
-const baseline = file => execFileSync('git',['show','b75c474:src/components/world/attractions/'+file],{encoding:'utf8'});
 const signature = g => ({
   attributes: Object.fromEntries(Object.keys(g.attributes).sort().map(k => {
     const a = g.attributes[k]; return [k,[a.itemSize,a.normalized,a.array.constructor.name,hash(a.array)]];
@@ -26,10 +18,14 @@ const signature = g => ({
 const surface = s => ({...s,vertices:hash(s.vertices),indices:hash(s.indices)});
 const packetSignature = value => ({
   steel:signature(value.steel),glow:signature(value.glow),
+  rails:Object.fromEntries(Object.entries(value.railCraft ?? {}).map(([k,g])=>[k,signature(g)])),
+  railShadow:value.railShadow && signature(value.railShadow),
   colliders:value.colliders.map(c => ({...c,hull:c.hull && hash(c.hull)})),
   relief:surface(value.relief),track:surface(value.track),art:value.art,
 });
-const dispose = value => { value?.steel.dispose(); value?.glow.dispose(); };
+const dispose = value => {
+  if(value) for(const g of [value.steel,value.glow,...Object.values(value.railCraft ?? {}),value.railShadow]) g?.dispose();
+};
 function protectedRegion(g, min, max) {
   const position = g.getAttribute('position'), keys = Object.keys(g.attributes).sort(), digest = createHash('sha256');
   let triangles = 0;
@@ -46,23 +42,8 @@ function protectedRegion(g, min, max) {
   }
   return {triangles,hash:digest.digest('hex')};
 }
-const ast = text => ts.createSourceFile('component.tsx',text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
-const declaration = (tree,name) => tree.statements.find(n=>ts.isFunctionDeclaration(n)&&n.name?.text===name);
-function calls(tree, within, name) {
-  const result=[];function visit(n) {
-    if(ts.isCallExpression(n)&&n.expression.getText(tree)===name)result.push(n);
-    ts.forEachChild(n,visit);
-  }visit(within);return result;
-}
-function opening(tree, within, tag, fragment) {
-  let result;function visit(n) {
-    if(ts.isJsxOpeningElement(n)&&n.tagName.getText(tree)===tag&&n.getText(tree).includes(fragment))result=n;
-    ts.forEachChild(n,visit);
-  }visit(within);assert.ok(result);return result.getText(tree);
-}
-
 test('near/far promotion preserves all collider/light/contact bytes and transfers the production derivative exactly',()=>{
-  assert.equal(COASTER_ARCHITECTURE_CRAFT,true);
+  assert.equal(promotion.COASTER_ARCHITECTURE_CRAFT,true);
   for(const near of [false,true]) {
     let old, promoted, restored;
     try {
@@ -100,76 +81,212 @@ test('near/far promotion preserves all collider/light/contact bytes and transfer
   }
 });
 
-test('worker and synchronous cache use the same immutable factory default, while standalone building-art callers remain legacy',()=>{
-  const factory=ast(read('./coaster-geometry.ts')),fn=declaration(factory,'createCoasterStructure');
-  assert.equal(fn.parameters[2].initializer.getText(factory),'COASTER_ARCHITECTURE_CRAFT');
-  const independent=declaration(factory,'addCoasterBuildingArt');
-  assert.equal(independent.parameters[2].initializer?.getText(factory),'false');
-  const worker=ast(read('./coaster-structure.worker.ts'));
-  const invoked=calls(worker,worker,'createCoasterStructure');
-  assert.equal(invoked.length,1);assert.equal(invoked[0].arguments.length,1);
-  assert.equal(invoked[0].arguments[0].getText(worker),'event.data');
-  const component=ast(read('./WorldIntentCoaster.tsx'));
-  let cache;
-  function visit(n){if(ts.isNewExpression(n)&&n.expression.getText(component)==='CoasterStructureCache')cache=n;ts.forEachChild(n,visit);}
-  visit(component);
-  assert.deepEqual(cache.arguments.map(n=>n.getText(component)),['createCoasterStructure','buildCoasterInWorker']);
-});
+const cacheModule = await import('./coaster-structure-cache.ts');
+const track = await import('./coaster-track.ts');
+const transitions = await import('./coaster-transition.ts');
+const access = await import('./coaster-access.ts');
+const passage = await import('./coaster-passage.ts');
+const sceneDependencies = {
+  './coaster-craft-promotion':promotion,
+  './intent-stations':await import('./intent-stations.ts'),
+  './coaster-device-geometry':await import('./coaster-device-geometry.ts'),
+  './attraction-camera':await import('./attraction-camera.ts'),
+  '../actor-physics':await import('../actor-physics.ts'),
+  '../region-passage':await import('../region-passage.ts'),
+};
+const loadScene = compileWorldComponent(new URL('./WorldIntentCoaster.tsx', import.meta.url));
+const loadDevices = compileWorldComponent(new URL('./WorldIntentDevices.tsx', import.meta.url));
 
-test('train movement, three original car transforms, boarding click and parked contacts are unchanged',()=>{
-  const a=ast(baseline('WorldIntentCoaster.tsx')),b=ast(read('./WorldIntentCoaster.tsx'));
-  const old=declaration(a,'CoasterTrain'),current=declaration(b,'CoasterTrain');
-  assert.equal(calls(a,old,'useFrame')[0].getText(a),calls(b,current,'useFrame')[0].getText(b));
-  for(const [tag,fragment]of [['group','cars.current[i]'],['group','activateIntentTarget'],['RigidBody','coaster-parked-car']])
-    assert.equal(opening(a,old,tag,fragment),opening(b,current,tag,fragment));
-  for(const file of ['coaster-access.ts','coaster-transition.ts','coaster-track.ts','intent-sign-layout.ts','WorldIntentSigns.tsx'])
-    assert.equal(read('./'+file),baseline(file),file+' physical or text contract');
-  const da=ast(baseline('WorldIntentDevices.tsx')),db=ast(read('./WorldIntentDevices.tsx'));
-  assert.equal(declaration(da,'IntentInteraction').getText(da),declaration(db,'IntentInteraction').getText(db));
-  assert.equal(calls(da,declaration(da,'IntentGate'),'useBeforePhysicsStep')[0].getText(da),
-    calls(db,declaration(db,'IntentGate'),'useBeforePhysicsStep')[0].getText(db));
-});
-
-function compiledFunction(file,name,env) {
-  const js=ts.transpileModule(read(file),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX}}).outputText;
-  const tree=ts.createSourceFile('component.js',js,ts.ScriptTarget.Latest,true);
-  const fn=declaration(tree,name).getText(tree).replace(/^export\s+(?:default\s+)?/,'');
-  return new Function(...Object.keys(env),`return (${fn});`)(...Object.values(env));
-}
-const jsx=reactJsx;
-function treeList(element) {
-  if(!element||typeof element!=='object')return [];
-  return [element,...[element.props?.children].flat(Infinity).flatMap(treeList)];
-}
-test('actual production JSX keeps static architecture in far mode and enables new device consumers only with the original lifecycle',()=>{
-  for(const active of [false,true])for(const riding of [false,true]) {
-    const structure={steel:{},glow:{},colliders:[],track:{vertices:[],indices:[]},relief:{vertices:[],indices:[]}};
-    class Cache {get(){return structure;}peek(){return structure;}snapshot(){return {};}}
-    const env={
-      useIntentStore:selector=>selector({riding}),useMemo:f=>f(),useState:f=>[f(),()=>{}],useEffect:()=>{},
-      CoasterStructureCache:Cache,createCoasterStructure:()=>{},buildCoasterInWorker:()=>{},coasterStructureMemory:{},
-      COASTER_ARCHITECTURE_CRAFT:true,coasterWorld:p=>p,COASTER_GATE_Z:56,_jsx:jsx,_jsxs:reactJsxs,_Fragment:Fragment,
-      ...Object.fromEntries(['WorldIntentReflectiveSurface','WorldCoasterStationCraft','WorldCoasterGateCraft','CoasterTrain',
-        'WorldIntentDevices','WorldIntentSigns','CoasterCollisions','IntentMovingLight','RigidBody','TrimeshCollider','WorldCoasterVegetation','Suspense'].map(k=>[k,k])),
+test('independent building art retains the complete station and gate at both detail levels',()=>{
+  for(const detailed of [false,true]) {
+    const geometry=(...options)=>{
+      const batch=new CoasterBatch();
+      addCoasterBuildingArt(batch,detailed,...options);
+      return batch.finish();
     };
-    const rendered=treeList(compiledFunction('./WorldIntentCoaster.tsx','WorldIntentCoaster',env)({active}));
-    const enabled=active||riding;
-    const station=rendered.filter(o=>o.type==='WorldCoasterStationCraft');
-    assert.equal(station.length,1);assert.equal(station[0].props.detailed,enabled);
-    assert.equal(rendered.filter(o=>o.type==='WorldCoasterGateCraft'&&o.props.part==='static').length,1);
-    for(const name of ['WorldIntentDevices','WorldIntentSigns','CoasterCollisions'])
-      assert.equal(rendered.filter(o=>o.type===name).length,enabled?1:0,name);
-    assert.equal(rendered.find(o=>o.type==='CoasterTrain').props.active,enabled);
+    const standard=geometry(),legacy=geometry(false),substituted=geometry(true);
+    try {
+      assert.deepEqual(signature(standard),signature(legacy));
+      assert.ok(substituted.getAttribute('position').count < standard.getAttribute('position').count);
+    } finally { standard.dispose();legacy.dispose();substituted.dispose(); }
   }
-  const names=['WorldIntentWorkshopCraft','WorldIntentWorkshop','WorldCoasterChestTransfer','WorldCoasterGateCraft','IntentGate','IntentInteraction','Suspense'];
-  const renderDevices=compiledFunction('./WorldIntentDevices.tsx','WorldIntentDevices',{
-    COASTER_WORKSHOP_CRAFT:true,COASTER_ARCHITECTURE_CRAFT:true,_jsx:jsx,_jsxs:reactJsxs,_Fragment:Fragment,...Object.fromEntries(names.map(k=>[k,k])),
+});
+
+test('the worker accepts both detail requests and transfers the same structure as the synchronous cache', async () => {
+  const cache = new cacheModule.CoasterStructureCache(createCoasterStructure);
+  const port = {};
+  const self = Object.getOwnPropertyDescriptor(globalThis,'self');
+  Object.defineProperty(globalThis,'self',{value:port, configurable:true});
+  try {
+    await import('./coaster-structure.worker.ts');
+    for (const near of [false,true]) {
+      let reply;
+      port.postMessage = (message,options) => { reply=structuredClone(message,options); };
+      port.onmessage({data:near});
+      assert.ok(reply?.packet,reply?.error);
+      const received=unpackCoasterStructure(reply.packet), expected=createCoasterStructure(near,'full',true);
+      try {
+        const wanted=packetSignature(expected);
+        assert.deepEqual(packetSignature(received),wanted);
+        assert.deepEqual(packetSignature(cache.get(near)),wanted);
+      } finally { dispose(received); dispose(expected); }
+    }
+  } finally {
+    cache.dispose();
+    if(self) Object.defineProperty(globalThis,'self',self); else delete globalThis.self;
+  }
+});
+
+function sceneFixture(active,riding) {
+  const state={riding,view:'chase',progress:{passed:[],clarified:[]},tools:{}};
+  const useIntentStore=Object.assign((select=s=>s)=>select(state),{
+    getState:()=>state, setState:update=>Object.assign(state,update),
   });
-  const devices=treeList(renderDevices());
-  for(const name of ['WorldIntentWorkshopCraft','WorldCoasterChestTransfer','IntentGate'])
-    assert.equal(devices.filter(o=>o.type===name).length,1,name);
-  assert.equal(devices.filter(o=>o.type==='WorldIntentWorkshop').length,0);
-  const keyVisual=devices.find(o=>o.type==='WorldCoasterChestTransfer').props.keyVisual;
-  assert.equal(treeList(keyVisual).filter(o=>o.type==='WorldCoasterGateCraft'&&o.props.part==='key').length,1);
-  assert.deepEqual(devices.filter(o=>o.type==='IntentInteraction').map(o=>o.props.target),['chest','gate','board']);
+  const frames=[],inputs=[],targets=[],built=[],doc={hidden:false},worldState={paused:false};
+  let hooks=null, physicsComponent=null;
+  function useRef(current) {
+    if (!hooks) return {current};
+    const index=hooks.index++;
+    return hooks.refs[index] ??= {current};
+  }
+  const pose=track.coasterRidePose(0,'chase');
+  const ride={active:riding,revision:7,transition:transitions.createCoasterTransition(pose.seat,pose.yaw,pose)};
+  ride.transition.phase='riding'; ride.transition.captured=true;
+  const clock={elapsed:10,riding,revision:7};
+  const services={
+    ...sceneDependencies,
+    react:{memo:f=>f,useRef,useEffect(){},useMemo:f=>f(),
+      useState:init=>[typeof init==='function'?init():init,()=>{}],Suspense:'suspense'},
+    '@react-three/fiber':{useFrame:cb=>frames.push(cb)},
+    '@react-three/rapier':{RigidBody:'rigid-body',CuboidCollider:'box',ConvexHullCollider:'hull',
+      TrimeshCollider:'trimesh',useBeforePhysicsStep(step){ hooks.step=step; },useRapier:()=>({world:{timestep:1/60}})},
+    '../store':{useWorldStore:{getState:()=>worldState,setState(){}}},
+    '../WorldInteract':{useInteractable:input=>inputs.push(input)},
+    './intent-state':{useIntentStore,intentRideClock:clock,activateIntentTarget:id=>targets.push(id)},
+    './coaster-track':track,'./coaster-transition':transitions,'./coaster-access':access,
+    './attraction-ride':{attractionRide:ride,updateAttractionRide(){}},
+    './coaster-passage':passage,'./WorldIntentSurface':{WorldIntentReflectiveSurface:'surface'},
+    './coaster-motion-audio':{}, './coaster-structure-job':{}, '../WorldParkAudio':{}, '../WorldNight':{night:{value:0}},
+    './coaster-geometry':{createCoasterStructure(near){
+      built.push(near);
+      return {steel:{attributes:{}},glow:{attributes:{}},colliders:[],track:{},relief:{}};
+    }},
+    './coaster-structure-cache':cacheModule,
+  };
+  for (const name of ['WorldCoasterStationCraft','WorldCoasterGateCraft','WorldCoasterRailCraft','WorldCoasterTrainCraft',
+    'WorldCoasterVegetation','WorldIntentWorkshopCraft','WorldIntentWorkshop','WorldCoasterChestTransfer','WorldIntentSigns'])
+    services['./'+name]=name;
+  services['./WorldIntentDevices']=loadDevices(services,doc).default;
+  function render(element) {
+    if(!element || typeof element!=='object')return [];
+    if(typeof element.type==='function') {
+      const instance={refs:[],index:0};
+      const update=()=>{
+        hooks=instance; instance.index=0;
+        try { return element.type(element.props); } finally { hooks=null; }
+      };
+      const output=update();
+      if(instance.step) physicsComponent={update,step:()=>instance.step()};
+      return render(output);
+    }
+    return [element,...[element.props.children].flat(Infinity).flatMap(render)];
+  }
+  const nodes=render(loadScene(services,doc).default({active}));
+  return {nodes,frames,inputs,targets,built,ride,clock,state,worldState,doc,physicsComponent};
+}
+
+test('distance and occupancy select the visible station, interactive devices and parked contacts',()=>{
+  for(const active of [false,true]) for(const riding of [false,true]) {
+    const {nodes,inputs,targets,built}=sceneFixture(active,riding), enabled=active||riding;
+    const all=type=>nodes.filter(n=>n.type===type);
+    assert.deepEqual(built,[enabled]);
+    assert.deepEqual(all('WorldCoasterStationCraft').map(n=>n.props.detailed),[enabled]);
+    const gate=all('WorldCoasterGateCraft');
+    assert.equal(gate.filter(n=>n.props.part==='static').length,1);
+    assert.equal(gate.filter(n=>n.props.part==='leaf').length,enabled?2:0);
+    for(const name of ['WorldIntentSigns','WorldIntentWorkshopCraft','WorldCoasterChestTransfer'])
+      assert.equal(all(name).length,Number(enabled));
+    assert.equal(all('WorldIntentWorkshop').length,0);
+    if(enabled)assert.equal(all('WorldCoasterChestTransfer')[0].props.keyVisual.props.children.props.part,'key');
+    assert.deepEqual(inputs.map(i=>i.id),enabled?['intent-chest','intent-gate','intent-board']:[]);
+    for(const input of inputs)input.onInteract();
+    assert.deepEqual(targets,enabled?['chest','gate','board']:[]);
+    assert.equal(all('rigid-body').some(n=>n.props.userData?.assetId==='coaster-track-sample'),enabled);
+    const parked=all('rigid-body').filter(n=>n.props.userData?.assetId==='coaster-parked-car');
+    assert.equal(parked.length,active&&!riding?3:0);
+    for(const body of parked)assert.deepEqual(body.props.children.map(c=>[c.props.position,c.props.args]),
+      access.COASTER_CAR_PANELS.map(p=>[p.at,p.size.map(x=>x/2)]));
+  }
+});
+
+test('three cars follow the track, hold at an unready region, resume and dispatch boarding clicks',()=>{
+  const {nodes,frames,targets,ride,clock}=sceneFixture(true,true);
+  const train=nodes.find(n=>n.props.name==='intent-train');
+  assert.equal(train.props.userData.shadowDynamic,true);
+  let stopped=false;
+  train.props.onClick({stopPropagation(){stopped=true;}});
+  assert.equal(stopped,true);assert.deepEqual(targets,['board']);
+  const cars=train.props.children.flat().filter(e=>typeof e?.props.ref==='function').map(e=>{
+    const car=new Group();
+    car.position.copy(e.props.position);car.quaternion.copy(e.props.quaternion);e.props.ref(car);
+    return car;
+  });
+  function check(u) {
+    assert.equal(cars.length,3);
+    cars.forEach((car,i)=>{
+      const expected=track.coasterFrame(u-i*3.55/track.COASTER_LENGTH);
+      assert.ok(car.position.distanceTo(expected.point)<1e-5);
+      assert.ok(car.quaternion.angleTo(expected.rotation)<1e-6);
+    });
+  }
+  check(0);
+  let ready=true;
+  ride.passage={at:()=>ready,allows:()=>ready};
+  for(const admitted of [true,false,true]) {
+    ready=admitted;
+    const before=clock.elapsed;
+    frames.forEach(frame=>frame(null,1/60));
+    if(admitted)assert.ok(clock.elapsed>before);else assert.equal(clock.elapsed,before);
+    check(track.coasterDistanceAt(clock.elapsed));
+  }
+});
+
+test('the mounted gate holds both physical leaves on pause and opens the passage when unlocked',async()=>{
+  const {default:R}=await import('@dimforge/rapier3d-compat');
+  await R.init();
+  const {nodes,state,worldState,physicsComponent,doc}=sceneFixture(true,false);
+  const leaves=nodes.filter(n=>n.props.userData?.assetId==='coaster-gate');
+  const world=new R.World({x:0,y:0,z:0});
+  try {
+    assert.equal(leaves.length,2);
+    const bodies=leaves.map(leaf=>{
+      assert.equal(leaf.props.type,'kinematicPosition');
+      const body=world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...leaf.props.position));
+      const shape=leaf.props.children.find(child=>child.type==='box');
+      world.createCollider(R.ColliderDesc.cuboid(...shape.props.args).setTranslation(...shape.props.position),body);
+      leaf.props.ref(body);
+      return body;
+    });
+    world.step();
+    const [x,y,z]=track.coasterWorld([1,1,track.COASTER_GATE_Z]);
+    const blocked=()=>!!world.castRay(new R.Ray({x,y,z:z-2},{x:0,y:0,z:1}),4,true);
+    assert.ok(blocked());
+    state.progress.gateOpen=true;
+    physicsComponent.update();
+    const tick=()=>{physicsComponent.step();world.step();};
+    for(const hold of [[true,false],[false,true]]) {
+      [worldState.paused,doc.hidden]=hold;
+      for(let i=0;i<20;i++)tick();
+      assert.ok(bodies.every(body=>Math.abs(body.rotation().y)<1e-6));
+      assert.ok(blocked());
+    }
+    worldState.paused=false;doc.hidden=false;
+    tick();
+    assert.ok(bodies[0].rotation().y*bodies[1].rotation().y<0);
+    assert.ok(blocked(),'the first opening frame still closes the aisle');
+    for(let i=0;i<150;i++)tick();
+    assert.equal(blocked(),false);
+    bodies.forEach((body,i)=>assert.ok(Math.abs(2*Math.atan2(body.rotation().y,body.rotation().w)-
+      access.coasterGateAngle(access.COASTER_GATE_LEAVES[i].side,1))<.001));
+  }finally {world.free();}
 });

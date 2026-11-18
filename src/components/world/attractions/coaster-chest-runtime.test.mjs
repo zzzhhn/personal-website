@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import ts from 'typescript';
+import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
+import * as track from './coaster-track.ts';
 import * as jsxRuntime from 'react/jsx-runtime';
 import { Matrix4, Mesh, Vector3 } from 'three';
 import { createCoasterChestRuntime, CHEST_OPEN_LID } from './coaster-chest-runtime.ts';
@@ -166,9 +167,7 @@ test('two full-resolution opaque shadow carriers retain all triangles at closed,
 
 // Load the entire shipping component through its normal export. Only its host
 // hooks, stores and URL import are supplied by the fixture.
-const compiledComponent = ts.transpileModule(readFileSync(new URL('./WorldCoasterChestTransfer.tsx', import.meta.url), 'utf8'), {
-  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
-}).outputText;
+const loadChest=compileWorldComponent(new URL('./WorldCoasterChestTransfer.tsx',import.meta.url));
 
 function elementsIn(value) {
   if (!value || typeof value !== 'object') return [];
@@ -189,19 +188,12 @@ function chestFixture(progress) {
     '../WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment: () => null },
     '../WorldNight': { night: { value: 0 } },
     './coaster-device-geometry': { createIntentKey: () => geometry },
-    './coaster-track': { coasterWorld: ([x, y, z]) => [x + 50, y + 1, z - 195], COASTER_GATE_Z: 56 },
+    './coaster-track': track,
     './intent-state': { useIntentStore: selector => selector({ progress }), activateIntentTarget: target => events.push(target) },
     './WorldIntentSurface': { WorldIntentReflectiveSurface: 'reflective-surface' },
     './coaster-chest-runtime': { CHEST_OPEN_LID, createCoasterChestRuntime: scene => (fixture.pack = createCoasterChestRuntime(scene)) },
   };
-  const load = id => {
-    if (id.endsWith('.glb?url')) return { default: 'fixture.glb' };
-    assert.ok(Object.hasOwn(dependencies, id), `Missing component dependency ${id}`);
-    return dependencies[id];
-  };
-  const exports = {};
-  new Function('require', 'exports', 'document', compiledComponent)(load, exports, doc);
-  fixture.render = exports.default;
+  fixture.render=loadChest(dependencies,doc).default;
   fixture.mountModel = () => {
     const suspense = elementsIn(fixture.render()).find(element => element.type === 'suspense');
     const element = suspense.props.children;
@@ -246,12 +238,12 @@ test('actual chest output preserves pickup/gate visibility, both key transforms 
       const visual = jsxRuntime.jsx('authored-key', {});
       const output = render(supplied ? { keyVisual: visual } : undefined), elements = elementsIn(output);
       const interaction = elements.find(o => o.type === 'group' && o.props.onClick);
-      assert.deepEqual(interaction.props.position, [42, 1, -135.5]);
+      assert.deepEqual(interaction.props.position, track.coasterWorld([-8,0,59.5]));
       let stopped = 0;
       interaction.props.onClick({ stopPropagation() { stopped++; } });
       assert.equal(stopped, 1); assert.deepEqual(events, ['chest']);
       const local = elements.filter(o => o.type === 'group' && JSON.stringify(o.props.position) === JSON.stringify([-.2, 1.4, .25]));
-      const gate = elements.filter(o => o.type === 'group' && JSON.stringify(o.props.position) === JSON.stringify([55.3, 2.65, -138.5]));
+      const gate = elements.filter(o => o.type === 'group' && JSON.stringify(o.props.position) === JSON.stringify(track.coasterWorld([5.3,1.65,track.COASTER_GATE_Z+.5])));
       assert.equal(local.length, chestOpen && !keyTaken ? 1 : 0);
       assert.equal(gate.length, gateOpen ? 1 : 0);
       if (local.length) assert.deepEqual(local[0].props.rotation, [-.25, 0, .25]);
