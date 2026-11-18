@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 from urllib.parse import urljoin, urlsplit
 
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageStat
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import TimeoutError as PlaywrightTimeout, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 VIEWPORT = {"width": 960, "height": 540}
@@ -39,14 +39,27 @@ def shoot(page, select, shot):
     select.select_option(shot)
     # The renderer sleeps between shots. Count actual GL frames and wait for the
     # shadow-settling burst plus the real lighting uniform, even on a slow GPU.
-    page.wait_for_function("""([shot, frame]) => {
+    ready = """([shot, frame]) => {
         const d = window.__worldDebug, s = d.state(), loop = d.renderLoop();
         const dark = shot.endsWith('-night'), camera = d.reviewCamera();
         return !document.hidden && s.shot === shot && !s.paused && s.quality === 'balanced'
           && s.weather === 'clear' && s.light === (dark ? 'night' : 'noon')
           && Math.abs(loop.night - Number(dark)) < .001 && loop.frame > frame + 2
           && camera?.settled && camera.onMark && d.stats().triangles > 0;
-    }""", arg=[shot, old_frame], timeout=150000)
+    }"""
+    for attempt in range(6):
+        try:
+            page.wait_for_function(ready, arg=[shot, old_frame], polling=350, timeout=60000)
+            break
+        except PlaywrightTimeout:
+            observed = page.evaluate("""() => {
+                const d = window.__worldDebug, s = d.state(), c = d.reviewCamera();
+                return {shot:s.shot, paused:s.paused, hidden:document.hidden, quality:s.quality, light:s.light,
+                    weather:s.weather, loop:d.renderLoop(), onMark:c?.onMark, settled:c?.settled, stats:d.stats()};
+            }""")
+            print(f"Waiting for {shot} from frame {old_frame}: {observed}", flush=True)
+            if attempt == 5:
+                raise
     camera = page.evaluate("window.__worldDebug.reviewCamera()")
     data = page.locator("canvas").screenshot(style=HIDE_UI, timeout=30000)
     image = Image.open(io.BytesIO(data)).convert("RGB")
