@@ -339,6 +339,14 @@ The coastal path, wheel and cave use the trail card's stop labels and positions 
 
 Verification on 2026-11-18 covered 88 focused tests, TypeScript, generated terrain/map freshness and the eight-page production build. Five pickup approaches use the shipped cave and terrain collision data. A separate case crosses the lamp's 0.60 m reach boundary after acceptance. Safari reloaded the ordinary 4343 Balanced URL, enabled the game controls and displayed the updated coastal path destination in map/settings. Pickup feel and M3 Air performance still require player and target-device review.
 
+## HUD selection and west pool exit, 2026-11-18
+
+The HUD previously ranked nearby objects again at render time, while the controller dispatched E to the nearest object on the next physics step. Crossed distances between HUD updates could redirect a press. HUD rows, Q/D-pad selection and activation now share the published choices. A keyboard press captures the displayed choice immediately. Execution checks that its registration and command still match, then validates current reach and sight. A pending approach also checks the original choice before invoking it. The review-build interaction button goes through the normal E input.
+
+The dynamic capsule test independently reproduced a west pool exit failure at x=53.37, z=58.82. Omitting only the submerged seat in a diagnostic build allowed both west routes to pass. The shipped fix keeps the seat and adds a 0.7 m sloped stone edge toward the pool. Its visible triangles supply the contact surface. All eight approaches across the four pool exits reach the deck and stop grounded in the Club collision fixture.
+
+131 focused tests pass, including selection changes, replacement during approach, cave and summit pickup staging, camp props, Club geometry and pool exits. TypeScript, generated resource checks and the eight-page production build pass. The pool fixture does not measure rendering or performance on an M3 Air.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

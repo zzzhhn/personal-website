@@ -339,7 +339,15 @@ export function buildDjcClubGeometry({
   // A submerged ledge follows the pavilion side, with visible mosaic nosing and room around both ends.
   for(let i=0;i<14;i++) {
     const a=2.79+i*.047,b=a+.047,p=(t:number,o:number):V3=>{const q=CLUB_POOL.boundary(t,o);return[q[0],1.035,q[1]];};
-    slab('stone',[p(a,-1.8),p(a,-.8),p(b,-.8),p(b,-1.8)],.42,i%3?'#88a7a0':'#c4cbb8');
+    const color = i%3?'#88a7a0':'#c4cbb8';
+    slab('stone',[p(a,-1.8),p(a,-.8),p(b,-.8),p(b,-1.8)],.42,color);
+    // The ledge crosses the west exit. Feather its pool-facing edge into the basin
+    // so the capsule follows the visible stone slope up onto the original seat.
+    const toe = (angle:number):V3 => {
+      const [x,z] = CLUB_POOL.boundary(angle,-2.5);
+      return [x,CLUB_POOL.floorHeight(x,z)-.02,z];
+    };
+    slab('stone',[toe(a),p(a,-1.8),p(b,-1.8),toe(b)],.14,color);
   }
   assemblyEnd('basin', 'submerged-seat-ledge', basinLedge);
   finishRole = 0;
