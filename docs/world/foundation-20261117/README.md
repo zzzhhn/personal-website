@@ -23,7 +23,7 @@ Do not call this program complete after a local repair. The five pipeline change
 | Interaction contract | One eligibility and execution path for every registered action; short safe approach; animation contact cannot silently veto an accepted action; cancellation and environment changes explicit | Shared entry and accepted completion implemented for Alpha, cave, camp, mine, exchange and inspection; whole-registry audit and venue approach unification pending |
 | Core and venue separation | Input, locomotion, vehicles, camera and interaction modules depend on generic contracts; no venue imports in controller; each region's actual collider readiness gates entry | Scene actor behavior registered; cameras, input ownership, towing and rides use generic contracts; site policy and guide presentation injected by world assembly; guide bundle has no venue/store runtime dependency; complete actor/store/layout boundary and all-region collider readiness pending |
 | Verification | Replace implementation-string/old-AST assertions with behavior coverage; reproducible ordinary-view day/night contact sheets with baseline and capture metadata | 16 authored sites now generate a paired production contact sheet and camera manifest; migration of source-string tests remains partial |
-| Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Local host verified as a 16 GB M3 MacBook Air (Mac15,13). Safari cold-load and ordinary roaming measurements remain pending. |
+| Device acceptance | Measured cold load and roaming on actual M3 Air Safari with resolution, quality, route, asset cache and frame-time distribution recorded | Local host verified as a 16 GB M3 MacBook Air (Mac15,13). The first Safari 26.5 cold HTTP-cache / ordinary camp route measurement is recorded below. Other locations and repeat samples remain open. |
 
 ## First change: executable pickup offers
 
@@ -372,3 +372,23 @@ The tool reads the site's existing review selector. Each paired view uses the re
 5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Use the fixed-view atlas for visual changes and record target-device timing separately.
 
 The user requested GitHub consolidation on 2026-11-17. Verified foundation batches are synchronized to `main` and `codex/world-foundation-20261117`; use the current Git refs for the latest checkpoint. The broader foundation program remains incomplete. 4341 remains on its prior candidate. User visual/feel review remains separate from technical checks.
+
+## Native M3 Air Safari camp baseline
+
+On this 16 GB Mac15,13, Safari 26.5 loaded the production 4343 build for
+`07c3db38` on a fresh loopback origin with HTTP caching disabled. A temporary
+HTML probe recorded the ordinary Balanced entry with no QA camera. This was a
+cold HTTP asset cache with an already running browser, at 1710 × 927 CSS pixels,
+DPR 2, and a 1955 × 1060 game canvas. All 131 measured game resource transfers
+had a nonzero transfer size (34,138,334 bytes total at readiness).
+
+The camp return button enabled, the canvas existed and the player map marker
+was present at **10.67 seconds** from navigation. After 2.5 seconds of warmup,
+a scripted W/D/S/A sequence held each ordinary movement input for 3.5 seconds.
+All four legs moved the player on the map (from −42.0, 35.0 through −47.2, 28.1;
+−39.0, 21.7; −31.5, 30.5; ending −32.4, 36.4). The page stayed visible.
+Across 14.01 seconds, 238 animation-frame intervals averaged **16.99 FPS**.
+Median interval was 44 ms, p95 was 85 ms, p99 was 205 ms, and 60 intervals
+exceeded 50 ms. No uncaught JavaScript error was recorded. This single foreground
+camp route is a performance baseline; frame intervals include the whole browser
+loop and do not isolate GPU cost or represent other districts.
