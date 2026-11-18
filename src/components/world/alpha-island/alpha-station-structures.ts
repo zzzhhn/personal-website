@@ -3,13 +3,14 @@ import type { Vec3 } from '../types';
 import { AlphaStructureBuilder } from './alpha-structure-builder';
 import { ALPHA_STATIONS } from './alpha-layout';
 import { alphaGroundHeight } from './alpha-terrain';
+import { lodgeFoundation, lodgeRamp } from './alpha-lodge-layout';
 
 const deck = { height: .52, thickness: .18, width: 7, boardDepth: .35, spacing: .38, firstZ: -2.7, boards: 15 };
 
 export function createAlphaLodge() {
   const b = new AlphaStructureBuilder('alpha-dock-lodge');
   const [lx, ly, lz] = ALPHA_STATIONS.lodge;
-  const width = 7.5, depth = 6.1, top = .36, bevel = .09;
+  const {width,depth}=lodgeFoundation, top = .36, bevel = .09;
   let bottom = 0;
   for (let iz = 0; iz <= 16; iz++) for (let ix = 0; ix <= 20; ix++) {
     const ground = alphaGroundHeight(lx + width * (ix / 20 - .5), lz + depth * (iz / 16 - .5));
@@ -92,7 +93,7 @@ export function createLodgeRamp() {
   const [cx, cy, cz] = ALPHA_STATIONS.lodge;
   const floor = cy + deck.height;
   const threshold = cz + deck.firstZ + (deck.boards-1)*deck.spacing + deck.boardDepth/2 - .06;
-  const toe = cz + 4.6, landing = cz + 2.98, width = 2.2, slices = 8;
+  const toe = cz + lodgeRamp.toe, landing = cz + lodgeRamp.landing, width = lodgeRamp.width, slices = 8;
   const points: number[] = [], uv: number[] = [], indices: number[] = [];
   function vertex(p: Vec3, side = false) {
     points.push(...p);

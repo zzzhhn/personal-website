@@ -17,6 +17,10 @@ import * as placement from './alpha-trail-placement.ts';
 import * as cairns from './alpha-summit-cairns.ts';
 import * as ownedVisual from '../useOwnedWorldVisual.ts';
 import * as structures from './alpha-station-structures.ts';
+import * as nature from './alpha-nature.ts';
+import * as lodgeLayout from './alpha-lodge-layout.ts';
+import * as boarding from './alpha-boarding-mask.ts';
+import * as batch2 from './alpha-batch2-layout.ts';
 import * as staticSurfaces from '../static-surface-asset.ts';
 import { surveyStationStructures } from '../../../../tools/world/alpha-mine-tests/station-structure-survey.mjs';
 
@@ -36,6 +40,10 @@ async function mount(){
  const Station=compileWorldComponent(new URL('./AlphaStationStructure.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-station-structures':structures,'./alpha-layout':layout,'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
  }).default;
+ const Nature=compileWorldComponent(new URL('./AlphaNature.tsx',import.meta.url))({
+  '@react-three/rapier':rapier,'./alpha-nature':nature,'./alpha-terrain':terrain,'./alpha-layout':layout,
+  './alpha-boarding-mask':boarding,'./alpha-materials':materials,'./alpha-batch2-layout':batch2,'./alpha-lodge-layout':lodgeLayout,
+ }).default;
  const Fence=compileWorldComponent(new URL('./AlphaPathFence.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-path-fence':{createAlphaPathFence},'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
  }).default;
@@ -51,7 +59,8 @@ async function mount(){
  const root=fiber.createRoot({}),camera=new THREE.PerspectiveCamera();
  await root.configure({gl:{render(){},setSize(){},setPixelRatio(){},capabilities:{getMaxAnisotropy:()=>4}},camera,frameloop:'never',dpr:1,size:{width:320,height:200,top:0,left:0}});
  let store;
- await act(async()=>{store=root.render(h('group',{position:layout.ALPHA_ORIGIN},h(Component)));});
+ camera.position.set(172.8,5.25,156.9);camera.lookAt(171,4.35,152.8);camera.updateMatrixWorld();
+ await act(async()=>{store=root.render(h('group',{position:layout.ALPHA_ORIGIN},h(Component),h(Nature)));});
  const scene=store.getState().scene;scene.updateMatrixWorld(true);
  return {scene,motion,advance:async time=>act(async()=>{motion.time=time;store.getState().advance(time,false);}),dispose:async()=>act(async()=>root.unmount())};
 }
@@ -61,6 +70,33 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
  const ground=shippingAlphaTerrain(),mounted=await mount(),{scene,motion}=mounted;
  try{
   await t.test('lodge and lantern rack use the visible structure and leave their controls reachable', child => surveyStationStructures(scene,ground,child));
+  await t.test('nearby alpine plants leave the lodge floor and entry ramp clear',async child=>{
+   await mounted.advance(.01);
+   const lodge=scene.getObjectByName('alpha-dock-lodge'),ramp=scene.getObjectByName('alpha-lodge-access-ramp');
+   const floor=lodge.children.find(n=>n.name.endsWith('/lodgeFloor'));
+   const range=floor.userData.sources.filter(p=>p.role==='floor'),boards=new THREE.Box3();
+   const v=new THREE.Vector3();
+   for(const p of range)for(let i=p.firstVertex;i<p.firstVertex+p.vertexCount;i++)
+    boards.expandByPoint(v.fromBufferAttribute(floor.geometry.attributes.position,i).applyMatrix4(floor.matrixWorld));
+   const floorTop=boards.max.y;
+   boards.min.y=floorTop-.002;boards.max.y+=1.5;
+   const walkway=new THREE.Box3().setFromObject(ramp),matrix=new THREE.Matrix4();
+   const bad=[],counts={};
+   for(const name of ['alpha-alpine-shrubs','alpha-path-grass']){
+    const plants=scene.getObjectByName(name),verts=plants.geometry.attributes.position;
+    counts[name]=plants.count;assert.ok(plants.count>0,'nearby outdoor plants must be present');
+    for(let i=0;i<plants.count;i++){
+     plants.getMatrixAt(i,matrix);matrix.premultiply(plants.matrixWorld);
+     for(let j=0;j<verts.count;j++){
+      v.fromBufferAttribute(verts,j).applyMatrix4(matrix);
+      if(boards.containsPoint(v)||(v.x>=walkway.min.x&&v.x<=walkway.max.x&&v.z>=walkway.min.z&&v.z<=walkway.max.z&&v.y>=walkway.min.y)){
+       bad.push({name,root:[matrix.elements[12],matrix.elements[13],matrix.elements[14]],point:v.toArray()});break;
+      }
+     }
+    }
+   }
+   assert.deepEqual(bad,[],'plants crossing the occupied lodge or ramp: '+JSON.stringify(bad));child.diagnostic(JSON.stringify(counts));
+  });
   await t.test('four actual pole rims are embedded and the night-readable boards clear the terrain',async()=>{
    const poles=[];scene.traverse(node=>{if(node.isMesh&&node.geometry.type==='CylinderGeometry'&&node.parent.children.some(child=>child.isMesh&&child.material.map?.isCanvasTexture))poles.push(node);});
    assert.equal(poles.length,4);
