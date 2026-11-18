@@ -86,7 +86,13 @@ function paintPoster(g: CanvasRenderingContext2D, w: number, h: number, here: [n
 
 const rot = (yaw: number) => new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), yaw);
 /** Ground-contact matrix of a greybox solid (its position is the box centre). */
-const ground = (s: SolidBox, extraYaw = 0) => new Matrix4().compose(new Vector3(s.position[0], s.position[1] - s.size[1] / 2, s.position[2]), rot(s.yaw + extraYaw), new Vector3(1, 1, 1));
+export function streetFurnitureMatrix(s: SolidBox) {
+  // Long benches face the avenue; pocket park benches face the walkway.
+  const turn = s.kind !== 'bench' ? 0 : s.size[2] > s.size[0]
+    ? (s.position[0] < 21 ? -Math.PI / 2 : Math.PI / 2) : (s.position[2] < -42 ? Math.PI : 0);
+  return new Matrix4().compose(new Vector3(s.position[0], s.position[1] - s.size[1] / 2, s.position[2]),
+    rot(s.yaw + turn), new Vector3(1, 1, 1));
+}
 
 export default function StreetFixed() {
   const { kinds, placements, seats, atlas } = useMemo(() => {
@@ -104,17 +110,15 @@ export default function StreetFixed() {
       if (s.kind === 'bench') {
         // Bench model is long along local X with its back toward +Z. A greybox 0.6 x 1.8 bench is long in z:
         // rotate so the seat front faces the walkway (forecourt / promenade benches face the avenue).
-        const longZ = s.size[2] > s.size[0];
-        const faceYaw = longZ ? (s.position[0] < 21 ? -Math.PI / 2 : Math.PI / 2) : (s.position[2] < -42 ? Math.PI : 0);
-        const m = ground(s, faceYaw);
+        const m = streetFurnitureMatrix(s);
         placements.push({ kind: 'bench', matrix: m });
         // Seat yaw: guide faces local -Z of the bench (its front) -> heading of (-Z) in world.
-        const f = new Vector3(0, 0, -1).applyQuaternion(rot(s.yaw + faceYaw));
+        const f = new Vector3(0, 0, -1).transformDirection(m);
         seats.push({ id: `street-bench-${i}`, position: at(m, A.BENCH_SEAT_LOCAL), yaw: Math.atan2(-f.z, f.x), anchor: at(m, [0, .47, -.45]), label: { en, zh } });
-      } else if (s.kind === 'bollard') placements.push({ kind: 'bollard', matrix: ground(s) });
+      } else if (s.kind === 'bollard') placements.push({ kind: 'bollard', matrix: streetFurnitureMatrix(s) });
       else if (s.kind === 'shelter') {
         // Open side toward the road (west, -X): model's open side is already local -X.
-        const m = ground(s);
+        const m = streetFurnitureMatrix(s);
         placements.push({ kind: 'shelter', matrix: m });
         const f = new Vector3(-1, 0, 0).applyQuaternion(rot(s.yaw));
         seats.push({ id: 'street-shelter-seat', position: at(m, [.4, .5, -.4]), yaw: Math.atan2(-f.z, f.x), anchor: at(m, [-.1, .5, -.4]), label: { en, zh } });

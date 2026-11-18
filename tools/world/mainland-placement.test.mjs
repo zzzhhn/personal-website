@@ -6,6 +6,7 @@ import path from 'node:path';
 import { gunzipSync } from 'node:zlib';
 import { build } from 'esbuild';
 import R from '@dimforge/rapier3d-compat';
+import { Matrix4, Vector3 } from 'three';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const manifest = JSON.parse(await readFile(path.join(root, 'src/components/world/terrain-artifacts.generated.json'), 'utf8'));
@@ -24,6 +25,10 @@ await build({ stdin: { contents: `
   export {CLUB_WALKWAYS} from './djc-club-layout';
   export {buildAttractionApproachGeometry} from './attractions/WorldAttractionApproach';
   export {billboardPlacements} from './WorldStreetBillboards';
+  export {pavingMesh, PAVE_STRIDE} from './WorldTerrainPaving';
+  export {streetFurnitureMatrix} from './WorldStreetFixed';
+  export {knockablesV4, solidsV4} from './layout-v4';
+  export * as streetAssets from './WorldStreetAssets';
 `, resolveDir: path.join(root, 'src/components/world') }, bundle: true, platform: 'node', format: 'esm', packages: 'external',
   define: { 'import.meta.env.SSR': 'false', 'import.meta.env.DEV': 'false' }, outfile: path.join(dir,'client.mjs'), logLevel: 'silent' });
 const client = await import(pathToFileURL(path.join(dir,'client.mjs')).href);
@@ -92,4 +97,61 @@ test('production approach ribbons and all billboard candidates have physical ter
     assert.ok(Math.abs(y-earth(x,z))<.0002);
     for(const u of [-1.55,0,1.55])for(const v of [-.65,0,.65])earth(x+Math.cos(yaw)*u+Math.sin(yaw)*v,z-Math.sin(yaw)*u+Math.cos(yaw)*v);
   }
+});
+
+test('street furniture feet meet the terrain and paving collision triangles across the mainland', t => {
+  const scene = new R.World({ x: 0, y: -9.81, z: 0 });
+  t.after(() => scene.free());
+  scene.createCollider(R.ColliderDesc.trimesh(artifact.terrain.positions, artifact.terrain.indices));
+  for (const chunk of client.pavingMesh().chunks) {
+    for (const [vertices, top] of [[chunk.v, chunk.top], [chunk.fv, chunk.ftop]]) {
+      if (!top.length) continue;
+      const positions = new Float32Array(vertices.length / client.PAVE_STRIDE * 3);
+      for (let i = 0; i < positions.length / 3; i++) {
+        const v = i * client.PAVE_STRIDE;
+        positions.set(vertices.slice(v, v + 3), 3 * i);
+      }
+      scene.createCollider(R.ColliderDesc.trimesh(positions, Uint32Array.from(top)));
+    }
+  }
+  scene.step();
+  const api = client.streetAssets, cell = [0, 0, 1, 1];
+  const models = { bench: api.bench().L0, bollard: api.bollard().L0, shelter: api.shelterGeometry(0, cell),
+    lamp: api.lamp().L0, signal: api.signal().L0, stop: api.stopGeometry(0, cell), direction: api.directionGeometry(0, cell),
+    chevron: api.chevronGeometry(0, cell), delineator: api.delineator().L0, bin: api.bin().L0, billboard: api.billboard(0, cell) };
+  const soles = new Map();
+  for (const [kind, model] of Object.entries(models)) {
+    const points = new Map();
+    const minY = model.pos.reduce((min, value, i) => i % 3 === 1 ? Math.min(min, value) : min, Infinity);
+    for (let i = 0; i < model.pos.length; i += 3) {
+      const [x, y, z] = model.pos.slice(i, i + 3);
+      if (y <= minY + .001) points.set([x, y, z].join(','), new Vector3(x, y, z));
+    }
+    assert.ok(points.size >= 3, kind + ' has no measurable foot');
+    soles.set(kind, [...points.values()]);
+  }
+  const objects = client.solidsV4().filter(s => ['bench', 'bollard', 'shelter'].includes(s.kind))
+    .map(s => ({ id: s.kind + '@' + s.position.join(','), kind: s.kind, matrix: client.streetFurnitureMatrix(s) }));
+  for (const item of [...client.knockablesV4(), ...client.billboardPlacements()]) {
+    objects.push({ id: item.id, kind: item.kind, matrix: new Matrix4().makeRotationY(item.yaw).setPosition(...item.position) });
+  }
+  const errors = [];
+  let samples = 0;
+  let maxDeviation = 0;
+  assert.deepEqual(new Set(objects.map(o => o.kind)), new Set(soles.keys()), 'every street model needs a placed instance');
+  for (const {id, kind, matrix} of objects) {
+    let worst = 0;
+    for (const foot of soles.get(kind)) {
+      const p = foot.clone().applyMatrix4(matrix);
+      const hit = scene.castRay(new R.Ray({ x: p.x, y: p.y + 2, z: p.z }, { x: 0, y: -1, z: 0 }), 10, true);
+      assert.ok(hit, id + ' has no support at ' + p.toArray());
+      const gap = hit.timeOfImpact - 2;
+      maxDeviation = Math.max(maxDeviation, Math.abs(gap));
+      if (Math.abs(gap) > Math.abs(worst)) worst = gap;
+      samples++;
+    }
+    if (Math.abs(worst) > .025) errors.push({id, gapMm: Math.round(worst * 1000)});
+  }
+  t.diagnostic(`${objects.length} street placements, ${samples} sole samples, largest deviation ${(1000 * maxDeviation).toFixed(1)} mm`);
+  assert.deepEqual(errors, []);
 });

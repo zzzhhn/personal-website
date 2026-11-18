@@ -325,6 +325,12 @@ The boarding mask now sizes its uniforms and shader from the same complete route
 
 Interaction audit follow-up: ferry and cable platforms now advertise calling an absent vehicle or boarding a present one. Both the prompt and execution use the current station availability, and a second call during empty travel has no effect. The sled destination stays exit-only. The global registry now rejects out-of-range and different-floor candidates before evaluating their venue callbacks. Behavioral tests exercise the call/wait/board sequence, repeat input, disabled nearby entries, selection order and preferred selection. Mask initialization now reads the shared boarding layout directly and skips constructing six temporary meshes. A comparison against the preceding implementation verified identical positions, indices, paths and segments at all six terminals (118 triangles total). No target-device frame-time measurement is claimed.
 
+## Mainland street contact on production paving
+
+Run `npm run check:grounding` for the current mainland, Alpha, cave, waterwheel and placement suites. The V4 street survey places the detailed models at their runtime home transforms, then raycasts their sole vertices against the terrain artifact and the walkable paving triangles in Rapier. It reports floating and buried feet with object IDs and signed millimetres. Coverage is currently 60 knockable street props at rest, 26 fixed street fixtures and three billboards. It does not assess dynamic settling or player movement.
+
+The previous contour simplifier discarded changes in sidewalk width and kerb height along straight gutters. The affected promenade benches had gaps up to 150 mm and the bus shelter centre had a 102 mm gap. Simplification now preserves these profile changes. A bench was moved inside the full-width promenade and the camp-road lamp beyond the ramp apron. The street survey now passes at all 1,234 samples with a maximum absolute deviation of 12 mm (limit 25 mm). Paving strip triangles increased from 9,378 to 11,564; carriageway cell triangles stayed at 5,606. The terrain payloads and street models are unchanged.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

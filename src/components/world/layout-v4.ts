@@ -526,7 +526,7 @@ export const solidsV4 = /*#__PURE__*/ lazy((): SolidBox[] => {
   // Benches: forecourts, pocket park, sea-side promenade (against the rail, x 30.1).
   for (const b of BUILDINGS_V4) out.push(box('bench', 12.4, ROAD_Y + .01, b.position[2] + 2.4, .6, .45, 1.8, '#8E6E55', 0, true));
   for (const [x, z] of [[-23.5, -44.5], [-19.5, -44.5], [-23.5, -39.5], [-19.5, -39.5]]) out.push(box('bench', x, GROUND, z, 1.8, .45, .6, '#8E6E55', 0, true));
-  for (const z of [-28, 16, 22]) out.push(box('bench', 30.1, ROAD_Y + .01, z, .6, .45, 1.8, '#8E6E55', 0, true));
+  for (const z of [-28, 16, 4]) out.push(box('bench', 30.1, ROAD_Y + .01, z, .6, .45, 1.8, '#8E6E55', 0, true));
   // Pocket park trees (trunk solid; canopy visual).
   for (const [x, z] of [[-21.5, -42]]) out.push(box('trunk', x, GROUND, z, .7, 2.8, .7, '#5A4634'));
   // Seawall rail along the avenue's sea side, ending clear of the bridge's south rail / J3 envelope.
@@ -658,7 +658,9 @@ export const knockablesV4 = /*#__PURE__*/ lazy((): Knockable[] => {
     if (!c.lamp || r.cls === 'avenue') continue;
     const total = polylineLength(r.pts);
     for (let side = 0; side < c.lampSides; side++) {
-      for (let s = 5 + side * c.lamp / 2; s < total - 3; s += c.lamp) {
+      // Start beyond the flared apron where the frozen camp ramp meets this sidewalk.
+      const firstLamp = r.id === 'camp-road' ? 9 : 5;
+      for (let s = firstLamp + side * c.lamp / 2; s < total - 3; s += c.lamp) {
         const q = pointAt(r.pts, s), sign = side === 0 ? 1 : -1, off = r.cls === 'foot' ? c.width / 2 - .3 : paveHalf(r.cls) - .4;
         const p = add(q.p, mul(rightOf(q.dir), sign * off));
         if (nearJunction(p) || inLayby(p) || !free(p)) continue;

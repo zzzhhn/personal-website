@@ -405,16 +405,33 @@ export function parkPlazaPavingVisual(c: PaveChunk) {
   return out;
 }
 
-/** Douglas-Peucker on an open/closed point chain (xz). */
-function simplify(pts: P2[], eps: number, closed: boolean): P2[] {
+/** A straight gutter can have a widening sidewalk or dropped kerb. Keep
+ * their cross-section changes when simplifying the original contour. */
+function simplifyGutter(pts: P2[], closed: boolean, field: PavingField): P2[] {
   if (pts.length < 4) return pts;
+  const profiles = pts.map(([x, z]) => {
+    const normal = unit([
+      sampleField(field.D, x + CELL, z) - sampleField(field.D, x - CELL, z),
+      sampleField(field.D, x, z + CELL) - sampleField(field.D, x, z - CELL),
+    ]);
+    return [sampleField(field.SW, x + normal[0] * GUTTER_W, z + normal[1] * GUTTER_W, 1),
+      GUTTER_DROP * sampleField(field.K, x, z, 0)];
+  });
   const keep = new Uint8Array(pts.length); keep[0] = 1; keep[pts.length - 1] = 1;
   const stack: [number, number][] = [[0, pts.length - 1]];
   if (closed) { const m = Math.floor(pts.length / 2); keep[m] = 1; stack.length = 0; stack.push([0, m], [m, pts.length - 1]); }
   while (stack.length) {
     const [a, b] = stack.pop()!; let best = -1, bi = -1;
-    for (let i = a + 1; i < b; i++) { const d = segmentDistance(pts[i], pts[a], pts[b]).distance; if (d > best) { best = d; bi = i; } }
-    if (best > eps) { keep[bi] = 1; stack.push([a, bi], [bi, b]); }
+    for (let i = a + 1; i < b; i++) {
+      const {distance, t} = segmentDistance(pts[i], pts[a], pts[b]);
+      let error = distance / .02;
+      for (let k = 0; k < 2; k++) {
+        const linear = profiles[a][k] + (profiles[b][k] - profiles[a][k]) * t;
+        error = Math.max(error, Math.abs(profiles[i][k] - linear) / .01);
+      }
+      if (error > best) { best = error; bi = i; }
+    }
+    if (best > 1) { keep[bi] = 1; stack.push([a, bi], [bi, b]); }
   }
   return pts.filter((_, i) => keep[i]);
 }
@@ -525,7 +542,7 @@ export const pavingMesh = lazy(() => {
   let stripTris = 0;
   const Dat = (x: number, z: number) => sampleField(F.D, x, z);
   for (const ch of gutterContours(F)) {
-    const pts = simplify(ch.pts, .02, ch.closed), n = pts.length;
+    const pts = simplifyGutter(ch.pts, ch.closed, F), n = pts.length;
     if (n < 2) continue;
     const segN: P2[] = [];
     for (let i = 0; i < n - 1; i++) { const d = unit([pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]]); segN.push([-d[1], d[0]]); }
@@ -541,7 +558,7 @@ export const pavingMesh = lazy(() => {
     const rows = pts.map((p, i) => {
       if (i) arc += Math.hypot(p[0] - pts[i - 1][0], p[1] - pts[i - 1][1]);
       const nn = vN[i], k = clamp(sampleField(F.K, p[0], p[1], 0), 0, 1), w = sampleField(F.W, p[0], p[1], 0), m = Math.hypot(nn[0], nn[1]);
-      let sw = sampleField(F.SW, p[0] + nn[0] * .4, p[1] + nn[1] * .4, 1);
+      let sw = sampleField(F.SW, p[0] + nn[0] * GUTTER_W, p[1] + nn[1] * GUTTER_W, 1);
       sw = Math.max(sw, KERB_FACE + KERB_TOP + .04);
       const offs = [...PROFILE.map(r => r.o), GUTTER_W + KERB_FACE + KERB_TOP, GUTTER_W + sw, GUTTER_W + sw + CHAMFER];
       const top = .01 * k, ys = [...PROFILE.map(r => r.y(k)), top, top, edgeFootY(p[0] + nn[0] * (GUTTER_W + sw + CHAMFER), p[1] + nn[1] * (GUTTER_W + sw + CHAMFER)) - ROAD_Y];
