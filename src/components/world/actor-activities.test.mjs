@@ -1,3 +1,4 @@
+import { cacheGroundRoute } from './activity-ground-route.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createActorActivities, activityApproachMotion } from './actor-activities.ts';
@@ -154,4 +155,20 @@ test('mine-owned carry restrictions and put-down preserve ore through a registry
   assert.equal(useAlphaMineStore.getState().carried,'REVERSAL_5');assert.equal(useAlphaMineStore.getState().dropped,null);
   assert.equal(mineActor.available,false);assert.equal(mineVisualSockets.valid,false);
   assert.equal(registry.carrying(),false);assert.equal(registry.busy(),false);
+});
+
+test('offer reads reuse a local route briefly and activation rechecks a newly blocked floor',()=>{
+  let calls=0,time=0,clear=true;
+  const query=cacheGroundRoute((from,to)=>{calls++;return clear?to:null;},()=>time);
+  const from=[0,1,0],to=[1,1,0];
+  assert.deepEqual(query(from,to,2),to);
+  clear=false;
+  assert.deepEqual(query([.02,1,0],to,2),to);
+  assert.equal(calls,1);
+  assert.equal(query(from,to,2,true),null);
+  clear=true;assert.equal(query(from,to,2),null);
+  time=101;assert.deepEqual(query(from,to,2),to);
+  clear=false;assert.equal(query([.09,1,0],to,2),null);
+  clear=true;assert.deepEqual(query([.09,1,0],[1,1,1],2),[1,1,1]);
+  clear=false;assert.equal(query([.09,1,0],[1,1,1],1),null);
 });

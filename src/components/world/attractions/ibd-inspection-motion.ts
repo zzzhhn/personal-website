@@ -1,4 +1,5 @@
 import { PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
+import type { GroundRouteQuery } from '../activity-ground-route';
 import type { Vec3 } from '../types.ts';
 import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from '../accepted-action';
 
@@ -16,7 +17,7 @@ export interface IbdInspectionVisualSockets {
   valid: boolean; reachable: boolean; sampledId: number | null; sampledElapsed: number;
   leftHand: Vec3; rightHand: Vec3; leftContactError: number; rightContactError: number; contactError: number;
 }
-export const ibdInspectionActor = { position: [0,0,0] as Vec3, yaw: 0, grounded: false, available: false, mode: 'guide' };
+export const ibdInspectionActor = { position: [0,0,0] as Vec3, yaw: 0, groundRoute: undefined as GroundRouteQuery | undefined, grounded: false, available: false, mode: 'guide' };
 export const ibdInspectionBody = { action: null as IbdInspectionAction | null, carried: null as IbdInspectionCarried };
 export const ibdInspectionVisualSockets: IbdInspectionVisualSockets = {
   valid: false, reachable: false, sampledId: null, sampledElapsed: 0, leftHand: [0,0,0], rightHand: [0,0,0],

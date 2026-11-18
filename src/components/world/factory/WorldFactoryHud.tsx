@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useWorldStore } from '../store';
 import { FACTORY_STATION_NAMES, FACTORY_STATION_PURPOSE, factoryActionLabel } from './factory-copy';
 import { nextFactoryStation, factoryHoistCue, factoryExperimentRoutes } from './factory-guidance';
-import { useFactoryStore, factoryStationActions, startFactoryOperation, closeFactoryStation, factoryControl, clearFactoryInput, observeFactoryTrial, guideFactoryStation, printFactoryReport, startNextFactoryBatch } from './factory-store';
+import { useFactoryStore, factoryOperatorAt, factoryStationActions, startFactoryOperation, closeFactoryStation, factoryControl, clearFactoryInput, observeFactoryTrial, guideFactoryStation, printFactoryReport, startNextFactoryBatch } from './factory-store';
 import WorldFactoryReadings, { FactoryTrialReadings } from './WorldFactoryReadings';
 import { factoryWheelExperiment } from './factory-experiment-feedback';
 import './factory.css';
 
 export default function WorldFactoryHud(){
   const station=useWorldStore(s=>s.factoryStation),lang=useWorldStore(s=>s.lang),paused=useWorldStore(s=>s.paused||s.poolInspect);
+  const operatorReady=useWorldStore(s=>!!s.factoryStation&&factoryOperatorAt(s.factoryStation));
   const state=useFactoryStore(),zh=lang==='zh',p=state.game.pending;
   useEffect(()=>{
     if(!station)return;
@@ -64,7 +65,7 @@ export default function WorldFactoryHud(){
       <p>{FACTORY_STATION_PURPOSE[station][zh?0:1]}</p>
       {station==='rework'&&factoryWheelExperiment(state.game,zh)&&<p className="factory-experiment-advice">{factoryWheelExperiment(state.game,zh)}</p>}
       {state.notice&&<p role="status">{state.notice==='completed'?(zh?'已完成，材料与记录已保留。':'Complete. Parts and records retained.'):(zh?'试验未完成，可重新尝试。':'Trial incomplete. You can run it again.')}</p>}
-      <div className="factory-actions">{actions.map((a,i)=><button key={i} onClick={()=>startFactoryOperation(a)}>{factoryActionLabel(a,zh)}</button>)}</div>
+      <div className="factory-actions">{actions.map((a,i)=><button key={i} disabled={!operatorReady} onClick={()=>startFactoryOperation(a)}>{factoryActionLabel(a,zh)}</button>)}</div>
       {station==='release'&&state.game.report&&<button onClick={printFactoryReport}>{zh?'打印产品卡':'Print product card'}</button>}
       {station==='release'&&state.game.released&&state.dispatchView==='printer'&&<button onClick={()=>useFactoryStore.setState({dispatchView:'dock'})}>{zh?'查看伙伴':'Look at companion'}</button>}
       {station==='release'&&state.game.released&&<button onClick={startNextFactoryBatch}>{zh?'开始下一批':'Start another batch'}</button>}

@@ -46,7 +46,7 @@ export function registerIbdActivity(registry: ActorActivities = actorActivities)
         fov:42,smoothing:7,priority:20};
     },
     dispose(){
-      interrupt();cancelIbdAction();ibdInspectionActor.available=false;
+      interrupt();cancelIbdAction();ibdInspectionActor.available=false;ibdInspectionActor.groundRoute=undefined;
       Object.assign(ibdInspectionVisualSockets,{valid:false,reachable:false,sampledId:null,sampledElapsed:0,
         leftContactError:Infinity,rightContactError:Infinity,contactError:Infinity});
     },

@@ -17,6 +17,7 @@ import { RideCameraOrientation, rideCameraPose, rideCameraSweepOrigin, rideLook,
 import { RideCameraObstruction } from './rides/ride-camera-obstruction';
 import { RideCabinCamera } from './rides/ride-camera-cabin';
 import { cycleInteractPick, nearestInteractable, publishInteractionPrompt, resolvePromptTarget, type Interactable } from './WorldInteract';
+import { cacheGroundRoute } from './activity-ground-route';
 import { findPickupStand, pickupGroundRoute } from './pickup-approach';
 import { createInteractionApproach, createInteractionOfferResolver, interactionVisible, type InteractionOfferContext } from './interaction-offer';
 import type { Vec3, VehicleId, VehiclePlacement } from './types';
@@ -357,6 +358,11 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const firstPerson = useWorldStore(s=>s.zoom===3);
   const { world, rapier, colliderStates } = useRapier();
   const passage=useMemo(()=>sites.passage(world,colliderStates),[sites,world,colliderStates]);
+  const groundRoute=useMemo(()=>cacheGroundRoute((from,destination,limit)=>{
+    const body=player.current;
+    return body && passage.allows(from,destination,PLAYER_RADIUS)
+      ? pickupGroundRoute(world,rapier,body,from,destination,limit) : null;
+  }),[passage,world,rapier]);
   const regionNoticeAt=useRef(-Infinity);
   const { camera, scene, gl } = useThree();
   const clearance = useRef<ReturnType<typeof createPlayerClearance> | null>(null);
@@ -1031,7 +1037,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       &&passage.at(asTuple(playerPosition),PLAYER_RADIUS);
     actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:activityAvailable&&!guideTransition.current,
-      mode:active?'vehicle':'guide',handsOccupied:!!guideActionHand.target});
+      mode:active?'vehicle':'guide',groundRoute,handsOccupied:!!guideActionHand.target});
     const unoccupied=activityAvailable&&!actorActivities.blocksOffers()&&!actorActivities.busy()&&!actorActivities.carrying()&&!guideTransition.current;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
@@ -1225,8 +1231,9 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(stance){
         actions.current.jump=false;
         const position:Vec3=[p.x,p.y,p.z],motion=activityApproachMotion(position,stance);
-        const route=motion&&passage.allows(position,stance.stand,PLAYER_RADIUS)&&(!motion.moving||pickupGroundRoute(world,rapier,player.current,position,
-          [stance.stand[0],stance.stand[1]+PLAYER_CENTER_HEIGHT,stance.stand[2]],stance.routeLimit??2));
+        const route=motion && (motion.moving
+          ? groundRoute(position,stance.stand,stance.routeLimit??2,true)
+          : passage.allows(position,stance.stand,PLAYER_RADIUS));
         if(!route){
           actorActivities.interrupt('blocked');
           actorNotice('站位路线被挡住了，请换一侧再试。','The standing position is blocked. Try another side.');

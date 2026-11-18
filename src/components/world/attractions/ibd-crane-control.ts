@@ -3,11 +3,12 @@ import { ibdWorld } from './ibd-yard-layout.ts';
 import type { IbdYardGame } from './ibd-yard-game.ts';
 import { beginIbdInspectionAction, cancelIbdInspectionAction, advanceIbdInspectionAction,
   ibdInspectionBody, ibdInspectionActionAligned } from './ibd-inspection-motion.ts';
+import { canReachIbdWorkstation, ibdWorkstationStance } from './ibd-workstation-reach';
 import type { Vec3 } from '../types.ts';
 
 export type CraneDirection = 'raise'|'travel'|'lower';
 export const CRANE_STEPS = ['raise','travel','lower'] as const;
-export const CRANE_STAND:Vec3=[-6,.1,.84];
+export { CRANE_STAND } from './ibd-workstation-reach';
 export const CRANE_PIVOTS:readonly Vec3[]=[[-6.22,.91,0],[-5.78,.91,0]];
 export const CRANE_GRIP:Vec3=[0,.17,.5];
 export const useIbdCraneControl=create(()=>({stage:0,held:null as CraneDirection|null,ready:false,wrong:false}));
@@ -19,7 +20,9 @@ export function craneGripTarget(side:0|1,angle:number):Vec3 {
 }
 export function beginCraneControl(game:IbdYardGame) {
   const token=game.pending?.token;if(token===undefined||game.pending?.action.kind!=='crane')return false;
-  const anchor={stand:ibdWorld(CRANE_STAND),yaw:Math.PI/2,
+  if(!canReachIbdWorkstation('crane',true))return false;
+  const {stand,radius}=ibdWorkstationStance('crane');
+  const anchor={stand,approachRadius:radius,yaw:Math.PI/2,
     leftTarget:ibdWorld(craneGripTarget(0,0)),rightTarget:ibdWorld(craneGripTarget(1,0))};
   const started=beginIbdInspectionAction('crane-control',anchor,()=>craneControl.token===token&&!craneControl.cancelled,
     ()=>{if(craneControl.token===token){craneControl.cancelled=true;setCraneInput(null);}});

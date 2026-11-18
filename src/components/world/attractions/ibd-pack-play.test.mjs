@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {useIbdYardStore} from './ibd-yard-store.ts';
+import { dispatchIbdAction, cancelIbdAction, useIbdYardStore } from './ibd-yard-store.ts';
 import {createIbdYardGame,yardPackItem} from './ibd-yard-game.ts';
 import {useWorldStore} from '../store.ts';
 import {createActorActivities,activityApproachMotion} from '../actor-activities.ts';
@@ -9,6 +9,9 @@ import R from '@dimforge/rapier3d-compat';
 import {Euler,Quaternion} from 'three';
 import {buildIbdStatic} from './ibd-yard-geometry.ts';
 import {ibdCraftOptions} from './ibd-craft-options.ts';
+import {canReachIbdWorkstation} from './ibd-workstation-reach.ts';
+import {useIbdCraneControl} from './ibd-crane-control.ts';
+import {interactionVisible} from '../interaction-offer.ts';
 import {pickupGroundRoute} from '../pickup-approach.ts';
 import {PLAYER_CENTER_HEIGHT,PLAYER_HALF_HEIGHT,PLAYER_RADIUS} from '../actor-physics.ts';
 import {ibdPackHome,ibdWorld,ibdStation} from './ibd-yard-layout.ts';
@@ -133,7 +136,8 @@ test('reopening preserves an unfinished choice, but a new carton or batch starts
   const g=useIbdYardStore.getState().game;
   useIbdYardStore.setState({game:{...g,core:{...g.core,opened:[...g.core.opened,'parts-b']}}});
   openIbdPack('parts-b');assert.equal(useIbdPackPlay.getState().pack,null,'remote cartons stay closed');
-  const position=ibdWorld([...ibdStation('parts-b').at]);position[1]=ibdInspectionActor.position[1];
+  const position=ibdWorld(ibdPackInspectAnchors('M8',.54).stand.map((v,i)=>v+ibdPackHome('parts-b')[i]));
+  position[1]+=PLAYER_CENTER_HEIGHT;
   Object.assign(ibdInspectionActor,{position});useWorldStore.setState({position});
   openIbdPack('parts-b');assert.equal(useIbdPackPlay.getState().selected,0);
   selectIbdPackPocket(3);cancelIbdPack(true);
@@ -143,7 +147,7 @@ test('reopening preserves an unfinished choice, but a new carton or batch starts
 });
 
 
-test('all four cartons can present a pocket from the outer aisle of the advertised station', async t => {
+async function yardPhysics(t) {
   await R.init();
   const world = new R.World({x:0,y:0,z:0}), origin=ibdWorld([0,0,0]);
   const scene=buildIbdStatic({separateCraftShells:true,...ibdCraftOptions(null)});
@@ -158,22 +162,52 @@ test('all four cartons can present a pocket from the outer aisle of the advertis
   const body=world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
   world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body);
   world.step();
+  return {world,body};
+}
+
+test('all four cartons can present a pocket from the outer aisle of the advertised station', async t => {
+  const {world,body}=await yardPhysics(t);
   for (const pack of ['parts-a','parts-b','stock-a','stock-b']) {
     const item = setup(pack), station = ibdStation(pack);
     const position = ibdWorld([...station.at]);
     position[1] = ibdInspectionActor.position[1];
     position[0] += station.radius - .03;
-    const support=world.castRay(new R.Ray({x:position[0],y:position[1]+.1,z:position[2]},{x:0,y:-1,z:0}),2,true,undefined,undefined,undefined,body);
-    assert.ok(support,pack+' needs a real walk surface');
-    // Spawn clearance is not part of the grounded capsule.
-    position[1]+=.1-support.timeOfImpact+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.001;
-    body.setTranslation({x:position[0],y:position[1],z:position[2]},true);
-    world.step();
-    useWorldStore.setState({position});
+    const standOnFloor = point => {
+      const hit=world.castRay(new R.Ray({x:point[0],y:point[1]+1,z:point[2]},{x:0,y:-1,z:0}),3,true,undefined,undefined,undefined,body);
+      assert.ok(hit,pack+' needs a real walk surface');
+      point[1]+=1-hit.timeOfImpact+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.001;
+    };
+    standOnFloor(position);
+    const aisle=[...position];
     const registry = createActorActivities(), unregister = registerIbdActivity(registry);
+    const groundRoute=(from,stand,limit)=>pickupGroundRoute(world,R,body,from,stand,limit);
+    const sync = () => registry.sync({position:[...position], yaw:Math.PI/2, available:true, grounded:true, mode:'guide', groundRoute});
+    const place = point => {
+      position.splice(0,3,...point);
+      body.setTranslation({x:position[0],y:position[1],z:position[2]},true);
+      world.step();useWorldStore.setState({position});sync();
+    };
     try {
-      const sync = () => registry.sync({position:[...position], yaw:Math.PI/2, available:true, grounded:true, mode:'guide'});
-      sync();
+      if(pack.startsWith('parts-')){
+        const blocked=ibdWorld([...station.at]);
+        blocked[0]+=1.03;blocked[2]+=1.75;
+        standOnFloor(blocked);place(blocked);
+        // The upper-body ray clears the rollers while the capsule cannot cross them.
+        assert.ok(interactionVisible(world,R,body,body.translation(),ibdWorld(station.at)));
+        assert.equal(canReachIbdWorkstation(pack),false,'the station filters its E prompt');
+        tickIbdPackInspection(1/60);
+        assert.equal(useIbdPackPlay.getState().reachable,false,'an already open panel disables sampling');
+        place(aisle);tickIbdPackInspection(1/60);
+        assert.equal(useIbdPackPlay.getState().reachable,true,'returning to the aisle restores the button');
+        place(blocked);
+        assert.equal(requestIbdPackContact(),false,'a panel opened before moving must not reserve an unreachable sample');
+        assert.equal(useIbdPackPlay.getState().reachable,false);
+        assert.equal(ibdInspectionBody.action,null);
+        cancelIbdPack(true);openIbdPack(pack);
+        assert.equal(useIbdPackPlay.getState().pack,null,'a blocked carton must not open');
+      }
+      place(aisle);openIbdPack(pack);
+      assert.equal(useIbdPackPlay.getState().reachable,true);
       assert.ok(requestIbdPackContact(),pack+' accepts the advertised range');
       const route=registry.approach();
       const destination=[route.stand[0],route.stand[1]+PLAYER_CENTER_HEIGHT,route.stand[2]];
@@ -196,4 +230,29 @@ test('all four cartons can present a pocket from the outer aisle of the advertis
       assert.ok(inspection?.held !== null && inspection?.held !== undefined, pack);
     } finally { unregister(); cancelIbdPack(true); }
   }
+});
+
+test('the gantry admits a two-metre aisle approach before handing over its controls',async t=>{
+  const {world,body}=await yardPhysics(t);
+  setup();cancelIbdPack(true);
+  const registry=createActorActivities(), release=registerIbdActivity(registry);
+  t.after(()=>{release();cancelIbdAction();});
+  const position=ibdWorld([-6,.085+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.001,2.84]);
+  const groundRoute=(from,stand,limit)=>pickupGroundRoute(world,R,body,from,stand,limit);
+  let yaw=0;
+  const sync=()=>registry.sync({position:[...position],grounded:true,available:true,mode:'guide',yaw,groundRoute});
+  useWorldStore.setState({position});
+  body.setTranslation({x:position[0],y:position[1],z:position[2]},true);world.step();sync();
+  assert.ok(canReachIbdWorkstation('crane'));
+  dispatchIbdAction({kind:'crane',station:'crane'});
+  assert.equal(useIbdYardStore.getState().game.pending?.action.kind,'crane');
+  assert.equal(useIbdCraneControl.getState().ready,false);
+  for(let i=0;i<240&&!useIbdCraneControl.getState().ready;i++){
+    const stance=registry.approach();
+    assert.ok(stance,'action kept its reservation while walking');
+    const motion=activityApproachMotion(position,stance);
+    position[0]+=motion.vx/60;position[2]+=motion.vz/60;yaw=motion.yaw;
+    sync();registry.advance(1/60);
+  }
+  assert.ok(useIbdCraneControl.getState().ready);
 });

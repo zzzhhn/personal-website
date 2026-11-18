@@ -3,20 +3,28 @@ import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { Quaternion, Euler, Box3, Vector3, Mesh, MeshBasicMaterial, Raycaster } from 'three';
 import { buildFactoryGeometry, FACTORY_PALETTE } from './factory-geometry.ts';
-import { FACTORY_STATIONS, FACTORY_COURSE_LOCAL, FACTORY_LANE_OFFSET, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS } from './factory-layout.ts';
+import { FACTORY_STATIONS, FACTORY_COURSE_LOCAL, FACTORY_LANE_OFFSET, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS, factoryWorld } from './factory-layout.ts';
+import { buildFactoryWorklife } from './factory-worklife.ts';
+import { canOpenFactoryStation, openFactoryStation, closeFactoryStation, useFactoryStore } from './factory-store.ts';
+import { registerFactoryActivity } from './factory-actor-activity.ts';
+import { createActorActivities } from '../actor-activities.ts';
+import { useWorldStore } from '../store.ts';
+import { pickupGroundRoute } from '../pickup-approach.ts';
+import { interactionVisible } from '../interaction-offer.ts';
+import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
 import { buildFactoryPrinter } from './factory-printer.ts';
 import { playerSupport,followPlayerGround,compensatePlayerSlopeGravity,clearPlayerSlopeGravity } from '../player-ground.ts';
 import { createPlayerClearance,sweptPlayerVelocity,playerVelocityChange } from '../player-motion.ts';
 import { FACTORY_WALK_NODES,FACTORY_WALK_EDGES,factoryWalkingRoute } from './factory-navigation.ts';
 import { createFactoryFollower,stepFactoryFollower } from './factory-follower.ts';
 await R.init();
-function worldFor(g){
+function worldFor(g,additionalSolids=[]){
   const w=new R.World({x:0,y:-12.5,z:0});w.timestep=1/60;
   const floor=w.createRigidBody(R.RigidBodyDesc.fixed());floor.userData={surface:true};
   w.createCollider(R.ColliderDesc.trimesh(g.surface.getAttribute('position').array,g.surface.index.array).setFriction(.8),floor);
   const fixed=w.createRigidBody(R.RigidBodyDesc.fixed());fixed.userData={solid:true};
   const printer=buildFactoryPrinter(FACTORY_PALETTE);
-  const solids=[...g.solids,...printer.solids];printer.dispose();
+  const solids=[...g.solids,...additionalSolids,...printer.solids];printer.dispose();
   for(const s of solids){
     const c=R.ColliderDesc.cuboid(...s.size.map(v=>v/2)).setTranslation(...s.at);
     if(s.rotation){const q=new Quaternion().setFromEuler(new Euler(...s.rotation,'YXZ'));c.setRotation(q);}
@@ -158,4 +166,40 @@ test('operator views reach the real work area without the collision camera colla
       assert.ok(!hit,`${station} view blocked at ${hit?.time_of_impact}, collider ${JSON.stringify(hit?.collider.translation())}`);
     }
   }finally{w.free();dispose(g);}
+});
+
+test('every factory console advertises clear capsule routes and rejects visible obstructed approaches',()=>{
+  const g=buildFactoryGeometry(), work=buildFactoryWorklife(FACTORY_PALETTE,{lamps:g.lamps,nightUniform:{value:0}});
+  const w=worldFor(g,work.solids), registry=createActorActivities(), release=registerFactoryActivity(registry);
+  const body=w.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
+  const capsule=new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
+  w.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body);w.step();
+  const origin=factoryWorld([0,0,0]), local=p=>p.map((v,i)=>v-origin[i]);
+  const groundRoute=(from,to,limit)=>{
+    const end=pickupGroundRoute(w,R,body,local(from),local(to),limit);
+    return end&&factoryWorld(end);
+  };
+  useFactoryStore.setState({active:true});useWorldStore.setState({paused:false,factoryStation:null});
+  try{
+    for(const station of FACTORY_STATIONS){
+      const [x,y,z]=station.at, samples=new Set();
+      for(let degrees=0; degrees<360; degrees+=15){
+        const angle=degrees*Math.PI/180,px=x+2*Math.cos(angle),pz=z+2*Math.sin(angle);
+        const hit=w.castRay(new R.Ray({x:px,y:y+2.5,z:pz},{x:0,y:-1,z:0}),4,true,undefined,undefined,undefined,body);
+        if(!hit)continue;
+        const point={x:px,y:y+2.5-hit.timeOfImpact+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.001,z:pz};
+        if(w.intersectionWithShape(point,body.rotation(),capsule,undefined,undefined,undefined,body)
+          || !playerSupport(w,R,body,point,true)?.grounded || !interactionVisible(w,R,body,point,station.at))continue;
+        const from=[point.x,point.y,point.z], position=factoryWorld(from);
+        const path=pickupGroundRoute(w,R,body,from,station.at,station.radius);
+        const reachable=!!path && Math.abs(path[1]-(y+PLAYER_HALF_HEIGHT+PLAYER_RADIUS))<.25;
+        registry.sync({position,grounded:true,available:true,yaw:0,mode:'guide',groundRoute});
+        assert.equal(canOpenFactoryStation(station.id),reachable,station.id+' prompt '+degrees);
+        assert.equal(openFactoryStation(station.id),reachable,station.id+' action '+degrees);
+        assert.equal(useWorldStore.getState().factoryStation,reachable?station.id:null);
+        closeFactoryStation();samples.add(reachable);
+      }
+      assert.deepEqual(samples,new Set([false,true]),station.id+' needs both clear and blocked approaches');
+    }
+  }finally{release();work.dispose();dispose(g);w.free();}
 });

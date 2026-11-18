@@ -4,16 +4,19 @@ import { createFactoryGame, restoreFactoryGame, saveFactoryGame, factoryActions,
   finishFactoryAction, cancelFactoryAction, appendFactoryTrialSample, addFactoryObservation,
   canStartNextFactoryBatch as batchReady, startNextFactoryBatch as nextBatch,
   type FactoryGame, type FactoryAction, type FactoryActionResult, type FactoryTicket, type FactoryTrialSample } from './factory-game.ts';
+import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics';
+import { canReachActivityStand, type GroundRouteQuery } from '../activity-ground-route';
 import { factoryStation, factoryWorld, type FactoryStationId } from './factory-layout.ts';
 import { createFactoryOperation, stepFactoryOperation, factoryAssemblyModules, factoryToolAligned, type FactoryOperation, type FactoryInput } from './factory-operation.ts';
 import { createFactoryInspection, advanceFactoryInspection, type FactoryInspectionSession, type FactoryInspectionProbe } from './factory-inspection.ts';
 import { factoryWalkingRoute } from './factory-navigation.ts';
 import type { FactoryPoint } from './factory-layout.ts';
 
+export const FACTORY_STAND_STOP_DISTANCE = .04;
 const SAVE_KEY='bobby.factory.v1';
 interface FactoryStore {game:FactoryGame;active:boolean;save:'saved'|'memory'|'invalid';notice:string|null;phase:string;aligned:boolean;route:FactoryPoint[]|null;printSequence:number;dispatchView:'dock'|'printer'}
 export const useFactoryStore=create<FactoryStore>(()=>({game:createFactoryGame(),active:false,save:'memory',notice:null,phase:'',aligned:false,route:null,printSequence:0,dispatchView:'dock'}));
-export const factoryActor={available:false,position:[0,0,0],grounded:false};
+export const factoryActor={available:false,position:[0,0,0] as FactoryPoint,grounded:false,groundRoute:undefined as GroundRouteQuery | undefined};
 export const factoryControl:{operation:FactoryOperation|null;inspection:FactoryInspectionSession|null;input:FactoryInput}={operation:null,inspection:null,input:{x:0,z:0,held:false,confirm:false}};
 let loaded=false;
 export function loadFactorySave(){
@@ -62,16 +65,16 @@ export function guideFactoryStation(from:FactoryStationId,to:FactoryStationId){
   const target=factoryWorld(route[1]??factoryStation(to).at);
   useWorldStore.setState({waypoint:[target[0],target[2]]});
 }
-export function canOpenFactoryStation(id:FactoryStationId){
+export function canOpenFactoryStation(id:FactoryStationId,fresh=false){
   const w=useWorldStore.getState(),station=factoryStation(id),p=factoryWorld(station.at),a=factoryActor;
   if(!useFactoryStore.getState().active||!a.available||!a.grounded||!a.position.every(Number.isFinite)
     ||w.paused||w.activeVehicle||w.seat||w.card||w.poolInspect||w.clubMode||w.shot||w.factoryStation
     ||(typeof document!=='undefined'&&document.hidden))return false;
   if(Math.hypot(a.position[0]-p[0],a.position[2]-p[2])>station.radius||Math.abs(a.position[1]-p[1])>2)return false;
-  return true;
+  return canReachActivityStand(a.position,p,station.radius,FACTORY_STAND_STOP_DISTANCE,a.groundRoute,fresh);
 }
 export function openFactoryStation(id:FactoryStationId){
-  if(!canOpenFactoryStation(id))return false;
+  if(!canOpenFactoryStation(id,true))return false;
   clearFactoryInput();useFactoryStore.setState({notice:null,route:null,dispatchView:'dock'});useWorldStore.setState({factoryStation:id,nearbyInteract:null,nearbyVehicle:null});return true;
 }
 export function factoryStationActions(game:FactoryGame,id:FactoryStationId){
@@ -90,12 +93,17 @@ export function factoryStationActions(game:FactoryGame,id:FactoryStationId){
     }
   });
 }
+export function factoryOperatorAt(id:FactoryStationId){
+  const {available,grounded,position}=factoryActor;
+  if(!available||!grounded||!position.every(Number.isFinite))return false;
+  const stand=factoryWorld(factoryStation(id).at);
+  return Math.hypot(position[0]-stand[0],position[2]-stand[2])<=.25
+    && Math.abs(position[1]-stand[1]-PLAYER_HALF_HEIGHT-PLAYER_RADIUS)<=.25;
+}
 export function startFactoryOperation(action:FactoryAction){
   const w=useWorldStore.getState(),s=useFactoryStore.getState();
-  if(!w.factoryStation||w.paused||w.poolInspect||!s.active||s.game.pending||!factoryActor.available||!factoryActor.grounded||!factoryActor.position.every(Number.isFinite)
+  if(!w.factoryStation||w.paused||w.poolInspect||!s.active||s.game.pending||!factoryOperatorAt(w.factoryStation)
     ||w.activeVehicle||w.seat||w.card||w.clubMode||w.shot||(typeof document!=='undefined'&&document.hidden))return false;
-  const stand=factoryWorld(factoryStation(w.factoryStation).at);
-  if(Math.hypot(factoryActor.position[0]-stand[0],factoryActor.position[2]-stand[2])>.25)return false;
   const legal=factoryStationActions(s.game,w.factoryStation).some(a=>JSON.stringify(a)===JSON.stringify(action));
   if(!legal)return false;
   const game=requestFactoryAction(s.game,action);if(game===s.game)return false;

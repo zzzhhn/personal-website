@@ -8,7 +8,7 @@ import { useWorldStore } from '../store.ts';
 import { PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
 import { createFactoryGame, requestFactoryAction, finishFactoryAction } from './factory-game.ts';
 import { FACTORY_STATIONS, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS, factoryWorld, factoryStation } from './factory-layout.ts';
-import { factoryActor, factoryControl, useFactoryStore, closeFactoryStation, canOpenFactoryStation,
+import { factoryActor, factoryControl, factoryOperatorAt, useFactoryStore, closeFactoryStation, canOpenFactoryStation,
   openFactoryStation, startFactoryOperation, tickFactoryOperation } from './factory-store.ts';
 
 function fixture(){
@@ -17,7 +17,8 @@ function fixture(){
   useWorldStore.setState({paused:false,poolInspect:false,card:null,activeVehicle:null,seat:null,clubMode:null,shot:null});
   const registry=createActorActivities(),release=registerFactoryActivity(registry);
   const stand=(id,dx=0)=>{const p=factoryWorld(factoryStation(id).at);return [p[0]+dx,p[1]+PLAYER_CENTER_HEIGHT,p[2]];};
-  const sync=(id='raw',dx=0,extra={})=>registry.sync({position:stand(id,dx),yaw:0,grounded:true,available:true,handsOccupied:false,mode:'guide',...extra});
+  const groundRoute=(_from,to)=>[to[0],to[1]+PLAYER_CENTER_HEIGHT,to[2]];
+  const sync=(id='raw',dx=0,extra={})=>registry.sync({position:stand(id,dx),yaw:0,grounded:true,available:true,handsOccupied:false,mode:'guide',groundRoute,...extra});
   sync();return {registry,release,stand,sync};
 }
 
@@ -29,9 +30,11 @@ test('all factory workstations provide live input ownership, the original approa
       assert.equal(openFactoryStation(station.id),true);f.sync(station.id,.6);
       assert.equal(factoryActor.available,true,'workstation occupation must not disable its own operator');
       assert.equal(f.registry.inputOwner(),`factory:${station.id}`);
+      assert.equal(factoryOperatorAt(station.id),false,'operations stay disabled during approach');
       const stance=f.registry.approach(),motion=activityApproachMotion(f.stand(station.id,.6),stance);
       assert.equal(motion.vx,-1.4);assert.equal(stance.yaw,station.yaw-Math.PI/2);
       const view=f.registry.camera();assert.equal(view.fov,50);assert.equal(view.smoothing,6);assert.equal(view.priority,30);
+      f.sync(station.id);assert.equal(factoryOperatorAt(station.id),true);
       assert.ok([...view.target,...view.eye].every(Number.isFinite));
     }
     closeFactoryStation();assert.equal(f.registry.inputOwner(),null);assert.equal(f.registry.camera(),null);

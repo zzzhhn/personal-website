@@ -1,6 +1,7 @@
+import type { GroundRouteQuery } from './activity-ground-route';
 import type { Vec3 } from './types';
 
-export type ActorActivityPose = { position: Vec3; yaw: number; grounded: boolean; available: boolean; mode?: 'guide' | 'vehicle'; handsOccupied?: boolean };
+export type ActorActivityPose = { position: Vec3; yaw: number; grounded: boolean; available: boolean; mode?: 'guide' | 'vehicle'; handsOccupied?: boolean; groundRoute?: GroundRouteQuery };
 export type ActivityNotice = { zh: string; en: string };
 export type ActivityInterruption = 'motion' | 'recovery' | 'blocked';
 export interface ActivityApproach {

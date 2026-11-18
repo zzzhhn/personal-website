@@ -21,8 +21,9 @@ export default function WorldIbdPackControls({zh}:{zh:boolean}) {
       <p>{t('已验样：','Samples checked: ')}{c.inspection.slots.filter(p=>p.reading).map(p=>`${p.index+1} · ${p.reading}`).join(' / ')}</p>}
     {view.feedback==='clamp-misaligned'&&<p role="status">{t('未能确认接触，请再次点击「合拢并读数」。','Contact could not be confirmed. Choose Close and read again.')}</p>}
     {view.feedback==='interrupted'&&<p role="status">{t('动作中断，零件已保留，可重试或归位退出。','Action interrupted. Your sample is retained; retry or put it back.')}</p>}
-    {view.feedback==='move-closer'&&<p role="status">{t('再走近箱前一步后取样。','Step closer to the front of the carton before sampling.')}</p>}
-    <div className="ibd-actions"><button className="ibd-primary" disabled={view.busy||(!held&&c.inspection.slots[view.selected].complete)} onClick={()=>requestIbdPackContact()}>
+    {!view.reachable&&<p role="status">{t('请从箱前通道靠近检验台。','Approach the inspection bench from the aisle.')}</p>}
+    {view.reachable&&view.feedback==='move-closer'&&<p role="status">{t('再走近箱前一步后取样。','Step closer to the front of the carton before sampling.')}</p>}
+    <div className="ibd-actions"><button className="ibd-primary" disabled={view.busy||!view.reachable||(!held&&c.inspection.slots[view.selected].complete)} onClick={()=>requestIbdPackContact()}>
       {view.busy?view.feedback==='closing'?t('合拢中…','Closing…'):view.feedback==='measured'?t('读数完成','Reading captured')
         :['returning','returned','cancelled'].includes(view.feedback)?t('归位中…','Returning…'):t('送样中…','Presenting…')
         :held?measured?t('放回原槽','Return to pocket'):t('合拢并读数','Close and read'):t('取出所选槽','Present selected pocket')}</button>

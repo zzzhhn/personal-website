@@ -21,6 +21,7 @@ import WorldIbdGuide from './WorldIbdGuide';
 import { ibdGuideStep } from './ibd-yard-guide.ts';
 import WorldIbdAudio from './WorldIbdAudio';
 import WorldIbdStaticCraft from './WorldIbdStaticCraft';
+import { canReachIbdWorkstation } from './ibd-workstation-reach';
 import { openIbdPack, requestIbdPackContact, useIbdPackPlay, ibdPackWorkBusy, cancelIbdPack } from './ibd-pack-play';
 
 function Station({ id, active }: { id: IbdStationId; active: boolean }) {
@@ -30,11 +31,14 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
   const stockChoice=game.stock.requested&&isIbdStockKey(id);
   const action = id==='stock-room'?undefined:guided && id === target.id ? guide.action
     : guided && id === 'manifest' && game.started ? undefined : yardActions(game, id)[0];
+  const workstation = action?.kind==='contents' && isIbdPackStation(id) ? id
+    : action?.kind==='crane' && id==='crane' ? id : null;
   useInteractable(active && action ? {
     id: `ibd-${id}`, kind: 'exhibit', position: ibdWorld(station.at), radius: station.radius,
     label: guided && id === target.id ? guide.title : IBD_ACTION_LABEL[action.kind],
     enabled: () => { const a = ibdActor(); return a.active && !a.paused && !a.hidden && !a.driving && !useIbdYardStore.getState().game.pending
-      && !ibdPackWorkBusy() && (!guided || id === target.id || stockChoice); },
+      && !ibdPackWorkBusy() && (!guided || id === target.id || stockChoice)
+      && (!workstation || canReachIbdWorkstation(workstation)); },
     onInteract: () => {
       if(action.kind==='contents'&&isIbdPackStation(action.station)){
         if(useIbdPackPlay.getState().pack===action.station)requestIbdPackContact();else openIbdPack(action.station);

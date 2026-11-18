@@ -1,6 +1,6 @@
 import { actorActivities, type ActorActivities, type ActivityCamera } from '../actor-activities';
 import { useWorldStore } from '../store';
-import { factoryActor, closeFactoryStation, clearFactoryInput, useFactoryStore } from './factory-store';
+import { FACTORY_STAND_STOP_DISTANCE, factoryActor, closeFactoryStation, clearFactoryInput, useFactoryStore } from './factory-store';
 import { FACTORY, FACTORY_DISPATCH_VIEWS, FACTORY_WORK_VIEWS, factoryStation, factoryWorld } from './factory-layout';
 
 /** Production remains on the factory scene clock. This adapter owns the operator's access and framing. */
@@ -11,11 +11,12 @@ export function registerFactoryActivity(registry: ActorActivities = actorActivit
       const id=useWorldStore.getState().factoryStation,station=id?factoryStation(id):null;
       return {busy:!!station,carrying:false,inputOwner:id??undefined,
         approach:station?{stand:factoryWorld(station.at),yaw:station.yaw-Math.PI/2,moving:true,
-          stopDistance:.04,maxSpeed:1.4,turnDistance:.24,routeLimit:station.radius}:undefined,
+          stopDistance:FACTORY_STAND_STOP_DISTANCE,maxSpeed:1.4,turnDistance:.24,routeLimit:station.radius}:undefined,
         notice:()=>({zh:'请先退出工作台，再上车。',en:'Leave the workstation before entering.'})};
     },
     sync(pose,context){
       if(pose.position)factoryActor.position=[...pose.position];
+      if(pose.groundRoute)factoryActor.groundRoute=pose.groundRoute;
       if(pose.grounded!==undefined)factoryActor.grounded=pose.grounded;
       if(pose.available!==undefined){
         factoryActor.available=pose.available&&!context.occupiedElsewhere&&!pose.handsOccupied&&useFactoryStore.getState().active;
@@ -52,6 +53,6 @@ export function registerFactoryActivity(registry: ActorActivities = actorActivit
       }
       return {target,eye,fov:50,smoothing:6,priority:30};
     },
-    dispose(){closeFactoryStation();factoryActor.available=false;},
+    dispose(){closeFactoryStation();factoryActor.available=false;factoryActor.groundRoute=undefined;},
   });
 }

@@ -7,10 +7,11 @@ import { IBD_PACK_INSPECTION, ibdPackInspectAnchors } from './ibd-pack-layout';
 import { advanceIbdInspectionAction, beginIbdInspectionAction, cancelIbdInspectionAction,
   ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_CALIPER_REACH_SECONDS,
   type IbdInspectionActionKind } from './ibd-inspection-motion';
+import { canReachIbdWorkstation, ibdWorkstationStance } from './ibd-workstation-reach';
 import type { Vec3 } from '../types';
 
 export const useIbdPackPlay = create(() => ({ pack: null as IbdPackStation|null, selected: 0 as IbdPackSlotIndex,
-  gap: .54, busy: false, feedback: '', round:0, itemId:'' }));
+  gap: .54, busy: false, reachable: true, feedback: '', round:0, itemId:'' }));
 /** Animation data is sampled on the existing physics clock, never pushed through React each frame. */
 export const ibdPackVisual = { pack: null as IbdPackStation|null, index: 0 as IbdPackSlotIndex, progress: 0, jaw: .54, retracting: false };
 export const ibdPackWorkBusy=()=>ibdInspectionBodyBusy()||ibdPackVisual.retracting||(!ibdInspectionBody.carried&&ibdPackVisual.progress>0);
@@ -29,13 +30,13 @@ export function openIbdPack(pack: IbdPackStation) {
   const g=useIbdYardStore.getState().game, item=yardPackItem(g,pack), a=actor();
   if(!item)return;
   const id=item.id;
-  if (!ibdReach(a.local, ibdStation(pack)) || !a.active || a.paused || a.hidden || a.driving || g.pending
+  if (!canReachIbdWorkstation(pack,true) || !a.active || a.paused || a.hidden || a.driving || g.pending
     || !g.equipped || !g.core.opened.includes(id) || g.core.loaded.includes(id) || ibdInspectionBodyBusy()) return;
   if (ibdInspectionBody.carried && useIbdPackPlay.getState().pack!==pack) return;
   const view=useIbdPackPlay.getState(), slots=g.packInspections[id]?.slots;
   const resume=view.itemId===id&&view.round===g.round&&!slots?.[view.selected].complete;
   const selected=resume?view.selected:slots?.find(p=>!p.complete)?.index??0;
-  useIbdPackPlay.setState({pack,selected,feedback:'',round:g.round,itemId:id});
+  useIbdPackPlay.setState({pack,selected,reachable:true,feedback:'',round:g.round,itemId:id});
 }
 export function selectIbdPackPocket(index: IbdPackSlotIndex) {
   if (ibdInspectionBodyBusy() || ibdInspectionBody.carried || ibdPackVisual.progress>0 || index<0 || index>3) return;
@@ -59,11 +60,12 @@ export function requestIbdPackContact(kind?: IbdInspectionActionKind) {
   const gap=fresh?IBD_PACK_INSPECTION.gapMax:ibdPackVisual.jaw;
   const spec=item.specId==='M6'?'M6':'M8', local=ibdPackInspectAnchors(spec,gap), home=ibdPackHome(view.pack!);
   const world=(p:Vec3)=>ibdWorld(p.map((n,i)=>n+home[i]) as Vec3);
-  const station=ibdStation(view.pack!);
-  if (!ibdReach(state.local, station)) return false;
-  // Some authored station markers sit two centimetres off the actual stance.
-  const approachRadius=station.radius+Math.hypot(home[0]+local.stand[0]-station.at[0],home[2]+local.stand[2]-station.at[2]);
-  const anchor={approachRadius,stand:world(local.stand),yaw:local.yaw,leftTarget:world(local.leftTarget),rightTarget:world(local.rightTarget)};
+  if (!canReachIbdWorkstation(view.pack!,true)) {
+    useIbdPackPlay.setState({reachable:false});
+    return false;
+  }
+  const {stand,radius}=ibdWorkstationStance(view.pack!);
+  const anchor={approachRadius:radius,stand,yaw:local.yaw,leftTarget:world(local.leftTarget),rightTarget:world(local.rightTarget)};
   const round=game.round, revision=game.revision;
   const started=beginIbdInspectionAction(action,anchor,()=>{
     const live=currentIbdPack();
@@ -113,6 +115,10 @@ export function tickIbdPackInspection(dt: number) {
   if(!ibdInspectionActor.available || !state.active || c.view.round!==c.game.round || c.view.itemId!==c.item.id || c.game.core.loaded.includes(c.item.id)
     || !ibdReach(state.local, ibdStation(c.view.pack!))){cancelIbdPack(true);return;}
   const a=ibdInspectionBody.action;
+  if(!a && !ibdPackVisual.retracting){
+    const reachable=canReachIbdWorkstation(c.view.pack!);
+    if(c.view.reachable!==reachable)useIbdPackPlay.setState({reachable});
+  }
   advanceIbdInspectionAction(dt);
   if(a?.phase==='perform'){
     if(a.kind==='pickup'||a.kind==='empty')ibdPackVisual.progress=Math.min(1,a.elapsed/1.5);

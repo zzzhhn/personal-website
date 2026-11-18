@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { registerFactoryActivity } from './factory-actor-activity.ts';
+import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics.ts';
 import assert from 'node:assert/strict';
 import {createFactoryOperation,stepFactoryOperation,factoryAssemblyModules,FACTORY_RAW_PICK,FACTORY_RAW_DROP,FACTORY_RAW_HALF_HEIGHT,FACTORY_MAGNET_HALF_HEIGHT,FACTORY_RAW_IDLE,factoryRawDrop,
   FACTORY_ASSEMBLY_PICK,FACTORY_ASSEMBLY_PICK_HEIGHT,FACTORY_ASSEMBLY_CONTACT,FACTORY_ASSEMBLY_IDLE,FACTORY_ASSEMBLY_BOUNDS} from './factory-operation.ts';
@@ -145,12 +147,13 @@ test('reworking wheels does not lift the retained chassis again',()=>{
   assert.equal(noMove.phase,'done');assert.equal(noMove.attached,false);
 });
 test('world console rejects remote use; pause clears held controls, Esc and camp recovery return pending material',()=>{
-  const disconnect=connectFactoryWorld();
+  const disconnect=connectFactoryWorld(), unregister=registerFactoryActivity();
   try{
     useWorldStore.setState({paused:false,poolInspect:false,seat:null,card:null,clubMode:null,activeVehicle:null,factoryStation:null});
     useFactoryStore.setState({active:true,game:createFactoryGame('operation-test')});Object.assign(factoryActor,{available:true,grounded:true,position:[0,1,0]});
     assert.equal(openFactoryStation('raw'),false);
-    factoryActor.position=factoryWorld(factoryStation('raw').at);assert.equal(openFactoryStation('raw'),true);
+    factoryActor.position=factoryWorld(factoryStation('raw').at);factoryActor.position[1]+=PLAYER_HALF_HEIGHT+PLAYER_RADIUS;
+    assert.equal(openFactoryStation('raw'),true);
     assert.equal(startFactoryOperation({type:'extract',module:'frame'}),true);
     factoryControl.input.held=true;factoryControl.input.confirm=true;useWorldStore.setState({paused:true});
     assert.equal(factoryControl.input.held,false);assert.equal(factoryControl.input.confirm,false);
@@ -159,5 +162,5 @@ test('world console rejects remote use; pause clears held controls, Esc and camp
     assert.equal(useFactoryStore.getState().game.pending,null);assert.equal(useFactoryStore.getState().game.materials.frame.status,'source');
     assert.equal(openFactoryStation('raw'),true);startFactoryOperation({type:'extract',module:'wheels'});requestCampReturn();
     assert.equal(useFactoryStore.getState().game.pending,null);assert.equal(factoryControl.operation,null);
-  }finally{closeFactoryStation();disconnect();}
+  }finally{unregister();disconnect();}
 });
