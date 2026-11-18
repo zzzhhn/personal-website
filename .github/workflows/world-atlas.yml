@@ -24,20 +24,46 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  capture:
+  build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22.16'
           cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: compiled-world-pages
+          path: |
+            dist/world
+            dist/_astro
+          retention-days: 1
+
+  capture:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    strategy:
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tools/world
+            public
+      - uses: actions/download-artifact@v4
+        with:
+          name: compiled-world-pages
+          path: dist
+      - run: cp -a public/. dist/
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: npm ci
-      - run: npm run build
       - run: |
           python -m pip install playwright==1.60.0 Pillow==12.2.0
           python -m playwright install --with-deps chromium
@@ -47,7 +73,30 @@ jobs:
           server=$!
           trap 'kill "$server"' EXIT
           curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent --output /dev/null http://127.0.0.1:4343/world/
-          python tools/world/capture-site-atlas.py
+          python tools/world/capture-site-atlas.py --shards 4 --shard "${{ matrix.shard }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: atlas-rows-${{ matrix.shard }}
+          path: local/world-atlas/
+          if-no-files-found: error
+          retention-days: 1
+
+  atlas:
+    needs: capture
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools/world
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright==1.60.0 Pillow==12.2.0
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: atlas-rows-*
+          path: ${{ runner.temp }}/rows
+      - run: python tools/world/capture-site-atlas.py --assemble "$RUNNER_TEMP/rows"
       - uses: actions/upload-artifact@v4
         with:
           name: world-atlas-${{ github.sha }}

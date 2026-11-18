@@ -19,6 +19,8 @@ VIEWPORT = {"width": 960, "height": 540}
 # reach "ready" at camp while some of these objects are still downloading.
 DISTRICTS = ["world-camp-content", "world-town", "world-street", "world-districts-v4",
              "djc-beach-club", "alpha-island-batch2", "world-ibd-yard", "factory-structure"]
+TILE_WIDTH, TILE_HEIGHT, LABEL_HEIGHT = 600, 338, 32
+ROW_HEIGHT = TILE_HEIGHT + LABEL_HEIGHT
 HIDE_UI = "body *:not(canvas):not(:has(canvas)) { visibility: hidden !important; }"
 
 
@@ -68,7 +70,7 @@ def shoot(page, select, shot):
     return camera, image
 
 
-def capture(browser, base):
+def capture(browser, base, shard, shards):
     errors = []
     context = browser.new_context(viewport=VIEWPORT, device_scale_factor=1)
     try:
@@ -102,12 +104,17 @@ def capture(browser, base):
         print("District meshes mounted", flush=True)
         select = page.get_by_role("combobox", name="现场接缝复核机位")
         sites = pairs(select.locator("option").evaluate_all("os => os.map(o => o.value).filter(Boolean)"))
-        tile_w, tile_h, label_h = 600, 338, 32
-        atlas = Image.new("RGB", (tile_w * 4, (label_h + tile_h) * ((len(sites) + 1) // 2)), "#182429")
+        order = list(sites)
+        rows = (len(order) + 1) // 2
+        if not 0 <= shard < shards <= rows:
+            raise ValueError(f"Invalid shard {shard}/{shards} for {rows} atlas rows")
+        selected = order[2 * (rows * shard // shards):2 * (rows * (shard + 1) // shards)]
+        atlas = Image.new("RGB", (TILE_WIDTH * 4, ROW_HEIGHT * ((len(selected) + 1) // 2)), "#182429")
         draw = ImageDraw.Draw(atlas)
         font = ImageFont.load_default(size=17)
         records = {}
-        for index, (site, group) in enumerate(sites.items()):
+        for index, site in enumerate(selected):
+            group = sites[site]
             day_camera, day = shoot(page, select, group["day"])
             night_camera, night = shoot(page, select, group["night"])
             if day_camera != night_camera:
@@ -117,17 +124,51 @@ def capture(browser, base):
                 raise RuntimeError(f"Day and night pixels nearly identical at {site}")
             records[site] = {"camera": day_camera, "meanAbsoluteRgbDifference": change}
             for column, (name, image) in enumerate([("Noon", day), ("Midnight", night)]):
-                x = (index % 2 * 2 + column) * tile_w
-                y = index // 2 * (tile_h + label_h)
+                x = (index % 2 * 2 + column) * TILE_WIDTH
+                y = index // 2 * (TILE_HEIGHT + LABEL_HEIGHT)
                 draw.text((x + 9, y + 5), f"{site[5:]}  /  {name}", font=font, fill="white")
-                atlas.paste(image.resize((tile_w, tile_h), Image.Resampling.LANCZOS), (x, y + label_h))
-            print(f"{index + 1}/{len(sites)}  {site}", flush=True)
+                atlas.paste(image.resize((TILE_WIDTH, TILE_HEIGHT), Image.Resampling.LANCZOS), (x, y + LABEL_HEIGHT))
+            print(f"{index + 1}/{len(selected)}  {site}", flush=True)
         if errors:
             raise RuntimeError("Browser errors: " + "; ".join(errors[:5]))
         return atlas, {"browser": browser.version, "viewport": VIEWPORT, "quality": "balanced",
-                       "preview": entry.url, "entrySha256": hashlib.sha256(html).hexdigest(), "sites": records}
+                       "preview": entry.url, "entrySha256": hashlib.sha256(html).hexdigest(), "siteOrder": order, "sites": records}
     finally:
         context.close()
+
+
+def assemble(root):
+    parts = []
+    for source in root.glob("*/manifest.json"):
+        manifest = json.loads(source.read_text())
+        data = (source.parent / "rows.png").read_bytes()
+        if hashlib.sha256(data).hexdigest() != manifest["atlasSha256"]:
+            raise ValueError(f"Invalid image digest in {source}")
+        parts.append((manifest, Image.open(io.BytesIO(data)).convert("RGB")))
+    if not parts:
+        raise ValueError("No captured atlas rows")
+    first = parts[0][0]
+    order = first["siteOrder"]
+    parts.sort(key=lambda p: order.index(next(iter(p[0]["sites"]))))
+    records, rows = {}, []
+    for manifest, image in parts:
+        for key in ("checkout", "entrySha256", "browser", "viewport", "quality", "siteOrder"):
+            if first[key] != manifest[key]:
+                raise ValueError(f"Atlas parts disagree on {key}")
+        if set(records).intersection(manifest["sites"]):
+            raise ValueError("Duplicate site in captured rows")
+        if image.size != (TILE_WIDTH * 4, ROW_HEIGHT * ((len(manifest["sites"]) + 1) // 2)):
+            raise ValueError("Unexpected dimensions for captured rows")
+        records.update(manifest["sites"])
+        rows.append(image)
+    if list(records) != order or sum(im.height for im in rows) != ROW_HEIGHT * ((len(order) + 1) // 2):
+        raise ValueError("Incomplete or misordered atlas rows")
+    atlas = Image.new("RGB", (rows[0].width, sum(im.height for im in rows)))
+    y = 0
+    for image in rows:
+        atlas.paste(image, (0, y))
+        y += image.height
+    return atlas, {**first, "dirty": any(m["dirty"] for m, _ in parts), "sites": records}
 
 
 def main():
@@ -136,27 +177,37 @@ def main():
     parser.add_argument("--out", type=Path, default=ROOT / "local/world-atlas")
     parser.add_argument("--cdp", help="Attach to an existing automation-enabled Chromium browser")
     parser.add_argument("--channel", help="Installed Chrome channel if launching a task-owned browser")
+    parser.add_argument("--shard", type=int, default=0, help="Zero-based index of the row group to render")
+    parser.add_argument("--shards", type=int, default=1)
+    parser.add_argument("--assemble", type=Path, help="Assemble downloaded row groups without a browser")
     args = parser.parse_args()
-    with sync_playwright() as p:
-        browser = (p.chromium.connect_over_cdp(args.cdp) if args.cdp
-                   else p.chromium.launch(channel=args.channel, headless=True))
-        try:
-            atlas, manifest = capture(browser, args.base)
-        finally:
-            if not args.cdp:
-                browser.close()
-    manifest["checkout"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-    manifest["dirty"] = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT))
+    if args.assemble:
+        atlas, manifest = assemble(args.assemble)
+    else:
+        with sync_playwright() as p:
+            browser = (p.chromium.connect_over_cdp(args.cdp) if args.cdp
+                       else p.chromium.launch(channel=args.channel, headless=True))
+            try:
+                atlas, manifest = capture(browser, args.base, args.shard, args.shards)
+            finally:
+                if not args.cdp:
+                    browser.close()
+        manifest["checkout"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+        manifest["dirty"] = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT))
     manifest["capturedAt"] = datetime.now(timezone.utc).isoformat()
     args.out.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=args.out) as tmp:
         directory = Path(tmp)
-        atlas.save(directory / "atlas.jpg", quality=91, subsampling=0)
-        manifest["atlasSha256"] = hashlib.sha256((directory / "atlas.jpg").read_bytes()).hexdigest()
+        name = "rows.png" if args.shards > 1 else "atlas.jpg"
+        if name.endswith(".png"):
+            atlas.save(directory / name)
+        else:
+            atlas.save(directory / name, quality=91, subsampling=0)
+        manifest["atlasSha256"] = hashlib.sha256((directory / name).read_bytes()).hexdigest()
         (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-        for name in ("atlas.jpg", "manifest.json"):
-            os.replace(directory / name, args.out / name)
-    print(args.out / "atlas.jpg")
+        for file in (name, "manifest.json"):
+            os.replace(directory / file, args.out / file)
+    print(args.out / name)
 
 
 if __name__ == "__main__":
