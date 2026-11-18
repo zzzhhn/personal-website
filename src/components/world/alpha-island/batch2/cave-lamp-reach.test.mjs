@@ -6,9 +6,9 @@ import { Bone, Group, Matrix4, Vector3 } from 'three';
 import { GuideCampLayer } from '../../WorldGuideCamp.ts';
 import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../../actor-physics.ts';
 import { createCaveFloorGeometry } from './cave-art.ts';
-import { CAVE_LAMP_HOME } from './cave-state.ts';
+import { CAVE_LAMP_HOME, createCaveState, startCaveLamp, tickCaveState } from './cave-state.ts';
 import { ALPHA_CAVE_PATH, batch2Segment } from '../alpha-batch2-layout.ts';
-import { CAVE_LAMP_LABELS, caveLampInteraction, caveLampPickupReach } from './batch2-station-feedback.ts';
+import { caveLampApproach, caveLampInteraction, caveLampPickupReach } from './batch2-station-feedback.ts';
 
 const floorGeometry=createCaveFloorGeometry(),p=floorGeometry.attributes.position,ids=floorGeometry.index.array;
 after(()=>floorGeometry.dispose());
@@ -70,13 +70,24 @@ test('every offered take stance is capsule-clear and reaches the unchanged hook 
   console.log(JSON.stringify({reachableStances:count,maxPalmError:maxError,operationExample:evidence,oldRadiusPalmError:farError,contactThreshold:.12}));
 });
 
-test('outer guidance never offers take; lamp-side stance offers take, and owned return stays available',()=>{
+test('the rack offers one pickup action and only its open side qualifies as the final stance',()=>{
   const x=hook[0]+.5,y=floorHeight(x,hook[2]),actor=[x,y+centreHeight,hook[2]];
-  assert.equal(caveLampInteraction('rack',false,caveLampPickupReach(actor,hook,true)),'take');
-  assert.equal(caveLampInteraction('rack',false,caveLampPickupReach([hook[0]+1.2,actor[1],hook[2]],hook,true)),'approach');
-  assert.equal(caveLampInteraction('rack',false,caveLampPickupReach([hook[0]-.5,actor[1],hook[2]],hook,true)),'approach');
-  assert.equal(caveLampInteraction('rack',false,caveLampPickupReach(actor,hook,false)),'approach');
-  assert.equal(caveLampInteraction('carried',true,false),'return');
-  assert.equal(caveLampInteraction('carried',false,true),null);
-  assert.notEqual(CAVE_LAMP_LABELS.approach,CAVE_LAMP_LABELS.take);
+  const approach=caveLampApproach(hook);
+  assert.equal(caveLampInteraction('rack',false),'take');
+  assert.ok(approach.ready(actor));
+  assert.equal(approach.ready([hook[0]+1.2,actor[1],hook[2]]),false);
+  assert.equal(approach.ready([hook[0]-.5,actor[1],hook[2]]),false);
+  assert.equal(caveLampInteraction('carried',true),'return');
+  assert.equal(caveLampInteraction('carried',false),null);
+});
+
+test('small grounded drift across the offer boundary still completes an accepted pickup', () => {
+  const stance = dx => [hook[0] + dx, floorHeight(hook[0] + dx, hook[2]) + centreHeight, hook[2]];
+  const before = stance(.59), after = stance(.61);
+  assert.equal(caveLampPickupReach(before, hook, true), true);
+  assert.equal(caveLampPickupReach(after, hook, true), false);
+  const state = createCaveState();
+  assert.equal(startCaveLamp(state, before), true);
+  for (let frame = 0; frame < 8; frame++) tickCaveState(state, .05, after);
+  assert.equal(state.lamp, 'carried');
 });

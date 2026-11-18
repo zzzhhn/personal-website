@@ -29,7 +29,6 @@ export const SHALLOWS_BRIDGE_NOTICE: Notice = {
 // with a fresh live label without accidentally mutating both sides of the comparison.
 export const CAVE_LAMP_LABELS = {
   take: Object.freeze({ zh: '从挂钩取矿灯', en: 'Take the miner lamp' }),
-  approach: Object.freeze({ zh: '靠近矿灯一侧', en: 'Move closer on the lamp side' }),
   return: Object.freeze({ zh: '把矿灯挂回原挂钩', en: 'Hang the miner lamp back' }),
 };
 /** The rack projects +X. Only its front standing strip is both capsule-clear and
@@ -43,8 +42,8 @@ export function caveLampApproach(hook: Vec3): PickupApproach {
   return {target:()=>hook,ready:position=>caveLampPickupReach(position,hook,true),
     candidates:from=>[0,.12,-.12,.22,-.22].map(dz=>[hook[0]+.5,from[1],hook[2]+dz] as Vec3)};
 }
-export const caveLampInteraction = (lamp: CaveState['lamp'], ownsHand: boolean, canReach = true) =>
-  lamp === 'rack' ? canReach ? 'take' : 'approach' : lamp === 'carried' && ownsHand ? 'return' : null;
+export const caveLampInteraction = (lamp: CaveState['lamp'], ownsHand: boolean) =>
+  lamp === 'rack' ? 'take' : lamp === 'carried' && ownsHand ? 'return' : null;
 export function caveLampPickupNotice(before: CaveState['lamp'], after: CaveState['lamp']): Notice | null {
   return before === 'reaching' && after === 'carried' ? {
     zh: '矿灯拿稳了。敲铜管听回声，回到挂钩旁按 E 挂回。',

@@ -331,6 +331,14 @@ Run `npm run check:grounding` for the current mainland, Alpha, cave, waterwheel 
 
 The previous contour simplifier discarded changes in sidewalk width and kerb height along straight gutters. The affected promenade benches had gaps up to 150 mm and the bus shelter centre had a 102 mm gap. Simplification now preserves these profile changes. A bench was moved inside the full-width promenade and the camp-road lamp beyond the ramp apron. The street survey now passes at all 1,234 samples with a maximum absolute deviation of 12 mm (limit 25 mm). Paving strip triangles increased from 9,378 to 11,564; carriageway cell triangles stayed at 5,606. The terrain payloads and street models are unchanged.
 
+## Cave lamp, ore pickup and route labels
+
+The cave lamp keeps a single request through approach, turn and reach. A second press on the same item preserves the request. A grounded actor may drift up to 0.3 m from the accepted stance during the reach animation. A movement command interrupts the auto-approach. A lost support or hand claim cancels the reach. Mine pickups track the selected seam, recovery shelf or dropped ore through delivery. An empty seam no longer offers a pickup just because the same factor is on the shelf.
+
+The coastal path, wheel and cave use the trail card's stop labels and positions for full-map markers and visit detection. The ferry destination now lists the coastal path. The retired shallows puzzle is absent from the ordinary island scene.
+
+Verification on 2026-11-18 covered 88 focused tests, TypeScript, generated terrain/map freshness and the eight-page production build. Five pickup approaches use the shipped cave and terrain collision data. A separate case crosses the lamp's 0.60 m reach boundary after acceptance. Safari reloaded the ordinary 4343 Balanced URL, enabled the game controls and displayed the updated coastal path destination in map/settings. Pickup feel and M3 Air performance still require player and target-device review.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

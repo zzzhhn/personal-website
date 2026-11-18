@@ -20,7 +20,7 @@ const FERRY_BOARDING = ALPHA_MAINLAND_APPROACH[2];
 export const WORLD_DESTINATIONS: readonly WorldDestination[] = [
   { id: 'alpha', at: [FERRY_BOARDING[0], FERRY_BOARDING[2]],
     name: { zh: '山岛渡口', en: 'Island ferry' },
-    detail: { zh: '乘渡船上岛 · 石滩、水车、岩洞与山顶雪橇', en: 'Ferry across · rune shallows, waterwheel, echo cave and summit sled' } },
+    detail: { zh: '乘渡船上岛 · 海侧步道、水车、岩洞与山顶雪橇', en: 'Ferry across · coastal path, waterwheel, echo cave and summit sled' } },
   { id: 'factory', at: [FACTORY.entrance[0], FACTORY.entrance[2]],
     name: { zh: '机械伙伴工厂', en: 'Companion Works' },
     detail: { zh: '亲手取料、路试对比、返工与打印产品卡', en: 'Collect parts, compare trials, rework and print a product card' } },

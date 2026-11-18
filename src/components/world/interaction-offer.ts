@@ -1,6 +1,21 @@
 import type { Interactable } from './WorldInteract';
-import type { PickupApproach } from './pickup-approach';
+import { pickupApproachMotion, PICKUP_APPROACH_TIMEOUT, type PickupApproach } from './pickup-approach';
+import { angleDelta } from './actor-physics';
 import type { Vec3 } from './types';
+import type * as Rapier from '@dimforge/rapier3d-compat';
+
+/** Only advertise an anchor with an unobstructed sight line from the actor's upper body. */
+export function interactionVisible(world: Rapier.World, rapier: Pick<typeof Rapier, 'Ray'>, player: Rapier.RigidBody | undefined,
+  from: { x: number; y: number; z: number }, target: Vec3) {
+  const origin = { x: from.x, y: from.y + .45, z: from.z };
+  const dx = target[0]-origin.x, dy = target[1]+.2-origin.y, dz = target[2]-origin.z, len = Math.hypot(dx,dy,dz);
+  if (len < .35) return true;
+  return !world.castRay(new rapier.Ray(origin,{ x: dx/len, y: dy/len, z: dz/len }), len-.3, true,
+    undefined,undefined,undefined,player,c => {
+      const data = c.parent()?.userData as { interactable?: string; vehicle?: string } | undefined;
+      return !c.isSensor() && !data?.interactable && !data?.vehicle;
+    });
+}
 
 export type InteractionOffer = { item: Interactable; stand: Vec3 | null };
 export interface InteractionOfferContext {
@@ -52,6 +67,40 @@ export function createInteractionOfferResolver() {
       }
       if (!stand || !approach.ready(stand)) return null;
       return { item, stand: [...stand] };
+    },
+  };
+}
+
+/** Own the interval between selecting a reachable item and invoking its action. */
+export function createInteractionApproach() {
+  let pending: { item: Interactable; stand: Vec3; elapsed: number } | null = null;
+  return {
+    get active() { return pending !== null; },
+    cancel() { pending = null; },
+    request(item: Interactable, resolve: () => InteractionOffer | null) {
+      if (pending?.item === item) return true;
+      const offer = resolve();
+      if (!offer) return false;
+      pending = offer.stand ? { item, stand: offer.stand, elapsed: 0 } : null;
+      if (!pending) item.onInteract();
+      return true;
+    },
+    step(dt: number, position: Vec3, yaw: number, speed: number, grounded: boolean,
+      routeClear: (item: Interactable, stand: Vec3, ready: boolean) => boolean) {
+      if (!pending) return null;
+      const { item, stand } = pending, approach = item.approach;
+      if (!approach || !grounded || item.enabled?.() === false) { pending = null; return null; }
+      pending.elapsed += dt;
+      const ready = approach.ready(position);
+      if (pending.elapsed > PICKUP_APPROACH_TIMEOUT || !routeClear(item, stand, ready)) {
+        pending = null;
+        return { blocked: true as const };
+      }
+      const motion = pickupApproachMotion(position, stand, approach.target(), ready);
+      const heading = yaw + Math.max(-dt * 10, Math.min(dt * 10, angleDelta(yaw, motion.yaw)));
+      const arrived = ready && Math.abs(angleDelta(heading, motion.yaw)) < .12 && speed < .18;
+      if (arrived) pending = null;
+      return { blocked: false as const, vx: motion.vx, vz: motion.vz, heading, arrived: arrived ? item : null };
     },
   };
 }

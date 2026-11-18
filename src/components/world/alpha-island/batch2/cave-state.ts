@@ -34,15 +34,17 @@ export function caveNear(position: readonly number[], margin = 0) {
     && position[1] > 19 && position[1] < 43;
 }
 export const createCaveState = () => ({ lamp: 'rack' as 'rack' | 'reaching' | 'carried', pickup: null as AcceptedAction | null,
+  pickupStart: null as Vec3 | null,
   echoAge: CAVE_ECHO_SECONDS, chime: 0 as CaveChime, revision: 0, exploration: createCaveExploration() });
 export type CaveState = ReturnType<typeof createCaveState>;
-export function startCaveLamp(s: CaveState) {
+export function startCaveLamp(s: CaveState, position: Vec3) {
   if (s.lamp !== 'rack') return false;
+  s.pickupStart = [...position];
   s.pickup = acceptAction(); s.lamp = 'reaching';
   return true;
 }
 export function cancelCaveState(s: CaveState) {
-  cancelAcceptedAction(s.pickup); s.pickup = null;
+  cancelAcceptedAction(s.pickup); s.pickup = null; s.pickupStart = null;
   s.lamp = 'rack'; s.echoAge = CAVE_ECHO_SECONDS; s.revision++;
   cancelCaveExploration(s.exploration);
 }
@@ -50,12 +52,16 @@ export function startCaveEcho(s: CaveState, chime: CaveChime) {
   if (s.echoAge < .65) return false;
   s.chime = chime; s.echoAge = 0; s.revision++; startCaveExploration(s.exploration, chime); return true;
 }
-export function tickCaveState(s: CaveState, dt: number, pickupEligible = true) {
+export function tickCaveState(s: CaveState, dt: number, groundedPosition: Vec3 | null = null) {
   dt = Math.max(0, Math.min(.08, Number.isFinite(dt) ? dt : 0));
   s.echoAge = Math.min(CAVE_ECHO_SECONDS, s.echoAge + dt);
   if (s.lamp === 'reaching') {
-    if (!s.pickup || !pickupEligible) { cancelAcceptedAction(s.pickup); s.lamp = 'rack'; s.revision++; }
+    const start = s.pickupStart;
+    const staying = groundedPosition && start && Math.hypot(groundedPosition[0]-start[0],
+      groundedPosition[1]-start[1],groundedPosition[2]-start[2]) <= .3;
+    if (!s.pickup || !staying) { cancelAcceptedAction(s.pickup); s.lamp = 'rack'; s.revision++; }
     else if (advanceAcceptedAction(s.pickup, dt, true)) { s.lamp = 'carried'; s.revision++; }
+    if (s.lamp !== 'reaching') { s.pickup = null; s.pickupStart = null; }
   }
 }
 export function caveRingPulse(age: number, delay: number) {

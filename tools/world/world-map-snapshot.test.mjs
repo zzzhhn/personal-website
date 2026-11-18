@@ -44,6 +44,8 @@ test('the first full-map render already has the complete current shoreline witho
     assert.ok(full.includes(`d="${shoreline}"`), 'first render must use current terrain waterlines');
     assert.ok(full.includes('data-alpha-island="batch2"'));
     assert.ok(!full.includes('world-map-player'), 'loading map hides player');
+    assert.match(full, />(海侧步道|Coastal path)<\/text>/);
+    assert.doesNotMatch(full, />(石滩|Shallows)<\/text>/);
     const mini = renderToStaticMarkup(createElement(WorldMap));
     assert.ok(/viewBox="[^"]+ 92 92"/.test(mini), 'radar keeps its player-centered window');
     assert.ok(mini.includes('world-map-player'));

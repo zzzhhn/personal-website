@@ -11,8 +11,14 @@ import { encodeCaveArtifact, decodeCaveArtifact, CAVE_PART_GROUPS } from '../../
 import { encodeStaticSurfaces, decodeStaticSurfaces, surfaceColliderBuffers, castStaticSurface } from '../../src/components/world/static-surface-asset.ts';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END } from '../../src/components/world/alpha-island/alpha-batch2-layout.ts';
 import { ALPHA_ORIGIN } from '../../src/components/world/alpha-island/alpha-layout.ts';
-import { CAVE_LAMP_HOME, CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW } from '../../src/components/world/alpha-island/batch2/cave-state.ts';
+import { CAVE_LAMP_HOME, CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, createCaveState, startCaveLamp, tickCaveState } from '../../src/components/world/alpha-island/batch2/cave-state.ts';
 import { decodeAlphaTerrain } from '../../src/components/world/alpha-island/alpha-terrain-artifact.ts';
+import { caveLampApproach } from '../../src/components/world/alpha-island/batch2/batch2-station-feedback.ts';
+import { findPickupStand, pickupGroundRoute } from '../../src/components/world/pickup-approach.ts';
+import { playerSupport, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, followPlayerGround } from '../../src/components/world/player-ground.ts';
+import { playerVelocityChange } from '../../src/components/world/player-motion.ts';
+import { createInteractionApproach, createInteractionOfferResolver, interactionVisible } from '../../src/components/world/interaction-offer.ts';
+import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../../src/components/world/actor-physics.ts';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const manifest = JSON.parse(await readFile(path.join(root, 'src/components/world/terrain-artifacts.generated.json'), 'utf8'));
@@ -23,6 +29,63 @@ const groups = CAVE_PART_GROUPS, all = ['solid', 'floor', 'detail', 'seams'].fla
 const dispose = art => groups.forEach(k => art[k].forEach(p => p.geometry.dispose()));
 const bytes = a => new Uint8Array(a.buffer, a.byteOffset, a.byteLength);
 test.after(() => { dispose(authored); dispose(baked); });
+
+test('lamp discovery, approach, turn and pickup finish once on the installed cave surfaces', async t => {
+  await R.init();
+  const world = new R.World({x:0,y:-12.5,z:0});
+  t.after(() => world.free());
+  const island = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...ALPHA_ORIGIN));
+  const rawIsland = gunzipSync(await readFile(path.join(root, 'public', manifest.alpha.url)));
+  const terrain = decodeAlphaTerrain(rawIsland.buffer.slice(rawIsland.byteOffset, rawIsland.byteOffset + rawIsland.byteLength));
+  for (const faces of [terrain.surface, terrain.solid]) world.createCollider(R.ColliderDesc.trimesh(terrain.positions, faces), island);
+  const rackOrigin = baked.rackPosition.map((v,i) => v + ALPHA_ORIGIN[i]);
+  const rack = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...rackOrigin));
+  for (const [body, parts] of [[island, all], [rack, baked.rack]]) for (const part of parts) {
+    const b = surfaceColliderBuffers(part);
+    if (b) world.createCollider(R.ColliderDesc.trimesh(b.vertices,b.indices),body);
+  }
+  const player = world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
+  world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setFriction(0).setMass(72),player);
+  world.step();
+  const hook = [rackOrigin[0]+.32,rackOrigin[1]+1.48,rackOrigin[2]], approach = caveLampApproach(hook);
+  for (const [dx,dz] of [[.5,0],[1.2,0],[1.55,0],[1.2,.32],[1.2,-.32]]) {
+    const x=hook[0]+dx,z=hook[2]+dz;
+    const hit=world.castRay(new R.Ray({x,y:hook[1],z},{x:0,y:-1,z:0}),3,true,undefined,undefined,undefined,player);
+    assert.ok(hit,'floor at '+[dx,dz]);
+    const floor=hook[1]-hit.timeOfImpact;
+    const support=playerSupport(world,R,player,{x,y:floor+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.08,z},true,.22);
+    assert.ok(support,'walkable floor at '+[dx,dz]);
+    const from=[x,support.centerY+.001,z];
+    player.setTranslation({x,y:from[1],z},true);
+    player.setLinvel({x:0,y:0,z:0},true);
+    const driver=createInteractionApproach(), offers=createInteractionOfferResolver(), lamp=createCaveState();
+    const pos=()=>{const p=player.translation();return [p.x,p.y,p.z];};
+    let accepted=0, yaw=0;
+    const visible=()=>interactionVisible(world,R,player,player.translation(),hook);
+    const item={id:'alpha-cave-miner-lamp',position:hook,radius:1.8,approach,enabled:()=>lamp.lamp==='rack',
+      onInteract:()=>{assert.ok(approach.ready(pos()));assert.ok(startCaveLamp(lamp,pos()));accepted++;}};
+    const resolve=()=>offers.resolve(item,{position:pos(),now:0,available:()=>true,visible,
+      findStand:a=>findPickupStand(world,R,player,pos(),a)},true);
+    assert.ok(driver.request(item,resolve),'no pickup offer from '+[dx,dz]);
+    const dt=1/60;
+    for(let i=0;i<210&&lamp.lamp!=='carried';i++){
+      if(i===4 && driver.active)assert.ok(driver.request(item,resolve),'repeat E during approach');
+      const p=pos(), vel=player.linvel(), support=playerSupport(world,R,player);
+      const motion=driver.step(dt,p,yaw,Math.hypot(vel.x,vel.z),!!support?.grounded,
+        (_,stand,ready)=>visible()&&(ready||!!pickupGroundRoute(world,R,player,p,stand)));
+      assert.ok(!motion?.blocked,'route blocked from '+[dx,dz]+' at '+p);
+      if(motion){yaw=motion.heading;motion.arrived?.onInteract();}
+      tickCaveState(lamp,dt,support?.grounded?p:null);
+      const change=playerVelocityChange(vel,{x:motion?.vx??0,y:0,z:motion?.vz??0},dt,!!support?.grounded);
+      player.applyImpulse({x:change.x*player.mass(),y:0,z:change.z*player.mass()},true);
+      compensatePlayerSlopeGravity(world,player,support,dt,false);
+      followPlayerGround(world,R,player,player.linvel(),dt,false);
+      world.step();clearPlayerSlopeGravity(player);
+    }
+    assert.equal(lamp.lamp,'carried','failed from '+[dx,dz]+' at '+pos()+' with '+accepted+' accepted');
+    assert.equal(accepted,1);
+  }
+});
 
 test('built cave preserves every visible attribute, triangle, finish and mural anchor', () => {
   assert.deepEqual(new Uint8Array(encodeCaveArtifact(authored)), new Uint8Array(raw));

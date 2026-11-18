@@ -6,7 +6,7 @@ const point=[1,0,0], id='REVERSAL_5';
 function fixture(){resetMineSession();Object.assign(mineActor,{position:[0,0,0],yaw:0,grounded:true,moving:false,available:true,restTarget:[.55,.7,0]});Object.assign(mineVisualSockets,{valid:true,assetsReady:true,contactError:0,rightReachError:0,leftReachError:0});}
 function advance(seconds){for(let t=0;t<seconds;t+=1/60){const a=useAlphaMineStore.getState().action;mineVisualSockets.sampledActionKind=a?.kind??null;mineVisualSockets.sampledElapsed=a?.elapsed??0;advanceMineAction(1/60);}}
 function equipped(){fixture();assert.ok(beginMineAction('equip',point));advance(1);assert.equal(useAlphaMineStore.getState().equipped,true);}
-function collected(){equipped();assert.ok(beginMineAction('scan',point,id));advance(1.2);for(let i=0;i<3;i++){assert.ok(beginMineAction('strike',point,id));advance(1.2);}assert.ok(beginMineAction('pickup',point,id));advance(1);}
+function collected(){equipped();assert.ok(beginMineAction('scan',point,id));advance(1.2);for(let i=0;i<3;i++){assert.ok(beginMineAction('strike',point,id));advance(1.2);}assert.ok(beginMineAction('pickup',point,id,'seam'));advance(1);}
 
 test('three accepted strikes produce one recoverable ore, never one per input/frame',()=>{
   equipped();assert.equal(beginMineAction('strike',point,id),false);
@@ -17,8 +17,8 @@ test('three accepted strikes produce one recoverable ore, never one per input/fr
     advance(.6);assert.equal(useAlphaMineStore.getState().veins[id].hits,i+1);
   }
   assert.equal(beginMineAction('strike',point,id),false);
-  assert.ok(beginMineAction('pickup',point,id));advance(1);
-  assert.equal(useAlphaMineStore.getState().carried,id);assert.equal(beginMineAction('pickup',point,id),false);
+  assert.ok(beginMineAction('pickup',point,id,'seam'));advance(1);
+  assert.equal(useAlphaMineStore.getState().carried,id);assert.equal(beginMineAction('pickup',point,id,'seam'),false);
 });
 test('cross-floor, out-of-reach and cancelled wind-ups cannot mine',()=>{
   equipped();assert.equal(beginMineAction('scan',[1,3.1,0],id),false);
@@ -37,15 +37,15 @@ test('release and arrival are distinct; interruption returns the same ore',()=>{
   cancelMineAction();assert.equal(useAlphaMineStore.getState().carried,id);
   assert.ok(beginMineAction('deposit',point,id,0));advance(1.5);
   assert.equal(useAlphaMineStore.getState().bays[0],id);assert.equal(useAlphaMineStore.getState().carried,null);
-  assert.ok(beginMineAction('pickup',point,id,0));advance(1);
+  assert.ok(beginMineAction('pickup',point,id,'recovery'));advance(1);
   assert.equal(useAlphaMineStore.getState().bays[0],id);assert.equal(useAlphaMineStore.getState().carried,id);assert.deepEqual(useAlphaMineStore.getState().recovered,[]);
 });
 test('put-down preserves identity and refuses reset or overwriting the loose ore',()=>{
   collected();assert.ok(putDownMineOre());assert.equal(useAlphaMineStore.getState().dropped,null);
   advance(1.5);const drop=useAlphaMineStore.getState().dropped;
   assert.equal(drop.factorId,id);assert.equal(resetMineVeins(),false);
-  assert.equal(beginMineAction('pickup',point,'ROC20_RANK'),false);
-  assert.ok(beginMineAction('pickup',drop.position,id));advance(1);
+  assert.equal(beginMineAction('pickup',point,'ROC20_RANK','dropped'),false);
+  assert.ok(beginMineAction('pickup',drop.position,id,'dropped'));advance(1);
   assert.equal(useAlphaMineStore.getState().dropped,null);assert.equal(useAlphaMineStore.getState().carried,id);
 });
 test('new exploration preserves comparison evidence when mining the same factor again',()=>{
@@ -53,7 +53,7 @@ test('new exploration preserves comparison evidence when mining the same factor 
   assert.equal(useAlphaMineStore.getState().bays[0],id);
   assert.ok(beginMineAction('scan',point,id));advance(1.2);
   for(let i=0;i<3;i++){assert.ok(beginMineAction('strike',point,id));advance(1.2);}
-  assert.ok(beginMineAction('pickup',point,id));advance(1);
+  assert.ok(beginMineAction('pickup',point,id,'seam'));advance(1);
   assert.equal(useAlphaMineStore.getState().carried,id);assert.equal(useAlphaMineStore.getState().bays[0],id);
 });
 
@@ -65,13 +65,35 @@ test('three ores can replace either result without losing recovered stones or bl
   }
   assert.deepEqual(useAlphaMineStore.getState().bays,[ids[2],ids[1]]);
   assert.deepEqual(useAlphaMineStore.getState().recovered,ids);
-  assert.ok(beginMineAction('pickup',point,ids[0]));advance(1);
+  assert.ok(beginMineAction('pickup',point,ids[0],'recovery'));advance(1);
   assert.ok(putDownMineOre());advance(1.6);
-  assert.ok(beginMineAction('pickup',point,ids[1]));advance(1);
+  assert.ok(beginMineAction('pickup',point,ids[1],'recovery'));advance(1);
   assert.equal(useAlphaMineStore.getState().dropped.factorId,ids[0]);
   assert.ok(beginMineAction('deposit',point,ids[1],0));advance(1.6);
-  assert.ok(beginMineAction('pickup',useAlphaMineStore.getState().dropped.position,ids[0]));advance(1);
+  assert.ok(beginMineAction('pickup',useAlphaMineStore.getState().dropped.position,ids[0],'dropped'));advance(1);
   assert.equal(useAlphaMineStore.getState().carried,ids[0]);
+});
+
+test('only the visible source offers its ore; picking up a recovered ore leaves other sources alone',()=>{
+  collected();assert.ok(beginMineAction('deposit',point,id,0));advance(1.5);
+  assert.equal(mineActionAvailable('pickup',id,'seam'),false);
+  assert.equal(beginMineAction('pickup',point,id,'seam'),false);
+  assert.equal(mineActionAvailable('pickup',id,'recovery'),true);
+  useAlphaMineStore.setState({dropped:{factorId:id,position:[...point]}});
+  const drop=useAlphaMineStore.getState().dropped;
+  assert.ok(beginMineAction('pickup',point,id,'recovery'));advance(1);
+  assert.deepEqual(useAlphaMineStore.getState().dropped,drop);
+  assert.deepEqual(useAlphaMineStore.getState().recovered,[]);
+  assert.equal(useAlphaMineStore.getState().carried,id);
+});
+
+test('loss of the selected ore during the reach cannot consume another copy',()=>{
+  equipped();
+  useAlphaMineStore.setState({recovered:[id],dropped:{factorId:id,position:[...point]}});
+  assert.ok(beginMineAction('pickup',point,id,'recovery'));advance(.16);
+  useAlphaMineStore.setState({recovered:[]});advance(1);
+  assert.equal(useAlphaMineStore.getState().carried,null);
+  assert.equal(useAlphaMineStore.getState().dropped.factorId,id);
 });
 test('an accepted strike commits despite missing, stale or imprecise render contact',()=>{
   equipped();assert.ok(beginMineAction('scan',point,id));advance(1.2);
@@ -112,7 +134,7 @@ test('prompt eligibility follows executable state for tools, seams and fresh exp
 
 test('loss of support or ore availability cancels a pending action without a delayed effect',()=>{
   for(const invalidate of [()=>{mineActor.grounded=false;},()=>{useAlphaMineStore.setState({carried:'ROC20_RANK'});}]){
-    equipped();useAlphaMineStore.setState({recovered:[id]});assert.ok(beginMineAction('pickup',point,id));
+    equipped();useAlphaMineStore.setState({recovered:[id]});assert.ok(beginMineAction('pickup',point,id,'recovery'));
     advance(.2);invalidate();advance(.1);
     assert.equal(useAlphaMineStore.getState().action,null);
     mineActor.grounded=true;advance(1);

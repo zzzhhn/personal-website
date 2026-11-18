@@ -95,12 +95,13 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
     enabled: () => {
       const now = useAlphaMineStore.getState();
       if (!now.equipped) return !now.action && mineCanReach(target, 2.2);
-      return depleted ? mineActionAvailable('pickup', factor.id)
+      return depleted ? mineActionAvailable('pickup', factor.id, 'seam')
         : canBeginMineAction(v.revealed ? 'strike' : 'scan', target, factor.id);
     },
     onInteract: () => {
       if (!s.equipped) { mineNotice('工具在入口左边的架上。','The tool rack is on the left of the entrance.'); return; }
-      beginMineAction(depleted?'pickup':v.revealed?'strike':'scan',target,factor.id);
+      if(depleted) beginMineAction('pickup',target,factor.id,'seam');
+      else beginMineAction(v.revealed?'strike':'scan',target,factor.id);
     },
   });
   return <group name={`alpha-mine-${m.id}`}>
@@ -137,8 +138,8 @@ function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: nu
   const anchor=poolShelf(manifest,index), rock=useOre(ore,factor.id);
   useInteractable({id:`alpha-mine-recovery-${index}`,position:mineLocalToWorld(anchor),radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
     approach:minePickupApproach(()=>mineLocalToWorld(anchor)),
-    label:{zh:`取回${factor.label}`,en:`Retrieve ${factor.labelEn}`},enabled:()=>useAlphaMineStore.getState().recovered.includes(factor.id)&&mineActionAvailable('pickup',factor.id),
-    onInteract:()=>beginMineAction('pickup',mineLocalToWorld(anchor),factor.id),
+    label:{zh:`取回${factor.label}`,en:`Retrieve ${factor.labelEn}`},enabled:()=>mineActionAvailable('pickup',factor.id,'recovery'),
+    onInteract:()=>beginMineAction('pickup',mineLocalToWorld(anchor),factor.id,'recovery'),
   });
   return <group>
     <mesh position={[anchor[0],.3,anchor[2]]} castShadow receiveShadow><boxGeometry args={[.7,.6,.55]}/><meshStandardMaterial color="#70634d" roughness={.9}/></mesh>
@@ -185,9 +186,9 @@ function MineLooseOre({ source }: { source: Object3D }) {
   const rock=useOre(source,id ?? 'REVERSAL_5');
   useInteractable(s.dropped?{id:'alpha-mine-dropped',position:s.dropped.position,radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
     approach:minePickupApproach(()=>useAlphaMineStore.getState().dropped?.position??s.dropped!.position),
-    enabled:()=>{const drop=useAlphaMineStore.getState().dropped;return !!drop&&mineActionAvailable('pickup',drop.factorId);},
+    enabled:()=>{const drop=useAlphaMineStore.getState().dropped;return !!drop&&mineActionAvailable('pickup',drop.factorId,'dropped');},
     label:{zh:'拾回矿石',en:'Retrieve the ore'},onInteract:()=>{
-    const drop=useAlphaMineStore.getState().dropped; if(drop) beginMineAction('pickup',drop.position,drop.factorId);
+    const drop=useAlphaMineStore.getState().dropped; if(drop) beginMineAction('pickup',drop.position,drop.factorId,'dropped');
   }}:null);
   useFrame(()=>{
     const group=holder.current; if(!group) return;

@@ -54,20 +54,21 @@ test('bridge confirmation waits for every actual body pose even if all logical s
 
 test('lamp operation hint fires once on accepted completion, never on cancellation or later carry frames',()=>{
   const state=createCaveState();
-  const tick=eligible=>{const was=state.lamp;tickCaveState(state,.08,eligible);return caveLampPickupNotice(was,state.lamp);};
-  startCaveLamp(state);
+  const p=[0,1,0];
+  const tick=eligible=>{const was=state.lamp;tickCaveState(state,.08,eligible?p:null);return caveLampPickupNotice(was,state.lamp);};
+  startCaveLamp(state,p);
   assert.equal(tick(false),null);
   for(let i=0;i<40;i++)assert.equal(tick(true),null);
   assert.equal(state.lamp,'rack');
-  startCaveLamp(state);
+  startCaveLamp(state,p);
   for(let i=0;i<4;i++)assert.equal(tick(true),null);
   assert.ok(tick(true));assert.equal(state.lamp,'carried');
   assert.equal(tick(true),null);
   const was=state.lamp;cancelCaveState(state);
   assert.equal(caveLampPickupNotice(was,state.lamp),null);
-  startCaveLamp(state);cancelCaveState(state);
+  startCaveLamp(state,p);cancelCaveState(state);
   assert.equal(caveLampPickupNotice('reaching',state.lamp),null);
-  startCaveLamp(state);for(let i=0;i<4;i++)tick(true);
+  startCaveLamp(state,p);for(let i=0;i<4;i++)tick(true);
   assert.ok(tick(true),'pickup can be completed again after cancellation');
 });
 

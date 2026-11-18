@@ -4,9 +4,10 @@ import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type Accepte
 
 export type MinePoint = [number, number, number];
 export type MineActionKind = 'equip' | 'scan' | 'strike' | 'pickup' | 'deposit';
+type OreSource = 'seam' | 'recovery' | 'dropped';
 export interface MineAction {
   kind: MineActionKind; elapsed: number; duration: number; target: MinePoint;
-  origin: MinePoint; factorId?: AlphaFactorId; contact: boolean; bay?: 0 | 1; commitClock: AcceptedAction;
+  origin: MinePoint; factorId?: AlphaFactorId; contact: boolean; bay?: 0 | 1; source?: OreSource; commitClock: AcceptedAction;
 }
 export interface MineVein { revealed: boolean; hits: number; collected: boolean }
 interface MineState {
@@ -42,34 +43,43 @@ export function mineCanReach(target: MinePoint, radius = 2.2, facing = false) {
   const targetYaw = Math.atan2(-dz, dx);
   return Math.abs(Math.atan2(Math.sin(targetYaw - mineActor.yaw), Math.cos(targetYaw - mineActor.yaw))) < .48;
 }
-function actionStateAllows(s: MineState, kind: MineActionKind, factorId?: AlphaFactorId) {
+function hasOreAt(s: MineState, id: AlphaFactorId, source: OreSource) {
+  if (source === 'recovery') return s.recovered.includes(id);
+  if (source === 'dropped') return s.dropped?.factorId === id;
+  return s.veins[id].hits >= 3 && !s.veins[id].collected;
+}
+function actionStateAllows(s: MineState, kind: MineActionKind, factorId?: AlphaFactorId, source?: OreSource) {
   if (factorId && !s.veins[factorId]) return false;
   if (kind === 'equip' && (s.equipped || s.carried)) return false;
   if (kind !== 'equip' && !s.equipped) return false;
   if (kind === 'scan' && (!factorId || s.carried || s.veins[factorId].revealed)) return false;
   if (kind === 'strike' && (!factorId || s.carried || !s.veins[factorId].revealed || s.veins[factorId].hits >= 3)) return false;
-  if (kind === 'pickup' && (!factorId || s.carried || (s.dropped?.factorId !== factorId && !s.recovered.includes(factorId) && (s.veins[factorId].hits < 3 || s.veins[factorId].collected)))) return false;
+  if (kind === 'pickup' && (!factorId || s.carried || !source || !hasOreAt(s, factorId, source))) return false;
   if (kind === 'deposit' && (!factorId || s.carried !== factorId)) return false;
   return true;
 }
 /** Semantic eligibility is shared by discovery and execution; pickup stances are resolved by
  * the registry before execution, so discovery does not impose the final hand distance. */
-export function mineActionAvailable(kind: MineActionKind, factorId?: AlphaFactorId) {
+export function mineActionAvailable(kind: MineActionKind, factorId?: AlphaFactorId, source?: OreSource) {
   const s = useAlphaMineStore.getState();
-  return mineActor.available && mineActor.grounded && !mineActor.moving && !s.action && actionStateAllows(s, kind, factorId);
+  return mineActor.available && mineActor.grounded && !mineActor.moving && !s.action && actionStateAllows(s, kind, factorId, source);
 }
-export function canBeginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId) {
-  return mineActionAvailable(kind, factorId)
+export function canBeginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId, source?: OreSource) {
+  return mineActionAvailable(kind, factorId, source)
     && mineCanReach(target, kind === 'deposit' ? 4.2 : kind === 'strike' ? 1.3 : 2.4);
 }
 function carriedOrigin(): MinePoint {
   const [x, y, z] = mineActor.position, yaw = mineActor.yaw;
   return [x + Math.cos(yaw) * .35, y + .25, z - Math.sin(yaw) * .35];
 }
-export function beginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId, bay?: 0 | 1) {
-  if (!canBeginMineAction(kind, target, factorId)) return false;
+export function beginMineAction(kind: 'pickup', target: MinePoint, factorId: AlphaFactorId, source: OreSource): boolean;
+export function beginMineAction(kind: Exclude<MineActionKind,'pickup'>, target: MinePoint, factorId?: AlphaFactorId, bay?: 0 | 1): boolean;
+export function beginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId, site?: 0 | 1 | OreSource) {
+  const source = typeof site === 'string' ? site : undefined;
+  const bay = typeof site === 'number' ? site : undefined;
+  if (!canBeginMineAction(kind, target, factorId, source)) return false;
   const origin = carriedOrigin();
-  useAlphaMineStore.setState({ notice: null, action: { kind, elapsed: 0, duration: DURATIONS[kind], target: [...target], origin, factorId, contact: false, bay, commitClock: acceptAction(CONTACT[kind]) } });
+  useAlphaMineStore.setState({ notice: null, action: { kind, elapsed: 0, duration: DURATIONS[kind], target: [...target], origin, factorId, contact: false, bay, source, commitClock: acceptAction(CONTACT[kind]) } });
   return true;
 }
 
@@ -108,7 +118,7 @@ export function advanceMineAction(dt: number) {
   const step = Math.min(dt, .05);
   a.elapsed = Math.min(a.duration, a.elapsed + step);
   if (!a.contact && advanceAcceptedAction(a.commitClock, step,
-    mineActor.grounded && actionStateAllows(s, a.kind, a.factorId))) {
+    mineActor.grounded && actionStateAllows(s, a.kind, a.factorId, a.source))) {
     const reach = mineCanReach(a.target, a.kind === 'deposit' ? 4.2 : a.kind === 'strike' ? 1.35 : 2.4, a.kind === 'strike');
     if (!reach) { cancelMineAction(); mineNotice('靠近同一层的岩面，再对准试试。', 'Move closer on this level and face the seam.'); return; }
     // Render contact is diagnostic only. A missing/stale IK sample cannot veto an accepted action.
@@ -125,7 +135,11 @@ export function advanceMineAction(dt: number) {
       useAlphaMineStore.setState({ veins: { ...s.veins, [id]: { ...s.veins[id], hits } }, effect: { kind: hits === 3 ? 'ore' : 'strike', at: [...a.target], factorId: id, seq: ++sequence } });
     }
     if (a.kind === 'pickup' && id) {
-      useAlphaMineStore.setState({ carried: id, dropped: s.dropped?.factorId === id ? null : s.dropped, recovered: s.recovered.filter(v=>v!==id), veins: { ...s.veins, [id]: { ...s.veins[id], collected: true } } });
+      useAlphaMineStore.setState({ carried: id,
+        ...(a.source === 'seam' && { veins: { ...s.veins, [id]: { ...s.veins[id], collected: true } } }),
+        ...(a.source === 'recovery' && { recovered: s.recovered.filter(v => v !== id) }),
+        ...(a.source === 'dropped' && { dropped: null }),
+      });
     }
     if (a.kind === 'deposit' && id) {
       a.origin = sockets.valid && sockets.sampledActionKind === a.kind

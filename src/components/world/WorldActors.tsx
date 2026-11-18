@@ -17,8 +17,8 @@ import { RideCameraOrientation, rideCameraPose, rideCameraSweepOrigin, rideLook,
 import { RideCameraObstruction } from './rides/ride-camera-obstruction';
 import { RideCabinCamera } from './rides/ride-camera-cabin';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
-import { findPickupStand, pickupGroundRoute, pickupApproachMotion, PICKUP_APPROACH_TIMEOUT } from './pickup-approach';
-import { createInteractionOfferResolver, type InteractionOfferContext } from './interaction-offer';
+import { findPickupStand, pickupGroundRoute } from './pickup-approach';
+import { createInteractionApproach, createInteractionOfferResolver, interactionVisible, type InteractionOfferContext } from './interaction-offer';
 import type { Vec3, VehicleId, VehiclePlacement } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import type { GuidePresentationFactory } from './guide-presentation';
@@ -318,7 +318,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   /** Interactable in reach this physics step (set before E handling). */
   const nearbyItem = useRef<Interactable|null>(null);
   const interactionOffers = useMemo(createInteractionOfferResolver, []);
-  const pickupApproach = useRef<{ item: Interactable; stand: Vec3; elapsed: number } | null>(null);
+  const pickupApproach = useMemo(createInteractionApproach, []);
   /** Seat id the body was last snapped to (store.seat), where it sat down from, and the seated body point. */
   const seatHeld = useRef<string|null>(null);
   const seatFrom = useRef<Vec3|null>(null);
@@ -396,14 +396,14 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
 
   function clearInput() {
     actorActivities.clearInput();
-    pickupApproach.current=null;
+    pickupApproach.cancel();
     keys.current.forEach(key=>releasedKeys.current.add(key));keys.current.clear();resetPad.current=true;
     pad.current.move=[0,0];pad.current.look=[0,0];pad.current.throttle=0;pad.current.brake=0;pad.current.sprint=false;
     actions.current={interact:false,jump:false,recover:false};debugDrive.current=null;moveIntent.current='idle';guideTargetSpeed.current=0;moveInput.current=[0,0];
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
   }
   function clearPlayerMotion(hardCut=false) {
-    pickupApproach.current=null;
+    pickupApproach.cancel();
     actorActivities.interrupt(hardCut?'recovery':'motion');
     if(player.current)clearPlayerSlopeGravity(player.current);
     vault.current=null;railVault.current=null;vaultPreview.current.plan=null;useWorldStore.setState({canVault:false});guideMovementLock.current=false;turnBeforeMove.current=false;
@@ -661,7 +661,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     else c.pitch=.12;
   }
   useEffect(() => {
-    const releaseAction=()=>{pickupApproach.current=null;releaseGuideActionHand();};
+    const releaseAction=()=>{pickupApproach.cancel();releaseGuideActionHand();};
     const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||actorActivities.inputOwner()||s.poolInspect||s.shot||actorActivities.blocksOffers())releaseAction();});
     const hiddenAction=()=>{if(document.hidden)releaseAction();};
     document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
@@ -1032,14 +1032,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     // Anchor distances are compared on the same horizontal metric as the car's (vehicle wins only when
     // its anchor is closer). While seated, a card is open or driving, E belongs to that state.
     const seated=!!state.seat,carded=!!state.card;
-    const sight=(item:Interactable)=>{
-      const [ix,iy,iz]=item.position,ox=playerPosition.x,oy=playerPosition.y+.45,oz=playerPosition.z;
-      const dx=ix-ox,dy=iy+.2-oy,dz=iz-oz,len=Math.hypot(dx,dy,dz);
-      if(len<.35)return true;
-      const hit=world.castRay(new rapier.Ray({x:ox,y:oy,z:oz},{x:dx/len,y:dy/len,z:dz/len}),len-.3,true,undefined,undefined,undefined,player.current??undefined,
-        c=>!c.isSensor()&&!(c.parent()?.userData as {interactable?:string}|undefined)?.interactable&&!(c.parent()?.userData as {vehicle?:string}|undefined)?.vehicle);
-      return !hit;
-    };
+    const sight=(item:Interactable)=>interactionVisible(world,rapier,player.current??undefined,playerPosition,item.position);
     const offerContext = (): InteractionOfferContext => ({
       position: [playerPosition.x, playerPosition.y, playerPosition.z], now: performance.now() / 1000,
       available: item => {
@@ -1077,12 +1070,9 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         return;
       }
       if(active)exit();else if(item){
-        if(pickupApproach.current?.item.id===item.id){pickupApproach.current=null;return;}
-        const offer=interactionOffers.resolve(item,offerContext(),true);
-        if(!offer){actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;}
-        if(offer.stand){
-          pickupApproach.current={item,stand:offer.stand,elapsed:0};
-        }else{pickupApproach.current=null;item.onInteract();}
+        if(!pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true))){
+          actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;
+        }
       }else if(nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
@@ -1209,7 +1199,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       actorActivities.input(magnitude > .05, actions.current.jump);
       const stance=actorActivities.approach();
       const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
-      if(pickupApproach.current&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.current=null;
+      if(pickupApproach.active&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.cancel();
       const handFacing=guideActionHand.facing??actorActivities.idleFacing();
       if (handFacing && unoccupied && !operating && magnitude <= .05) {
         const focus=handFacing;
@@ -1239,25 +1229,17 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
           moveIntent.current=motion.moving?'walk':'idle';
         }
       }
-      const pickup=pickupApproach.current;
-      if(pickup){
-        const approach=pickup.item.approach,position:Vec3=[p.x,p.y,p.z];
-        pickup.elapsed+=dt;
-        const ready=!!approach&&grounded.current&&approach.ready(position);
-        const invalid=!approach||(pickup.item.enabled&&!pickup.item.enabled())||!grounded.current;
-        const blocked=!invalid&&(!sight(pickup.item)||!passage.allows(position,pickup.stand,PLAYER_RADIUS)||(!ready&&!pickupGroundRoute(world,rapier,player.current,position,pickup.stand)));
-        if(invalid||blocked||pickup.elapsed>PICKUP_APPROACH_TIMEOUT){
-          pickupApproach.current=null;
-          if(blocked||pickup.elapsed>PICKUP_APPROACH_TIMEOUT)actorNotice('没有走到可取用的位置，请换一侧再试。','Could not reach the pickup spot. Try another side.');
-        }else{
-          const motion=pickupApproachMotion(position,pickup.stand,approach!.target(),ready);
-          vx=motion.vx;vz=motion.vz;
-          guideYaw.current+=clamp(angleDelta(guideYaw.current,motion.yaw),-dt*10,dt*10);
+      if(pickupApproach.active){
+        const position:Vec3=[p.x,p.y,p.z];
+        const motion=pickupApproach.step(dt,position,guideYaw.current,Math.hypot(velocity.x,velocity.z),grounded.current,
+          (item,stand,ready)=>sight(item)&&passage.allows(position,stand,PLAYER_RADIUS)&&(ready||!!pickupGroundRoute(world,rapier,player.current!,position,stand)));
+        if(motion?.blocked)actorNotice('没有走到可取用的位置，请换一侧再试。','Could not reach the pickup spot. Try another side.');
+        else if(motion){
+          vx=motion.vx;vz=motion.vz;guideYaw.current=motion.heading;
           moveIntent.current=Math.hypot(vx,vz)>.05?'walk':'idle';
-          if(ready&&Math.abs(angleDelta(guideYaw.current,motion.yaw))<.12&&Math.hypot(velocity.x,velocity.z)<.18){
-            pickupApproach.current=null;
+          if(motion.arrived){
             actorActivities.sync({position,yaw:guideYaw.current});
-            pickup.item.onInteract();
+            motion.arrived.onInteract();
           }
         }
       }
@@ -1279,7 +1261,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       actorActivities.advance(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
-      const eligible=!seat&&!locked&&!pickupApproach.current&&grounded.current&&!actorActivities.carrying()&&!railVault.current;
+      const eligible=!seat&&!locked&&!pickupApproach.active&&grounded.current&&!actorActivities.carrying()&&!railVault.current;
       vaultPreview.current.elapsed+=dt;
       if(!eligible){vaultPreview.current.plan=null;vaultPreview.current.x=Infinity;}
       else if(vaultPreview.current.elapsed>=.18){
@@ -1337,7 +1319,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const passageMotion=passageVelocity(passage,asTuple(p),nextVelocity,dt,PLAYER_RADIUS);
       if(passageMotion.blocked) {
         player.current.setLinvel(passageMotion.velocity,true);
-        railVault.current=null;vault.current=null;pickupApproach.current=null;
+        railVault.current=null;vault.current=null;pickupApproach.cancel();
         guideTargetSpeed.current=0;moveIntent.current='idle';
         if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01)noticeRegionWaiting();
       }

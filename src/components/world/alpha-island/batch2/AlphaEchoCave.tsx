@@ -14,7 +14,7 @@ import type { Vec3 } from '../../types';
 import { caveChimeTarget, createCaveArt } from './cave-art';
 import { createCaveAudio } from './cave-audio';
 import { CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
-import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupReach,caveLampPickupNotice,caveLampApproach } from './batch2-station-feedback';
+import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupNotice,caveLampApproach } from './batch2-station-feedback';
 import { PICKUP_DISCOVERY_RADIUS } from '../../pickup-approach';
 import { heldPropPoint } from '../../accepted-action';
 import { startCaveLamp } from './cave-state';
@@ -23,6 +23,7 @@ import type { CavePart } from './cave-artifact';
 import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
 const OWNER='alpha-echo-cave';
 const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
+const LAMP_APPROACH=caveLampApproach(LAMP_HOOK);
 type Parts=CavePart[];
 function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:boolean;glow?:boolean}) {
   const materials=useMemo(()=>parts.map(p=>{const m=alphaMaterial(p.finish);
@@ -69,14 +70,13 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     rings.current.forEach(r=>{if(r)r.visible=false;});chimeRefs.current.forEach(g=>{if(g)g.rotation.z=0;});cancelling.current=false;
   }
   const pick=()=>{
-    if(state.current.lamp!=='rack'||!caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded))return;
+    if(state.current.lamp!=='rack'||!campPropActor.grounded||!LAMP_APPROACH.ready(campPropActor.position))return;
     cancelAlphaHand();cancelCampPropInteraction('cave-lamp');releaseGuideActionHand();
     const grip=[...LAMP_HOOK] as Vec3;
-    target.current=grip;startCaveLamp(state.current);
+    target.current=grip;startCaveLamp(state.current,campPropActor.position);
     Object.assign(guideActionHand,{owner:OWNER,target:grip,facing:grip,mode:'grip',cancel});
   };
-  const lampAction=()=>caveLampInteraction(state.current.lamp,guideActionHand.owner===OWNER,
-    caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded));
+  const lampAction=()=>caveLampInteraction(state.current.lamp,guideActionHand.owner===OWNER);
   const canUseLamp=()=>{
     const w=useWorldStore.getState(),p=campPropActor.position;
     return !!lampAction()&&campPropActor.available&&
@@ -85,14 +85,13 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
   };
   useInteractable({id:'alpha-cave-miner-lamp',position:LAMP_HOOK,radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
     get label(){return CAVE_LAMP_LABELS[lampAction()==='return'?'return':'take'];},
-    get approach(){return state.current.lamp==='rack'?caveLampApproach(LAMP_HOOK):undefined;},
+    get approach(){return state.current.lamp==='rack'?LAMP_APPROACH:undefined;},
     enabled:canUseLamp,onInteract:()=>{
       if(!canUseLamp())return;
       const action=lampAction();
       if(action==='return'){
         cancel();useWorldStore.setState({toast:{zh:'矿灯已挂回。',en:'The miner lamp is back on its hook.',at:performance.now()}});
       }else if(action==='take')pick();
-      else useWorldStore.setState({toast:{zh:'靠近挂架伸出矿灯的一侧，再按 E 取灯。',en:'Move to the lamp side of the rack, then press E to take it.',at:performance.now()}});
     }});
   const canExplore=()=>{
     const w=useWorldStore.getState();
@@ -144,8 +143,7 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
       }
     }
     const palm=guideActionHand.owner===OWNER?guideActionHand.palm:null,t=target.current;
-    const was=s.lamp;tickCaveState(s,delta,
-      s.lamp!=='reaching'||caveLampPickupReach(campPropActor.position,LAMP_HOOK,campPropActor.grounded));
+    const was=s.lamp;tickCaveState(s,delta,campPropActor.grounded?campPropActor.position:null);
     if(was==='reaching'&&s.lamp==='rack'){cancel();return;}
     const pickupNotice=caveLampPickupNotice(was,s.lamp);
     if(pickupNotice)useWorldStore.setState({toast:{...pickupNotice,at:performance.now()}});

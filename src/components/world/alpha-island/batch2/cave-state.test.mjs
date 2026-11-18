@@ -5,13 +5,15 @@ import { existsSync } from 'node:fs';
 import { createCaveState, startCaveLamp, cancelCaveState, tickCaveState, startCaveEcho, caveEchoSequence, caveRingPulse, caveNear, CAVE_ECHO_SECONDS } from './cave-state.ts';
 
 test('an accepted lamp pickup completes after its short animation; a lost safe stance cancels',()=>{
-  const s=createCaveState();assert.equal(startCaveLamp(s),true);assert.equal(startCaveLamp(s),false);
-  tickCaveState(s,.08,true);assert.equal(s.lamp,'reaching');
-  for(let i=0;i<4;i++)tickCaveState(s,.08,true);
+  const s=createCaveState(),p=[1,2,3];assert.equal(startCaveLamp(s,p),true);assert.equal(startCaveLamp(s,p),false);
+  tickCaveState(s,.08,p);assert.equal(s.lamp,'reaching');
+  for(let i=0;i<4;i++)tickCaveState(s,.08,p);
   assert.equal(s.lamp,'carried');cancelCaveState(s);assert.equal(s.lamp,'rack');
-  assert.equal(s.echoAge,CAVE_ECHO_SECONDS);startCaveLamp(s);tickCaveState(s,.08,false);
-  for(let i=0;i<40;i++)tickCaveState(s,.08,true);
+  assert.equal(s.echoAge,CAVE_ECHO_SECONDS);startCaveLamp(s,p);tickCaveState(s,.08,null);
+  for(let i=0;i<40;i++)tickCaveState(s,.08,p);
   assert.equal(s.lamp,'rack','no delayed pickup after leaving the rack');
+  startCaveLamp(s,p);p[0]+=.4;tickCaveState(s,.08,p);
+  assert.equal(s.lamp,'rack','walking out cancels even when the actor reuses its position array');
 });
 test('echo directions differ, delayed rings agree with audio events and hit rate is bounded',()=>{
   const s=createCaveState();assert.equal(startCaveEcho(s,0),true);assert.equal(startCaveEcho(s,1),false);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
-import { createInteractionOfferResolver } from './interaction-offer.ts';
+import { createInteractionApproach, createInteractionOfferResolver } from './interaction-offer.ts';
 import { findPickupStand, pickupStandingRing } from './pickup-approach.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { registerInteractable, nearestInteractable, reachableInteractables } from './WorldInteract.ts';
@@ -16,6 +16,23 @@ const item = { id: 'offer-lamp', position: [0, 1.15, 0], radius: 1.8, kind: 'exh
   label: { en: 'Take lamp', zh: '取灯' }, approach, onInteract() {} };
 const context = () => ({ position: [1.6, H, 0], now: 0, available: () => true,
   visible: () => true, findStand: () => [.5, H, 0] });
+
+test('repeated E preserves the selected approach; interruption, obstruction and expiry never dispatch it', () => {
+  for(const stop of ['arrive','cancel','obstruction','expiry','unregister','airborne']) {
+    const driver=createInteractionApproach();
+    let valid=true,count=0,requests=0;
+    const lamp={...item,enabled:()=>valid,onInteract:()=>count++};
+    const select=()=>driver.request(lamp,()=>{requests++;return {item:lamp,stand:[.5,H,0]};});
+    assert.ok(select()); assert.ok(select()); assert.equal(requests,1);
+    if(stop==='cancel')driver.cancel();
+    if(stop==='unregister')valid=false;
+    for(let frame=0;frame<240;frame++){
+      const motion=driver.step(1/60,stop==='expiry'?[1.6,H,0]:[.5,H,0],Math.PI,0,stop!=='airborne',()=>stop!=='obstruction');
+      motion?.arrived?.onInteract();
+    }
+    assert.equal(count,stop==='arrive'?1:0,stop);assert.equal(driver.active,false);
+  }
+});
 
 test('a visible nearby object without a safe stance is absent from both E and Q selection', () => {
   const resolver = createInteractionOfferResolver(), ctx = context(), release = registerInteractable(item);

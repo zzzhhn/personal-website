@@ -9,9 +9,10 @@ import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, INTENT_COASTER_FOOTPRINT, IBD
 
 import { ALPHA_STATIONS,alphaWorld,alphaContainsWorld,ALPHA_MAINLAND_PIER_POLYGON,ALPHA_MAINLAND_APPROACH } from './alpha-island/alpha-layout';
 import {ALPHA_VISITOR_PATH,ALPHA_VISITOR_SPURS} from './alpha-island/alpha-visitor-path';
-import {ALPHA_BATCH2_PATHS,ALPHA_SHALLOWS,ALPHA_WATERWHEEL,ALPHA_CAVE_PATH} from './alpha-island/alpha-batch2-layout';
+import {ALPHA_BATCH2_PATHS} from './alpha-island/alpha-batch2-layout';
+import { ALPHA_TRAIL_STOPS } from './alpha-island/alpha-trail';
 const alphaBatch2MapPaths=ALPHA_BATCH2_PATHS.slice(0,4).map(p=>p.map(alphaWorld));
-const alphaBatch2Stops=[{p:alphaWorld(ALPHA_SHALLOWS.center),zh:'石滩',en:'Shallows'},{p:alphaWorld(ALPHA_WATERWHEEL.center),zh:'水车',en:'Waterwheel'},{p:alphaWorld(ALPHA_CAVE_PATH[1]),zh:'岩洞',en:'Cave'}];
+const alphaBatch2Stops=ALPHA_TRAIL_STOPS.filter(s=>s.n===2||s.n===5||s.n===6).map(s=>({p:alphaWorld(s.point),...s.name}));
 
 import {FACTORY,FACTORY_FOOTPRINT} from './factory/factory-layout';
 import { createMapPathCache } from './map-path-cache';
