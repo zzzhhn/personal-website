@@ -28,11 +28,27 @@ function blocked(world: World, rapier: QueryApi, body: RigidBody, p: Point, shap
     rapier.QueryFilterFlags.EXCLUDE_SENSORS, undefined, undefined, body);
 }
 
+/** A point ray can fall through a joint that a sole bridges. Require dry, nearly level
+ * support on opposite sides of the same point; a single nearby ledge is insufficient. */
+function playerFooting(world: World, rapier: QueryApi, body: RigidBody, p: Vec3, waterY: number) {
+  const sample = (dx: number, dz: number) => ground(world, rapier, body,
+    [p[0]+dx, p[1], p[2]+dz], waterY, .18, 20);
+  const center = sample(0,0);
+  if (center !== null) return center;
+  for (const [dx,dz] of [[.06,0],[0,.06]]) {
+    const a = sample(dx,dz);
+    if (a === null) continue;
+    const b = sample(-dx,-dz);
+    if (b !== null && Math.abs(a-b) <= .015) return Math.max(a,b);
+  }
+  return null;
+}
+
 function playerSpot(world: World, rapier: QueryApi, body: RigidBody, p: Vec3, waterY: number) {
   const heights: number[] = [];
   for (let i = -1; i < 8; i++) {
     const angle = i * Math.PI / 4, r = i === -1 ? 0 : .75;
-    const y = ground(world, rapier, body, [p[0] + Math.cos(angle) * r, p[1], p[2] + Math.sin(angle) * r], waterY, .18, 20);
+    const y = playerFooting(world, rapier, body, [p[0] + Math.cos(angle) * r, p[1], p[2] + Math.sin(angle) * r], waterY);
     if (y === null) return null;
     heights.push(y);
   }

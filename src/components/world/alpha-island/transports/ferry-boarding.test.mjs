@@ -8,7 +8,7 @@ import {AnimationMixer,Box3,Group,Quaternion,Vector3} from 'three';
 import {alphaFerryRoute,alphaFerryGroundHeight} from './alpha-routes.ts';
 import {alphaTerrainData} from '../alpha-terrain.ts';
 import {ALPHA_ORIGIN} from '../alpha-layout.ts';
-import {alphaMainlandPierStructure,alphaPierDecks} from '../alpha-mainland-pier.ts';
+import {alphaMainlandPierStructure} from '../alpha-mainland-pier.ts';
 import {transportBoardingGeometry} from '../../rides/transport-boarding.ts';
 import {rideFootRouteClear} from '../../rides/ride-clearance.ts';
 import {findSafePlayerLanding} from '../../safe-landing.ts';
@@ -37,9 +37,11 @@ test('ferry boarding, steps, canopy and exact safe exits clear actual boat and p
   const terrain=alphaTerrainData(),vertices=new Float32Array(terrain.positions);
   for(let i=0;i<vertices.length;i++)vertices[i]+=ALPHA_ORIGIN[i%3];
   labels.set(world.createCollider(R.ColliderDesc.trimesh(vertices,terrain.indices)).handle,'actual Alpha terrain');
-  for(const part of pier.parts)mesh(part.geometry,'actual pier '+part.finish);
-  for(const [i,deck]of alphaPierDecks.entries())labels.set(world.createCollider(R.ColliderDesc.cuboid(...deck.size.map(v=>v/2)).setTranslation(...deck.p)).handle,'pier deck '+i);
-  for(const [i,part]of [...pier.posts,...pier.rails].entries())labels.set(world.createCollider(R.ColliderDesc.cuboid(...part.size.map(v=>v/2)).setTranslation(...part.p)).handle,'pier structure '+i);
+  for(const piece of pier.pieces){
+   const [x,y,z,w]=piece.quaternion;
+   const shape=R.ColliderDesc.roundCuboid(...piece.args).setTranslation(...piece.position).setRotation({x,y,z,w});
+   labels.set(world.createCollider(shape).handle,piece.id);
+  }
   const boards=transportBoardingGeometry(route,index,alphaFerryGroundHeight);labels.set(world.createCollider(R.ColliderDesc.trimesh(boards.positions,boards.indices)).handle,'fixed gangway '+index);
   const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0,-100,0));world.createCollider(R.ColliderDesc.capsule(.48,.34),body);world.step();
   for(const [name,path]of [['boarding',terminal.boarding],['egress',terminal.egress]]){

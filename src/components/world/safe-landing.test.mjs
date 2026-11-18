@@ -156,3 +156,16 @@ test('shallow water never accumulates rescue time; only continuously submerged m
   assert.deepEqual(updateHeadSubmersion(state.submergedSeconds, .1, -PLAYER_HEAD_OFFSET, 0), { submergedSeconds: 0, shouldRescue: false });
   assert.equal(updateHeadSubmersion(1.9, .1, -.4, 0, .3).shouldRescue, true, 'explicit head offset is supported');
 });
+
+test('player landing bridges a board joint only with close level footing on both sides', () => {
+  for (const [width, farHeight, accepted] of [[.025,0,true], [.18,0,false], [.025,-.12,false], [.025,null,false]]) {
+    const s=scene();
+    try {
+      for (const [side,height] of [[-1,0],[1,farHeight]]) {
+        if (height===null) continue;
+        s.world.createCollider(RAPIER.ColliderDesc.cuboid(4,.2,2).setTranslation(0,height-.2,side*(2+width/2)));
+      }
+      assert.equal(!!queries(s).player,accepted,JSON.stringify({width,farHeight}));
+    } finally { s.world.free(); }
+  }
+});

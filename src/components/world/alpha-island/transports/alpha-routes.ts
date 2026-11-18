@@ -1,7 +1,7 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
 import { transportBoardingFootprints } from '../../rides/transport-boarding';
 import { alphaGroundHeight as alphaHeight,alphaGroundSample } from '../alpha-terrain';
-import { alphaPierDecks } from '../alpha-mainland-pier';
+import { alphaPierDeckHeight } from '../alpha-mainland-pier';
 import {meshHeight} from '../../WorldLandform';
 import {WATER_Y} from '../../layout';
 import { Vector3 } from 'three';
@@ -87,6 +87,6 @@ export function alphaFerryGroundHeight(x:number,z:number):number|null {
  let y=meshHeight(x,z)??-Infinity;
  const island=alphaGroundSample(x-ALPHA_ORIGIN[0],z-ALPHA_ORIGIN[2]);
  if(island)y=Math.max(y,island.height);
- for(const deck of alphaPierDecks)if(Math.abs(x-deck.p[0])<=deck.size[0]/2&&Math.abs(z-deck.p[2])<=deck.size[2]/2)y=Math.max(y,deck.p[1]+deck.size[1]/2);
+ y=Math.max(y,alphaPierDeckHeight(x,z)??-Infinity);
  return y>=WATER_Y+.18?y:null;
 }

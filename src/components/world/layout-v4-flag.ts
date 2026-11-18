@@ -78,6 +78,8 @@ export const WORLD_SHOTS_V4 = [
     { id: `site-town-${time}`, position: [24, 3, 17] as Vec3, target: [10, 1.4, 7] as Vec3 },
     { id: `site-quarry-${time}`, position: [-78, 3, -46] as Vec3, target: [-84, 1.2, -56] as Vec3 },
     { id: `site-factory-${time}`, position: [-139, 3, -27] as Vec3, target: [-153, 1.2, -17] as Vec3 },
+    { id: `site-mainland-ferry-${time}`, position: [-3, 4.1, 103] as Vec3, target: [-11.4, 1.6, 112] as Vec3 },
+    { id: `site-sled-bend-${time}`, position: [157, 8.2, 159] as Vec3, target: [164, 3.9, 155] as Vec3 },
     { id: `camp-batch-overview-${time}`, position: [-24, 12.5, 48] as Vec3, target: [-43, 6.1, 27] as Vec3 },
     { id: `camp-batch-shelter-${time}`, position: [-37.5, 7.2, 19.3] as Vec3, target: [-33, 6.0, 12.5] as Vec3 },
     { id: `camp-batch-flags-${time}`, position: [-50.7, 7.0, 34.9] as Vec3, target: [-57, 6.4, 30] as Vec3 },

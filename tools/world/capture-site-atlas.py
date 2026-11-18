@@ -19,7 +19,7 @@ VIEWPORT = {"width": 960, "height": 540}
 # Wait for independently suspended districts before framing a site. The player can
 # reach "ready" at camp while some of these objects are still downloading.
 DISTRICTS = ["world-camp-content", "world-town", "world-street", "world-districts-v4",
-             "djc-beach-club", "alpha-island-batch2", "world-ibd-yard", "factory-structure"]
+             "djc-beach-club", "alpha-island-batch2", "world-ibd-yard", "factory-structure", "alpha-mainland-pier-r4-candidate"]
 TILE_WIDTH, TILE_HEIGHT, LABEL_HEIGHT = 600, 338, 32
 ROW_HEIGHT = TILE_HEIGHT + LABEL_HEIGHT
 

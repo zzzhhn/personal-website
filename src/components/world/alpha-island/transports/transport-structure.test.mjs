@@ -1,6 +1,6 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
 import test from 'node:test';import assert from 'node:assert/strict';import R from '@dimforge/rapier3d-compat';import{Quaternion,Vector3}from'three';
-import{ALPHA_TRANSPORT_ROUTES}from'./alpha-routes.ts';import{transportInfrastructure}from'./transport-infrastructure.ts';import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';import{rideFootRouteClear}from'../../rides/ride-clearance.ts';import{TransportDriver}from'../../rides/transport-driver.ts';import{transportWorld}from'../../rides/transport-route.ts';
+import{ALPHA_TRANSPORT_ROUTES}from'./alpha-routes.ts';import{transportInfrastructure,transportBeamGeometry,SLED_RAIL_RADIUS}from'./transport-infrastructure.ts';import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';import{rideFootRouteClear}from'../../rides/ride-clearance.ts';import{TransportDriver}from'../../rides/transport-driver.ts';import{transportWorld}from'../../rides/transport-route.ts';
 import{findSafePlayerLanding}from'../../safe-landing.ts';
 import{verifyPhysicalBoardingJoins}from'../../rides/transport-joining-fixture.mjs';
 import{alphaTerrainData}from'../alpha-terrain.ts';
@@ -32,6 +32,13 @@ test('sled walking paths clear the actual runtime footrest, runners, seat and ba
  const route=ALPHA_TRANSPORT_ROUTES[1],asset=await readWorldCraftGltf(['public/assets/world/alpha-island/transports/sled.glb']);assert.ok(asset);asset.scene.updateMatrixWorld(true);
  for(const index of [0,1]){const terminal=route.terminals[index],world=new R.World({x:0,y:0,z:0}),q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),terminal.yaw+route.transform.yaw),root=new Vector3(...transportWorld(terminal.vehicle,route.transform)),labels=new Map();
  asset.scene.traverse(o=>{if(!o.isMesh)return;const g=o.geometry.clone().applyMatrix4(o.matrixWorld),position=g.getAttribute('position'),vertices=new Float32Array(position.count*3);for(let i=0;i<position.count;i++){const v=new Vector3().fromBufferAttribute(position,i).applyQuaternion(q).add(root);vertices.set(v.toArray(),i*3);}const indices=g.index?new Uint32Array(g.index.array):Uint32Array.from({length:position.count},(_,i)=>i);const collider=world.createCollider(R.ColliderDesc.trimesh(vertices,indices));labels.set(collider.handle,o.name);g.dispose();});
+ const track=transportInfrastructure(route);
+ world.createCollider(R.ColliderDesc.trimesh(track.vertices,track.indices));
+ for(const segment of track.sledRails){
+  const guide=transportBeamGeometry(segment,SLED_RAIL_RADIUS);
+  const physicalGuide=world.createCollider(R.ColliderDesc.trimesh(guide.attributes.position.array,Uint32Array.from(guide.index.array)));
+  labels.set(physicalGuide.handle,'sled guide');guide.dispose();
+ }
  const terrain=alphaTerrainData(),terrainVertices=new Float32Array(terrain.positions);for(let i=0;i<terrainVertices.length;i++)terrainVertices[i]+=route.transform.origin[i%3];world.createCollider(R.ColliderDesc.trimesh(terrainVertices,terrain.indices));const deck=transportBoardingGeometry(route,index);world.createCollider(R.ColliderDesc.trimesh(deck.positions,deck.indices));const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0,-100,0));world.createCollider(R.ColliderDesc.capsule(.48,.34),body);world.step();
  assert.equal(verifyPhysicalBoardingJoins(world,R,body,route,index),6);
  for(const [name,path]of [['boarding',terminal.boarding],['egress',terminal.egress]]){const points=path.map(p=>transportWorld(p,route.transform));for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i],hit=world.castShape({x:a[0],y:a[1]+.832,z:a[2]},{x:0,y:0,z:0,w:1},{x:b[0]-a[0],y:b[1]-a[1],z:b[2]-a[2]},new R.Capsule(.48,.34),.004,1,false,undefined,undefined,undefined,body);assert.equal(!!hit,false,JSON.stringify({index,name,segment:i,part:hit?labels.get(hit.collider.handle):null,toi:hit?.time_of_impact}));}assert.ok(rideFootRouteClear(world,R,body,points),`${index} ${name} actual sled body`);}const exit=transportWorld(terminal.safeExit,route.transform),landing=findSafePlayerLanding(world,R,body,[exit],-.7);assert.ok(landing,`${index} endpoint passes real safe-landing ring and escape sweep`);assert.ok(Math.abs(landing[1]-.88-exit[1])<.12,JSON.stringify({index,exit,landing}));world.free();}

@@ -4,7 +4,7 @@ import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { CuboidCollider, CylinderCollider, RigidBody, TrimeshCollider, type RapierRigidBody } from '@react-three/rapier';
-import { BufferGeometry, CylinderGeometry, Float32BufferAttribute, FrontSide, Group, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
+import { BufferGeometry, Float32BufferAttribute, FrontSide, Group, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { useDjcFurnitureEnvironment } from '../../WorldDjcFurnitureEnvironment';
 import {FACILITY_WOOD_TILE} from '../../WorldFacilitySurface';
@@ -13,7 +13,7 @@ import { useInteractable } from '../../WorldInteract';
 import { useWorldStore } from '../../store';
 import { attractionRide, beginDrivenAttractionRide, endAttractionRide, requestAttractionExit, updateAttractionRide } from '../../attractions/attraction-ride';
 import { alphaFerryRoute,alphaFerryGroundHeight } from './alpha-routes';
-import { transportInfrastructure } from './transport-infrastructure';
+import { SLED_RAIL_RADIUS,transportBeamGeometry,transportInfrastructure } from './transport-infrastructure';
 import { transportBoardingGeometry } from '../../rides/transport-boarding';
 import { resetAttractionLook } from '../../attractions/attraction-camera';
 import { TransportDriver } from '../../rides/transport-driver';
@@ -115,8 +115,8 @@ function TransportInfrastructure({route,groundHeight}:{route:TransportRoute;grou
  return <>
   {route.kind==='sled'&&(wood?<WoodTrough source={pack.geometry} vertices={pack.vertices} indices={pack.indices} length={pack.curve.getLength()} snowCut={(route.snowLine??64)-dimensions.sledRunnerBelowFloor+route.transform.origin[1]} material={wood}/>:<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial vertexColors color="#ffffff" roughness={.78} metalness={0}/></mesh>)}
   {route.kind==='sled'&&<RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:route.id+'-trough'}}><TrimeshCollider args={[pack.vertices,pack.indices]} friction={.5}/></RigidBody>}
-  {route.kind==='sled'&&[-.77,.77].map(side=><PathRail key={side} route={route} offset={side} elevation={.08}/>)}
-  {route.kind==='cable'&&<PathRail route={route} offset={0} elevation={dimensions.cable.cableHeight}/>}
+  {route.kind==='sled'&&<RigidBody type="fixed" colliders="trimesh" userData={{surface:true,solid:true,assetId:route.id+'-guides'}}><BeamBatch segments={pack.sledRails} radius={SLED_RAIL_RADIUS} color="#815b35" wood/></RigidBody>}
+  {route.kind==='cable'&&<CableWire route={route}/>}
   <BeamBatch segments={pack.supports} radius={route.kind==='cable'?.09:.12} color={route.kind==='cable'?'#54666c':'#775231'} wood={route.kind==='sled'}/>
   <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:route.id+'-supports'}}>
    {pack.supports.map((s,i)=>{const a=new Vector3(...s.a),b=new Vector3(...s.b),d=b.clone().sub(a),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize());return <CylinderCollider key={i} position={tuple(a.add(b).multiplyScalar(.5))} quaternion={q} args={[d.length()/2,route.kind==='cable'?.09:.12]}/>;})}
@@ -147,21 +147,35 @@ function BoardingWalkway({route,index,groundHeight}:{route:TransportRoute;index:
  return <>{wood?<WoodBoarding source={pack.geometry} segments={pack.segments} material={wood}/>:<mesh geometry={pack.geometry} receiveShadow><meshStandardMaterial color="#a77f53" roughness={.8} side={2}/></mesh>}<RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:route.id+'-gangway-'+index}}><TrimeshCollider args={[pack.vertices,pack.indices]}/></RigidBody></>;
 }
 
-function PathRail({route,offset,elevation}:{route:TransportRoute;offset:number;elevation:number}){
- const geometry=useMemo(()=>{
-  const curve=transportCurve(route),p:Vec3[]=[];const count=Math.ceil(curve.getLength()/2);
-  for(let i=0;i<=count;i++){const v=curve.getPointAt(i/count),t=curve.getTangentAt(i/count),s=new Vector3(-t.z,0,t.x).normalize();v.addScaledVector(s,offset);v.y+=elevation;p.push(transportWorld(tuple(v),route.transform));}
-  return p;
- },[route,offset,elevation]);
- return <BeamBatch segments={geometry.slice(1).map((b,i)=>({a:geometry[i],b}))} radius={route.kind==='sled'?.065:.035} color={route.kind==='sled'?'#815b35':'#59666e'} wood={route.kind==='sled'}/>;
+function CableWire({route}:{route:TransportRoute}){
+ const segments=useMemo(()=>{
+  const curve=transportCurve(route),count=Math.ceil(curve.getLength()/2),points:Vec3[]=[];
+  for(let i=0;i<=count;i++){
+   const v=curve.getPointAt(i/count);v.y+=dimensions.cable.cableHeight;
+   points.push(transportWorld(tuple(v),route.transform));
+  }
+  return points.slice(1).map((b,i)=>({a:points[i],b}));
+ },[route]);
+ return <BeamBatch segments={segments} radius={.035} color="#59666e"/>;
 }
 function BeamBatch({segments,radius,color,wood=false}:{segments:{a:Vec3;b:Vec3}[];radius:number;color:string;wood?:boolean}){
  const woodMaterial=useTransportWood();
  const geometry=useMemo(()=>{
   // Ferry infrastructure has no fixed beams. Three's merger requires a first geometry.
   if(segments.length===0)return null;
-  const parts=segments.map(({a,b})=>{const from=new Vector3(...a),to=new Vector3(...b),d=to.clone().sub(from),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize());
-   const cylinder=new CylinderGeometry(radius,radius,d.length(),8);if(wood){const uv=cylinder.getAttribute('uv'),colors=new Float32Array(cylinder.getAttribute('position').count*3).fill(.82);for(let i=0;i<uv.count;i++){const u=uv.getX(i),v=uv.getY(i);uv.setXY(i,v*d.length()/FACILITY_WOOD_TILE[0],u*2*Math.PI*radius/FACILITY_WOOD_TILE[1]);}cylinder.setAttribute('color',new Float32BufferAttribute(colors,3));}return cylinder.applyMatrix4(new Matrix4().compose(from.add(to).multiplyScalar(.5),q,new Vector3(1,1,1)));});
+  const parts=segments.map(segment=>{
+   const cylinder=transportBeamGeometry(segment,radius);
+   if(wood){
+    const uv=cylinder.getAttribute('uv'),length=cylinder.parameters.height;
+    for(let i=0;i<uv.count;i++){
+     const u=uv.getX(i),v=uv.getY(i);
+     uv.setXY(i,v*length/FACILITY_WOOD_TILE[0],u*2*Math.PI*radius/FACILITY_WOOD_TILE[1]);
+    }
+    const colors=new Float32Array(cylinder.getAttribute('position').count*3).fill(.82);
+    cylinder.setAttribute('color',new Float32BufferAttribute(colors,3));
+   }
+   return cylinder;
+  });
   const merged=mergeGeometries(parts,false);parts.forEach(p=>p.dispose());return merged;
  },[segments,radius,wood]);
  useEffect(()=>()=>geometry?.dispose(),[geometry]);
