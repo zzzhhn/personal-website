@@ -1,44 +1,11 @@
 import assert from 'node:assert/strict';
 import { after, test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import ts from 'typescript';
 import { Group, Mesh, BoxGeometry, MeshPhysicalMaterial, PerspectiveCamera, Ray, Texture, Vector3 } from 'three';
 import { buildDjcClubGeometry } from './WorldDjcClubGeometry.ts';
-import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_DANCE_JOIN, DJC_BAR_NEAR_PREFETCH, DJC_BAR_ORIGIN, DJC_BAR_STOOLS, buildDjcBarProxy, cloneDjcBarVisual, createDjcBarPrefetchCheck, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarWorld, shareDjcBarTexture } from './djc-bar-layout.ts';
+import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_DANCE_JOIN, DJC_BAR_ORIGIN, DJC_BAR_STOOLS, buildDjcBarProxy, cloneDjcBarVisual, createDjcBarPrefetchCheck, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarWorld, shareDjcBarTexture } from './djc-bar-layout.ts';
 
 const proxy = buildDjcBarProxy(), club = buildDjcClubGeometry();
-// Exercise production component initializers and frame callbacks without a GL
-// renderer. This checks requests/state writes, not browser Suspense presentation.
-const componentJS = ts.transpileModule(readFileSync(new URL('./WorldDjcClubBar.tsx', import.meta.url), 'utf8'), {
-  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
-}).outputText;
-const componentAST = ts.createSourceFile('WorldDjcClubBar.js', componentJS, ts.ScriptTarget.Latest, true);
-function componentRig(name, metres) {
-  const declaration = componentAST.statements.find(n => ts.isFunctionDeclaration(n) && n.name?.text === name);
-  assert.ok(declaration);
-  const text = declaration.getText(componentAST), expression = text.slice(text.indexOf('function'));
-  const camera = new PerspectiveCamera(50, 1951 / 1062, .1, 600);
-  camera.position.set(DJC_BAR_ORIGIN[0] + metres, DJC_BAR_ORIGIN[1], DJC_BAR_ORIGIN[2]);
-  camera.lookAt(...DJC_BAR_ORIGIN);
-  const frames = [], refs = [], writes = [], environmentCalls = [];
-  let inTransition = false;
-  const marker = () => null;
-  const env = { DJC_BAR_ORIGIN, DJC_BAR_ASSETS, DJC_BAR_NEAR_PREFETCH, createDjcBarPrefetchCheck, djcBarLod, djcBarQaMode, djcBarQaOpaque,
-    useThree: select => select({ camera }), useMemo: create => create(), useEffect: () => {},
-    useRef(value) { const ref = { current: value }; refs.push(ref); return ref; },
-    useState(init) { return [typeof init === 'function' ? init() : init, value => writes.push({ value, inTransition })]; },
-    useFrame: frame => frames.push(frame), buildDjcBarProxy: () => proxy,
-    startTransition(callback) { inTransition = true; try { callback(); } finally { inTransition = false; } },
-    useBarEnvironment() { environmentCalls.push(true); return null; },
-    BarFallback: marker, ActiveBarVisual: marker, BarBoundary: marker, Suspense: marker, BarAsset: marker,
-    RigidBody: marker, TrimeshCollider: marker,
-    _jsx: (type, props, key) => ({ type, props, key }), _jsxs: (type, props, key) => ({ type, props, key }),
-  };
-  const fn = new Function(...Object.keys(env), `return (${expression});`)(...Object.values(env));
-  const tree = fn({ fallback: 'loading' });
-  return { tree, camera, frames, refs, writes, environmentCalls,
-    move(distance) { camera.position.x = DJC_BAR_ORIGIN[0] + distance; frames.forEach(frame => frame()); } };
-}
 function hit(data, origin, direction, cull = true) {
   const ray = new Ray(new Vector3(...origin), new Vector3(...direction)), p = data.vertices;
   const a = new Vector3(), b = new Vector3(), c = new Vector3(), q = new Vector3();
@@ -128,58 +95,29 @@ test('LOD hysteresis and QA-only opaque comparison do not change collision contr
   assert.equal(djcBarQaMode('?qa=1&djcBar=near'), 'near');
   assert.equal(djcBarQaMode('?qa=1&djcBar=far'), 'far');
 });
-test('first approach activates heavy visual resources only once while collision remains present', () => {
-  const remote = componentRig('WorldDjcClubBar', 220);
-  assert.equal(remote.environmentCalls.length, 0);
-  assert.equal(remote.tree.props.children[1].length, 2, 'both fixed collision bodies mount remotely');
-  assert.equal(remote.tree.props.children[0].props.children.props.roof, proxy.roof, 'remote branch is the cheap fallback');
-  for (let i = 0; i < 180; i++) remote.move(91);
-  assert.equal(remote.writes.length, 0);
-  remote.move(90);
-  for (const d of [89, 30, 200, 89, 5, 220]) remote.move(d);
-  assert.deepEqual(remote.writes.map(w => w.value), [true], 'activation stays sticky without per-frame React writes');
-  const close = componentRig('WorldDjcClubBar', 30);
-  assert.equal(close.tree.props.children[0].props.children.props.fallback.props.roof, proxy.roof, 'near branch mounts the active-resource component');
-  assert.equal(close.writes.length, 0, 'close initial entry needs no activation update');
-});
-test('camp tools shot defers the bar until the camera turns toward it', () => {
-  const rig = componentRig('WorldDjcClubBar', 79);
-  rig.camera.position.set(-36.5, 7, 24.6);
-  rig.camera.quaternion.set(-.06310534784218876, -.3773144837755987, -.025780923859161607, .9235728663033786);
-  rig.frames[0]();
-  assert.equal(rig.writes.length, 0);
-  rig.camera.lookAt(...DJC_BAR_ORIGIN);
-  rig.frames[0]();
-  assert.deepEqual(rig.writes.map(w => w.value), [true]);
-});
-test('close approach prefetches offscreen and the padded bounds catch the viewport edge', () => {
-  const close = componentRig('WorldDjcClubBar', 50);
-  close.camera.lookAt(DJC_BAR_ORIGIN[0] + 100, DJC_BAR_ORIGIN[1], DJC_BAR_ORIGIN[2]);
-  close.move(36);
-  assert.equal(close.writes.length, 0);
-  close.move(35);
-  assert.deepEqual(close.writes.map(w => w.value), [true]);
+test('bar prefetch accounts for the camp camera, the close offscreen radius and the viewport edge', () => {
+  const wantsAsset = createDjcBarPrefetchCheck();
+  const center = new Vector3(...DJC_BAR_ORIGIN), camera = new PerspectiveCamera(50, 1951 / 1062, .1, 600);
+  const eligible = () => wantsAsset(camera, camera.position.distanceTo(center));
+  camera.position.set(-36.5, 7, 24.6);
+  camera.quaternion.set(-.06310534784218876, -.3773144837755987, -.025780923859161607, .9235728663033786);
+  assert.equal(eligible(), false);
+  camera.lookAt(center);
+  assert.equal(eligible(), true);
 
-  const edge = componentRig('WorldDjcClubBar', 70);
-  const center = new Vector3(...DJC_BAR_ORIGIN).add(new Vector3(0, 2.5, 0));
-  edge.camera.position.y = center.y;
-  edge.camera.lookAt(center.x, center.y, center.z - 70);
-  edge.camera.updateMatrixWorld();
-  assert.ok(Math.abs(center.clone().project(edge.camera).x) > 1, 'the bar center is already offscreen');
-  edge.frames[0]();
-  assert.deepEqual(edge.writes.map(w => w.value), [true], 'the padded bound intersects the viewport');
-});
-test('LOD requests use transitions and keep stable boundary identity through cold-load waits', () => {
-  const rig = componentRig('ActiveBarVisual', 60);
-  assert.equal(rig.environmentCalls.length, 1);
-  assert.equal(rig.tree.key, undefined); assert.equal(rig.tree.props.children.key, undefined);
-  const oldAsset = rig.tree.props.children.props.children;
-  assert.equal(oldAsset.props.url, DJC_BAR_ASSETS.far);
-  for (let i = 0; i < 180; i++) rig.move(25);
-  assert.deepEqual(rig.writes, [{ value: 'near', inTransition: true }], 'one transition request while near asset is pending');
-  assert.equal(oldAsset.props.url, DJC_BAR_ASSETS.far, 'pending request leaves the committed asset intact');
-  rig.move(31); rig.move(31);
-  assert.deepEqual(rig.writes, [{ value: 'near', inTransition: true }, { value: 'far', inTransition: true }]);
+  camera.position.copy(center);
+  camera.position.x += 36;
+  camera.lookAt(center.clone().add(new Vector3(100, 0, 0)));
+  assert.equal(eligible(), false);
+  camera.position.x -= 1;
+  assert.equal(eligible(), true);
+
+  const barCenter = center.clone().add(new Vector3(0, 2.5, 0));
+  camera.position.copy(barCenter).x += 70;
+  camera.lookAt(barCenter.x, barCenter.y, barCenter.z - 70);
+  camera.updateMatrixWorld();
+  assert.ok(Math.abs(barCenter.clone().project(camera).x) > 1);
+  assert.equal(eligible(), true, 'the padded bound intersects the viewport');
 });
 test('QA legacy mode restores the actual frozen source mesh, not a recreated approximation', () => {
   const baseline = JSON.parse(readFileSync(new URL('../../../docs/world/phase-2-playground/djc-quality-pilot-20261101/baseline.json', import.meta.url)));

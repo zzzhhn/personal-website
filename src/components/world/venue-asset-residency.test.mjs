@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { act, createElement as h, StrictMode } from 'react';
-import { Group, PerspectiveCamera } from 'three';
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PerspectiveCamera } from 'three';
 import { compileWorldComponent } from '../../../tools/world/alpha-mine-tests/component-host.mjs';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
 import { useOwnedDjcVisual } from './useOwnedDjcVisual.ts';
@@ -15,8 +15,10 @@ import * as furniture from './djc-furniture-visual.ts';
 import * as crates from './attractions/ibd-crate-visual.ts';
 import * as equipment from './attractions/ibd-static-craft-visual.ts';
 
+import * as bar from './djc-bar-layout.ts';
+
 const fiber = createRequire(import.meta.url)('@react-three/fiber');
-fiber.extend({ Group });
+fiber.extend({ BoxGeometry, Group, Mesh, MeshStandardMaterial });
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
 const cases = [
@@ -28,6 +30,13 @@ const cases = [
   ...['Shell', 'Lid'].map(part => ['attractions/WorldIbdCratePart', './ibd-crate-visual', crates, crates.IBD_CRATE_ASSET,
     IBD_YARD.center, 'ibd-crafted-crate-' + part.toLowerCase(), part]),
 ];
+
+async function createScene(camera) {
+  const root = fiber.createRoot({});
+  const renderer = { render() {}, setSize() {}, setPixelRatio() {}, capabilities: { getMaxAnisotropy: () => 4 } };
+  await root.configure({ gl: renderer, camera, frameloop: 'never', dpr: 1, size: { width: 320, height: 200, top: 0, left: 0 } });
+  return root;
+}
 
 function materialsOf(root) {
   const materials = new Set();
@@ -43,9 +52,7 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     assert.ok(gltf, 'missing shipping model: ' + asset);
     const camera = new PerspectiveCamera();
     camera.position.set(center[0] + 200, 2, center[2]);
-    const root = fiber.createRoot({});
-    const renderer = { render() {}, setSize() {}, setPixelRatio() {}, capabilities: { getMaxAnisotropy: () => 4 } };
-    await root.configure({ gl: renderer, camera, frameloop: 'never', dpr: 1, size: { width: 320, height: 200, top: 0, left: 0 } });
+    const root = await createScene(camera);
     const local = entry.startsWith('attractions/') ? '../' : './';
     let ready = false, release, requests = 0, failure;
     const pending = new Promise(resolve => { release = resolve; });
@@ -147,3 +154,92 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     }
   });
 }
+
+test('the Club bar keeps the far model and both fixed bodies during a suspended near-model transition', async () => {
+  const { DJC_BAR_ORIGIN: origin, DJC_BAR_ASSETS: urls } = bar;
+  const packs = new Map();
+  for (const url of Object.values(urls)) {
+    const gltf = await readWorldCraftGltf(['public' + url]);
+    assert.ok(gltf, url);
+    packs.set(url, gltf);
+  }
+  const camera = new PerspectiveCamera(50, 1.8, .1, 600);
+  camera.position.set(origin[0] + 220, origin[1], origin[2]);
+  camera.lookAt(...origin);
+  const root = await createScene(camera);
+  let elapsed = 0, store, release, nearReady = false, environments = 0;
+  const pending = new Promise(resolve => { release = resolve; });
+  const requests = new Set();
+  const disposed = new WeakMap();
+  function observe(resource) {
+    if (disposed.has(resource)) return;
+    disposed.set(resource, 0);
+    resource.addEventListener('dispose', () => disposed.set(resource, disposed.get(resource) + 1));
+  }
+  const Bar = compileWorldComponent(new URL('./WorldDjcClubBar.tsx', import.meta.url))({
+    './djc-bar-layout': { ...bar, buildDjcBarProxy() {
+      const proxy = bar.buildDjcBarProxy();
+      observe(proxy.roof);
+      return proxy;
+    } },
+    './useOwnedDjcVisual': { useOwnedDjcVisual },
+    './WorldAssetDecoder': { withWorldAssetDecoder() {} },
+    './WorldNight': { night: { value: 0 } },
+    './WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment() { environments++; return null; } },
+    '@react-three/rapier': { RigidBody: ({ name, children }) => h('group', { name }, children), TrimeshCollider: () => null },
+    '@react-three/fiber': { ...fiber, useLoader(_loader, url) {
+      requests.add(url);
+      if (url === urls.near && !nearReady) throw pending;
+      return packs.get(url);
+    } },
+  }).default;
+  const move = distance => act(async () => {
+    camera.position.set(origin[0] + distance, origin[1], origin[2]);
+    store.getState().advance(++elapsed, false);
+  });
+  try {
+    await act(async () => { store = root.render(null); });
+    await act(async () => { root.render(h(StrictMode, null, h(Bar))); });
+    const scene = store.getState().scene;
+    const visual = scene.getObjectByName('djc-north-bar-visual');
+    const bodies = ['surface', 'solid'].map(kind => scene.getObjectByName('djc-bar-' + kind));
+    assert.ok(bodies.every(Boolean));
+    const fallback = visual.getObjectByName('djc-north-bar-fallback');
+    assert.ok(fallback);
+    const roof = fallback.children.find(mesh => disposed.has(mesh.geometry)).geometry;
+    assert.equal(disposed.get(roof), 0, 'the mounted fallback roof must survive effect replay');
+    assert.equal(environments, 0);
+    await move(91);
+    assert.equal(requests.size, 0);
+    visual.addEventListener('childadded', ({ child }) => materialsOf(child).forEach(observe));
+    await move(90);
+    const far = visual.children[0];
+    assert.ok(far && far !== fallback);
+    assert.deepEqual([...requests], [urls.far]);
+    for (const m of materialsOf(far)) assert.equal(disposed.get(m), 0);
+    await move(25);
+    assert.deepEqual([...requests], [urls.far, urls.near]);
+    assert.equal(visual.children[0], far);
+    assert.equal(far.visible, true);
+    assert.equal(visual.children.length, 1);
+    await act(async () => { nearReady = true; release(); });
+    const near = visual.children[0];
+    assert.notEqual(near, far);
+    assert.equal(visual.children.length, 1);
+    for (const m of materialsOf(far)) assert.equal(disposed.get(m), 1);
+    for (const m of materialsOf(near)) assert.equal(disposed.get(m), 0);
+    await move(29);
+    assert.equal(visual.children[0], near);
+    await move(31);
+    assert.notEqual(visual.children[0], near);
+    for (const m of materialsOf(near)) assert.equal(disposed.get(m), 1);
+    await move(200);
+    assert.equal(visual.visible, false);
+    for (const body of bodies) assert.equal(scene.getObjectByName(body.name), body);
+    await act(async () => { root.render(null); });
+    assert.equal(disposed.get(roof), 1);
+  } finally {
+    await act(async () => { root.unmount(); });
+    for (const gltf of packs.values()) disposeWorldCraftGltf(gltf.scene);
+  }
+});

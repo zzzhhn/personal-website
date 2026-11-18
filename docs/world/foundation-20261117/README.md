@@ -500,4 +500,6 @@ The Club pool lanterns and daybeds disposed their mounted materials during React
 
 The venue residency suite mounts the shipping React components under React Three Fiber, defers GLB delivery, then supplies the shipping GLB meshes. It checks the fallback during loading, the real material disposal events and the return trip across the visibility boundary. Club furniture stays resident while hidden, static freight equipment unloads past its exit radius, and active freight crates retain their articulated parts. It also exercises the crate error boundary. This runs without WebGL using a stub renderer and CPU texture placeholders. Four older suites retain their geometry, material and collision checks and no longer extract private component declarations from source text.
 
-The atlas build now exercises these seven scene cases and the terrain loader's real HTTP gzip regression before capture.
+The same replay also triggered an early disposal of the north bar's fallback roof geometry, and independently of the materials of its mounted far model. Both now use the same release rule. A real Suspense transition keeps the far GLB visible while the near GLB is pending, releases its private materials after replacement and preserves the two fixed-body registrations across both detail boundaries. The remaining camera checks sample the actual prefetch rule at the camp pose and the viewport edge.
+
+The atlas build now exercises all eight scene cases, the terrain loader's real HTTP gzip regression and the Alpha boarding mask capacity regression before capture.

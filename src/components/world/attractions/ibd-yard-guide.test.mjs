@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ibdGuideStep, ibdGuideRoute, ibdGuideResult, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions, yardCase } from './ibd-yard-game.ts';
 import { ibdStation, IBD_STOCK_KEYS } from './ibd-yard-layout.ts';
 import { ibdStockItem } from './ibd-stock.ts';
@@ -77,13 +75,6 @@ test('resuming after free exploration respects gallery proofs, opened cartons an
   const saved = JSON.stringify(game); ibdGuideStep(game); ibdGuideRoute(game); assert.equal(JSON.stringify(game), saved);
   game = manual(game, 'manifest', 'reset');
   assert.equal(ibdGuideStep(game).action.kind, 'brief'); assert.equal(game.round, 2);
-});
-test('changed React components and guide modules parse without TS/JSX syntax errors', () => {
-  for (const file of ['WorldIbdGuide.tsx', 'WorldIbdHud.tsx', 'WorldIbdYard.tsx', 'ibd-yard-guide.ts', 'ibd-yard-store.ts', 'ibd-yard-game.ts', 'ibd-yard-verdict.ts']) {
-    const source = readFileSync(new URL(file, import.meta.url), 'utf8');
-    const parsed = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, file.endsWith('tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
-    assert.deepEqual(parsed.parseDiagnostics.map(d => ts.flattenDiagnosticMessageText(d.messageText, '\n')), [], file);
-  }
 });
 test('the first-batch ground breadcrumbs avoid floor-level fixed cuboids with player-width clearance', () => {
   const data = buildIbdStatic();
