@@ -46,11 +46,10 @@ if (typeof window !== 'undefined' && new URLSearchParams(window.location.search)
 export function nearestInteractable(x: number, y: number, z: number, reachable?: (item: Interactable) => boolean, preferred?: string | null): { item: Interactable; distance: number } | null {
   const inRange: { item: Interactable; distance: number }[] = [];
   for (const item of registry.values()) {
-    if (item.enabled && !item.enabled()) continue;
     const [px, py, pz] = item.position;
     if (Math.abs(py - y) > 2.5) continue;
     const d = Math.hypot(px - x, pz - z);
-    if (d <= (item.radius ?? 2.2)) inRange.push({ item, distance: d });
+    if (d <= (item.radius ?? 2.2) && (item.enabled?.() ?? true)) inRange.push({ item, distance: d });
   }
   inRange.sort((a, b) => a.distance - b.distance);
   reachableNow = inRange.filter(c => !reachable || reachable(c.item));

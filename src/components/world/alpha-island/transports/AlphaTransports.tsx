@@ -22,7 +22,8 @@ import { sampleTransport, transportCurve, transportWorld, tuple } from '../../ri
 import { registerRideGround, type TransportRoute } from '../../rides/ride-contract';
 import type { Vec3 } from '../../types';
 export const transportQaHold={value:false};
-import { useTransportStatus,transportActions,transportNames as names } from './transport-status';
+import { useTransportStatus,transportActions } from './transport-status';
+import { transportStation } from './transport-station';
 export interface AlphaTransportsProps { routes:TransportRoute[]; /** local terrain elevation; supports share scene ground */ groundHeight?:(x:number,z:number)=>number|null }
 export default function AlphaTransports({routes,groundHeight}:AlphaTransportsProps){const effective=useMemo(()=>import.meta.env.DEV&&new URLSearchParams(window.location.search).get('ferryFixture')==='1'&&!routes.some(route=>route.kind==='ferry')?[...routes,alphaFerryRoute()]:routes,[routes]);useEffect(()=>{transportActions.requestExit=requestAttractionExit;transportActions.skipTravel=()=>{
  const w=useWorldStore.getState(),d=attractionRide.driver;
@@ -35,21 +36,25 @@ function Transport({route,groundHeight}: {route:TransportRoute;groundHeight?:Alp
  const samples=useMemo(()=>{const curve=transportCurve(route);return {curve,parked:[sampleTransport(route,0,curve),sampleTransport(route,1,curve)]};},[route]);
  const initial=samples.parked[0];
  const begin=(source:0|1)=>{
-  const w=useWorldStore.getState();if(attractionRide.active||w.paused||w.activeVehicle||w.seat||w.card||empty.current!==null||parked.current!==source)return;
-  if(route.kind==='sled'&&source!==0)return;
+  const w=useWorldStore.getState();
   let release=()=>{};
   if(route.kind==='cable'){const lease=rideEnvironment.acquire(route.id,w.weather);environmentLease.current=lease;release=lease.release;}
   const d=new TransportDriver(route,source,release),sample=d.sample();
   if(beginDrivenAttractionRide(d,sample.pose,transportWorld(route.terminals[source].safeExit,route.transform))){driver.current=d;useTransportStatus.setState({id:route.id,kind:route.kind,phase:d.phase,progress:0,cancelled:false,blocked:false});}
   else d.dispose('recovery');
  };
- const boardOrCall=(source:0|1)=>{
-  if(empty.current!==null||attractionRide.active)return;
-  if(parked.current!==source){empty.current=parked.current;emptyTarget.current=source;useWorldStore.setState({toast:{zh:'交通正在沿线路驶来，请在站台等候。',en:'The transport is approaching along its route. Please wait on the platform.',at:performance.now()}});return;}
-  begin(source);
+ const stationAvailable=()=>{
+  const w=useWorldStore.getState();
+  return !driver.current&&!attractionRide.active&&empty.current===null&&!w.paused&&!w.activeVehicle&&!w.seat&&!w.card&&!w.poolInspect&&!w.shot&&!document.hidden;
  };
- useInteractable({id:route.id+'-board-0',kind:'board',position:transportWorld(route.terminals[0].boarding[0],route.transform),radius:2.1,label:names[route.kind],enabled:()=>!attractionRide.active&&empty.current===null,onInteract:()=>boardOrCall(0)});
- useInteractable(route.kind==='sled'?null:{id:route.id+'-board-1',kind:'board',position:transportWorld(route.terminals[1].boarding[0],route.transform),radius:2.1,label:names[route.kind],enabled:()=>!attractionRide.active&&empty.current===null,onInteract:()=>boardOrCall(1)});
+ const station=(source:0|1)=>transportStation(route,source,transportWorld(route.terminals[source].boarding[0],route.transform),
+  ()=>parked.current,stationAvailable,()=>begin(source),()=>{
+   empty.current=parked.current;
+   emptyTarget.current=source;
+   useWorldStore.setState({toast:{zh:'交通正在沿线路驶来，请在站台等候。',en:'The transport is approaching along its route. Please wait on the platform.',at:performance.now()}});
+  });
+ useInteractable(station(0));
+ useInteractable(station(1));
  useEffect(()=>()=>{if(driver.current&&attractionRide.driver===driver.current)endAttractionRide();driver.current?.dispose('recovery');if(useTransportStatus.getState().id===route.id)useTransportStatus.setState({id:null,kind:null});},[route]);
  useFrame((_,dt)=>{
   const w=useWorldStore.getState(),frozen=w.paused||w.poolInspect||!!w.shot||document.hidden;

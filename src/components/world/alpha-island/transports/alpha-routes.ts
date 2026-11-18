@@ -1,5 +1,5 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
-import { transportBoardingGeometry } from '../../rides/transport-boarding';
+import { transportBoardingFootprints } from '../../rides/transport-boarding';
 import { alphaGroundHeight as alphaHeight,alphaGroundSample } from '../alpha-terrain';
 import { alphaPierDecks } from '../alpha-mainland-pier';
 import {meshHeight} from '../../WorldLandform';
@@ -74,7 +74,11 @@ export function alphaFerryRoute():TransportRoute {
  return route;
 }
 
-export function alphaTransportBoardingFootprints(includeFerry=false){return (includeFerry?[...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()]:ALPHA_TRANSPORT_ROUTES).flatMap(route=>route.terminals.flatMap((t,index)=>{const data=transportBoardingGeometry(route,index as 0|1);return data.segments.map(s=>({...s,halfWidth:.65}));}));}
+export function alphaTransportBoardingFootprints(includeFerry=false) {
+ const routes = includeFerry ? [...ALPHA_TRANSPORT_ROUTES, alphaFerryRoute()] : ALPHA_TRANSPORT_ROUTES;
+ return routes.flatMap(route => ([0, 1] as const).flatMap(index => transportBoardingFootprints(route, index)));
+}
+
 
 /** Actual source mesh interpolation and physical pier tops, in world coordinates.
  * The ferry has identity transform; passing scene-local alphaHeight directly would sample
