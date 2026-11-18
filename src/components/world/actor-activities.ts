@@ -49,12 +49,16 @@ export interface ActorActivity {
 }
 
 export function createActorActivities() {
+  // Publish the controller pose even when no regional adapter has mounted.
+  const interactionPose = { position: [0,0,0] as Vec3, yaw: 0, grounded: false, available: false };
+  let controllerAvailable = false;
   const entries = new Map<string, { entry: ActorActivity }>();
   const current = () => [...entries.values()];
   const visit = (run: (entry: ActorActivity) => void) => {
     for (const slot of current()) if (entries.get(slot.entry.id) === slot) run(slot.entry);
   };
   return {
+    interactionPose: interactionPose as Readonly<typeof interactionPose>,
     register(entry: ActorActivity) {
       if (!entry.id) throw new Error('An actor activity needs an id');
       const old = entries.get(entry.id);
@@ -71,6 +75,11 @@ export function createActorActivities() {
         || pose.yaw !== undefined && !Number.isFinite(pose.yaw)) return;
       // Snapshot ownership before any adapter can cancel itself during synchronization.
       const owners = current().filter(({entry}) => { const state=entry.read(); return state.busy || state.carrying || state.occupied; });
+      if (pose.position) interactionPose.position.splice(0, 3, ...pose.position);
+      if (pose.yaw !== undefined) interactionPose.yaw = pose.yaw;
+      if (pose.grounded !== undefined) interactionPose.grounded = pose.grounded;
+      if (pose.available !== undefined) controllerAvailable = pose.available;
+      interactionPose.available = controllerAvailable && owners.length === 0;
       visit(entry => entry.sync({ ...pose, ...(pose.position ? { position: [...pose.position] as Vec3 } : {}) },
         { occupiedElsewhere: owners.some(slot => slot.entry !== entry) }));
     },
@@ -182,6 +191,7 @@ export function createActorActivities() {
 }
 export type ActorActivities = ReturnType<typeof createActorActivities>;
 export const actorActivities = createActorActivities();
+export const interactionActor = actorActivities.interactionPose;
 
 /** All scene-owned stance actions use this motion rule; the physics caller validates the route. */
 export function activityApproachMotion(position: Vec3, approach: ActivityApproach) {

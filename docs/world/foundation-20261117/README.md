@@ -347,6 +347,14 @@ The dynamic capsule test independently reproduced a west pool exit failure at x=
 
 131 focused tests pass, including selection changes, replacement during approach, cave and summit pickup staging, camp props, Club geometry and pool exits. TypeScript, generated resource checks and the eight-page production build pass. The pool fixture does not measure rendering or performance on an M3 Air.
 
+## Independent mountain pickups and guide hand
+
+Camp props and the Alpha island load under separate Suspense boundaries. The mountain stations and cave lamp previously read their live player pose from a mirror maintained exclusively by the camp adapter. The guide also checked that mirror before posing its hand for scene-owned actions. Without camp, a grounded player could therefore lose both the offer and the hand animation.
+
+The controller now publishes its interaction pose through the activity registry even when no region is registered. Occupied activities reserve the actor, and removing the controller clears availability. The summit rack and cave use that pose. Camp props retain their own hand state.
+
+88 focused tests passed. The shipped cave and island meshes exercise the actual lamp action from five approaches. The summit test checks camp ownership, camp unloading during pickup and a fixed rack anchor while carrying. The G24 skeleton reaches a scene-owned grip within 2.5 cm without camp. TypeScript, generated terrain/map checks and the eight-page production build passed. The 4343 world page and seven referenced or runtime assets matched the fresh build byte for byte. Safari's existing game tab was located, but the Mac was locked for the post-build visual check.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.

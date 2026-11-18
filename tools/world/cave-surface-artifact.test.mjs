@@ -11,9 +11,11 @@ import { encodeCaveArtifact, decodeCaveArtifact, CAVE_PART_GROUPS } from '../../
 import { encodeStaticSurfaces, decodeStaticSurfaces, surfaceColliderBuffers, castStaticSurface } from '../../src/components/world/static-surface-asset.ts';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END } from '../../src/components/world/alpha-island/alpha-batch2-layout.ts';
 import { ALPHA_ORIGIN } from '../../src/components/world/alpha-island/alpha-layout.ts';
-import { CAVE_LAMP_HOME, CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, createCaveState, startCaveLamp, tickCaveState } from '../../src/components/world/alpha-island/batch2/cave-state.ts';
+import { CAVE_LAMP_HOME, CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, createCaveState, cancelCaveState, tickCaveState } from '../../src/components/world/alpha-island/batch2/cave-state.ts';
 import { decodeAlphaTerrain } from '../../src/components/world/alpha-island/alpha-terrain-artifact.ts';
-import { caveLampApproach } from '../../src/components/world/alpha-island/batch2/batch2-station-feedback.ts';
+import { caveLampStation, CAVE_HAND_OWNER } from '../../src/components/world/alpha-island/batch2/cave-lamp-station.ts';
+import { actorActivities } from '../../src/components/world/actor-activities.ts';
+import { guideActionHand, releaseGuideActionHand } from '../../src/components/world/rides/guide-action-hand.ts';
 import { findPickupStand, pickupGroundRoute } from '../../src/components/world/pickup-approach.ts';
 import { playerSupport, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, followPlayerGround } from '../../src/components/world/player-ground.ts';
 import { playerVelocityChange } from '../../src/components/world/player-motion.ts';
@@ -32,6 +34,7 @@ test.after(() => { dispose(authored); dispose(baked); });
 
 test('lamp discovery, approach, turn and pickup finish once on the installed cave surfaces', async t => {
   await R.init();
+  t.after(()=>{releaseGuideActionHand();actorActivities.sync({available:false,grounded:false});});
   const world = new R.World({x:0,y:-12.5,z:0});
   t.after(() => world.free());
   const island = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...ALPHA_ORIGIN));
@@ -47,7 +50,7 @@ test('lamp discovery, approach, turn and pickup finish once on the installed cav
   const player = world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
   world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setFriction(0).setMass(72),player);
   world.step();
-  const hook = [rackOrigin[0]+.32,rackOrigin[1]+1.48,rackOrigin[2]], approach = caveLampApproach(hook);
+  const hook = [rackOrigin[0]+.32,rackOrigin[1]+1.48,rackOrigin[2]];
   for (const [dx,dz] of [[.5,0],[1.2,0],[1.55,0],[1.2,.32],[1.2,-.32]]) {
     const x=hook[0]+dx,z=hook[2]+dz;
     const hit=world.castRay(new R.Ray({x,y:hook[1],z},{x:0,y:-1,z:0}),3,true,undefined,undefined,undefined,player);
@@ -62,8 +65,8 @@ test('lamp discovery, approach, turn and pickup finish once on the installed cav
     const pos=()=>{const p=player.translation();return [p.x,p.y,p.z];};
     let accepted=0, yaw=0;
     const visible=()=>interactionVisible(world,R,player,player.translation(),hook);
-    const item={id:'alpha-cave-miner-lamp',position:hook,radius:1.8,approach,enabled:()=>lamp.lamp==='rack',
-      onInteract:()=>{assert.ok(approach.ready(pos()));assert.ok(startCaveLamp(lamp,pos()));accepted++;}};
+    actorActivities.sync({position:pos(),grounded:true,available:true,yaw});
+    const item=caveLampStation(lamp,grip=>{assert.ok(Math.hypot(...grip.map((v,i)=>v-hook[i]))<1e-6,'hand targets the installed rack');accepted++;},()=>cancelCaveState(lamp));
     const resolve=()=>offers.resolve(item,{position:pos(),now:0,available:()=>true,visible,
       findStand:a=>findPickupStand(world,R,player,pos(),a)},true);
     assert.ok(driver.request(item,resolve),'no pickup offer from '+[dx,dz]);
@@ -71,6 +74,7 @@ test('lamp discovery, approach, turn and pickup finish once on the installed cav
     for(let i=0;i<210&&lamp.lamp!=='carried';i++){
       if(i===4 && driver.active)assert.ok(driver.request(item,resolve),'repeat E during approach');
       const p=pos(), vel=player.linvel(), support=playerSupport(world,R,player);
+      actorActivities.sync({position:p,grounded:!!support?.grounded,yaw});
       const motion=driver.step(dt,p,yaw,Math.hypot(vel.x,vel.z),!!support?.grounded,
         (_,stand,ready)=>visible()&&(ready||!!pickupGroundRoute(world,R,player,p,stand)));
       assert.ok(!motion?.blocked,'route blocked from '+[dx,dz]+' at '+p);
@@ -84,6 +88,9 @@ test('lamp discovery, approach, turn and pickup finish once on the installed cav
     }
     assert.equal(lamp.lamp,'carried','failed from '+[dx,dz]+' at '+pos()+' with '+accepted+' accepted');
     assert.equal(accepted,1);
+    assert.equal(guideActionHand.owner,CAVE_HAND_OWNER);
+    releaseGuideActionHand();
+    assert.equal(lamp.lamp,'rack');
   }
 });
 

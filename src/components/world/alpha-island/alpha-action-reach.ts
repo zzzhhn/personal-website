@@ -15,14 +15,6 @@ const LABELS: Record<AlphaAction, Notice> = {
   tree: { zh:'拉动树根钟绳',en:'Pull the tree rope' }, wind: { zh:'扳动风闸',en:'Turn the wind gate' },
   stone: { zh:'添一块石头',en:'Add one stone' }, lantern: { zh:'从灯架取一盏纸灯',en:'Take a paper lantern' },
 };
-const APPROACH: Record<AlphaAction, Notice> = {
-  bell: { zh:'靠近铜铃的木柄',en:'Move closer to the bell’s wooden grip' },
-  sand: { zh:'靠近沙盘前沿的铜钮',en:'Move closer to the button at the table’s front' },
-  tree: { zh:'靠近树根旁的绳柄',en:'Move closer to the rope grip beside the roots' },
-  wind: { zh:'靠近风闸手柄',en:'Move closer to the wind-gate handle' },
-  stone: { zh:'靠近石堆，留出落石的位置',en:'Move beside the cairn, leaving room for the stone' },
-  lantern: { zh:'靠近灯架前方的纸灯提绳',en:'Move closer to the lantern cord at the front of the rack' },
-};
 const WIND_LABELS: Notice[] = [
   { zh:'风闸：静风，切换微风',en:'Wind: calm. Set a breeze' },
   { zh:'风闸：微风，切换强风',en:'Wind: breeze. Set a strong wind' },
@@ -71,8 +63,8 @@ export function alphaPickupApproach(kind: 'wind'|'lantern'|'stone', wind = 0): P
         : [0,.1,-.1].flatMap(dz=>[.5,.44,.56].map(dx=>[target[0]+dx,from[1],target[2]+dz] as Vec3)),
   };
 }
-export const alphaActionLabel = (kind: AlphaAction, reachable: boolean, wind = 0): Notice =>
-  !reachable?APPROACH[kind]:kind==='wind'?WIND_LABELS[wind]:LABELS[kind];
+export const alphaActionLabel = (kind: AlphaAction, wind = 0): Notice =>
+  kind==='wind'?WIND_LABELS[wind]:LABELS[kind];
 export function alphaActionNotice(kind: AlphaAction, wind = 0): Notice {
   if(kind==='wind')return WIND_NOTICES[wind];
   return {

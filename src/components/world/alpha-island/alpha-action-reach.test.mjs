@@ -10,6 +10,12 @@ import { alphaHeight } from './alpha-terrain.ts';
 import { alphaActionTarget,alphaActionCanReach,alphaActionLabel,alphaActionNotice,alphaStonePlacementTarget,
   alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction } from './alpha-action-reach.ts';
 
+import { actorActivities, interactionActor } from '../actor-activities.ts';
+import { registerCampActivity } from '../camp-actor-activity.ts';
+import { campPropActor, startCampPropInteraction } from '../camp-prop-interactions.ts';
+import { alphaStationInteraction } from './alpha-station-interaction.ts';
+import { advanceAlphaHand, alphaMotion, cancelAlphaHand, useAlphaStore } from './alpha-state.ts';
+
 const centreHeight=PLAYER_RADIUS+PLAYER_HALF_HEIGHT;
 let guideSource;
 function rig(){
@@ -45,6 +51,41 @@ function physicalSupport(x,z){
   return {height:u+v<=1?a[1]*(1-u-v)+b[1]*u+c[1]*v:b[1]*(1-v)+c[1]*(1-u)+d[1]*(u+v-1),normalY:normal.y};
 }
 const actor=(stand)=>alphaWorld([stand[0],stand[1]+centreHeight,stand[2]]);
+
+test('the summit rack respects a busy camp prop and survives unloading the camp during pickup', t => {
+  const position = actor([-8.65,83,41.17]);
+  const unregister = registerCampActivity();
+  t.after(() => { unregister(); cancelAlphaHand(); actorActivities.sync({available:false,grounded:false}); });
+  let starts=0, releases=0;
+  const rack=alphaStationInteraction('lantern',0,()=>{starts++;});
+  actorActivities.sync({position,yaw:0,grounded:true,available:true});
+  startCampPropInteraction({id:'fixture',anchor:position,release:()=>{releases++;}});
+  actorActivities.sync({grounded:true});
+  assert.equal(rack.enabled(),false);
+  rack.onInteract();
+  assert.equal(releases,0);
+  assert.equal(starts,0);
+  unregister();
+  actorActivities.sync({grounded:true});
+  assert.equal(campPropActor.available,false);
+  assert.equal(rack.enabled(),true);
+  assert.ok(rack.approach.ready(position));
+  rack.onInteract();
+  const unload = registerCampActivity();
+  actorActivities.sync({position,yaw:0,grounded:true,available:true});
+  unload();
+  assert.equal(campPropActor.available,false);
+  for(let i=0;i<8;i++)advanceAlphaHand(.06,position,interactionActor.available);
+  assert.equal(useAlphaStore.getState().carried,true);
+  assert.equal(starts,1);
+  const hook=[...rack.position];
+  alphaMotion.handTarget[0]+=1;
+  assert.deepEqual(rack.position,hook);
+  cancelAlphaHand();
+  actorActivities.sync({available:false});
+  rack.onInteract();
+  assert.equal(starts,1);
+});
 
 test('paper-lantern entrance is capsule-clear, physically supported and reachable by real G24 palm',()=>{
   const stand=[-8.65,83,41.17],target=alphaActionTarget('lantern');flatPhysicalCell(stand[0],stand[2],83);
@@ -83,7 +124,7 @@ test('each wind grip has a natural supported stance; labels and feedback describ
     assert.ok(accepted.length>=30,'retain a usable area, not one exact stance');
     const dxRange=[Math.min(...accepted.map(p=>p.dx)),Math.max(...accepted.map(p=>p.dx))],dzRange=[Math.min(...accepted.map(p=>p.dz)),Math.max(...accepted.map(p=>p.dz))];
     assert.ok(dxRange[1]-dxRange[0]>=.14&&dzRange[1]-dzRange[0]>=.29,'natural approach area was narrowed too far');
-    const oldLabel=alphaActionLabel('wind',true,wind),newLabel=alphaActionLabel('wind',true,(wind+1)%3);
+    const oldLabel=alphaActionLabel('wind',wind),newLabel=alphaActionLabel('wind',(wind+1)%3);
     assert.notEqual(oldLabel,newLabel);assert.notEqual(oldLabel.zh,newLabel.zh);
     evidence.push({wind,stand,palmError:error,accepted:accepted.length,maxGridPalmError:maxError,minBaseClearance,dxRange,dzRange,nextNotice:alphaActionNotice('wind',(wind+1)%3)});
   }

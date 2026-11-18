@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-import { cancelCampPropInteraction } from '../camp-prop-interactions';
-import { guideActionHand as campPropHand, releaseGuideActionHand } from '../rides/guide-action-hand';
+import { guideActionHand, releaseGuideActionHand } from '../rides/guide-action-hand';
 import type { Vec3 } from '../types';
 import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, type AcceptedAction } from '../accepted-action';
 export type AlphaAction = 'bell'|'sand'|'tree'|'wind'|'stone'|'lantern';
@@ -15,11 +14,11 @@ export const alphaMotion={time:0,bellAt:-100,treeAt:-100,sandAt:-100,windAt:-100
 export function saveAlphaProgress(){try{const {visits,card,stones}=useAlphaStore.getState();localStorage.setItem('alpha-island-progress-v1',JSON.stringify({visits,card,stones}));}catch{/* Storage unavailable: session remains playable. */}}
 export function visitAlphaStation(n:number){const s=useAlphaStore.getState();if(!s.visits.includes(n)){useAlphaStore.setState({visits:[...s.visits,n]});saveAlphaProgress();}}
 export function startAlphaHand(action:AlphaAction,target:Vec3,position?:Vec3){
- cancelCampPropInteraction('alpha-action');releaseGuideActionHand();cancelAlphaHand();
+ releaseGuideActionHand();cancelAlphaHand();
  alphaMotion.actionClock=acceptAction(action==='stone'?1.2:.36);
  alphaMotion.acceptedAt=position?[...position]:null;
- alphaMotion.handTarget=target;campPropHand.target=target;campPropHand.facing=target;
- campPropHand.mode='grip';campPropHand.owner='alpha-island';campPropHand.cancel=()=>{cancelAlphaHand();};
+ alphaMotion.handTarget=target;guideActionHand.target=target;guideActionHand.facing=target;
+ guideActionHand.mode='grip';guideActionHand.owner='alpha-island';guideActionHand.cancel=()=>{cancelAlphaHand();};
  useAlphaStore.setState({action});
 }
 
@@ -28,8 +27,8 @@ export function advanceAlphaHand(dt:number,position:Vec3,eligible:boolean):{kind
  const s=useAlphaStore.getState(),clock=alphaMotion.actionClock;
  if(!s.action||s.carried)return null;
  const start=alphaMotion.acceptedAt;
- const valid=eligible&&position.every(Number.isFinite)&&campPropHand.owner==='alpha-island'
-   &&!!alphaMotion.handTarget&&campPropHand.target===alphaMotion.handTarget
+ const valid=eligible&&position.every(Number.isFinite)&&guideActionHand.owner==='alpha-island'
+   &&!!alphaMotion.handTarget&&guideActionHand.target===alphaMotion.handTarget
    &&(!start||Math.hypot(position[0]-start[0],position[1]-start[1],position[2]-start[2])<=.3);
  if(!clock||!valid){cancelAlphaHand();return null;}
  if(!advanceAcceptedAction(clock,dt,true))return null;
@@ -46,8 +45,8 @@ export function advanceAlphaHand(dt:number,position:Vec3,eligible:boolean):{kind
  return {kind,wind};
 }
 /** The scene-owned hand release calls this before opening pause. A cancelled lantern returns to its rack. */
-export function cancelAlphaHand(){const s=useAlphaStore.getState();if(!s.action&&!s.carried)return false;if(campPropHand.target===alphaMotion.handTarget){campPropHand.target=null;campPropHand.facing=null;campPropHand.palm=null;campPropHand.owner=null;campPropHand.cancel=null;}cancelAcceptedAction(alphaMotion.actionClock);alphaMotion.actionClock=null;alphaMotion.acceptedAt=null;alphaMotion.handTarget=null;alphaMotion.handError=Infinity;useAlphaStore.setState({action:null,carried:false,revision:s.revision+1});return true;}
-export function canReleaseAlphaLantern(){const s=useAlphaStore.getState();return s.carried&&s.action==='lantern'&&campPropHand.owner==='alpha-island'&&!!alphaMotion.handTarget&&campPropHand.target===alphaMotion.handTarget;}
+export function cancelAlphaHand(){const s=useAlphaStore.getState();if(!s.action&&!s.carried)return false;if(guideActionHand.target===alphaMotion.handTarget){guideActionHand.target=null;guideActionHand.facing=null;guideActionHand.palm=null;guideActionHand.owner=null;guideActionHand.cancel=null;}cancelAcceptedAction(alphaMotion.actionClock);alphaMotion.actionClock=null;alphaMotion.acceptedAt=null;alphaMotion.handTarget=null;alphaMotion.handError=Infinity;useAlphaStore.setState({action:null,carried:false,revision:s.revision+1});return true;}
+export function canReleaseAlphaLantern(){const s=useAlphaStore.getState();return s.carried&&s.action==='lantern'&&guideActionHand.owner==='alpha-island'&&!!alphaMotion.handTarget&&guideActionHand.target===alphaMotion.handTarget;}
 export function releaseAlphaLantern(position:Vec3){if(!canReleaseAlphaLantern()||!position.every(Number.isFinite))return false;const id=alphaMotion.nextLantern++;if(alphaMotion.lanterns.length>=ALPHA_LANTERN_CAP)alphaMotion.lanterns.shift();alphaMotion.lanterns.push({id,age:0,position:[...position],drift:(id%5-2)*.035});cancelAlphaHand();return true;}
 /** Lightweight read-only actor adapter; no global player weather preference mutation. */
 export function alphaWindAtWorld(position:readonly number[]){if(Math.hypot(position[0]-254,position[2]-148)>14)return null;return {strength:useAlphaStore.getState().wind, direction:[1,0,.15] as Vec3};}

@@ -915,7 +915,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     };
     debugTarget=api;
     return ()=>{
-      unsubscribeAction();releaseAction();document.removeEventListener('visibilitychange',hiddenAction);window.removeEventListener('blur',releaseAction);
+      unsubscribeAction();releaseAction();actorActivities.sync({available:false,grounded:false});document.removeEventListener('visibilitychange',hiddenAction);window.removeEventListener('blur',releaseAction);
       window.removeEventListener('keydown',down);window.removeEventListener('keyup',up);window.removeEventListener('blur',clearInput);
       document.removeEventListener('visibilitychange',hidden);gl.domElement.removeEventListener('wheel',wheel);unsubscribe();clearInput();
       el.removeEventListener('pointerdown',pointerDown);el.removeEventListener('pointermove',pointerMove);el.removeEventListener('pointerup',pointerUp);

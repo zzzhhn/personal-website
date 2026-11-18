@@ -5,25 +5,21 @@ import { DoubleSide, Group, Mesh, MeshBasicMaterial, Vector3 } from 'three';
 import { useInteractable } from '../../WorldInteract';
 import { useWorldStore } from '../../store';
 import { useWorldAudioSettings } from '../../world-audio-settings';
-import { campPropActor, cancelCampPropInteraction } from '../../camp-prop-interactions';
-import { guideActionHand, releaseGuideActionHand } from '../../rides/guide-action-hand';
-import { cancelAlphaHand } from '../alpha-state';
+import { interactionActor } from '../../actor-activities';
+import { alphaActorCanAct } from '../alpha-station-interaction';
+import { guideActionHand } from '../../rides/guide-action-hand';
 import { alphaLocal, alphaWorld } from '../alpha-layout';
 import { alphaMaterial } from '../alpha-materials';
 import type { Vec3 } from '../../types';
 import { caveChimeTarget, createCaveArt } from './cave-art';
 import { createCaveAudio } from './cave-audio';
-import { CAVE_ECHO_SECONDS, CAVE_LAMP_HOME, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
-import { CAVE_LAMP_LABELS,caveLampInteraction,caveLampPickupNotice,caveLampApproach } from './batch2-station-feedback';
-import { PICKUP_DISCOVERY_RADIUS } from '../../pickup-approach';
+import { CAVE_ECHO_SECONDS, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
+import { caveLampPickupNotice } from './batch2-station-feedback';
+import { caveLampStation, CAVE_HAND_OWNER as OWNER } from './cave-lamp-station';
 import { heldPropPoint } from '../../accepted-action';
-import { startCaveLamp } from './cave-state';
 import { surfaceColliderBuffers } from '../../static-surface-asset';
 import type { CavePart } from './cave-artifact';
 import { advanceCaveExploration, readCaveMural, caveReturnEchoSequence, caveGuideRingOpacity, caveAtWaypoint, caveRoutePoints } from './cave-exploration';
-const OWNER='alpha-echo-cave';
-const LAMP_HOOK=alphaWorld([CAVE_LAMP_HOME[0]+.32,CAVE_LAMP_HOME[1]+1.48,CAVE_LAMP_HOME[2]]);
-const LAMP_APPROACH=caveLampApproach(LAMP_HOOK);
 type Parts=CavePart[];
 function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:boolean;glow?:boolean}) {
   const materials=useMemo(()=>parts.map(p=>{const m=alphaMaterial(p.finish);
@@ -69,47 +65,20 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     if(guideActionHand.owner===OWNER)Object.assign(guideActionHand,{owner:null,target:null,facing:null,palm:null,cancel:null,mode:'reach'});
     rings.current.forEach(r=>{if(r)r.visible=false;});chimeRefs.current.forEach(g=>{if(g)g.rotation.z=0;});cancelling.current=false;
   }
-  const pick=()=>{
-    if(state.current.lamp!=='rack'||!campPropActor.grounded||!LAMP_APPROACH.ready(campPropActor.position))return;
-    cancelAlphaHand();cancelCampPropInteraction('cave-lamp');releaseGuideActionHand();
-    const grip=[...LAMP_HOOK] as Vec3;
-    target.current=grip;startCaveLamp(state.current,campPropActor.position);
-    Object.assign(guideActionHand,{owner:OWNER,target:grip,facing:grip,mode:'grip',cancel});
-  };
-  const lampAction=()=>caveLampInteraction(state.current.lamp,guideActionHand.owner===OWNER);
-  const canUseLamp=()=>{
-    const w=useWorldStore.getState(),p=campPropActor.position;
-    return !!lampAction()&&campPropActor.available&&
-      !w.paused&&!w.shot&&!w.card&&!w.activeVehicle&&!w.seat&&!w.poolInspect&&!document.hidden&&
-      Math.hypot(p[0]-LAMP_HOOK[0],p[2]-LAMP_HOOK[2])<=PICKUP_DISCOVERY_RADIUS&&Math.abs(p[1]-LAMP_HOOK[1])<=2.5;
-  };
-  useInteractable({id:'alpha-cave-miner-lamp',position:LAMP_HOOK,radius:PICKUP_DISCOVERY_RADIUS,kind:'exhibit',
-    get label(){return CAVE_LAMP_LABELS[lampAction()==='return'?'return':'take'];},
-    get approach(){return state.current.lamp==='rack'?LAMP_APPROACH:undefined;},
-    enabled:canUseLamp,onInteract:()=>{
-      if(!canUseLamp())return;
-      const action=lampAction();
-      if(action==='return'){
-        cancel();useWorldStore.setState({toast:{zh:'矿灯已挂回。',en:'The miner lamp is back on its hook.',at:performance.now()}});
-      }else if(action==='take')pick();
-    }});
-  const canExplore=()=>{
-    const w=useWorldStore.getState();
-    return campPropActor.available&&!w.paused&&!w.shot&&!w.card&&!w.poolInspect&&!w.activeVehicle&&!w.seat&&!document.hidden;
-  };
+  useInteractable(caveLampStation(state.current, grip => { target.current = grip; }, cancel));
   const ring=(index:CaveChime)=>{
     const firstVisit=!state.current.exploration.visited;
-    if(!canExplore()||!startCaveEcho(state.current,index))return;
+    if(!alphaActorCanAct()||!startCaveEcho(state.current,index))return;
     echoFromChime.current=true;sequence.current=caveEchoSequence(index);audio.play(sequence.current);
     if(firstVisit)onVisit?.();
     useWorldStore.setState({toast:{zh:index===2?'沉声向左折去。沿暖色矿环看看，岔口始终能走回来。':'清亮回声逐段穿过岩洞，下一道矿环会留在前方。',en:index===2?'The low echo bends left. Follow the warm rings; the fork remains open behind you.':'The clear echo travels through the cave. Its next warm ring stays ahead.',at:performance.now()}});
   };
   useInteractable({id:'alpha-cave-mural',position:alphaWorld([built.muralPosition[0],built.muralPosition[1]+1.4,built.muralPosition[2]]),radius:1.9,kind:'exhibit',
     label:{zh:'看看山水日轮壁画，循原路回岔口',en:'Read the mountain, water and sun relief; retrace the side passage'},
-    enabled:()=>canExplore()&&caveAtWaypoint(alphaLocal(campPropActor.position),caveRoutePoints('mural').at(-1)!),
+    enabled:()=>alphaActorCanAct()&&caveAtWaypoint(alphaLocal(interactionActor.position),caveRoutePoints('mural').at(-1)!),
     onInteract:()=>{
       const end=caveRoutePoints('mural').at(-1)!;
-      if(!canExplore()||!caveAtWaypoint(alphaLocal(campPropActor.position),end))return;
+      if(!alphaActorCanAct()||!caveAtWaypoint(alphaLocal(interactionActor.position),end))return;
       const returning=readCaveMural(state.current.exploration);
       if(returning){state.current.echoAge=0;echoFromChime.current=false;sequence.current=caveReturnEchoSequence();audio.play(sequence.current);}
       // The relief remains readable without ringing a chime; only a genuine
@@ -133,23 +102,23 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
   useFrame(({camera},delta)=>{
     const w=useWorldStore.getState(),s=state.current,near=caveNear(alphaLocal(w.position));
     if(!near){if(s.lamp!=='rack'||s.echoAge<CAVE_ECHO_SECONDS||s.exploration.route)cancel();return;}
-    if(!canExplore())return;
+    if(!alphaActorCanAct()){if(s.lamp!=='rack')cancel();return;}
     if(s.lamp!=='rack'){
-      if(!campPropActor.available||guideActionHand.owner!==OWNER||!target.current){cancel();return;}
+      if(guideActionHand.owner!==OWNER||!target.current){cancel();return;}
       if(s.lamp==='carried'){
-        const p=campPropActor.position,yaw=campPropActor.yaw,t=target.current;
+        const p=interactionActor.position,yaw=interactionActor.yaw,t=target.current;
         t[0]=p[0]+Math.cos(yaw)*.43+Math.sin(yaw)*.24;t[1]=p[1]+.34;t[2]=p[2]-Math.sin(yaw)*.43+Math.cos(yaw)*.24;
         guideActionHand.facing=null;
       }
     }
     const palm=guideActionHand.owner===OWNER?guideActionHand.palm:null,t=target.current;
-    const was=s.lamp;tickCaveState(s,delta,campPropActor.grounded?campPropActor.position:null);
+    const was=s.lamp;tickCaveState(s,delta,interactionActor.grounded?interactionActor.position:null);
     if(was==='reaching'&&s.lamp==='rack'){cancel();return;}
     const pickupNotice=caveLampPickupNotice(was,s.lamp);
     if(pickupNotice)useWorldStore.setState({toast:{...pickupNotice,at:performance.now()}});
     if(rackLamp.current)rackLamp.current.visible=s.lamp!=='carried';
     const held=t?heldPropPoint(palm,t):null;
-    if(handLamp.current){handLamp.current.visible=s.lamp==='carried'&&!!held;if(held){const p=alphaLocal(held);handLamp.current.position.set(p[0],p[1]-.76,p[2]);handLamp.current.rotation.y=campPropActor.yaw;}}
+    if(handLamp.current){handLamp.current.visible=s.lamp==='carried'&&!!held;if(held){const p=alphaLocal(held);handLamp.current.position.set(p[0],p[1]-.76,p[2]);handLamp.current.rotation.y=interactionActor.yaw;}}
     alphaCaveLight.active=s.lamp==='carried'&&!!held;
     if(alphaCaveLight.active&&held){alphaCaveLight.position[0]=held[0];alphaCaveLight.position[1]=held[1]-.43;alphaCaveLight.position[2]=held[2];alphaCaveLight.intensity=7.5;}
     else alphaCaveLight.intensity=0;
@@ -186,7 +155,7 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
       {chimes.map((parts,i)=><group key={i} ref={g=>{chimeRefs.current[i]=g;}} position={[(i-1)*.65,3.05,.05]}><Craft parts={parts} name={`alpha-cave-bronze-chime-${i}`}/></group>)}
     </group>
     <group position={built.muralPosition} rotation={[0,built.muralYaw,0]}><Craft parts={mural} name="alpha-cave-carved-mountain-water-sun-mural" glow/></group>
-    {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring} enabled={canExplore}/>)}
+    {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring} enabled={alphaActorCanAct}/>)}
     {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`} userData={{surfaceId:`alpha-cave/echo-ring/${i}`,surfaceSpace:'alpha-cave/echo-ring',collision:'none',surfaceRole:'decoration',collisionReason:'Transient camera-facing echo guide; no physical obstruction'}}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
   </group>;
 }

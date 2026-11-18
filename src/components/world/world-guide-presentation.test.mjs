@@ -14,6 +14,7 @@ import { exchangeBody, exchangeVisualSockets } from './alpha-exchange-motion.ts'
 import { ibdInspectionBody, ibdInspectionVisualSockets } from './attractions/ibd-inspection-motion.ts';
 import { ibdInspectionHands } from './attractions/ibd-inspection-hands.ts';
 import { campPropActor, campPropHand } from './camp-prop-interactions.ts';
+import { actorActivities } from './actor-activities.ts';
 import { guideActionHand } from './rides/guide-action-hand.ts';
 import { FACTORY_STATIONS, factoryWorld } from './factory/factory-layout.ts';
 import { factoryConsoleHandTarget } from './factory/factory-operator-pose.ts';
@@ -61,6 +62,7 @@ function reset() {
   Object.assign(exchangeBody, { action: null, carried: null });
   Object.assign(ibdInspectionBody, { action: null, carried: null });
   Object.assign(campPropActor, { available: true });
+  actorActivities.sync({available:true});
   Object.assign(campPropHand, { target: null, palm: null, mode: 'reach' });
   Object.assign(guideActionHand, { owner: null, target: null, palm: null, mode: 'reach' });
 }
@@ -149,10 +151,10 @@ test('hidden, occupied, unavailable and card states clear contact output without
   }
   apply(p, {}, false); assert.equal(guideActionHand.palm, null);
   apply(p, {}, true, true); assert.equal(guideActionHand.palm, null);
-  campPropActor.available = false; apply(p); assert.equal(guideActionHand.palm, null);
+  actorActivities.sync({available:false}); apply(p); assert.equal(guideActionHand.palm, null);
   // Pausing preserves the target; WorldGuide does not execute pose phases while frozen.
   p.prepare({ ...frame, frozen: true }); assert.equal(p.blocksIdle, true);
-  campPropActor.available = true;
+  actorActivities.sync({available:true});
   useWorldStore.setState({ card: { kind: 'about', id: 'about' } });
   apply(p); assert.equal(guideActionHand.palm, null);
   useWorldStore.setState({ card: null }); apply(p);
@@ -202,4 +204,18 @@ test('bundled guide contains its actual pose solvers but no world store or venue
   assert.ok(inputs.some(p => p.endsWith('/WorldGuideStop.ts')));
   assert.ok(inputs.some(p => p.endsWith('/WorldGuideVehicle.ts')));
   assert.deepEqual(inputs.filter(p => /(?:\/store\.ts|\/attractions\/|\/factory\/|\/alpha-island\/|\/alpha-(?:mine|exchange)|\/camp-prop-|\/world-guide-|WorldGuide(?:Mine|Exchange|IbdInspection|Camp))/.test(p)), []);
+});
+
+test('a scene-owned lamp poses the shipped hand with only the actor controller running', () => {
+  reset();
+  campPropActor.available = false;
+  actorActivities.sync({position:[0,0,0],yaw:0,grounded:true,available:true});
+  guideActionHand.owner = 'alpha-island';
+  guideActionHand.target = [.45,.95,.12];
+  const p = new WorldGuidePresentation(rig());
+  try {
+    for (let i = 0; i < 20; i++) apply(p);
+    assert.ok(guideActionHand.palm, 'scene grip must not wait for camp to mount');
+    assert.ok(new Vector3(...guideActionHand.palm).distanceTo(new Vector3(...guideActionHand.target)) < .025);
+  } finally {p.dispose();}
 });

@@ -5,6 +5,7 @@ import { GuideExchangeLayer } from './WorldGuideExchange';
 import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection';
 import { GuideCampLayer } from './WorldGuideCamp';
 import { guideActionHand } from './rides/guide-action-hand';
+import { interactionActor } from './actor-activities';
 import { campPropActor, campPropHand } from './camp-prop-interactions';
 import { factoryConsoleHandTarget } from './factory/factory-operator-pose';
 import { ibdInspectionBody, ibdInspectionVisualSockets } from './attractions/ibd-inspection-motion';
@@ -36,7 +37,8 @@ export class WorldGuidePresentation implements GuidePresentation {
     const world = useWorldStore.getState();
     this.actionHand = guideActionHand.owner ? guideActionHand : campPropHand;
     const allowed = frame.shown && frame.contactAllowed && !world.card;
-    this.campTarget = allowed && (frame.frozen || campPropActor.available) ? this.actionHand.target : null;
+    const actorAvailable = guideActionHand.owner ? interactionActor.available : campPropActor.available;
+    this.campTarget = allowed && (frame.frozen || actorAvailable) ? this.actionHand.target : null;
     this.handTarget = this.campTarget ?? (allowed
       ? factoryConsoleHandTarget(world.factoryStation, world.position, frame.facing, frame.speedMps) : null);
     if (!this.handTarget) this.contact.reset();
