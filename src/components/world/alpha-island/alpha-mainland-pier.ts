@@ -1,6 +1,7 @@
 import { Quaternion, Vector3 } from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { AlphaBuilder, type AlphaFinish } from './alpha-art';
+import { roundedColliderArgs } from './alpha-structure-builder';
 import { meshHeight } from '../WorldLandform';
 import { castStaticSurface, type StaticSurface } from '../static-surface-asset';
 import type { Vec3 } from '../types';
@@ -57,14 +58,10 @@ export function alphaMainlandPierStructure(groundHeight: typeof meshHeight = mes
     position: Vec3, rotation = new Quaternion()) {
     // Three stores the actual clamped bevel on the primitive. Its external dimensions
     // include the bevel; Rapier takes the core half-extents plus the bevel separately.
-    const radius = (geometry.parameters as {radius?: number}).radius;
-    if (radius === undefined || !Number.isFinite(radius)) throw new Error('Missing pier bevel: '+id);
-    geometry.computeBoundingBox();
-    const size = geometry.boundingBox!.getSize(new Vector3());
     const firstVertex = verticesByFinish.get(finish) ?? 0;
     const vertexCount = geometry.getAttribute('position').count;
     pieces.push({ id:'mainland-pier/'+id, role, finish, collision:'solid', position,
-      quaternion:rotation.toArray(), args:[size.x/2-radius, size.y/2-radius, size.z/2-radius, radius],
+      quaternion:rotation.toArray(), args:roundedColliderArgs(geometry),
       firstVertex, vertexCount });
     verticesByFinish.set(finish, firstVertex + vertexCount);
     builder.add(geometry, finish, position, rotation);

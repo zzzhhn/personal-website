@@ -1,11 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { gunzipSync } from 'node:zlib';
 import { createRequire } from 'node:module';
 import { act,createElement as h } from 'react';
 import * as THREE from 'three';
-import { MeshBVH,acceleratedRaycast } from 'three-mesh-bvh';
+import { shippingAlphaTerrain } from '../../../../tools/world/alpha-mine-tests/shipping-alpha-terrain.mjs';
 import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
 import R from '@dimforge/rapier3d-compat';
 import { PLAYER_HALF_HEIGHT,PLAYER_RADIUS,PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
@@ -18,7 +16,9 @@ import * as materials from './alpha-materials.ts';
 import * as placement from './alpha-trail-placement.ts';
 import * as cairns from './alpha-summit-cairns.ts';
 import * as ownedVisual from '../useOwnedWorldVisual.ts';
-import { decodeAlphaTerrain } from './alpha-terrain-artifact.ts';
+import * as structures from './alpha-station-structures.ts';
+import * as staticSurfaces from '../static-surface-asset.ts';
+import { surveyStationStructures } from '../../../../tools/world/alpha-mine-tests/station-structure-survey.mjs';
 
 const fiber=createRequire(import.meta.url)('@react-three/fiber');
 fiber.extend(THREE);
@@ -26,32 +26,25 @@ globalThis.IS_REACT_ACT_ENVIRONMENT=true;
 const round=n=>+n.toFixed(6);
 const load=compileWorldComponent(new URL('./AlphaScenery.tsx',import.meta.url));
 
-function survey(){
- const manifest=JSON.parse(readFileSync(new URL('../terrain-artifacts.generated.json',import.meta.url),'utf8'));
- const packed=gunzipSync(readFileSync(new URL('../../../../public'+manifest.alpha.url,import.meta.url)));
- const d=decodeAlphaTerrain(packed.buffer.slice(packed.byteOffset,packed.byteOffset+packed.byteLength)),cached=terrain.alphaTerrainData(),g=new THREE.BufferGeometry();
- for(const key of ['positions','indices','surface','solid'])assert.deepEqual(cached[key],d[key],`placement terrain differs from shipping artifact: ${key}`);
- g.setAttribute('position',new THREE.Float32BufferAttribute(d.positions,3));g.setIndex(Array.from(d.indices));
- g.boundsTree=new MeshBVH(g);
- const material=new THREE.MeshBasicMaterial(),mesh=new THREE.Mesh(g,material);mesh.raycast=acceleratedRaycast;
- mesh.position.fromArray(layout.ALPHA_ORIGIN);mesh.updateMatrixWorld(true);
- const ray=new THREE.Raycaster();ray.firstHitOnly=true;
- return {height(x,z){ray.set(new THREE.Vector3(x,200,z),new THREE.Vector3(0,-1,0));const hit=ray.intersectObject(mesh)[0];assert.ok(hit,'terrain must exist');return hit.point.y;},dispose(){g.dispose();material.dispose();}};
-}
 
 async function mount(){
  const motion={time:0,bellAt:-100},empty=()=>null;
  const canvas=()=>({getContext:()=>new Proxy({},{get:()=>()=>{}})});
  const rapier={RigidBody:({children,position,name,userData})=>h('group',{position,name,userData},children),CuboidCollider:()=>null,
-  TrimeshCollider:({args})=>h('group',{userData:{colliderArgs:args}}),ConvexHullCollider:()=>null};
+  TrimeshCollider:({args})=>h('group',{userData:{colliderArgs:args}}),ConvexHullCollider:()=>null,
+  RoundCuboidCollider:({args,name,position,quaternion})=>h('group',{name,position,quaternion,userData:{roundBox:args}})};
+ const Station=compileWorldComponent(new URL('./AlphaStationStructure.tsx',import.meta.url))({
+  '@react-three/rapier':rapier,'./alpha-station-structures':structures,'./alpha-layout':layout,'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
+ }).default;
  const Fence=compileWorldComponent(new URL('./AlphaPathFence.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-path-fence':{createAlphaPathFence},'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
  }).default;
  const Component=load({
   './alpha-art':art,'./alpha-layout':layout,'./alpha-terrain':terrain,'./alpha-rocks':rocks,
+  './alpha-station-structures':structures,'../static-surface-asset':staticSurfaces,
   './alpha-materials':materials,'./alpha-trail-placement':placement,
   './alpha-summit-cairns':cairns,'../useOwnedWorldVisual':ownedVisual,
-  './AlphaGrammarTree':empty,'./AlphaVisitorWayfinding':empty,'./AlphaPathFence':Fence,
+  './AlphaGrammarTree':empty,'./AlphaVisitorWayfinding':empty,'./AlphaPathFence':Fence,'./AlphaStationStructure':Station,
   './alpha-state':{alphaMotion:motion,useAlphaStore:{getState:()=>({wind:0})}},
   '@react-three/rapier':rapier,
  },{createElement:canvas}).default;
@@ -65,8 +58,9 @@ async function mount(){
 
 test('shipping Alpha trail fixtures meet their terrain, collision and clearance contracts',async t=>{
  await R.init();
- const ground=survey(),mounted=await mount(),{scene,motion}=mounted;
+ const ground=shippingAlphaTerrain(),mounted=await mount(),{scene,motion}=mounted;
  try{
+  await t.test('lodge and lantern rack use the visible structure and leave their controls reachable', child => surveyStationStructures(scene,ground,child));
   await t.test('four actual pole rims are embedded and the night-readable boards clear the terrain',async()=>{
    const poles=[];scene.traverse(node=>{if(node.isMesh&&node.geometry.type==='CylinderGeometry'&&node.parent.children.some(child=>child.isMesh&&child.material.map?.isCanvasTexture))poles.push(node);});
    assert.equal(poles.length,4);

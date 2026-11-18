@@ -64,6 +64,7 @@ export const WORLD_SHOTS_V4 = [
     // Contact-height review cameras use the production world and materials.
     { id: `site-alpha-shallows-${time}`, position: [183, 14.2, 117] as Vec3, target: [199, 12.2, 130] as Vec3 },
     { id: `site-alpha-lodge-${time}`, position: [152, 6.3, 144] as Vec3, target: [170, 4.1, 151] as Vec3 },
+    { id: `site-alpha-lodge-entry-${time}`, position: [172.8, 5.25, 156.9] as Vec3, target: [171, 4.35, 152.8] as Vec3 },
     { id: `site-alpha-cave-${time}`, position: [215, 25.8, 160] as Vec3, target: [219.2, 25.2, 153.5] as Vec3 },
     { id: `site-alpha-summit-${time}`, position: [225, 84.5, 227.8] as Vec3, target: [227, 84.2, 232] as Vec3 },
     { id: `site-alpha-wind-sign-${time}`, position: [252, 38.4, 156.6] as Vec3, target: [251, 37.4, 152] as Vec3 },

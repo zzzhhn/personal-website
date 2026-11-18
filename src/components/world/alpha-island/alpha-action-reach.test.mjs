@@ -1,4 +1,4 @@
-/** CPU-only metadata/transform checks. No GLB mesh decoding or full island terrain. */
+/** CPU checks against the shipping terrain and the G24 joint hierarchy. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -6,7 +6,7 @@ import { Bone,Group,Matrix4,Vector3 } from 'three';
 import { GuideCampLayer } from '../WorldGuideCamp.ts';
 import { PLAYER_RADIUS,PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
 import { alphaWorld,ALPHA_WIND_GATE_Y } from './alpha-layout.ts';
-import { alphaHeight } from './alpha-terrain.ts';
+import { shippingAlphaTerrain } from '../../../../tools/world/alpha-mine-tests/shipping-alpha-terrain.mjs';
 import { alphaActionTarget,alphaActionCanReach,alphaActionLabel,alphaActionNotice,alphaStonePlacementTarget,
   alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction } from './alpha-action-reach.ts';
 
@@ -33,22 +33,17 @@ function palmAt(stand,target){
   for(let i=0;i<15;i++)palm=layer.apply(target,'grip',.05);
   return new Vector3(...palm).distanceTo(new Vector3(...target));
 }
-function flatPhysicalCell(x,z,y){
-  // alphaTerrainData's unchanged 1.5m lattice. Four equal source heights prove
-  // both actual physical triangles are flat, without allocating the island mesh.
-  const nx=Math.ceil(196/1.5),nz=Math.ceil(228/1.5),dx=196/nx,dz=228/nz;
-  const i=Math.floor((x+98)/dx),j=Math.floor((z+114)/dz);
-  for(const [di,dj]of [[0,0],[1,0],[0,1],[1,1]])assert.ok(Math.abs(alphaHeight(-98+(i+di)*dx,-114+(j+dj)*dz)-y)<1e-7,`non-flat support at ${x},${z}`);
+const ground=shippingAlphaTerrain();
+test.after(()=>ground.dispose());
+function physicalSupport(x,z) {
+  const [wx,,wz]=alphaWorld([x,0,z]);
+  return ground.support(wx,wz);
 }
-function physicalSupport(x,z){
-  // Same Float32 vertices, diagonal and barycentric interpolation as
-  // alphaTerrainData/alphaGroundHeight, but evaluate only this one source cell.
-  const nx=Math.ceil(196/1.5),nz=Math.ceil(228/1.5),i=Math.floor((x+98)/196*nx),j=Math.floor((z+114)/228*nz);
-  const point=(i,j)=>{const x=-98+i*196/nx,z=-114+j*228/nz;return [x,alphaHeight(x,z),z].map(Math.fround);};
-  const a=point(i,j),b=point(i+1,j),c=point(i,j+1),d=point(i+1,j+1),u=(x-a[0])/(b[0]-a[0]),v=(z-a[2])/(c[2]-a[2]);
-  const tri=u+v<=1?[a,c,b]:[b,c,d],ab=new Vector3(...tri[1]).sub(new Vector3(...tri[0])),ac=new Vector3(...tri[2]).sub(new Vector3(...tri[0]));
-  const normal=ab.cross(ac).normalize();
-  return {height:u+v<=1?a[1]*(1-u-v)+b[1]*u+c[1]*v:b[1]*(1-v)+c[1]*(1-u)+d[1]*(u+v-1),normalY:normal.y};
+function assertFlatStance(x,z,y) {
+  for (const [dx,dz] of [[0,0],[PLAYER_RADIUS,0],[-PLAYER_RADIUS,0],[0,PLAYER_RADIUS],[0,-PLAYER_RADIUS]]) {
+    const support=physicalSupport(x+dx,z+dz);
+    assert.ok(Math.abs(support.height-y)<1e-5 && support.normalY>.9999,'stance footprint at '+[x+dx,z+dz]);
+  }
 }
 const actor=(stand)=>alphaWorld([stand[0],stand[1]+centreHeight,stand[2]]);
 
@@ -88,7 +83,7 @@ test('the summit rack respects a busy camp prop and survives unloading the camp 
 });
 
 test('paper-lantern entrance is capsule-clear, physically supported and reachable by real G24 palm',()=>{
-  const stand=[-8.65,83,41.17],target=alphaActionTarget('lantern');flatPhysicalCell(stand[0],stand[2],83);
+  const stand=[-8.65,83,41.17],target=alphaActionTarget('lantern');assertFlatStance(stand[0],stand[2],83);
   // Existing rack slab front at z=41.575; its leg bases end at z=41.65.
   assert.ok(41.575-stand[2]>PLAYER_RADIUS,'capsule overlaps the preserved rack slab');
   assert.ok(41.65-stand[2]>PLAYER_RADIUS,'capsule overlaps the preserved leg bases');
@@ -135,7 +130,7 @@ test('each wind grip has a natural supported stance; labels and feedback describ
 });
 
 test('first cairn addition retains its original arc and has a supported planted stance',()=>{
-  const stand=[1.45,83,39.675];flatPhysicalCell(stand[0],stand[2],83);
+  const stand=[1.45,83,39.675];assertFlatStance(stand[0],stand[2],83);
   // Within the existing summit's 3m decorative-cairn exclusion and far from the rack.
   assert.ok(Math.hypot(stand[0]-2,stand[2]-39)<3);
   assert.ok(Math.hypot(stand[0]+8,stand[2]-42)>4);
