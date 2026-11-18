@@ -14,6 +14,7 @@ export const STATIC_SHOT_SETTLE_FRAMES = 90;
  * wake itself once the final frame has drained from R3F's queue. */
 export class StaticShotFrames {
   private remaining = 0;
+  get settled() { return this.remaining === 0; }
   reset() { this.remaining = 0; }
   frame(shot: boolean): boolean {
     if (!shot) { this.reset(); return false; }

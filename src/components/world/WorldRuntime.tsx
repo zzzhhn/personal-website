@@ -248,6 +248,18 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           quality: useWorldStore.getState().quality, antialias: ctx.getContextAttributes()?.antialias, msaaSamples: ctx.getParameter(ctx.SAMPLES), toneMapping: gl.toneMapping, outputColorSpace: gl.outputColorSpace,
           shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [], coasterVegetation };
       },
+      reviewCamera: () => {
+        const view = WORLD_SHOTS.find(v => v.id === useWorldStore.getState().shot);
+        if (!view) return null;
+        const aim = new Vector3(...view.target).sub(camera.position).normalize();
+        return {
+          position: camera.position.toArray(), quaternion: camera.quaternion.toArray(),
+          projection: camera.projectionMatrix.toArray(), exposure: gl.toneMappingExposure,
+          buffer: [gl.domElement.width, gl.domElement.height], settled: staticShotFrames.settled,
+          onMark: camera.position.distanceToSquared(new Vector3(...view.position)) < 1e-8
+            && camera.getWorldDirection(new Vector3()).dot(aim) > .999999,
+        };
+      },
       stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0, camera: camera.position.toArray() }),
       renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value,
         frameMs: (() => {
@@ -261,7 +273,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     Object.assign(window, { __worldDebug: debug });
     if(import.meta.env.DEV)setRenderReadoutSource(()=>({sampledAt:new Date().toISOString(),...debug.stats(),...debug.renderLoop(),...debug.renderInfo()}));
     return () => { if(import.meta.env.DEV)setRenderReadoutSource(null);delete (window as Window & { __worldDebug?: unknown }).__worldDebug; };
-  }, [camera, gl, scene, get, world, colliderStates, rapier, setOverlay]);
+  }, [camera, gl, scene, get, world, colliderStates, rapier, setOverlay, staticShotFrames]);
   return null;
 }
 

@@ -355,12 +355,18 @@ The controller now publishes its interaction pose through the activity registry 
 
 88 focused tests passed. The shipped cave and island meshes exercise the actual lamp action from five approaches. The summit test checks camp ownership, camp unloading during pickup and a fixed rack anchor while carrying. The G24 skeleton reaches a scene-owned grip within 2.5 cm without camp. TypeScript, generated terrain/map checks and the eight-page production build passed. The 4343 world page and seven referenced or runtime assets matched the fresh build byte for byte. Safari's existing game tab was located, but the Mac was locked for the post-build visual check.
 
+## Fixed-camera daylight and midnight atlas
+
+Run a production build, serve its `dist` at 4343, then run `python3 tools/world/capture-site-atlas.py --channel chrome` with Python Playwright and Pillow installed. Use `--cdp` to reuse an automation-enabled Chromium instance. The capture uses one isolated browser context for all views and writes `local/world-atlas/atlas.jpg` and a camera/build manifest. The GitHub Actions workflow **World visual atlas** runs on world-related pull requests and pushes to main and retains the two files as an artifact.
+
+The tool reads the site's existing review selector. Each paired view uses the real Balanced renderer, clear weather, the same 960 × 540 viewport and its authored position and aim. It waits for the district meshes, completed shadow-settling burst and actual noon/midnight lighting. It rejects blank or near-identical pairs, asset HTTP failures and mismatched camera, projection or exposure. The sixteen sites include the cave lamp, summit rack, waterwheel, camp and mainland route seams. Read each horizontal pair as noon on the left and midnight on the right. The atlas records the production scene from fixed cameras. Movement, pickup feel and actual Safari cold-load/frame times require separate checks.
+
 ## Next work
 
 1. Inventory every `useInteractable` action's final success/cancellation gate; migrate palm-contact-gated pickups to an explicit accepted-action lifecycle while retaining their visible animations.
 2. Extract venue state adapters out of `WorldActors` using that lifecycle; preserve the independent regional collider-readiness gate.
 3. Inventory actual mesh surfaces and placement callers, then migrate build-produced mesh data region by region without changing silhouettes or material treatment. A single scalar height cannot represent both cave roof and floor; surface identity and vertical query origin must survive.
 4. Introduce collision provenance alongside exported or generated geometry, then enforce full coverage once all regions are migrated.
-5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Add the fixed-view atlas and separate target-device timing.
+5. Classify source-reading tests by purpose. Replace brittle implementation tests with behavioral or rendered evidence before removal; keep legitimate architecture/dependency checks. Use the fixed-view atlas for visual changes and record target-device timing separately.
 
 The user requested GitHub consolidation on 2026-11-17. Verified foundation batches are synchronized to `main` and `codex/world-foundation-20261117`; use the current Git refs for the latest checkpoint. The broader foundation program remains incomplete. 4341 remains on its prior candidate. User visual/feel review remains separate from technical checks.

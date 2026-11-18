@@ -1,0 +1,56 @@
+name: World visual atlas
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: &world_paths
+      - 'src/components/world/**'
+      - 'src/pages/world*'
+      - 'src/pages/world/**'
+      - 'src/content/**'
+      - 'public/assets/world/**'
+      - 'tools/world/**'
+      - 'astro.config.mjs'
+      - 'package*.json'
+      - '.github/workflows/world-atlas.yml'
+  pull_request:
+    paths: *world_paths
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-atlas-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run build
+      - run: |
+          python -m pip install playwright==1.60.0 Pillow==12.2.0
+          python -m playwright install --with-deps chromium
+      - name: Capture paired site views
+        run: |
+          python -m http.server 4343 --bind 127.0.0.1 --directory dist > "$RUNNER_TEMP/world-atlas-server.log" 2>&1 &
+          server=$!
+          trap 'kill "$server"' EXIT
+          curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent --output /dev/null http://127.0.0.1:4343/world/
+          python tools/world/capture-site-atlas.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: world-atlas-${{ github.sha }}
+          path: local/world-atlas/
+          if-no-files-found: error
+          retention-days: 14
