@@ -106,7 +106,7 @@ def capture(browser, base, shard, shards):
         html = entry.body()
         if html != (ROOT / "dist/world/index.html").read_bytes():
             raise RuntimeError("The preview is serving a different build from dist/world/index.html")
-        page.wait_for_function("window.__worldDebug?.state().ready", timeout=150000)
+        page.wait_for_function("window.__worldDebug?.state().ready", polling=350, timeout=150000)
         print("World ready; waiting for district meshes", flush=True)
         try:
             page.wait_for_function("""names => {
@@ -116,8 +116,14 @@ def capture(browser, base, shard, shards):
         except Exception as error:
             present = set(page.evaluate("window.__worldDebug.sceneObjects()"))
             raise RuntimeError(f"Scene missing {set(DISTRICTS) - present}. Browser errors: {errors[:4]}") from error
+        if page.evaluate("window.__worldDebug.sceneObjects().includes('alpha-shallows-eight-rune-crossing')"):
+            raise RuntimeError("Retired rune bridge mounted on the ordinary Alpha coastal path")
         print("District meshes mounted", flush=True)
-        select = page.get_by_role("combobox", name="现场接缝复核机位").element_handle()
+        # The software GPU can spend seconds on one frame. This control only
+        # needs to exist and be enabled; its bounds and paint timing are immaterial.
+        select = page.wait_for_function(
+            """document.querySelector('select[aria-label="现场接缝复核机位"]:enabled')""",
+            polling=350, timeout=150000).as_element()
         sites = pairs(select.evaluate("el => Array.from(el.options, o => o.value).filter(Boolean)"))
         order = list(sites)
         rows = (len(order) + 1) // 2
@@ -138,10 +144,13 @@ def capture(browser, base, shard, shards):
             if max(change) < 2:
                 raise RuntimeError(f"Day and night pixels nearly identical at {site}")
             records[site] = {"camera": day_camera, "meanAbsoluteRgbDifference": change}
+            # Keep the surveyed camera ID comparable to older manifests; its
+            # current playable destination is the coastal path.
+            caption = "alpha-coastal-path" if site == "site-alpha-shallows" else site[5:]
             for column, (name, image) in enumerate([("Noon", day), ("Midnight", night)]):
                 x = (index % 2 * 2 + column) * TILE_WIDTH
                 y = index // 2 * (TILE_HEIGHT + LABEL_HEIGHT)
-                draw.text((x + 9, y + 5), f"{site[5:]}  /  {name}", font=font, fill="white")
+                draw.text((x + 9, y + 5), f"{caption}  /  {name}", font=font, fill="white")
                 atlas.paste(image.resize((TILE_WIDTH, TILE_HEIGHT), Image.Resampling.LANCZOS), (x, y + LABEL_HEIGHT))
             print(f"{index + 1}/{len(selected)}  {site}", flush=True)
         if errors:

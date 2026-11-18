@@ -442,3 +442,12 @@ projection and exposure at all 16 sites; the largest mean difference in any
 channel on any of the 32 tiles was 0.72/255 against b00b41a0. The A/B supports
 profiling sun updates further. The small before/after FPS difference and the
 variation between held runs do not establish an island-wide frame-rate gain.
+
+The historical camera ID `site-alpha-shallows` surveys the coastal path.
+Commit `4b92ddb7` removed the rune bridge from the island assembly. Its archived
+component and its isolated tests do not prove that a player can encounter it.
+The atlas labels this location as the coastal path and checks that the retired
+bridge does not mount in the loaded scene. Camera IDs and poses stay comparable
+with previous manifests. The capture waits for the review selector using timed
+DOM polling; the software-rendered runner previously timed out resolving the
+accessibility locator after district readiness.
