@@ -146,3 +146,24 @@ test('a changed command or a newly mounted rack cannot finish an older approach'
     } finally {cleanup?.(); release();}
   }
 });
+
+
+test('accepting while walking consumes only the held heading through arrival and hand contact', () => {
+  const driver = createInteractionApproach();
+  const take = (move) => driver.request(item, () => ({ item, stand: [.5, H, 0] }), undefined, move);
+  const arrive = () => driver.step(1/60, [.5,H,0], Math.PI, 0, true, () => true);
+  assert.ok(take([0,1]));
+  assert.ok(driver.consumeHeldMovement(.04, .75), 'an already tilted stick may drift slightly');
+  assert.equal(arrive()?.arrived, item);
+  assert.ok(driver.consumeHeldMovement(0, 1), 'the same held W cannot cancel the dispatched reach');
+  assert.equal(driver.consumeHeldMovement(0, 0), false);
+  assert.equal(driver.consumeHeldMovement(0, 1), false, 'a fresh W belongs to the player');
+  assert.ok(take([0,1]));
+  assert.equal(driver.consumeHeldMovement(1, 1), false, 'adding D is a new heading');
+  assert.equal(driver.consumeHeldMovement(0, 1), false);
+  assert.ok(take([1,0]));
+  driver.step(1/60, [.5,H,0], 0, 0, true, () => false);
+  assert.equal(driver.consumeHeldMovement(1, 0), false, 'route failure gives control back immediately');
+  assert.ok(take([0,-1])); driver.cancel();
+  assert.equal(driver.consumeHeldMovement(0, -1), false);
+});

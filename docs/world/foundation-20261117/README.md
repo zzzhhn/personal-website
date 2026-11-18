@@ -451,3 +451,9 @@ bridge does not mount in the loaded scene. Camera IDs and poses stay comparable
 with previous manifests. The capture waits for the review selector using timed
 DOM polling; the software-rendered runner previously timed out resolving the
 accessibility locator after district readiness.
+
+## Walking input at pickup acceptance
+
+The approach controller previously read a held direction as a cancellation on the same physics step as E or gamepad Y. The mine also required stationary input to discover tools and ore. Keyboard acceptance now records the displayed offer and movement direction at keydown. Gamepad acceptance samples both at its button edge. During a collision-checked approach the controller consumes that existing direction, including small analogue drift. Releasing and moving again or steering into a new direction immediately returns control. An interrupted or obstructed approach also releases the direction. A completed reach consumes the original direction until release or re-steering, so the hand animation can finish. The mine continues to require stationary input to start its physical action.
+
+On the M3 Air in native Safari 26.5, a QA session using the Balanced production build and real controller input events exercised the mounted quarry tool rack. Holding W and pressing E at 1.37 m, then adding D before arrival, left the tools on the rack. Holding W and pressing E once at 1.34 m moved the capsule to 0.57 m from the grip and changed the rack's action to fresh exploration. Releasing and pressing W resumed movement. No uncaught page error occurred. Keyboard behavior was exercised in Safari; analogue heading variation is covered by the controller tests.

@@ -161,3 +161,19 @@ test('nonfinite positions and time cannot enter or poison the action lifecycle',
   assert.equal(a.elapsed,0);assert.equal(a.contact,false);advance(1);
   assert.equal(useAlphaMineStore.getState().equipped,true);
 });
+
+
+test('walk-up tools and recovered ore can be discovered in motion and taken after stopping', () => {
+  fixture();
+  for (const kind of ['equip', 'pickup']) {
+    if (kind === 'pickup') useAlphaMineStore.setState({recovered:[id]});
+    const args = kind === 'equip' ? [] : [id, 'recovery'];
+    mineActor.moving = true;
+    assert.ok(mineActionAvailable(kind, ...args));
+    assert.equal(beginMineAction(kind, point, ...args), false);
+    mineActor.moving = false;
+    assert.ok(beginMineAction(kind, point, ...args));
+    advance(1);
+  }
+  assert.equal(useAlphaMineStore.getState().carried, id);
+});

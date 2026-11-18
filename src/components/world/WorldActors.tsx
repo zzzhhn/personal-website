@@ -65,6 +65,12 @@ type CameraRig = { yaw: number; pitch: number; distance: number; actual: number;
   driveManualZoom: boolean; desiredDistance: number };
 /** Pad state read once per physics step (standard mapping). */
 type PadState = { connected: boolean; move: [number,number]; look: [number,number]; throttle: number; brake: number; sprint: boolean; buttons: boolean[] };
+function walkAxes(keys: Set<string>, pad: PadState): [number, number] {
+  return [
+    Number(keys.has('KeyD')) - Number(keys.has('KeyA')) + (pad.connected ? pad.move[0] : 0),
+    Number(keys.has('KeyW')) - Number(keys.has('KeyS')) - (pad.connected ? pad.move[1] : 0),
+  ];
+}
 type ActorSnapshot = {
   player: Vec3 | null; activeVehicle: VehicleId | null; canRecover: boolean; grounded: boolean;
   playerVelocity: Vec3 | null; playerCollider: { radius: number; halfHeight: number; centerHeight: number };
@@ -327,7 +333,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const releasedKeys = useRef(new Set<string>());
   const resetPad = useRef(false);
   type PromptAtPress = Pick<ReturnType<typeof useWorldStore.getState>, 'nearbyInteract' | 'nearbyVehicle'>;
-  const actions = useRef<{interact: PromptAtPress | null; jump: boolean; recover: boolean}>({interact:null,jump:false,recover:false});
+  const actions = useRef<{interact: (PromptAtPress & { movement: [number, number] }) | null; jump: boolean; recover: boolean}>({interact:null,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
   const grounded = useRef(false);
   const supportDecision = useRef<Record<string, unknown> | null>(null);
@@ -681,7 +687,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
           if (actorActivities.command('put-down')) event.preventDefault();
         }
         if (event.code==='KeyE') {
-          actions.current.interact={nearbyInteract:state.nearbyInteract,nearbyVehicle:state.nearbyVehicle};
+          actions.current.interact={nearbyInteract:state.nearbyInteract,nearbyVehicle:state.nearbyVehicle,movement:walkAxes(keys.current,pad.current)};
         }
         if (event.code==='Space') actions.current.jump=true;
         if (event.code==='KeyR') actions.current.recover=true;
@@ -1058,7 +1064,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
     if(seated||carded||actorActivities.inputOwner())nearby=null;
-    const interactNow=(shown: PromptAtPress = useWorldStore.getState())=>{
+    const interactNow=(shown: PromptAtPress, movement: [number, number])=>{
       const now=useWorldStore.getState();
       if(actorActivities.interact())return;
       if(actorActivities.inputOwner())return;
@@ -1073,13 +1079,13 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       }
       if(active)exit();else if(prompt){
         const item = resolvePromptTarget(prompt);
-        if(!item || !pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true),()=>resolvePromptTarget(prompt)===item)){
+        if(!item || !pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true),()=>resolvePromptTarget(prompt)===item,movement)){
           actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;
         }
       }else if(nearby && shown.nearbyVehicle===nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
-    if(actions.current.interact){interactNow(actions.current.interact);actions.current.interact=null;}
+    if(actions.current.interact){interactNow(actions.current.interact,actions.current.interact.movement);actions.current.interact=null;}
     if(useWorldStore.getState().paused||useWorldStore.getState().poolInspect)return;
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
@@ -1096,7 +1102,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(edge(12))cycleInteractPick(-1);
       if(edge(13))cycleInteractPick(1);
       if(edge(0)&&!actorActivities.inputOwner())actions.current.jump=true;
-      if(edge(3))interactNow();
+      if(edge(3))interactNow(useWorldStore.getState(),walkAxes(keys.current,gp));
       if(edge(1))actions.current.recover=true;
       if(edge(8))cycleCamera();
       if(edge(9)){useWorldStore.setState({paused:true});return;}
@@ -1133,9 +1139,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
         capsuleSupport:ground?{gap:ground.gap,normal:asTuple(ground.normal),centerY:ground.centerY}:null};
       // Raw input in camera space (x right, z forward): keys plus the left stick (analogue magnitude).
-      let rx=Number(keys.current.has('KeyD'))-Number(keys.current.has('KeyA'));
-      let rz=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
-      if(gp.connected){rx+=gp.move[0];rz-=gp.move[1];}
+      let [rx,rz]=walkAxes(keys.current,gp);
+      if(pickupApproach.consumeHeldMovement(rx,rz)){rx=0;rz=0;}
       const operating=actorActivities.inputOwner();
       if(operating){rx=0;rz=0;actions.current.jump=false;}
       let rm=Math.hypot(rx,rz);if(rm>1){rx/=rm;rz/=rm;rm=1;}
@@ -1202,7 +1207,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       actorActivities.input(magnitude > .05, actions.current.jump);
       const stance=actorActivities.approach();
       const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
-      if(pickupApproach.active&&(magnitude>.05||actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.cancel();
+      if(pickupApproach.active&&(actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.cancel();
       const handFacing=guideActionHand.facing??actorActivities.idleFacing();
       if (handFacing && unoccupied && !operating && magnitude <= .05) {
         const focus=handFacing;

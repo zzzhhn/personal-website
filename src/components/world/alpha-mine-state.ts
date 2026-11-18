@@ -62,10 +62,10 @@ function actionStateAllows(s: MineState, kind: MineActionKind, factorId?: AlphaF
  * the registry before execution, so discovery does not impose the final hand distance. */
 export function mineActionAvailable(kind: MineActionKind, factorId?: AlphaFactorId, source?: OreSource) {
   const s = useAlphaMineStore.getState();
-  return mineActor.available && mineActor.grounded && !mineActor.moving && !s.action && actionStateAllows(s, kind, factorId, source);
+  return mineActor.available && mineActor.grounded && !s.action && actionStateAllows(s, kind, factorId, source);
 }
 export function canBeginMineAction(kind: MineActionKind, target: MinePoint, factorId?: AlphaFactorId, source?: OreSource) {
-  return mineActionAvailable(kind, factorId, source)
+  return !mineActor.moving && mineActionAvailable(kind, factorId, source)
     && mineCanReach(target, kind === 'deposit' ? 4.2 : kind === 'strike' ? 1.3 : 2.4);
 }
 function carriedOrigin(): MinePoint {

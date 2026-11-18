@@ -74,14 +74,32 @@ export function createInteractionOfferResolver() {
 /** Own the interval between selecting a reachable item and invoking its action. */
 export function createInteractionApproach() {
   let pending: { item: Interactable; stand: Vec3; elapsed: number; stillSelected?: () => boolean } | null = null;
+  let heldHeading: number | null = null;
+  function cancel() {
+    pending = null;
+    heldHeading = null;
+  }
   return {
     get active() { return pending !== null; },
-    cancel() { pending = null; },
-    request(item: Interactable, resolve: () => InteractionOffer | null, stillSelected?: () => boolean) {
+    cancel,
+    /** E owns the direction already held at acceptance, through the hand animation.
+     * Neutral rearms walking; a new heading can interrupt immediately. */
+    consumeHeldMovement(x: number, z: number) {
+      if (!pending && heldHeading === null) return false;
+      if (Math.hypot(x, z) <= .05) {
+        heldHeading = null;
+        return false;
+      }
+      if (heldHeading !== null && Math.abs(angleDelta(heldHeading, Math.atan2(z, x))) < Math.PI / 8) return true;
+      cancel();
+      return false;
+    },
+    request(item: Interactable, resolve: () => InteractionOffer | null, stillSelected?: () => boolean, movement?: [number, number]) {
       if (pending?.item === item && pending.stillSelected?.() !== false) return true;
       const offer = resolve();
       if (!offer) return false;
       pending = offer.stand ? { item, stand: offer.stand, elapsed: 0, stillSelected } : null;
+      heldHeading = pending && movement && Math.hypot(...movement) > .05 ? Math.atan2(movement[1], movement[0]) : null;
       if (!pending) item.onInteract();
       return true;
     },
@@ -89,11 +107,11 @@ export function createInteractionApproach() {
       routeClear: (item: Interactable, stand: Vec3, ready: boolean) => boolean) {
       if (!pending) return null;
       const { item, stand } = pending, approach = item.approach;
-      if (!approach || !grounded || pending.stillSelected?.() === false || item.enabled?.() === false) { pending = null; return null; }
+      if (!approach || !grounded || pending.stillSelected?.() === false || item.enabled?.() === false) { cancel(); return null; }
       pending.elapsed += dt;
       const ready = approach.ready(position);
       if (pending.elapsed > PICKUP_APPROACH_TIMEOUT || !routeClear(item, stand, ready)) {
-        pending = null;
+        cancel();
         return { blocked: true as const };
       }
       const motion = pickupApproachMotion(position, stand, approach.target(), ready);
