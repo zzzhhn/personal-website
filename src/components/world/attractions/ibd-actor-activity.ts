@@ -21,7 +21,7 @@ export function registerIbdActivity(registry: ActorActivities = actorActivities)
       const action=ibdInspectionBody.action,carrying=!!ibdInspectionBody.carried;
       return {busy:!!action,carrying,movementLocked:carrying,
         approach:action?{stand:action.anchor.stand,yaw:action.anchor.yaw,moving:action.phase==='approach',
-          stopDistance:IBD_INSPECTION_STAND_TOLERANCE*.5}:undefined,
+          routeLimit:action.anchor.approachRadius,stopDistance:IBD_INSPECTION_STAND_TOLERANCE*.5}:undefined,
         notice:()=>({zh:'请先将检验样品归位，再上车。',en:'Return the inspection sample before entering.'})};
     },
     sync(pose,context){

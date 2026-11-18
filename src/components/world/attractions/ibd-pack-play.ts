@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { useIbdYardStore, ibdActor } from './ibd-yard-store';
 import { inspectIbdYardPack, yardPackItem, cancelIbdYardAction } from './ibd-yard-game';
 import { createIbdPackInspection, type IbdPackSlotIndex, type IbdPackInspectionEvent } from './ibd-pack-inspection';
-import { ibdPackHome, ibdLocal, ibdWorld, type IbdPackStation } from './ibd-yard-layout';
+import { ibdPackHome, ibdLocal, ibdWorld, ibdStation, ibdReach, type IbdPackStation } from './ibd-yard-layout';
 import { IBD_PACK_INSPECTION, ibdPackInspectAnchors } from './ibd-pack-layout';
 import { advanceIbdInspectionAction, beginIbdInspectionAction, cancelIbdInspectionAction,
   ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_CALIPER_REACH_SECONDS,
@@ -29,7 +29,7 @@ export function openIbdPack(pack: IbdPackStation) {
   const g=useIbdYardStore.getState().game, item=yardPackItem(g,pack), a=actor();
   if(!item)return;
   const id=item.id;
-  if (!a.active || a.paused || a.hidden || a.driving || g.pending
+  if (!ibdReach(a.local, ibdStation(pack)) || !a.active || a.paused || a.hidden || a.driving || g.pending
     || !g.equipped || !g.core.opened.includes(id) || g.core.loaded.includes(id) || ibdInspectionBodyBusy()) return;
   if (ibdInspectionBody.carried && useIbdPackPlay.getState().pack!==pack) return;
   const view=useIbdPackPlay.getState(), slots=g.packInspections[id]?.slots;
@@ -59,7 +59,11 @@ export function requestIbdPackContact(kind?: IbdInspectionActionKind) {
   const gap=fresh?IBD_PACK_INSPECTION.gapMax:ibdPackVisual.jaw;
   const spec=item.specId==='M6'?'M6':'M8', local=ibdPackInspectAnchors(spec,gap), home=ibdPackHome(view.pack!);
   const world=(p:Vec3)=>ibdWorld(p.map((n,i)=>n+home[i]) as Vec3);
-  const anchor={stand:world(local.stand),yaw:local.yaw,leftTarget:world(local.leftTarget),rightTarget:world(local.rightTarget)};
+  const station=ibdStation(view.pack!);
+  if (!ibdReach(state.local, station)) return false;
+  // Some authored station markers sit two centimetres off the actual stance.
+  const approachRadius=station.radius+Math.hypot(home[0]+local.stand[0]-station.at[0],home[2]+local.stand[2]-station.at[2]);
+  const anchor={approachRadius,stand:world(local.stand),yaw:local.yaw,leftTarget:world(local.leftTarget),rightTarget:world(local.rightTarget)};
   const round=game.round, revision=game.revision;
   const started=beginIbdInspectionAction(action,anchor,()=>{
     const live=currentIbdPack();
@@ -104,9 +108,10 @@ export function cancelIbdPack(hard=false) {
 }
 export function tickIbdPackInspection(dt: number) {
   const c=currentIbdPack(); if(!c)return;
-  if(actor().paused||actor().hidden||!Number.isFinite(dt)||dt<=0)return;
-  if(!ibdInspectionActor.available || !actor().active || c.view.round!==c.game.round || c.view.itemId!==c.item.id || c.game.core.loaded.includes(c.item.id)
-    || Math.hypot(actor().local[0]-ibdPackHome(c.view.pack!)[0],actor().local[2]-ibdPackHome(c.view.pack!)[2])>4){cancelIbdPack(true);return;}
+  const state=actor();
+  if(state.paused||state.hidden||!Number.isFinite(dt)||dt<=0)return;
+  if(!ibdInspectionActor.available || !state.active || c.view.round!==c.game.round || c.view.itemId!==c.item.id || c.game.core.loaded.includes(c.item.id)
+    || !ibdReach(state.local, ibdStation(c.view.pack!))){cancelIbdPack(true);return;}
   const a=ibdInspectionBody.action;
   advanceIbdInspectionAction(dt);
   if(a?.phase==='perform'){

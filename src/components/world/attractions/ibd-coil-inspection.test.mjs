@@ -24,7 +24,7 @@ function tick(sample=true) {
   tickIbdCoilInspection(1/60);
 }
 function finish(){for(let i=0;i<350&&ibdInspectionBody.action;i++)tick();}
-test('timer completion cannot grant coil evidence before the real-palm gate and recovery finish',()=>{
+test('timer completion cannot grant coil evidence before the action and recovery finish',()=>{
   setup();dispatchIbdAction(scan);const token=useIbdYardStore.getState().game.pending.token;
   finishIbdAction(token);assert.equal(useIbdYardStore.getState().game.core.proofs['coil-front'],undefined);
   for(let i=0;i<200&&!ibdInspectionBody.action?.committed;i++)tick();
@@ -37,21 +37,29 @@ test('timer completion cannot grant coil evidence before the real-palm gate and 
   assert.equal(game.pending,null);assert.deepEqual(game.core.proofs['coil-front'],['identity','quantity','specification','quality-front']);
   finishIbdAction(token);assert.equal(useIbdYardStore.getState().game,game);
 });
-test('cancel before or after pose confirmation, missing render samples and lost footing grant no proof',()=>{
-  for(const interruption of['early','after-pose','no-render','airborne','unavailable','new-round']) {
+test('cancel before or after pose confirmation and lost footing grant no proof',()=>{
+  for(const interruption of['early','after-pose','airborne','unavailable','new-round']) {
     setup();dispatchIbdAction(scan);const token=useIbdYardStore.getState().game.pending.token;
     if(interruption==='after-pose')for(let i=0;i<200&&!ibdInspectionBody.action?.committed;i++)tick();
-    else for(let i=0;i<25;i++)tick(interruption!=='no-render');
+    else for(let i=0;i<25;i++)tick();
     if(interruption==='early'||interruption==='after-pose')cancelIbdAction();
     if(interruption==='airborne')ibdInspectionActor.grounded=false;
     if(interruption==='unavailable')ibdInspectionActor.available=false;
     if(interruption==='new-round')useIbdYardStore.setState({game:createIbdYardGame(1,2)});
-    for(let i=0;i<350;i++)tick(interruption!=='no-render');
+    for(let i=0;i<350;i++)tick();
     finishIbdAction(token);
     assert.equal(ibdInspectionBody.action,null,interruption);
     assert.equal(useIbdYardStore.getState().game.pending,null,interruption);
     assert.equal(useIbdYardStore.getState().game.core.proofs['coil-front'],undefined,interruption);
   }
+});
+test('a grounded inspection completes without a render sample',()=>{
+  setup();dispatchIbdAction(scan);
+  for(let i=0;i<350;i++)tick(false);
+  const game=useIbdYardStore.getState().game;
+  assert.equal(ibdInspectionBody.action,null);
+  assert.equal(game.pending,null);
+  assert.deepEqual(game.core.proofs['coil-front'],['identity','quantity','specification','quality-front']);
 });
 test('rear observation still requires the turntable; blocked rear cargo and occupied hands cannot bypass the rules',()=>{
   setup();dispatchIbdAction(scan);finish();

@@ -3,8 +3,15 @@ import assert from 'node:assert/strict';
 import {useIbdYardStore} from './ibd-yard-store.ts';
 import {createIbdYardGame,yardPackItem} from './ibd-yard-game.ts';
 import {useWorldStore} from '../store.ts';
-import {PLAYER_CENTER_HEIGHT} from '../actor-physics.ts';
-import {ibdPackHome,ibdWorld} from './ibd-yard-layout.ts';
+import {createActorActivities,activityApproachMotion} from '../actor-activities.ts';
+import {registerIbdActivity} from './ibd-actor-activity.ts';
+import R from '@dimforge/rapier3d-compat';
+import {Euler,Quaternion} from 'three';
+import {buildIbdStatic} from './ibd-yard-geometry.ts';
+import {ibdCraftOptions} from './ibd-craft-options.ts';
+import {pickupGroundRoute} from '../pickup-approach.ts';
+import {PLAYER_CENTER_HEIGHT,PLAYER_HALF_HEIGHT,PLAYER_RADIUS} from '../actor-physics.ts';
+import {ibdPackHome,ibdWorld,ibdStation} from './ibd-yard-layout.ts';
 import {ibdPackInspectAnchors} from './ibd-pack-layout.ts';
 import {ibdInspectionActor,ibdInspectionBody,ibdInspectionVisualSockets} from './ibd-inspection-motion.ts';
 import {openIbdPack,useIbdPackPlay,requestIbdPackContact,tickIbdPackInspection,cancelIbdPack,selectIbdPackPocket,ibdPackVisual} from './ibd-pack-play.ts';
@@ -125,9 +132,68 @@ test('reopening preserves an unfinished choice, but a new carton or batch starts
   cancelIbdPack(true);
   const g=useIbdYardStore.getState().game;
   useIbdYardStore.setState({game:{...g,core:{...g.core,opened:[...g.core.opened,'parts-b']}}});
+  openIbdPack('parts-b');assert.equal(useIbdPackPlay.getState().pack,null,'remote cartons stay closed');
+  const position=ibdWorld([...ibdStation('parts-b').at]);position[1]=ibdInspectionActor.position[1];
+  Object.assign(ibdInspectionActor,{position});useWorldStore.setState({position});
   openIbdPack('parts-b');assert.equal(useIbdPackPlay.getState().selected,0);
   selectIbdPackPocket(3);cancelIbdPack(true);
   useIbdYardStore.setState({game:{...useIbdYardStore.getState().game,round:g.round+1}});
   openIbdPack('parts-b');assert.equal(useIbdPackPlay.getState().selected,0);
   cancelIbdPack(true);
+});
+
+
+test('all four cartons can present a pocket from the outer aisle of the advertised station', async t => {
+  await R.init();
+  const world = new R.World({x:0,y:0,z:0}), origin=ibdWorld([0,0,0]);
+  const scene=buildIbdStatic({separateCraftShells:true,...ibdCraftOptions(null)});
+  t.after(()=>{world.free();scene.geometry.dispose();scene.craftShellGeometry?.dispose();});
+  const floor=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...origin));
+  world.createCollider(R.ColliderDesc.trimesh(scene.walkSurface.vertices,scene.walkSurface.indices),floor);
+  for(const solid of scene.solids){
+    const collider=R.ColliderDesc.cuboid(...solid.size.map(v=>v/2)).setTranslation(...solid.at);
+    if(solid.rotation)collider.setRotation(new Quaternion().setFromEuler(new Euler(...solid.rotation)));
+    world.createCollider(collider,floor);
+  }
+  const body=world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
+  world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body);
+  world.step();
+  for (const pack of ['parts-a','parts-b','stock-a','stock-b']) {
+    const item = setup(pack), station = ibdStation(pack);
+    const position = ibdWorld([...station.at]);
+    position[1] = ibdInspectionActor.position[1];
+    position[0] += station.radius - .03;
+    const support=world.castRay(new R.Ray({x:position[0],y:position[1]+.1,z:position[2]},{x:0,y:-1,z:0}),2,true,undefined,undefined,undefined,body);
+    assert.ok(support,pack+' needs a real walk surface');
+    // Spawn clearance is not part of the grounded capsule.
+    position[1]+=.1-support.timeOfImpact+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.001;
+    body.setTranslation({x:position[0],y:position[1],z:position[2]},true);
+    world.step();
+    useWorldStore.setState({position});
+    const registry = createActorActivities(), unregister = registerIbdActivity(registry);
+    try {
+      const sync = () => registry.sync({position:[...position], yaw:Math.PI/2, available:true, grounded:true, mode:'guide'});
+      sync();
+      assert.ok(requestIbdPackContact(),pack+' accepts the advertised range');
+      const route=registry.approach();
+      const destination=[route.stand[0],route.stand[1]+PLAYER_CENTER_HEIGHT,route.stand[2]];
+      assert.ok(pickupGroundRoute(world,R,body,position,destination,route.routeLimit),pack+' requires a collision-clear capsule route');
+      if(pack.startsWith('parts-')){
+        const blocked=[destination[0],position[1],destination[2]+2.06];
+        assert.equal(pickupGroundRoute(world,R,body,blocked,destination,route.routeLimit),null,'roller bed blocks a straight approach');
+      }
+      for (let frame=0; frame<400; frame++) {
+        const stance = registry.approach();
+        if (!stance) break;
+        const motion = activityApproachMotion(position,stance);
+        const remaining = Math.hypot(stance.stand[0]-position[0],stance.stand[2]-position[2]);
+        if (motion.moving) assert.ok(remaining <= (stance.routeLimit ?? 2), 'the production passage check accepts this route length');
+        position[0] += motion.vx/60;
+        position[2] += motion.vz/60;
+        sync(); registry.advance(1/60);
+      }
+      const inspection = useIbdYardStore.getState().game.packInspections[item.id];
+      assert.ok(inspection?.held !== null && inspection?.held !== undefined, pack);
+    } finally { unregister(); cancelIbdPack(true); }
+  }
 });

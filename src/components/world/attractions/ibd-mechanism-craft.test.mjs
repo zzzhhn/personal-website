@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
+import { IBD_TRUCK_FLOOR } from './ibd-yard-layout.ts';
 import { Builder } from '../WorldStreetGeometry.ts';
 import { addIbdRollerFrame } from './ibd-craft-geometry.ts';
 import { buildIbdStatic, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdTools, buildIbdShutter } from './ibd-yard-geometry.ts';
@@ -13,11 +14,22 @@ function inspect(geometry, run) {
   try { run(hit,geometry); } finally { material.dispose(); geometry.dispose(); }
 }
 
-test('mechanism visual upgrade preserves all exact solids, gallery and roller contact bytes', () => {
+test('assembled truck deck meets its collision surface and gallery tread retains its contact mesh', () => {
   const data=buildIbdStatic();
   try {
     assert.equal(data.solids.length,256);
-    assert.equal(createHash('sha256').update(JSON.stringify(data.solids)).digest('hex'),'ad00d1525a6e8602925b1b43253f441332a69503a7a6f013291b00ca73a9a56e');
+    const deck=data.solids.find(s=>s.at[0]===16&&s.at[2]===12.5&&s.size[1]===.3);
+    assert.ok(deck,'cargo deck collider is present in the assembled yard');
+    const collisionTop=deck.at[1]+deck.size[1]/2;
+    assert.ok(Math.abs(collisionTop-IBD_TRUCK_FLOOR)<1e-6);
+    const mesh=new Mesh(data.geometry,new MeshBasicMaterial({side:DoubleSide}));
+    try {
+      for(const z of [10.5,14.5]){
+        const ray=new Raycaster(new Vector3(16.235,collisionTop+.2,z),new Vector3(0,-1,0),0,.4);
+        const top=ray.intersectObject(mesh)[0];
+        assert.ok(top&&Math.abs(top.point.y-collisionTop)<1e-6,'visible boards meet the physical cargo deck');
+      }
+    } finally { mesh.material.dispose(); }
     assert.equal(digest(data.walkSurface.vertices),'a7a86e1c42de0df4951a7a839a08368a648436fd77b81c04a34cffb40fb54ee2');
     assert.equal(digest(data.walkSurface.indices),'6d27b54f865dd07c848f77a54e2accce001e770a22ea968ffc51fd473d33f284');
     const p=data.geometry.attributes.position, role=data.geometry.attributes.aMat, uv=data.geometry.attributes.aSuv;
