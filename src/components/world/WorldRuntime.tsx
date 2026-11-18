@@ -34,6 +34,7 @@ import WorldAttractions from './attractions/WorldAttractions';
 import { intentRideClock, useIntentStore } from './attractions/intent-state';
 import { coasterPhase } from './attractions/coaster-track';
 import { INTENT_COASTER } from './attractions/attraction-layout';
+import { shadowScanCount } from './WorldShadows';
 import { StaticShotFrames, worldRenderMode } from './performance-render-policy';
 import { worldResumeProbe } from './world-resume-probe';
 import { createResumeTimeBoundary } from './world-resume-time';
@@ -154,7 +155,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   }, [shot, camera]);
   useFrame((_, delta) => {
     frameDelta.current = delta;
-    if (!document.hidden && staticShotFrames.frame(!!shot)) invalidate();
+    if (!document.hidden && staticShotFrames.frame(!!shot, shadowScanCount(), delta)) invalidate();
     if (frameSample && !frozen && !document.hidden && delta > 0) {
       // An explicitly started QA window includes arrival/resume warm-up too.
       // Only the passive HUD percentile ring may discard its first 30 frames.

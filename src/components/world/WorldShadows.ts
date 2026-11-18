@@ -126,6 +126,7 @@ const ISLAND_BOX = new Box3(new Vector3(-86, -2, -82), new Vector3(96, 17.5, 62)
 export interface ShadowFitOptions {
   /** Legacy single-map size from WorldEnvironment (4096 high / 2048 balanced); selects the tier. */
   mapSize: number;
+  frozenViewDelta?: number;
   /** Overview shots use a surveyed window; close shots retain the play cascades. */
   wide: boolean;
   wideBounds?: Box3;
@@ -230,6 +231,8 @@ proxyGroup.visible = false;
 proxyGroup.userData.shadowProxy = true;
 proxyGroup.matrixAutoUpdate = false; proxyGroup.matrixWorldAutoUpdate = false; // proxy matrices are set per pass
 let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
+let frozenScanSeconds = 0, completedScans = 0;
+export const shadowScanCount = () => completedScans;
 type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; wallMs: number; slices: number; maxSliceMs: number; phases: ReturnType<ShadowChunkStages['snapshot']>; hullWorker: ShadowHullJob['stats']; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number; update: ShadowChunkUpdate; addedNames: string[] };
 let rebuildProbeAt: number | null = null;
 const rebuildSamples: RebuildSample[] = [];
@@ -1152,7 +1155,12 @@ export function fitSunShadow(light: DirectionalLight, target: Object3D, camera: 
   ensureSun(light, scene);
   target.position.set(options.focus[0], options.focus[1], options.focus[2]);
   frameNo++;
-  if (frameNo - scanFrame >= 30) { scanFrame = frameNo; rescan(scene); }
+  frozenScanSeconds = options.frozenViewDelta ? frozenScanSeconds + options.frozenViewDelta : 0;
+  if (frameNo - scanFrame >= 30 || frozenScanSeconds >= .5) {
+    scanFrame = frameNo; frozenScanSeconds = 0;
+    rescan(scene);
+    completedScans++;
+  }
   advanceChunks();
   worldLightsFrame(scene, camera, tier, sun!, options.focus);
   if (typeof window !== 'undefined' && (window as unknown as { __worldDebug?: Record<string, unknown> }).__worldDebug) {

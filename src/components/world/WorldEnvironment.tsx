@@ -394,7 +394,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     scene.fog = new Fog('#C49C83', 350, 600);
     return () => { scene.fog = oldFog; };
   }, [scene]);
-  useFrame(() => {
+  useFrame((_, delta) => {
     const s = sampleTimeLight(climate.minutes, sample.current), n = night.value;
     const a = TIME_LIGHT[s.from], b = TIME_LIGHT[s.to], ca = palettes[s.from], cb = palettes[s.to];
     const overcast = climate.rain * .78 + climate.snow * .68;
@@ -407,7 +407,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       // Fixed sun direction; the orthographic window is fitted to the follow camera's visible
       // ground and texel-snapped (WorldShadows), so shadows track casters without crawling.
       const focus = shadowCapture?.focus ?? useWorldStore.getState().position;
-      fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, wide: shadowCapture?.wide ?? false,
+      fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, frozenViewDelta: shot ? delta : 0, wide: shadowCapture?.wide ?? false,
         wideBounds: shadowCapture?.bounds, focus, receivers: receiverBand(focus), tallReceivers: TALL_RECEIVERS });
     }
     if (hemisphere.current) {

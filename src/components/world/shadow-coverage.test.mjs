@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { DirectionalLight, Object3D, PerspectiveCamera, Scene, Vector3 } from 'three';
-import { fitSunShadow, shadowTelemetry, worldSun } from './WorldShadows.ts';
+import { fitSunShadow, shadowScanCount, shadowTelemetry, worldSun } from './WorldShadows.ts';
 import { worldShadowCapture } from './world-shadow-capture.ts';
 import { WORLD_SHOTS } from './layout.ts';
 
@@ -53,4 +53,18 @@ test('northern overview cameras contain all eight corners of their surveyed faci
       }
     } finally { f.close(); }
   }
+});
+
+test('slow fixed captures perform real caster scans while ordinary walking retains its frame cadence', t => {
+  const scene = new Scene(), light = new DirectionalLight(), target = new Object3D();
+  scene.add(light, target);
+  t.after(() => scene.remove(light));
+  const camera = new PerspectiveCamera(), options = {mapSize:2048, wide:false, focus:[0,0,0]};
+  const tick = delta => fitSunShadow(light,target,camera,{...options,frozenViewDelta:delta});
+  tick(8);
+  const before = shadowScanCount();
+  for(let i=0;i<4;i++) tick(0);
+  assert.equal(shadowScanCount(), before);
+  for(let i=0;i<3;i++) tick(8);
+  assert.equal(shadowScanCount(), before+3);
 });

@@ -4,7 +4,7 @@ export function worldRenderMode(visible: boolean, paused: boolean, shot: string 
   return !visible ? 'never' : paused || shot ? 'demand' : 'always';
 }
 
-// WorldShadows scans every 30 rendered frames and needs two unchanged scans
+// The normal shadow scan interval is 30 frames. Fitting needs two unchanged scans
 // after discovering a caster. A late asset or camera edit must reach all three
 // scans before a frozen shot sleeps; vegetation also updates on a time budget.
 export const STATIC_SHOT_SETTLE_FRAMES = 90;
@@ -14,11 +14,23 @@ export const STATIC_SHOT_SETTLE_FRAMES = 90;
  * wake itself once the final frame has drained from R3F's queue. */
 export class StaticShotFrames {
   private remaining = 0;
+  private firstScan = 0;
+  private elapsed = 0;
   get settled() { return this.remaining === 0; }
   reset() { this.remaining = 0; }
-  frame(shot: boolean): boolean {
+  frame(shot: boolean, scan = 0, delta = 0): boolean {
     if (!shot) { this.reset(); return false; }
-    if (!this.remaining) this.remaining = STATIC_SHOT_SETTLE_FRAMES;
+    if (!this.remaining) {
+      this.remaining = STATIC_SHOT_SETTLE_FRAMES;
+      this.firstScan = scan;
+      this.elapsed = 0;
+    }
+    this.elapsed += Math.max(0, Math.min(delta, .5));
+    // On a slow GPU three completed scans can span seconds in just a few frames.
+    if (scan - this.firstScan >= 3 && this.elapsed >= 1.5) {
+      this.remaining = 0;
+      return false;
+    }
     return --this.remaining > 0;
   }
 }

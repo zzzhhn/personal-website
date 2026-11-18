@@ -32,8 +32,9 @@ export function NightClock() {
       r.published = minute; r.light = timePresetAt(climate.minutes);
       useWorldStore.setState({ worldMinutes: climate.minutes, light: r.light });
     }
-    r.transition = Math.min(2, r.transition + Math.min(delta, .1));
-    climate.blend = r.transition >= 2 ? 1 : 1 - Math.exp(-Math.min(delta, .1) * 5);
+    const lightDelta = Math.min(delta, s.shot ? 2 : .1);
+    r.transition = Math.min(2, r.transition + lightDelta);
+    climate.blend = r.transition >= 2 ? 1 : 1 - Math.exp(-lightDelta * 5);
     night.value += (sampleTimeLight(climate.minutes, r.sample).night - night.value) * climate.blend;
     const overlay=rideEnvironment.sample(s.weather,!running);
     climate.rain += ((overlay?.rain ?? (s.weather === 'rain' ? 1 : 0)) - climate.rain) * climate.blend;

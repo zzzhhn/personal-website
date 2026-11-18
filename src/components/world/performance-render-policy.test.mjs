@@ -109,3 +109,16 @@ test('unmount during a settling burst releases the root and drains the shared RA
   const before = f.read().draws; f.unmount(); f.tick(600);
   assert.equal(f.read().draws, before); assert.equal(f.read().queued, 0);
 });
+
+test('a slow fixed view waits for three new caster scans even after a long frame or camera change', () => {
+  const burst = new StaticShotFrames();
+  assert.equal(burst.frame(true, 40, 8), true);
+  assert.equal(burst.frame(true, 40, 8), true);
+  assert.equal(burst.frame(true, 41, 8), true);
+  assert.equal(burst.frame(true, 42, 8), true);
+  assert.equal(burst.frame(true, 43, 8), false);
+  burst.reset();
+  assert.equal(burst.frame(true, 43, 8), true);
+  assert.equal(burst.frame(true, 44, 8), true);
+  assert.equal(burst.settled, false);
+});
