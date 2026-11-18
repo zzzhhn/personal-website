@@ -249,6 +249,15 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           quality: useWorldStore.getState().quality, antialias: ctx.getContextAttributes()?.antialias, msaaSamples: ctx.getParameter(ctx.SAMPLES), toneMapping: gl.toneMapping, outputColorSpace: gl.outputColorSpace,
           shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [], coasterVegetation };
       },
+      captureReviewFrame: () => {
+        if (!useWorldStore.getState().shot || gl.getContext().isContextLost()) {
+          throw new Error('A live fixed review camera is required');
+        }
+        // Read within the same task as the draw: WebGL may discard its default
+        // drawing buffer after presentation. Browser UI and HUD live outside it.
+        gl.render(scene, camera);
+        return gl.domElement.toDataURL('image/png');
+      },
       reviewCamera: () => {
         const view = WORLD_SHOTS.find(v => v.id === useWorldStore.getState().shot);
         if (!view) return null;

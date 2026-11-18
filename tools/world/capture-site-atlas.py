@@ -1,5 +1,6 @@
 """Capture every paired site camera from one production world. Requires Playwright and Pillow."""
 import argparse
+import base64
 import hashlib
 import io
 import json
@@ -21,7 +22,6 @@ DISTRICTS = ["world-camp-content", "world-town", "world-street", "world-district
              "djc-beach-club", "alpha-island-batch2", "world-ibd-yard", "factory-structure"]
 TILE_WIDTH, TILE_HEIGHT, LABEL_HEIGHT = 600, 338, 32
 ROW_HEIGHT = TILE_HEIGHT + LABEL_HEIGHT
-HIDE_UI = "body *:not(canvas):not(:has(canvas)) { visibility: hidden !important; }"
 
 
 def pairs(ids):
@@ -38,20 +38,28 @@ def pairs(ids):
 
 def shoot(page, select, shot):
     old_frame = page.evaluate("window.__worldDebug.renderLoop().frame")
-    select.select_option(shot)
+    select.evaluate("""(el, shot) => {
+        el.value = shot;
+        el.dispatchEvent(new Event('change', {bubbles: true}));
+    }""", shot)
     # The renderer sleeps between shots. Count actual GL frames and wait for the
     # shadow-settling burst plus the real lighting uniform, even on a slow GPU.
-    ready = """([shot, frame]) => {
+    ready = """([shot, frame, viewport]) => {
         const d = window.__worldDebug, s = d.state(), loop = d.renderLoop();
+        const rect = document.querySelector('canvas')?.getBoundingClientRect();
+        if (!rect || rect.x !== 0 || rect.y !== 0 || rect.width !== viewport.width || rect.height !== viewport.height)
+            throw new Error('Canvas does not cover the capture viewport');
         const dark = shot.endsWith('-night'), camera = d.reviewCamera();
         return !document.hidden && s.shot === shot && !s.paused && s.quality === 'balanced'
           && s.weather === 'clear' && s.light === (dark ? 'night' : 'noon')
           && Math.abs(loop.night - Number(dark)) < .001 && loop.frame > frame + 2
-          && camera?.settled && camera.onMark && d.stats().triangles > 0;
+          && camera?.settled && camera.onMark && d.stats().triangles > 0 && {camera, png: d.captureReviewFrame()};
     }"""
     for attempt in range(6):
         try:
-            page.wait_for_function(ready, arg=[shot, old_frame], polling=350, timeout=60000)
+            sample = page.wait_for_function(ready, arg=[shot, old_frame, VIEWPORT], polling=350, timeout=60000)
+            capture = sample.json_value()
+            sample.dispose()
             break
         except PlaywrightTimeout:
             observed = page.evaluate("""() => {
@@ -62,17 +70,14 @@ def shoot(page, select, shot):
             print(f"Waiting for {shot} from frame {old_frame}: {observed}", flush=True)
             if attempt == 5:
                 raise
-    camera = page.evaluate("window.__worldDebug.reviewCamera()")
-    # The canvas fills this fixed viewport. Element screenshots unnecessarily
-    # scroll it and wait for extra animation frames on software renderers.
-    bounds = page.locator("canvas").bounding_box()
-    if bounds != {"x": 0, "y": 0, **VIEWPORT}:
-        raise RuntimeError(f"Canvas does not cover the capture viewport: {bounds}")
-    data = page.screenshot(style=HIDE_UI, timeout=120000)
+    header, encoded = capture["png"].split(",", 1)
+    if header != "data:image/png;base64":
+        raise RuntimeError(f"Invalid WebGL readback at {shot}")
+    data = base64.b64decode(encoded, validate=True)
     image = Image.open(io.BytesIO(data)).convert("RGB")
     if image.size != tuple(VIEWPORT.values()) or max(ImageStat.Stat(image).stddev) < 2:
-        raise RuntimeError(f"Empty or incorrectly sized render at {shot}")
-    return camera, image
+        raise RuntimeError(f"Invalid render at {shot}: {image.size}, channel deviation {ImageStat.Stat(image).stddev}")
+    return capture["camera"], image
 
 
 def capture(browser, base, shard, shards):
@@ -80,12 +85,17 @@ def capture(browser, base, shard, shards):
     context = browser.new_context(viewport=VIEWPORT, device_scale_factor=1)
     try:
         page = context.new_page()
-        page.on("pageerror", lambda error: errors.append(str(error)))
+        def record_error(message):
+            errors.append(message)
+            print(f"Browser error: {message}", flush=True)
+
+        page.on("pageerror", lambda error: record_error(str(error)))
+        page.on("crash", lambda _: record_error("Renderer process crashed"))
 
         def response(r):
             path = urlsplit(r.url).path
             if r.status >= 400 and path.startswith(("/_astro/", "/assets/world/")):
-                errors.append(f"{r.status} {path}")
+                record_error(f"{r.status} {path}")
 
         page.on("response", response)
         entry = page.goto(urljoin(base, "/world/?quality=balanced&siteReview=1&qa=1"),
@@ -107,8 +117,8 @@ def capture(browser, base, shard, shards):
             present = set(page.evaluate("window.__worldDebug.sceneObjects()"))
             raise RuntimeError(f"Scene missing {set(DISTRICTS) - present}. Browser errors: {errors[:4]}") from error
         print("District meshes mounted", flush=True)
-        select = page.get_by_role("combobox", name="现场接缝复核机位")
-        sites = pairs(select.locator("option").evaluate_all("os => os.map(o => o.value).filter(Boolean)"))
+        select = page.get_by_role("combobox", name="现场接缝复核机位").element_handle()
+        sites = pairs(select.evaluate("el => Array.from(el.options, o => o.value).filter(Boolean)"))
         order = list(sites)
         rows = (len(order) + 1) // 2
         if not 0 <= shard < shards <= rows:
@@ -123,7 +133,7 @@ def capture(browser, base, shard, shards):
             day_camera, day = shoot(page, select, group["day"])
             night_camera, night = shoot(page, select, group["night"])
             if day_camera != night_camera:
-                raise RuntimeError(f"Camera/projection/exposure mismatch at {site}")
+                raise RuntimeError(f"Camera/projection/exposure mismatch at {site}: {day_camera} vs {night_camera}")
             change = ImageStat.Stat(ImageChops.difference(day, night)).mean
             if max(change) < 2:
                 raise RuntimeError(f"Day and night pixels nearly identical at {site}")
