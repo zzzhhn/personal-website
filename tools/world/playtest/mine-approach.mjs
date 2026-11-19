@@ -26,12 +26,12 @@ try {
     }
     return result;
   });
-  const route=await bot.walk([[-57.58,-37.79],[-61.16,-39.58],[-64.73,-41.37],[-68,-43],[-71.2,-45.4],[-74.4,-47.8],[-77.6,-50.2],[-80.8,-52.6]],{arrive:.43,timeout:15,maxRecoveries:1});
+  const route=await bot.walk([[-57.58,-37.79],[-61.16,-39.58],[-64.73,-41.37],[-68,-43],[-71.2,-45.4],[-74.4,-47.8],[-77.6,-50.2],[-80.8,-52.6],[-84,-52.6],[-84,-54.5],[-84,-56.75]],{arrive:.43,timeout:15,maxRecoveries:1});
   const grounded=route.trace.filter(row=>row.g).length;
   console.log(JSON.stringify({version,placements:bot.fixtureCalls,probes,legs:route.legs,blocking:route.trace.slice(-6).flatMap(r=>r.contacts?.map(c=>({name:c.other.name,asset:c.other.assetId,normal:c.normal}))),grounded,samples:route.trace.length,errors}));
   assert.ok(probes.every(row=>version!=='before' ? row.other?.name==='brain-quarry-marker-sides' : !row.hit),JSON.stringify(probes));
   if (version==='after') {
-    assert.ok(route.legs.length===8 && route.legs.every(leg=>leg.reached && !leg.recoveries));
+    assert.ok(route.legs.length===11 && route.legs.every(leg=>leg.reached && !leg.recoveries));
   } else {
     assert.equal(route.legs.at(-1).reached,false);
     assert.ok(route.trace.some(row=>row.contacts?.some(c=>c.other.name==='street-knock-rail-guard-3-2')));
