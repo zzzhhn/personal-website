@@ -9,7 +9,8 @@ const hash = array => createHash('sha256').update(new Uint8Array(array.buffer,ar
 const shape = data => ({
   steel:Object.entries(data.steel.attributes).map(([key,a])=>[key,a.itemSize,a.normalized,hash(a.array)]),
   glow:Object.entries(data.glow.attributes).map(([key,a])=>[key,a.itemSize,a.normalized,hash(a.array)]),
-  colliders:data.colliders.map(c=>({...c,hull:c.hull&&hash(c.hull)})),
+  colliders:data.colliders.map(c=>({...c,hull:c.hull&&hash(c.hull),
+    mesh:c.mesh&&{vertices:hash(c.mesh.vertices),indices:hash(c.mesh.indices)}})),
   relief:{...data.relief,vertices:hash(data.relief.vertices),indices:hash(data.relief.indices)},
   track:{vertices:hash(data.track.vertices),indices:hash(data.track.indices)},
   art:data.art,

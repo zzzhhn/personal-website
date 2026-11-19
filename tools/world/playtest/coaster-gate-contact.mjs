@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import { Bot, CHROME, comboFor, loadPlaywright } from './lib.mjs';
 
 const [base = 'http://127.0.0.1:4343', mode = 'after'] = process.argv.slice(2);
-assert.ok(['before', 'after'].includes(mode));
+assert.ok(['before', 'after', 'rails'].includes(mode));
+const authored = mode !== 'before';
+const railRoots = ['coaster-rail-footings-contact','coaster-running-rails-contact','coaster-rail-steel-contact'];
 const url = new URL('/world/?start=coaster', base);
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
 try {
@@ -36,7 +38,7 @@ try {
     try {
       while (true) {
         const state = await actor(), dx = x - state.p[0], dz = z - state.p[2], distance = Math.hypot(dx, dz);
-        if (offer ? state.offer === offer : distance < arrive) return state;
+        if (distance < arrive && (!offer || state.offer === offer)) return state;
         if (best - distance > .04) { best = distance; progress = state.step; }
         if (state.step - progress >= 150 || state.step - started.step >= 1300) {
           const contact = await page.evaluate(([x,z]) => {
@@ -74,7 +76,7 @@ try {
       former: d.probeAsset('intent-coaster', point, direction, .006) };
   }, mode);
   assert.ok(portal.physical, 'stone is physically solid');
-  if (mode === 'after') {
+  if (authored) {
     assert.ok(portal.visual.length && portal.physical.visualBoundaryGap < .002, 'stone first hit follows the actual recessed return');
     assert.equal(portal.former, null, 'the coarse station box cannot still occupy the portal');
     const sources = await page.evaluate(() => window.__worldDebug.reviewCollisionSources('coaster-gate-portal-contact'));
@@ -83,7 +85,7 @@ try {
     assert.equal(sources.colliders[0].shape.indices, sources.meshes.reduce((n, m) => n + m.declaration.ranges[0].indexCount, 0));
   } else assert.ok(portal.physical.point[2] > -138.15, 'the legacy box hits before the recessed return');
   console.log(JSON.stringify({ phase: 'portal', ...portal }));
-  if (mode === 'after') {
+  if (authored) {
     const source = await page.evaluate(() => window.__worldDebug.reviewCollisionSources('coaster-gate-leaves'));
     assert.equal(source.meshes.length, 10);
     assert.deepEqual(source.colliders.map(collider => [collider.name, collider.shape.type]).sort(),
@@ -95,22 +97,23 @@ try {
     }
     console.log(JSON.stringify({ phase: 'source', ...source }));
   }
-  await walk(51.5, -127);
-  await walk(51.5, -136.8, .7, 'intent-gate');
+  await walk(52, -127.2);
+  await walk(52, -132.9);
+  const atGate = await walk(50.6, -136.5, .65, 'intent-gate');
   await bot.press('KeyE');
   await wait(key => JSON.parse(localStorage.getItem(key)).gateOpen, saveKey);
   await wait(() => {
     const leaves = window.__worldDebug.physicsInventory().filter(c => c.assetId === 'coaster-gate');
-    return leaves.length === 2 && leaves.every(c => Math.abs(c.rotation[1]) > .65);
+    return leaves.length === 2 && leaves.every(c => Math.abs(c.rotation[1]) > .662);
   });
-  const through = await walk(50, -142.7, 1.05);
+  const through = await walk(50.4, -142.7, .85);
   const open = await probe();
-  console.log(JSON.stringify({ phase: 'open', through, ...open }));
+  console.log(JSON.stringify({ phase: 'open', atGate, through, ...open }));
   assert.equal(open.gap.physical, null);
   assert.ok(through.grounded);
   const platform = await walk(55.36, -151.945, .72, 'intent-board');
   console.log(JSON.stringify({ phase: 'platform', platform, actor: await actor() }));
-  if (mode === 'after') {
+  if (authored) {
     const station = await page.evaluate(() => window.__worldDebug.reviewCollisionSources('coaster-station-architecture-contact'));
     const visible = station.meshes.filter(mesh => mesh.submitted);
     assert.equal(station.meshes.length, 15);
@@ -129,6 +132,27 @@ try {
     }
     console.log(JSON.stringify({ phase: 'train-source', cars, pathCount: train.meshes.length }));
   }
+  if (mode === 'rails') {
+    const active = await page.evaluate(async roots => {
+      const d = window.__worldDebug;
+      return { sources: await Promise.all(roots.map(root => d.reviewCollisionSources(root))),
+        inventory: d.reviewCollisionInventory(), frames: d.renderLoop().frameMs };
+    },railRoots);
+    const shapes = [[1,39,10416],[1,44,76160],[2,45,125052]];
+    for (const [i,{meshes,colliders}] of active.sources.entries()) {
+      const [batches,cells,triangles] = shapes[i], root = railRoots[i];
+      assert.equal(meshes.length,batches);
+      assert.equal(colliders.length,cells);
+      assert.equal(active.inventory.registrations[root],cells,'actual registrations at the active local facility');
+      assert.equal(colliders.reduce((sum,c) => sum + c.shape.indices/3,0),triangles);
+      assert.ok(colliders.every(c => c.shape.type === 'TriMesh'));
+      const declared = meshes.flatMap(mesh => mesh.declaration.ranges);
+      for (const c of colliders) assert.equal(declared.filter(range => range.surfaceId === c.name)
+        .reduce((sum,range) => sum + range.indexCount,0),c.shape.indices);
+    }
+    assert.deepEqual(active.inventory.errors.filter(error => railRoots.some(root => error.includes(root))),[]);
+    console.log(JSON.stringify({ phase: 'rails-source', shapes, frames: active.frames }));
+  }
   await bot.press('KeyE');
   const skip = page.getByRole('button', { name: 'Skip travel and return to station', exact: true });
   try { await skip.waitFor({ timeout: 23_000 }); }
@@ -140,7 +164,7 @@ try {
     });
     throw new Error(JSON.stringify({ actor: await actor(), path, ui: ui.slice(-2000) }), { cause: error });
   }
-  if (mode === 'after') {
+  if (authored) {
     assert.equal(await page.evaluate(() => window.__worldDebug.physicsInventory().filter(c => c.assetId === 'coaster-parked-car').length), 0);
   }
   await skip.click();
@@ -152,7 +176,7 @@ try {
   const resumed = await walk(exit.p[0]+1.4, exit.p[2], .55);
   console.log(JSON.stringify({ phase: 'board-return', mode, platform, exit, resumed, keys: bot.events, relocations: bot.fixtureCalls, errors }));
   assert.deepEqual(bot.fixtureCalls, []);
-  if (mode === 'after') {
+  if (authored) {
     await page.locator('button.world-camp-return:enabled').click();
     await wait(() => {
       const d = window.__worldDebug;
@@ -165,6 +189,14 @@ try {
     const station = await page.evaluate(() => window.__worldDebug.reviewCollisionSources('coaster-station-architecture-contact'));
     assert.equal(station.meshes.length, 15);
     assert.equal(station.colliders.length, 0);
+    if (mode === 'rails') {
+      const distant = await page.evaluate(async roots => {
+        const d = window.__worldDebug, inventory = d.reviewCollisionInventory();
+        const surveys = await Promise.all(roots.map(root => d.reviewCollisionSources(root)));
+        return surveys.map(({meshes,colliders},i) => [meshes.length,colliders.length,inventory.registrations[roots[i]] ?? 0]);
+      },railRoots);
+      assert.deepEqual(distant,[[1,0,0],[1,0,0],[2,0,0]],'rail finishes stay mounted at camp with separate sleeping contact');
+    }
     const coverage = await page.evaluate(async () => {
       const drawn = await window.__worldDebug.reviewCollisionSources('intent-coaster');
       return { mounted: drawn.meshes.length, withoutPolicy: drawn.meshes.filter(m => !m.declaration || m.declaration.partial).map(m => m.path) };

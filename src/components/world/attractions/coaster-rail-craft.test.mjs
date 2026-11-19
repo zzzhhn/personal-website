@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
 import { BoxGeometry, Mesh } from 'three';
+import { COASTER_ARCHITECTURE_CRAFT } from './coaster-craft-promotion.ts';
 import { createCoasterStructure } from './coaster-geometry.ts';
 import { packCoasterStructure } from './coaster-structure-transfer.ts';
 import { CoasterStructureCache } from './coaster-structure-cache.ts';
@@ -11,7 +11,6 @@ import { coasterFrame, coasterSupports } from './coaster-track.ts';
 import { shadowOnlyRange } from './coaster-shadow-range.ts';
 import { shadowChunkSourceKey } from '../shadow-chunk-builder.ts';
 
-const baseline = JSON.parse(readFileSync(new URL('../../../../docs/world/phase-2-playground/coaster-rail-craft-20261105/production-baseline.json', import.meta.url), 'utf8'));
 const hash = value => createHash('sha256').update(value).digest('hex');
 const bytes = array => hash(new Uint8Array(array.buffer, array.byteOffset, array.byteLength));
 const json = value => hash(JSON.stringify(value));
@@ -25,7 +24,9 @@ const resources = value => [value.steel, value.glow, ...Object.values(value.rail
 const transferShape = g => ({ ...geometryShape(g), box: g.boundingBox && { min: g.boundingBox.min.toArray(), max: g.boundingBox.max.toArray() } });
 const contactShape = d => ({
   track: { vertices: bytes(d.track.vertices), indices: bytes(d.track.indices), vertexBytes: d.track.vertices.byteLength, indexBytes: d.track.indices.byteLength },
-  colliders: { count: d.colliders.length, hash: json(d.colliders.map(c => ({ ...c, ...(c.hull ? { hull: bytes(c.hull) } : {}) }))) },
+  colliders: { count: d.colliders.length, hash: json(d.colliders.map(c => ({ ...c,
+    hull: c.hull && bytes(c.hull), mesh: c.mesh && [bytes(c.mesh.vertices),bytes(c.mesh.indices)],
+  }))) },
   relief: { vertices: bytes(d.relief.vertices), indices: bytes(d.relief.indices) },
   glow: geometryShape(d.glow), art: json(d.art),
 });
@@ -38,11 +39,13 @@ const closestVertex = (g, point) => {
   return closest;
 };
 
-test('production near/far preserve baseline contacts, old projection and worker transfer ownership', async t => {
+test('near/far rail promotion retains the live fallback contacts, exact shadow placement and worker ownership', async t => {
   for (const near of [false, true]) {
-    const label = near ? 'near' : 'far', original = createCoasterStructure(near), expected = baseline.variants[label];
-    const { steel: oldSteel, ...expectedContacts } = expected;
-    assert.deepEqual(contactShape(original), expectedContacts, `${label}: physical/glow/art bytes changed`);
+    const label = near ? 'near' : 'far', original = createCoasterStructure(near);
+    const fallback = createCoasterStructure(near,'full',COASTER_ARCHITECTURE_CRAFT,false);
+    t.after(() => [...resources(fallback),...resources(original)].forEach(g => g.dispose()));
+    const oldSteel = geometryShape(fallback.steel), expectedContacts = contactShape(fallback);
+    assert.deepEqual(contactShape(original), expectedContacts, `${label}: fallback, relief or glow changed with the rail display`);
     assert.ok(original.railShadow?.attributes.position.count > 0, `${label}: old projection carrier missing`);
     assert.deepEqual(Object.keys(original.railCraft).sort(), ['coatedSteel', 'concrete', 'jointSteel', 'runningSteel']);
     for (const [role, g] of Object.entries(original.railCraft)) {

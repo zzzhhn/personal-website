@@ -11,6 +11,8 @@ import { THRILL_CABIN_EYE_HEIGHT } from './coaster-thrill-frame.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
 import { COASTER_CAR_PANELS } from './coaster-access.ts';
 import { coasterColliderDescriptor } from './coaster-collision.ts';
+import { coasterRailContactShapes, coasterRailFootingSources, coasterRailSteelSources, coasterRunningRailSources,
+  mergeRailContactShapes } from './coaster-rail-contact.ts';
 import { cameraCollisionRadius } from '../camera-collision.ts';
 
 await R.init();
@@ -83,7 +85,18 @@ test('real full-loop cabin eye and near plane clear visible structures, producti
   const world=new R.World({x:0,y:0,z:0}),carWorld=new R.World({x:0,y:0,z:0}),labels=new Map(),reports=[];
   try {
     for(const [i,c] of structure.colliders.entries()){
+      if(c.railFootingFallback || c.railSupportFallback) continue;
       const collider=world.createCollider(coasterColliderDescriptor(R,c));labels.set(collider.handle,`production-${i}`);
+    }
+    const {concrete,runningSteel,coatedSteel,jointSteel}=structure.railCraft;
+    const railCells=[
+      ...coasterRailContactShapes(concrete,coasterRailFootingSources(concrete).cells),
+      ...coasterRailContactShapes(runningSteel,coasterRunningRailSources(runningSteel).cells),
+      ...mergeRailContactShapes([coatedSteel,jointSteel].map(g=>[g,coasterRailSteelSources(g).cells])),
+    ];
+    for(const {id,at,vertices,indices} of railCells){
+      const collider=world.createCollider(R.ColliderDesc.trimesh(vertices,indices).setTranslation(...at));
+      labels.set(collider.handle,id);
     }
     for(const [name,geometry] of [['visible-steel',structure.steel],['visible-glow',structure.glow]]){
       const collider=world.createCollider(meshDescriptor(geometry));labels.set(collider.handle,name);
@@ -136,5 +149,8 @@ test('real full-loop cabin eye and near plane clear visible structures, producti
       reports.push({fps,samples,envelope,maxWorldStep,maxSeatResidual,maxAngle,collisionCorrections:0});
     }
     t.diagnostic(JSON.stringify({near,aspects,fov:ATTRACTION_CABIN_FOV,reports}));
-  } finally {world.free();carWorld.free();structure.steel.dispose();structure.glow.dispose();carGeometry.dispose();}
+  } finally {
+    world.free(); carWorld.free();
+    for(const geometry of [structure.steel,structure.glow,structure.railShadow,...Object.values(structure.railCraft),carGeometry])geometry?.dispose();
+  }
 });

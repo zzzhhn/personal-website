@@ -72,7 +72,10 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
   }, [enabled]);
   const review: CoasterCollisionReview = { active, occupied, preparing, renderedNear };
   return <><group name="intent-coaster" userData={{noOcclusionFade:true, coasterCollisionReview: review}}>
-    <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.82} metalness={.16} /></mesh>
+    <mesh geometry={structure.steel} castShadow receiveShadow
+      userData={{ worldCollisionSources: structure.steel.userData.siteContactRanges, worldCollisionPartial: true }}>
+      <WorldIntentReflectiveSurface roughness={.82} metalness={.16} />
+    </mesh>
     <mesh name="coaster-light-strips" geometry={structure.glow}
       userData={{ worldCollision: 'none', worldCollisionReason: 'Emissive trim and station light lenses supported by separate structures' }}>
       <meshBasicMaterial vertexColors toneMapped={false} />
@@ -223,9 +226,11 @@ function CoasterCollisions({ colliders, craftedRails }: { colliders: CoasterColl
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} name={surface?'coaster-station-surfaces':'coaster-station-solids'} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
       {colliders.filter(c => !!c.surface === surface && !(craftedRails && (c.railFootingFallback || c.railSupportFallback))
-        && !(COASTER_ARCHITECTURE_CRAFT && (c.gatePortalFallback || c.stationCraftFallback))).map((c, i) => c.hull
-        ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
-        : <CuboidCollider key={i} name={c.boardingSupport ? COASTER_TREAD_COLLIDER : undefined} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
+        && !(COASTER_ARCHITECTURE_CRAFT && (c.gatePortalFallback || c.stationCraftFallback))).map((c, i) => c.mesh
+        ? <TrimeshCollider key={i} name={c.sourceId} position={c.position} rotation={c.rotation} args={[c.mesh.vertices,c.mesh.indices]} friction={.9} />
+        : c.hull
+        ? <ConvexHullCollider key={i} name={c.sourceId} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
+        : <CuboidCollider key={i} name={c.boardingSupport ? COASTER_TREAD_COLLIDER : c.sourceId} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, interactable: 'intent-chest' }}>
       <CuboidCollider position={coasterWorld([-8, .65, 59.5])} args={[1.9, .65, 1.05]} />

@@ -4,8 +4,9 @@ import type { CoasterCollider } from './coaster-geometry';
 
 /** Headless physics must use the same shapes, transforms and friction as CoasterCollisions. */
 export function coasterColliderDescriptor(rapier: Pick<typeof Rapier, 'ColliderDesc'>, collider: CoasterCollider) {
-  const shape = collider.hull ? rapier.ColliderDesc.convexHull(collider.hull) : rapier.ColliderDesc.cuboid(...collider.half);
-  if (!shape) throw new Error('Invalid coaster rock hull');
+  const shape = collider.mesh ? rapier.ColliderDesc.trimesh(collider.mesh.vertices,collider.mesh.indices)
+    : collider.hull ? rapier.ColliderDesc.convexHull(collider.hull) : rapier.ColliderDesc.cuboid(...collider.half);
+  if (!shape) throw new Error('Invalid coaster contact hull');
   return shape.setTranslation(...collider.position)
     .setRotation(new Quaternion().setFromEuler(new Euler(...(collider.rotation ?? [0, 0, 0]))))
     .setFriction(.9);

@@ -21,7 +21,7 @@ const packetSignature = value => ({
   steel:signature(value.steel),glow:signature(value.glow),
   rails:Object.fromEntries(Object.entries(value.railCraft ?? {}).map(([k,g])=>[k,signature(g)])),
   railShadow:value.railShadow && signature(value.railShadow),
-  colliders:value.colliders.map(c => ({...c,hull:c.hull && hash(c.hull)})),
+  colliders:value.colliders.map(c => ({...c,hull:c.hull && hash(c.hull),mesh:c.mesh && surface(c.mesh)})),
   relief:surface(value.relief),track:surface(value.track),art:value.art,
 });
 const dispose = value => {
@@ -172,7 +172,7 @@ function sceneFixture(active,riding) {
     './coaster-motion-audio':{}, './coaster-structure-job':{}, '../WorldParkAudio':{}, '../WorldNight':{night:{value:0}},
     './coaster-geometry':{createCoasterStructure(near){
       built.push(near);
-      return {steel:{attributes:{}},glow:{attributes:{}},colliders:[],track:{},relief:{}};
+      return {steel:{attributes:{},userData:{}},glow:{attributes:{}},colliders:[],track:{},relief:{}};
     }},
     './coaster-structure-cache':cacheModule,
   };

@@ -1,6 +1,6 @@
 import { Box3, BufferAttribute, BufferGeometry, Sphere, Vector3 } from 'three';
 import type { TypedArray } from 'three';
-import type { createCoasterStructure } from './coaster-geometry';
+import type { CoasterSiteContactRange, createCoasterStructure } from './coaster-geometry';
 import type { CoasterRailPart } from './coaster-rail-contact';
 
 export type CoasterStructure = ReturnType<typeof createCoasterStructure>;
@@ -10,6 +10,7 @@ type GeometryPacket = {
   sphere: { center: number[]; radius: number } | null;
   box: { min: number[]; max: number[] } | null;
   contactParts?: CoasterRailPart[];
+  siteContactRanges?: CoasterSiteContactRange[];
 };
 export type CoasterStructurePacket = Omit<CoasterStructure, 'steel' | 'glow' | 'railCraft' | 'railShadow'> & {
   steel: GeometryPacket; glow: GeometryPacket;
@@ -33,11 +34,18 @@ export function packCoasterStructure(structure: CoasterStructure) {
     sphere: g.boundingSphere ? { center: g.boundingSphere.center.toArray(), radius: g.boundingSphere.radius } : null,
     box: g.boundingBox ? { min: g.boundingBox.min.toArray(), max: g.boundingBox.max.toArray() } : null,
     ...(keepContactParts ? { contactParts: (g.userData.contactParts ?? g.userData.parts) as CoasterRailPart[] } : {}),
+    ...(g.userData.siteContactRanges ? { siteContactRanges: g.userData.siteContactRanges as CoasterSiteContactRange[] } : {}),
   });
   const packet: CoasterStructurePacket = { ...structure, steel: geometry(structure.steel), glow: geometry(structure.glow),
     railCraft: Object.fromEntries(Object.entries(structure.railCraft ?? {}).map(([role, g]) => [role, geometry(g, true)])),
     railShadow: structure.railShadow ? geometry(structure.railShadow) : null };
-  for (const c of structure.colliders) if (c.hull) buffers.add(c.hull.buffer as ArrayBuffer);
+  for (const c of structure.colliders) {
+    if (c.hull) buffers.add(c.hull.buffer as ArrayBuffer);
+    if (c.mesh) {
+      buffers.add(c.mesh.vertices.buffer as ArrayBuffer);
+      buffers.add(c.mesh.indices.buffer as ArrayBuffer);
+    }
+  }
   buffers.add(structure.relief.vertices.buffer as ArrayBuffer);
   buffers.add(structure.relief.indices.buffer as ArrayBuffer);
   buffers.add(structure.track.vertices.buffer as ArrayBuffer);
@@ -53,6 +61,7 @@ export function unpackCoasterStructure(packet: CoasterStructurePacket): CoasterS
     if (p.sphere) g.boundingSphere = new Sphere(new Vector3().fromArray(p.sphere.center), p.sphere.radius);
     if (p.box) g.boundingBox = new Box3(new Vector3().fromArray(p.box.min), new Vector3().fromArray(p.box.max));
     if (p.contactParts) g.userData.contactParts = p.contactParts;
+    if (p.siteContactRanges) g.userData.siteContactRanges = p.siteContactRanges;
     return g;
   };
   return { ...packet, steel: geometry(packet.steel), glow: geometry(packet.glow),
