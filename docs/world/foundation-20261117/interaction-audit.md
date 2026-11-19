@@ -134,11 +134,35 @@ node tools/world/playtest/foundation-interaction-coverage.mjs --json
 
 原圆床退出在 `djc-daybed-1-0`、`djc-daybed-1-1`、`djc-daybed-2-0` 起身后掉到约 1.37 m 的低层。共用座椅退出修复后，三处从相同圆床坡顶入座再用实际键盘或模拟 Y 起身，生产记录落在约 2.58 m，同一层且在各自座位旁。台账同时保存首次失败和修后成功记录。
 
-生产入口 HTML SHA-256 为 `0af3bb234fd035f670bc748c3a47d21cee8d4eef559a2dae000992f57c990a0c`。同一包中，Club、工厂、矿场与箱门通过。交易厅曾在持票步行贴到中央台边时接键后停在距站位约 9 cm 处，未完成插票。随后同包改从南侧约半米处停稳再按 E，完成整轮；两条记录均已归档。以上生产浏览器批次的页面和游戏控制台错误为零。
+生产入口 HTML SHA-256 为 `0af3bb234fd035f670bc748c3a47d21cee8d4eef559a2dae000992f57c990a0c`。同一包中，Club、工厂、矿场与箱门通过。交易厅曾在持票步行贴到中央台边时接键后停在距站位约 9 cm 处，未完成插票。随后在同一包从南侧约半米处停稳按 E 可完成整轮。使用模拟左摇杆贴近原桌沿、停稳后分别用 E 和模拟 Y 触发时，两种输入都完成整轮，实测触发距离为 8.34 和 8.22 cm。同一实体几何的 Rapier 回归在原坐标和外侧站位各完成一次接触。交易厅定向套件 40 项通过。两种站位均使用生产锚点和可达条件，偶发失败仍保留原始记录。上述完成的浏览器批次页面和游戏控制台错误为零。
 
-原 138 个注册中的 127 个有直接浏览器行为凭证。加入两个曾实测挂载的条件动作，总计 129／140。键盘覆盖 103 个 ID，模拟标准手柄 70 个，面板 44 个。剩下 11 个已观察 ID 均在货场，包括前后卷材、翻转、展廊，A／B 称重和装货，以及吊机。另有 12 个条件 ID 及按交易厅目录生成的年份票尚需验证。实物手柄与目标机 Safari 仍待实测。
+这一批完成后，原 138 个注册中的 127 个取得直接浏览器行为凭证。加入两个曾实测挂载的条件动作，共 129／140。
 
 ```sh
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4389 club club-seats factory exchange-project exchange-round mine-round coaster-locks
+WORLD_BROWSER_MODULES=/path/to/playwright/project WORLD_EXCHANGE_DESK_RIM=keyboard node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4389 exchange-round
+WORLD_BROWSER_MODULES=/path/to/playwright/project WORLD_EXCHANGE_DESK_RIM=gamepad node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4389 exchange-round
+node tools/world/playtest/foundation-interaction-coverage.mjs --json
+```
+
+## 新货批的 11 项货场实测
+
+Chrome 先打开普通入口，再用公开的货场起点进入新货批。接货单、拿工具两段均用真实键盘走到设备并按 E。后续脚本只定位角色，货单、检验和装载状态均来自本次游戏操作。每条记录带上生产提示、角色落脚及货单反馈。
+
+| ID | 已观察结果 |
+| --- | --- |
+| `ibd-coil-front`、`ibd-coil-rear` | 分别用 E、模拟 Y 照检，货单记录对应卷材的外侧。后卷在吊开前卷后进行。 |
+| `ibd-turn-front`、`ibd-turn-rear` | 分别用模拟 Y、E 开始翻卷，货单显示背面露出。 |
+| `ibd-crane` | E 接管吊架，依次按住 ↑、←、↓。每段手柄到位才前进，吊件落稳后后卷开放。 |
+| `ibd-gallery-front`、`ibd-gallery-rear` | 角色在高廊站稳，两处身体中心高度均约 5.92 m。分别用模拟 Y、E 观测，货单确认两面证据齐备。 |
+| `ibd-scale-a`、`ibd-scale-b` | 分别用 E、模拟 Y 称重，两处都实际显示 2.00 kg。 |
+| `ibd-load-a`、`ibd-load-b` | 分别用 E、模拟 Y 装车，货单装载计数由 0／2 到 1／2 再到 2／2。称重后直接测试这两个装载动作，货批仍有开箱检验和最终签认步骤。 |
+
+生产入口 HTML SHA-256 为 `cf005320a9b74cc15d1e7d4949d6523b6ce6b27f55b1ea8c7a8f13432b0027d3`。11 项均通过，页面和游戏控制台错误为零。静态服务上的统计请求返回 501。
+
+冻结的 138 个注册全部取得浏览器行为凭证。连同两项后来实测挂载的条件动作，共 140／140。键盘 109 个 ID、模拟标准手柄 75 个、面板 44 个。另有 12 个已知条件 ID 和交易厅目录生成的年份票尚需实测。原始记录中的站位、测试响应、工位只开关面板等范围仍适用。实物手柄与目标机 Safari 仍待实测。
+
+```sh
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-yard.mjs http://127.0.0.1:4390
 node tools/world/playtest/foundation-interaction-coverage.mjs --json
 ```

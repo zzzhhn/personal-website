@@ -15017,6 +15017,4381 @@
         "intent-gate"
       ],
       "omittedFailures": []
+    },
+    {
+      "name": "foundation-interaction-yard-fresh-production.jsonl",
+      "entrySha256": "cf005320a9b74cc15d1e7d4949d6523b6ce6b27f55b1ea8c7a8f13432b0027d3",
+      "browser": "157.0.8103.79",
+      "sha256": "221f2238f84b9a111899fac6923cb8cdfdf5c850196a732fe1718d917f8cfc18",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls. Fresh batch, reached the manifest and tools on foot. QA placement only for later stations.",
+      "cases": [
+        {
+          "id": "ibd-coil-front",
+          "fixture": [
+            -100,
+            2.1,
+            -178.7
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "照检前卷外侧，货单出现正面记录",
+              "control": "E",
+              "before": {
+                "position": [
+                  -100,
+                  1.9044259786605835,
+                  -178.6999969482422
+                ],
+                "grounded": true,
+                "step": 640,
+                "near": "ibd-coil-front",
+                "label": "Read, measure and inspect the front",
+                "choices": [
+                  "ibd-coil-front"
+                ],
+                "title": "Front coil",
+                "status": "Tools collected.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -100,
+                  1.9039127826690674,
+                  -178.6999969482422
+                ],
+                "grounded": true,
+                "step": 833,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Front recorded. The rear is still unchecked.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-turn-front",
+          "fixture": [
+            -96,
+            2.1,
+            -180
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "翻转前卷，提示改为检查背面",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -96,
+                  1.9043267965316772,
+                  -180
+                ],
+                "grounded": true,
+                "step": 870,
+                "near": "ibd-turn-front",
+                "label": "Rotate the coil cradle",
+                "choices": [
+                  "ibd-turn-front"
+                ],
+                "title": "Front turntable",
+                "status": "Front recorded. The rear is still unchecked.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -96,
+                  1.9039127826690674,
+                  -180
+                ],
+                "grounded": true,
+                "step": 970,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Rear exposed. Return to the coil to inspect it.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-crane",
+          "fixture": [
+            -94,
+            2.1,
+            -176.16
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "握住吊架手柄，方向操作启用",
+              "control": "E",
+              "before": {
+                "position": [
+                  -94,
+                  1.9043267965316772,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1007,
+                "near": "ibd-crane",
+                "label": "Lift the front coil aside",
+                "choices": [
+                  "ibd-crane"
+                ],
+                "title": "Gantry crane",
+                "status": "Rear exposed. Return to the coil to inspect it.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1047,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "stage": 0
+              }
+            },
+            {
+              "input": "keyboard",
+              "operation": "吊起",
+              "control": "ArrowUp",
+              "before": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1047,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1181,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "stage": 1
+              }
+            },
+            {
+              "input": "keyboard",
+              "operation": "横移",
+              "control": "ArrowLeft",
+              "before": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1181,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1317,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "stage": 2
+              }
+            },
+            {
+              "input": "keyboard",
+              "operation": "落稳",
+              "control": "ArrowDown",
+              "before": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1317,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1455,
+                "choices": [],
+                "title": "Gantry crane",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "stage": 3
+              }
+            },
+            {
+              "input": "keyboard",
+              "operation": "接管吊架并把前卷吊到侧方检查位",
+              "control": "E, ArrowUp, ArrowLeft, ArrowDown",
+              "before": {
+                "position": [
+                  -94,
+                  1.9043267965316772,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1007,
+                "near": "ibd-crane",
+                "label": "Lift the front coil aside",
+                "choices": [
+                  "ibd-crane"
+                ],
+                "title": "Gantry crane",
+                "status": "Rear exposed. Return to the coil to inspect it.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -94,
+                  1.9039127826690674,
+                  -176.16000366210938
+                ],
+                "grounded": true,
+                "step": 1502,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Front coil moved. Reach the rear coil through the south opening.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-coil-rear",
+          "fixture": [
+            -100,
+            2.1,
+            -183.7
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "在开放的槽位验证后卷标识和外侧",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -100,
+                  1.9044259786605835,
+                  -183.6999969482422
+                ],
+                "grounded": true,
+                "step": 1535,
+                "near": "ibd-coil-rear",
+                "label": "Read, measure and inspect the front",
+                "choices": [
+                  "ibd-coil-rear"
+                ],
+                "title": "Rear coil",
+                "status": "Front coil moved. Reach the rear coil through the south opening.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -100,
+                  1.9039127826690674,
+                  -183.6999969482422
+                ],
+                "grounded": true,
+                "step": 1730,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Front recorded. The rear is still unchecked.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-turn-rear",
+          "fixture": [
+            -96,
+            2.1,
+            -185
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "翻转后卷，提示改为检查背面",
+              "control": "E",
+              "before": {
+                "position": [
+                  -95.99995422363281,
+                  1.904833197593689,
+                  -185
+                ],
+                "grounded": true,
+                "step": 1767,
+                "near": "ibd-turn-rear",
+                "label": "Rotate the coil cradle",
+                "choices": [
+                  "ibd-turn-rear"
+                ],
+                "title": "Rear turntable",
+                "status": "Front recorded. The rear is still unchecked.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -95.99995422363281,
+                  1.9040172100067139,
+                  -185
+                ],
+                "grounded": true,
+                "step": 1864,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Coil turned. Return to the ring through the south opening.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-gallery-front",
+          "fixture": [
+            -94,
+            6.05,
+            -179.95
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "从高廊观测仪记录前卷两面",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -94,
+                  5.918827533721924,
+                  -179.99085998535156
+                ],
+                "grounded": true,
+                "step": 2217,
+                "near": "ibd-gallery-front",
+                "label": "Survey with the gallery scope",
+                "choices": [
+                  "ibd-gallery-front"
+                ],
+                "title": "Front survey scope",
+                "status": "Coil turned. Return to the ring through the south opening.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -94,
+                  5.918827533721924,
+                  -179.98861694335938
+                ],
+                "grounded": true,
+                "step": 2302,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Evidence complete. Compare it with the manifest and make your call.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-gallery-rear",
+          "fixture": [
+            -98,
+            6.05,
+            -189.95
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "从高廊观测仪记录后卷两面",
+              "control": "E",
+              "before": {
+                "position": [
+                  -98,
+                  5.918651580810547,
+                  -189.9499969482422
+                ],
+                "grounded": true,
+                "step": 2651,
+                "near": "ibd-gallery-rear",
+                "label": "Survey with the gallery scope",
+                "choices": [
+                  "ibd-gallery-rear"
+                ],
+                "title": "Rear survey scope",
+                "status": "Evidence complete. Compare it with the manifest and make your call.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -98,
+                  5.918651580810547,
+                  -189.9499969482422
+                ],
+                "grounded": true,
+                "step": 2733,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Evidence complete. Compare it with the manifest and make your call.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-scale-a",
+          "fixture": [
+            -80.8,
+            2.1,
+            -187.8
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "称 A 箱并读取公斤数",
+              "control": "E",
+              "before": {
+                "position": [
+                  -80.80000305175781,
+                  1.9038485288619995,
+                  -187.8000030517578
+                ],
+                "grounded": true,
+                "step": 2767,
+                "near": "ibd-scale-a",
+                "label": "Weigh for a clue",
+                "choices": [
+                  "ibd-scale-a"
+                ],
+                "title": "Scale A",
+                "status": "Evidence complete. Compare it with the manifest and make your call.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -80.80000305175781,
+                  1.9038249254226685,
+                  -187.8000030517578
+                ],
+                "grounded": true,
+                "step": 2819,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "2.00 kg. Open the carton next.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-scale-b",
+          "fixture": [
+            -67,
+            2.1,
+            -187.8
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "称 B 箱并读取公斤数",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -67,
+                  1.903832197189331,
+                  -187.8000030517578
+                ],
+                "grounded": true,
+                "step": 2857,
+                "near": "ibd-scale-b",
+                "label": "Weigh for a clue",
+                "choices": [
+                  "ibd-scale-b"
+                ],
+                "title": "Scale B",
+                "status": "2.00 kg. Open the carton next.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -67,
+                  1.9038249254226685,
+                  -187.8000030517578
+                ],
+                "grounded": true,
+                "step": 2913,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "2.00 kg. Open the carton next.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-load-a",
+          "fixture": [
+            -80.2,
+            2.1,
+            -182.5
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "启动 A 托运输并确认首托实际进车厢",
+              "control": "E",
+              "before": {
+                "position": [
+                  -80.19999694824219,
+                  1.9038301706314087,
+                  -182.5
+                ],
+                "grounded": true,
+                "step": 2952,
+                "near": "ibd-load-a",
+                "label": "Send this pallet into the truck",
+                "choices": [
+                  "ibd-load-a"
+                ],
+                "title": "Load pallet A",
+                "status": "2.00 kg. Open the carton next.",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -80.19999694824219,
+                  1.9038249254226685,
+                  -182.5
+                ],
+                "grounded": true,
+                "step": 3139,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "One pallet is in the truck.",
+                "details": "Coils0/2Packs0/2Loaded1/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pending · LoadedPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "1/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-load-b",
+          "fixture": [
+            -67.8,
+            2.1,
+            -182.5
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "启动 B 托运输并确认两托实际进车厢",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -67.80000305175781,
+                  1.9038563966751099,
+                  -182.5
+                ],
+                "grounded": true,
+                "step": 3172,
+                "near": "ibd-load-b",
+                "label": "Send this pallet into the truck",
+                "choices": [
+                  "ibd-load-b"
+                ],
+                "title": "Load pallet B",
+                "status": "One pallet is in the truck.",
+                "details": "Coils0/2Packs0/2Loaded1/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pending · LoadedPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "1/2"
+              },
+              "after": {
+                "position": [
+                  -67.80000305175781,
+                  1.9038249254226685,
+                  -182.5
+                ],
+                "grounded": true,
+                "step": 3362,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "One pallet is in the truck.",
+                "details": "Coils0/2Packs0/2Loaded2/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coil1 coil · steel-AInspection or verdict pendingRear coil1 coil · steel-AInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pending · LoadedPack BCount unchecked · Spec uncheckedInspection or verdict pending · LoadedAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "2/2"
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "ibd-coil-front",
+        "ibd-turn-front",
+        "ibd-crane",
+        "ibd-coil-rear",
+        "ibd-turn-rear",
+        "ibd-gallery-front",
+        "ibd-gallery-rear",
+        "ibd-scale-a",
+        "ibd-scale-b",
+        "ibd-load-a",
+        "ibd-load-b"
+      ],
+      "omittedFailures": []
+    },
+    {
+      "name": "foundation-exchange-desk-rim-keyboard-production.jsonl",
+      "entrySha256": "0af3bb234fd035f670bc748c3a47d21cee8d4eef559a2dae000992f57c990a0c",
+      "browser": "157.0.8103.79",
+      "sha256": "a21b3c82c731ac019a9aa2a084151dcdf851ae34bca16d2325e07944ae74f643",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls. Historical network response fixture.",
+      "cases": [
+        {
+          "id": "alpha-exchange-archive",
+          "fixture": [
+            [
+              48.3,
+              2.48,
+              -73.12
+            ],
+            null
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "从档案台加载并校验回放用 SPY 曲线",
+              "before": {
+                "phase": "cancelled",
+                "notice": "cancelled",
+                "day": 0,
+                "days": 0,
+                "date": null,
+                "nav": null,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 0,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": null,
+                "archive": [],
+                "reviewIndex": null,
+                "contacts": 0,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "history-ready",
+                "notice": "history-ready",
+                "day": 0,
+                "days": 0,
+                "date": null,
+                "nav": null,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 0,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": null,
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 0,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true,
+                "historyRequests": [
+                  "REVERSAL_5"
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "重新操作档案台并领取完整历史票",
+              "before": {
+                "phase": "history-ready",
+                "notice": "history-ready",
+                "day": 0,
+                "days": 0,
+                "date": null,
+                "nav": null,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 0,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": null,
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 0,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "ticket",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 1,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-desk",
+          "fixture": [
+            {
+              "walked": [
+                {
+                  "target": [
+                    48.3,
+                    -71
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    48.29999923706055,
+                    2.408825635910034,
+                    -73.12000274658203
+                  ],
+                  "end": [
+                    48.09125900268555,
+                    2.408674478530884,
+                    -71.17414093017578
+                  ],
+                  "seconds": 0.88,
+                  "minDist": 0.272
+                },
+                {
+                  "target": [
+                    50.6,
+                    -71
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    48.09125900268555,
+                    2.408674478530884,
+                    -71.17414093017578
+                  ],
+                  "end": [
+                    50.5549430847168,
+                    2.40879225730896,
+                    -70.99225616455078
+                  ],
+                  "seconds": 0.8,
+                  "minDist": 0.102
+                },
+                {
+                  "target": [
+                    50.6,
+                    -64
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    50.5549430847168,
+                    2.40879225730896,
+                    -70.99225616455078
+                  ],
+                  "end": [
+                    50.619102478027344,
+                    2.408825635910034,
+                    -64.24927520751953
+                  ],
+                  "seconds": 2.45,
+                  "minDist": 0.307
+                },
+                {
+                  "target": [
+                    57,
+                    -64
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    50.619102478027344,
+                    2.408825635910034,
+                    -64.24927520751953
+                  ],
+                  "end": [
+                    56.879173278808594,
+                    2.408740282058716,
+                    -64.10023498535156
+                  ],
+                  "seconds": 2.02,
+                  "minDist": 0.157
+                },
+                {
+                  "target": [
+                    57,
+                    -67.95
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    56.879173278808594,
+                    2.408740282058716,
+                    -64.10023498535156
+                  ],
+                  "end": [
+                    56.995445251464844,
+                    1.9598355293273926,
+                    -67.71064758300781
+                  ],
+                  "seconds": 1.24,
+                  "minDist": 0.239
+                },
+                {
+                  "target": [
+                    58,
+                    -69.4
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    56.995445251464844,
+                    1.9598355293273926,
+                    -67.71064758300781
+                  ],
+                  "end": [
+                    57.96919631958008,
+                    1.9586907625198364,
+                    -69.34730529785156
+                  ],
+                  "seconds": 0.58,
+                  "minDist": 0.061
+                },
+                {
+                  "target": [
+                    58.65,
+                    -69.4
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    57.96919631958008,
+                    1.9586907625198364,
+                    -69.34730529785156
+                  ],
+                  "end": [
+                    58.82716751098633,
+                    1.9587061405181885,
+                    -69.55073547363281
+                  ],
+                  "seconds": 0.4,
+                  "minDist": 0.256
+                }
+              ],
+              "actorAtStand": [
+                58.7224006652832,
+                1.9588167667388916,
+                -70.02135467529297
+              ],
+              "stanceDistance": 0.08337904714037676,
+              "finalApproach": {
+                "input": "simulated left stick",
+                "target": [
+                  58.73,
+                  -70.02
+                ],
+                "start": [
+                  58.82716751098633,
+                  1.9587061405181885,
+                  -69.55073547363281
+                ],
+                "end": [
+                  58.7343635559082,
+                  1.9586782455444336,
+                  -70.00484466552734
+                ]
+              }
+            },
+            null,
+            [
+              58.65,
+              2.03,
+              -69.98
+            ],
+            [
+              58.65,
+              2.03,
+              -69.98
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "持票走到中央台并插入票槽",
+              "before": {
+                "phase": "ticket",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 1,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 2,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "将当前选择封单",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 5,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "sealed",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 6,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "将当前选择封单",
+              "before": {
+                "phase": "selecting",
+                "notice": "cancelled",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 7,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "sealed",
+                "notice": "contact",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 8,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "将当前选择封单",
+              "before": {
+                "phase": "selecting",
+                "notice": "cancelled",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 9,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "sealed",
+                "notice": "contact",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 10,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-nudge-1",
+          "fixture": [
+            null,
+            null
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "向右拨动一档并增加 10 份",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 2,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 3,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "为第一段重新拨到 10 份",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 4,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 5,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-nudge--1",
+          "fixture": [
+            null
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "向左拨动一档并减少 10 份",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 3,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 4,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-bell",
+          "fixture": [
+            [
+              60,
+              2.48,
+              -91.2
+            ],
+            [
+              60,
+              2.48,
+              -91.2
+            ],
+            [
+              60,
+              2.48,
+              -91.2
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "拉铃推进一个真实结算区间",
+              "before": {
+                "phase": "sealed",
+                "notice": "cancelled",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 6,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 7,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "拉铃推进一个真实结算区间",
+              "before": {
+                "phase": "sealed",
+                "notice": "cancelled",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 8,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 9,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "拉铃推进一个真实结算区间",
+              "before": {
+                "phase": "sealed",
+                "notice": "cancelled",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 10,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "clearing",
+                "notice": "contact",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 11,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-clearing",
+          "fixture": [
+            [
+              71.7,
+              2.48,
+              -80.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "压印并领取三段回放的回执",
+              "before": {
+                "phase": "clearing",
+                "notice": "cancelled",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 11,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "complete",
+                "notice": "contact",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": {
+                  "pnl": 95,
+                  "finalEquity": 10095,
+                  "choices": 3
+                },
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 12,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-review",
+          "fixture": [
+            [
+              57,
+              7.2299999999999995,
+              -93.25999999999999
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "在楼上拨动复盘台并显示第一段",
+              "before": {
+                "phase": "complete",
+                "notice": "cancelled",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": {
+                  "pnl": 95,
+                  "finalEquity": 10095,
+                  "choices": 3
+                },
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 12,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "complete",
+                "notice": "contact",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": {
+                  "pnl": 95,
+                  "finalEquity": 10095,
+                  "choices": 3
+                },
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": 0,
+                "contacts": 13,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "alpha-exchange-archive",
+        "alpha-exchange-bell",
+        "alpha-exchange-desk",
+        "alpha-exchange-clearing",
+        "alpha-exchange-review"
+      ],
+      "omittedFailures": []
+    },
+    {
+      "name": "foundation-exchange-desk-rim-gamepad-production.jsonl",
+      "entrySha256": "0af3bb234fd035f670bc748c3a47d21cee8d4eef559a2dae000992f57c990a0c",
+      "browser": "157.0.8103.79",
+      "sha256": "09ddac6c5d4e6b3b0211ea1710e8b4c61414c80a4b8c9bce71ea6bfe2198ccb4",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls. Historical network response fixture.",
+      "cases": [
+        {
+          "id": "alpha-exchange-archive",
+          "fixture": [
+            [
+              48.3,
+              2.48,
+              -73.12
+            ],
+            null
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "从档案台加载并校验回放用 SPY 曲线",
+              "before": {
+                "phase": "cancelled",
+                "notice": "cancelled",
+                "day": 0,
+                "days": 0,
+                "date": null,
+                "nav": null,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 0,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": null,
+                "archive": [],
+                "reviewIndex": null,
+                "contacts": 0,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "history-ready",
+                "notice": "history-ready",
+                "day": 0,
+                "days": 0,
+                "date": null,
+                "nav": null,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 0,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": null,
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 0,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true,
+                "historyRequests": [
+                  "REVERSAL_5"
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "重新操作档案台并领取完整历史票",
+              "before": {
+                "phase": "history-ready",
+                "notice": "history-ready",
+                "day": 0,
+                "days": 0,
+                "date": null,
+                "nav": null,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 0,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": null,
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 0,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "ticket",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 1,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-desk",
+          "fixture": [
+            {
+              "walked": [
+                {
+                  "target": [
+                    48.3,
+                    -71
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    48.29999923706055,
+                    2.408825635910034,
+                    -73.12000274658203
+                  ],
+                  "end": [
+                    48.09125900268555,
+                    2.408674478530884,
+                    -71.17414093017578
+                  ],
+                  "seconds": 0.88,
+                  "minDist": 0.32
+                },
+                {
+                  "target": [
+                    50.6,
+                    -71
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    48.09125900268555,
+                    2.408674478530884,
+                    -71.17414093017578
+                  ],
+                  "end": [
+                    50.44855880737305,
+                    2.4087305068969727,
+                    -70.9668960571289
+                  ],
+                  "seconds": 0.76,
+                  "minDist": 0.21
+                },
+                {
+                  "target": [
+                    50.6,
+                    -64
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    50.44855880737305,
+                    2.4087305068969727,
+                    -70.9668960571289
+                  ],
+                  "end": [
+                    50.64828109741211,
+                    2.4087774753570557,
+                    -64.17662811279297
+                  ],
+                  "seconds": 2.39,
+                  "minDist": 0.183
+                },
+                {
+                  "target": [
+                    57,
+                    -64
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    50.6475944519043,
+                    2.408799886703491,
+                    -64.12996673583984
+                  ],
+                  "end": [
+                    56.87825393676758,
+                    2.4088006019592285,
+                    -64.06324768066406
+                  ],
+                  "seconds": 2.14,
+                  "minDist": 0.184
+                },
+                {
+                  "target": [
+                    57,
+                    -67.95
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    56.87825393676758,
+                    2.4088006019592285,
+                    -64.06324768066406
+                  ],
+                  "end": [
+                    56.97819900512695,
+                    1.9591232538223267,
+                    -67.66944885253906
+                  ],
+                  "seconds": 1.24,
+                  "minDist": 0.281
+                },
+                {
+                  "target": [
+                    58,
+                    -69.4
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    56.97819900512695,
+                    1.9591232538223267,
+                    -67.66944885253906
+                  ],
+                  "end": [
+                    58.08670425415039,
+                    1.9587061405181885,
+                    -69.2723388671875
+                  ],
+                  "seconds": 0.61,
+                  "minDist": 0.22
+                },
+                {
+                  "target": [
+                    58.65,
+                    -69.4
+                  ],
+                  "reached": true,
+                  "recoveries": 0,
+                  "blockedAt": null,
+                  "start": [
+                    58.10420608520508,
+                    1.9586923122406006,
+                    -69.30496215820312
+                  ],
+                  "end": [
+                    58.433231353759766,
+                    1.958692193031311,
+                    -69.56954956054688
+                  ],
+                  "seconds": 0.21,
+                  "minDist": 0.275
+                }
+              ],
+              "actorAtStand": [
+                58.72307205200195,
+                1.9586490392684937,
+                -70.017578125
+              ],
+              "stanceDistance": 0.08216836533783349,
+              "finalApproach": {
+                "input": "simulated left stick",
+                "target": [
+                  58.73,
+                  -70.02
+                ],
+                "start": [
+                  58.433231353759766,
+                  1.958692193031311,
+                  -69.56954956054688
+                ],
+                "end": [
+                  58.74504470825195,
+                  1.958688735961914,
+                  -70.01321411132812
+                ]
+              }
+            },
+            null,
+            [
+              58.65,
+              2.03,
+              -69.98
+            ],
+            [
+              58.65,
+              2.03,
+              -69.98
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "持票走到中央台并插入票槽",
+              "before": {
+                "phase": "ticket",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 1,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 2,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "将当前选择封单",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 5,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "sealed",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 6,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "将当前选择封单",
+              "before": {
+                "phase": "selecting",
+                "notice": "cancelled",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 7,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "sealed",
+                "notice": "contact",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 8,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "将当前选择封单",
+              "before": {
+                "phase": "selecting",
+                "notice": "cancelled",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 9,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "sealed",
+                "notice": "contact",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 10,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-nudge-1",
+          "fixture": [
+            null,
+            null
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "向右拨动一档并增加 10 份",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 2,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 3,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "为第一段重新拨到 10 份",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 4,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 5,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-nudge--1",
+          "fixture": [
+            null
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "向左拨动一档并减少 10 份",
+              "before": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 3,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 0,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 4,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-bell",
+          "fixture": [
+            [
+              60,
+              2.48,
+              -91.2
+            ],
+            [
+              60,
+              2.48,
+              -91.2
+            ],
+            [
+              60,
+              2.48,
+              -91.2
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "拉铃推进一个真实结算区间",
+              "before": {
+                "phase": "sealed",
+                "notice": "cancelled",
+                "day": 0,
+                "days": 20,
+                "date": "2026-01-01",
+                "nav": 100,
+                "cash": 10000,
+                "units": 0,
+                "targetUnits": 10,
+                "checkpoint": 0,
+                "equity": 10000,
+                "choices": [],
+                "traceLength": 1,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 6,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 7,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "拉铃推进一个真实结算区间",
+              "before": {
+                "phase": "sealed",
+                "notice": "cancelled",
+                "day": 6,
+                "days": 20,
+                "date": "2026-01-07",
+                "nav": 103,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 1,
+                "equity": 10030,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  }
+                ],
+                "traceLength": 7,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 8,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "selecting",
+                "notice": "contact",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 9,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "拉铃推进一个真实结算区间",
+              "before": {
+                "phase": "sealed",
+                "notice": "cancelled",
+                "day": 13,
+                "days": 20,
+                "date": "2026-01-14",
+                "nav": 106.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 2,
+                "equity": 10065,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  }
+                ],
+                "traceLength": 14,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 10,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "clearing",
+                "notice": "contact",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 11,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-clearing",
+          "fixture": [
+            [
+              71.7,
+              2.48,
+              -80.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "压印并领取三段回放的回执",
+              "before": {
+                "phase": "clearing",
+                "notice": "cancelled",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": null,
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 11,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "complete",
+                "notice": "contact",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": {
+                  "pnl": 95,
+                  "finalEquity": 10095,
+                  "choices": 3
+                },
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 12,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-exchange-review",
+          "fixture": [
+            [
+              57,
+              7.2299999999999995,
+              -93.25999999999999
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "在楼上拨动复盘台并显示第一段",
+              "before": {
+                "phase": "complete",
+                "notice": "cancelled",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": {
+                  "pnl": 95,
+                  "finalEquity": 10095,
+                  "choices": 3
+                },
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": null,
+                "contacts": 12,
+                "ticketReturned": false,
+                "error": null
+              },
+              "after": {
+                "phase": "complete",
+                "notice": "contact",
+                "day": 19,
+                "days": 20,
+                "date": "2026-01-20",
+                "nav": 109.5,
+                "cash": 9000,
+                "units": 10,
+                "targetUnits": 10,
+                "checkpoint": 3,
+                "equity": 10095,
+                "choices": [
+                  {
+                    "checkpoint": 1,
+                    "day": 0,
+                    "date": "2026-01-01",
+                    "value": 100,
+                    "fromUnits": 0,
+                    "units": 10,
+                    "deltaUnits": 10,
+                    "cashBefore": 10000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10000,
+                    "throughDay": 6,
+                    "throughDate": "2026-01-07",
+                    "equityAfter": 10030
+                  },
+                  {
+                    "checkpoint": 2,
+                    "day": 6,
+                    "date": "2026-01-07",
+                    "value": 103,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10030,
+                    "throughDay": 13,
+                    "throughDate": "2026-01-14",
+                    "equityAfter": 10065
+                  },
+                  {
+                    "checkpoint": 3,
+                    "day": 13,
+                    "date": "2026-01-14",
+                    "value": 106.5,
+                    "fromUnits": 10,
+                    "units": 10,
+                    "deltaUnits": 0,
+                    "cashBefore": 9000,
+                    "cashAfter": 9000,
+                    "equityBefore": 10065,
+                    "throughDay": 19,
+                    "throughDate": "2026-01-20",
+                    "equityAfter": 10095
+                  }
+                ],
+                "traceLength": 20,
+                "receipt": {
+                  "pnl": 95,
+                  "finalEquity": 10095,
+                  "choices": 3
+                },
+                "previousRun": null,
+                "ticketId": "full",
+                "archive": [
+                  {
+                    "id": "full",
+                    "label": "SPY",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  },
+                  {
+                    "id": "year-2026",
+                    "label": "2026",
+                    "start": "2026-01-01",
+                    "end": "2026-01-20",
+                    "days": 20
+                  }
+                ],
+                "reviewIndex": 0,
+                "contacts": 13,
+                "ticketReturned": false,
+                "error": null,
+                "grounded": true
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "alpha-exchange-archive",
+        "alpha-exchange-bell",
+        "alpha-exchange-desk",
+        "alpha-exchange-clearing",
+        "alpha-exchange-review"
+      ],
+      "omittedFailures": []
     }
   ]
 }

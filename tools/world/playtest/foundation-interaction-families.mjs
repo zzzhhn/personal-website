@@ -5,6 +5,8 @@ import census from '../../../docs/world/foundation-20261117/interaction-census.j
 import { Bot, CHROME, comboFor, loadPlaywright } from './lib.mjs';
 
 const [origin='http://127.0.0.1:4343',...selectors]=process.argv.slice(2);
+const deskRimInput=process.env.WORLD_EXCHANGE_DESK_RIM;
+assert.ok(deskRimInput===undefined||deskRimInput==='keyboard'||deskRimInput==='gamepad');
 const world=new URL('/world/',origin), errors=[], analytics=[], failures=[], ids=[];
 const browser=await loadPlaywright().chromium.launch({executablePath:CHROME,headless:true,args:['--use-angle=metal']});
 const viewport={width:1056,height:700};
@@ -60,6 +62,7 @@ try{
     const pad={id:'Foundation families standard pad',mapping:'standard',connected:true,index:0,axes:[0,0,0,0],buttons,timestamp:0};
     Object.defineProperty(navigator,'getGamepads',{value:()=>[pad,null,null,null]});
     window.familyPad=(i,pressed)=>Object.assign(buttons[i],{pressed,touched:pressed,value:Number(pressed)});
+    window.familyWalk=([x,z])=>{pad.axes[0]=x;pad.axes[1]=z;};
     if(prepareCoaster)localStorage.setItem('bobby-world.intent-coaster.progress.v1',JSON.stringify({
       version:1,bankRevision:'original-20261027-v1',passed:['T1','T2','T3','T4','T5','T6'],clarified:[],
       chestOpen:false,keyTaken:false,gateOpen:false,
@@ -231,7 +234,23 @@ try{
     const read=()=>page.evaluate(()=>window.__worldExchange?.read());
     await relocate([59,2,-62]);
     const desk=(await registerRow(exchangePrefix+'desk')).position;
-    async function action(short,input,operation,done,{position,loading=false,walk}={}){
+    async function approachRim(){
+      const target=[58.73,-70.02], start=(await actor()).position, endBy=performance.now()+9000;
+      try{
+        while(performance.now()<endBy){
+          const {position:[x,,z]}=await actor(), dx=target[0]-x,dz=target[1]-z,d=Math.hypot(dx,dz);
+          if(d<.034)break;
+          const yaw=await page.evaluate(()=>window.__worldDebug.camera().yaw);
+          const scale=(d>.14?.36:.25)/d;
+          await page.evaluate(axes=>window.familyWalk(axes),[(dx*Math.sin(yaw)-dz*Math.cos(yaw))*scale,
+            (dx*Math.cos(yaw)+dz*Math.sin(yaw))*scale]);
+          await frames(3);
+        }
+      }finally{await page.evaluate(()=>window.familyWalk([0,0]));}
+      const after=(await actor()).position;
+      return {input:'simulated left stick',target,start,end:after};
+    }
+    async function action(short,input,operation,done,{position,loading=false,walk,rim=false}={}){
       const id=exchangePrefix+short;
       let fixture;
       if(walk){
@@ -239,10 +258,13 @@ try{
         const walked=await bot.walk(targets,{arrive:.32,timeout:13,maxRecoveries:2});
         assert.equal(walked.legs.length,targets.length);
         assert.ok(walked.legs.every(leg=>leg.reached),JSON.stringify(walked.legs.at(-1)));
+        const finalApproach=rim?await approachRim():null;
         await frames(12);
         await restored(id);
         await choose(id);
-        fixture={walked:walked.legs};
+        const actorAtStand=await actor(),stanceDistance=Math.hypot(actorAtStand.position[0]-desk[0],actorAtStand.position[2]-desk[2]);
+        fixture={walked:walked.legs,actorAtStand:actorAtStand.position,stanceDistance,...(finalApproach&&{finalApproach})};
+        if(rim)assert.ok(stanceDistance<.15,JSON.stringify(fixture));
       }else if((await actor()).choices.includes(id)){
         await choose(id);
         fixture=null;
@@ -256,7 +278,7 @@ try{
         if(loading&&state.notice==='error')throw new Error(state.error);
         return loading?state.notice==='history-ready':state.contacts===contacts+1;
       },{contacts:before.contacts,loading},14500).catch(async error=>{
-        throw new Error(`${id} after ${input}: ${error.message}; round=${JSON.stringify(await read())}`);
+        throw new Error(`${id} after ${input}: ${error.message}; start=${JSON.stringify(fixture)}; round=${JSON.stringify(await read())}`);
       });
       // Actor actions commit at hand contact and finish before the next fixture move.
       if(!loading)await frames(52);
@@ -268,8 +290,8 @@ try{
     }
     await action('archive','keyboard','从档案台加载并校验回放用 SPY 曲线',s=>s.archive.some(t=>t.id==='full'&&t.days===20)&&historyRequests.includes('REVERSAL_5'),{loading:true});
     await action('archive','gamepad','重新操作档案台并领取完整历史票',s=>s.phase==='ticket'&&s.ticketId==='full'&&!s.ticketReturned);
-    await action('desk','keyboard','持票走到中央台并插入票槽',s=>s.phase==='selecting',
-      {walk:[[-11.7,-16],[-9.4,-16],[-9.4,-9],[-3,-9],[-3,-12.95],[-2,-14.4],[-1.35,-14.4]]});
+    await action('desk',deskRimInput??'keyboard','持票走到中央台并插入票槽',s=>s.phase==='selecting',
+      {walk:[[-11.7,-16],[-9.4,-16],[-9.4,-9],[-3,-9],[-3,-12.95],[-2,-14.4],[-1.35,-14.4]],rim:!!deskRimInput});
     await action('nudge-1','gamepad','向右拨动一档并增加 10 份',s=>s.targetUnits===10,{position:desk});
     await action('nudge--1','keyboard','向左拨动一档并减少 10 份',s=>s.targetUnits===0,{position:desk});
     await action('nudge-1','keyboard','为第一段重新拨到 10 份',s=>s.targetUnits===10,{position:desk});

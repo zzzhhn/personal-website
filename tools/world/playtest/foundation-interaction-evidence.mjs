@@ -145,6 +145,7 @@ for(const file of logs){
   const fixture=['Ordinary entry checked. QA locations followed by production controls.',
     ...([...families].some(id=>id==='mine-round'||id==='exchange-round')?['Historical network response fixture.']:[]),
     ...(families.has('coaster-locks')?['Valid progress fixture grants six workshop credits only.']:[]),
+    ...(families.has('yard')?['Fresh batch, reached the manifest and tools on foot. QA placement only for later stations.']:[]),
   ].join(' ');
   runs.push({name:appending?basename(file):'操作族浏览器采集 · '+(logs.indexOf(file)+1),
     entrySha256:entry.entrySha256,browser:entry.browser,sha256,fixture,cases,

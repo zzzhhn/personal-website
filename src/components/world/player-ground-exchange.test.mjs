@@ -8,6 +8,10 @@ import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, PLAYER_CENTER_HEIGHT } from './actor
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground.ts';
 import { createPlayerClearance, sweptPlayerVelocity, playerVelocityChange } from './player-motion.ts';
 import { buildTerrain, requireMeshHeight } from './WorldLandform.ts';
+import { activityApproachMotion } from './actor-activities.ts';
+import { EXCHANGE_PLAY_STATIONS } from './alpha-exchange-play-layout.ts';
+import { advanceExchangeBodyAction, beginExchangeBodyAction, cancelExchangeBodyAction, EXCHANGE_APPROACH_STOP, exchangeActor, exchangeBody } from './alpha-exchange-motion.ts';
+import { pickupGroundRoute } from './pickup-approach.ts';
 await R.init();
 const dt=1/60,restHeight=PLAYER_HALF_HEIGHT+PLAYER_RADIUS,q={x:0,y:0,z:0,w:1};
 const point=v=>({x:v[0],y:v[1],z:v[2]});
@@ -46,6 +50,43 @@ function fixture(run,{includeSurface=true,overhead=false,start=p,park=false,land
     world.step();run(world,body,kinds);
   }finally{world.free();built.body.dispose();built.glass.dispose();}
 }
+
+test('the desk accepts its offered stance both at the southern approach and at the rim contact',t=>{
+  const stand=exchangeWorld([...EXCHANGE_PLAY_STATIONS.desk.stand]);
+  const anchor={stand,yaw:EXCHANGE_PLAY_STATIONS.desk.yaw,target:exchangeWorld([...EXCHANGE_PLAY_STATIONS.desk.contact])};
+  for(const [x,z] of [[58.65,-69.4],[58.730625,-70.020866]])fixture((world,body)=>{
+    const guard=createPlayerClearance(world), previous={...exchangeActor};
+    try{
+      for(let frame=0;frame<18;frame++)world.step();
+      const position=()=>{const p=body.translation();return [p.x,p.y,p.z];};
+      exchangeActor.groundRoute=(from,to,limit)=>pickupGroundRoute(world,R,body,from,to,limit);
+      const grounded=!!playerSupport(world,R,body)?.grounded;
+      assert.ok(grounded);
+      Object.assign(exchangeActor,{position:position(),yaw:anchor.yaw,available:true,grounded});
+      const start=position();
+      let contacts=0;
+      assert.ok(beginExchangeBodyAction('insert',anchor,()=>{contacts++;}),JSON.stringify({x,z,start}));
+      for(let frame=0;frame<180&&exchangeBody.action;frame++){
+        const a=exchangeBody.action;
+        const grounded=!!playerSupport(world,R,body)?.grounded;
+        Object.assign(exchangeActor,{position:position(),grounded});
+        const motion=activityApproachMotion(exchangeActor.position,{stand,yaw:anchor.yaw,moving:a.phase==='approach',stopDistance:EXCHANGE_APPROACH_STOP});
+        const change=playerVelocityChange(body.linvel(),{x:motion.vx,y:0,z:motion.vz},dt,grounded);
+        body.applyImpulse({x:change.x*body.mass(),y:0,z:change.z*body.mass()},true);
+        body.setLinvel(sweptPlayerVelocity(guard,body,body.linvel(),dt,R.QueryFilterFlags.EXCLUDE_SENSORS),true);
+        followPlayerGround(world,R,body,body.linvel(),dt,false);
+        advanceExchangeBodyAction(dt);world.step();
+      }
+      const result={start,stand,end:position(),contacts};
+      t.diagnostic(JSON.stringify(result));
+      assert.equal(contacts,1,JSON.stringify(result));
+    }finally{
+      cancelExchangeBodyAction();
+      Object.assign(exchangeActor,previous);
+      world.removeCharacterController(guard);
+    }
+  },{start:{x,y:1.958649,z}});
+});
 test('actual v2 gallery remains support when the full-height probe meets a test-only near-clearance beam',t=>fixture((world,body,kinds)=>{
   const at=body.translation(),lifted={...at,y:at.y+.06};
   const old=world.castShape(lifted,q,{x:0,y:-1,z:0},new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),0,.09,true,undefined,undefined,undefined,body);
