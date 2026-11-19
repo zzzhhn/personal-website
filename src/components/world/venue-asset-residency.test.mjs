@@ -14,7 +14,6 @@ import * as umbrellas from './djc-umbrella-visual.ts';
 import * as furniture from './djc-furniture-visual.ts';
 import * as crates from './attractions/ibd-crate-visual.ts';
 import * as equipment from './attractions/ibd-static-craft-visual.ts';
-import * as ibdFixtures from './attractions/ibd-workstation-fixtures.ts';
 
 import * as bar from './djc-bar-layout.ts';
 import * as fixedContacts from './club-fixed-contact.ts';
@@ -95,7 +94,6 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       [visualImport]: visualModule,
       './useOwnedWorldVisual': { useOwnedWorldVisual },
       './ibd-static-craft-visual': equipment,
-      './ibd-workstation-fixtures': ibdFixtures,
       './attraction-layout': { IBD_YARD },
       './djc-club-layout': { CLUB, CLUB_DAYBEDS },
       './club-fixed-contact': fixedContacts,
