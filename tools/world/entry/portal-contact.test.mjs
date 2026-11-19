@@ -66,3 +66,40 @@ test('all five walking portals have physical stone, an open crossing and a share
     t.diagnostic(site.id+' stone='+stoneHits+' open='+openRays+' capsule=8 ramp=7');
   }
 });
+
+test('an unloaded gateway guards both approaches, leaving adjacent ground usable until the last solid part mounts', async t => {
+  const { worldPassageRegions } = await import('../../../src/components/world/world-actor-sites.ts');
+  const { createColliderReadinessProbe } = await import('../../../src/components/world/collider-readiness.ts');
+  const { createRegionPassage } = await import('../../../src/components/world/region-passage.ts');
+  const up = new Vector3(0,1,0), world = new R.World({x:0,y:0,z:0}), states = new Map();
+  t.after(() => world.free());
+  let delayedFailure = false, now = 0;
+  const regions = worldPassageRegions(true).filter(r => r.loadSource === 'walking-portals');
+  const read = createColliderReadinessProbe(world,states,()=>now);
+  const passage = createRegionPassage(regions,read,[],()=>delayedFailure);
+  function addPart(name) {
+    const node = new Group(); node.name = name;
+    const body = world.createRigidBody(R.RigidBodyDesc.fixed());
+    const shape = R.ColliderDesc.trimesh(new Float32Array([0,0,0, 0,0,1, 1,0,0]),new Uint32Array([0,1,2]));
+    const col = world.createCollider(shape,body);
+    states.set(col.handle,{object:node});
+    return col;
+  }
+  for (const site of WORLD_PORTALS) {
+    const origin = new Vector3(...site.position), rot = new Quaternion().setFromAxisAngle(up,site.yaw);
+    const at = (x,z) => new Vector3(x,1,z).applyQuaternion(rot).add(origin).toArray();
+    const through = sign => passage.allows(at(0,3*sign),at(0,-3*sign),.34);
+    assert.ok(passage.allows(at(2.5,3),at(2.5,-3),.34), site.id+' outside footprint');
+    assert.equal(through(1),false); assert.equal(through(-1),false);
+    assert.equal(passage.at(site.arrivalCandidates[0],.34),false,site.id+' unavailable as a portal destination');
+    const prefix='G28-'+site.id;
+    addPart(prefix+'-threshold'); addPart(prefix+'-stone-frame'); addPart(prefix+'-stone-frame');
+    assert.equal(through(1),false);
+    const last = addPart(prefix+'-stone-frame');
+    assert.ok(through(1) && through(-1));
+    last.setEnabled(false); delayedFailure = true;
+    assert.equal(through(1),false); assert.ok(passage.failureAt(at(0,0)));
+    delayedFailure = false; last.setEnabled(true); now+=101;
+    assert.ok(through(-1));
+  }
+});

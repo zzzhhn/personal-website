@@ -99,6 +99,7 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
     resources.spill.material.uniforms.uAmount.value=n*.8;resources.beamMaterial.uniforms.uAmount.value=n*.065;
     const near=(camera.position.x-CLUB.center[0])**2+(camera.position.z-CLUB.center[2])**2<RUNNING_RADIUS_SQ;
     if(group.current)group.current.visible=near;
+    if(mirror.current)mirror.current.visible=near;
     lights.current.forEach((light,i)=>{if(light){light.intensity=near&&n>.01?n*CLUB_LIGHTS[i].intensity:0;}});
     resources.spot.uniforms.uAmount.value=n*1.55;
     if(!isWorldRunning()||!near)return;
@@ -140,17 +141,24 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
       {keys.filter(key=>resources.geometry.poolLanterns[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.poolLanterns[key]} material={resources.materials[key]} castShadow={key==='wood'} receiveShadow dispose={null}/>)}
     </group>}/>}
     <group ref={group} name="djc-beach-club-visual" dispose={null}>
-      {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.finishes[key] ?? resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} />)}
-      <WorldClubWater geometry={resources.geometry.pool} basinMaterial={resources.finishes.stone ?? resources.materials.stone}/>
-      <mesh ref={mirror} name="djc-mirror-ball" position={DJC_MIRROR_POSITION} geometry={resources.mirror} material={resources.mirrorMaterial}/>
-      <mesh ref={spots} name="djc-mirror-floor-fragments" position={[CLUB.dance[0],CLUB.dance[1]+.022,CLUB.dance[2]]} geometry={resources.spots} material={resources.spot} renderOrder={3}/>
-      <mesh name="djc-lantern-spill" geometry={resources.spill.geometry} material={resources.spill.material} renderOrder={3}/>
-      {[0,1].map(i=><mesh key={i} ref={m=>{beams.current[i]=m;}} name={`djc-moving-beam-${i}`} geometry={resources.beamGeometry} material={resources.beamMaterial} renderOrder={4}/>)}
+      {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.finishes[key] ?? resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} userData={resources.geometry.sources[key]} />)}
+      <group userData={{worldCollision:'soft',worldCollisionReason:'Traversable shallow water above the separate mineral floor'}}>
+        <WorldClubWater geometry={resources.geometry.pool} basinMaterial={resources.finishes.stone ?? resources.materials.stone}/>
+      </group>
+      <group userData={{worldCollision:'none',worldCollisionReason:'Light projected onto the existing surfaces'}}>
+        <mesh ref={spots} name="djc-mirror-floor-fragments" position={[CLUB.dance[0],CLUB.dance[1]+.022,CLUB.dance[2]]} geometry={resources.spots} material={resources.spot} renderOrder={3}/>
+        <mesh name="djc-lantern-spill" geometry={resources.spill.geometry} material={resources.spill.material} renderOrder={3}/>
+        {[0,1].map(i=><mesh key={i} ref={m=>{beams.current[i]=m;}} name={`djc-moving-beam-${i}`} geometry={resources.beamGeometry} material={resources.beamMaterial} renderOrder={4}/>)}
+      </group>
     </group>
     {CLUB_LIGHTS.map((light,i)=><pointLight key={i} ref={l=>{lights.current[i]=l;}} name={`djc-venue-light-${i}`} position={light.position} color={light.color} intensity={0} distance={light.range} decay={2} castShadow={false}/>)}
-    <RigidBody name="djc-mirror-ball-solid" position={DJC_MIRROR_POSITION} type="fixed" colliders={false} userData={{solid:true,assetId:'djc-mirror-ball',cameraBlocker:true}}>
-      <BallCollider name="djc-mirror-ball-camera-collider" args={[DJC_MIRROR_RADIUS]} friction={.5} restitution={0}/>
-    </RigidBody>
+    <group name="djc-mirror-contact">
+      <mesh ref={mirror} name="djc-mirror-ball" position={DJC_MIRROR_POSITION} geometry={resources.mirror} material={resources.mirrorMaterial}
+        userData={{worldCollision:'solid',surfaceId:'djc-mirror-ball-camera-collider'}}/>
+      <RigidBody name="djc-mirror-ball-solid" position={DJC_MIRROR_POSITION} type="fixed" colliders={false} userData={{solid:true,assetId:'djc-mirror-ball',cameraBlocker:true}}>
+        <BallCollider name="djc-mirror-ball-camera-collider" args={[DJC_MIRROR_RADIUS]} friction={.5} restitution={0}/>
+      </RigidBody>
+    </group>
     {(['surface','solid'] as const).map(kind=><RigidBody key={kind} name={`djc-${kind}`} type="fixed" colliders={false} userData={{[kind]:true,assetId:'djc-club'}}>
       <TrimeshCollider name={`djc-${kind}-same-mesh`} args={[resources.geometry.colliders[kind].vertices,resources.geometry.colliders[kind].indices]} friction={kind==='surface'?.9:.65} restitution={0}/>
     </RigidBody>)}

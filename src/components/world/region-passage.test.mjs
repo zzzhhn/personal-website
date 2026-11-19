@@ -4,6 +4,7 @@ import R from '@dimforge/rapier3d-compat';
 import { Object3D } from 'three';
 import { createRegionPassage, passageVelocity } from './region-passage.ts';
 import { createColliderReadinessProbe, FIXED_TRIMESH } from './collider-readiness.ts';
+import { WORLD_PORTALS } from './world-portals.ts';
 import { worldPassageRegions } from './world-actor-sites.ts';
 await R.init();
 
@@ -72,6 +73,7 @@ test('all current district footprints supply nonempty live collider contracts; l
   const regions=worldPassageRegions(true);
   const points={'alpha-island':[235,1,190],'alpha-waterwheel':[206,24,199],'alpha-cave':[220,24,155],'mainland-pier':[-10,1,112],brain:[-84,1,-55],exchange:[60,2,-60],club:[45,1,55],
     factory:[-180,1,10],ibd:[-88,1,-177],coaster:[50,1,-195]};
+  for (const site of WORLD_PORTALS) points['walking-portal-'+site.id]=site.position;
   for(const r of regions) {
     assert.ok(r.requirements.length,r.id);assert.equal(r.contains(points[r.id],0),true,r.id);
     const ready=new Set(regions.filter(v=>v!==r).map(v=>v.requirements));
@@ -79,7 +81,7 @@ test('all current district footprints supply nonempty live collider contracts; l
     assert.equal(gate.at(points[r.id],.3),false,r.id);
     ready.add(r.requirements);assert.equal(gate.at(points[r.id],.3),true,r.id);
   }
-  assert.deepEqual(worldPassageRegions(false).map(r=>r.id),['alpha-island','alpha-waterwheel','alpha-cave','mainland-pier','brain','exchange','club']);
+  assert.deepEqual(worldPassageRegions(false).map(r=>r.id),['alpha-island','alpha-waterwheel','alpha-cave',...WORLD_PORTALS.map(site=>'walking-portal-'+site.id),'mainland-pier','brain','exchange','club']);
 });
 
 test('the real body cannot walk across the cold boundary and resumes after mounting without a teleport',()=>{

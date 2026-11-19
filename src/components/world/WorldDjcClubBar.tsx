@@ -8,6 +8,7 @@ import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { night } from './WorldNight';
 import { useDjcFurnitureEnvironment as useBarEnvironment } from './WorldDjcFurnitureEnvironment';
 import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_NEAR_PREFETCH, DJC_BAR_ORIGIN, buildDjcBarProxy, cloneDjcBarVisual, createDjcBarPrefetchCheck, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarQaSceneTransmission, shareDjcBarTexture } from './djc-bar-layout';
+import { buildClubBarStoolContact } from './club-north-bar-contact';
 
 function BarAsset({ url, environment, opaque, textures, sceneTransmission }: { url: string; environment: Texture | null; opaque: boolean; textures: Map<string, Texture>; sceneTransmission: boolean }) {
   const gltf = useLoader(GLTFLoader, url, withWorldAssetDecoder);
@@ -28,10 +29,14 @@ class BarBoundary extends Component<{ fallback: ReactNode; children: ReactNode }
   componentDidCatch(error: unknown) { console.warn('[djc-bar] asset failed; fixed proxy and fallback retained', error); }
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
-function BarFallback({ roof }: { roof: ReturnType<typeof buildDjcBarProxy>['roof'] }) {
+function BarFallback({ roof, stools }: { roof: ReturnType<typeof buildDjcBarProxy>['roof']; stools: ReturnType<typeof buildClubBarStoolContact> }) {
   return <group name="djc-north-bar-fallback">
-    {DJC_BAR_BOXES.map((box, i) => <mesh key={i} name={`djc-bar-fallback-${box.name}`} position={box.center} castShadow receiveShadow>
+    {DJC_BAR_BOXES.filter(box=>box.name!=='stool').map((box, i) => <mesh key={i} name={`djc-bar-fallback-${box.name}`} position={box.center} castShadow receiveShadow>
       <boxGeometry args={box.size} /><meshStandardMaterial color={box.color} roughness={.85} />
+    </mesh>)}
+    {stools.placements.map((p,i) => <mesh key={`stool${i}`} name={`djc-bar-fallback-stool-${i}`} position={p}
+      geometry={stools.geometry} castShadow receiveShadow dispose={null}>
+      <meshStandardMaterial color="#a77749" roughness={.85} />
     </mesh>)}
     <mesh castShadow receiveShadow><primitive object={roof} attach="geometry" dispose={null} /><meshStandardMaterial color="#a58a50" roughness={.95} /></mesh>
   </group>;
@@ -66,14 +71,16 @@ export default function WorldDjcClubBar() {
   const distance = () => Math.hypot(camera.position.x - DJC_BAR_ORIGIN[0], camera.position.y - DJC_BAR_ORIGIN[1], camera.position.z - DJC_BAR_ORIGIN[2]);
   const [active, setActive] = useState(() => distance() <= DJC_BAR_NEAR_PREFETCH), activated = useRef(active);
   const shouldPrefetch = useMemo(createDjcBarPrefetchCheck, []);
-  const proxy = useMemo(buildDjcBarProxy, []);
+  const proxy = useMemo(() => buildDjcBarProxy(true), []);
+  const stools = useMemo(buildClubBarStoolContact, []);
   useOwnedWorldVisual(proxy.roof);
+  useOwnedWorldVisual(stools.geometry);
   useFrame(() => {
     const d = distance();
     if (!activated.current && shouldPrefetch(camera, d)) { activated.current = true; setActive(true); }
     if (group.current) group.current.visible = d < 180;
   });
-  const fallback = <BarFallback roof={proxy.roof} />;
+  const fallback = <BarFallback roof={proxy.roof} stools={stools} />;
   return <group name="djc-north-bar" position={DJC_BAR_ORIGIN} userData={{ assetId: 'djc-north-bar' }}>
     <group ref={group} name="djc-north-bar-visual">
       {active ? <ActiveBarVisual fallback={fallback} /> : fallback}
@@ -82,5 +89,9 @@ export default function WorldDjcClubBar() {
       userData={{ [kind]: true, assetId: 'djc-north-bar', ...(kind === 'solid' ? { cameraBlocker: true } : {}) }}>
       <TrimeshCollider name={`djc-bar-${kind}-proxy`} args={[proxy[kind].vertices, proxy[kind].indices]} friction={kind === 'surface' ? .9 : .65} restitution={0} />
     </RigidBody>)}
+    <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:'djc-north-bar',cameraBlocker:true}}>
+      {stools.placements.map((p,i) => <TrimeshCollider key={i} name={`djc-bar-stool-${i}`} position={p}
+        args={[stools.vertices, stools.indices]} friction={.65} restitution={0}/>)}
+    </RigidBody>
   </group>;
 }

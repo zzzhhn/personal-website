@@ -356,7 +356,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       {LAYOUT_V4&&<WorldAttractions/>}
       <Suspense fallback={null}><WorldStreet experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldCampContent /></Suspense>
-      <Suspense fallback={null}><WorldEntry /></Suspense>
+      <RegionSceneBoundary id="walking-portals"><WorldEntry /></RegionSceneBoundary>
       <SceneLifecycle setOverlay={setOverlay} />
     </Physics></Suspense>
   </Canvas>;

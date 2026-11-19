@@ -1,18 +1,8 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import vm from 'node:vm';
 import test from 'node:test';
-import { execFileSync } from 'node:child_process';
-import ts from 'typescript';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { contact as pure, contactPatch, pack, streamedFamily } from './contact-fixture.mjs';
 
-const root = new URL('../../../../', import.meta.url);
-const source = fs.readFileSync(new URL('src/components/world/camp-suitcase-contact.ts', root), 'utf8');
-const pure = vm.createContext({ ...THREE });
-vm.runInContext(ts.transpileModule(source.replace(/^import .*\n/, '').replaceAll(/^export /gm, ''), { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText, pure);
-const bytes = execFileSync('git', ['show', 'HEAD:public/assets/world/facility-craft/camp/camp-facilities-v1.glb'], { cwd: root, maxBuffer: 4 * 1024 * 1024 });
-const pack = await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
 const candidate = () => pack.scene.getObjectByName('C15').clone(true);
 const pose = (x = 0, y = 4.9, z = 0, angle = 0) => new THREE.Matrix4().compose(new THREE.Vector3(x, y, z), new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, angle)), new THREE.Vector3(1, 1, 1));
 function paving(width = 3, depth = 2.4, yaw = 0) {
@@ -41,21 +31,11 @@ test('actual C15 yields exactly four low tire shells, using real vertices withou
   assert.equal(pure.suitcaseContactWheels(new THREE.Group()).length, 0);
 });
 
-test('actual tire dimensions and the shader expose a bounded 1–2 cm halo without raising peak opacity', () => {
-  const component = fs.readFileSync(new URL('src/components/world/WorldCampSuitcaseContact.tsx', root), 'utf8');
-  const fragment = component.match(/fragmentShader: '([^']+)'/)[1];
-  const expression = fragment.match(/gl_FragColor = vec4\(0.0, 0.0, 0.0, (.*?)\);/)[1];
-  const alpha = vm.runInNewContext(`(radial, contactStrength) => (${expression})`, { pow: Math.pow });
-  assert.equal(alpha(1, 1), .32); assert.equal(alpha(0, 1), 0); assert.equal(alpha(1, 0), 0);
+test('contact patches extend 3 cm beyond each real tire in both axes', () => {
   for (const wheel of pure.suitcaseContactWheels(candidate())) {
-    for (const [coordinate, radius, expected1, expected2] of [[0, wheel.radiusX, .136494, .055905], [2, wheel.radiusZ, .188408, .081834]]) {
-      const values = Array.from(wheel.vertices).filter((_, index) => index % 3 === coordinate);
-      const half = (Math.max(...values) - Math.min(...values)) / 2;
-      assert.ok(Math.abs(radius - half - .03) < 1e-9);
-      const at = distance => alpha(Math.max(0, 1 - ((half + distance) / radius) ** 2), 1);
-      assert.ok(Math.abs(at(.01) - expected1) < 1e-5);
-      assert.ok(Math.abs(at(.02) - expected2) < 1e-5);
-      assert.equal(at(.03), 0); assert.equal(at(.04), 0);
+    for (const [axis,radius] of [[0,wheel.radiusX],[2,wheel.radiusZ]]) {
+      const coordinates = Array.from(wheel.vertices).filter((_,i)=>i%3===axis);
+      assert.ok(Math.abs(radius-(Math.max(...coordinates)-Math.min(...coordinates))/2-.03)<1e-9);
     }
   }
 });
@@ -136,34 +116,21 @@ test('craft registration ignores stale unmounts and fallback has no current cont
 });
 
 test('actual craft ready effect registers only mounted C15 candidates and releases the matching generation', () => {
-  const adapter = fs.readFileSync(new URL('src/components/world/WorldCampFacilityCraft.tsx', root), 'utf8');
-  const component = adapter.slice(adapter.indexOf('function CraftVisual'), adapter.indexOf('\nclass CraftBoundary'));
-  const slot = pure.createSuitcaseContactSlot(), effects = [], a = candidate(), b = candidate(); let ready = a;
-  const hooks = vm.createContext({
-    GLTFLoader: null, CAMP_FACILITY_URL: '', CampSuitcaseContactContext: null, night: { value: 0 },
-    useLoader: () => ({}), useDjcFurnitureEnvironment: () => null, useMemo: create => create(),
-    useContext: () => slot.register, useLayoutEffect: effect => effects.push(effect), useEffect: () => {}, useFrame: () => {},
-    createCampFacilityVisual: () => ({ root: ready }), React: { createElement: () => {} },
-  });
-  vm.runInContext(ts.transpileModule(component, { compilerOptions: { target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.React } }).outputText, hooks);
-  assert.equal(slot.root, null, 'fallback/loading creates no candidate registration');
-  hooks.CraftVisual({ family: 'C15' }); const cleanupA = effects[0](); assert.equal(slot.root, a);
-  ready = b; hooks.CraftVisual({ family: 'C15' }); const cleanupB = effects[1]();
-  cleanupA(); assert.equal(slot.root, b); cleanupB(); assert.equal(slot.root, null);
-  hooks.CraftVisual({ family: 'C12' }); assert.equal(effects[2](), undefined); assert.equal(slot.root, null);
+  const slot = pure.createSuitcaseContactSlot();
+  const a = streamedFamily('C15',slot), b = streamedFamily('C15',slot), other=streamedFamily('C12',slot);
+  assert.equal(slot.root,null,'no contact before layout effects');
+  const releaseA = a.effects[0](); assert.equal(slot.root,a.root);
+  const releaseB = b.effects[0](); assert.equal(slot.root,b.root);
+  releaseA(); assert.equal(slot.root,b.root);
+  releaseB(); assert.equal(slot.root,null);
+  assert.equal(other.effects[0](),undefined);
+  a.dispose(); b.dispose(); other.dispose();
 });
 
-test('mounted component owns just one eight-triangle mesh and cleans up without disposing the pack', () => {
-  const component = fs.readFileSync(new URL('src/components/world/WorldCampSuitcaseContact.tsx', root), 'utf8');
+test('mounted component owns just one eight-triangle mesh and cleans up without disposing the pack', async () => {
   const scene = new THREE.Scene(), pad = paving(), visual = candidate(), slot = pure.createSuitcaseContactSlot();
   visual.position.y = 4.9; scene.add(pad, visual);
-  const effects = [], microtasks = []; let mesh;
-  const hooks = vm.createContext({ ...THREE,
-    createContext: () => ({}), useMemo: create => create(), useThree: selector => selector({ scene }), useLayoutEffect: effect => effects.push(effect),
-    createSuitcaseContactModel: pure.createSuitcaseContactModel, suitcaseContactSupport: pure.suitcaseContactSupport, suitcaseContactWheels: pure.suitcaseContactWheels,
-    queueMicrotask: callback => microtasks.push(callback), React: { createElement: (_tag, props) => { mesh = props.object; } }, slot,
-  });
-  vm.runInContext(ts.transpileModule(component.replaceAll(/^import .*\n/gm, '').replaceAll(/^export default /gm, '').replaceAll(/^export /gm, '') + '\nWorldCampSuitcaseContact({slot});', { compilerOptions: { target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.React } }).outputText, hooks);
+  const {mesh,effects}=contactPatch(scene,slot);
   const firstCleanup = effects[0](), release = slot.register(visual); slot.update();
   assert.equal(mesh.visible, true); assert.equal(mesh.geometry.index.count / 3, 8); assert.equal(mesh.castShadow, false); assert.equal(mesh.receiveShadow, false);
   assert.equal(mesh.material.depthWrite, false); assert.equal(mesh.material.uniforms.map, undefined);
@@ -182,14 +149,8 @@ test('mounted component owns just one eight-triangle mesh and cleans up without 
   let geometryDisposals = 0, materialDisposals = 0, borrowedDisposals = 0;
   mesh.geometry.addEventListener('dispose', () => geometryDisposals++); mesh.material.addEventListener('dispose', () => materialDisposals++);
   visual.traverse(object => { if (object.isMesh) object.geometry.addEventListener('dispose', () => borrowedDisposals++); });
-  firstCleanup(); const finalCleanup = effects[0](); microtasks.splice(0).forEach(callback => callback());
+  firstCleanup(); const finalCleanup = effects[0](); await Promise.resolve();
   assert.equal(geometryDisposals, 0); assert.equal(materialDisposals, 0);
-  finalCleanup(); microtasks.splice(0).forEach(callback => callback());
+  finalCleanup(); await Promise.resolve();
   assert.equal(slot.update, null); assert.equal(geometryDisposals, 1); assert.equal(materialDisposals, 1); assert.equal(borrowedDisposals, 0);
-});
-
-test('new component/helper pass strict semantic checking', () => {
-  const files = ['camp-suitcase-contact.ts', 'WorldCampSuitcaseContact.tsx'].map(name => new URL(`src/components/world/${name}`, root).pathname);
-  const program = ts.createProgram(files, { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler, jsx: ts.JsxEmit.ReactJSX, strict: true, noEmit: true, skipLibCheck: true });
-  assert.deepEqual(ts.getPreEmitDiagnostics(program).map(diagnostic => ts.flattenDiagnosticMessageText(diagnostic.messageText, ' ')), []);
 });

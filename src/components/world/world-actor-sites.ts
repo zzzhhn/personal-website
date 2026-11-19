@@ -14,7 +14,7 @@ import { WATERWHEEL_FRAME_BODY, WATERWHEEL_FLOOR_BODY } from './alpha-island/bat
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
 import { nearestDryPoint, requireMeshHeight } from './WorldLandform';
 import { roadLandingCandidates } from './world-travel';
-import { WORLD_PORTALS } from './world-portals';
+import { PORTAL_THRESHOLD, WORLD_PORTALS, portalLocalPoint } from './world-portals';
 import type { Vec3 } from './types';
 import { mountedCollidersReady, createColliderReadinessProbe, FIXED_TRIMESH, type ColliderRequirement } from './collider-readiness';
 import { createRegionPassage, polygonPassageFootprint, type PassageRegion } from './region-passage';
@@ -53,6 +53,15 @@ export function worldPassageRegions(layoutV4=LAYOUT_V4): PassageRegion[] {
       const x = p[0] - ALPHA_ORIGIN[0], z = p[2] - ALPHA_ORIGIN[2];
       return Math.min(batch2Segment(x,z,ALPHA_CAVE_PATH).distance,batch2Segment(x,z,ALPHA_CAVE_DEAD_END).distance) <= 4.5 + r;
     } },
+    ...WORLD_PORTALS.map(site => ({
+      id: 'walking-portal-' + site.id, loadSource: 'walking-portals',
+      requirements: [mesh('G28-' + site.id + '-threshold'), { ...mesh('G28-' + site.id + '-stone-frame'), count: 3 }],
+      contains: (position: Vec3, radius: number) => {
+        if (Math.abs(position[0]-site.position[0]) > 3+radius || Math.abs(position[2]-site.position[2]) > 3+radius) return false;
+        const [x,y,z] = portalLocalPoint(site,position);
+        return y >= -1-radius && y <= 3.5+radius && Math.abs(x)<=1.65+radius && Math.abs(z)<=PORTAL_THRESHOLD.halfLength+radius;
+      },
+    })),
     { id: 'mainland-pier', loadSource: 'alpha-island', contains: pier, requirements: pierRequirements },
     { id: 'brain', contains: polygonPassageFootprint(ALPHA_MINE_FOOTPRINT_POINTS), requirements: quarryRequirements },
     { id: 'exchange', contains: box(ALPHA_EXCHANGE_FOOTPRINT), requirements: exchangeRequirements },

@@ -5,10 +5,10 @@ import { buildDjcClubGeometry, DJC_DAYBED_ACCESS, DJC_DAYBED_TOP } from './World
 import { CLUB_DAYBEDS } from './djc-club-layout.ts';
 import { createDjcDaybedVisual, djcDaybedLegacy } from './djc-daybed-visual.ts';
 
-test('streamed furniture preserves all original approach, support, guard and sitting contracts',()=>{
+test('streamed furniture preserves approach and seat anchors with its own arc-cut contact',()=>{
   const original=buildDjcClubGeometry(),streamed=buildDjcClubGeometry({separateDaybeds:true});
   try{
-    assert.deepEqual(streamed.colliders,original.colliders);
+    assert.ok(streamed.colliders.surface.indices.length>original.colliders.surface.indices.length);
     assert.deepEqual(streamed.seats,original.seats);
     assert.deepEqual(streamed.daybedApproaches,original.daybedApproaches);
     let removed=0;

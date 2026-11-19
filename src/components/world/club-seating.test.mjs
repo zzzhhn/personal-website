@@ -15,7 +15,7 @@ import { CLUB_POOL } from './djc-club-layout.ts';
 const hook=registerHooks({resolve(specifier,context,next){if(context.parentURL?.endsWith('/WorldDjcClub.tsx')&&['./WorldClubDancer','./WorldDjcClubVisual'].includes(specifier))return{url:'data:text/javascript,export default function RenderOnlyFixture(){return null}',shortCircuit:true};return next(specifier,context);}});
 const {djcSeatInteraction,djcSeatApproach,djcSeatReachable}=await import('./WorldDjcClub.tsx');hook.deregister();
 await R.init();
-const geometry=buildDjcClubGeometry(),world=new R.World({x:0,y:-12.5,z:0});
+const geometry=buildDjcClubGeometry({separateDaybeds:true,separateFurniture:true,separateUmbrellas:true}),world=new R.World({x:0,y:-12.5,z:0});
 for(const [kind,m]of Object.entries(geometry.colliders)){const b=world.createRigidBody(R.RigidBodyDesc.fixed());b.userData={[kind]:true};world.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices),b);}
 const player=world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations()),bodyShape=new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
 world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),player);

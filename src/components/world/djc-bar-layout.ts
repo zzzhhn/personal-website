@@ -67,9 +67,10 @@ export function shareDjcBarTexture(texture: Texture, imageUri: string | undefine
   if (!registry.has(key)) registry.set(key, texture);
   return registry.get(key)!;
 }
-export function buildDjcBarProxy() {
+export function buildDjcBarProxy(omitStools = false) {
   const surface: number[] = [], solid: number[] = [];
   for (const box of DJC_BAR_BOXES) {
+    if (omitStools && box.name === 'stool') continue;
     const indexed = new BoxGeometry(...box.size), g = indexed.toNonIndexed(); indexed.dispose(); g.translate(...box.center);
     const p = g.getAttribute('position'), n = g.getAttribute('normal');
     for (let i = 0; i < p.count; i += 3) {
