@@ -1,4 +1,5 @@
-import { RigidBody, TrimeshCollider } from '@react-three/rapier';
+import {placeSandRouteBall,SAND_BALL_RADIUS} from './alpha-sand-route';
+import { RigidBody, TrimeshCollider, useRapier } from '@react-three/rapier';
 import { useOwnedWorldVisual } from '../useOwnedWorldVisual';
 import { createWindFlagStand } from './alpha-wind-flag-stand';
 import { useEffect,useMemo,useRef } from 'react';
@@ -8,7 +9,7 @@ import { useInteractable } from '../WorldInteract';
 import { useWorldStore } from '../store';
 import { interactionActor } from '../actor-activities';
 import { guideActionHand } from '../rides/guide-action-hand';
-import { alphaLocal,alphaWorld,alphaContainsWorld,ALPHA_MAIN_PATH } from './alpha-layout';
+import { alphaLocal,alphaWorld,alphaContainsWorld } from './alpha-layout';
 import { alphaMotion,useAlphaStore,advanceAlphaHand,cancelAlphaHand,canReleaseAlphaLantern,releaseAlphaLantern,visitAlphaStation,saveAlphaProgress,ALPHA_LANTERN_CAP,ALPHA_LANTERN_LIFETIME,type AlphaAction } from './alpha-state';
 import { ALPHA_TRAIL_STOPS } from './alpha-trail';
 import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
@@ -46,6 +47,8 @@ function WindFlagStand({index}: {index: number}) {
 }
 function WindFlags(){const paper=useRef<Group>(null);useFrame(()=>{const strength=useAlphaStore.getState().wind,t=alphaMotion.time;flagUniforms.time.value=t;flagUniforms.strength.value=strength;if(paper.current){const a=Math.min(9,Math.max(0,alphaMotion.time-alphaMotion.windAt)),x=22+Math.min(28,a*3.1)*(strength===2?1:0),theta=strength===2?a*3:0,z=-40+Math.sin(a*3)*.1,vertical=Math.max(Math.abs(Math.sin(theta))*.25+Math.abs(Math.cos(theta))*.25,Math.abs(Math.cos(theta))*.8+Math.abs(Math.sin(theta))*.04);paper.current.position.set(x,alphaHeight(x,z)+vertical,z);paper.current.rotation.set(0,0,theta);}});return <group><group name="alpha-wind-flag-stands">{[0,1,2].map(index=><WindFlagStand key={index} index={index}/>)}</group><group ref={paper} position={[22,38.8,-40]}><mesh><boxGeometry args={[.5,.5,.04]}/><meshStandardMaterial color="#dbc696" roughness={.95}/></mesh><mesh position={[0,-.4,0]}><cylinderGeometry args={[.035,.04,.8,8]}/><meshStandardMaterial color="#82633f"/></mesh></group></group>;}
 export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.carried),hand=useRef<Group>(null),stoneRef=useRef<Mesh>(null),ball=useRef<Mesh>(null);
+ const {world:physics,rapier}=useRapier();
+ const marble=useMemo(()=>new rapier.Ball(SAND_BALL_RADIUS),[rapier]);
  const canRelease=()=>alphaActorCanAct()&&canReleaseAlphaLantern();
  useInteractable({id:'alpha-card',position:alphaWorld([-66.3,5.4,-36.9]),radius:1.8,kind:'exhibit',label:{zh:'摘下登山卡和猜想木牌',en:'Take a trail card and idea tag'},enabled:()=>!useAlphaStore.getState().card,onInteract:()=>{useAlphaStore.setState({card:true});visitAlphaStation(1);saveAlphaProgress();announce('登山卡已收好，只记录来过的地方。','Trail card kept. It records places, without a score.');}});
  useInteractable(carried?alphaLanternReleaseInteraction(()=>interactionActor.position,canRelease,()=>{
@@ -64,10 +67,10 @@ export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.car
  }
  if(stoneRef.current){stoneRef.current.visible=useAlphaStore.getState().action==='stone'&&placing;if(alphaMotion.handTarget){const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaMotion.handTarget));stoneRef.current.position.set(p[0],p[1]-.08,p[2]);}}
  if(hand.current){hand.current.visible=useAlphaStore.getState().carried;const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaLanternCarryTarget(interactionActor.position,interactionActor.yaw)));hand.current.position.set(p[0],p[1]-.89,p[2]);}
- if(ball.current){const t=((alphaMotion.time-alphaMotion.sandAt)/6);ball.current.visible=t>=0&&t<1;if(t>=0&&t<1){const n=t*(ALPHA_MAIN_PATH.length-1),i=Math.floor(n),p=ALPHA_MAIN_PATH[i],q=ALPHA_MAIN_PATH[Math.min(i+1,ALPHA_MAIN_PATH.length-1)],f=n-i;ball.current.position.set(-64+(p[0]+(q[0]-p[0])*f)/95,5.49+(p[1]+(q[1]-p[1])*f)/180,-39.9+(p[2]+(q[2]-p[2])*f)/100);}}
+ if(ball.current){const t=((alphaMotion.time-alphaMotion.sandAt)/6);ball.current.visible=t>=0&&t<1&&placeSandRouteBall(physics,marble,t,ball.current.position);}
  const pos=alphaLocal(world.position);for(const {n,point:p} of ALPHA_TRAIL_STOPS){if(Math.hypot(pos[0]-p[0],pos[2]-p[2])<8&&Math.abs(pos[1]-p[1])<4)visitAlphaStation(n);}
  });
- return <group name="alpha-playable-stations">{(['bell','sand','tree','wind','stone','lantern'] as AlphaAction[]).map(kind=><Action key={kind} kind={kind}/>)}<group visible={!carried}><AlphaLantern position={[-8.65,83.3,41.7]}/></group><AlphaLantern position={[-7.35,83.3,41.7]}/><AlphaLantern rootRef={hand}/><FlyingLanterns/><WindFlags/><mesh ref={ball} name="alpha-sand-route-ball" visible={false}><sphereGeometry args={[.075,12,8]}/><meshStandardMaterial color="#dba650" metalness={.6} roughness={.3}/></mesh><mesh ref={stoneRef} visible={false} scale={[.32,.1,.25]}><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color="#adb3a6" roughness={.94}/></mesh><PlayerCairn/></group>;
+ return <group name="alpha-playable-stations">{(['bell','sand','tree','wind','stone','lantern'] as AlphaAction[]).map(kind=><Action key={kind} kind={kind}/>)}<group visible={!carried}><AlphaLantern position={[-8.65,83.3,41.7]}/></group><AlphaLantern position={[-7.35,83.3,41.7]}/><AlphaLantern rootRef={hand}/><FlyingLanterns/><WindFlags/><mesh ref={ball} name="alpha-sand-route-ball" userData={{worldCollision:'none',collisionReason:'Animated marble demonstrates the route after pressing the sand-table button'}} visible={false}><sphereGeometry args={[SAND_BALL_RADIUS,12,8]}/><meshStandardMaterial color="#dba650" metalness={.6} roughness={.3}/></mesh><mesh ref={stoneRef} visible={false} scale={[.32,.1,.25]}><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color="#adb3a6" roughness={.94}/></mesh><PlayerCairn/></group>;
 }
 function PlayerCairn(){const n=useAlphaStore(s=>s.stones);return <group name="alpha-personal-cairn" position={[1,83,39.2]}>{Array.from({length:n},(_,i)=><mesh key={i} position={[Math.sin(i*2.3)*(.15+(i%5)*.075),.12+Math.floor(i/8)*.19,Math.cos(i*2.3)*(.15+(i%5)*.075)]} scale={[.32-i*.003,.1,.25-i*.002]} castShadow><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color={i%2?'#a6aba3':'#8c9693'} roughness={.96}/></mesh>)}</group>;}
 

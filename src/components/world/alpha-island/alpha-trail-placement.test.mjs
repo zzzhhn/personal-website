@@ -49,6 +49,7 @@ async function mount(){
   '@react-three/rapier':rapier,'./alpha-path-fence':{createAlphaPathFence},'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
  }).default;
  const Component=load({
+  './alpha-sand-route':await import('./alpha-sand-route.ts'),
   './alpha-art':art,'./alpha-layout':layout,'./alpha-terrain':terrain,'./alpha-rocks':rocks,
   './alpha-station-structures':structures,'../static-surface-asset':staticSurfaces,
   './alpha-materials':materials,'./alpha-trail-placement':placement,

@@ -1,12 +1,13 @@
 import { useEffect,useMemo,useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody,TrimeshCollider,ConvexHullCollider } from '@react-three/rapier';
-import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,TubeGeometry,CatmullRomCurve3,Vector3,Float32BufferAttribute,LatheGeometry,Vector2 } from 'three';
+import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,Vector3,LatheGeometry,Vector2 } from 'three';
 import { AlphaBuilder,alphaLanternGeometry,type AlphaFinish } from './alpha-art';
+import {createSandRouteModel,SAND_MODEL_ID} from './alpha-sand-route';
 import AlphaStationStructure from './AlphaStationStructure';
 import { createLodgeRamp } from './alpha-station-structures';
 import { surfaceColliderBuffers } from '../static-surface-asset';
-import { ALPHA_MAIN_PATH,ALPHA_STATIONS,ALPHA_WIND_GATE_Y } from './alpha-layout';
+import { ALPHA_STATIONS,ALPHA_WIND_GATE_Y } from './alpha-layout';
 import { alphaGroundHeight as alphaHeight,alphaPathDistance } from './alpha-terrain';
 import AlphaPathFence from './AlphaPathFence';
 import { createAlphaBoulderField } from './alpha-rocks';
@@ -62,7 +63,23 @@ function LodgeRamp() {
 }
 function bellParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[0,.35,0],.04);b.add(new LatheGeometry([[.04,0],[.11,-.06],[.15,-.32],[.28,-.49],[.27,-.53],[.23,-.5],[.12,-.3],[.08,-.07]].map(p=>new Vector2(p[0],p[1])),20),'metal');b.beam('rope',[0,-.35,0],[0,-1.3,0],.022);b.cyl('wood',[0,-1.3,0],.075,.2);b.cyl('metal',[0,-.43,0],.055,.19);const parts=b.finish();parts.forEach(p=>p.geometry.translate(0,-.35,0));return parts;}
 function BellMechanism(){const ref=useRef<Group>(null);useFrame(()=>{if(!ref.current)return;const age=alphaMotion.time-alphaMotion.bellAt;ref.current.rotation.z=age<4?Math.sin(age*14)*Math.exp(-age)*.28:0;});return <group ref={ref} name="alpha-copper-bell-pivot" position={[-61.3,6.6,-36.35]}><Craft build={bellParts} name="alpha-hollow-copper-bell"/></group>;}
-function SandMiniature(){const built=useMemo(()=>{const b=new AlphaBuilder(),ps:number[]=[],ix:number[]=[],n=24;for(let j=0;j<=n;j++)for(let i=0;i<=n;i++){const x=(i/n-.5)*1.95,z=(j/n-.5)*1.4;ps.push(-64+x,5.4+Math.max(0,alphaHeight(x*95,z*100))/180,-39.9+z);}for(let j=0;j<n;j++)for(let i=0;i<n;i++){const a=j*(n+1)+i;ix.push(a,a+n+1,a+1,a+1,a+n+1,a+n+2);}const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(ps,3));g.setIndex(ix);g.computeVertexNormals();b.add(g,'stone');const curve=new CatmullRomCurve3(ALPHA_MAIN_PATH.map(p=>new Vector3(-64+p[0]/95,5.415+p[1]/180,-39.9+p[2]/100)));b.add(new TubeGeometry(curve,90,.012,5,false),'metal');return b.finish();},[]);return <Craft build={()=>built} name="alpha-physical-sand-route-model"/>;}
+function SandMiniature() {
+ const model=useMemo(()=>{
+   const surfaces=createSandRouteModel().map(part=>{
+     const id='alpha-tabletop-'+part.finish;
+     const surface={id,space:'alpha-island',role:'enclosure',collision:'solid',reason:'Installed tabletop relief and raised metal rail',geometry:part.geometry} as const;
+     return {...part,id,material:alphaMaterial(part.finish),buffers:surfaceColliderBuffers(surface)!};
+   });
+   return {surfaces,dispose(){for(const p of surfaces){p.geometry.dispose();p.material.dispose();}}};
+ },[]);
+ useOwnedWorldVisual(model);
+ return <RigidBody type="fixed" name="alpha-physical-sand-route-model" colliders={false} userData={{solid:true,assetId:SAND_MODEL_ID}}>
+   {model.surfaces.map(p=><group key={p.id}>
+     <mesh name={p.id} geometry={p.geometry} material={p.material} userData={{worldCollision:'solid',surfaceId:p.id}} castShadow receiveShadow dispose={null}/>
+     <TrimeshCollider name={p.id} args={[p.buffers.vertices,p.buffers.indices]}/>
+   </group>)}
+ </RigidBody>;
+}
 function TrailLamps(){
  const ref=useRef<InstancedMesh>(null),dummy=useMemo(()=>new Object3D(),[]),color=useMemo(()=>new Color(),[]);
  const last=useRef<boolean[]>([]);
