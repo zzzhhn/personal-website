@@ -88,7 +88,8 @@ export const FACTORY_WORK_VIEWS:Partial<Record<FactoryStationId,{eye:FactoryPoin
   routing:{eye:[-13,7,-26],target:[-21,1.8,-9]},
   ...Object.fromEntries((['frame','wheels','shell'] as const).map((id,i)=>{
     const z=[-11,2,15][i];
-    return [id,{eye:[-39,5.2,z+3.5],target:[-27.5,2.2,z]}];
+    // Keep the operator sweep above the fixed task luminaire on the aisle side.
+    return [id,{eye:[-39,5.5,z+3.3],target:[-27.5,2.2,z]}];
   })),
 };
 /** Shared track centreline; duplicated by translation only so test courses remain equivalent. */

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { Box3, DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import { FACTORY_MODULES } from './factory-game.ts';
 import { FACTORY_PALETTE, buildFactoryGeometry } from './factory-geometry.ts';
@@ -13,6 +14,8 @@ import {
   buildFactoryReturnGeometry, buildFactoryReturnHoist, createFactoryReturnPlan,
   createFactoryReturnPose, factoryReturnSource, sampleFactoryReturn,
 } from './factory-return.ts';
+
+await R.init();
 
 const near = (a, b, tolerance = 1e-5) => assert.ok(Math.abs(a - b) < tolerance, `${a} != ${b}`);
 const ray = (mesh, p, d, far = 2) => new Raycaster(new Vector3(...p), new Vector3(...d), 0, far).intersectObject(mesh, true)[0];
@@ -161,7 +164,22 @@ test('the selected module is gripped on real surfaces in both configurations, cl
 
 test('raised module travel clears the actual fixed factory solids and stays within material-only pedestrian space', () => {
   const factory = buildFactoryGeometry(), structure = buildFactoryReturnGeometry(FACTORY_PALETTE);
-  const obstacles = [...factory.solids, ...structure.solids].filter(s => !s.rotation).map(box);
+  const world = new R.World({ x: 0, y: 0, z: 0 }), fixed = world.createRigidBody(R.RigidBodyDesc.fixed());
+  const identities = new Map(), orientation = { x: 0, y: 0, z: 0, w: 1 };
+  for (const c of [...factory.rails, ...factory.structureContacts]) {
+    const collider = world.createCollider(R.ColliderDesc.trimesh(c.vertices, c.indices), fixed);
+    identities.set(collider.handle, c.id);
+  }
+  for (const s of structure.solids) {
+    const collider = world.createCollider(R.ColliderDesc.cuboid(...s.size.map(size => size / 2)).setTranslation(...s.at), fixed);
+    identities.set(collider.handle, 'return hoist column');
+  }
+  world.step();
+  const obstruction = bounds => {
+    const half = bounds.getSize(new Vector3()).multiplyScalar(.5).addScalar(-.001);
+    const hit = world.intersectionWithShape(bounds.getCenter(new Vector3()), orientation, new R.Cuboid(...half));
+    return hit && identities.get(hit.handle);
+  };
   const material = new MeshBasicMaterial({ side: DoubleSide }), mesh = new Mesh(factory.geometry, material), tool = buildFactoryReturnHoist(FACTORY_PALETTE);
   try {
     for (const module of FACTORY_MODULES) for (const seated of [true, false]) {
@@ -177,7 +195,7 @@ test('raised module travel clears the actual fixed factory solids and stays with
           tool.group.traverse(object => {
             if (!object.isMesh) return;
             const bounds = new Box3().setFromObject(object);
-            assert.ok(obstacles.every(obstacle => !obstacle.intersectsBox(bounds)), `${module}: moving ${object.parent.name} hits fixed solid at ${pose.phase}`);
+            assert.equal(obstruction(bounds), null, `${module}: moving ${object.parent.name} hits fixed solid at ${pose.phase}`);
           });
           if (!pose.attached || pose.phase === 'reform') continue;
           for (const [a, b] of FACTORY_WALK_EDGES)
@@ -185,7 +203,7 @@ test('raised module travel clears the actual fixed factory solids and stays with
               'suspended load never crosses a surveyed pedestrian route');
           if (pose.phase !== 'traverse') continue;
           const hull = localBounds.clone().translate(new Vector3(...pose.part));
-          assert.ok(obstacles.every(obstacle => !obstacle.intersectsBox(hull)), `${module}: raised load hits fixed solid`);
+          assert.equal(obstruction(hull), null, `${module}: raised load hits fixed solid`);
           // Short upward rays also catch any uncollided roof over the actual load.
           const roof = ray(mesh, [pose.part[0], pose.part[1] + .85, pose.part[2]], [0, 1, 0], .4);
           assert.equal(roof, undefined, `${module}: raised load is too close to fixed overhead geometry`);
@@ -197,6 +215,6 @@ test('raised module travel clears the actual fixed factory solids and stays with
       } finally { model.dispose(); }
     }
   } finally {
-    factory.geometry.dispose(); factory.roofs.dispose(); factory.surface.dispose(); structure.geometry.dispose(); material.dispose(); tool.dispose();
+    world.free(); factory.geometry.dispose(); factory.roofs.dispose(); factory.surface.dispose(); structure.geometry.dispose(); material.dispose(); tool.dispose();
   }
 });

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { Box3, BoxGeometry, DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Triangle, Vector3 } from 'three';
 import { buildFactoryMachineCasing } from './factory-machine-casing.ts';
 import { FACTORY_PALETTE } from './factory-geometry.ts';
@@ -8,11 +9,23 @@ import { FACTORY_CONVEYOR_TOP, FACTORY_ASSEMBLY_PICK_HEIGHT, FACTORY_RAW_HALF_HE
 import { buildFactoryCarrier } from './factory-carrier.ts';
 import { buildFactoryCompanion } from './factory-companion.ts';
 
+await R.init();
+const pose = { x: 0, y: 0, z: 0, w: 1 };
+function physics(casing) {
+  const world = new R.World({ x: 0, y: 0, z: 0 }), body = world.createRigidBody(R.RigidBodyDesc.fixed());
+  const contact = casing.contact;
+  world.createCollider(R.ColliderDesc.trimesh(contact.vertices, contact.indices), body);
+  world.step();
+  return world;
+}
+
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-5, `${a} != ${b}`);
 const area = (min, max) => new Box3(new Vector3(...min), new Vector3(...max));
 function clear(casing, region, label) {
-  for (const solid of casing.solids) assert.ok(!region.intersectsBox(new Box3().setFromCenterAndSize(
-    new Vector3(...solid.at), new Vector3(...solid.size))), `${label}: collider intrudes`);
+  const world = physics(casing), half = region.getSize(new Vector3()).multiplyScalar(.5);
+  try {
+    assert.equal(world.intersectionWithShape(region.getCenter(new Vector3()), pose, new R.Cuboid(...half)), null, label);
+  } finally { world.free(); }
   const p = casing.geometry.attributes.position, index = casing.geometry.index, triangle = new Triangle();
   for (let i = 0; i < index.count; i += 3) {
     triangle.a.fromBufferAttribute(p, index.getX(i)); triangle.b.fromBufferAttribute(p, index.getX(i + 1)); triangle.c.fromBufferAttribute(p, index.getX(i + 2));
@@ -29,7 +42,7 @@ test('each casing is a finite single batch inside the existing machine survey an
       near(bounds.min.y, .12); near(bounds.max.y, 5.1);
       assert.ok(bounds.min.x >= -3 && bounds.max.x <= 3 && bounds.min.z >= -2.40001 && bounds.max.z <= 2.40001);
       assert.deepEqual(g.groups, []); assert.equal(casing.triangles, g.index.count / 3); assert.ok(casing.triangles < 6000);
-      assert.ok(casing.solids.length <= 28);
+      assert.equal(casing.contact.indexCount, g.index.count);
       for (const name of ['position', 'normal', 'color', 'aMat', 'aSuv']) assert.ok(g.attributes[name]);
       for (const attribute of Object.values(g.attributes)) for (const value of attribute.array) assert.ok(Number.isFinite(value));
       for (let i = 0; i < g.index.count; i += 3) {
@@ -37,10 +50,7 @@ test('each casing is a finite single batch inside the existing machine survey an
         a.fromBufferAttribute(p, g.index.getX(i)); b.fromBufferAttribute(p, g.index.getX(i + 1)); c.fromBufferAttribute(p, g.index.getX(i + 2));
         assert.ok(b.sub(a).cross(c.sub(a)).lengthSq() > 1e-16, 'no collapsed casing face');
       }
-      for (const solid of casing.solids) {
-        assert.ok([...solid.at, ...solid.size].every(Number.isFinite)); assert.ok(solid.size.every(v => v > 0));
-      }
-      console.log(JSON.stringify({ module, triangles: casing.triangles, colliders: casing.solids.length, vertices: p.count }));
+      console.log(JSON.stringify({ module, triangles: casing.triangles, colliders: 1, vertices: p.count }));
     } finally { casing.geometry.dispose(); }
   }
 });
@@ -93,7 +103,7 @@ test('full moving platen/guard envelopes and axial rod probes clear the actual f
   const material = new MeshBasicMaterial({ side: DoubleSide });
   try {
     for (const module of FACTORY_MODULES) {
-      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material);
+      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material), world = physics(casing);
       try {
         const bottom = FACTORY_CONVEYOR_TOP + 2 * FACTORY_RAW_HALF_HEIGHT[module];
         clear(casing, area([-1.915, bottom - .015, -1.615], [1.915, 3.775, 1.615]), 'complete ram travel');
@@ -102,12 +112,13 @@ test('full moving platen/guard envelopes and axial rod probes clear the actual f
           const angle = i * Math.PI / 12, x = r * Math.cos(angle), z = r * Math.sin(angle);
           const origin = new Vector3(x, 1.58, z), direction = new Vector3(0, 1, 0);
           assert.equal(new Raycaster(origin, direction, 0, 3.55).intersectObject(mesh, false).length, 0, 'rod bore must be genuinely open');
-          for (const solid of casing.solids) assert.equal(new Raycaster(origin, direction, 0, 3.55).ray.intersectBox(
-            new Box3().setFromCenterAndSize(new Vector3(...solid.at), new Vector3(...solid.size)), new Vector3()), null);
+          assert.equal(world.castRay(new R.Ray(origin, direction), 3.55, true), null);
         }
         const boreWall = new Raycaster(new Vector3(0, 4.1, 0), new Vector3(1, 0, 0), 0, .5).intersectObject(mesh, false)[0];
         assert.ok(boreWall && boreWall.point.x > .18 && boreWall.point.x < .21, 'receiver has an actual annular wall');
-      } finally { casing.geometry.dispose(); }
+        const hit = world.castRay(new R.Ray({ x: 0, y: 4.1, z: 0 }, { x: 1, y: 0, z: 0 }), .5, true);
+        near(hit.timeOfImpact, boreWall.distance);
+      } finally { world.free(); casing.geometry.dispose(); }
     }
   } finally { material.dispose(); }
 });
@@ -148,8 +159,8 @@ test('palette and per-instance geometry ownership are preserved without allocate
   const a = buildFactoryMachineCasing('frame', palette), b = buildFactoryMachineCasing('frame', palette);
   let otherDisposals = 0; b.geometry.addEventListener('dispose', () => otherDisposals++);
   try {
-    assert.deepEqual(palette, before); assert.notEqual(a.geometry, b.geometry); assert.notEqual(a.solids, b.solids);
-    assert.deepEqual(Object.keys(a).sort(), ['geometry', 'solids', 'triangles']);
+    assert.deepEqual(palette, before); assert.notEqual(a.geometry, b.geometry); assert.notEqual(a.contact, b.contact);
+    assert.deepEqual(Object.keys(a).sort(), ['contact', 'geometry', 'triangles']);
     a.geometry.dispose(); assert.equal(otherDisposals, 0);
     assert.throws(() => buildFactoryMachineCasing('unknown', palette), TypeError);
   } finally { b.geometry.dispose(); }
@@ -179,22 +190,22 @@ test('each I column is one connected section with a continuous web and both full
   } finally { material.dispose(); }
 });
 
-test('the deep crown has real sloping haunches, a supported centre and matching centre colliders', () => {
+test('the deep crown contact matches its real sloping haunches and supported centre', () => {
   const material = new MeshBasicMaterial({ side: DoubleSide });
   try {
     for (const module of FACTORY_MODULES) {
-      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material);
+      const casing = buildFactoryMachineCasing(module, FACTORY_PALETTE), mesh = new Mesh(casing.geometry, material), world = physics(casing);
       try {
         for (const z of [-2.05, 2.05]) {
           for (const x of [0, .9, 1.75, -1.75]) {
             const hit = new Raycaster(new Vector3(x, 3.95, z), new Vector3(0, 1, 0), 0, .5).intersectObject(mesh)[0];
             assert.ok(hit); const expected = Math.abs(x) <= 1.45 ? 4.06 : 4.06 + (Math.abs(x) - 1.45) * .34 / .7;
             near(hit.point.y, expected);
+            const contact = world.castRay(new R.Ray({ x, y: 3.95, z }, { x: 0, y: 1, z: 0 }), .5, true);
+            near(contact.timeOfImpact, hit.distance);
           }
-          const solid = casing.solids.find(s => s.at[0] === 0 && s.at[2] === z && s.at[1] < 4.4 && s.at[1] > 4);
-          assert.ok(solid); near(solid.at[1] - solid.size[1] / 2, 4.06);
         }
-      } finally { casing.geometry.dispose(); }
+      } finally { world.free(); casing.geometry.dispose(); }
     }
   } finally { material.dispose(); }
 });

@@ -1,10 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { Mesh, MeshBasicMaterial, DoubleSide, Raycaster, Vector3, Box3 } from 'three';
 import { buildFactoryGeometry } from './factory-geometry.ts';
 import { FACTORY_MODULES } from './factory-game.ts';
 import { factoryRoutingPath, factoryBatchPosition, factoryIntakePath, sampleFactoryRoute } from './factory-routing.ts';
 import { FACTORY_RAW_HALF_HEIGHT, FACTORY_CONVEYOR_TOP, FACTORY_LINE_Z, factoryRawDrop, createFactoryOperation, stepFactoryOperation, FACTORY_RAW_IDLE } from './factory-operation.ts';
+
+await R.init();
 
 test('intake and every outgoing/return route join the actual waiting pocket and press without diagonal shortcuts',()=>{
   for(const module of FACTORY_MODULES){
@@ -28,7 +31,9 @@ test('intake and every outgoing/return route join the actual waiting pocket and 
 test('actual static decks support intake and staging-to-line transfer, with no collider through the travelling blank',()=>{
   const g=buildFactoryGeometry(),mat=new MeshBasicMaterial({side:DoubleSide}),mesh=new Mesh(g.geometry,mat);
   const halves={frame:[.31,.1,.36],wheels:[.26,.15,.26],shell:[.29,.06,.35]};
-  const boxes=g.solids.filter(s=>!s.rotation).map(s=>new Box3().setFromCenterAndSize(new Vector3(...s.at),new Vector3(...s.size)));
+  const world=new R.World({x:0,y:0,z:0}),fixed=world.createRigidBody(R.RigidBodyDesc.fixed()), pose={x:0,y:0,z:0,w:1};
+  for(const c of [...g.rails,...g.structureContacts])world.createCollider(R.ColliderDesc.trimesh(c.vertices,c.indices),fixed);
+  world.step();
   try{
     for(const module of FACTORY_MODULES){
       const h=halves[module],paths=[factoryIntakePath(module),...FACTORY_MODULES.map(line=>factoryRoutingPath(module,line))];
@@ -36,17 +41,23 @@ test('actual static decks support intake and staging-to-line transfer, with no c
         const p=sampleFactoryRoute(path,i/160,[0,0,0]),bottom=p[1]-h[1];
         // 12 mm clearance includes the authored 15 mm deck bevel at the shallow incline joint.
         const hull=new Box3(new Vector3(p[0]-h[0]+.005,bottom+.012,p[2]-h[2]+.005),new Vector3(p[0]+h[0]-.005,p[1]+h[1]-.005,p[2]+h[2]-.005));
-        assert.ok(boxes.every(box=>!box.intersectsBox(hull)),`${module}: obstruction at ${p}`);
+        const half=hull.getSize(new Vector3()).multiplyScalar(.5);
+        assert.equal(world.intersectionWithShape(hull.getCenter(new Vector3()),pose,new R.Cuboid(...half)),null,`${module}: obstruction at ${p}`);
         // The blank spans roller gaps; sample its footprint, not just its centre.
         let nearest=Infinity;
         for(const dx of [-h[0]*.85,0,h[0]*.85]){
-          const hit=new Raycaster(new Vector3(p[0]+dx,bottom+.02,p[2]),new Vector3(0,-1,0),0,.2).intersectObject(mesh,false)[0];
-          if(hit)nearest=Math.min(nearest,Math.abs(bottom-hit.point.y));
+          const from=new Vector3(p[0]+dx,bottom+.02,p[2]),dir=new Vector3(0,-1,0);
+          const hit=new Raycaster(from,dir,0,.2).intersectObject(mesh,false)[0];
+          const contact=world.castRay(new R.Ray(from,dir),.2,true);
+          if(hit && contact){
+            assert.ok(Math.abs(hit.distance-contact.timeOfImpact)<.005,`${module}: visible support differs at ${p}`);
+            nearest=Math.min(nearest,Math.abs(bottom-hit.point.y));
+          }
         }
         assert.ok(nearest<.04,`${module}: unsupported at ${p}, gap ${nearest}`);
       }
     }
-  }finally{g.geometry.dispose();g.roofs.dispose();g.surface.dispose();mat.dispose();}
+  }finally{world.free();g.geometry.dispose();g.roofs.dispose();g.surface.dispose();mat.dispose();}
 });
 
 test('extraction corrects alignment continuously and only commits after material transport and empty-hoist parking',()=>{

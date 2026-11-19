@@ -1,10 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { Box3, BoxGeometry, CylinderGeometry, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
-import { buildFactoryGantry } from './factory-gantry.ts';
+import { buildFactoryGantry, FACTORY_GANTRY } from './factory-gantry.ts';
 import { buildFactoryGeometry, FACTORY_PALETTE } from './factory-geometry.ts';
 import { createFactoryOperation, stepFactoryOperation, FACTORY_RAW_PICK, FACTORY_RAW_DROP, FACTORY_RAW_TRANSFER_TOP } from './factory-operation.ts';
 
+await R.init();
+const pose={x:0,y:0,z:0,w:1}, down={x:0,y:-1,z:0};
+function gantryPhysics(model){
+  const world=new R.World({x:0,y:0,z:0}),fixed=world.createRigidBody(R.RigidBodyDesc.fixed());
+  for(const source of model.structureContacts.filter(c=>c.id.startsWith('factory-raw-gantry-'))){
+    world.createCollider(R.ColliderDesc.trimesh(source.vertices,source.indices),fixed);
+  }
+  world.step();
+  return world;
+}
 const neutral={x:0,z:0,held:false,confirm:false};
 const bounds=o=>new Box3().setFromObject(o);
 const close=(a,b,message)=>assert.ok(Math.abs(a-b)<2e-5,`${message}: ${a} != ${b}`);
@@ -37,16 +48,20 @@ test('production extraction extremes keep bridge and trolley wheels on real supp
   const rig=buildFactoryGantry(FACTORY_PALETTE),fixed=buildFactoryGeometry(),material=new MeshBasicMaterial();
   const runway=new Mesh(fixed.geometry,material),bridge=rig.group.getObjectByName('gantry-twin-bridge-and-end-trucks');
   const trolley=rig.group.getObjectByName('gantry-trolley-deck');
-  const posts=fixed.solids.filter(s=>s.size[1]>5&&s.size[0]<.8&&s.size[2]<.8&&s.at[0]<-30&&s.at[2]>-26&&s.at[2]<-12);
-  assert.equal(posts.length,4,'four physical posts support the runway');
-  const columnXs=[...new Set(posts.map(p=>p.at[0]))];
+  const world=gantryPhysics(fixed),columnXs=FACTORY_GANTRY.columnsX;
   try{
+    for(const x of columnXs)for(const z of FACTORY_GANTRY.endsZ){
+      const hit=world.castRay(new R.Ray({x:x-.7,y:2.5,z},{x:1,y:0,z:0}),1,true);
+      assert.ok(hit); close(hit.timeOfImpact,.5,'actual supporting post');
+    }
     runway.updateMatrixWorld(true);
     for(const p of operationSamples()){
       rig.update(p);rig.group.updateMatrixWorld(true);
       for(const x of columnXs)for(const dz of [-.48,.48]){
         const wheelBottom=ray(bridge,x,5.4,p[2]+dz,1);
         const railTop=ray(runway,x,5.9,p[2]+dz,-1);
+        const contact=world.castRay(new R.Ray({x,y:5.9,z:p[2]+dz},down),.4,true);
+        assert.ok(contact); close(5.9-contact.timeOfImpact,railTop,'actual runway contact');
         close(wheelBottom,railTop,'bridge wheel/runway contact');
       }
       for(const dx of [-.43,.43])for(const dz of [-.36,.36]){
@@ -55,7 +70,7 @@ test('production extraction extremes keep bridge and trolley wheels on real supp
         close(wheelBottom,beamTop,'trolley wheel/bridge contact');
       }
     }
-  }finally{rig.dispose();disposeStatic(fixed);material.dispose();}
+  }finally{world.free();rig.dispose();disposeStatic(fixed);material.dispose();}
 });
 
 test('steel ropes contact the winch guides and magnet sockets throughout lowering without clamping',()=>{
@@ -79,26 +94,24 @@ test('steel ropes contact the winch guides and magnet sockets throughout lowerin
 });
 
 test('gantry posts and intake preserve the console approach and full raw placement tolerance',()=>{
-  const g=buildFactoryGeometry(),material=new MeshBasicMaterial(),mesh=new Mesh(g.geometry,material);
+  const g=buildFactoryGeometry(),material=new MeshBasicMaterial(),mesh=new Mesh(g.geometry,material),world=gantryPhysics(g);
   try{
     mesh.updateMatrixWorld(true);
-    for(const s of g.solids.filter(s=>s.at[0]<-30&&s.at[2]>-26&&s.at[2]<-12)){
-      const overlaps=(x,z,r)=>Math.abs(x-s.at[0])<s.size[0]/2+r&&Math.abs(z-s.at[2])<s.size[2]/2+r;
-      if(s.at[1]-s.size[1]/2<1.9){
-        assert.equal(overlaps(-37,-25,.4),false,'player stance remains clear');
-        if(s.size[1]>5)for(const p of Object.values(FACTORY_RAW_PICK))
-          assert.equal(overlaps(p[0],p[2],1.45),false,'column does not cross a raw bin');
-      }
+    assert.equal(world.intersectionWithShape({x:-37,y:.95,z:-25},pose,new R.Capsule(.48,.34)),null,'player stance remains clear');
+    for(const p of Object.values(FACTORY_RAW_PICK)){
+      assert.equal(world.intersectionWithShape({x:p[0],y:3,z:p[2]},pose,new R.Cuboid(1.45,.8,1.45)),null,'column stays out of raw bay');
     }
     for(const half of [[.31,.1,.36],[.26,.15,.26],[.29,.06,.35]])for(let angle=0;angle<Math.PI*2;angle+=Math.PI/4){
       for(const sx of [-1,1])for(const sz of [-1,1]){
         const x=FACTORY_RAW_DROP[0]+Math.cos(angle)*.72+sx*half[0];
         const z=FACTORY_RAW_DROP[2]+Math.sin(angle)*.72+sz*half[2];
         const surface=ray(mesh,x,1.5,z,-1);
+        const contact=world.castRay(new R.Ray({x,y:1.5,z},down),1,true);
+        assert.ok(contact); close(1.5-contact.timeOfImpact,surface,'visible intake deck matches physics');
         assert.ok(surface<=FACTORY_RAW_TRANSFER_TOP+.001,`rim obstructs accepted raw placement at ${x},${z}`);
       }
     }
-  }finally{disposeStatic(g);material.dispose();}
+  }finally{world.free();disposeStatic(g);material.dispose();}
 });
 
 test('updates retain finite geometry and stable resources; disposal owns only rig resources exactly once',()=>{

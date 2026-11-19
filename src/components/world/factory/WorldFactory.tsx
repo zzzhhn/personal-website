@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { registerFactoryActivity } from './factory-actor-activity';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody, CuboidCollider, TrimeshCollider } from '@react-three/rapier';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { Mesh, type PointLight } from 'three';
 import { acceleratedRaycast } from 'three-mesh-bvh';
 import { indexFactoryStructure } from './factory-structure-raycast';
@@ -65,8 +65,12 @@ export default memo(function WorldFactory({active}:{active:boolean}){
     const material=createFactoryMaterial(true,night),roofMaterial=createFactoryMaterial(true,night);
     const conveyors=createFactoryConveyors(FACTORY_PALETTE,night);
     const worklife=buildFactoryWorklife(FACTORY_PALETTE,{lamps:built.lamps,nightUniform:night});
-    const railSources = built.rails.map(({id,firstIndex,indexCount})=>({id,firstIndex,indexCount,collision:'solid',surfaceId:id}));
-    return {...built,railSources,solids:[...built.solids,...worklife.solids],material,roofMaterial,conveyors,worklife,vertices:built.surface.getAttribute('position').array as Float32Array,indices:built.surface.index!.array as Uint32Array,roofVertices:built.roofs.getAttribute('position').array as Float32Array,roofIndices:built.roofs.index!.array as Uint32Array};
+    const structureContacts = [...built.rails, ...built.structureContacts];
+    const structureSources = [
+      ...structureContacts.map(({id,firstIndex,indexCount})=>({id,firstIndex,indexCount,collision:'solid',surfaceId:id})),
+      ...built.structureDecorations.map(range=>({...range,collision:'none'})),
+    ].sort((a,b)=>a.firstIndex-b.firstIndex);
+    return {...built,structureContacts,structureSources,material,roofMaterial,conveyors,worklife,vertices:built.surface.getAttribute('position').array as Float32Array,indices:built.surface.index!.array as Uint32Array,roofVertices:built.roofs.getAttribute('position').array as Float32Array,roofIndices:built.roofs.index!.array as Uint32Array};
   },[]);
   useEffect(()=>{
     loadFactorySave();useFactoryStore.setState({active});
@@ -91,7 +95,12 @@ export default memo(function WorldFactory({active}:{active:boolean}){
     data.worklife.update(clock.elapsedTime,active,w.paused||w.poolInspect||document.hidden);
   });
   return <group name="world-factory" position={FACTORY.origin} dispose={null}>
-    <mesh name="factory-structure" geometry={data.geometry} material={data.material} raycast={acceleratedRaycast} castShadow receiveShadow userData={{solid:true,assetId:'factory-architecture',worldCollisionSources:data.railSources,worldCollisionPartial:true}}/>
+    <group name="factory-structure-contact">
+      <mesh name="factory-structure" geometry={data.geometry} material={data.material} raycast={acceleratedRaycast} castShadow receiveShadow userData={{solid:true,assetId:'factory-architecture',worldCollisionSources:data.structureSources}}/>
+      <RigidBody type="fixed" colliders={false} name="factory-equipment-collision" userData={{solid:true,assetId:'factory-architecture'}}>
+        {data.structureContacts.map(contact=><TrimeshCollider key={contact.id} name={contact.id} args={[contact.vertices,contact.indices]} friction={.85}/>)}
+      </RigidBody>
+    </group>
     <group name="factory-walk-support">
       <mesh name="factory-walks" geometry={data.surface} material={data.material} receiveShadow userData={{worldCollision:'solid',surfaceId:'factory-walk-contact'}}/>
       <RigidBody type="fixed" colliders={false} name="factory-collision" userData={{solid:true,assetId:'factory-architecture'}}>
@@ -105,11 +114,12 @@ export default memo(function WorldFactory({active}:{active:boolean}){
       </RigidBody>
     </group>
     <primitive object={data.conveyors.group}/>
-    <primitive object={data.worklife.root}/>
-    <RigidBody type="fixed" colliders={false} name="factory-equipment-collision" userData={{solid:true,assetId:'factory-architecture'}}>
-      {data.rails.map(rail=><TrimeshCollider key={rail.id} name={rail.id} args={[rail.vertices,rail.indices]} friction={.85}/>)}
-      {data.solids.map((s,i)=><CuboidCollider key={i} args={[s.size[0]/2,s.size[1]/2,s.size[2]/2]} position={s.at} rotation={s.rotation} friction={.85}/>)}
-    </RigidBody>
+    <group name="factory-worklife-contact">
+      <primitive object={data.worklife.root}/>
+      <RigidBody type="fixed" colliders={false} name="factory-worklife-collision" userData={{solid:true,assetId:'factory-worklife'}}>
+        {data.worklife.contacts.map(contact=><TrimeshCollider key={contact.id} name={contact.id} args={[contact.vertices,contact.indices]} friction={.85}/>)}
+      </RigidBody>
+    </group>
     <WorkLights lamps={data.lamps} active={active}/>
     {active&&<><WorldFactoryMechanisms/><WorldFactoryTrial/><WorldFactoryGuide/><WorldFactoryPrinter/><WorldFactoryArchive/></>}
     {FACTORY_STATIONS.map(s=><Station key={s.id} id={s.id} active={active}/>) }

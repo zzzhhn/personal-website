@@ -1,27 +1,22 @@
 import { Builder, cbox, type Surf, type V3 } from '../WorldStreetGeometry.ts';
-import type { FactorySolid } from './factory-geometry.ts';
+import { factorySourceContact, type FactorySourceContact } from './factory-contact.ts';
 
 export interface FactoryFacadePalette {
   cream: Surf; teal: Surf; steel: Surf; glass: Surf;
 }
 
-/** factory-v1 envelope, in the existing factory-local survey.
- * Integration by the scene owner:
- * - Replace the z=[-31,31], x=[-40,-25,-10,5,22,38] waist-wall/isolated-mullion
- *   loop and the z=[-24,-9,6,23] west-wall loop in factory-geometry.ts.
- * - Keep the preceding building ribs/feet, every roof face and rafter, lamps,
- *   machinery, slab, ramp, platform and railing. No existing path is replaced.
- * - Add this geometry as one PBR batch (or merge it before bakeFactoryLight),
- *   append solids, and dispose the geometry with the owning factory instance.
- * Glass is opaque coloured infill; the actual doors/loggias are open geometry. */
+/** Installed envelope and its surface contact share the same indexed geometry.
+ * Doors and loggias are open, and the opaque window panes retain their depth. */
 export function buildFactoryFacade(palette: FactoryFacadePalette) {
-  const b = new Builder(), solids: FactorySolid[] = [], P = palette;
-  const box = (at: V3, size: V3, surf: Surf, solid = false, bevel = 0) => {
-    cbox(b, at, size, surf, bevel);
-    if (solid) solids.push({ at: [...at], size: [...size] });
+  const b = new Builder(), contacts: FactorySourceContact[] = [], P = palette;
+  const box = (at: V3, size: V3, surf: Surf, bevel = 0) => cbox(b, at, size, surf, bevel);
+  let firstVertex = 0, firstIndex = 0;
+  const record = (part: string) => {
+    contacts.push(factorySourceContact(b, `factory-facade-${part}`, firstVertex, firstIndex));
+    firstVertex = b.pos.length / 3;
+    firstIndex = b.idx.length;
   };
-  // Local X spans a wall bay, +Z is its exterior. Whole-bay colliders are valid
-  // because glazing is opaque solid infill, with no hidden door in these bays.
+  // Local X spans a wall bay with +Z facing outside.
   const bay = (x: number, z: number, span: number, bottom: number, top: number, yaw = 0, waist = false) => {
     const sill = waist ? 1.975 : bottom + .42, head = top - (waist ? 1.1 : .5);
     b.tr([x, 0, z], [0, yaw, 0], () => {
@@ -47,8 +42,6 @@ export function buildFactoryFacade(palette: FactoryFacadePalette) {
       for (const dx of [-span * .23, span * .23]) cbox(b,
         [dx, (head + top) / 2, .137], [.028, top - head - .1, .004], P.teal);
     });
-    const alongZ = Math.abs(Math.sin(yaw)) > .5;
-    solids.push({ at: [x, (bottom + top) / 2, z], size: alongZ ? [.29, top - bottom, span] : [span, top - bottom, .29] });
   };
   // Wall bays share the original footprint. Only surveyed service doors remain
   // open below their headers; gaps between every repeated bay were accidental.
@@ -58,54 +51,58 @@ export function buildFactoryFacade(palette: FactoryFacadePalette) {
     bay(x, z, 12, .125, top, z < 0 ? Math.PI : 0, true);
   }
   for (const z of [-24, -9, 6, 23]) bay(-46, z, 12, .1, 8.9, -Math.PI / 2, true);
+  record('lower-wall-bays');
   // North: raw delivery and east-entry corner. South: dispatch service exit.
   // Other bay gaps are infill, rather than repeated unassigned doorways.
   for (const z of [-31, 31]) for (const [a, end] of [[-34, -31], [-19, -16], [-4, -1], [11, 16], [28, 32], [44, 46]]) {
     const top = z > 0 && end === 46 ? 3.75 : end <= -1 ? 8.9 : 6.9;
     const open = z < 0 ? a === -34 || a === 44 : a === 28;
     const bottom = open ? 2.95 : .125;
-    box([(a + end) / 2, (bottom + top) / 2, z], [end - a, top - bottom, .27], P.cream, true, .025);
+    box([(a + end) / 2, (bottom + top) / 2, z], [end - a, top - bottom, .27], P.cream, .025);
   }
   for (const [a, end] of [[-18, -15], [-3, 0], [12, 17]]) {
     const bottom = a === -18 ? 2.95 : .125;
-    box([-46, (bottom + 8.9) / 2, (a + end) / 2], [.27, 8.9 - bottom, end - a], P.cream, true, .025);
+    box([-46, (bottom + 8.9) / 2, (a + end) / 2], [.27, 8.9 - bottom, end - a], P.cream, .025);
   }
   for (const [a, end] of [[-31, -30], [29, 31]])
-    box([-46, 4.5125, (a + end) / 2], [.27, 8.775, end - a], P.cream, true, .025);
-  for (const z of [-31, 31]) box([22.5, 7, z], [47, .2, .27], P.cream, true, .015);
+    box([-46, 4.5125, (a + end) / 2], [.27, 8.775, end - a], P.cream, .025);
+  for (const z of [-31, 31]) box([22.5, 7, z], [47, .2, .27], P.cream, .015);
   // Close the surplus mezzanine gap west of the actual east landing.
   bay(35.1, 31, 6.2, 3.75, 6.9);
 
+  record('service-door-infill');
   // Upper atrium: a broad clerestory below the existing roof truss. The south
   // platform x=2..16 crosses z=31 at Y=8.52, so its loggia stays genuinely open.
   for (const [a, end] of [[-1, 14], [14, 30], [30, 46]]) bay((a + end) / 2, -31, end - a, 7.1, 14.75, Math.PI);
   for (const [a, end] of [[17, 30], [30, 46]]) bay((a + end) / 2, 31, end - a, 7.1, 14.75);
-  box([0, 10.925, 31], [2, 7.65, .27], P.cream, true, .025);
-  box([9, 7.55, 31], [16, .9, .27], P.cream, true, .025);
-  box([9, 13.15, 31], [16, 3.2, .27], P.cream, true, .025);
+  box([0, 10.925, 31], [2, 7.65, .27], P.cream, .025);
+  box([9, 7.55, 31], [16, .9, .27], P.cream, .025);
+  box([9, 13.15, 31], [16, 3.2, .27], P.cream, .025);
   // The east L1 passage Y=4.32 remains open up to the underside at Y=6.9.
   for (const [a, end] of [[-31, -16], [-16, -1], [-1, 14], [14, 31]])
     bay(46, (a + end) / 2, end - a, 7.1, 14.75, Math.PI / 2);
-  box([46, 7.05, 0], [.28, .3, 62], P.teal, true, .02);
+  box([46, 7.05, 0], [.28, .3, 62], P.teal, .02);
   // Full-height supports sit outside the existing x=46 walking edge, within
   // its original x=46.4 column-foot envelope, and align with closed ground bays.
-  for (const z of [-24.2, 0, 29.6]) box([46.25, 7.5, z], [.28, 14.75, .35], P.teal, true, .025);
+  for (const z of [-24.2, 0, 29.6]) box([46.25, 7.5, z], [.28, 14.75, .35], P.teal, .025);
   // External fascia makes the open L1 gallery read as a deliberate floor band.
   // It sits above the 4.1 m courtyard crossing and outside the existing slab.
   for (const [a, end] of [[1, 29.425], [29.775, 31]])
-    box([46.25, 4.205, (a + end) / 2], [.28, .19, end - a], P.cream, true, .015);
+    box([46.25, 4.205, (a + end) / 2], [.28, .19, end - a], P.cream, .015);
   for (const [a, end] of [[-25.95, -22.5], [-3.5, 3.5], [28.5, 30.8]])
-    box([46, 1.725, (a + end) / 2], [.27, 3.2, end - a], P.cream, true, .025);
+    box([46, 1.725, (a + end) / 2], [.27, 3.2, end - a], P.cream, .025);
 
+  record('clerestory-and-east-wall');
   // A recessed entrance portal and thick soffit provide an identifiable entry
   // volume without extending the building or changing the approach at -29.5.
   // The south jamb stays in the original corner-column foot, preserving the
   // old x=45,z=-31 corner door as well as the primary east approach.
-  box([46.19, 2, -30.75], [.4, 3.75, .6], P.cream, true, .035);
-  box([45.45, 2, -26.25], [1.1, 3.75, .6], P.cream, true, .035);
-  box([44.5, 4.1, -28.5], [3, .45, 5], P.cream, true, .035);
+  box([46.19, 2, -30.75], [.4, 3.75, .6], P.cream, .035);
+  box([45.45, 2, -26.25], [1.1, 3.75, .6], P.cream, .035);
+  box([44.5, 4.1, -28.5], [3, .45, 5], P.cream, .035);
   box([44.5, 3.89, -28.5], [2.85, .04, 4.85], P.teal);
 
+  record('entry-canopy');
   // Closed west sawtooth cheeks follow the existing three roof ramps exactly.
   const cheek = (z0: number, z1: number) => {
     const points: [number, number][] = [[9, z0], [9, z1], [11.5, z1]];
@@ -131,6 +128,7 @@ export function buildFactoryFacade(palette: FactoryFacadePalette) {
         cbox(b, [0, 0, 0], [length, .32, .16], P.cream, .025));
     }
   }
+  record('eaves-and-sawtooth-cheeks');
   const geometry = b.build();
-  return { geometry, solids, triangles: b.triangles };
+  return { geometry, contacts, triangles: b.triangles };
 }

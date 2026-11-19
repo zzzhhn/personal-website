@@ -18,15 +18,16 @@ import { createPlayerClearance,sweptPlayerVelocity,playerVelocityChange } from '
 import { FACTORY_WALK_NODES,FACTORY_WALK_EDGES,factoryWalkingRoute } from './factory-navigation.ts';
 import { createFactoryFollower,stepFactoryFollower } from './factory-follower.ts';
 await R.init();
-function worldFor(g,additionalSolids=[]){
+function worldFor(g){
   const w=new R.World({x:0,y:-12.5,z:0});w.timestep=1/60;
   const floor=w.createRigidBody(R.RigidBodyDesc.fixed());floor.userData={surface:true};
   w.createCollider(R.ColliderDesc.trimesh(g.surface.getAttribute('position').array,g.surface.index.array).setFriction(.8),floor);
   const fixed=w.createRigidBody(R.RigidBodyDesc.fixed());fixed.userData={solid:true};
   w.createCollider(R.ColliderDesc.trimesh(g.roofs.attributes.position.array,g.roofs.index.array),fixed);
-  for(const rail of g.rails)w.createCollider(R.ColliderDesc.trimesh(rail.vertices,rail.indices),fixed);
-  const printer=buildFactoryPrinter(FACTORY_PALETTE);
-  const solids=[...g.solids,...additionalSolids,...printer.solids];printer.dispose();
+  for(const contact of [...g.rails, ...g.structureContacts])w.createCollider(R.ColliderDesc.trimesh(contact.vertices,contact.indices).setFriction(.85),fixed);
+  const worklife=buildFactoryWorklife(FACTORY_PALETTE), printer=buildFactoryPrinter(FACTORY_PALETTE);
+  for(const contact of worklife.contacts)w.createCollider(R.ColliderDesc.trimesh(contact.vertices,contact.indices).setFriction(.85),fixed);
+  const solids=printer.solids; worklife.dispose(); printer.dispose();
   for(const s of solids){
     const c=R.ColliderDesc.cuboid(...s.size.map(v=>v/2)).setTranslation(...s.at);
     if(s.rotation){const q=new Quaternion().setFromEuler(new Euler(...s.rotation,'YXZ'));c.setRotation(q);}
@@ -35,6 +36,29 @@ function worldFor(g,additionalSolids=[]){
   return w;
 }
 const dispose=g=>{g.geometry.dispose();g.roofs.dispose();g.surface.dispose();};
+test('merged factory structure assigns its whole installed colour batch to actual surfaces or floor marks', () => {
+  const model = buildFactoryGeometry(), positions = model.geometry.attributes.position.array, indices = model.geometry.index.array;
+  try {
+    const contacts = [...model.rails, ...model.structureContacts].sort((a,b)=>a.firstIndex-b.firstIndex);
+    let previous = 0;
+    for (const { id, firstIndex, indexCount, vertices, indices: local } of contacts) {
+      assert.ok(firstIndex >= previous, id);
+      assert.equal(indexCount, local.length, id);
+      const baseVertex = indices[firstIndex] - local[0];
+      assert.deepEqual(positions.subarray(baseVertex * 3, baseVertex * 3 + vertices.length), vertices, id);
+      for (let i = 0; i < indexCount; i++) assert.equal(indices[firstIndex + i] - baseVertex, local[i], id);
+      previous = firstIndex + indexCount;
+    }
+    const ranges = [...contacts, ...model.structureDecorations].sort((a,b)=>a.firstIndex-b.firstIndex);
+    assert.equal(new Set(ranges.map(range=>range.id)).size, ranges.length);
+    let cursor = 0;
+    for (const range of ranges) { assert.equal(range.firstIndex,cursor,range.id); cursor += range.indexCount; }
+    assert.equal(cursor,indices.length);
+    assert.deepEqual(model.structureDecorations.map(range=>range.id),
+      ['factory-floor-markings','factory-routing-transfer-marks','factory-forecourt-staging-markings']);
+  } finally { dispose(model); }
+});
+
 test('flat test lanes have one visible courtyard surface rather than coplanar overlays',()=>{
   const g=buildFactoryGeometry(),material=new MeshBasicMaterial(),mesh=new Mesh(g.surface,material);
   try{
@@ -102,19 +126,15 @@ test('two test lanes derive from identical translated surface sections',()=>{
   }finally{w.free();dispose(g);}
 });
 test('finished modules can leave all three press beds through a real opening',()=>{
-  const g=buildFactoryGeometry();
+  const g=buildFactoryGeometry(),w=worldFor(g),pose={x:0,y:0,z:0,w:1};
   try{
+    w.step();
     for(const z of [-11,2,15]){
-      // The workpiece travels out along +X. Old full-depth columns blocked it
-      // despite the visual conveyor continuing on the far side of the wall.
-      const outfeed=new Box3(new Vector3(-24.9,1.4,z-.6),new Vector3(-22,2.2,z+.6));
-      for(const solid of g.solids){
-        if(solid.rotation)continue;
-        const bounds=new Box3().setFromCenterAndSize(new Vector3(...solid.at),new Vector3(...solid.size));
-        assert.ok(!bounds.intersectsBox(outfeed),`press ${z} blocked by ${solid.at}`);
-      }
+      // The workpiece travels out along +X through the real post openings.
+      const hit=w.intersectionWithShape({x:-23.45,y:1.8,z},pose,new R.Cuboid(1.45,.4,.6));
+      assert.equal(hit,null,`press ${z} outfeed blocked`);
     }
-  }finally{dispose(g);}
+  }finally{w.free();dispose(g);}
 });
 test('every signed ground-floor walking edge clears the full standing capsule in both directions',()=>{
   const g=buildFactoryGeometry(),w=worldFor(g),shape=new R.Capsule(.48,.34),q={x:0,y:0,z:0,w:1};
@@ -166,13 +186,18 @@ test('operator views reach the real work area without the collision camera colla
       const hit=w.castShape({x:target[0],y:target[1],z:target[2]},{x:0,y:0,z:0,w:1},
         {x:eye[0]-target[0],y:eye[1]-target[1],z:eye[2]-target[2]},new R.Ball(.18),0,1,true);
       assert.ok(!hit,`${station} view blocked at ${hit?.time_of_impact}, collider ${JSON.stringify(hit?.collider.translation())}`);
+      if (['frame','wheels','shell'].includes(station)) {
+        const old = w.castShape({x:target[0],y:target[1],z:target[2]},{x:0,y:0,z:0,w:1},
+          {x:-39-target[0],y:5.2-target[1],z:3.5},new R.Ball(.18),0,1,true);
+        assert.ok(old&&old.time_of_impact<.35,station+' must still collide with the actual luminaire on the old camera sweep');
+      }
     }
   }finally{w.free();dispose(g);}
 });
 
 test('every factory console advertises clear capsule routes and rejects visible obstructed approaches',()=>{
-  const g=buildFactoryGeometry(), work=buildFactoryWorklife(FACTORY_PALETTE,{lamps:g.lamps,nightUniform:{value:0}});
-  const w=worldFor(g,work.solids), registry=createActorActivities(), release=registerFactoryActivity(registry);
+  const g=buildFactoryGeometry();
+  const w=worldFor(g), registry=createActorActivities(), release=registerFactoryActivity(registry);
   const body=w.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
   const capsule=new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
   w.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body);w.step();
@@ -203,7 +228,7 @@ test('every factory console advertises clear capsule routes and rejects visible 
       }
       assert.deepEqual(samples,new Set([false,true]),station.id+' needs both clear and blocked approaches');
     }
-  }finally{release();work.dispose();dispose(g);w.free();}
+  }finally{release();dispose(g);w.free();}
 });
 
 test('rechecking the moving raw-console approach sees its continuous floor at the live coordinates',()=>{

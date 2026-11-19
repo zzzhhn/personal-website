@@ -1,6 +1,7 @@
 import { Bone, Float32BufferAttribute, Group, Mesh, Quaternion, Skeleton, SkinnedMesh, Uint16BufferAttribute, Vector3 } from 'three';
 import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
-import type { FactoryLamp, FactorySolid } from './factory-geometry.ts';
+import type { FactoryLamp } from './factory-geometry.ts';
+import { factorySourceContact, type FactorySourceContact } from './factory-contact.ts';
 import { bakeFactoryLight, createFactoryMaterial } from './factory-lighting.ts';
 
 type Palette = Record<'cream'|'teal'|'steel'|'silver'|'dark'|'amber', Surf>;
@@ -14,19 +15,18 @@ const ease = (t: number) => { const v = Math.max(0, Math.min(1, t)); return v * 
 
 /** Factory-local, two fixed workstations. Elapsed is monotonic seconds. Only
  * active/unpaused deltas advance the bounded demonstration loops; no walking,
- * production events, batch IDs or physics bodies are generated. Parent this
- * root once under the existing FACTORY.origin group and append its solids.
+ * production events or batch IDs are generated. Parent the root and fixed
+ * surface contacts under the existing FACTORY.origin group.
  * Material, geometry and skeleton are owned here, including detached meshes. */
 export function buildFactoryWorklife(palette: Palette, options: {
   lamps?: readonly FactoryLamp[]; nightUniform?: { value: number };
 } = {}) {
-  const P = palette, fixed = new Builder(), moving = new Builder(), root = new Group(), solids: FactorySolid[] = [];
+  const P = palette, fixed = new Builder(), moving = new Builder(), root = new Group(), contacts: FactorySourceContact[] = [];
   root.name = 'factory-worklife'; root.visible = false;
   const gloves: Surf = { color: P.amber.color, rough: .9, metal: 0 };
   const skins: number[] = [], weights: number[] = [];
   const point = (origin: V3, at: V3): V3 => at.map((v, i) => v + origin[i]) as V3;
   const box = (origin: V3, at: V3, size: V3, s: Surf, bevel = 0) => cbox(fixed, point(origin, at), size, s, bevel);
-  const solid = (origin: V3, at: V3, size: V3) => solids.push({ at: point(origin, at), size: [...size] });
   const mark = (bone: number, add: () => void) => {
     const first = moving.pos.length / 3; add();
     for (let i = first; i < moving.pos.length / 3; i++) { skins.push(bone, 0, 0, 0); weights.push(1, 0, 0, 0); }
@@ -38,7 +38,7 @@ export function buildFactoryWorklife(palette: Palette, options: {
   pickup.copy(grip).applyAxisAngle(axisY, -.62).add(prepAnchor);
 
   FACTORY_WORKLIFE_STATIONS.forEach((station, index) => {
-    const o = station.at;
+    const o = station.at, firstVertex = fixed.pos.length / 3, firstIndex = fixed.idx.length;
     // An accessible-height table, a side rack and one under-table remnants bin.
     for (const x of [-.34, .7]) for (const z of [.33, .97]) {
       box(o, [x, .37, z], [.075, .62, .075], P.teal, .008);
@@ -46,10 +46,8 @@ export function buildFactoryWorklife(palette: Palette, options: {
     }
     for (const z of [.33, .97]) box(o, [.18, .68, z], [1.18, .08, .08], P.steel);
     box(o, [.18, .76, .66], [1.25, .08, .88], P.silver, .012);
-    solid(o, [.18, .4, .66], [1.25, .8, .88]);
     for (const x of [-1.45, -.85]) for (const z of [.25, 1]) box(o, [x, .58, z], [.055, 1.16, .055], P.teal);
     for (const y of [.16, .66, 1.16]) box(o, [-1.15, y, .625], [.7, .06, .85], P.steel, .008);
-    solid(o, [-1.15, .58, .625], [.7, 1.16, .85]);
     for (let i = 0; i < 3; i++) {
       const x = -1.36 + i * .21;
       box(o, [x, .25, .55], [.12, .12, .42], index ? P.cream : P.silver, .008);
@@ -77,7 +75,23 @@ export function buildFactoryWorklife(palette: Palette, options: {
     });
     box(o, [0, 1.34, .18], [.30, .15, .07], visor, .025);
     for (const side of [-1, 1]) bar(fixed, point(o, [side * .20, 1.33, 0]), point(o, [side * .265, 1.33, 0]), .065, gloves, 8);
-    solid(o, [0, .79, 0], [.55, 1.58, .43]);
+    if (index === 0) {
+      for (const side of [-1, 1]) {
+        const x = .18 + side * Math.sin(.62) * .275, z = .12 + Math.cos(.62) * .275;
+        for (const dx of [-.115, .115]) box(o, [x + dx, .815, z], [.016, .03, .216], P.teal);
+        for (const dz of [-.108, .108]) box(o, [x, .815, z + dz], [.214, .03, .016], P.teal);
+      }
+    } else {
+      for (const x of [-.07, .43]) box(o, [x, .805, .8], [.1, .01, .35], P.steel);
+      box(o, [.18, 1.01, .8], [.66, .4, .4], P.teal, .025);
+      for (const x of [-.11, .47]) box(o, [x, 1.01, .59], [.08, .4, .06], P.cream);
+      for (const y of [.84, 1.18]) box(o, [.18, y, .59], [.5, .06, .06], P.cream);
+      box(o, [.18, 1.01, .62], [.50, .28, .02], P.steel);
+      bar(fixed, point(o, [.18, 1.005, .42]), point(o, [.18, 1.005, .635]), .012, P.silver, 8);
+      fixed.tr(point(o, [.18, 1.005, .44]), [Math.PI / 2, 0, 0], () => lathe(fixed,
+        [[0, -.01], [.015, -.01], [.015, .01], [0, .01]], P.silver, { sides: 6, faceted: true }));
+    }
+    contacts.push(factorySourceContact(fixed, `factory-worklife-${station.id}-surface`, firstVertex, firstIndex));
     mark(index + 1, () => {
       const at = armAnchors[index];
       moving.tr(at, [0, 0, 0], () => {
@@ -91,20 +105,6 @@ export function buildFactoryWorklife(palette: Palette, options: {
       });
     });
   });
-  const prep = FACTORY_WORKLIFE_STATIONS[0].at, repair = FACTORY_WORKLIFE_STATIONS[1].at;
-  for (const side of [-1, 1]) {
-    const x = .18 + side * Math.sin(.62) * .275, z = .12 + Math.cos(.62) * .275;
-    for (const dx of [-.115, .115]) box(prep, [x + dx, .815, z], [.016, .03, .216], P.teal);
-    for (const dz of [-.108, .108]) box(prep, [x, .815, z + dz], [.214, .03, .016], P.teal);
-  }
-  for (const x of [-.07, .43]) box(repair, [x, .805, .8], [.1, .01, .35], P.steel);
-  box(repair, [.18, 1.01, .8], [.66, .4, .4], P.teal, .025);
-  for (const x of [-.11, .47]) box(repair, [x, 1.01, .59], [.08, .4, .06], P.cream);
-  for (const y of [.84, 1.18]) box(repair, [.18, y, .59], [.5, .06, .06], P.cream);
-  box(repair, [.18, 1.01, .62], [.50, .28, .02], P.steel);
-  bar(fixed, point(repair, [.18, 1.005, .42]), point(repair, [.18, 1.005, .635]), .012, P.silver, 8);
-  fixed.tr(point(repair, [.18, 1.005, .44]), [Math.PI / 2, 0, 0], () => lathe(fixed,
-    [[0, -.01], [.015, -.01], [.015, .01], [0, .01]], P.silver, { sides: 6, faceted: true }));
   mark(3, () => moving.tr([pickup.x, pickup.y, pickup.z], [0, 0, 0], () => {
     // One finite U-shaped cleat, never a duplicated or newly produced part.
     for (const x of [-.065, .065]) cbox(moving, [x, 0, -.015], [.03, .045, .07], P.silver, .004);
@@ -119,6 +119,8 @@ export function buildFactoryWorklife(palette: Palette, options: {
   const material = createFactoryMaterial(true, options.nightUniform ?? { value: 0 });
   const structure = new Mesh(fixedGeometry, material), mechanism = new SkinnedMesh(movingGeometry, material);
   structure.name = 'worklife-benches-workers-and-racks'; mechanism.name = 'worklife-working-arms-and-cleat';
+  structure.userData = { assetId: 'factory-worklife', solid: true, worldCollisionSources: contacts.map(({ id, firstIndex, indexCount }) => ({ id, firstIndex, indexCount, collision: 'solid' })) };
+  mechanism.userData = { assetId: 'factory-worklife', worldCollision: 'none', worldCollisionReason: 'Scripted hand, wrench and cleat demonstration on fixed workstations' };
   structure.castShadow = true; mechanism.castShadow = false;
   structure.receiveShadow = mechanism.receiveShadow = true;
   mechanism.boundingSphere = movingGeometry.boundingSphere!.clone();
@@ -148,9 +150,9 @@ export function buildFactoryWorklife(palette: Palette, options: {
   };
   pose();
   const metrics = { triangles: fixed.triangles + moving.triangles, drawCalls: 2, shadowDrawCalls: 1, drivenObjects: 3,
-    bones: 4, geometries: 2, materials: 1, colliders: solids.length };
+    bones: 4, geometries: 2, materials: 1, colliders: contacts.length };
   root.userData.factoryWorklife = { stations: FACTORY_WORKLIFE_STATIONS, metrics };
-  return { root, solids, metrics, update(elapsed: number, active: boolean, paused: boolean) {
+  return { root, contacts, metrics, update(elapsed: number, active: boolean, paused: boolean) {
     if (disposed) return;
     root.visible = active;
     if (!Number.isFinite(elapsed) || !active || paused) { last = null; return; }

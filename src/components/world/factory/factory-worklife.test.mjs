@@ -1,11 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Box3, BoxGeometry, Mesh, MeshBasicMaterial, Ray, Vector3 } from 'three';
+import { Box3, BoxGeometry, Mesh, MeshBasicMaterial, Ray, Raycaster, Vector3 } from 'three';
+import R from '@dimforge/rapier3d-compat';
 import { buildFactoryWorklife, FACTORY_WORKLIFE_STATIONS } from './factory-worklife.ts';
 import { FACTORY_PALETTE } from './factory-geometry.ts';
 import { FACTORY_STATIONS, FACTORY_WORK_VIEWS, FACTORY_DISPATCH_VIEWS } from './factory-layout.ts';
 import { FACTORY_GANTRY } from './factory-gantry.ts';
 import { FACTORY_ASSEMBLY_BOUNDS, FACTORY_LINE_Z } from './factory-operation.ts';
+
+await R.init();
 
 const near = (a, b, tolerance = 1e-5) => assert.ok(Math.abs(a - b) < tolerance, `${a} != ${b}`);
 const box = (min, max) => new Box3(new Vector3(...min), new Vector3(...max));
@@ -22,7 +25,7 @@ test('two useful fixed workstations fit the extra triangle, draw and animated-ob
     assert.equal(model.metrics.triangles, triangles); assert.ok(triangles <= 6000);
     assert.equal(meshes.length, 2); assert.ok(meshes.length + meshes.filter(m => m.castShadow).length <= 3);
     assert.equal(rig.skeleton.bones.length, 4); assert.ok(model.metrics.drivenObjects <= 12);
-    assert.equal(new Set(meshes.map(m => m.material)).size, 1); assert.equal(model.solids.length, 6);
+    assert.equal(new Set(meshes.map(m => m.material)).size, 1); assert.equal(model.contacts.length, 2); assert.equal(model.metrics.colliders, 2);
     const p = rig.geometry.attributes.position, ids = rig.geometry.attributes.skinIndex, weights = rig.geometry.attributes.skinWeight;
     assert.equal(ids.count, p.count); assert.equal(weights.count, p.count);
     for (let i = 0; i < ids.count; i++) { assert.ok(ids.getX(i) >= 1 && ids.getX(i) <= 3); near(weights.getX(i), 1); }
@@ -32,6 +35,47 @@ test('two useful fixed workstations fit the extra triangle, draw and animated-ob
     }
     console.log(JSON.stringify(model.metrics));
   } finally { model.dispose(); }
+});
+
+test('installed benches and racks leave the actual gaps open and match the visible fixed surfaces', () => {
+  const model = buildFactoryWorklife(FACTORY_PALETTE), { meshes } = components(model);
+  const structure = meshes.find(mesh => !mesh.isSkinnedMesh), positions = structure.geometry.attributes.position.array;
+  const world = new R.World({ x: 0, y: 0, z: 0 }), body = world.createRigidBody(R.RigidBodyDesc.fixed());
+  const q = { x: 0, y: 0, z: 0, w: 1 }, openings = [], surfaces = [];
+  try {
+    for (const contact of model.contacts) {
+      const sourceIndices = structure.geometry.index.array.subarray(contact.firstIndex, contact.firstIndex + contact.indexCount);
+      assert.equal(sourceIndices.length, contact.indices.length);
+      const firstVertex = sourceIndices[0] - contact.indices[0];
+      assert.deepEqual(positions.subarray(firstVertex * 3, firstVertex * 3 + contact.vertices.length), contact.vertices);
+      for (let i = 0; i < sourceIndices.length; i++) assert.equal(sourceIndices[i] - firstVertex, contact.indices[i]);
+      world.createCollider(R.ColliderDesc.trimesh(contact.vertices, contact.indices), body);
+    }
+    world.step();
+    for (const station of FACTORY_WORKLIFE_STATIONS) {
+      const point = (dx, dy, dz) => new Vector3(station.at[0] + dx, station.at[1] + dy, station.at[2] + dz);
+      for (const [part, dx, dy] of [['under table', .34, .50], ['lower shelf gap', -1.14, .48], ['upper shelf gap', -1.14, .96]]) {
+        const from = point(dx, dy, 1.28), direction = new Vector3(0, 0, -1), distance = .65;
+        assert.equal(new Raycaster(from, direction, 0, distance).intersectObject(structure).length, 0, part);
+        assert.equal(world.castRay(new R.Ray(from, direction), distance, true), null, part);
+        assert.equal(world.castShape(from, q, direction, new R.Ball(.025), 0, distance, true), null, part);
+        openings.push({ station: station.id, part, open: true });
+      }
+      for (const [part, from, direction, limit] of [
+        ['table top', point(.73, 1.7, .82), new Vector3(0, -1, 0), 1.2],
+        ['shelf top', point(-1.14, 1.7, .82), new Vector3(0, -1, 0), 1.2],
+        ['table leg', point(.70, .48, 1.28), new Vector3(0, 0, -1), .5],
+        ['worker torso', point(0, .95, -.48), new Vector3(0, 0, 1), .7],
+      ]) {
+        const visual = new Raycaster(from, direction, 0, limit).intersectObject(structure)[0];
+        const physical = world.castRay(new R.Ray(from, direction), limit, true);
+        assert.ok(visual && physical, `${station.id} ${part}`);
+        near(visual.distance, physical.timeOfImpact, .001);
+        surfaces.push({ station: station.id, part, visual: visual.distance, physical: physical.timeOfImpact });
+      }
+    }
+    console.log(JSON.stringify({ openings, surfaces }));
+  } finally { world.free(); model.dispose(); }
 });
 
 test('station volumes avoid interaction bodies, material lines, both hoists and authored camera rays', () => {

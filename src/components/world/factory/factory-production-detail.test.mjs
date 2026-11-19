@@ -1,5 +1,6 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { Box3, Mesh, MeshBasicMaterial, DoubleSide, Raycaster, Triangle, Vector3 } from 'three';
 import { buildFactoryProductionDetail, FACTORY_TOOL_RACKS } from './factory-production-detail.ts';
 import { FACTORY_PALETTE } from './factory-geometry.ts';
@@ -9,35 +10,60 @@ import { FACTORY_RAW_PICK, FACTORY_RAW_HALF_HEIGHT, FACTORY_CONVEYOR_TOP, FACTOR
 import { FACTORY_MODULES } from './factory-game.ts';
 import { factoryIntakePath, factoryRoutingPath, sampleFactoryRoute } from './factory-routing.ts';
 
+await R.init();
+
 const model = buildFactoryProductionDetail(FACTORY_PALETTE), geometry = model.geometry;
 const material = new MeshBasicMaterial({ side: DoubleSide }), mesh = new Mesh(geometry, material);
-const boxes = model.solids.map(s => new Box3().setFromCenterAndSize(new Vector3(...s.at), new Vector3(...s.size)));
+const world = new R.World({ x: 0, y: 0, z: 0 }), body = world.createRigidBody(R.RigidBodyDesc.fixed());
+const identity = { x: 0, y: 0, z: 0, w: 1 };
+for (const contact of model.contacts) world.createCollider(R.ColliderDesc.trimesh(contact.vertices, contact.indices), body);
+world.step();
 const triangles = [], p = geometry.attributes.position, index = geometry.index;
 for (let i = 0; i < index.count; i += 3) triangles.push(new Triangle(...[0, 1, 2].map(j => new Vector3().fromBufferAttribute(p, index.getX(i + j)))));
 const bounds = (min, max) => new Box3(new Vector3(...min), new Vector3(...max));
 function clear(box, label) {
-  for (let i = 0; i < boxes.length; i++) if (box.intersectsBox(boxes[i])) assert.fail(`${label}: collider ${i}`);
+  const center = box.getCenter(new Vector3()), half = box.getSize(new Vector3()).multiplyScalar(.5);
+  assert.equal(world.intersectionWithShape(center, identity, new R.Cuboid(...half)), null, label);
   for (let i = 0; i < triangles.length; i++) if (box.intersectsTriangle(triangles[i])) assert.fail(`${label}: visible triangle ${i}`);
 }
-after(() => { geometry.dispose(); material.dispose(); });
+after(() => { world.free(); geometry.dispose(); material.dispose(); });
 
-test('production details merge as one finite static batch with bounded exact boxes and seven fixtures', () => {
+test('production details merge as one finite static batch with bounded same-source contact and seven fixtures', () => {
   assert.equal(model.triangles, index.count / 3); assert.ok(model.triangles < 5600);
-  assert.ok(model.solids.length > 0 && model.solids.length <= 190); assert.equal(model.lamps.length, 7); assert.equal(FACTORY_TOOL_RACKS.length, 3);
+  assert.equal(model.contacts.length, 10); assert.equal(model.lamps.length, 7); assert.equal(FACTORY_TOOL_RACKS.length, 3);
   assert.deepEqual(geometry.groups, []);
   for (const a of Object.values(geometry.attributes)) for (const value of a.array) assert.ok(Number.isFinite(value));
-  for (const box of boxes) assert.ok(box.min.y >= .1199);
-  console.log(JSON.stringify({ triangles: model.triangles, colliders: model.solids.length, addedColorDrawsAfterMerge: 0, realtimeLights: 0 }));
+  assert.equal(model.contacts.reduce((n, contact) => n + contact.indexCount, 0), index.count);
+  console.log(JSON.stringify({ triangles: model.triangles, colliders: model.contacts.length, addedColorDrawsAfterMerge: 0, realtimeLights: 0 }));
 });
 
 test('reserve stock supports each live source blank at its real underside, below the extraction sweep', () => {
   for (const module of FACTORY_MODULES) {
     const [x, y, z] = FACTORY_RAW_PICK[module], top = y - FACTORY_RAW_HALF_HEIGHT[module];
-    const hit = new Raycaster(new Vector3(x + .013, y + .5, z + .017), new Vector3(0, -1, 0), 0, 2).intersectObject(mesh)[0];
-    assert.ok(hit); assert.ok(Math.abs(hit.point.y - top) < 1e-5, module);
+    const from = new Vector3(x + .013, y + .5, z + .017), direction = new Vector3(0, -1, 0);
+    const hit = new Raycaster(from, direction, 0, 2).intersectObject(mesh)[0];
+    const contact = world.castRay(new R.Ray(from, direction), 2, true);
+    assert.ok(hit && contact); assert.ok(Math.abs(hit.point.y - top) < 1e-5, module);
+    assert.ok(Math.abs(from.y - contact.timeOfImpact - top) < 1e-5, module);
     clear(bounds([x - .34, top + .01, z - .37], [x + .34, y + .6, z + .37]), `${module} live blank and magnet`);
   }
   clear(bounds([-43.5, 1.72, -23.5], [-31.5, 7.65, -13.5]), 'gantry load and trolley envelope');
+});
+
+test('tool rack dies have physical sides and retain their visible open centres', () => {
+  const north = new Vector3(0, 0, -1), observations = [];
+  for (const { module, at: [x, y, z] } of FACTORY_TOOL_RACKS) {
+    const solid = new Vector3(x - .66 + .26, y + .93 + .23, z + .52);
+    const drawn = new Raycaster(solid, north, 0, .8).intersectObject(mesh)[0];
+    const hit = world.castRay(new R.Ray(solid, north), .8, true);
+    assert.ok(drawn && hit, module);
+    assert.ok(Math.abs(drawn.distance - hit.timeOfImpact) < .001, module);
+    const opening = new Vector3(x - .66, solid.y, solid.z);
+    assert.equal(new Raycaster(opening, north, 0, .8).intersectObject(mesh).length, 0, module);
+    assert.equal(world.castShape(opening, identity, north, new R.Ball(.025), 0, .8, true), null, module);
+    observations.push({ module, visible: drawn.distance, physical: hit.timeOfImpact, open: true });
+  }
+  console.log(JSON.stringify(observations));
 });
 
 test('all stations, signed walking edges and real operating camera rays retain clearance', () => {
