@@ -58,6 +58,17 @@ def pairs(ids):
     return result
 
 
+def collision_problems(coverage):
+    problems = list(coverage["errors"])
+    for scope in ("mounted", "submitted"):
+        counts = coverage[scope]
+        gaps = coverage[scope + "GapsByRegion"]
+        if (counts["meshes"] <= 0 or counts["declared"] != counts["meshes"]
+                or counts["unclassified"] or counts["invalid"] or gaps):
+            problems.append(f"{scope}: {counts}, regions: {gaps}")
+    return problems
+
+
 def shoot(page, select, shot, diagnostics):
     old_frame = page.evaluate("window.__worldDebug.renderLoop().frame")
     select.evaluate("""(el, shot) => {
@@ -101,14 +112,15 @@ def shoot(page, select, shot, diagnostics):
     if image.size != tuple(VIEWPORT.values()) or max(ImageStat.Stat(image).stddev) < 2:
         raise RuntimeError(f"Invalid render at {shot}: {image.size}, channel deviation {ImageStat.Stat(image).stddev}")
     coverage = capture["coverage"]
-    if coverage["errors"] or not coverage["submitted"]["meshes"]:
+    problems = collision_problems(coverage)
+    if problems:
         diagnostics.mkdir(parents=True, exist_ok=True)
         image.save(diagnostics / (shot + ".png"))
         (diagnostics / (shot + ".json")).write_text(json.dumps({
             "shot": shot, "camera": capture["camera"], "coverage": coverage,
             "url": page.url, "viewport": VIEWPORT, "quality": "balanced",
         }, indent=2) + "\n")
-        raise RuntimeError(f"Collision inventory failed at {shot}: {coverage['errors'][:10]}, submitted={coverage['submitted']}")
+        raise RuntimeError(f"Collision inventory failed at {shot}: {problems[:10]}")
     return capture["camera"], image, coverage
 
 
@@ -275,6 +287,11 @@ def assemble(root):
             raise ValueError("Duplicate site in captured rows")
         if image.size != (TILE_WIDTH * 4, ROW_HEIGHT * ((len(manifest["sites"]) + 1) // 2)):
             raise ValueError("Unexpected dimensions for captured rows")
+        for site, record in manifest["sites"].items():
+            for time in ("day", "night"):
+                problems = collision_problems(record["collisionCoverage"][time])
+                if problems:
+                    raise ValueError(f"Collision inventory failed at {site}-{time}: {problems[:10]}")
         records.update(manifest["sites"])
         rows.append(image)
     if list(records) != order or sum(im.height for im in rows) != ROW_HEIGHT * ((len(order) + 1) // 2):
