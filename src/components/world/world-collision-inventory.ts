@@ -2,6 +2,7 @@ import { Matrix4, type BatchedMesh, type InstancedMesh, type Mesh, type Object3D
 import type { CollisionClass } from './static-surface-asset';
 
 export const migratedCollisionRoots = [
+  'world-player-contact', 'world-vehicle-offroad-contact', 'world-vehicle-coupe-contact', 'world-vehicle-van-contact',
   'alpha-dock-lodge', 'alpha-lantern-rack', 'alpha-path-fence', 'alpha-mainland-pier-r4-candidate',
   'north-attractions-road', 'alpha-echo-cave-station-6', 'alpha-station5-three-sluices-waterwheel', 'alpha-lodge-threshold', 'alpha-supported-boulder-field',
   'alpha-crafted-alpine-forest', 'alpha-agent-exchange', 'alpha-terrain-patch', 'island-terrain-v4', 'street-year-group', 'street-roadblock-group',
@@ -243,9 +244,10 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   for (const node of heldObjects) {
     const root = owner(node), scope = root && scoped.get(root);
     if (!scope) continue;
-    scope.names.set(node.name,(scope.names.get(node.name) ?? 0)+1);
-    scope.held.add(node.name);
-    heldColliderIds.add(node.name);
+    const id = collisionSupplyId(node);
+    scope.names.set(id,(scope.names.get(id) ?? 0)+1);
+    scope.held.add(id);
+    heldColliderIds.add(id);
   }
   scene.traverse(node => {
     const mesh = node as Mesh;

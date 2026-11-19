@@ -17,6 +17,9 @@ import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
 import { collisionInventory, migratedCollisionRoots } from './world-collision-inventory';
+import { coasterCollisionReviewRoots } from './attractions/coaster-collision-review';
+import { isRegionColliderHeld } from './region-body-guard';
+import { playerContactId, isPlayerContact, isHeldPlayerContact } from './world-player-contact';
 import { isHeldCampDumbbellCollider } from './camp-prop-interactions';
 import type { Object3D } from 'three';
 import { night, NightClock } from './WorldNight';
@@ -287,11 +290,13 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
         world.forEachCollider(c => {
           const node = colliderStates.get(c.handle)?.object;
           if (!node) return;
-          if (c.isEnabled() && !c.isSensor()) active.push(node);
-          else if (isHeldCampDumbbellCollider(c,c.parent())) held.push(node);
+          const body = c.parent();
+          if (node.name === playerContactId && !isPlayerContact(c)) return;
+          if (isHeldPlayerContact(c,body) || isRegionColliderHeld(c,body) || isHeldCampDumbbellCollider(c,body)) held.push(node);
+          else if (c.isEnabled() && body?.isEnabled() !== false && !c.isSensor() && c.collisionGroups() !== 0) active.push(node);
         });
         const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['world-paving-v4','coaster-vegetation','street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group','street-year-group','street-roadblock-group','street-trees-group','north-attractions-road','factory-walk-support','factory-roof-support'].includes(name));
-        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, roots, held);
+        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, [...roots,...coasterCollisionReviewRoots(scene)], held);
       },
       reviewCamera: () => {
         const view = WORLD_SHOTS.find(v => v.id === useWorldStore.getState().shot);

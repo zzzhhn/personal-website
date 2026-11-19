@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 VIEWPORT = {"width": 960, "height": 540}
 # Wait for independently suspended districts before framing a site. The player can
 # reach "ready" at camp while some of these objects are still downloading.
-DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-craft",
+DISTRICTS = ["world-player-contact", "world-vehicle-offroad-contact", "world-vehicle-coupe-contact", "world-vehicle-van-contact", "world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-craft",
              "camp-craft-C05", "camp-craft-C06", "camp-craft-C07", "camp-tree-craft-G17-L0_wood",
              "C02_stone_batch", "camp-workshop-C08", "camp-C14-contact", "camp-L01-contact",
              "alpha-wind-flag-stands", "alpha-wind-gate", "alpha-wind-control", "alpha-bell-control", "alpha-physical-sand-route-model", "world-town-assets", "world-street", "street-trees-group", "street-construction-sign-family", "street-foundation-slabs-group", "street-billboard-group", "park-signs", "world-districts-v4", "world-paving-v4",
