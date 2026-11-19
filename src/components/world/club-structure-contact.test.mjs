@@ -4,7 +4,7 @@ import R from '@dimforge/rapier3d-compat';
 import { DoubleSide, Group, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import { buildDjcClubGeometry } from './WorldDjcClubGeometry.ts';
 import { buildDjcBarProxy, DJC_BAR_ASSETS } from './djc-bar-layout.ts';
-import { CLUB_DAYBEDS } from './djc-club-layout.ts';
+import { CLUB_DAYBEDS, CLUB_LANTERNS } from './djc-club-layout.ts';
 import { DJC_DAYBED_ORIGIN_Y } from './djc-daybed-visual.ts';
 import { clubDaybedContact } from './club-daybed-contact.ts';
 import { buildClubBarStoolContact } from './club-north-bar-contact.ts';
@@ -35,19 +35,46 @@ test('provenance on the approved material batches maps physical source triangles
     const positions=scene.batches[name].attributes.position;
     let end=0;
     for(const span of data.worldCollisionSources??[]){
-      assert.ok(span.firstVertex>=end);
+      assert.equal(span.firstVertex,end,`${name}: no unclaimed triangles between explicit spans`);
       end=span.firstVertex+span.vertexCount;
       if(span.collision==='soft') { assert.equal(name,'foliage');continue; }
+      if(span.collision==='none') { assert.ok(span.reason);continue; }
       for(let i=span.firstVertex;i<end;i+=3){
         assert.ok(contact[span.surfaceId].has(key([i,i+1,i+2].map(v=>point(positions,v)))),`${name} source triangle ${i/3}`);
         verified++;
       }
     }
+    assert.equal(end,positions.count,`${name}: every rendered triangle has an owner or explicit surface role`);
   }
   assert.equal(scene.sources.stone.worldCollisionPartial,false);
   assert.equal(scene.sources.foliage.worldCollisionPartial,false);
   assert.ok(verified>10_000);
   t.diagnostic(`${verified} verified physical triangles across the original material draws`);
+});
+
+test('real low lantern cages, light covers and legacy bar glass have contact on their visible faces',t=>{
+  const legacy=buildDjcClubGeometry({includeNorthBar:true,separateDaybeds:true,separateUmbrellas:true,separateFurniture:true,separatePoolLanterns:true});
+  const material=new MeshBasicMaterial({side:DoubleSide}),world=worldWith(Object.values(scene.colliders)),oldBar=worldWith(Object.values(legacy.colliders));
+  t.after(()=>{world.free();oldBar.free();material.dispose();for(const name of ['batches','daybeds','poolLanterns','umbrellas','furniture'])Object.values(legacy[name]).forEach(g=>g.dispose());legacy.pool.dispose();});
+  assert.equal(scene.batches.glass.attributes.position.count,0,'ordinary bar has its own loaded asset');
+  assert.equal(legacy.sources.glass.worldCollisionPartial,false,'the archived visible bottles keep their physical source ranges');
+  const visibleFixture=new Group();
+  for(const kind of ['wood','amber','cyan','metal'])visibleFixture.add(new Mesh(scene.batches[kind],material));
+  const lampCages=CLUB_LANTERNS.filter(p=>p[1]===1.95).map(([x,y,z])=>[[x+.31,y,z],[-1,0,0],.32]);
+  const errors=[];
+  for(const [origin,dir,span] of [...lampCages,[[43.5,7.8,48],[0,1,0],.13],[[43.5,7.8,62],[0,1,0],.13]]){
+    const see=visible(visibleFixture,origin,dir,span),hit=physical(world,origin,dir,span);
+    assert.ok(see!==undefined&&hit!==undefined,`${origin}: find the actual lamp body`);
+    errors.push(Math.abs(see-hit));
+  }
+  const glass=new Mesh(legacy.batches.glass,material), amber=new Mesh(legacy.batches.amber,material);
+  for(const [draw,origin,dir,span] of [[glass,[36.98,2.51,39.1],[0,0,-1],.33],[amber,[40.8,2.2,37.95],[0,0,1],.5]]){
+    const see=visible(draw,origin,dir,span),hit=physical(oldBar,origin,dir,span);
+    assert.ok(see!==undefined&&hit!==undefined,`${origin}: find the actual bar object`);
+    errors.push(Math.abs(see-hit));
+  }
+  assert.ok(Math.max(...errors)<.001,`maximum real light and glass fit ${Math.max(...errors)} m`);
+  t.diagnostic(JSON.stringify({probes:errors.length,maxErrorMm:Math.max(...errors)*1000}));
 });
 
 test('the separate DJ controller plate and platter tops own their visible contact, leaving the operator side open',t=>{

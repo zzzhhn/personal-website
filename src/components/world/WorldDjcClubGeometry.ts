@@ -24,18 +24,27 @@ export const DJC_BOOTH_STAND:V3=[31,CLUB.stage[1],55];
 const TAU = Math.PI * 2;
 const FINISH = { thatch: 1, woven: 2, bamboo: 3, paver: 4, lining: 5, mortar: 6, coping: 7 };
 const C = { wood: '#a77749', edge: '#735035', stone: '#c7b89b', dark: '#242a2a', bronze: '#927550', fabric: '#e5d6b7', cushion: '#d6c7ac', green: '#5c7352', silver: '#9caaa7', amber: '#ffd59b', cyan: '#79cdc5' };
+const trim={controls:'Small fitted controls on the solid DJ deck',roof:'Thin thatch or bamboo finish on the structural roof',
+  upper:'Upper finishing detail supported by the primary roof frame',wordmark:'High woven sign strokes on the solid pavilion',
+  lining:'Surface finish on the adjacent solid furniture or guard'} as const;
+type ClubDetail=keyof typeof trim;
+type ClubContact=ClubSourceKind|ClubSourceSpan[]|ClubDetail;
 class Batch {
   positions: number[] = []; normals: number[] = []; colors: number[] = []; wind: number[] = [];
   readonly finish: number[] = [];
   readonly contacts: ClubSourceSpan[] = [];
   constructor(private readonly hasFinish = false) {}
-  add(g: BufferGeometry, color: string, sway = 0, role = 0, contact?:ClubSourceKind) {
+  add(g: BufferGeometry, color: string, sway = 0, role = 0, contact?:ClubContact) {
     const mesh = g.index ? g.toNonIndexed() : g, p = mesh.getAttribute('position'), n = mesh.getAttribute('normal'), c = new Color(color);
     const grain = mesh.getAttribute('aDjcGrain');
-    const start = this.positions.length/3, previous = this.contacts.at(-1);
-    if(contact&&p.count){
-      if(previous?.kind===contact&&previous.firstVertex+previous.vertexCount===start)previous.vertexCount+=p.count;
-      else this.contacts.push({kind:contact,firstVertex:start,vertexCount:p.count});
+    const start = this.positions.length/3;
+    const spans=Array.isArray(contact)?contact:contact?[{kind:contact in trim?'none':contact as ClubSourceKind,
+      firstVertex:0,vertexCount:p.count,reason:trim[contact as ClubDetail]} as ClubSourceSpan]:[];
+    for(const span of spans){
+      if(!span.vertexCount)continue;
+      const firstVertex=start+span.firstVertex,previous=this.contacts.at(-1);
+      if(previous?.kind===span.kind&&previous.reason===span.reason&&previous.firstVertex+previous.vertexCount===firstVertex)previous.vertexCount+=span.vertexCount;
+      else this.contacts.push({...span,firstVertex});
     }
     let minY=Infinity,maxY=-Infinity;
     if(sway) for(let i=0;i<p.count;i++) { minY=Math.min(minY,p.getY(i)); maxY=Math.max(maxY,p.getY(i)); }
@@ -138,23 +147,32 @@ export function buildDjcClubGeometry({
   const separateFixtureContact = () => (separateFurniture && collectingFurniture) || (separateDaybeds && collectingDaybed);
   // Each replaceable fixture owns its contact. Supports, guards and
   // approaches remain in the facility assembly.
-  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0, contact?:ClubSourceKind) => (separateFurniture && collectingFurniture ? furnitureBatches : separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : separateUmbrellas && collectingUmbrella ? umbrellaBatches : batches)[kind].add(g, color, wind, finishRole, contact);
-  const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide = false) => {
+  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0, contact?:ClubContact) => (separateFurniture && collectingFurniture ? furnitureBatches : separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : separateUmbrellas && collectingUmbrella ? umbrellaBatches : batches)[kind].add(g, color, wind, finishRole, contact);
+  const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide:boolean|ClubDetail = false) => {
     const g = kind==='fabric' ? new RoundedBoxGeometry(...size,1,Math.min(.055,...size.map(n=>n*.2))) : new BoxGeometry(...size); g.rotateY(rotate); g.translate(p[0],p[1]+yOffset,p[2]);
-    const source=collide&&!separateFixtureContact();
+    const source=collide===true&&!separateFixtureContact();
     if (source) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
-    add(kind, g, color, 0, source?'solid':undefined);
+    add(kind, g, color, 0, source?'solid':typeof collide==='string'?collide:undefined);
   };
-  const cylinder = (kind: ClubBatch, p: V3, top: number, bottom: number, height: number, color: string, segments = 12, rotateZ = 0,collide:boolean|'solid'=false) => {
+  const cylinder = (kind: ClubBatch, p: V3, top: number, bottom: number, height: number, color: string, segments = 12, rotateZ = 0,collide:boolean|'solid'|ClubDetail=false) => {
     const g = new CylinderGeometry(top,bottom,height,segments); g.rotateZ(rotateZ); g.translate(p[0],p[1]+yOffset,p[2]);
-    const source=collide&&!separateFixtureContact();
-    if(source){const raw=g.toNonIndexed(),v=raw.getAttribute('position'),n=raw.getAttribute('normal');for(let i=0;i<v.count;i+=3){const a:V3=[v.getX(i),v.getY(i),v.getZ(i)],b:V3=[v.getX(i+1),v.getY(i+1),v.getZ(i+1)],c:V3=[v.getX(i+2),v.getY(i+2),v.getZ(i+2)];(collide!=='solid'&&n.getY(i)>.7?surface:solid).triangle(a,b,c);}raw.dispose();}
-    add(kind,g,color,0,source&&collide==='solid'?'solid':undefined);
+    if((collide===true||collide==='solid')&&!separateFixtureContact()){
+      const raw=g.toNonIndexed(),v=raw.getAttribute('position'),n=raw.getAttribute('normal'),spans:ClubSourceSpan[]=[];
+      for(let i=0;i<v.count;i+=3){
+        const a:V3=[v.getX(i),v.getY(i),v.getZ(i)],b:V3=[v.getX(i+1),v.getY(i+1),v.getZ(i+1)],c:V3=[v.getX(i+2),v.getY(i+2),v.getZ(i+2)];
+        const kind=collide==='solid'||n.getY(i)<=.7?'solid':'surface';
+        (kind==='solid'?solid:surface).triangle(a,b,c);
+        const previous=spans.at(-1);
+        if(previous?.kind===kind)previous.vertexCount+=3;
+        else spans.push({kind,firstVertex:i,vertexCount:3});
+      }
+      g.dispose();add(kind,raw,color,0,spans);
+    }else add(kind,g,color,0,typeof collide==='string'&&collide!=='solid'?collide:undefined);
   };
-  const sphere = (kind: ClubBatch, p: V3, radius: number, color: string, scale: V3 = [1,1,1]) => {
-    const g = new SphereGeometry(radius,12,8); g.scale(...scale); g.translate(p[0],p[1]+yOffset,p[2]); add(kind,g,color);
+  const sphere = (kind: ClubBatch, p: V3, radius: number, color: string, scale: V3, detail:ClubDetail) => {
+    const g = new SphereGeometry(radius,12,8); g.scale(...scale); g.translate(p[0],p[1]+yOffset,p[2]); add(kind,g,color,0,detail);
   };
-  const rod = (kind: ClubBatch, a: V3, b: V3, radius: number, color: string, collide = false) => {
+  const rod = (kind: ClubBatch, a: V3, b: V3, radius: number, color: string, collide:boolean|ClubDetail = false) => {
     const av = new Vector3(...a), bv = new Vector3(...b), direction = bv.clone().sub(av), g = new CylinderGeometry(radius,radius,direction.length(),8);
     if (finishRole === FINISH.bamboo) {
       const uv = g.getAttribute('uv'), grain: number[] = [], length = direction.length();
@@ -162,9 +180,9 @@ export function buildDjcClubGeometry({
       g.setAttribute('aDjcGrain', new Float32BufferAttribute(grain, 2));
     }
     g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),direction.normalize())); const mid=av.add(bv).multiplyScalar(.5); g.translate(mid.x,mid.y+yOffset,mid.z);
-    const source=collide&&!separateFixtureContact();
+    const source=collide===true&&!separateFixtureContact();
     if (source) { const m = g.toNonIndexed(); const p = m.getAttribute('position'); for(let i=0;i<p.count;i+=3) solid.triangle([p.getX(i),p.getY(i),p.getZ(i)],[p.getX(i+1),p.getY(i+1),p.getZ(i+1)],[p.getX(i+2),p.getY(i+2),p.getZ(i+2)]); m.dispose(); }
-    add(kind,g,color,0,source?'solid':undefined);
+    add(kind,g,color,0,source?'solid':typeof collide==='string'?collide:undefined);
   };
   const walkwayFaces:V3[][]=[];
   // Cut the existing sloped faces into a world-scale running bond. Grout is an
@@ -416,20 +434,20 @@ export function buildDjcClubGeometry({
     const fallbackSides=daybedApproachArc?CLUB_DAYBED_MATTRESS_SIDES:32;
     cylinder('fabric',[x,DJC_DAYBED_PAD.centerY,z],fallbackRadius,fallbackRadius,DJC_DAYBED_PAD.height,'#3e8582',fallbackSides,0,true);
     for(const dx of [-.69,0,.69])box('fabric',[x+dx,1.94,z+.92],[.66,.55,.36],'#31666a',0,true);
-    const piping=new TorusGeometry(1.445,.012,4,48);piping.rotateX(Math.PI/2);piping.translate(x,1.71,z);add('fabric',piping,'#57908a');
+    const piping=new TorusGeometry(1.445,.012,4,48);piping.rotateX(Math.PI/2);piping.translate(x,1.71,z);add('fabric',piping,'#57908a',0,'lining');
     // Small inset end-grain blocks articulate the rim without projecting into the approach.
     for(const angle of [.25,1.05,2.1,2.9,3.65,5.75]){
       const px=x+1.57*Math.cos(angle),pz=z+1.57*Math.sin(angle);
-      box('wood',[px,1.455,pz],[.09,.075,.14],'#795737',-angle);
+      box('wood',[px,1.455,pz],[.09,.075,.14],'#795737',-angle,'lining');
     }
-    for(const dx of [-.67,.67]) box('fabric',[x+dx,1.94,z+.45],[.48,.4,.2],'#254f55',-.1*dx);
+    for(const dx of [-.67,.67]) box('fabric',[x+dx,1.94,z+.45],[.48,.4,.2],'#254f55',-.1*dx,true);
     // Keep the bedside tray behind the front sitting/standing routes.
     const tx=x-1.26,tz=z+.05;
     cylinder('wood',[tx,1.82,tz],.32,.34,.1,C.edge,18,0,true);
     // A compact framed lantern lives on each bedside table, with solid timber feet and handle.
-    cylinder('amber',[tx,2.02,tz],.07,.07,.22,C.amber,8);
-    for(const dx of [-.095,.095])for(const dz of [-.095,.095])rod('wood',[tx+dx,1.88,tz+dz],[tx+dx,2.16,tz+dz],.018,C.edge);
-    box('wood',[tx,2.17,tz],[.24,.045,.24],C.edge);
+    cylinder('amber',[tx,2.02,tz],.07,.07,.22,C.amber,8,0,'solid');
+    for(const dx of [-.095,.095])for(const dz of [-.095,.095])rod('wood',[tx+dx,1.88,tz+dz],[tx+dx,2.16,tz+dz],.018,C.edge,true);
+    box('wood',[tx,2.17,tz],[.24,.045,.24],C.edge,0,true);
     collectingDaybed = false;
   }
   for(let i=0;i<12;i++) {
@@ -437,9 +455,9 @@ export function buildDjcClubGeometry({
     const [x,z]=CLUB_POOL.boundary(a,2.25);
     collectingPoolLantern = true;
     box('wood',[x,1.6,z],[.3,.4,.3],C.edge,0,!separatePoolLanterns);
-    box('amber',[x,1.93,z],[.19,.27,.19],C.amber);
-    for(const dx of [-.115,.115])for(const dz of [-.115,.115])rod('wood',[x+dx,1.77,z+dz],[x+dx,2.12,z+dz],.02,C.edge);
-    box('wood',[x,2.14,z],[.31,.06,.31],C.edge);
+    box('amber',[x,1.93,z],[.19,.27,.19],C.amber,0,!separatePoolLanterns);
+    for(const dx of [-.115,.115])for(const dz of [-.115,.115])rod('wood',[x+dx,1.77,z+dz],[x+dx,2.12,z+dz],.02,C.edge,!separatePoolLanterns);
+    box('wood',[x,2.14,z],[.31,.06,.31],C.edge,0,!separatePoolLanterns);
     collectingPoolLantern = false;
   }
   // The north bar is a separate streamed GLB with its own fixed collision proxies.
@@ -448,12 +466,12 @@ export function buildDjcClubGeometry({
     slab('wood',rect(35.5,46,37.8,42.3,1.2),.2,C.wood);
     for(const x of [36,45.5]) for(const z of [38.2,41.8]) rod('wood',[x,1.2,z],[x,4.6,z],.13,'#a88042',true);
     box('wood',[40.8,1.73,38.65],[8.8,1.06,.12],C.edge,0,true);
-    for(let x=36.5;x<45.2;x+=.2) rod('wood',[x,1.2,38.8],[x,2.25,38.8],.07,x%1>.5?C.edge:C.wood);
+    for(let x=36.5;x<45.2;x+=.2) rod('wood',[x,1.2,38.8],[x,2.25,38.8],.07,x%1>.5?C.edge:C.wood,'lining');
     slab('stone',rect(36.3,45.3,38.4,39.25,2.36),.13,C.stone,false);
     for(let x=37.2;x<=44.5;x+=2.3) {
       cylinder('wood',[x,1.79,41.35],.33,.33,.11,C.wood,18,0,true);
       for(const dz of [-.2,.2]) for(const dx of [-.2,.2]) rod('metal',[x+dx,1.2,41.35+dz],[x+dx*.8,1.75,41.35+dz*.8],.027,C.dark,true);
-      for(let k=0;k<3;k++) { const bx=x+(k-1)*.22; cylinder('glass',[bx,2.49,38.85],.045,.055,.2,k===1?'#687f68':'#b79a66',10); cylinder('metal',[bx,2.62,38.85],.025,.025,.07,C.bronze,8); }
+      for(let k=0;k<3;k++) { const bx=x+(k-1)*.22; cylinder('glass',[bx,2.49,38.85],.045,.055,.2,k===1?'#687f68':'#b79a66',10,0,'solid'); cylinder('metal',[bx,2.62,38.85],.025,.025,.07,C.bronze,8,0,'solid'); }
     }
   }
   yOffset=stageY-1.8;
@@ -461,36 +479,36 @@ export function buildDjcClubGeometry({
   collectingFurniture = true;
   slab('wood',rect(32.12,33.48,52.5,57.5,2.72),.16,C.edge,false);
   for(const z of [52.7,57.3]) for(const x of [32.25,33.3]) rod('metal',[x,1.8,z],[x,2.65,z],.055,C.dark,true);
-  for(let z=52.58;z<57.48;z+=.16) box('wood',[33.47,2.26,z],[.08,.72,.105],C.wood);
+  for(let z=52.58;z<57.48;z+=.16) box('wood',[33.47,2.26,z],[.08,.72,.105],C.wood,0,true);
   collectingFurniture = false;
   // The face points +X. Controller long axis is world Z, its operator stands to the west.
   box('metal',[32.7,2.79,55],[1.04,.13,3.68],C.dark,0,true);
   for(const z of [53.85,56.15]) {
     cylinder('metal',[32.72,2.88,z],.42,.43,.075,'#a3aaa4',32,0,'solid');
     cylinder('metal',[32.72,2.924,z],.337,.337,.018,'#333936',32,0,'solid');
-    cylinder('metal',[32.72,2.938,z],.09,.09,.012,C.bronze,20);
-    const g=new TorusGeometry(.35,.012,4,40); g.rotateX(Math.PI/2); g.translate(32.72,2.94+yOffset,z); add('metal',g,'#bec3b3');
-    box('cyan',[32.94,2.87,z+.46],[.25,.017,.24],C.cyan);
-    for(let row=0;row<2;row++) for(let col=0;col<4;col++) box(col===0?'amber':'cyan',[32.34+row*.13,2.88,z-.27+col*.15],[.095,.016,.11],col===0?C.amber:C.cyan);
-    rod('metal',[33.06,2.92,z-.3],[32.9,2.96,z-.12],.018,C.silver);
-    rod('metal',[32.9,2.96,z-.12],[32.79,2.96,z-.1],.015,C.silver);
-    for(const dx of [-.32,.32]) cylinder('metal',[32.7+dx,2.9,z+.3],.035,.035,.05,C.silver,10);
+    cylinder('metal',[32.72,2.938,z],.09,.09,.012,C.bronze,20,0,'controls');
+    const g=new TorusGeometry(.35,.012,4,40); g.rotateX(Math.PI/2); g.translate(32.72,2.94+yOffset,z); add('metal',g,'#bec3b3',0,'controls');
+    box('cyan',[32.94,2.87,z+.46],[.25,.017,.24],C.cyan,0,'controls');
+    for(let row=0;row<2;row++) for(let col=0;col<4;col++) box(col===0?'amber':'cyan',[32.34+row*.13,2.88,z-.27+col*.15],[.095,.016,.11],col===0?C.amber:C.cyan,0,'controls');
+    rod('metal',[33.06,2.92,z-.3],[32.9,2.96,z-.12],.018,C.silver,'controls');
+    rod('metal',[32.9,2.96,z-.12],[32.79,2.96,z-.1],.015,C.silver,'controls');
+    for(const dx of [-.32,.32]) cylinder('metal',[32.7+dx,2.9,z+.3],.035,.035,.05,C.silver,10,0,'controls');
   }
   for(const z of [54.6,54.87,55.13,55.4]) {
-    for(let row=0;row<4;row++) cylinder('metal',[32.45+row*.16,2.905,z],.034,.034,.07,row===0?C.bronze:C.silver,10);
-    box('metal',[32.95,2.865,z],[.26,.012,.015],'#111918'); box('metal',[32.92,2.895,z],[.065,.035,.055],C.silver);
+    for(let row=0;row<4;row++) cylinder('metal',[32.45+row*.16,2.905,z],.034,.034,.07,row===0?C.bronze:C.silver,10,0,'controls');
+    box('metal',[32.95,2.865,z],[.26,.012,.015],'#111918',0,'controls'); box('metal',[32.92,2.895,z],[.065,.035,.055],C.silver,0,'controls');
   }
-  box('metal',[32.29,2.87,55],[.018,.012,.7],'#0e1515'); box('metal',[32.29,2.9,55],[.06,.035,.12],C.silver);
+  box('metal',[32.29,2.87,55],[.018,.012,.7],'#0e1515',0,'controls'); box('metal',[32.29,2.9,55],[.06,.035,.12],C.silver,0,'controls');
   // Headphone band and coiled patch cables are tubes, not painted decals.
-  const band=new TorusGeometry(.19,.022,6,20,Math.PI); band.rotateY(Math.PI/2); band.translate(32.5,2.97+yOffset,57.21); add('metal',band,C.dark);
-  for(const dz of [-.18,.18]) sphere('metal',[32.5,2.97,57.21+dz],.075,C.dark,[.65,1,1]);
-  for(let i=0;i<18;i++) { const a=i*.42,b=(i+1)*.42; rod('metal',[32.1+.12*Math.sin(a),2.55-i*.034,57.22+.08*Math.cos(a)],[32.1+.12*Math.sin(b),2.55-(i+1)*.034,57.22+.08*Math.cos(b)],.012,C.dark); }
+  const band=new TorusGeometry(.19,.022,6,20,Math.PI); band.rotateY(Math.PI/2); band.translate(32.5,2.97+yOffset,57.21); add('metal',band,C.dark,0,'controls');
+  for(const dz of [-.18,.18]) sphere('metal',[32.5,2.97,57.21+dz],.075,C.dark,[.65,1,1],'controls');
+  for(let i=0;i<18;i++) { const a=i*.42,b=(i+1)*.42; rod('metal',[32.1+.12*Math.sin(a),2.55-i*.034,57.22+.08*Math.cos(a)],[32.1+.12*Math.sin(b),2.55-(i+1)*.034,57.22+.08*Math.cos(b)],.012,C.dark,'controls'); }
   for(const z of [49.1,60.9]) {
     collectingFurniture = true;
     box('metal',[35.1,2.7,z],[.9,1.55,.78],C.dark,0,true);
-    for(const y of [2.39,2.97]) cylinder('metal',[35.56,y,z],.24,.25,.035,'#101817',24,-Math.PI/2);
-    cylinder('metal',[35.59,3.25,z],.09,.09,.025,C.bronze,16,-Math.PI/2);
-    rod('metal',[35.1,1.8,z],[35.1,1.96,z],.14,C.dark);
+    for(const y of [2.39,2.97]) cylinder('metal',[35.56,y,z],.24,.25,.035,'#101817',24,-Math.PI/2,'solid');
+    cylinder('metal',[35.59,3.25,z],.09,.09,.025,C.bronze,16,-Math.PI/2,'lining');
+    rod('metal',[35.1,1.8,z],[35.1,1.96,z],.14,C.dark,true);
     collectingFurniture = false;
   }
   yOffset=0;
@@ -550,8 +568,8 @@ export function buildDjcClubGeometry({
         const e = at(x, edge, course === 7 ? .001 : -.085), f = at(x + 2, edge, course === 7 ? .001 : -.085);
         const top = side > 0 ? [...a,...c,...b,...a,...d,...c] : [...a,...b,...c,...a,...c,...d];
         const lip = side > 0 ? [...d,...f,...c,...d,...e,...f] : [...d,...c,...f,...d,...f,...e];
-        add('fabric', fromTriangles(top), ['#c2a262','#b89a58','#b99a5a'][(bay + course * 2) % 3]);
-        add('fabric', fromTriangles(lip), '#866837');
+        add('fabric', fromTriangles(top), ['#c2a262','#b89a58','#b99a5a'][(bay + course * 2) % 3],0,'roof');
+        add('fabric', fromTriangles(lip), '#866837',0,'roof');
       }
     }
   } else for(const x of [28,31,34,37,40,43,46,49]) {
@@ -564,7 +582,7 @@ export function buildDjcClubGeometry({
       const e:V3=[b[0],b[1]-.055,b[2]],f:V3=[c[0],c[1]-.055,c[2]];
       lip.push(...b,...c,...f,...b,...f,...e);
     }
-    add('fabric',fromTriangles(course),'#bea162');add('fabric',fromTriangles(lip),'#92733e');
+    add('fabric',fromTriangles(course),'#bea162',0,'roof');add('fabric',fromTriangles(lip),'#92733e',0,'roof');
   }
   assemblyEnd('pavilion', 'thatch-shell-and-courses', pavilionRoof);
   const pavilionArches = assemblyStart();
@@ -573,10 +591,11 @@ export function buildDjcClubGeometry({
     for(const bundle of [-.17,0,.17]) for(let i=0;i<22;i++) {
       const curve=(t:number):V3=>[x+bundle,1.6+9.05*Math.sin(t*Math.PI),55-11*Math.cos(t*Math.PI)];
       // One complete central pole per bundle is the upper structural guard: 66 arc segments total.
-      rod('wood',curve(i/22),curve((i+1)/22),.115,bundle?'#a87c3f':'#c29952',bundle===0||i<2||i>19);
+      const collidable=bundle===0||i<2||i>19;
+      rod('wood',curve(i/22),curve((i+1)/22),.115,bundle?'#a87c3f':'#c29952',collidable||'upper');
       if(i%3===0) {
         const p=new Vector3(...curve(i/22)),tangent=new Vector3(0,9.05*Math.cos(i*Math.PI/22),11*Math.sin(i*Math.PI/22)).normalize().multiplyScalar(.035);
-        rod('wood',p.clone().sub(tangent).toArray() as V3,p.clone().add(tangent).toArray() as V3,.135,'#745833',bundle===0||i<2||i>19);
+        rod('wood',p.clone().sub(tangent).toArray() as V3,p.clone().add(tangent).toArray() as V3,.135,'#745833',collidable||'lining');
       }
     }
     // Two turns of fibre lashing bind each three-pole arch, within its existing bundle envelope.
@@ -584,13 +603,13 @@ export function buildDjcClubGeometry({
       const t=i/22,tangent=new Vector3(0,9.05*Math.cos(t*Math.PI),11*Math.sin(t*Math.PI)).normalize(),q=new Quaternion().setFromUnitVectors(new Vector3(0,0,1),tangent);
       for(const turn of [-.03,.03]){
         const g=new TorusGeometry(.26,.012,4,12);g.scale(1,.36,1);g.applyQuaternion(q);
-        g.translate(x,1.6+9.05*Math.sin(t*Math.PI)+tangent.y*turn,55-11*Math.cos(t*Math.PI)+tangent.z*turn);add('wood',g,'#68543b');
+        g.translate(x,1.6+9.05*Math.sin(t*Math.PI)+tangent.y*turn,55-11*Math.cos(t*Math.PI)+tangent.z*turn);add('wood',g,'#68543b',0,'lining');
       }
     }
     for(const sign of [-1,1]) {
       rod('wood',[x,1.6,55+sign*11],[x,7.9,55+sign*10.5],.16,'#a77b3f',true);
       rod('wood',[x,3.7,55+sign*10.8],[x-2,7.1,55+sign*7.2],.1,'#bd9651',true);
-      cylinder('wood',[x,1.75,55+sign*11],.28,.3,.3,pavilionCraft ? '#75634b' : C.edge,10);
+      cylinder('wood',[x,1.75,55+sign*11],.28,.3,.3,pavilionCraft ? '#75634b' : C.edge,10,0,'solid');
       if (pavilionCraft) {
         const postZ = sign < 0 ? 44.15 : 65.65;
         const kneeZ = sign < 0 ? 50.6 : 59.2;
@@ -598,14 +617,14 @@ export function buildDjcClubGeometry({
         // Extend the existing guards visually to the purlins. The original
         // collidable posts and knees still cover the reachable portion.
         rod('wood', [x, 7.85, 55 + sign * 10.505],
-          [x, roofY(x, postZ) - .17, postZ], .142, '#b28b52');
+          [x, roofY(x, postZ) - .17, postZ], .142, '#b28b52','upper');
         rod('wood', [x - 1.97, 7.049, 55 + sign * 7.254],
-          [kneeX, roofY(kneeX, kneeZ) - .17, kneeZ], .098, '#b28b52');
+          [kneeX, roofY(kneeX, kneeZ) - .17, kneeZ], .098, '#b28b52','upper');
         // Bearing blocks bridge the real space between the arch and the
         // existing purlins. Both ends sit inside their supporting bamboo.
         for (const z of [52.75, 57.05].filter(z => Math.sign(z - 55) === sign)) {
           const archY = 1.6 + 9.05 * Math.sqrt(1 - ((z - 55) / 11) ** 2);
-          rod('wood', [x, archY, z], [x, roofY(x, z) - .15, z], .105, '#af884b');
+          rod('wood', [x, archY, z], [x, roofY(x, z) - .15, z], .105, '#af884b','upper');
         }
       }
     }
@@ -631,8 +650,8 @@ export function buildDjcClubGeometry({
         if (j === 0) sides.push(...a,...e,...f,...a,...f,...b);
         if (j === 27) sides.push(...d,...c,...g,...d,...g,...h);
       }
-      add('wood', fromTriangles(soffit), '#a9844c');
-      add('wood', fromTriangles(sides), '#775830');
+      add('wood', fromTriangles(soffit), '#a9844c',0,'roof');
+      add('wood', fromTriangles(sides), '#775830',0,'roof');
     }
   }
   finishRole = pavilionFinish ? FINISH.bamboo : 0;
@@ -643,11 +662,11 @@ export function buildDjcClubGeometry({
     rod('wood',[x,roofY(x,z)-.08,z],[x,roofY(x,z1)-.08,z1],.07,'#98753f',true);
   }
   for(let x=26;x<=50;x+=1.2) for(const sign of [-1,1]) {
-    const z=55+sign*13.2; rod('wood',[x,roofY(x,z)-.15,z],[x+.6,roofY(x+.6,z)-.19,z],.09,'#87683b');
+    const z=55+sign*13.2; rod('wood',[x,roofY(x,z)-.15,z],[x+.6,roofY(x+.6,z)-.19,z],.09,'#87683b','roof');
     // Sparse, visibly faceted fringe remains part of the roof silhouette.
     const fringe:V3[]=[[x,roofY(x,z),z],[x+.72,roofY(x+.72,z),z],[x+.63,roofY(x+.63,z)-.32,z+sign*.2],[x+.12,roofY(x+.12,z)-.25,z+sign*.22]];
     finishRole = pavilionFinish ? FINISH.thatch : 0;
-    add('fabric',fromTriangles([...fringe[0],...fringe[1],...fringe[2],...fringe[0],...fringe[2],...fringe[3]]),'#ac884c');
+    add('fabric',fromTriangles([...fringe[0],...fringe[1],...fringe[2],...fringe[0],...fringe[2],...fringe[3]]),'#ac884c',0,'roof');
     finishRole = pavilionFinish ? FINISH.bamboo : 0;
   }
   assemblyEnd('pavilion', 'purlins-rafters-and-eaves', pavilionEaves);
@@ -655,35 +674,35 @@ export function buildDjcClubGeometry({
   if(includeNorthBar){
     for(const sign of [-1,1]) {
       const z=40+sign*2.9;
-      const canopy=[35,4.5,z,46.5,5.7,40,35,5.7,40,35,4.5,z,46.5,4.5,z,46.5,5.7,40];solidTriangles(canopy);add('fabric',fromTriangles(canopy),'#a58a50');
+      const canopy=[35,4.5,z,46.5,5.7,40,35,5.7,40,35,4.5,z,46.5,4.5,z,46.5,5.7,40];solidTriangles(canopy);add('fabric',fromTriangles(canopy),'#a58a50',0,'solid');
       rod('wood',[35,4.45,z],[46.5,4.45,z],.09,C.edge,true);
     }
     rod('wood',[35,5.65,40],[46.5,5.65,40],.1,C.edge,true);
   }
   // Mirror ball suspension and bounded stage lamps attach to a real cross beam.
   rod('wood',[43.5,8.65,47],[43.5,8.65,63],.13,'#98713f',true);
-  rod('metal',[43.5,8.65,55],[43.5,6.95,55],.018,C.dark);
+  rod('metal',[43.5,8.65,55],[43.5,6.95,55],.018,C.dark,true);
   for(const z of [48,62]) {
-    rod('metal',[43.5,8.5,z],[43.5,8.15,z],.035,C.dark);
-    cylinder('metal',[43.5,8.05,z],.14,.2,.32,C.dark,12);
-    cylinder(z<55?'amber':'cyan',[43.5,7.88,z],.13,.13,.018,z<55?C.amber:C.cyan,12);
+    rod('metal',[43.5,8.5,z],[43.5,8.15,z],.035,C.dark,true);
+    cylinder('metal',[43.5,8.05,z],.14,.2,.32,C.dark,12,0,'solid');
+    cylinder(z<55?'amber':'cyan',[43.5,7.88,z],.13,.13,.018,z<55?C.amber:C.cyan,12,0,'solid');
   }
   // Small wicker lanterns and a single warm bar strip. They share two emissive batches.
   for(const [x,y,z] of CLUB_LANTERNS) {
     // The new asset includes its own pendant lamps. Keep the shared array indices
     // intact: pool-light selection and the pool-only spill use those indices.
     if(!includeNorthBar&&z===39.6&&(x===37||x===44))continue;
-    cylinder('amber',[x,y,z],.11,.11,.3,C.amber,8);
-    for(let i=0;i<8;i++) { const a=i*TAU/8; rod('wood',[x+.17*Math.cos(a),y-.2,z+.17*Math.sin(a)],[x+.14*Math.cos(a),y+.2,z+.14*Math.sin(a)],.018,C.edge); }
-    cylinder('wood',[x,y+.21,z],.18,.18,.05,C.edge,10);
+    cylinder('amber',[x,y,z],.11,.11,.3,C.amber,8,0,'solid');
+    for(let i=0;i<8;i++) { const a=i*TAU/8; rod('wood',[x+.17*Math.cos(a),y-.2,z+.17*Math.sin(a)],[x+.14*Math.cos(a),y+.2,z+.14*Math.sin(a)],.018,C.edge,true); }
+    cylinder('wood',[x,y+.21,z],.18,.18,.05,C.edge,10,0,'solid');
   }
-  if(includeNorthBar)box('amber',[40.8,2.2,38.35],[8.8,.06,.035],C.amber);
+  if(includeNorthBar)box('amber',[40.8,2.2,38.35],[8.8,.06,.035],C.amber,0,true);
   // A small architectural DJC wordmark, built as actual rounded strokes on the front bamboo beam.
-  rod('wood',[49.96,8.6,51.9],[49.96,8.6,57.6],.12,C.edge);
-  for(const z of [51.9,57.6]) rod('wood',[49.96,8.6,z],[49.96,roofY(49.96,z)-.12,z],.07,C.edge);
+  rod('wood',[49.96,8.6,51.9],[49.96,8.6,57.6],.12,C.edge,true);
+  for(const z of [51.9,57.6]) rod('wood',[49.96,8.6,z],[49.96,roofY(49.96,z)-.12,z],.07,C.edge,true);
   // Front is +X: a viewer on the sea side sees screen-right along -Z.
   // Reflect both letter order and strokes once; the real back naturally remains mirrored.
-  const letter=(z:number,points:[number,number][])=>{ for(let i=0;i<points.length-1;i++) rod('fabric',[50.12,8.7+points[i][1],110-z-points[i][0]],[50.12,8.7+points[i+1][1],110-z-points[i+1][0]],.085,'#e3d5ae'); };
+  const letter=(z:number,points:[number,number][])=>{ for(let i=0;i<points.length-1;i++) rod('fabric',[50.12,8.7+points[i][1],110-z-points[i][0]],[50.12,8.7+points[i+1][1],110-z-points[i+1][0]],.085,'#e3d5ae','wordmark'); };
   letter(52.5,[[0,0],[0,1.35],[.45,1.35],[.85,1.1],[.95,.65],[.8,.2],[.45,0],[0,0]]);
   letter(54.4,[[0,.3],[.15,.05],[.45,0],[.7,.25],[.7,1.35],[.1,1.35],[1.05,1.35]]);
   letter(56.3,[[.95,1.15],[.65,1.35],[.25,1.25],[0,.9],[0,.4],[.25,.05],[.65,0],[.95,.2]]);
@@ -765,7 +784,7 @@ export function buildDjcClubGeometry({
     cylinder('wood',[74,2.7,z],.05,.065,2.6,C.edge,8,0,!separateUmbrellas);
     const umbrella=new CylinderGeometry(.05,1.65,.65,8,1,true); umbrella.translate(74,3.9,z);
     if(!separateUmbrellas){const raw=umbrella.toNonIndexed();solidTriangles(Array.from(raw.getAttribute('position').array));raw.dispose();}
-    add('fabric',umbrella,'#c6b17d');
+    add('fabric',umbrella,'#c6b17d',0,!separateUmbrellas?'solid':undefined);
     collectingUmbrella=false;
     collectingFurniture = true;
     box('wood',[74,1.42,z],[1.2,.16,2.4],C.edge,0,true); box('fabric',[74,1.6,z],[1.12,.19,2.3],'#43827e',0,true);

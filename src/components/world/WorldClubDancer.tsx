@@ -1,5 +1,6 @@
 import { Component, useEffect, useMemo, useRef, Suspense, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
+import { CapsuleCollider, RigidBody, useBeforePhysicsStep, type RapierRigidBody } from '@react-three/rapier';
 import { AnimationMixer, LoopRepeat, SkinnedMesh, Vector3, type Group } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
@@ -8,6 +9,7 @@ import { createClubDanceClips } from './WorldGuideDance';
 import { createClubGuestAppearance } from './WorldClubGuestAppearance';
 import { advanceClubGuestClock, clubGuestAnimationInterval, clubGuestPlan, createClubGuestClock, createClubGuestGreeting } from './WorldClubDancePlan';
 import { useWorldStore } from './store';
+import { clubGuestContactCenter, clubGuestContactId, fitClubGuestContact } from './club-guest-contact';
 
 export interface WorldClubDancerProps {
   /** Feet origin on the platform; the parent owns placement and NPC count (at most two). */
@@ -33,6 +35,7 @@ class ClubDancerBoundary extends Component<{ children: ReactNode }, { failed: bo
 function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDancerProps) {
   const gltf = useLoader(GLTFLoader, '/assets/world/guide/G24.glb', withWorldAssetDecoder) as GLTF;
   const group = useRef<Group>(null);
+  const body = useRef<RapierRigidBody>(null);
   const rig = useMemo(() => {
     const scene = clone(gltf.scene);
     const skeletons = new Set<SkinnedMesh['skeleton']>();
@@ -58,8 +61,14 @@ function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDan
       greeting.paused = true; greeting.setEffectiveWeight(0); greeting.play();
       mixer.update(0);
       scene.scale.setScalar(appearance.scale);
+      const bones=appearance.mesh.skeleton.bones;
+      const pelvis=bones.find(b=>b.name.toLowerCase()==='pelvis'),chest=bones.find(b=>b.name.toLowerCase()==='chest');
+      if(!pelvis||!chest)throw new Error('Club dancer requires its pelvis and chest');
+      const restTorso=pelvis.getWorldPosition(new Vector3()).lerp(chest.getWorldPosition(new Vector3()),.5);
+      const contact=fitClubGuestContact(appearance.mesh,appearance.scale);
+      Object.assign(appearance.mesh.userData,{worldCollision:'solid',surfaceId:clubGuestContactId(step)});
       return { scene, mixer, idle, dances, greeting, appearance, skeletons,
-        camera: new Vector3(), origin: new Vector3() };
+        pelvis,chest,contact,restTorso,camera:new Vector3(),origin:new Vector3(),pose:new Vector3(),upper:new Vector3() };
     } catch (error) {
       // A failed bake never reaches effect cleanup; release any already-owned resources here.
       mixer?.stopAllAction(); mixer?.uncacheRoot(scene);
@@ -69,6 +78,13 @@ function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDan
   }, [gltf, step]);
   const clock = useRef({ pending: 0, idle: 0, danceWeights: [0, 0], first: true,
     audio: createClubGuestClock(), greetingTime: 1.9, lastGreetingPhrase: -1 });
+  const initial=useMemo(()=>rig.contact.center.clone().applyAxisAngle(new Vector3(0,1,0),facing).add(new Vector3(...position)),[rig,position,facing]);
+  const next=useMemo(()=>initial.clone(),[initial]);
+  const previous=useMemo(()=>initial.clone(),[initial]);
+  useBeforePhysicsStep(()=>{
+    if(!body.current||previous.equals(next))return;
+    body.current.setNextKinematicTranslation(next);previous.copy(next);
+  });
 
   useEffect(() => {
     if (!import.meta.env.DEV) return;
@@ -136,14 +152,21 @@ function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDan
     rig.greeting.setEffectiveWeight(time.greetingTime < 1.9 ? .8 : 0);
     // Beat-derived bounded cursors prevent a source/deck change from teleporting the pose.
     rig.mixer.update(0);
+    rig.pelvis.getWorldPosition(rig.pose).lerp(rig.chest.getWorldPosition(rig.upper),.5);
+    clubGuestContactCenter(rig.contact,rig.origin,rig.restTorso,rig.pose,facing,next);
   });
 
-  return <group ref={group} position={position} rotation={[0, facing, 0]} name={`club-dancer-${step}`} dispose={null}>
-    <primitive object={rig.scene} dispose={null} />
-  </group>;
+  return <>
+    <RigidBody ref={body} name={`djc-guest-${step}-body`} type="kinematicPosition" colliders={false} position={initial.toArray()} userData={{solid:true,assetId:`djc-guest-${step}`}}>
+      <CapsuleCollider name={clubGuestContactId(step)} args={[rig.contact.halfHeight,rig.contact.radius]} friction={0} restitution={0}/>
+    </RigidBody>
+    <group ref={group} position={position} rotation={[0, facing, 0]} name={`club-dancer-${step}`} dispose={null}>
+      <primitive object={rig.scene} dispose={null} />
+    </group>
+  </>;
 }
 
-/** Ambient character only: no player controller, physics body, QA recorder or mining sockets. */
+/** Ambient character with its own kinematic contact. */
 export function WorldClubDancer(props: WorldClubDancerProps) {
   return <ClubDancerBoundary><Suspense fallback={null}><ClubDancerModel {...props} /></Suspense></ClubDancerBoundary>;
 }

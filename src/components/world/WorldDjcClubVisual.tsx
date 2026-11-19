@@ -146,7 +146,7 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
       {keys.filter(key=>resources.geometry.poolLanterns[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.poolLanterns[key]} material={resources.materials[key]} castShadow={key==='wood'} receiveShadow dispose={null}/>)}
     </group>}/>
     <group ref={group} name="djc-beach-club-visual" dispose={null}>
-      {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.finishes[key] ?? resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} userData={resources.geometry.sources[key]} />)}
+      {keys.filter(key=>resources.geometry.batches[key].attributes.position.count>0).map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.finishes[key] ?? resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} userData={resources.geometry.sources[key]} />)}
       <group userData={{worldCollision:'soft',worldCollisionReason:'Traversable shallow water above the separate mineral floor'}}>
         <WorldClubWater geometry={resources.geometry.pool} basinMaterial={resources.finishes.stone ?? resources.materials.stone}/>
       </group>

@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useRapier } from '@react-three/rapier';
 import type { World, RigidBody } from '@dimforge/rapier3d-compat';
 import { CLUB } from './djc-club-layout';
+import { DJC_GUESTS } from './club-guest-contact';
 import { useInteractable, type Interactable } from './WorldInteract';
 import { useWorldStore } from './store';
 import { clubAudio } from './WorldClubAudio';
@@ -71,7 +72,6 @@ export default function WorldDjcClub() {
   return <group name="djc-beach-club" userData={{noOcclusionFade:true,assetId:'djc-club'}}>
     <WorldDjcClubVisual beat={clubAudio.beat} energy={clubAudio.energy} />
     {DJC_CLUB_SEATS.map(seat=><DaybedSeat key={seat.id} seat={seat}/>)}
-    {[[40, 1.6, 51.5], [43, 1.6, 59]].map((p, i) => <WorldClubDancer key={i} position={p as [number,number,number]}
-      facing={Math.PI+i*.3} step={i as 0|1} beat={clubAudio.beat} playing={()=>clubAudio.energy()>0} />)}
+    {DJC_GUESTS.map(guest=><WorldClubDancer key={guest.step} {...guest} beat={clubAudio.beat} playing={()=>clubAudio.energy()>0} />)}
   </group>;
 }
