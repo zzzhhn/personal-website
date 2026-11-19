@@ -5,8 +5,12 @@ import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import { buildWalk } from '../../src/components/world/WorldParkWalk.tsx';
 import { parkWalkCollision } from '../../src/components/world/park-deck-collision.ts';
 import { BOARDWALK_POINTS } from '../../src/components/world/layout.ts';
+import { PARK_ROAD_HANDOVER_X, ROAD_Y } from '../../src/components/world/layout-v4-flag.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../../src/components/world/actor-physics.ts';
-import { playerSupport, followPlayerGround } from '../../src/components/world/player-ground.ts';
+import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from '../../src/components/world/player-ground.ts';
+
+import { pavingMesh, pavingAtParkHandover, PAVE_STRIDE } from '../../src/components/world/WorldTerrainPaving.ts';
+import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../../src/components/world/player-motion.ts';
 
 test('boardwalk gaps, piles, plaza landing and both mitres match their physical surfaces', async t => {
   await R.init();
@@ -87,4 +91,89 @@ test('boardwalk gaps, piles, plaza landing and both mitres match their physical 
     for(const s of sections){s.deck.dispose();s.solid.dispose();}
     material.dispose();world.free();legacy.free();
   }
+});
+
+test('the street sidewalk joins the project plaza across the roadway handover', t => {
+  const world = new R.World({x:0,y:-12.5,z:0});
+  const park = buildWalk(), far = buildWalk(true);
+  const material = new MeshBasicMaterial({side:DoubleSide});
+  t.after(()=>{
+    for (const walk of [park,far]) {
+      for (const part of [walk,...walk.groups]) {part.deck.dispose();part.solid.dispose();}
+    }
+    material.dispose();
+    world.free();
+  });
+  const deck = parkWalkCollision(park.deck,park.solid,'plaza');
+  function install(vertices, indices, surface) {
+    const owner = world.createRigidBody(R.RigidBodyDesc.fixed());
+    owner.userData = surface ? {surface:true} : {solid:true};
+    return world.createCollider(R.ColliderDesc.trimesh(vertices,Uint32Array.from(indices)),owner);
+  }
+  const parkTreads = install(deck.deckVertices,deck.floor,true);
+  install(deck.deckVertices,deck.wall,false);
+  install(deck.shellVertices,deck.shellIndices,false);
+  const road = pavingAtParkHandover(pavingMesh().chunks.find(chunk=>chunk.key===1));
+  const positions = new Float32Array(road.v.length/PAVE_STRIDE*3);
+  for(let i=0;i<road.v.length;i+=PAVE_STRIDE)positions.set(road.v.slice(i,i+3),i/PAVE_STRIDE*3);
+  const roadTreads = install(positions,road.top,true);
+  install(positions,road.walls,false);
+  world.step();
+  const nearMesh=new Mesh(park.deck,material),farMesh=new Mesh(far.deck,material);
+  const direction=new Vector3(0,-1,0),seam=PARK_ROAD_HANDOVER_X;
+  const lanes=[-41.4,-42.1,-44.35,-48];
+  function reach(collider,x,z) {
+    return collider.castRay(new R.Ray({x,y:2,z},direction),1,true);
+  }
+  for(const z of lanes) {
+    assert.ok(reach(roadTreads,seam-.05,z)>0);
+    assert.equal(reach(parkTreads,seam-.05,z),-1);
+    for(let x=seam+.05;x<43.57;x+=.05) {
+      assert.equal(reach(roadTreads,x,z),-1,'only plaza owns the installed threshold');
+      const height=2-reach(parkTreads,x,z);
+      assert.ok(Math.abs(height-ROAD_Y)<.001,'support matches the full-height road');
+      const ray=new Raycaster(new Vector3(x,2,z),direction,0,1);
+      for(const mesh of [nearMesh,farMesh]){
+        const rendered=ray.intersectObject(mesh)[0];
+        assert.ok(rendered&&Math.abs(2-rendered.distance-height)<.001,JSON.stringify({x,z,height,rendered:rendered?.point.y}));
+      }
+    }
+  }
+  const results=[];
+  for(const z of lanes)for(const sign of [-1,1]){
+    // Traverse the repaired sidewalk and its connection to the existing flag row.
+    const start=43.35-sign*1.0, end=43.35+sign*1.0;
+    const player=world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations().setTranslation(start,1.15+PLAYER_CENTER_HEIGHT,z)
+      .setLinearDamping(.2).setCcdEnabled(true).setSoftCcdPrediction(.1));
+    player.userData={player:true};
+    world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setFriction(0).setMass(72),player);
+    const guard=createPlayerClearance(world);
+    const step = speed => {
+      const support=playerSupport(world,R,player);
+      const delta=playerVelocityChange(player.linvel(),{x:sign*speed,y:0,z:0},1/60,!!support?.grounded);
+      compensatePlayerSlopeGravity(world,player,support,1/60,false);
+      player.applyImpulse({x:delta.x*player.mass(),y:0,z:0},true);
+      const velocity=sweptPlayerVelocity(guard,player,player.linvel(),1/60,R.QueryFilterFlags.EXCLUDE_SENSORS);
+      player.setLinvel(velocity,true);
+      followPlayerGround(world,R,player,velocity,1/60,false);
+      world.step();
+      clearPlayerSlopeGravity(player);
+    };
+    for(let i=0;i<35;i++)step(0);
+    let minimum=Infinity,progress,ungrounded=0;
+    for(let i=0;i<150;i++){
+      step(2);
+      const p=player.translation();
+      minimum=Math.min(minimum,p.y);
+      if(!playerSupport(world,R,player)?.grounded)ungrounded++;
+      progress=(p.x-end)*sign;
+      if(progress>=0)break;
+    }
+    const result={z,sign,progress,minimum,ungrounded,last:player.translation()};
+    assert.ok(progress>=0&&minimum>1.93&&ungrounded===0,JSON.stringify(result));
+    results.push(result);
+    world.removeCharacterController(guard);
+    world.removeRigidBody(player);
+  }
+  t.diagnostic(JSON.stringify(results));
 });

@@ -7,6 +7,7 @@ import { compileWorldComponent } from './alpha-mine-tests/component-host.mjs';
 
 const paving = await import('../../src/components/world/WorldTerrainPaving.ts');
 const { decorV4 } = await import('../../src/components/world/layout-v4.ts');
+const { PARK_ROAD_HANDOVER_X } = await import('../../src/components/world/layout-v4-flag.ts');
 const { collisionInventory } = await import('../../src/components/world/world-collision-inventory.ts');
 await R.init();
 const load = compileWorldComponent(new URL('../../src/components/world/WorldTerrainRoads.tsx', import.meta.url));
@@ -81,7 +82,8 @@ for (const handover of [false,true]) test('mainland paving triangles and install
   }
   assert.ok(maxError<.00002);
   const down=(x,z)=>world.castRay(new R.Ray({x,y:2,z},{x:0,y:-1,z:0}),1.1,true);
-  assert.ok(down(43.55,-44),'road just west of the shared edge');
+  assert.ok(down(PARK_ROAD_HANDOVER_X-.05,-44),'road just west of the shared edge');
+  assert.equal(Boolean(down(PARK_ROAD_HANDOVER_X+.05,-44)),!handover,'park owns the threshold east of the shared edge');
   assert.equal(Boolean(down(45,-45)),!handover,'park owns the ground east of the shared edge after handover');
   t.diagnostic(JSON.stringify({handover,solids,paint,rays,maxError,colliders:contacts.size}));
 });

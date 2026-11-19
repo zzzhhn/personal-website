@@ -6,15 +6,37 @@ import { loadWorldModule } from '../../street/runtime.mjs';
 import { sha, geom, snapshot } from './prepare.mjs';
 import { mountKnockable } from './knockables-fixture.mjs';
 const frozen=JSON.parse(readFileSync(new URL('./baseline/manifest.json',import.meta.url))),base=loadWorldModule('WorldParkWalk.tsx','?walkCraft=baseline'),W=loadWorldModule('WorldParkWalk.tsx'),actual=snapshot(W);
-test('baseline switch reproduces c4f7fca geometry, P01, placements and total rail mass', () => {
+const { PARK_ROAD_HANDOVER_X, ROAD_Y }=loadWorldModule('layout-v4-flag.ts');
+function originalPlaza(W, level, summary) {
+  const walk=W.buildWalk(Boolean(level)),geometry=geom(walk.deck),positions=geometry.position;
+  const edge=[[PARK_ROAD_HANDOVER_X,43.6],[W.PLAZA.top-.2,ROAD_Y],[W.PLAZA.z0+.35,W.PLAZA.z1-.35]];
+  const corner=i=>edge.every((axis,j)=>axis.some(value=>Math.abs(positions[i*3+j]-value)<.00001));
+  const keep=[];
+  for(let i=0;i<positions.length/3;i+=3) {
+    if(![i,i+1,i+2].every(corner))keep.push(i,i+1,i+2);
+  }
+  // The new visible trim contributes two treads and eight faces. Keep the
+  // frozen geometry check on every original stone, including vertex attributes.
+  assert.equal(positions.length/3-keep.length,30);
+  const original=Object.fromEntries(Object.entries(geometry).map(([name,data])=>{
+    const size=walk.deck.getAttribute(name).itemSize;
+    return [name,keep.flatMap(i=>data.slice(i*size,(i+1)*size))];
+  }));
+  for(const part of [walk,...walk.groups]){part.deck.dispose();part.solid.dispose();}
+  return {...summary,deck:sha(original),triangles:summary.triangles-10};
+}
+
+test('baseline switch preserves the previous walk, plaza stones, placements and total rail mass', () => {
   const { rail: { spec: oldSpec, ...railGeometry }, walk } = frozen;
   const { rail: { spec, ...baselineRail }, walk: baselineWalk } = JSON.parse(JSON.stringify(snapshot(base)));
-  assert.deepEqual(baselineWalk, walk);
+  assert.deepEqual(baselineWalk.map((row,i)=>({...row,plaza:originalPlaza(base,i,row.plaza)})),walk);
   assert.deepEqual(baselineRail, railGeometry);
   assert.equal(spec.mass, oldSpec.mass);
 });
 for(let l=0;l<2;l++)test(`P02 L${l}: support slabs, P01 plaza, rail/lamp placements and walking geometry remain exact`,()=>{
- const old=frozen.walk[l],now=actual.walk[l];for(const k of['plaza','surfaces','rails','lamps'])assert.deepEqual(JSON.parse(JSON.stringify(now[k])),old[k]);
+ const old=frozen.walk[l],now=actual.walk[l];
+ assert.deepEqual(originalPlaza(W,l,now.plaza),old.plaza);
+ for(const k of['surfaces','rails','lamps'])assert.deepEqual(JSON.parse(JSON.stringify(now[k])),old[k]);
  const before=base.buildWalk(!!l),after=W.buildWalk(!!l);for(let i=0;i<3;i++){
   assert.equal(sha([...after.groups[i].deck.getAttribute('position').array]),sha([...before.groups[i].deck.getAttribute('position').array]));
   assert.equal(JSON.stringify(after.groups[i].center),JSON.stringify(before.groups[i].center));

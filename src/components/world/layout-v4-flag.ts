@@ -11,6 +11,8 @@ export const LAYOUT_V4 = import.meta.env?.SSR === false || query === 'v4' || (DE
 
 export type P2 = [number, number];
 export const ROAD_Y = 1.14;
+/** The plaza begins while the bridge sidewalk still has full-height support. */
+export const PARK_ROAD_HANDOVER_X = 43.10;
 
 /** Approved control outline (spec §12.1 A6, ~20,541 m2; convex for WorldLandform.coastFrame). Mostly
  * north / west / south growth plus the approved local east easing beside the avenue; the bridge-axis

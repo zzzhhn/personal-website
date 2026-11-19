@@ -20,6 +20,7 @@ import {
   BUILDINGS_V4, CONNECTORS_V4, decorV4, insidePolygon, TRAIL_HALF, TRAIL_V4, JUNCTIONS_V4, LAYBY, pavedV4, PROMENADE, ROAD_CLASSES, ROAD_Y, ROADS_V4,
   segmentDistance, xz, type P2, type PavedPoly, type RoadV4,
 } from './layout-v4';
+import { PARK_ROAD_HANDOVER_X } from './layout-v4-flag';
 import type { Vec3 } from './types';
 
 /** Walkable top of sidewalks, kerb tops, forecourts and park paving (contract with town / park / street). */
@@ -392,7 +393,7 @@ function clipPolygon(poly: number[][], keep: (p: number[]) => number) {
 }
 const keepClip = (p: number[]) => { const c = clipDist(p[0], p[2]); return c === Infinity ? 1 : c; };
 
-/** The road and the park share an edge at x = 43.6. Clip the actual drawn and
+/** The road and the park share the bridge handover edge. Clip the actual drawn and
  * physical triangles together when the plaza takes over, retaining all vertex attributes. */
 export function pavingAtParkHandover(chunk: PaveChunk): PaveChunk {
   if (!chunk.parkSpurTriangles.length) return chunk;
@@ -407,7 +408,7 @@ export function pavingAtParkHandover(chunk: PaveChunk): PaveChunk {
     const offset = first * PAVE_STRIDE;
     if (handover.has(first)) {
       const triangle = [0, 1, 2].map(i => chunk.v.slice(offset + i * PAVE_STRIDE, offset + (i + 1) * PAVE_STRIDE));
-      const polygon = clipPolygon(triangle, p => 43.6 - p[0]);
+      const polygon = clipPolygon(triangle, p => PARK_ROAD_HANDOVER_X - p[0]);
       for (let i = 1; i < polygon.length - 1; i++) v.push(...polygon[0], ...polygon[i], ...polygon[i + 1]);
     } else {
       for (let i = offset; i < offset + 3 * PAVE_STRIDE; i++) v.push(chunk.v[i]);
@@ -660,7 +661,7 @@ export const pavingMesh = lazy(() => {
       const ex = T[j][0] - T[i][0], ez = T[j][2] - T[i][2], el = Math.hypot(ex, ez) || 1, wn = [ez / el, 0, -ex / el];
       pushTri(c, tv(T[i], wn), tv(T[j], wn), tv(B[j], wn), mode, 'walls', fore); pushTri(c, tv(T[i], wn), tv(B[j], wn), tv(B[i], wn), mode, 'walls', fore);
     }
-    if (p.road === 'park-spur') for (let i = startVertex; i < c.v.length / PAVE_STRIDE; i += 3) c.parkSpurTriangles.push(i);
+    if (p.road === 'park-spur' || p.road === 'bridge') for (let i = startVertex; i < c.v.length / PAVE_STRIDE; i += 3) c.parkSpurTriangles.push(i);
   }
   // 4) Boardwalk stilts: the eight visible sides also stop a body approaching under the deck.
   for (const d of decorV4().filter(q => q.color === '#6E5642')) {

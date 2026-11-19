@@ -5,6 +5,7 @@ import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, InstancedRigidBodies, type RapierRigidBody, type InstancedRigidBodyProps } from '@react-three/rapier';
 import { AdditiveBlending, BufferAttribute, BufferGeometry, CanvasTexture, Color, InstancedBufferAttribute, InstancedMesh, Matrix4, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 import { BOARDWALK_POINTS, BOARDWALK_WIDTH } from './layout';
+import { LAYOUT_V4, PARK_ROAD_HANDOVER_X, ROAD_Y } from './layout-v4-flag';
 import { ParkGeo, clipHalf, hash, parkMaterial, parkNight, plankPoly, slab, type P2 } from './WorldParkKit';
 import { DECK_Y, HUTS, HUT_FRONT_Z } from './WorldParkLayout';
 import { isWorldRunning } from './WorldWind';
@@ -21,8 +22,7 @@ import { collisionInstancePartId, type InstanceCollisionSources } from './world-
  * centreline and width as authored.
  */
 export const PLAZA = { x0: 36.5, x1: 53.5, z0: -53.5, z1: -36.5, top: 1.15 };
-/** The bridge / park-spur road reaches x 50.7 at z -40.9..-51.1: the plaza paving leaves that strip to
- * the road owner (paved key) and starts east of the bridge head. */
+/** Keep the existing flag grid east of the threshold trim. */
 const BRIDGE_X = 43.6;
 const W2 = BOARDWALK_WIDTH / 2;
 const P = BOARDWALK_POINTS.map(p => [p[0], p[2]] as P2);
@@ -130,6 +130,12 @@ export function buildWalk(low = false) {
     slab(deck, [[x + 0.01, z + 0.01], [x1 - 0.01, z + 0.01], [x1 - 0.01, z1 - 0.01], [x + 0.01, z1 - 0.01]], PLAZA.top + r * 0.006, PLAZA.top - 0.1, r < 0.5 ? '#8A8580' : r < 0.85 ? '#958F87' : '#7F7A74', { inset: 0.012, jitter: 0.04, seed: x * 3 + z });
   }
   if (low) slab(deck, [[BRIDGE_X, PLAZA.z0 + .35], [PLAZA.x1 - .35, PLAZA.z0 + .35], [PLAZA.x1 - .35, PLAZA.z1 - .35], [BRIDGE_X, PLAZA.z1 - .35]], PLAZA.top, PLAZA.top - .1, '#8A8580');
+  if (LAYOUT_V4) {
+    // The outer sidewalk bends west of the flag grid. Fit a flush, visible
+    // threshold between the shared road edge and the first row of flags.
+    const west = PARK_ROAD_HANDOVER_X, north = PLAZA.z0 + .35, south = PLAZA.z1 - .35;
+    slab(deck, [[west, north], [BRIDGE_X, north], [BRIDGE_X, south], [west, south]], ROAD_Y, PLAZA.top - .2, '#8A8580');
+  }
   // bedding under the flags (gap colour) and coping stones around the north / east / south edges
   slab(deck, [[BRIDGE_X, PLAZA.z0 + 0.35], [PLAZA.x1 - 0.35, PLAZA.z0 + 0.35], [PLAZA.x1 - 0.35, PLAZA.z1 - 0.35], [BRIDGE_X, PLAZA.z1 - 0.35]], PLAZA.top - 0.012, PLAZA.top - 0.2, '#6E6A64');
   const coping = (a: P2, b: P2, seed: number) => {
