@@ -12,6 +12,7 @@ import { FACTORY, FACTORY_STATIONS, factoryStation, factoryWorld, inFactory, typ
 import { buildFactoryGeometry, FACTORY_PALETTE, type FactoryLamp } from './factory-geometry';
 import { bakeFactoryLight, createFactoryMaterial } from './factory-lighting';
 import { FACTORY_STATION_NAMES } from './factory-copy';
+import { factoryActiveContactCounts } from './factory-live-contact';
 import { useFactoryStore, canOpenFactoryStation, openFactoryStation, closeFactoryStation, loadFactorySave, tickFactoryOperation, clearFactoryInput, connectFactoryWorld, factoryControl } from './factory-store';
 import { createFactoryConveyors } from './factory-conveyor';
 import { buildFactoryWorklife } from './factory-worklife';
@@ -95,7 +96,7 @@ export default memo(function WorldFactory({active}:{active:boolean}){
     data.worklife.update(clock.elapsedTime,active,w.paused||w.poolInspect||document.hidden);
   });
   return <group name="world-factory" position={FACTORY.origin} dispose={null}
-    userData={{worldContactCounts: () => ({'factory-report-printer-contact': active ? 3 : 0})}}>
+    userData={{worldContactCounts: () => factoryActiveContactCounts(active,useFactoryStore.getState().game,factoryControl.operation)}}>
     <group name="factory-structure-contact">
       <mesh name="factory-structure" geometry={data.geometry} material={data.material} raycast={acceleratedRaycast} castShadow receiveShadow userData={{solid:true,assetId:'factory-architecture',worldCollisionSources:data.structureSources}}/>
       <RigidBody type="fixed" colliders={false} name="factory-equipment-collision" userData={{solid:true,assetId:'factory-architecture'}}>
