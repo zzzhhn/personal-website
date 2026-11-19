@@ -181,6 +181,64 @@ try {
     return { route: 'tent', start, afterWalk, camp, qa: false };
   });
 
+  await withPage('town-greybox', async ({ page, open, button, ready }) => {
+    const asset='**/assets/world/town-craft/T03.glb';
+    const at=[14,-2.5], faults=[];
+    const fail=route=>{faults.push(new URL(route.request().url()).pathname);return route.abort();};
+    await page.route(asset,fail);
+    await open('town');
+    await ready();
+    assert.equal(await page.evaluate(()=>!!window.__worldDebug),false);
+    const ordinaryStart=await position(page);
+    assert.ok(isAt(ordinaryStart,at));
+    const ordinaryWalk=await walk(page,ordinaryStart,['KeyW']);
+    await button.click();
+    await page.getByText(campNotice).waitFor({timeout});
+    assert.ok(isAt(await position(page),mainlandCamp));
+
+    const qa=ordinary('?start=town&qa=1');
+    await page.goto(qa);
+    await ready();
+    const claim=async () => page.evaluate(() => {
+      const d=window.__worldDebug, bodies=d.physicsInventory();
+      return { claimed:d.claimedGreybox().includes('building'), grounded:d.snapshot().grounded,
+        grey:bodies.filter(c=>c.name==='building-moe'), finished:bodies.filter(c=>c.name==='town-collider-building-moe-visual') };
+    });
+    await page.waitForFunction(()=>window.__worldDebug?.snapshot().grounded,{},{timeout});
+    const failed=await claim();
+    assert.equal(failed.claimed,false);
+    assert.equal(failed.grey.length,1);
+    assert.equal(failed.finished.length,0);
+
+    await page.unroute(asset,fail);
+    const gate=Promise.withResolvers(), requested=page.waitForRequest(asset,{timeout});
+    await page.route(asset,async route=>{await gate.promise;await route.continue();});
+    try {
+      await page.reload({waitUntil:'domcontentloaded'});
+      await requested;
+      await ready();
+      await page.waitForFunction(()=>window.__worldDebug?.snapshot().grounded,{},{timeout});
+      const before=await claim();
+      assert.equal(before.claimed,false);
+      assert.equal(before.grey.length,1);
+      const beforeReload=await position(page);
+      const delayedWalk=await walk(page,beforeReload,['KeyW']);
+      gate.resolve();
+      await page.waitForFunction(()=>window.__worldDebug?.claimedGreybox().includes('building'),{},{timeout});
+      await page.waitForFunction(()=> {
+        const d=window.__worldDebug,bodies=d.physicsInventory();
+        return d.snapshot().grounded && bodies.some(c=>c.name==='town-collider-building-moe-visual')
+          && !bodies.some(c=>c.name==='building-moe');
+      },{},{timeout});
+      const restored=await claim();
+      assert.equal(restored.finished.length,1);
+      const afterWalk=await walk(page,delayedWalk,['KeyW']);
+      assert.ok(faults.length>=2);
+      return {route:'town-greybox',ordinaryStart,ordinaryWalk,faults,failed,before,delayedWalk,restored,afterWalk,
+        qa:'only observes collision identities; both walks use regular keys'};
+    } finally {gate.resolve();}
+  });
+
   const venues = [
     { start: 'ibd', other: 'coaster', otherAt: [50,-125], module: /\/(?:WorldIbdYard\.[^/]+\.js|WorldIbdYard\.tsx)(?:\?|$)/, at: [-88, -143] },
     { start: 'coaster', other: 'ibd', otherAt: [-88,-143], module: /\/(?:WorldIntentCoaster\.[^/]+\.js|WorldIntentCoaster\.tsx)(?:\?|$)/, at: [50, -125] },

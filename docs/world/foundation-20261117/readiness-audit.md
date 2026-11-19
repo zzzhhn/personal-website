@@ -122,6 +122,12 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 
 原始运行记录为 `/tmp/city-readiness-b5-traffic.log`、`/tmp/city-readiness-gangway-browser.log` 和 `/tmp/city-readiness-4429-remount.log`。在 `foundation-interactions.mjs` 的预览地址后加 `ferry-gangway-loss cable-gangway-loss sled-gangway-loss` 可复跑三站，`region-remount.mjs` 地址后加 `factory ibd-suv` 可复跑行走和驾驶重挂。60 项相关 Node 用例、独立加载来源替换与打包洞口形状复测、TypeScript 和 8 页生产构建通过。
 
+## 城镇灰盒交接
+
+同一 4429 生产包在 `?start=town` 拒收实际三角模型 `/assets/world/town-craft/T03.glb`。普通入口仍可接地，按 W 步行约 1.44 m 并用顶部按钮返回营地。独立重载时延迟同一请求，玩家仍接地和行走，场景有唯一的 `building-moe` 灰盒碰撞。请求放行后，原灰盒卸载，唯一的 `town-collider-building-moe-visual` 三角网格登记，玩家可以再走约 1.48 m。QA 只读取碰撞身份及是否接地，未移动角色。已失败的资产用页面刷新重试。此例覆盖 MoE 入口与城镇走廊。
+
+在 `arrival-readiness.mjs` 的预览地址后加 `town-greybox` 可复跑，原始记录为 `/tmp/city-readiness-4429-town.log`。
+
 ## 验证
 
 - `npm run check:grounding` 42 项通过，包含打包回音洞新旧出生点、真胶囊、渡口结构下架/重挂及资产数据验证。
