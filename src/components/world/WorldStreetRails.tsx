@@ -64,7 +64,7 @@ export function railLayout() {
     }
     // Ring guardrail: three panels of L / 3 (~4.67 m) between four fixed posts. The beam faces the road:
     // the greybox run is offset outward, so the road side is toward the island centre.
-    const n = 3, seg = L / n, cx = -30, cz = -10;
+    const n = Math.max(1, Math.round(L / (14 / 3))), seg = L / n, cx = -30, cz = -10;
     const toCentre = [cx - r.position[0], cz - r.position[2]];
     const localZ = [Math.sin(r.yaw), Math.cos(r.yaw)]; // local +Z in world (three.js yaw)
     const flip = toCentre[0] * localZ[0] + toCentre[1] * localZ[1] > 0 ? Math.PI : 0; // beam sits on local -Z

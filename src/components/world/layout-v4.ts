@@ -9,6 +9,7 @@
  * Switch: `?layout=v4` (default entry keeps the frozen v3 layout until the main thread flips LAYOUT_V4).
  */
 import type { Vec3 } from './types';
+import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH } from './alpha-mine-layout.ts';
 import { FACTORY_APPROACH } from './factory/factory-layout';
 import {
   BUILDINGS_V4, CAMP_FOOT_RADIUS, CAMP_XZ, FOUNDATIONS_V4, insidePolygon, LAYOUT_V4, OBSTACLES_V4, OUTLINE_V4, RIDGE_CENTER, RIDGE_FOOT_R,
@@ -500,6 +501,33 @@ function railAlong(a: P2, b: P2, y: number, out: SolidBox[], color = '#E6DCCB', 
   if (posts) for (const p of [a, b]) out.push(box('post', p[0], y, p[1], .3, h, .3, color, yaw));
 }
 
+/** Keep the full marked quarry path clear through the coastal road shoulder.
+ * Cut the same rail runs that feed the fixed greybox, crafted posts and moving panels. */
+function quarryClearRailRuns(a: P2, b: P2): [P2, P2][] {
+  const rail = sub(b, a), length = len(rail);
+  let intervals = [[0, 1]];
+  for (let i = 1; i < ALPHA_MINE_CONNECTOR.length; i++) {
+    const start = xz(ALPHA_MINE_CONNECTOR[i - 1]), end = xz(ALPHA_MINE_CONNECTOR[i]);
+    const axis = unit(sub(end, start)), across = rightOf(axis);
+    // The guard sheet stands slightly forward of the post centreline.
+    const half = ALPHA_MINE_CONNECTOR_WIDTH / 2 + .45;
+    let lo = 0, hi = 1;
+    for (const [u, min, max] of [[axis, 0, len(sub(end, start))], [across, -half, half]] as const) {
+      const offset = dot(sub(a, start), u), step = dot(rail, u);
+      if (Math.abs(step) < 1e-9) {
+        if (offset < min || offset > max) hi = -1;
+        continue;
+      }
+      const t1 = (min - offset) / step, t2 = (max - offset) / step;
+      lo = Math.max(lo, Math.min(t1, t2)); hi = Math.min(hi, Math.max(t1, t2));
+    }
+    if (lo < hi) intervals = intervals.flatMap(([left, right]) =>
+      hi <= left || lo >= right ? [[left, right]] : [[left, Math.max(left, lo)], [Math.min(right, hi), right]]);
+  }
+  const at = (t: number) => t === 0 ? a : t === 1 ? b : add(a, mul(rail, t));
+  return intervals.filter(([left, right]) => (right - left) * length >= .65).map(([left, right]) => [at(left), at(right)]);
+}
+
 /** Bridge rail ends adjusted for the new J3 approach (whitelist: 为新进桥方向调整的桥栏端部). West ends
  * start beyond the turning envelope; a short flare closes the gap to the shore outside the deck. */
 export const BRIDGE_RAIL = { southStart: 3, northStart: 3, end: 2.8, offset: 5.2 };
@@ -545,7 +573,7 @@ export const solidsV4 = /*#__PURE__*/ lazy((): SolidBox[] => {
       for (const [p, d] of [[a, da], [b, db]] as [P2, P2][]) {
         const from = p === a ? sub(v, mul(d, 14)) : v, to = p === a ? v : add(v, mul(d, 14));
         const n = mul(rightOf(d), outer * (paveHalf('coastal') + 1.6));
-        railAlong(add(from, n), add(to, n), GROUND, out);
+        for (const [start, end] of quarryClearRailRuns(add(from, n), add(to, n))) railAlong(start, end, GROUND, out);
       }
     }
   }

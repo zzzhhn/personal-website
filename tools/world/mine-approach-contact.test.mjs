@@ -73,3 +73,36 @@ test('each real floor triangle cut out of the quarry apron has support on the in
   assert.ok(coverage.length>1000&&excluded>1000); assert.ok(maxError<.001,JSON.stringify({maxError,excluded,coverage:coverage.length}));
   t.diagnostic(JSON.stringify({floorFaces:coverage.length,excluded,maxError,exposedTriangles:exposed.indices.length/3}));
 });
+
+test('the working quarry trail has a full pedestrian opening through the greybox and crafted highway guards',async t=>{
+  const {railLayout}=await import('../../src/components/world/WorldStreetRails.tsx');
+  const {solidsV4}=await import('../../src/components/world/layout-v4.ts');
+  const {ALPHA_MINE_CONNECTOR}=await import('../../src/components/world/alpha-mine-layout.ts');
+  const runs=solidsV4().filter(r=>r.kind==='rail' && Math.hypot(r.position[0]+76,r.position[2]+50)<15);
+  const {beams,placements}=railLayout();
+  const {mountStreetContacts}=await import('./facility-craft/street/contact-fixture.mjs');
+  const moving=mountStreetContacts('rail',beams.filter(b=>b.kind==='guard'));
+  const fallback=new R.World({x:0,y:0,z:0});
+  const installations=[fallback,moving.world];
+  t.after(()=>{fallback.free();moving.dispose();});
+  function box(world,xyz,size,yaw) {
+    const collider=R.ColliderDesc.cuboid(...size.map(s=>s/2)).setTranslation(...xyz)
+      .setRotation({x:0,y:Math.sin(yaw/2),z:0,w:Math.cos(yaw/2)});
+    world.createCollider(collider);
+  }
+  for(const r of runs) box(installations[0],r.position,r.size,r.yaw);
+  for(const p of placements.filter(p=>p.kind==='guardPost')) {
+    const e=p.matrix.elements;
+    box(installations[1],[e[12],e[13]+.4,e[14]],[.3,.8,.3],Math.atan2(e[8],e[0]));
+  }
+  const [a,b]=ALPHA_MINE_CONNECTOR.slice(-2);
+  const dx=b[0]-a[0],dz=b[2]-a[2],length=Math.hypot(dx,dz);
+  const capsule=new R.Capsule(.46,.34), rotation={x:0,y:0,z:0,w:1};
+  for (const w of installations) {
+    w.step();
+    for (const lane of [-1.65,0,1.65]) {
+      const from={x:a[0]-dz/length*lane,y:1.88,z:a[2]+dx/length*lane};
+      assert.equal(w.castShape(from,rotation,{x:dx,y:0,z:dz},capsule,.002,1,false),null);
+    }
+  }
+});
