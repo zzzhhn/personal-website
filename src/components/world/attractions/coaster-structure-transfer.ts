@@ -1,6 +1,7 @@
 import { Box3, BufferAttribute, BufferGeometry, Sphere, Vector3 } from 'three';
 import type { TypedArray } from 'three';
 import type { createCoasterStructure } from './coaster-geometry';
+import type { CoasterRailPart } from './coaster-rail-contact';
 
 export type CoasterStructure = ReturnType<typeof createCoasterStructure>;
 type Attribute = { array: TypedArray; itemSize: number; normalized: boolean };
@@ -8,6 +9,7 @@ type GeometryPacket = {
   attributes: Record<string, Attribute>; index: Attribute | null;
   sphere: { center: number[]; radius: number } | null;
   box: { min: number[]; max: number[] } | null;
+  contactParts?: CoasterRailPart[];
 };
 export type CoasterStructurePacket = Omit<CoasterStructure, 'steel' | 'glow' | 'railCraft' | 'railShadow'> & {
   steel: GeometryPacket; glow: GeometryPacket;
@@ -22,7 +24,7 @@ export function packCoasterStructure(structure: CoasterStructure) {
     buffers.add(a.array.buffer as ArrayBuffer);
     return { array: a.array, itemSize: a.itemSize, normalized: a.normalized };
   };
-  const geometry = (g: BufferGeometry): GeometryPacket => ({
+  const geometry = (g: BufferGeometry, keepContactParts = false): GeometryPacket => ({
     attributes: Object.fromEntries(Object.entries(g.attributes).map(([name, a]) => {
       if (!(a instanceof BufferAttribute)) throw new Error('Unexpected interleaved coaster geometry');
       return [name, attribute(a)];
@@ -30,9 +32,10 @@ export function packCoasterStructure(structure: CoasterStructure) {
     index: g.index ? attribute(g.index) : null,
     sphere: g.boundingSphere ? { center: g.boundingSphere.center.toArray(), radius: g.boundingSphere.radius } : null,
     box: g.boundingBox ? { min: g.boundingBox.min.toArray(), max: g.boundingBox.max.toArray() } : null,
+    ...(keepContactParts ? { contactParts: g.userData.parts as CoasterRailPart[] } : {}),
   });
   const packet: CoasterStructurePacket = { ...structure, steel: geometry(structure.steel), glow: geometry(structure.glow),
-    railCraft: Object.fromEntries(Object.entries(structure.railCraft ?? {}).map(([role, g]) => [role, geometry(g)])),
+    railCraft: Object.fromEntries(Object.entries(structure.railCraft ?? {}).map(([role, g]) => [role, geometry(g, role === 'concrete')])),
     railShadow: structure.railShadow ? geometry(structure.railShadow) : null };
   for (const c of structure.colliders) if (c.hull) buffers.add(c.hull.buffer as ArrayBuffer);
   buffers.add(structure.relief.vertices.buffer as ArrayBuffer);
@@ -49,6 +52,7 @@ export function unpackCoasterStructure(packet: CoasterStructurePacket): CoasterS
     if (p.index) g.setIndex(new BufferAttribute(p.index.array, p.index.itemSize, p.index.normalized));
     if (p.sphere) g.boundingSphere = new Sphere(new Vector3().fromArray(p.sphere.center), p.sphere.radius);
     if (p.box) g.boundingBox = new Box3(new Vector3().fromArray(p.box.min), new Vector3().fromArray(p.box.max));
+    if (p.contactParts) g.userData.parts = p.contactParts;
     return g;
   };
   return { ...packet, steel: geometry(packet.steel), glow: geometry(packet.glow),

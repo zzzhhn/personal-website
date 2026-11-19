@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { MeshBasicMaterial, MeshStandardMaterial, NoColorSpace, RepeatWrapping, type BufferGeometry } from 'three';
 import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import { night } from '../WorldNight';
 import { shadowOnlyRange } from './coaster-shadow-range';
+import { coasterRailFootingShapes, coasterRailFootingSources } from './coaster-rail-contact';
 import metalMapUrl from '../../../../docs/world/phase-2-playground/coaster-gate-craft-20261105/directional-hardware-roughness-256.png?url';
 import mineralMapUrl from '../../../../docs/world/phase-2-playground/coaster-gate-craft-20261105/honed-mineral-roughness-256.png?url';
 
@@ -17,13 +19,17 @@ export const RAIL_FINISHES = {
 
 /** Four physical finishes retain fabrication UVs. Shared baked incident light
  * illuminates paint/mineral surfaces at night without one light per support. */
-export default function WorldCoasterRailCraft({ geometry, shadow }: {
-  geometry: Record<string, BufferGeometry>; shadow: BufferGeometry;
+export default function WorldCoasterRailCraft({ geometry, shadow, contactActive = false }: {
+  geometry: Record<string, BufferGeometry>; shadow: BufferGeometry; contactActive?: boolean;
 }) {
   const environment = useDjcFurnitureEnvironment();
   const shadowRange = useMemo(() => shadowOnlyRange(shadow), [shadow]);
   useEffect(() => () => shadowRange.restore(), [shadowRange]);
   const [metalSource, mineralSource] = useTexture([metalMapUrl, mineralMapUrl]);
+  const footing = geometry.concrete;
+  const footingSources = useMemo(() => coasterRailFootingSources(footing), [footing]);
+  const footingShapes = useMemo(() => contactActive ? coasterRailFootingShapes(footing, footingSources.cells) : [],
+    [contactActive, footing, footingSources]);
   const pack = useMemo(() => {
     const maps = [metalSource, mineralSource].map(source => {
       const texture = source.clone();
@@ -74,7 +80,16 @@ export default function WorldCoasterRailCraft({ geometry, shadow }: {
     for (const material of Object.values(pack.materials)) material.envMapIntensity = .85 - .35 * night.value;
   });
   return <group name="coaster-rail-craft" dispose={null}>
-    {Object.entries(geometry).map(([key, shape]) => <mesh key={key} name={`rail-${key}`} geometry={shape} material={pack.materials[key]} receiveShadow />)}
+    {Object.entries(geometry).map(([key, shape]) => key === 'concrete' ? null
+      : <mesh key={key} name={`rail-${key}`} geometry={shape} material={pack.materials[key]} receiveShadow />)}
+    <group name="coaster-rail-footings-contact">
+      <mesh name="rail-concrete" geometry={footing} material={pack.materials.concrete} receiveShadow
+        userData={{ assetId: 'coaster-rail-footing', solid: true, worldCollisionSources: footingSources.ranges }} />
+      {footingShapes.map(shape => <RigidBody key={footing.uuid + shape.id} type="fixed" colliders={false} position={shape.at}
+        userData={{ solid: true, assetId: 'coaster-rail-footing' }}>
+        <TrimeshCollider name={shape.id} args={[shape.vertices,shape.indices]} friction={.9} />
+      </RigidBody>)}
+    </group>
     <mesh name="coaster-retained-rail-shadow" geometry={shadow} material={pack.depth} castShadow
       userData={{ worldCollision: 'none', worldCollisionReason: 'Retained rail silhouette for the shadow pass' }}
       onBeforeRender={shadowRange.beforeColour} onAfterRender={shadowRange.restore}

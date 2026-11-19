@@ -29,6 +29,7 @@ import { CoasterStructureCache, coasterStructureMemory } from './coaster-structu
 import { buildCoasterInWorker } from './coaster-structure-job';
 import { COASTER_CAR_PANELS } from './coaster-access';
 import { reportRegionLoadFailure } from '../region-load-failure';
+import type { CoasterCollisionReview } from './coaster-collision-review';
 
 /** World-space scene. The parent owns actor/camera integration and the activation radius. */
 function WorldIntentCoaster({ active, preparing = false }: { active: boolean; preparing?: boolean }) {
@@ -69,14 +70,16 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
     const releaseAudio = parkAudio.retain();
     return () => { clearIntentRide(true); useIntentStore.setState({ active: false }); releaseAudio(); };
   }, [enabled]);
-  return <><group name="intent-coaster" userData={{noOcclusionFade:true}}>
+  const review: CoasterCollisionReview = { active, occupied, preparing, renderedNear };
+  return <><group name="intent-coaster" userData={{noOcclusionFade:true, coasterCollisionReview: review}}>
     <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.82} metalness={.16} /></mesh>
     <mesh name="coaster-light-strips" geometry={structure.glow}
       userData={{ worldCollision: 'none', worldCollisionReason: 'Emissive trim and station light lenses supported by separate structures' }}>
       <meshBasicMaterial vertexColors toneMapped={false} />
     </mesh>
-    {structure.railShadow && <Suspense fallback={null}>
-      <WorldCoasterRailCraft geometry={structure.railCraft} shadow={structure.railShadow} />
+    {structure.railShadow && <Suspense fallback={mountContacts ? <CoasterArchitectureFallback origin={[0,0,0]}
+      colliders={structure.colliders.filter(c => c.railFootingFallback)} assetId="coaster-rail-footing" /> : null}>
+      <WorldCoasterRailCraft geometry={structure.railCraft} shadow={structure.railShadow} contactActive={mountContacts} />
     </Suspense>}
     {COASTER_ARCHITECTURE_CRAFT && <WorldCoasterStationCraft detailed={renderedNear} contactActive={mountContacts}
       fallback={mountContacts ? <CoasterArchitectureFallback origin={coasterWorld([0, 0, 0])}
@@ -88,7 +91,7 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
     {mountContacts && <>
       {/* LODs have different support counts. Never reuse an index-keyed collider
           for a different solid while its Rapier hook still owns the old shape. */}
-      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} />
+      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} railFootings={!!structure.railShadow} />
       <RigidBody key={`track-${renderedNear}`} type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-track-sample' }}>
         <TrimeshCollider args={[structure.track.vertices, structure.track.indices]} friction={.9} />
       </RigidBody>
@@ -209,10 +212,11 @@ function CoasterTrain({ active }: { active: boolean }) {
   </group>;
 }
 
-function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
+function CoasterCollisions({ colliders, railFootings }: { colliders: CoasterCollider[]; railFootings: boolean }) {
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} name={surface?'coaster-station-surfaces':'coaster-station-solids'} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
-      {colliders.filter(c => !!c.surface === surface && !(COASTER_ARCHITECTURE_CRAFT && (c.gatePortalFallback || c.stationCraftFallback))).map((c, i) => c.hull
+      {colliders.filter(c => !!c.surface === surface && !(railFootings && c.railFootingFallback)
+        && !(COASTER_ARCHITECTURE_CRAFT && (c.gatePortalFallback || c.stationCraftFallback))).map((c, i) => c.hull
         ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
         : <CuboidCollider key={i} name={c.boardingSupport ? COASTER_TREAD_COLLIDER : undefined} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}

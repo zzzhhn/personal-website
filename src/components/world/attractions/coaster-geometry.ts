@@ -79,6 +79,7 @@ export interface CoasterCollider {
   boardingSupport?: true;
   gatePortalFallback?: true;
   stationCraftFallback?: true;
+  railFootingFallback?: true;
 }
 export type CoasterStructureScope = 'legacy' | 'short' | 'full';
 export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT, craftedRail = COASTER_RAIL_CRAFT) {
@@ -121,7 +122,7 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
     for (const p of [a,b]) {
       const base=coasterSupportBase(p.x,p.z);
       steel.housing([p.x,base+.5,p.z],[2.5,1,2.5],P.concrete);
-      colliders.push({position:[p.x,base+.5,p.z],half:[1.25,.5,1.25]});
+      colliders.push({position:[p.x,base+.5,p.z],half:[1.25,.5,1.25],railFootingFallback:true});
       if (fullStructure) COASTER_TRACK_CRAFT.mark(steel.parts[steel.parts.length - 1], 'grout');
       else if (!inCoasterStructureSample(u)) steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
     }
