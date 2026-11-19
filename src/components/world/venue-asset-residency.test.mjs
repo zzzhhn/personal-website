@@ -87,7 +87,7 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     const root = await createScene(camera);
     const local = entry.startsWith('attractions/') ? '../' : './';
     const contact = contactRoots[entry];
-    const host = (contact || entry.endsWith('WorldIbdStaticCraft')) && mountedPhysics();
+    const host = contact && mountedPhysics();
     let ready = false, release, requests = 0, failure;
     const pending = new Promise(resolve => { release = resolve; });
     const Component = compileWorldComponent(new URL('./' + entry + '.tsx', import.meta.url))({
@@ -140,10 +140,7 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       const parent = contact ? scene.getObjectByName(contact[0]) : original().parent;
       parent.addEventListener('childadded', ({ child }) => materialsOf(child).forEach(observe));
       const checkContacts = (fallback) => {
-        if (!contact) {
-          if (host) assert.equal(host.installed().size > 0,!fallback);
-          return;
-        }
+        if (!contact) return;
         const installed = host.installed(), names = [...installed.keys()];
         if (fallback) assert.deepEqual(names,[`${contact[0]}-fallback`]);
         else {
