@@ -20,7 +20,7 @@ import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import WorldIbdGuide from './WorldIbdGuide';
 import { ibdGuideStep } from './ibd-yard-guide.ts';
 import WorldIbdAudio from './WorldIbdAudio';
-import WorldIbdStaticCraft from './WorldIbdStaticCraft';
+import WorldIbdStaticCraft, { IbdWorkstationColliders } from './WorldIbdStaticCraft';
 import { canReachIbdWorkstation } from './ibd-workstation-reach';
 import { openIbdPack, requestIbdPackContact, useIbdPackPlay, ibdPackWorkBusy, cancelIbdPack } from './ibd-pack-play';
 
@@ -85,7 +85,11 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
       userData={{ solid: true, assetId: 'ibd-yard-architecture', worldCollisionPartial: true,
         worldCollisionSources: data.contactSurfaces.map(({ id, firstIndex, indexCount }) => ({ id, firstIndex, indexCount, collision: 'solid' }))
           .sort((a, b) => a.firstIndex - b.firstIndex) }} />
-    <WorldIbdStaticCraft uniform={data.uniform} fallback={<mesh name="ibd-static-equipment-legacy" geometry={data.craftShellGeometry!} material={data.material} castShadow receiveShadow/>}/>
+    <WorldIbdStaticCraft uniform={data.uniform} fallback={<>
+      <mesh name="ibd-static-equipment-legacy" geometry={data.craftShellGeometry!} material={data.material} castShadow receiveShadow
+        userData={{worldCollisionSources:data.workstationContacts.map(({ id,firstIndex,indexCount })=>({id,firstIndex,indexCount,collision:'solid'}))}} />
+      <IbdWorkstationColliders contacts={data.workstationContacts}/>
+    </>}/>
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>
       {data.contactSurfaces.map(s => <TrimeshCollider key={s.id} name={s.id}
         args={[s.vertices, s.indices, rapier.TriMeshFlags.FIX_INTERNAL_EDGES] as unknown as [Float32Array, Uint32Array]} friction={.85} />)}

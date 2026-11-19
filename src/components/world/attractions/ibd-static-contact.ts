@@ -1,4 +1,5 @@
 import type { Builder } from '../WorldStreetGeometry.ts';
+import type { BufferGeometry } from 'three';
 
 export type IbdContactSurface = {
   id: string; firstIndex: number; indexCount: number;
@@ -8,11 +9,21 @@ export type IbdContactSurface = {
 /** Preserve the source triangle order and exact float32 positions. Intern
  * coincident positions so Rapier can recognise internal edges across faces. */
 export function ibdTriangleContact(builder: Builder, id: string, firstIndex: number, endIndex = builder.idx.length): IbdContactSurface {
+  return triangleContact('ibd-' + id, firstIndex, endIndex, i => builder.idx[i], (i, axis) => builder.pos[i * 3 + axis]);
+}
+
+export function ibdGeometryContact(geometry: BufferGeometry, id: string, firstIndex: number, endIndex: number): IbdContactSurface {
+  const index = geometry.index, position = geometry.getAttribute('position');
+  return triangleContact(id, firstIndex, endIndex, i => index?.getX(i) ?? i, (i, axis) => position.getComponent(i, axis));
+}
+
+function triangleContact(id: string, firstIndex: number, endIndex: number, sourceIndex: (i: number) => number,
+  coordinate: (i: number, axis: number) => number): IbdContactSurface {
   const vertices: number[] = [], indices = new Uint32Array(endIndex - firstIndex);
   const seen = new Map<string, number>();
   for (let i = firstIndex; i < endIndex; i++) {
-    const source = builder.idx[i] * 3;
-    const x = Math.fround(builder.pos[source]), y = Math.fround(builder.pos[source + 1]), z = Math.fround(builder.pos[source + 2]);
+    const source = sourceIndex(i);
+    const x = Math.fround(coordinate(source, 0)), y = Math.fround(coordinate(source, 1)), z = Math.fround(coordinate(source, 2));
     const key = `${x},${y},${z}`;
     let index = seen.get(key);
     if (index === undefined) {
@@ -22,7 +33,7 @@ export function ibdTriangleContact(builder: Builder, id: string, firstIndex: num
     }
     indices[i - firstIndex] = index;
   }
-  return { id: `ibd-${id}`, firstIndex, indexCount: indices.length, vertices: new Float32Array(vertices), indices };
+  return { id, firstIndex, indexCount: indices.length, vertices: new Float32Array(vertices), indices };
 }
 
 export type IbdContactSource = (id: string, firstIndex: number) => void;

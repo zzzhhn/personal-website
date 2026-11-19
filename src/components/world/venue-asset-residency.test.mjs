@@ -14,6 +14,8 @@ import * as umbrellas from './djc-umbrella-visual.ts';
 import * as furniture from './djc-furniture-visual.ts';
 import * as crates from './attractions/ibd-crate-visual.ts';
 import * as equipment from './attractions/ibd-static-craft-visual.ts';
+import * as ibdFixtures from './attractions/ibd-workstation-fixtures.ts';
+import { buildIbdStatic } from './attractions/ibd-yard-geometry.ts';
 
 import * as bar from './djc-bar-layout.ts';
 import * as fixedContacts from './club-fixed-contact.ts';
@@ -87,13 +89,15 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     const root = await createScene(camera);
     const local = entry.startsWith('attractions/') ? '../' : './';
     const contact = contactRoots[entry];
-    const host = contact && mountedPhysics();
+    const ibdEquipment = entry.endsWith('WorldIbdStaticCraft');
+    const host = (contact || ibdEquipment) && mountedPhysics();
     let ready = false, release, requests = 0, failure;
     const pending = new Promise(resolve => { release = resolve; });
-    const Component = compileWorldComponent(new URL('./' + entry + '.tsx', import.meta.url))({
+    const compiled = compileWorldComponent(new URL('./' + entry + '.tsx', import.meta.url))({
       [visualImport]: visualModule,
       './useOwnedWorldVisual': { useOwnedWorldVisual },
       './ibd-static-craft-visual': equipment,
+      './ibd-workstation-fixtures': ibdFixtures,
       './attraction-layout': { IBD_YARD },
       './djc-club-layout': { CLUB, CLUB_DAYBEDS },
       './club-fixed-contact': fixedContacts,
@@ -109,9 +113,14 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
         if (!ready) throw pending;
         return gltf;
       } },
-    }).default;
-    const geometry = contact && new BoxGeometry(1, .5, .75);
-    const fallback = geometry ? h('mesh', { name:'original-geometry', geometry, dispose:null }) : h('group', { name: 'original-geometry' });
+    });
+    const Component = compiled.default;
+    const ibdFallback = ibdEquipment ? buildIbdStatic({ separateCraftShells: true }) : null;
+    ibdFallback?.geometry.dispose();
+    const geometry = ibdFallback?.craftShellGeometry ?? (contact ? new BoxGeometry(1, .5, .75) : null);
+    const originalModel = geometry ? h('mesh', { name:'original-geometry', geometry, dispose:null }) : h('group', { name: 'original-geometry' });
+    const fallback = ibdFallback ? h('group', null, originalModel,
+      h(compiled.IbdWorkstationColliders, { contacts: ibdFallback.workstationContacts })) : originalModel;
     const uniform = { value: 0 };
     let store, elapsed = 0;
     const render = (props = {}) => act(async () => {
@@ -137,18 +146,21 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       assert.ok(original());
       assert.equal(requests, 0);
       // Observe attachment before passive effects run, including their StrictMode replay.
-      const parent = contact ? scene.getObjectByName(contact[0]) : original().parent;
+      const physicalRoot = ibdEquipment ? ibdFixtures.IBD_WORKSTATION_FIXTURES_ROOT : contact?.[0];
+      const parent = physicalRoot ? scene.getObjectByName(physicalRoot) : original().parent;
       parent.addEventListener('childadded', ({ child }) => materialsOf(child).forEach(observe));
       const checkContacts = (fallback) => {
-        if (!contact) return;
+        if (!host) return;
         const installed = host.installed(), names = [...installed.keys()];
-        if (fallback) assert.deepEqual(names,[`${contact[0]}-fallback`]);
+        if (ibdFallback) assert.deepEqual(names.sort(),ibdFallback.workstationContacts.map(c=>c.id).sort());
+        else if (fallback) assert.deepEqual(names,[`${contact[0]}-fallback`]);
         else {
           assert.equal(names.length, contact[1]);
           assert.ok(names.every(name => name.startsWith(contact[0]+'-')&&!name.endsWith('-fallback')));
         }
         assert.ok([...installed.values()].every(collider => collider.shapeType() === rapier.ShapeType.TriMesh && collider.parent()?.isFixed()));
       };
+      checkContacts(true);
       if (part) {
         await render({ active: true, legacy: true });
         assert.ok(original());

@@ -8,13 +8,12 @@ import { IBD_SHEDS, IBD_TRUCK } from './ibd-yard-layout.ts';
 import { IBD_FIXTURES, ibdWorkLight, nearestIbdFixtures } from './ibd-yard-lighting.ts';
 
 function sample(build) {
-  const b = new Builder(), solids = [];
-  const cube = (at, size, surface, solid = false, bevel = .03, rotation) => {
+  const b = new Builder();
+  const cube = (at, size, surface, _solid = false, bevel = .03, rotation) => {
     if (rotation) b.tr(at, rotation, () => cbox(b, [0, 0, 0], size, surface, bevel));
     else cbox(b, at, size, surface, bevel);
-    if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
-  build(b, cube, solids);
+  build(b, cube, () => {});
   const geometry = b.build(), material = new MeshBasicMaterial({ side: DoubleSide });
   return { geometry, mesh: new Mesh(geometry, material), dispose() { geometry.dispose(); material.dispose(); } };
 }
