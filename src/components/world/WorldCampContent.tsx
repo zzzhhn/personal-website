@@ -1,6 +1,6 @@
 import { Component, memo, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { AnyCollider, ConvexHullCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
+import { ConvexHullCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
 import { AdditiveBlending, BufferAttribute, BufferGeometry, CanvasTexture, DoubleSide, Group, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, SRGBColorSpace, Vector3, type Material, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { UI } from '../../lib/i18n';
@@ -21,8 +21,9 @@ import { campCraftPushableHull, campLegacyPushableHull, createCampPushableHullBi
 import WorldCampSuitcaseContact, { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
 import { createSuitcaseContactSlot } from './camp-suitcase-contact';
 import { ToolWallVisual } from './WorldCampWorkshopCraft';
+import WorldCampToolWall from './WorldCampToolWall';
 import { ExitPostVisual } from './WorldCampSiteCraft';
-import { CampJournal, CampPropSession, CampToolWall, useCampPushableInteraction } from './WorldCampPropInteractions';
+import { CampJournal, CampPropSession, useCampPushableInteraction } from './WorldCampPropInteractions';
 import { campPropActor, campPropHand, currentCampPropInteraction } from './camp-prop-interactions';
 import { setCampFlagLift } from './camp-flag-wind';
 
@@ -86,6 +87,18 @@ const DESK_LOCAL = new Vector3(-0.4, 0.85, -0.62);
  * of render, collider and hull alike; mass follows the larger dumbbell. */
 const SCALE = { C13: 1.7, C14: 1.3 } as const;
 
+function legacyHardVisual(source: Object3D) {
+  const root = source.clone(true);
+  root.traverse(object => {
+    const mesh = object as Mesh;
+    if (!mesh.isMesh) return;
+    mesh.material = vc;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+  });
+  return root;
+}
+
 function CampContent() {
   const g = useContentGltfs();
   const lang = useWorldStore(s => s.lang);
@@ -99,7 +112,6 @@ function CampContent() {
     const lanternM = placementMatrix([lanternPos.x, lanternPos.y, lanternPos.z], desk.yaw + 0.5);
     const postM = EXIT_POSTS.map(p => placementMatrix(p, 0));
     const m11 = placementMatrix(place.C11.position, place.C11.yaw), m14 = placementMatrix(place.C14.position, place.C14.yaw, SCALE.C14);
-    // Legacy merges for the tool wall and the stationary tabletop lantern.
     const merge = (parts: BufferGeometry[]) => {
       if (!parts.length) return null;
       const geometry = mergeGeometries(parts);
@@ -107,45 +119,30 @@ function CampContent() {
       return geometry;
     };
     const staticGeometry = merge([
-      ...(!CAMP_BATCH ? byName('C11', 'C11_body').map(p => bake(p, m11)) : []),
       ...(legacy ? byName('C16', 'C16_frame').map(p => bake(p, lanternM)) : []),
     ]);
     const glowGeometry = merge([
       ...(legacy ? byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)) : []),
     ]);
-    // Separate visual fallbacks let each streamed family fail independently.
-    const toolWall = CAMP_BATCH ? merge(byName('C11', 'C11_body').map(p => bake(p, new Matrix4()))) : null;
     const postBody = merge(byName('L01', 'L01_post').map(p => bake(p, new Matrix4())))!;
     const postGlow = merge(byName('L01', 'L01_lens').map(p => glowBake(p, new Matrix4(), false)))!;
     const postShapes: LocalShape[] = [{kind:'trimesh',part:'body',...localTrimesh(parts.L01)}];
-    const legacyCookware = g.C14.scene.clone(true);
-    legacyCookware.traverse(object => {
-      const mesh = object as Mesh;
-      if (!mesh.isMesh) return;
-      mesh.material = vc;
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-    });
+    const legacyCookware = legacyHardVisual(g.C14.scene), legacyToolWall = legacyHardVisual(g.C11.scene);
     const lanternFrame = mergeGeometries(byName('C16', 'C16_frame').map(p => bake(p, new Matrix4())))!;
     const lanternGlass = mergeGeometries(byName('C16', 'C16_glass').map(p => glowBake(p, new Matrix4(), true)))!;
-    const hard = [
-      { id: 'C11', mesh: localTrimesh(parts.C11), matrix: m11 },
-    ].map(h => ({ id: h.id, indices: h.mesh.indices, vertices: transform(h.mesh.vertices, h.matrix) }));
-    // Animated sub-parts: geometry in node-local frame, placed by asset matrix x node matrix.
-    const sub = (id: keyof typeof g, name: string, assetM: Matrix4) => { const p = byName(id, name)[0]; return { geometry: bake({ ...p, matrix: new Matrix4() }, new Matrix4()), frame: new Matrix4().multiplyMatrices(assetM, p.matrix) }; };
     const dumbbells: Place[] = [padOffset(CONTENT_PAD.C13, -0.05, 0.95), padOffset(CONTENT_PAD.C13, -0.62, 0.9)].map((p, i) => ({ position: p, yaw: yawToFire(CONTENT_PAD.C13) + (i ? 0.12 : -0.05) }));
     const local = (list: NodePart[]) => mergeGeometries(list.map(p => bake(p, new Matrix4())))!;
     const plates = JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[];
     return {
-      place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postShapes, postM, legacyCookware, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
-      tools: sub('C11', 'C11_tools', m11),
+      place, lanternPos, staticGeometry, glowGeometry, legacyToolWall, postBody, postGlow, postShapes, postM,
+      legacyCookware, lanternFrame, lanternGlass, m14, lanternM, dumbbells, benchTop: seatTop(parts.C06),
       guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: campLegacyPushableHull(parts.C12, 'C12') },
       dumbbell: { geometry: local(parts.C13), hull: campLegacyPushableHull(parts.C13, 'C13', SCALE.C13) },
       suitcase: { body: local(byName('C15', 'C15_case')), handle: local(byName('C15', 'C15_handle')), hull: campLegacyPushableHull(parts.C15, 'C15') },
       plates, toolCentres: plates.map(plate => plate.centre[2]), m11,
     };
   }, [g, legacy]);
-  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.body, data.suitcase.handle]) geo?.dispose(); }, [data]);
+  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.postBody, data.postGlow, data.lanternFrame, data.lanternGlass, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.body, data.suitcase.handle]) geo?.dispose(); }, [data]);
 
   // Formal replacements for the five pad stand-ins and both exit lamps are mounted (visual + collider).
   useGreyboxClaim('camp-placeholder', 'camp-lamps');
@@ -166,10 +163,14 @@ function CampContent() {
     </group>)}
     <CampColliders id="L01" label="exit" shapes={data.postShapes} matrices={data.postM}/>
   </>;
+  const oldToolWall = <WorldCampToolWall root={data.legacyToolWall} placement={data.m11} centres={data.toolCentres} />;
   return <group name="world-camp-content">
-    {data.staticGeometry && <mesh name="camp-content-static" geometry={data.staticGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'camp-content', solid: true }} />}
-    {data.glowGeometry && <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material} userData={{ noOcclusionFade: true }} />}
-    {CAMP_BATCH && <group matrix={data.m11} matrixAutoUpdate={false}><ToolWallVisual node="C11_body" fallback={<mesh geometry={data.toolWall!} material={vc} castShadow receiveShadow />} /></group>}
+    {data.staticGeometry && <mesh name="camp-content-static" geometry={data.staticGeometry} material={vc} castShadow receiveShadow
+      userData={{ assetId: 'C16', worldCollision: 'none', collisionReason: 'Tabletop lantern inside the solid desk footprint' }} />}
+    {data.glowGeometry && <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material}
+      userData={{ noOcclusionFade: true, worldCollision: 'none', collisionReason: 'Tabletop lantern glow' }} />}
+    {CAMP_BATCH ? <ToolWallVisual fallback={oldToolWall} renderWall={root =>
+      <WorldCampToolWall root={root} placement={data.m11} centres={data.toolCentres} crafted />} /> : oldToolWall}
     <group name="camp-L01-contact">{CAMP_BATCH ? <ExitPostVisual matrices={data.postM} fallback={oldPosts}/> : oldPosts}</group>
     <WorldCampFacilityCraft family="C14"
       fallback={<WorldCampCookware root={data.legacyCookware} placement={data.m14} elapsed={wokFeedbackTime} />}
@@ -177,12 +178,7 @@ function CampContent() {
     {!legacy && <group matrix={data.lanternM} matrixAutoUpdate={false} userData={{ worldCollision: 'none', collisionReason: 'Tabletop lantern inside the solid desk footprint' }}>
       <WorldCampFacilityCraft family="C16" fallback={<><mesh geometry={data.lanternFrame} material={vc} castShadow receiveShadow /><mesh geometry={data.lanternGlass} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
     </group>}
-    <HardColliders hard={data.hard} />
     <CampPropSession />
-    <CampToolWall frame={data.tools.frame} centres={data.toolCentres}>
-      {CAMP_BATCH ? <ToolWallVisual node="C11_tools" fallback={<mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />} />
-        : <mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />}
-    </CampToolWall>
     <LabelPlates plates={data.plates} frame={data.m11} lang={lang} />
     <Pushable family="C12" id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">
       <mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow />
@@ -203,12 +199,6 @@ function CampContent() {
   </group>;
 }
 
-function transform(points: Float32Array, m: Matrix4) {
-  const out = new Float32Array(points.length), v = new Vector3();
-  for (let i = 0; i < points.length; i += 3) { v.set(points[i], points[i + 1], points[i + 2]).applyMatrix4(m); out[i] = v.x; out[i + 1] = v.y; out[i + 2] = v.z; }
-  return out;
-}
-
 /** C06 seat surface in GLB-local space: highest point of the log, and the mean X of its top band. */
 function seatTop(parts: NodePart[]) {
   const p = localPoints(parts); let maxY = -Infinity;
@@ -216,23 +206,6 @@ function seatTop(parts: NodePart[]) {
   let sx = 0, n = 0;
   for (let i = 0; i < p.length; i += 3) if (p[i + 1] > maxY - 0.03 && Math.abs(p[i + 2]) < 0.6) { sx += p[i]; n++; }
   return { y: maxY, x: n ? sx / n : 0 };
-}
-
-const hardRecords: { id: string; aabb: { min: Vec3; max: Vec3 } }[] = [];
-function HardColliders({ hard }: { hard: { id: string; vertices: Float32Array; indices: Uint32Array }[] }) {
-  const { rapier } = useRapier();
-  useEffect(() => {
-    hardRecords.length = 0;
-    for (const h of hard) {
-      const min: Vec3 = [Infinity, Infinity, Infinity], max: Vec3 = [-Infinity, -Infinity, -Infinity];
-      for (let i = 0; i < h.vertices.length; i += 3) for (let k = 0; k < 3; k++) { min[k] = Math.min(min[k], h.vertices[i + k]); max[k] = Math.max(max[k], h.vertices[i + k]); }
-      hardRecords.push({ id: h.id, aabb: { min, max } });
-    }
-  }, [hard]);
-  return <>{hard.map(h => <RigidBody key={h.id} type="fixed" colliders={false} name={`camp-content-body-${h.id}`} userData={{ solid: true, assetId: h.id.slice(0, 3) }}>
-    <AnyCollider name={`camp-content-collider-${h.id}`} shape="trimesh" friction={0.6} restitution={0.05}
-      args={[h.vertices, h.indices, rapier.TriMeshFlags.FIX_INTERNAL_EDGES] as unknown as [Float32Array, Uint32Array]} />
-  </RigidBody>)}</>;
 }
 
 /** Five bilingual category labels on the tool wall from UI.about.techCategories (same order as the
@@ -264,7 +237,8 @@ function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: numbe
     return { geometry, material };
   }, [plates, frame, lang]);
   useEffect(() => () => { geometry.dispose(); material.map?.dispose(); material.dispose(); }, [geometry, material]);
-  return <mesh name="camp-content-C11-labels" geometry={geometry} material={material} receiveShadow userData={{ noOcclusionFade: true }} />;
+  return <mesh name="camp-content-C11-labels" geometry={geometry} material={material} receiveShadow
+    userData={{ noOcclusionFade: true, worldCollision: 'none', collisionReason: 'Printed faces over the fixed label plates' }} />;
 }
 
 const pushables = new Map<string, { body: RefObject<RapierRigidBody | null>; home: Vec3; state: { displacedAt: number; clock: number } }>();
@@ -478,8 +452,9 @@ function useQa(data: { place: Record<string, Place>; dumbbells: Place[]; lantern
       placements: () => ({ ...data.place, C13: data.dumbbells, C16: data.lanternPos.toArray(), L01: EXIT_POSTS, benchTop: data.benchTop }),
       hard: () => {
         const cookware = campCookwareHardRecord();
-        return [...hardRecords, ...(cookware ? [cookware] : []),
-          ...campColliderRecords().filter(r => r.id === 'L01').map(r => ({id:`L01-${r.instance}`,aabb:r.aabb}))];
+        const records = campColliderRecords();
+        return [...records.filter(r => r.id === 'C11').map(r => ({ id: 'C11', aabb: r.aabb })), ...(cookware ? [cookware] : []),
+          ...records.filter(r => r.id === 'L01').map(r => ({ id: `L01-${r.instance}`, aabb: r.aabb }))];
       },
       pushables: () => [...pushables].map(([id, p]) => {
         const body = p.body.current, position = body?.translation();

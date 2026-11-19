@@ -8,6 +8,7 @@ import { Box3, BoxGeometry, BufferGeometry, DoubleSide, Float32BufferAttribute, 
 import { campFixedBody, campColliderKey, campGradedFlagstones, campPlacementMatrix, campShapes, campStoneInstances, campStoneShapes } from './WorldCampPhysics.tsx';
 import { CONTENT_PAD, EXIT_POSTS, onPad } from './WorldCampContentLayout.ts';
 import { campCookwareWokPose, prepareCampCookware } from './camp-cookware-contact.ts';
+import { campToolColliderKey, prepareCampToolRack, takeCampTool } from './camp-tool-wall-contact.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { collisionInventory } from './world-collision-inventory.ts';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground.ts';
@@ -80,6 +81,89 @@ function fixedProbe(shapes, transform, run) {
     return run(world);
   } finally { world.free(); }
 }
+
+test('C11 only keeps exact parked tool triangles on its wall and restores all five tool contacts', async t => {
+  const preferred = await readWorldCraftGltf(['public/assets/world/camp-workshop-craft/camp-workshop.glb']);
+  const original = oldCampAsset('C11');
+  const { position, yaw } = onPad(CONTENT_PAD.C11), placement = campPlacementMatrix({ position, yaw });
+  const material = new MeshBasicMaterial({ side: DoubleSide });
+  const point = new Vector3();
+  try {
+    for (const [label, scene] of [['preferred', preferred.scene], ['legacy', original.scene]]) {
+      const family = scene.getObjectByName('C11'), board = family.getObjectByName('C11_body').clone(true);
+      const tools = family.getObjectByName('C11_tools').clone(true);
+      const centres = JSON.parse(family.userData.panelCentresGLB_z);
+      tools.updateMatrix();
+      const frame = placement.clone().multiply(tools.matrix);
+      tools.position.set(0, 0, 0);
+      const prepared = prepareCampToolRack(tools, frame, centres);
+      board.traverse(o => { if (o.isMesh) o.material = material; });
+      tools.traverse(o => { if (o.isMesh) o.material = material; });
+      const wall = campFixedBody(board)[0];
+      const wallVertices = wall.vertices.map((value, index, vertices) => {
+        const vertex = index - index % 3;
+        return point.fromArray(vertices, vertex).applyMatrix4(placement).getComponent(index % 3);
+      });
+      const renders = new Scene(), scope = new Group(), parking = new Group(), carried = new Group();
+      scope.name = 'camp-C11-contact';
+      renders.add(scope); scope.add(board, parking, carried);
+      parking.matrix.copy(frame); parking.matrixAutoUpdate = false; parking.add(tools);
+      carried.matrix.copy(frame); carried.matrixAutoUpdate = false;
+      placement.decompose(board.position, board.quaternion, board.scale);
+      board.userData = { worldCollision: 'solid', surfaceId: 'wall', worldCollisionSharedSurface: true };
+      const colliderNodes = ['wall', ...centres.map((_, lane) => campToolColliderKey(lane))].map(name => Object.assign(new Group(), { name }));
+      scope.add(...colliderNodes);
+      const world = new R.World({ x: 0, y: 0, z: 0 });
+      try {
+        const fixed = world.createRigidBody(R.RigidBodyDesc.fixed());
+        const install = ({ vertices, indices }) => world.createCollider(R.ColliderDesc.trimesh(vertices, indices, R.TriMeshFlags.FIX_INTERNAL_EDGES), fixed);
+        const wallCollider = install({ ...wall, vertices: wallVertices });
+        const parked = prepared.shapes.map(install);
+        world.step(); renders.updateMatrixWorld(true);
+        const front = new Vector3(1, 0, 0).transformDirection(placement), downWall = front.clone().negate();
+        const rays = [];
+        for (let y = .58; y <= 1.2; y += .015) for (let z = -.94; z <= .94; z += .015) {
+          const origin = new Vector3(.9, y, z).applyMatrix4(placement);
+          rays.push({ origin, ray: new R.Ray(origin, downWall) });
+        }
+        const visibleAt = (origin) => new Raycaster(origin, downWall, 0, 2).intersectObjects([board, parking], true)[0]?.distance;
+        const target = parked.map(collider => rays.find(({ origin, ray }) => {
+          const hit = world.castRay(ray, 2, true);
+          return hit?.collider.handle === collider.handle && Math.abs(visibleAt(origin) - hit.timeOfImpact) < .00005;
+        }));
+        const rear = new Vector3(-1, 1.3, 0).applyMatrix4(placement);
+        assert.equal(world.castRay(new R.Ray(rear, front), 2, true)?.collider.handle, wallCollider.handle);
+        const meshNodes = () => { const nodes = []; renders.traverseVisible(o => { if (o.isMesh) nodes.push(o); }); return nodes; };
+        const reports = [];
+        for (let lane = 0; lane < centres.length; lane++) {
+          const probe = target[lane];
+          assert.ok(probe, 'an exposed ray must hit the installed tool before the board');
+          const before = world.castRay(probe.ray, 2, true);
+          assert.equal(before.collider.handle, parked[lane].handle);
+          const renderedAt = () => visibleAt(probe.origin);
+          assert.ok(Math.abs(renderedAt() - before.timeOfImpact) < .00005,
+            JSON.stringify({ label, lane, render: renderedAt(), rapier: before.timeOfImpact, origin: probe.origin.toArray() }));
+          const returnTool = takeCampTool(prepared.batches, carried, lane);
+          assert.ok(returnTool);
+          parked[lane].setEnabled(false); world.step(); renders.updateMatrixWorld(true);
+          const after = world.castRay(probe.ray, 2, true);
+          assert.notEqual(after?.collider.handle, parked[lane].handle);
+          assert.ok(!after || after.timeOfImpact > before.timeOfImpact + .001);
+          assert.equal(carried.children.reduce((sum, mesh) => sum + mesh.geometry.index.count, 0), prepared.shapes[lane].indices.length);
+          assert.ok(carried.children.every(mesh => mesh.userData.worldCollision === 'none'));
+          const inHand = collisionInventory(renders, meshNodes(), colliderNodes.filter((_, i) => i !== lane + 1), [scope.name]);
+          assert.deepEqual(inHand.errors, []);
+          returnTool(); parked[lane].setEnabled(true); world.step(); renders.updateMatrixWorld(true);
+          assert.equal(carried.children.length, 0);
+          assert.equal(world.castRay(probe.ray, 2, true)?.collider.handle, parked[lane].handle);
+          assert.deepEqual(collisionInventory(renders, meshNodes(), colliderNodes, [scope.name]).errors, []);
+          reports.push({ lane, faces: prepared.shapes[lane].indices.length / 3, clearedMillimetres: (after ? (after.timeOfImpact - before.timeOfImpact) * 1000 : null) });
+        }
+        t.diagnostic(`${label} wall ${wall.indices.length / 3}: ${JSON.stringify(reports)}`);
+      } finally { world.free(); }
+    }
+  } finally { material.dispose(); original.dispose(); disposeWorldCraftGltf(preferred.scene); }
+});
 
 test('installed C14 cookware matches the selected stove and moving bowl, including the gap left by the toss', async t => {
   const craft = await readWorldCraftGltf(['public/assets/world/facility-craft/camp/camp-facilities-v1.glb']);

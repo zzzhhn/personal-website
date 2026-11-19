@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useRef, type ReactNode, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, type RefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
-import { BufferAttribute, BufferGeometry, CanvasTexture, DoubleSide, Group, Mesh, SRGBColorSpace, Vector3, type Matrix4 } from 'three';
+import { AnyCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
+import { CanvasTexture, DoubleSide, Group, SRGBColorSpace, Vector3, type Matrix4, type Object3D } from 'three';
 import { UI } from '../../lib/i18n';
 import { PLAYER_CENTER_HEIGHT, rotateVector, yawRotation } from './actor-physics';
-import { CAMP_DUMBBELL_REACH, CAMP_TOOL_GRIPS, campDumbbellDrop, campDumbbellGrip, campMissingSignalTime, campPropActor, campPropHand, campPushablePrompt, campSuitcaseHandleZ, campSuitcasePull, campSuitcaseTowTarget, campSuitcaseTurn, canReachCampProp, cancelCampPropInteraction, currentCampPropInteraction, holdCampDumbbell, horizontalCampReach, nearestCampToolLane, readCampPropActivity, startCampPropInteraction } from './camp-prop-interactions';
+import { CAMP_DUMBBELL_REACH, CAMP_TOOL_GRIPS, campDumbbellDrop, campDumbbellGrip, campMissingSignalTime, campPropActor, campPropHand, campPushablePrompt, campSuitcaseHandleZ, campSuitcasePull, campSuitcaseTowTarget, campSuitcaseTurn, canReachCampProp, cancelCampPropInteraction, currentCampPropInteraction, holdCampDumbbell, horizontalCampReach, readCampPropActivity, startCampPropInteraction } from './camp-prop-interactions';
 import { bookStack, type Place } from './WorldCampContentLayout';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
@@ -14,6 +14,7 @@ import { campPropReachAt } from './camp-prop-interactions';
 import { campPushCommand, campToolCommand, campJournalCommand, campJournalReachAt, campHeldBodyPose, type CampPushPhase } from './camp-prop-interactions';
 import { acceptAction, advanceAcceptedAction, cancelAcceptedAction, heldPropPoint, type AcceptedAction } from './accepted-action';
 import { registerCampActivity } from './camp-actor-activity';
+import { campToolColliderKey, prepareCampToolRack, takeCampTool } from './camp-tool-wall-contact';
 
 type Labels = { en: string; zh: string };
 // A shape query can miss at the instant a dumbbell collider is removed or at a stone seam.
@@ -277,68 +278,14 @@ export function useCampPushableInteraction(id: string, home: Place, body: RefObj
   return () => playable && (isActive(key) || pendingDrop.current !== null);
 }
 
-interface ToolPiece { source: Mesh; original: BufferGeometry; wall: BufferGeometry; hand: Mesh }
-function toolGeometry(source: BufferGeometry, indices: number[]) {
-  const geometry = new BufferGeometry();
-  const vertices: number[] = [], remap = new Map<number, number>();
-  const compactIndices = indices.map(index => {
-    const existing = remap.get(index);
-    if (existing !== undefined) return existing;
-    const next = vertices.length;
-    vertices.push(index); remap.set(index, next);
-    return next;
-  });
-  for (const [name, attribute] of Object.entries(source.attributes)) {
-    const { itemSize } = attribute;
-    const values = new Float32Array(vertices.length * itemSize);
-    for (let i = 0; i < vertices.length; i++) {
-      for (let j = 0; j < itemSize; j++) values[i * itemSize + j] = attribute.getComponent(vertices[i], j);
-    }
-    geometry.setAttribute(name, new BufferAttribute(values, itemSize));
-  }
-  geometry.setIndex(compactIndices);
-  geometry.computeBoundingBox(); geometry.computeBoundingSphere();
-  return geometry;
-}
+type ToolPlay = { index: number; phase: 'reach' | 'held' | 'return'; pickupAction: AcceptedAction; age: number;
+  restore: (() => void) | null; clearNotice?: () => void };
 
-/** Preserve the pack's three idle material batches. Separate only the selected lane from
- * each batch while the tool is away. Its mounting peg remains part of the fixed wall. */
-function takeTool(root: Group, carried: Group, lane: number, centres: readonly number[]) {
-  const pieces: ToolPiece[] = [];
-  root.updateWorldMatrix(true, true);
-  const point = new Vector3(), parentInverse = root.matrixWorld.clone().invert();
-  root.traverse(object => {
-    const source = object as Mesh;
-    if (!source.isMesh || !source.visible) return;
-    const original = source.geometry;
-    const positions = original.getAttribute('position'), index = original.getIndex();
-    if (!positions) return;
-    const transform = parentInverse.clone().multiply(source.matrixWorld);
-    const kept: number[] = [], taken: number[] = [];
-    for (let i = 0, count = index?.count ?? positions.count; i < count; i += 3) {
-      const a = index?.getX(i) ?? i, b = index?.getX(i + 1) ?? i + 1, c = index?.getX(i + 2) ?? i + 2;
-      point.set((positions.getX(a) + positions.getX(b) + positions.getX(c)) / 3,
-        (positions.getY(a) + positions.getY(b) + positions.getY(c)) / 3,
-        (positions.getZ(a) + positions.getZ(b) + positions.getZ(c)) / 3).applyMatrix4(transform);
-      (nearestCampToolLane(point.z, centres) === lane ? taken : kept).push(a, b, c);
-    }
-    if (!taken.length) return;
-    const wall = toolGeometry(original, kept);
-    const hand = new Mesh(toolGeometry(original, taken), source.material);
-    hand.name = `camp-carried-tool-${lane}`;
-    hand.matrix.copy(transform); hand.matrixAutoUpdate = false;
-    hand.castShadow = source.castShadow; hand.receiveShadow = source.receiveShadow;
-    hand.userData = { assetId: 'C11', noOcclusionFade: true, shadowDynamic: true };
-    pieces.push({ source, original, wall, hand });
-  });
-  for (const piece of pieces) { piece.source.geometry = piece.wall; carried.add(piece.hand); }
-  return pieces;
-}
-
-type ToolPlay = { index: number; phase: 'reach' | 'held' | 'return'; pickupAction: AcceptedAction; age: number; pieces: ToolPiece[]; clearNotice?: () => void };
-
-export function CampToolWall({ frame, centres, children }: { frame: Matrix4; centres: readonly number[]; children: ReactNode }) {
-  const wall = useRef<Group>(null), carried = useRef<Group>(null), play = useRef<ToolPlay | null>(null);
+export function CampToolWall({ frame, centres, art }: { frame: Matrix4; centres: readonly number[]; art: Object3D }) {
+  const carried = useRef<Group>(null), play = useRef<ToolPlay | null>(null);
+  const colliders = useRef<(RapierCollider | null)[]>([]);
+  const { rapier } = useRapier();
+  const rack = useMemo(() => prepareCampToolRack(art, frame, centres), [art, frame, centres]);
   const positions = useMemo(() => centres.map(z => new Vector3(.58, -.04, z).applyMatrix4(frame).toArray() as Vec3), [centres, frame]);
   const grips = useMemo(() => centres.map((z, i) => new Vector3(-.006, CAMP_TOOL_GRIPS[i].y, z).applyMatrix4(frame).toArray() as Vec3), [centres, frame]);
   const inverse = useMemo(() => frame.clone().invert(), [frame]);
@@ -359,7 +306,7 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
       else if (command === 'cancel') cancelCampPropInteraction('cancel-reach');
       return;
     }
-    if (!canTake(index) || !wall.current || !carried.current) return;
+    if (!canTake(index) || !colliders.current[index]?.isValid() || !carried.current) return;
     const obj = carried.current;
     startCampPropInteraction({ id: actionId(index), anchor: positions[index], inspect: () => {
       const p = play.current;
@@ -369,34 +316,31 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
       play.current = null;
       cancelAcceptedAction(previous?.pickupAction ?? null);
       previous?.clearNotice?.();
-      for (const part of previous?.pieces ?? []) {
-        part.source.geometry = part.original;
-        part.hand.removeFromParent();
-        part.hand.geometry.dispose();
-        part.wall.dispose();
-      }
+      previous?.restore?.();
+      const parked = colliders.current[index];
+      if (parked?.isValid()) parked.setEnabled(true);
       obj.position.set(0, 0, 0);
       obj.rotation.set(0, 0, 0);
     } });
-    play.current = { index, phase: 'reach', pickupAction: acceptAction(), age: 0, pieces: [] };
+    play.current = { index, phase: 'reach', pickupAction: acceptAction(), age: 0, restore: null };
     aim(grips[index], 'reach');
   };
-  useEffect(() => () => { if (play.current) cancelCampPropInteraction('unmounted'); }, []);
+  useLayoutEffect(() => () => { if (play.current) cancelCampPropInteraction('tool-visual-replaced'); }, [rack]);
   useFrame((_, delta) => {
-    const p = play.current, obj = carried.current, root = wall.current;
-    if (!p || !obj || !root) return;
+    const p = play.current, obj = carried.current;
+    if (!p || !obj) return;
     const grip = grips[p.index];
     if (!campPropActor.available) { cancelCampPropInteraction('actor-unavailable'); return; }
     if (!campPropActor.grounded) { cancelCampPropInteraction('lost-ground'); return; }
     if (horizontalCampReach(campPropActor.position, grip) > .99) { cancelCampPropInteraction('out-of-reach'); return; }
-    if (p.pieces.some(({ source }) => { for (let n = source.parent; n; n = n.parent) if (n === root) return false; return true; })) {
-      cancelCampPropInteraction('tool-visual-replaced'); return;
-    }
     p.age += Math.min(delta, .05);
     if (p.phase === 'reach') {
       if (!advanceAcceptedAction(p.pickupAction, Math.min(delta, .05), true)) return;
-      p.pieces = takeTool(root, obj, p.index, centres);
-      if (!p.pieces.length) { cancelCampPropInteraction('tool-geometry-missing'); return; }
+      const parked = colliders.current[p.index];
+      if (!parked?.isValid()) { cancelCampPropInteraction('tool-collider-missing'); return; }
+      p.restore = takeCampTool(rack.batches, obj, p.index);
+      if (!p.restore) { cancelCampPropInteraction('tool-geometry-missing'); return; }
+      parked.setEnabled(false);
       p.phase = 'held'; p.age = 0;
       const category = (lang: 'en' | 'zh') => UI.about.techCategories[lang][p.index].items.filter(item => !item.endsWith(':')).join(' · ');
       p.clearNotice = notice({ en: category('en'), zh: category('zh') });
@@ -416,15 +360,22 @@ export function CampToolWall({ frame, centres, children }: { frame: Matrix4; cen
       obj.position.set(from.x + .006, from.y - CAMP_TOOL_GRIPS[p.index].y, from.z - centres[p.index]);
     }
   });
-  return <group matrix={frame} matrixAutoUpdate={false} name="camp-content-C11-tools" userData={{ assetId: 'C11', shadowDynamic: true }}>
-    <group ref={wall}>{children}</group>
-    <group ref={carried} name="camp-carried-tool" />
-    {positions.map((position, index) => <ToolAction key={index} id={actionId(index)} position={grips[index]} index={index} play={play}
-      enabled={() => campPropActor.available && !!wall.current && !!carried.current
-        && (!play.current || (play.current.index === index && campToolCommand(play.current.phase) !== null))}
-      approach={{ target: () => grips[index], ready: position => canTakeAt(index, position),
-        candidates: from => [[position[0], from[1], position[2]]] }} onInteract={() => act(index)} />)}
-  </group>;
+  return <>
+    <RigidBody name="camp-content-body-C11-rack" type="fixed" colliders={false} userData={{ assetId: 'C11', solid: true }}>
+      {rack.shapes.map((shape, lane) => <AnyCollider key={lane} ref={collider => { colliders.current[lane] = collider; }}
+        name={campToolColliderKey(lane)} shape="trimesh" friction={.6} restitution={.05}
+        args={[shape.vertices, shape.indices, rapier.TriMeshFlags.FIX_INTERNAL_EDGES] as unknown as [Float32Array, Uint32Array]} />)}
+    </RigidBody>
+    <group matrix={frame} matrixAutoUpdate={false} name="camp-content-C11-tools" userData={{ assetId: 'C11', shadowDynamic: true }}>
+      <primitive object={art} dispose={null} />
+      <group ref={carried} name="camp-carried-tool" />
+      {positions.map((position, index) => <ToolAction key={index} id={actionId(index)} position={grips[index]} index={index} play={play}
+        enabled={() => campPropActor.available && !!colliders.current[index]?.isValid() && !!carried.current
+          && (!play.current || (play.current.index === index && campToolCommand(play.current.phase) !== null))}
+        approach={{ target: () => grips[index], ready: position => canTakeAt(index, position),
+          candidates: from => [[position[0], from[1], position[2]]] }} onInteract={() => act(index)} />)}
+    </group>
+  </>;
 }
 
 function ToolAction({ id, position, index, play, enabled, approach, onInteract }: {
@@ -545,7 +496,8 @@ export function CampJournal({ anchor }: { anchor: Vec3 }) {
 
   return <group ref={pages} visible={false} name="camp-prop-journal-pages"
     position={[book.position[0], book.position[1] + .336, book.position[2]]} rotation={[0, book.yaw, 0]}
-    userData={{ assetId: 'C08', noOcclusionFade: true, shadowDynamic: true }}>
+    userData={{ assetId: 'C08', noOcclusionFade: true, shadowDynamic: true, worldCollision: 'none',
+      collisionReason: 'Interactive pages rest on the C08 book stack and do not obstruct walking' }}>
     <mesh position={[BOOK_WIDTH / 2, .001, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 2]} receiveShadow>
       <planeGeometry args={[BOOK_DEPTH, BOOK_WIDTH]} />
       <meshStandardMaterial map={paper.texture} roughness={.92} />

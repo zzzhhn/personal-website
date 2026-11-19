@@ -7,10 +7,10 @@ import { night } from './WorldNight';
 import { applyCampSurfaceBalance } from './camp-surface-balance';
 import { campBookShapes, CampColliders, campColliderKey } from './WorldCampPhysics';
 
-type ToolWallNode = 'C11_body' | 'C11_tools';
+type WorkshopNode = 'C08' | 'C11';
 const URL = '/assets/world/camp-workshop-craft/camp-workshop.glb';
 
-function cloneVisual(source: Object3D, node: 'C08' | ToolWallNode, environment: Texture | null) {
+function cloneVisual(source: Object3D, node: WorkshopNode, environment: Texture | null) {
   const root = source.clone(true);
   // The placement/animation parent supplies the original node transform.
   root.position.set(0, 0, 0);
@@ -41,7 +41,9 @@ function cloneVisual(source: Object3D, node: 'C08' | ToolWallNode, environment: 
   return { root, materials: [...copies.values()], users: 0, previousNight: NaN };
 }
 
-function WorkshopVisual({ node, placement }: { node: 'C08' | ToolWallNode; placement?: Matrix4 }) {
+type WorkshopProps = { node: WorkshopNode; placement?: Matrix4; renderWall?: (root: Object3D) => ReactNode };
+
+function WorkshopVisual({ node, placement, renderWall }: WorkshopProps) {
   const gltf = useLoader(GLTFLoader, URL);
   const environment = useDjcFurnitureEnvironment();
   const visual = useMemo(() => {
@@ -64,7 +66,10 @@ function WorkshopVisual({ node, placement }: { node: 'C08' | ToolWallNode; place
     visual.previousNight = amount;
     for (const material of visual.materials) material.envMapIntensity = 1.25 - 0.8 * amount;
   });
-  if (node !== 'C08') return <primitive object={visual.root} dispose={null} />;
+  if (node === 'C11') {
+    if (!renderWall) throw new Error('Camp workshop is missing its tool wall installation');
+    return renderWall(visual.root);
+  }
   if (!shapes || !placement) throw new Error('Camp workbench is missing its book-stack placement');
   return <><group matrix={placement} matrixAutoUpdate={false}><primitive object={visual.root} dispose={null} /></group>
     <CampColliders id="C08" label="pad1" shapes={shapes} matrices={matrices}/></>;
@@ -77,9 +82,9 @@ class WorkshopBoundary extends Component<{ children: ReactNode; fallback: ReactN
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function WorkshopAsset({ node, fallback, placement }: { node: 'C08' | ToolWallNode; fallback: ReactNode; placement?: Matrix4 }) {
+function WorkshopAsset({ node, fallback, placement, renderWall }: WorkshopProps & { fallback: ReactNode }) {
   return <WorkshopBoundary fallback={fallback}>
-    <Suspense fallback={fallback}><WorkshopVisual node={node} placement={placement} /></Suspense>
+    <Suspense fallback={fallback}><WorkshopVisual node={node} placement={placement} renderWall={renderWall} /></Suspense>
   </WorkshopBoundary>;
 }
 
@@ -87,6 +92,6 @@ export function BookStackVisual({ fallback, placement }: { fallback: ReactNode; 
   return <WorkshopAsset node="C08" fallback={fallback} placement={placement} />;
 }
 
-export function ToolWallVisual({ node, fallback }: { node: ToolWallNode; fallback: ReactNode }) {
-  return <WorkshopAsset node={node} fallback={fallback} />;
+export function ToolWallVisual({ fallback, renderWall }: { fallback: ReactNode; renderWall: (root: Object3D) => ReactNode }) {
+  return <WorkshopAsset node="C11" fallback={fallback} renderWall={renderWall} />;
 }
