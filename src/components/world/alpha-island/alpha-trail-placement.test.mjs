@@ -48,7 +48,13 @@ async function mount(){
  const Fence=compileWorldComponent(new URL('./AlphaPathFence.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-path-fence':{createAlphaPathFence},'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
  }).default;
+ const controlState={alphaMotion:motion,useAlphaStore:{getState:()=>({wind:0})}};
+ const Control=compileWorldComponent(new URL('./AlphaStationControl.tsx',import.meta.url))({
+  '@react-three/rapier':{...rapier,useBeforePhysicsStep:()=>{}},'./alpha-state':controlState,
+  './alpha-station-control':await import('./alpha-station-control.ts'),'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
+ }).default;
  const Component=load({
+  './AlphaStationControl':Control,
   './alpha-sand-route':await import('./alpha-sand-route.ts'),
   './alpha-art':art,'./alpha-layout':layout,'./alpha-terrain':terrain,'./alpha-rocks':rocks,
   './alpha-station-structures':structures,'../static-surface-asset':staticSurfaces,
