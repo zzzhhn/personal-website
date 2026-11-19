@@ -17,7 +17,7 @@ export const migratedCollisionRoots = [
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id => 'park-exhibit-set-'+id),
   'djc-mirror-contact', 'djc-north-bar-contact', 'djc-pool-lantern-contact', 'djc-umbrella-contact', 'djc-furniture-contact', 'djc-daybed-contact',
-  'brain-quarry-approach-contact', 'ibd-workstation-fixtures', 'ibd-parked-truck', 'alpha-mine-attraction', 'alpha-mine-backtest-basin', 'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp', 'alpha-mine-east-ramp', 'alpha-mine-middle-bridge',
+  'coaster-vegetation', 'brain-quarry-approach-contact', 'ibd-workstation-fixtures', 'ibd-parked-truck', 'alpha-mine-attraction', 'alpha-mine-backtest-basin', 'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp', 'alpha-mine-east-ramp', 'alpha-mine-middle-bridge',
   ...['west-entry', 'west-rise', 'west-link'].map(name => 'alpha-mine-gallery-'+name),
   'alpha-mine-north-ravine-bridge', ...['lower','middle','upper'].map(level => 'alpha-mine-'+level+'-vein-contact'),
   'G28-entry', ...['mine','park','yard','coaster'].map(id => 'G28-entry-'+id),
@@ -52,10 +52,12 @@ export function collisionSupplyId(node: Object3D) {
 
 function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSources): Declaration {
   const kind = mesh.userData.worldCollision;
-  if (!mesh.isInstancedMesh || (kind !== 'solid' && kind !== 'pushable') || !Array.isArray(sources?.placements)
+  const soft = kind === 'soft';
+  if (!mesh.isInstancedMesh || (!soft && kind !== 'solid' && kind !== 'pushable') || !Array.isArray(sources?.placements)
     || !Array.isArray(sources.slots) || sources.slots.length !== mesh.count) return 'invalid';
   const ranges = sourceRanges(mesh);
   if (ranges === 'invalid') return ranges;
+  if (soft && (!ranges || ranges.partial || mesh.userData.worldCollisionSources.some((r: {collision: CollisionClass}) => r.collision !== 'soft'))) return 'invalid';
   const placements: readonly Placement[] = sources.placements;
   const blocks: Claim[] = [];
   const ids = new Set<string>();
@@ -66,6 +68,7 @@ function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSour
     if (p.surfaceIds !== undefined && (!Array.isArray(p.surfaceIds) || !p.surfaceIds.length
       || new Set(p.surfaceIds).size !== p.surfaceIds.length
       || p.surfaceIds.some((id:unknown) => typeof id !== 'string' || !id))) return 'invalid';
+    if (soft && p.surfaceIds !== undefined) return 'invalid';
     const supplied = ranges ? ranges.blocks.map(part => collisionInstancePartId(p.id, part.id!)) : p.surfaceIds ?? [p.id];
     if (ranges && supplied.some(id => !p.surfaceIds?.includes(id))) return 'invalid';
     blocks.push(...supplied.map(id => ({ id, shared: true })));

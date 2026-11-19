@@ -300,11 +300,18 @@ const transformPoints = (points: Float32Array, matrix: Matrix4) => {
   for (let i = 0; i < points.length; i += 3) { v.set(points[i], points[i + 1], points[i + 2]).applyMatrix4(matrix); out[i] = v.x; out[i + 1] = v.y; out[i + 2] = v.z; }
   return out;
 };
-const boundsOf = (points: Float32Array, indices?: Uint32Array) => {
+// Keep hull coordinates near the plant's origin. With world coordinates, a
+// convex hull can contain the player yet miss a ray through its own centre.
+export function campHullPlacement(points: Float32Array, matrix: Matrix4) {
+  return {points:transformPoints(points,matrix.clone().setPosition(0,0,0)),
+    origin:new Vector3().setFromMatrixPosition(matrix).toArray() as Vec3};
+}
+const boundsOf = (points: Float32Array, indices?: Uint32Array, origin?: Vec3) => {
   const box = new Box3(), sample = new Vector3();
   for (let i = 0; i < (indices?.length ?? points.length / 3); i++) {
     box.expandByPoint(sample.fromArray(points, (indices?.[i] ?? i) * 3));
   }
+  if (origin) box.translate(sample.fromArray(origin));
   return { min: box.min.toArray() as Vec3, max: box.max.toArray() as Vec3 };
 };
 
@@ -315,12 +322,12 @@ export function CampColliders({ id, label, shapes, matrices, surface = false }: 
   const built = useMemo(() => matrices.flatMap((matrix, instance) => shapes.map((shape, n) => {
     const key = campColliderKey(id, label, instance, shape.part, n);
     return shape.kind === 'hull'
-      ? { key, instance, part: shape.part, kind: shape.kind, sensor: !!shape.sensor, points: transformPoints(shape.points, matrix) }
+      ? { key, instance, part: shape.part, kind: shape.kind, sensor: !!shape.sensor, ...campHullPlacement(shape.points,matrix) }
       : { key, instance, part: shape.part, kind: shape.kind, points: transformPoints(shape.vertices, matrix), indices: shape.indices };
   })), [id, label, shapes, matrices]);
   useEffect(() => {
     const records: CampColliderRecord[] = built.map(b => ({ id, key: b.key, instance: b.instance, label, part: b.part,
-      kind: b.kind, sensor: 'sensor' in b && b.sensor, aabb: boundsOf(b.points, b.kind === 'trimesh' ? b.indices : undefined) }));
+      kind: b.kind, sensor: 'sensor' in b && b.sensor, aabb: boundsOf(b.points, b.kind === 'trimesh' ? b.indices : undefined,b.kind === 'hull' ? b.origin : undefined) }));
     records.forEach(record => registry.set(record.key, record));
     return () => records.forEach(record => { if (registry.get(record.key) === record) registry.delete(record.key); });
   }, [built, id, label]);
@@ -334,8 +341,8 @@ export function CampColliders({ id, label, shapes, matrices, surface = false }: 
   return <RigidBody type="fixed" colliders={false} name={`camp-body-${id}-${label}${surface?'-support':''}`} userData={userData}>
     {built.map(b => b.kind === 'hull'
       ? ('sensor' in b && b.sensor
-        ? <ConvexHullCollider key={b.key} name={b.key} args={[b.points]} sensor ref={zoneRef} />
-        : <ConvexHullCollider key={b.key} name={b.key} args={[b.points]} friction={0.65} restitution={0.1} />)
+        ? <ConvexHullCollider key={b.key} name={b.key} position={b.origin} args={[b.points]} sensor ref={zoneRef} />
+        : <ConvexHullCollider key={b.key} name={b.key} position={b.origin} args={[b.points]} friction={0.65} restitution={0.1} />)
       // Static trimesh keeps the door opening (a hull would fill it); internal-edge fixing avoids
       // snagging on the shell's interior triangle seams.
       : <AnyCollider key={b.key} name={b.key} shape="trimesh" friction={surface ? .95 : id === 'C02' ? .65 : .6} restitution={id === 'C02' ? 0 : .05}

@@ -92,7 +92,7 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
         <TrimeshCollider name="coaster-relief-surface" args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
       </RigidBody>
     </>}
-  </group><WorldCoasterVegetation /></>;
+  </group><WorldCoasterVegetation active={enabled} /></>;
 }
 export default memo(WorldIntentCoaster);
 

@@ -7,7 +7,7 @@ import type { Vec3 } from '../types';
 
 export const COASTER_VEGETATION_BUDGET = Object.freeze({ trees: 48, nearTrees: 8, bushes: 36, visibleBushes: 24,
   nearEnter: 26, nearExit: 32, farDistance: 185, bushDistance: 65, updateSeconds: .1 });
-export interface CoasterPlant { id: string; kind: 0 | 1 | 2; local: Vec3; scale: number; yaw: number; bounds: Box3; matrix: Matrix4 }
+export interface CoasterPlant { id: string; kind: 0 | 1 | 2; familySlot: number; local: Vec3; scale: number; yaw: number; bounds: Box3; matrix: Matrix4 }
 // Bounds include BOTH authored crown LODs, arbitrary yaw and the shared .13 m wind excursion.
 export const PLANT_ENVELOPES = [{ radius: 2.6, height: 4.96 }, { radius: 2.2, height: 6.46 }, { radius: 1.21, height: 1.06 }] as const;
 const origin = coasterWorld([0, 0, 0]);
@@ -90,7 +90,7 @@ function publicOrSolid(x: number, z: number, radius: number) {
 let layout: readonly CoasterPlant[] | undefined;
 export function coasterVegetationLayout(): readonly CoasterPlant[] {
   if (layout) return layout;
-  const plants: CoasterPlant[] = [];
+  const plants: CoasterPlant[] = [], familySizes = [0,0,0];
   const place = (id: string, kind: 0 | 1 | 2, x: number, z: number, scale: number, yaw: number, planter = false, drop = false) => {
     const radius = PLANT_ENVELOPES[kind].radius*scale;
     if (!planter && publicOrSolid(x,z,radius)) return;
@@ -106,7 +106,7 @@ export function coasterVegetationLayout(): readonly CoasterPlant[] {
     if (!clearCoasterPlant(bounds)) return;
     if (plants.some(p => p.kind !== 2 && kind !== 2 && Math.hypot(p.local[0]-x,p.local[2]-z) < 2.7)) return;
     if (plants.some(p => Math.hypot(p.local[0]-x,p.local[2]-z) < (kind === 2 ? .9 : 1.5))) return;
-    plants.push({ id, kind, local, scale, yaw, bounds, matrix: new Matrix4().compose(new Vector3(...coasterWorld(local)),
+    plants.push({ id, kind, familySlot:familySizes[kind]++, local, scale, yaw, bounds, matrix: new Matrix4().compose(new Vector3(...coasterWorld(local)),
       new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw),new Vector3().setScalar(scale)) });
   };
   // Four authored trees reuse the existing ST1/ST2 instances; the later grove fill
@@ -169,12 +169,22 @@ export function mergeCoasterPlantGeometry(scene: Object3D, branches: readonly st
     for (const key of Object.keys(geo.attributes)) if (!['position','normal','color','_wind'].includes(key)) geo.deleteAttribute(key);
     const wind = geo.getAttribute('_wind'); if (!wind) throw new Error(`Missing authored wind: ${mesh.name}`);
     if (trunk) for (let i = 0; i < wind.count; i++) wind.setXYZW(i,0,0,0,0);
+    geo.name = mesh.name || mesh.parent?.name || branches.join('-');
     geo.clearGroups(); (trunk ? wood : leaves).push(geo);
   });
   const parts = [...leaves,...wood];
   if (!parts.length) throw new Error(`Missing vegetation branches: ${branches.join(',')}`);
-  const result = mergeGeometries(parts,false); parts.forEach(p=>p.dispose());
+  const result = mergeGeometries(parts,false);
   if (!result) throw new Error('Incompatible vegetation attributes');
+  let firstVertex = 0;
+  result.userData.worldCollisionSources = parts.map((part, i) => {
+    const bark = i >= leaves.length, vertexCount = part.getAttribute('position').count;
+    const range = {id:(bark ? 'bark-' : 'leaves-') + i, source:part.name, firstVertex, vertexCount,
+      collision:bark ? 'solid' : 'soft', surfaceId:bark ? 'trunk' : undefined};
+    firstVertex += vertexCount;
+    part.dispose();
+    return range;
+  });
   return result;
 }
 
@@ -203,7 +213,12 @@ export function updateCoasterVegetationInstances(mesh: InstancedMesh, group: rea
   const signature = group.map(p=>p.id).join('|');
   if (signature === previous) return previous;
   mesh.count = group.length; mesh.visible = group.length > 0;
-  group.forEach((p,i)=>mesh.setMatrixAt(i,p.matrix));
+  const sources = mesh.userData.worldCollisionInstances;
+  group.forEach((p,i)=>{
+    mesh.setMatrixAt(i,p.matrix);
+    if (sources) sources.slots[i] = p.familySlot;
+  });
+  if (sources) sources.slots.length = group.length;
   // WorldOcclusion caches this sphere for its ray prefilter. LOD membership moves instances,
   // so updating only the GPU buffer would leave an old sphere and miss newly visible blockers.
   mesh.computeBoundingSphere();

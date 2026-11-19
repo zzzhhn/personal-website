@@ -242,3 +242,49 @@ test('the player capsule completes the garden loop with actual tree trunks and r
     assert.ok(grounded/steps>.95);console.log(JSON.stringify({gardenLoopPhysicsSteps:steps,groundedFrames:grounded,treeTrimeshes:colliders.length}));
   } finally {world.free();scene.steel.dispose();scene.glow.dispose();}
 });
+
+test('published near and far crowns retain their live instance poses, physical trunks and walk-through G19 crowns', async t=>{
+  const {buildCoasterVegetation}=await import('./WorldCoasterVegetation.tsx');
+  const {collisionInventory}=await import('../world-collision-inventory.ts');
+  const {Scene, Matrix4}=await import('three');
+  const files=sources.map(s=>({scene:s.root}));
+  const built=buildCoasterVegetation(files.slice(0,2),files[2]);
+  const scene=new Scene(), root=new Group();
+  root.name='coaster-vegetation';scene.add(root);root.add(...built.meshes);
+  t.after(()=>built.clean.forEach(dispose=>dispose()));
+  const nodes=built.colliders.map(c=>{const node=new Group();node.name=c.id;root.add(node);return node;});
+  const read=()=>collisionInventory(scene,built.meshes,nodes,[root.name]);
+  for(const eye of [[10,4,-150],[46,4,-200],[55,6,-175],[10000,55,10000]]) {
+    const {groups,near}=selectCoasterVegetation(built.plants,new Vector3(...eye),()=>true,built.near);
+    built.near=near;
+    groups.forEach((g,i)=>{built.signatures[i]=updateCoasterVegetationInstances(built.meshes[i],g,built.signatures[i]);});
+    assert.deepEqual(read().errors,[]);
+    assert.equal(read().registrations[root.name],built.colliders.length);
+    for(const [i,group] of groups.entries()) for(const [slot,p] of group.entries()){
+      const mesh=built.meshes[i],sources=mesh.userData.worldCollisionInstances;
+      assert.equal(sources.placements[sources.slots[slot]].id,p.id);
+      if(i===4) {
+        const original=p.matrix.clone();
+        mesh.setMatrixAt(slot,new Matrix4().makeTranslation(999,1,999));
+        assert.equal(read().mounted.invalid,1);
+        mesh.setMatrixAt(slot,original);
+      }
+    }
+  }
+  assert.equal(built.bushes.length,36);
+  assert.equal(built.bushShapes.length,1);assert.equal(built.bushShapes[0].sensor,true);
+  await R.init();
+  const world=new R.World({x:0,y:0,z:0});t.after(()=>world.free());
+  const {campHullPlacement}=await import('../WorldCampPhysics.tsx');
+  for(const matrix of built.bushes){
+    const {points,origin}=campHullPlacement(built.bushShapes[0].points,matrix),v=new Vector3();
+    const sensor=world.createCollider(R.ColliderDesc.convexHull(points).setTranslation(...origin).setSensor(true));
+    const centre=new Vector3();
+    for(let i=0;i<points.length;i+=3)centre.add(v.fromArray(points,i));
+    centre.multiplyScalar(3/points.length).add(v.fromArray(origin));
+    const ray=new R.Ray({x:centre.x,y:centre.y,z:centre.z-2},{x:0,y:0,z:1});
+    world.step();
+    assert.ok(sensor.castRay(ray,4,true)>=0,JSON.stringify({centre, origin:matrix.elements.slice(12,15)}));
+    assert.equal(world.castRay(ray,4,true,R.QueryFilterFlags.EXCLUDE_SENSORS),null);
+  }
+});
