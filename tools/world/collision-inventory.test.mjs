@@ -137,3 +137,22 @@ test('a complete scene requires active contact owners and audits the dormant vis
   delete rail.userData.surfaceId;
   assert.ok(run([walk], [ride]).errors.some(text=>text.includes('unnamed physical source')));
 });
+
+test('saved or active venue state requires each contact before its group is discovered',()=>{
+  const scene=new Scene(), venue=new Group(), group=new Group(), mesh=new Mesh(), shape=new Group();
+  scene.add(venue); group.name='installed-stones'; shape.name='stone-1';
+  mesh.userData={worldCollision:'solid',surfaceId:shape.name};
+  let count=0;
+  venue.userData.worldContactCounts=()=>({[group.name]:count});
+  const check=()=>collisionInventory(scene,[mesh],[shape],[]);
+  assert.deepEqual(check().errors,[]);
+  count=1;
+  assert.ok(check().errors.some(error=>error.includes('Missing or ambiguous')));
+  venue.add(group);group.add(mesh,shape);
+  assert.deepEqual(check().registrations,{[group.name]:1});
+  assert.deepEqual(check().errors,[]);
+  count=2;
+  assert.ok(check().errors.some(error=>error.includes('expected 2 active contacts')));
+  count=0;
+  assert.ok(check().errors.some(error=>error.includes('while inactive')));
+});

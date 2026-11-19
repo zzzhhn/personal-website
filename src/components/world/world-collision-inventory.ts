@@ -22,7 +22,7 @@ export const migratedCollisionRoots = [
   ...['west-entry', 'west-rise', 'west-link'].map(name => 'alpha-mine-gallery-'+name),
   'alpha-mine-north-ravine-bridge', ...['lower','middle','upper'].map(level => 'alpha-mine-'+level+'-vein-contact'),
   'G28-entry', ...['mine','park','yard','coaster'].map(id => 'G28-entry-'+id),
-  'world-paving-v4', 'world-camp-content', 'camp-C14-contact', 'camp-L01-contact', 'world-camp-slice', 'street-trees-group', 'world-town-assets', 'factory-structure-contact', 'factory-worklife-contact', 'factory-walk-support', 'factory-roof-support',
+  'world-paving-v4', 'world-camp-content', 'camp-C14-contact', 'camp-L01-contact', 'world-camp-slice', 'street-trees-group', 'world-town-assets', 'factory-structure-contact', 'factory-conveyor-contact', 'factory-worklife-contact', 'factory-walk-support', 'factory-roof-support',
 ];
 const classes = new Set<CollisionClass>(['solid', 'pushable', 'soft', 'none']);
 const counts = () => ({ meshes: 0, declared: 0, unclassified: 0, invalid: 0 });
@@ -225,6 +225,21 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   sharedSupplies: readonly {root:string;collider:Object3D|null;missingId?:string}[] = [], distantRoots?: readonly Object3D[]) {
   const mounted = counts(), submitted = counts(), errors: string[] = [];
   const roots = new Set(requiredRoots);
+  const expectedCounts = new Map<string, number>();
+  // A venue knows when its conditional meshes should exist, even if a broken
+  // render omitted the whole group. A saved cairn and the local printer use this.
+  scene.traverse(node => {
+    const read = node.userData.worldContactCounts as (() => Record<string, number>) | undefined;
+    if (!read) return;
+    for (const [name, count] of Object.entries(read())) {
+      if (!Number.isSafeInteger(count) || count < 0 || expectedCounts.has(name)) {
+        errors.push(node.name + ': invalid expected contact count for ' + name);
+        continue;
+      }
+      expectedCounts.set(name, count);
+      if (count > 0) roots.add(name);
+    }
+  });
   // Passing even an empty list requests a complete scene audit. Ordinary partial
   // surveys may inspect a single asset while unrelated districts are still loading.
   const distant = new Set(distantRoots);
@@ -315,13 +330,20 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
     }
   });
   const registrations: Record<string, number> = {};
-  for (const name of requiredRoots) {
+  for (const name of roots) {
     const matches = [...scoped].filter(([root]) => root.name === name);
     if (matches.length !== 1 || !matches[0][1].claims.size) errors.push('Missing or ambiguous collision structure: ' + name);
     else registrations[name] = [...matches[0][1].claims.keys()].filter(id=>!matches[0][1].held.has(id)).length;
   }
   for (const [root, scope] of scoped) for (const name of scope.names.keys()) {
     if (!scope.claims.has(name)) errors.push(root.name + ': collider without a visible source: ' + name);
+  }
+  for (const [name, expected] of expectedCounts) {
+    if (!expected) {
+      if (scene.getObjectByName(name)) errors.push(name + ': contact group still mounted while inactive');
+    } else if (registrations[name] !== expected) {
+      errors.push(name + ': expected ' + expected + ' active contacts, found ' + (registrations[name] ?? 0));
+    }
   }
   if (distantRoots) {
     // A road segment may supply the coaster's visible approach even when the

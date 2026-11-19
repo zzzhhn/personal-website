@@ -39,7 +39,8 @@ export default function WorldAlphaIsland() {
   });
   useEffect(() => () => { cancelAlphaHand(); localWind.strength = 0; localWind.radius = 0; }, []);
   return <>
-    <group name="alpha-island-batch2" position={ALPHA_ORIGIN}>
+    <group name="alpha-island-batch2" position={ALPHA_ORIGIN}
+      userData={{worldContactCounts: () => ({'alpha-personal-cairn': useAlphaStore.getState().stones})}}>
       <AlphaTerrain /><AlphaScenery /><AlphaNature /><AlphaInteractions /><AlphaCloudSea />
       <RegionSceneBoundary id="alpha-waterwheel"><AlphaWaterwheel /></RegionSceneBoundary>
       <RegionSceneBoundary id="alpha-cave"><AlphaEchoCave /></RegionSceneBoundary>
