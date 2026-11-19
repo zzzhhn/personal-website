@@ -31,6 +31,7 @@ import { findRailVault, railVaultVelocity, type RailVault } from './player-vault
 import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
 import { portalRearmed } from './world-travel';
 import { portalCrossing } from './portal-crossing';
+import { advancePortalAttempt, beginPortalAttempt, retreatingFromPortal, type PortalAttempt } from './portal-transfer';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
@@ -352,7 +353,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const physicsSteps = useRef(0);
   const wetPlayer = useRef(0);
   const rescueRetry = useRef(new Map<string,number>());
-  const portalTravel = useRef<{previous:Vec3|null;cooldown:number;armed:boolean}>({previous:null,cooldown:0,armed:true});
+  const portalTravel = useRef<{previous:Vec3|null;cooldown:number;armed:boolean;attempt:PortalAttempt|null;noticeAt:number}>(
+    {previous:null,cooldown:0,armed:true,attempt:null,noticeAt:-Infinity});
   const lastRecover = useRef(useWorldStore.getState().recoverRequest);
   const publishedTime = useRef(0);
   const activeVehicle = useWorldStore(s=>s.activeVehicle);
@@ -439,6 +441,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   }
   function relocatePlayer(position:Vec3) {
     if(!player.current)return;
+    if (portalTravel.current.attempt) finishPortalAttempt();
     releaseGuideActionHand();ride.cancel();rideHeld.current=false;
     clearPlayerMotion(true);clearInput();grounded.current=false;
     player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
@@ -474,6 +477,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   function returnToCamp() {
     const body = player.current;
     if (!body) return false;
+    if (portalTravel.current.attempt) finishPortalAttempt();
     if (!passage.at(home.position, PLAYER_RADIUS)) { noticeRegionWaiting(home.position); return false; }
     const ground: Vec3 = [home.position[0], home.position[1] - PLAYER_CENTER_HEIGHT, home.position[2]];
     const landing = findSafePlayerLanding(world, rapier, body, [ground], waterY);
@@ -492,7 +496,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     return recoverActor({...home,position:landing},body,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
       nearbyItem.current=null;guideYaw.current=0;publishedTime.current=0;
-      portalTravel.current={previous:landing,cooldown:2,armed:false};
+      portalTravel.current={previous:landing,cooldown:2,armed:false,attempt:null,noticeAt:-Infinity};
       cars.current.forEach(car=>{for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,0);}});
     },()=>{
       cameraReady.current=false;target.current.set(...landing);impact.current=0;lastCarYaw.current=null;
@@ -604,6 +608,21 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     car.flipped=0; car.wet=0; clearPlayerMotion(true);clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
   }
 
+  function publishPortalWarmRegions(regions: readonly string[]) {
+    const previous = useWorldStore.getState().portalWarmRegions;
+    if (previous.length !== regions.length || regions.some((region, i) => region !== previous[i])) {
+      useWorldStore.setState({ portalWarmRegions: regions });
+    }
+  }
+  function finishPortalAttempt(arriving = false) {
+    const travel = portalTravel.current;
+    travel.attempt = null; travel.cooldown = 2;
+    if (!arriving) publishPortalWarmRegions([]);
+  }
+  function cancelPortalAttempt() {
+    finishPortalAttempt();
+    actorNotice('已取消穿门。离开光幕后可再试。','Gate travel cancelled. Step away from the veil to try again.');
+  }
   function noticeRegionWaiting(position?: Vec3, radius = PLAYER_RADIUS) {
     const now=performance.now();
     if(now-regionNoticeAt.current<=2500)return;
@@ -797,6 +816,10 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     let inputContext=actorActivities.inputContext();
     const unsubscribe=useWorldStore.subscribe((state,previous)=>{
       if(state.campReturnRequest!==previous.campReturnRequest){returnToCamp();return;}
+      if (portalTravel.current.attempt) {
+        if (state.paused && !previous.paused) cancelPortalAttempt();
+        else if (state.poolInspect || state.shot || state.card || state.seat || state.activeVehicle) finishPortalAttempt();
+      }
       const nextOwner=actorActivities.inputOwner();
       const nextContext=actorActivities.inputContext();
       const ownerChanged=nextOwner!==inputOwner,contextChanged=nextContext!==inputContext;
@@ -975,6 +998,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     };
     debugTarget=api;
     return ()=>{
+      if (portalTravel.current.attempt) finishPortalAttempt();
       unbindPanelInput();unsubscribeAction();releaseAction();actorActivities.sync({available:false,grounded:false});document.removeEventListener('visibilitychange',hiddenAction);window.removeEventListener('blur',releaseAction);
       window.removeEventListener('keydown',down);window.removeEventListener('keyup',up);window.removeEventListener('blur',clearInput);
       document.removeEventListener('visibilitychange',hidden);gl.domElement.removeEventListener('wheel',wheel);unsubscribe();clearInput();
@@ -1025,6 +1049,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     const dt=world.timestep || PHYSICS_STEP;
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(ride.active){
+      if (portalTravel.current.attempt) finishPortalAttempt();
       actorActivities.sync({available:false});
       releaseGuideActionHand();
       if(!rideHeld.current){
@@ -1294,11 +1319,16 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         player.current.setEnabled(true);
       }
       const locomotion=actorActivities.locomotion(),sprinting=running&&locomotion.sprintAllowed;
-      const speed=(seat?0:Math.min(locomotion.speedLimit,sprinting?6.2:3.6))*magnitude;
-      moveIntent.current=magnitude>.05?(sprinting?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
-      actorActivities.input(magnitude > .05, actions.current.jump);
+      const pending = portalTravel.current.attempt;
+      if (pending && (retreatingFromPortal(pending,wx,wz) || Math.hypot(p.x-pending.source.position[0],p.z-pending.source.position[2]) > 3.5)) cancelPortalAttempt();
+      else if (pending && !unoccupied) finishPortalAttempt();
+      const portalWaiting = !!portalTravel.current.attempt;
+      if (portalWaiting) actions.current.jump = false;
+      const speed=(seat||portalWaiting?0:Math.min(locomotion.speedLimit,sprinting?6.2:3.6))*magnitude;
+      moveIntent.current=!portalWaiting&&magnitude>.05?(sprinting?'run':'walk'):'idle';
+      actorActivities.input(!portalWaiting && magnitude > .05, actions.current.jump);
       const stance=actorActivities.approach();
       const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
       if(pickupApproach.active&&(actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.cancel();
@@ -1349,7 +1379,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
           }
         }
       }
-      if (magnitude>.05 && !locked) {
+      if (magnitude>.05 && !locked && !portalWaiting) {
         const desiredYaw=Math.atan2(-vz,vx);
         const difference=Math.atan2(Math.sin(desiredYaw-guideYaw.current),Math.cos(desiredYaw-guideYaw.current));
         if (grounded.current && Math.hypot(velocity.x,velocity.z)<.5 && Math.abs(difference)>Math.PI/3)
@@ -1438,24 +1468,43 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
       }
       const travel=portalTravel.current,now=asTuple(player.current.translation());
-      if(!travel.armed&&portalRearmed(travel.cooldown,now,portals))travel.armed=true;
+      if(!travel.armed&&!travel.attempt&&portalRearmed(travel.cooldown,now,portals))travel.armed=true;
       if(travel.armed&&travel.previous&&!seat&&!locked&&!state.card&&!railVault.current){
         const source=portals.find(g=>portalCrossing(g,travel.previous!,now,PLAYER_RADIUS,PLAYER_HALF_HEIGHT));
         if(source){
-          const destinations=portals.filter(g=>g.id!==source.id),start=Math.floor(Math.random()*destinations.length);
-          travel.armed=false;travel.cooldown=2;
-          let transferred=false;
-          for(let i=0;i<destinations.length;i++){
-            const destination=destinations[(i+start)%destinations.length];
-            const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates.filter(point=>passage.at(point,PLAYER_RADIUS)),waterY);
-            if(!landing)continue;
-            relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
-            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:sites.zone(landing,destination.fallbackZone)});
-            actorNotice(destination.notice.zh,destination.notice.en);
-            transferred=true;
-            break;
+          travel.attempt=beginPortalAttempt(source,travel.previous,portals);
+          travel.armed=false;travel.noticeAt=-Infinity;
+        }
+      }
+      const attempt = travel.attempt;
+      if (attempt && (seat || locked || state.card || railVault.current)) finishPortalAttempt();
+      else if (attempt) {
+        const body = player.current;
+        const result = advancePortalAttempt(attempt, dt, destination => {
+          const candidates = destination.arrivalCandidates.filter(point => passage.at(point, PLAYER_RADIUS));
+          const landing = findSafePlayerLanding(world, rapier, body, candidates, waterY);
+          if (landing) return { status: 'ready', landing };
+          const waiting = destination.arrivalCandidates.filter(point => !passage.failureAt?.(point, PLAYER_RADIUS));
+          const regions = [...new Set(waiting.flatMap(point => passage.loadingSourcesAt?.(point, PLAYER_RADIUS) ?? []))];
+          return regions.length ? { status: 'loading', regions } : { status: 'blocked' };
+        });
+        if (result.status === 'arrived') {
+          const { destination, landing } = result;
+          finishPortalAttempt(true);
+          relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
+          useWorldStore.setState({position:landing,portalWarmRegions:[],nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:sites.zone(landing,destination.fallbackZone)});
+          actorNotice((result.fallback?'原出口暂不可用。':'')+destination.notice.zh,
+            (result.fallback?'The first exit could not open. ':'')+destination.notice.en);
+        } else if (result.status === 'loading') {
+          const velocity = body.linvel(); body.setLinvel({x:0,y:velocity.y,z:0},true);
+          publishPortalWarmRegions(result.regions);
+          if (attempt.elapsed - travel.noticeAt >= 3) {
+            travel.noticeAt = attempt.elapsed;
+            actorNotice('正在准备安全出口。可后退或按 Esc 取消。','Preparing a safe exit. Step back or press Esc to cancel.');
           }
-          if(!transferred)actorNotice('出口暂时被挡住了，离开光幕后可再试。','The exits are obstructed. Step away from the veil and try again.');
+        } else {
+          finishPortalAttempt();
+          actorNotice('暂时没有安全出口。离开光幕后可再试。','No safe exit is available. Step away from the veil and try again.');
         }
       }
       travel.previous=asTuple(player.current.translation());

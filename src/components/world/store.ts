@@ -19,6 +19,8 @@ interface WorldState {
   poolInspect: boolean;
   /** A synchronous recovery request: must also work while the physics world is paused. */
   campReturnRequest: number;
+  /** Physical load sources required by the departure currently in progress. */
+  portalWarmRegions: readonly string[];
   activeVehicle: VehicleId | null;
   nearbyVehicle: VehicleId | null;
   /** Nearest interactable in reach when walking (null while driving). */
@@ -55,7 +57,7 @@ interface WorldState {
 }
 export const useWorldStore = create<WorldState>(() => ({
   lang: 'en', light: 'dusk', worldMinutes: 1050, timeRevision: 0, timeRunning: true, weather: 'clear', paused: false, poolInspect: false, campReturnRequest: 0, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
-  clubMode:null, factoryStation:null, danceStep:0, canVault:false, canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
+  clubMode:null, factoryStation:null, danceStep:0, canVault:false, canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30], portalWarmRegions: [],
   ready: false, arrivalLoadFailed: false, zoom: 1, quality: 'balanced', shot: null, waypoint: null, interactPick: null,
   loading: { phase: 'runtime', loaded: 0, total: 0, active: false, failed: 0 },
 }));

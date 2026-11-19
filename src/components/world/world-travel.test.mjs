@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { roadLandingCandidates, portalRearmed } from './world-travel.ts';
 import { WORLD_PORTALS, PORTAL_THRESHOLD, portalCrossing } from './world-portals.ts';
+import { advancePortalAttempt, beginPortalAttempt, retreatingFromPortal } from './portal-transfer.ts';
 
 test('recovery candidates stay on road segments and turn the car along the road',()=>{
   const roads=[[0,1,0],[0,2,20],[20,2,20]];
@@ -34,5 +35,45 @@ test('arrival cooldown alone cannot bounce a player through the same gate',()=>{
     const away=world(g,0,.82,4);
     assert.equal(portalRearmed(1,away,WORLD_PORTALS),false);
     assert.equal(portalRearmed(0,away,WORLD_PORTALS),true);
+  }
+});
+
+test('every entry can first select each of the other four gates, including a cold gate', () => {
+  for (const from of WORLD_PORTALS) {
+    const choices = WORLD_PORTALS.filter(gate => gate !== from);
+    for (let i = 0; i < choices.length; i++) {
+      const trip = beginPortalAttempt(from, from.entryApproachCandidates[0], WORLD_PORTALS, (i + .5) / choices.length);
+      assert.equal(trip.destinations[0], choices[i]);
+      assert.equal(new Set(trip.destinations).size, 4);
+      assert.ok(trip.destinations.every(gate => gate !== from));
+    }
+  }
+});
+
+test('a cold first exit retains priority, a failure opens a safe fallback and an expired request cannot stall that fallback', () => {
+  const [camp, mine, , , coaster] = WORLD_PORTALS;
+  const start = () => beginPortalAttempt(camp, camp.entryApproachCandidates[0], WORLD_PORTALS, .99);
+  const cold = { status: 'loading', regions: ['real-station'] };
+  const ready = landing => ({ status: 'ready', landing });
+  const trip = start();
+  assert.deepEqual(advancePortalAttempt(trip, 1, gate => {
+    assert.equal(gate, coaster); return cold;
+  }), cold);
+  assert.equal(trip.cursor, 0);
+  assert.deepEqual(advancePortalAttempt(trip, 1, gate => ready(gate.arrivalCandidates[0])),
+    { status: 'arrived', destination: coaster, landing: coaster.arrivalCandidates[0], fallback: false });
+  const inspect = gate => gate === coaster ? { status: 'blocked' } : ready(gate.arrivalCandidates[0]);
+  assert.deepEqual(advancePortalAttempt(start(), .1, inspect),
+    { status: 'arrived', destination: mine, landing: mine.arrivalCandidates[0], fallback: true });
+  assert.equal(advancePortalAttempt(start(), 8, gate => gate === coaster ? cold : inspect(gate)).destination, mine);
+  assert.deepEqual(advancePortalAttempt(start(), 8, () => cold), { status: 'blocked' });
+});
+
+test('retreat uses the gate frame and the actual approach side', () => {
+  for (const gate of WORLD_PORTALS) for (const sign of [-1, 1]) {
+    const trip = beginPortalAttempt(gate, world(gate, 0, 1.37, sign), WORLD_PORTALS, .5);
+    assert.equal(retreatingFromPortal(trip, 0, 0), false);
+    assert.equal(retreatingFromPortal(trip, Math.sin(gate.yaw) * sign, Math.cos(gate.yaw) * sign), true);
+    assert.equal(retreatingFromPortal(trip, -Math.sin(gate.yaw) * sign, -Math.cos(gate.yaw) * sign), false);
   }
 });

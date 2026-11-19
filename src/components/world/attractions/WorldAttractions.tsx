@@ -16,10 +16,11 @@ export default function WorldAttractions(){
     const [x,,z]=s.position,b=INTENT_COASTER.bounds;
     return Math.hypot(Math.max(b.minX-x,0,x-b.maxX),Math.max(b.minZ-z,0,z-b.maxZ))<24;
   });
+  const coasterPreparing=useWorldStore(s=>s.portalWarmRegions.includes('coaster'));
   return <group name="northern-attractions">
     <WorldAttractionApproach/>
     <RegionSceneBoundary id="ibd"><Ibd active={ibdActive}/></RegionSceneBoundary>
-    <RegionSceneBoundary id="coaster"><Coaster active={coasterActive}/></RegionSceneBoundary>
+    <RegionSceneBoundary id="coaster"><Coaster active={coasterActive} preparing={coasterPreparing}/></RegionSceneBoundary>
     <RegionSceneBoundary id="factory"><Factory active={factoryActive}/></RegionSceneBoundary>
   </group>;
 }

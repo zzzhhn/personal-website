@@ -28,29 +28,37 @@ import { CoasterMotionAudio } from './coaster-motion-audio';
 import { CoasterStructureCache, coasterStructureMemory } from './coaster-structure-cache';
 import { buildCoasterInWorker } from './coaster-structure-job';
 import { COASTER_CAR_PANELS } from './coaster-access';
+import { reportRegionLoadFailure } from '../region-load-failure';
 
 /** World-space scene. The parent owns actor/camera integration and the activation radius. */
-function WorldIntentCoaster({ active }: { active: boolean }) {
+function WorldIntentCoaster({ active, preparing = false }: { active: boolean; preparing?: boolean }) {
   const occupied = useIntentStore(s => s.riding), enabled = active || occupied;
+  const requestedNear = enabled || preparing;
   const structures = useMemo(() => new CoasterStructureCache(createCoasterStructure, buildCoasterInWorker), []);
   const [presented, setPresented] = useState(() => {
     const result = structures.get(enabled);
     Object.assign(coasterStructureMemory, structures.snapshot());
     return { near: enabled, structure: result };
   });
-  const cached = structures.peek(enabled);
-  const structure = cached ?? presented.structure, renderedNear = cached ? enabled : presented.near;
+  const cached = structures.peek(requestedNear);
+  const structure = cached ?? presented.structure, renderedNear = cached ? requestedNear : presented.near;
   useEffect(() => {
     let current = true;
-    if (!structures.peek(enabled)) structures.load(enabled).then(value => {
+    let releaseFailure: (() => void) | undefined;
+    if (!structures.peek(requestedNear)) structures.load(requestedNear).then(value => {
       Object.assign(coasterStructureMemory, structures.snapshot());
-      if (current) setPresented({ near: enabled, structure: value });
+      if (current) setPresented({ near: requestedNear, structure: value });
     }).catch(error => {
       // Retain the existing model and its matching contacts if a worker cannot run.
-      if (current) console.warn('Coaster detail retained:', error);
+      if (!current) return;
+      if (preparing && !enabled) releaseFailure = reportRegionLoadFailure('coaster');
+      console.warn('Coaster detail retained:', error);
     });
-    return () => { current = false; };
-  }, [structures, enabled]);
+    return () => {
+      current = false; releaseFailure?.();
+      if (preparing && !enabled) structures.cancel(true);
+    };
+  }, [structures, requestedNear, enabled, preparing]);
   useEffect(() => () => structures.releaseGpu(renderedNear), [structures, renderedNear]);
   useEffect(() => () => { structures.dispose(); Object.assign(coasterStructureMemory, structures.snapshot()); }, [structures]);
   useEffect(() => {
@@ -72,7 +80,8 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
     </Suspense>}
     <CoasterTrain active={enabled} />
     <IntentMovingLight active={enabled} />
-    {enabled && <><WorldIntentDevices /><WorldIntentSigns />
+    {enabled && <><WorldIntentDevices /><WorldIntentSigns /></>}
+    {(enabled || (preparing && renderedNear)) && <>
       {/* LODs have different support counts. Never reuse an index-keyed collider
           for a different solid while its Rapier hook still owns the old shape. */}
       <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} />

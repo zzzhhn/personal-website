@@ -21,6 +21,21 @@ function fixture() {
   return {world,states,probe,mount,reads:()=>reads,tick:()=>{time+=101;}};
 }
 
+test('remote warm-up asks for missing real load sources at the candidate only', () => {
+  const regions = [{ ...region, loadSource: 'shared' }, { ...region, id: 'another', loadSource: 'shared' },
+    { ...region, id: 'separate', contains: p => p[0] > 20 }];
+  let ready = false, failed = false;
+  const passage = createRegionPassage(regions, needs => !needs.length || ready, [], id => id === 'shared' && failed);
+  assert.deepEqual(passage.loadingSourcesAt([-15, 0, 0], .34), []);
+  assert.deepEqual(passage.loadingSourcesAt([1, 0, 0], .34), ['shared']);
+  assert.deepEqual(passage.loadingSourcesAt([30, 0, 0], .34), ['separate']);
+  failed = true;
+  assert.equal(passage.failureAt([1, 0, 0], .34), true);
+  ready = true;
+  assert.deepEqual(passage.loadingSourcesAt([1, 0, 0], .34), []);
+  assert.equal(passage.failureAt([1, 0, 0], .34), false);
+});
+
 test('short path checks catch outside-to-outside crossings, radius contact and corner grazes',()=>{
   const gate=createRegionPassage([region],()=>false);
   assert.equal(gate.at([-1,1,0],.3),false,'base false is a global missing-ground gate');

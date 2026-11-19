@@ -26,11 +26,18 @@ export class CoasterStructureCache {
     if (!this.buildAsync) return Promise.reject(new Error('No asynchronous coaster builder'));
     const controller = new AbortController();
     const promise = this.buildAsync(near, controller.signal).then(value => {
-      if (this.disposed) { geometries(value).forEach(g => g.dispose()); throw new Error('Coaster cache disposed during generation'); }
+      if (this.disposed || controller.signal.aborted) {
+        geometries(value).forEach(g => g.dispose());
+        throw new Error(this.disposed ? 'Coaster cache disposed during generation' : 'Coaster generation cancelled');
+      }
       this.variants.set(near, value); return value;
-    }).finally(() => this.pending.delete(near));
+    }).finally(() => { if (this.pending.get(near)?.controller === controller) this.pending.delete(near); });
     this.pending.set(near, { controller, promise });
     return promise;
+  }
+  cancel(near: boolean) {
+    const pending = this.pending.get(near);
+    if (pending) { this.pending.delete(near); pending.controller.abort(); }
   }
   releaseGpu(near: boolean) {
     const value = this.variants.get(near);

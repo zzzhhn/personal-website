@@ -11,6 +11,7 @@ export interface PassageRegion {
 export interface RegionPassage {
   at:(position:Vec3,radius?:number)=>boolean;
   failureAt?:(position:Vec3,radius?:number)=>boolean;
+  loadingSourcesAt?:(position:Vec3,radius?:number)=>readonly string[];
   allows:(from:Vec3,to:Vec3,radius?:number)=>boolean;
 }
 
@@ -48,6 +49,8 @@ export function createRegionPassage(regions:readonly PassageRegion[],
   return {at,
     failureAt:(p,radius=0)=>regions.some(region=>region.contains(p,radius)
       &&failed(region.loadSource??region.id)&&!ready(region.requirements)),
+    loadingSourcesAt:(p,radius=0)=>valid(p)&&Number.isFinite(radius)&&radius>=0 ? [...new Set(regions.filter(region=>region.contains(p,radius)&&!ready(region.requirements))
+      .map(region=>region.loadSource??region.id))] : [],
     allows(from,to,radius=0) {
     if(!valid(from)||!valid(to)||!Number.isFinite(radius)||radius<0||!ready(base))return false;
     const distance=Math.hypot(to[0]-from[0],to[2]-from[2]);

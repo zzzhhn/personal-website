@@ -52,3 +52,29 @@ test('worker failure preserves the usable variant without synchronous fallback o
   assert.equal(cache.peek(true),existing);assert.equal(cache.peek(false),undefined);assert.equal(calls,1);
   cache.dispose();
 });
+
+test('leaving a cold portal aborts its near worker and a late reply cannot replace a retry', async () => {
+  const jobs = [];
+  const make = () => ({ steel: new BoxGeometry(), glow: new BoxGeometry() });
+  const cache = new CoasterStructureCache(make, (_, signal) => {
+    const job = { signal, ...Promise.withResolvers() };
+    jobs.push(job); return job.promise;
+  });
+  const far = cache.get(false);
+  const first = cache.load(true);
+  cache.cancel(true);
+  assert.equal(jobs[0].signal.aborted, true);
+  const second = cache.load(true);
+  assert.equal(jobs[1].signal.aborted, false);
+  const rejected = assert.rejects(first, /cancelled/);
+  const stale = make(); let disposed = 0;
+  stale.steel.addEventListener('dispose', () => disposed++);
+  jobs[0].resolve(stale);
+  await rejected;
+  assert.equal(disposed, 1);
+  assert.equal(cache.peek(false), far);
+  assert.equal(cache.load(true), second);
+  const near = make(); jobs[1].resolve(near);
+  assert.equal(await second, near);
+  cache.dispose();
+});
