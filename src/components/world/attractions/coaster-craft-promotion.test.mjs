@@ -4,6 +4,7 @@ import '../../../../tools/world/alpha-mine-tests/register.mjs';
 import { createHash } from 'node:crypto';
 import { Group } from 'three';
 import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
+import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
 const { createCoasterStructure, CoasterBatch, addCoasterBuildingArt } = await import('./coaster-geometry.ts');
 const { packCoasterStructure, unpackCoasterStructure } = await import('./coaster-structure-transfer.ts');
 const promotion=await import('./coaster-craft-promotion.ts');
@@ -214,8 +215,11 @@ test('distance and occupancy select the visible station, interactive devices and
     for(const input of inputs)input.onInteract();
     assert.deepEqual(targets,enabled?['chest','gate','board']:[]);
     assert.equal(all('rigid-body').some(n=>n.props.userData?.assetId==='coaster-track-sample'),enabled);
-    const parked=all('rigid-body').filter(n=>n.props.userData?.assetId==='coaster-parked-car');
-    assert.equal(parked.length,active&&!riding?3:0);
+    const train=all('WorldCoasterTrainCraft')[0];
+    assert.equal(train.props.contactActive,active&&!riding);
+    const trainLease=all('suspense').find(n=>n.props.children===train);
+    const parked=trainLease.props.fallback?.props.children??[];
+    assert.equal(parked.length,active&&!riding?3:0,'temporary boxes apply only before the parked craft has mounted');
     for(const body of parked)assert.deepEqual(body.props.children.map(c=>[c.props.position,c.props.args]),
       access.COASTER_CAR_PANELS.map(p=>[p.at,p.size.map(x=>x/2)]));
   }
@@ -255,6 +259,8 @@ test('three cars follow the track, hold at an unready region, resume and dispatc
 
 test('the mounted gate holds both physical leaves on pause and opens the passage when unlocked',async()=>{
   const {default:R}=await import('@dimforge/rapier3d-compat');
+  const {coasterModelContact}=await import('./coaster-model-contact.ts');
+  const {scene}=await readWorldCraftGltf(['docs/world/phase-2-playground/coaster-gate-craft-20261105/coaster-gate.glb']);
   await R.init();
   const {nodes,state,worldState,physicsComponent,doc}=sceneFixture(true,false);
   const leaves=nodes.filter(n=>n.props.userData?.assetId==='coaster-gate');
@@ -264,13 +270,16 @@ test('the mounted gate holds both physical leaves on pause and opens the passage
     const bodies=leaves.map(leaf=>{
       assert.equal(leaf.props.type,'kinematicPosition');
       const body=world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...leaf.props.position));
-      const shape=leaf.props.children.find(child=>child.type==='box');
-      world.createCollider(R.ColliderDesc.cuboid(...shape.props.args).setTranslation(...shape.props.position),body);
+      const { children, fallback } = leaf.props.children.props;
+      assert.equal(fallback.props.name, children.props.surfaceId, 'the temporary gate still locks while the source downloads');
+      const { vertices, indices } = coasterModelContact(scene.getObjectByName('GateLeaf').clone(true),
+        children.props.surfaceId, children.props.mirrorX);
+      world.createCollider(R.ColliderDesc.trimesh(vertices, indices),body);
       leaf.props.ref(body);
       return body;
     });
     world.step();
-    const [x,y,z]=track.coasterWorld([1,1,track.COASTER_GATE_Z]);
+    const [x,y,z]=track.coasterWorld([-.4,1.35,track.COASTER_GATE_Z]);
     const blocked=()=>!!world.castRay(new R.Ray({x,y,z:z-2},{x:0,y:0,z:1}),4,true);
     assert.ok(blocked());
     state.progress.gateOpen=true;
@@ -290,5 +299,5 @@ test('the mounted gate holds both physical leaves on pause and opens the passage
     assert.equal(blocked(),false);
     bodies.forEach((body,i)=>assert.ok(Math.abs(2*Math.atan2(body.rotation().y,body.rotation().w)-
       access.coasterGateAngle(access.COASTER_GATE_LEAVES[i].side,1))<.001));
-  }finally {world.free();}
+  }finally {world.free();disposeWorldCraftGltf(scene);}
 });

@@ -1,20 +1,21 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferGeometry, DoubleSide, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, type Material, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import { night } from '../WorldNight';
+import { coasterContactSources, coasterModelContact } from './coaster-model-contact';
 import assetUrl from '../../../../docs/world/phase-2-playground/coaster-gate-craft-20261105/coaster-gate.glb?url';
 
 export type CoasterGateCraftPart = 'static' | 'leaf' | 'key';
 const ROOTS: Record<CoasterGateCraftPart, string> = { static: 'GateStatic', leaf: 'GateLeaf', key: 'GateKey' };
 
-/** Visual-only. The caller keeps the original placements, rigid bodies, hinges,
- * mirror scale, key visibility and live sign atlas. No input or state is owned here.
- * Do not mount alongside the old steel surfaces: remove those specific originals.
- */
-export default function WorldCoasterGateCraft({ part }: { part: CoasterGateCraftPart }) {
+/** The caller owns hinge motion, key visibility and the live sign atlas. */
+export default function WorldCoasterGateCraft({ part, surfaceId, mirrorX = 1, contactActive = true }: {
+  part: CoasterGateCraftPart; surfaceId?: string; mirrorX?: number; contactActive?: boolean;
+}) {
   const { scene } = useGLTF(assetUrl);
   const environment = useDjcFurnitureEnvironment();
   const model = useMemo(() => {
@@ -37,6 +38,8 @@ export default function WorldCoasterGateCraft({ part }: { part: CoasterGateCraft
       object.castShadow = part !== 'leaf';
       object.receiveShadow = true;
     });
+    const sources = surfaceId ? coasterContactSources(root, surfaceId) : null;
+    if (part === 'key') Object.assign(root.userData, { worldCollision: 'none', worldCollisionReason: 'Small carried puzzle key' });
     let shadow: Mesh<BufferGeometry, MeshBasicMaterial> | null = null;
     if (part === 'leaf') {
       const shadowSource = scene.getObjectByName('GateLeafShadow');
@@ -70,6 +73,7 @@ export default function WorldCoasterGateCraft({ part }: { part: CoasterGateCraft
       shadow.name = 'GateLeafShadowCarrier';
       shadow.castShadow = true;
       shadow.receiveShadow = false;
+      Object.assign(shadow.userData, { worldCollision: 'none', worldCollisionReason: 'Hinged shadow silhouette' });
       // Child of the same hinged root, so mirrored/open leaves keep exact poses.
       root.add(shadow);
     }
@@ -93,8 +97,11 @@ export default function WorldCoasterGateCraft({ part }: { part: CoasterGateCraft
         });
       };
     };
-    return { root, materials: owned, retain, shadow };
-  }, [scene, part]);
+    root.scale.x = mirrorX;
+    return { root, materials: owned, retain, shadow, sources };
+  }, [scene, part, surfaceId, mirrorX]);
+  const contact = useMemo(() => contactActive && surfaceId && model.sources
+    ? coasterModelContact(model.root, surfaceId, mirrorX, model.sources) : null, [model, surfaceId, mirrorX, contactActive]);
   const previousNight = useRef(NaN);
   useEffect(() => {
     for (const material of model.materials) {
@@ -114,7 +121,12 @@ export default function WorldCoasterGateCraft({ part }: { part: CoasterGateCraft
   });
   // Source geometry/maps belong to useGLTF's cache. The leaf carrier's derived
   // geometry/depth material and all cloned PBR materials have owned lifetimes.
-  return <group name={`coaster-gate-craft-${part}`} dispose={null}>
+  const visual = <group name={`coaster-gate-craft-${part}`} userData={part === 'static' ? { assetId: surfaceId, solid: true } : undefined} dispose={null}>
     <primitive object={model.root} dispose={null} />
   </group>;
+  if (!contact) return visual;
+  const collider = <TrimeshCollider name={surfaceId} args={[contact.vertices, contact.indices]} />;
+  return <>{visual}{part === 'static'
+    ? <RigidBody type="fixed" colliders={false} userData={{ assetId: surfaceId, solid: true }}>{collider}</RigidBody>
+    : collider}</>;
 }

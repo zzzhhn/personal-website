@@ -76,6 +76,7 @@ export default function WorldCoasterRailCraft({ geometry, shadow }: {
   return <group name="coaster-rail-craft" dispose={null}>
     {Object.entries(geometry).map(([key, shape]) => <mesh key={key} name={`rail-${key}`} geometry={shape} material={pack.materials[key]} receiveShadow />)}
     <mesh name="coaster-retained-rail-shadow" geometry={shadow} material={pack.depth} castShadow
+      userData={{ worldCollision: 'none', worldCollisionReason: 'Retained rail silhouette for the shadow pass' }}
       onBeforeRender={shadowRange.beforeColour} onAfterRender={shadowRange.restore}
       onBeforeShadow={shadowRange.restore} />
   </group>;

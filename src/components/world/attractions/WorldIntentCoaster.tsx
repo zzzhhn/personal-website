@@ -42,6 +42,7 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
   });
   const cached = structures.peek(requestedNear);
   const structure = cached ?? presented.structure, renderedNear = cached ? requestedNear : presented.near;
+  const mountContacts = enabled || (preparing && renderedNear);
   useEffect(() => {
     let current = true;
     let releaseFailure: (() => void) | undefined;
@@ -70,18 +71,21 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
   }, [enabled]);
   return <><group name="intent-coaster" userData={{noOcclusionFade:true}}>
     <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentReflectiveSurface roughness={.82} metalness={.16} /></mesh>
-    <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
+    <mesh name="coaster-light-strips" geometry={structure.glow}
+      userData={{ worldCollision: 'none', worldCollisionReason: 'Emissive trim and station light lenses supported by separate structures' }}>
+      <meshBasicMaterial vertexColors toneMapped={false} />
+    </mesh>
     {structure.railShadow && <Suspense fallback={null}>
       <WorldCoasterRailCraft geometry={structure.railCraft} shadow={structure.railShadow} />
     </Suspense>}
-    {COASTER_ARCHITECTURE_CRAFT && <Suspense fallback={null}>
-      <WorldCoasterStationCraft detailed={renderedNear} />
-      <group position={coasterWorld([0, 0, COASTER_GATE_Z])}><WorldCoasterGateCraft part="static" /></group>
-    </Suspense>}
+    {COASTER_ARCHITECTURE_CRAFT && <WorldCoasterStationCraft detailed={renderedNear} contactActive={mountContacts}
+      fallback={mountContacts ? <CoasterArchitectureFallback origin={coasterWorld([0, 0, 0])}
+        colliders={structure.colliders.filter(c => c.stationCraftFallback)} assetId="coaster-station-building" /> : null} />}
+    {COASTER_ARCHITECTURE_CRAFT && <CoasterGatePortal active={mountContacts} colliders={structure.colliders} />}
     <CoasterTrain active={enabled} />
     <IntentMovingLight active={enabled} />
     {enabled && <><WorldIntentDevices /><WorldIntentSigns /></>}
-    {(enabled || (preparing && renderedNear)) && <>
+    {mountContacts && <>
       {/* LODs have different support counts. Never reuse an index-keyed collider
           for a different solid while its Rapier hook still owns the old shape. */}
       <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} />
@@ -95,6 +99,26 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
   </group><WorldCoasterVegetation active={enabled} /></>;
 }
 export default memo(WorldIntentCoaster);
+
+function CoasterGatePortal({ active, colliders }: { active: boolean; colliders: CoasterCollider[] }) {
+  const origin = coasterWorld([0, 0, COASTER_GATE_Z]);
+  const fallback = active ? <CoasterArchitectureFallback origin={origin}
+    colliders={colliders.filter(c => c.gatePortalFallback)} assetId="coaster-gate-portal" /> : null;
+  return <group name="coaster-gate-portal-contact" position={origin}>
+    <Suspense fallback={fallback}><WorldCoasterGateCraft part="static" surfaceId="coaster-gate-portal" contactActive={active} /></Suspense>
+  </group>;
+}
+
+function CoasterArchitectureFallback({ origin, colliders, assetId }: {
+  origin: [number, number, number]; colliders: CoasterCollider[]; assetId: string;
+}) {
+  return <>{[false, true].map(surface => <RigidBody key={String(surface)} type="fixed" colliders={false}
+    userData={{ solid: !surface, surface, assetId }}>
+    {colliders.filter(c => !!c.surface === surface).map((c, i) => <CuboidCollider key={i}
+      name={c.boardingSupport ? COASTER_TREAD_COLLIDER : undefined} rotation={c.rotation} friction={.9}
+      position={[c.position[0] - origin[0], c.position[1] - origin[1], c.position[2] - origin[2]]} args={c.half} />)}
+  </RigidBody>)}</>;
+}
 
 function CoasterTrain({ active }: { active: boolean }) {
   const occupied = useIntentStore(s => s.riding);
@@ -167,16 +191,20 @@ function CoasterTrain({ active }: { active: boolean }) {
     const second = Math.floor(intentRideClock.elapsed);
     if (second !== s.rideSecond) useIntentStore.setState({ rideSecond: second });
   }, -60);
+  const parked = active && !occupied;
+  const fallback = parked ? <>{[0, 1, 2].map(i => {
+    const frame = coasterFrame(-i * 3.55 / COASTER_LENGTH);
+    return <RigidBody key={i} type="fixed" colliders={false} position={frame.point} quaternion={frame.rotation}
+      userData={{ solid: true, assetId: 'coaster-parked-car' }}>
+      {COASTER_CAR_PANELS.map((p, j) => <CuboidCollider key={j} position={p.at} args={p.size.map(v => v / 2) as [number, number, number]} />)}
+    </RigidBody>;
+  })}</> : null;
   // Boarding holds the cars still for seconds; they must never enter static shadow chunks.
   return <group name="intent-train" userData={{ shadowDynamic: true }} onClick={e => { e.stopPropagation(); activateIntentTarget('board'); }}>
-    <Suspense fallback={null}><WorldCoasterTrainCraft cars={cars} /></Suspense>
+    <Suspense fallback={fallback}><WorldCoasterTrainCraft cars={cars} contactActive={parked} /></Suspense>
     {[0, 1, 2].map(i => {
       const f = coasterFrame(-i * 3.55 / COASTER_LENGTH);
-      return <group key={i} ref={el => { cars.current[i] = el; }} position={f.point} quaternion={f.rotation}>
-        {active && !occupied && <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-parked-car' }}>
-          {COASTER_CAR_PANELS.map((p, j) => <CuboidCollider key={j} position={p.at} args={p.size.map(v => v / 2) as [number, number, number]} />)}
-        </RigidBody>}
-      </group>;
+      return <group key={i} ref={el => { cars.current[i] = el; }} position={f.point} quaternion={f.rotation} />;
     })}
   </group>;
 }
@@ -184,7 +212,7 @@ function CoasterTrain({ active }: { active: boolean }) {
 function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} name={surface?'coaster-station-surfaces':'coaster-station-solids'} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
-      {colliders.filter(c => !!c.surface === surface).map((c, i) => c.hull
+      {colliders.filter(c => !!c.surface === surface && !(COASTER_ARCHITECTURE_CRAFT && (c.gatePortalFallback || c.stationCraftFallback))).map((c, i) => c.hull
         ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
         : <CuboidCollider key={i} name={c.boardingSupport ? COASTER_TREAD_COLLIDER : undefined} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}

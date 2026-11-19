@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { Box3, BufferGeometry, DoubleSide, Group, Mesh, Raycaster, Texture, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
+import { coasterContactSources, coasterModelContact } from './coaster-model-contact.ts';
 
 // Load the actual exported geometry/material graph. The existing CPU loader mocks
 // texture decode only: this test makes no image, renderer or GPU assertions.
@@ -35,6 +36,7 @@ for (const part of ['static', 'leaf', 'key']) {
       '@react-three/fiber': { useFrame() {} }, '@react-three/drei': { useGLTF: () => gltf },
       '../WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment: () => environment },
       '../WorldNight': { night: { value: .4 } },
+      './coaster-model-contact': { coasterContactSources, coasterModelContact },
     }).default;
     const output = Component({ part });
     const root = output.props.children.props.object;

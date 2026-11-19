@@ -1,18 +1,24 @@
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { DoubleSide, DynamicDrawUsage, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Vector3, type MeshStandardMaterial } from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import { night } from '../WorldNight';
+import { coasterModelContact } from './coaster-model-contact';
+import { coasterFrame, COASTER_LENGTH } from './coaster-track';
+import type { InstanceCollisionSources } from '../world-collision-inventory';
 import assetUrl from '../../../../docs/world/phase-2-playground/coaster-car-astra-pilot-20261104/coaster-car.glb?url';
 import distantUrl from '../../../../docs/world/phase-2-playground/coaster-car-astra-pilot-20261104/coaster-car-distant.glb?url';
 
-/** The exact approved near meshes, batched across the three moving car roots.
- * Physics/boarding remain on their existing roots. Only owned materials and
- * instance buffers are disposed; GLTF cache geometry/images are borrowed.
- */
-export default function WorldCoasterTrainCraft({ cars }: { cars: RefObject<(Group | null)[]> }) {
+const carContactId = (i: number) => `coaster-parked-car-${i + 1}`;
+
+/** Preserve the instanced draw. Each parked car gets the exact near-source shape;
+ * drop those forms while the route and the cabin animation own the rider. */
+export default function WorldCoasterTrainCraft({ cars, contactActive = false }: {
+  cars: RefObject<(Group | null)[]>; contactActive?: boolean;
+}) {
   const near = useGLTF(assetUrl), far = useGLTF(distantUrl);
   const environment = useDjcFurnitureEnvironment();
   const root = useRef<Group>(null);
@@ -26,7 +32,7 @@ export default function WorldCoasterTrainCraft({ cars }: { cars: RefObject<(Grou
         if (!materials.has(source.name)) materials.set(source.name, source.clone());
       }
     });
-    const meshes: { mesh: InstancedMesh; local: Matrix4 }[] = [];
+    const meshes: { mesh: InstancedMesh; local: Matrix4; source?: InstanceCollisionSources }[] = [];
     for (const [index, source] of [near.scene, far.scene].entries()) {
       source.traverse(o => {
         if (!(o instanceof Mesh)) return;
@@ -38,7 +44,10 @@ export default function WorldCoasterTrainCraft({ cars }: { cars: RefObject<(Grou
         // A shared silhouette carrier below casts the opaque train shadow once.
         // Never cast from both visual LODs through detached shadow proxies.
         mesh.castShadow = false; mesh.receiveShadow = true;
-        levels[index].add(mesh); meshes.push({ mesh, local: o.matrixWorld.clone() });
+        const placements = Array.from({ length: 3 }, (_, i) => ({ id: carContactId(i), matrix: new Matrix4() }));
+        const source = { placements, slots: [0, 1, 2] };
+        Object.assign(mesh.userData, { worldCollision: 'solid', worldCollisionInstances: source });
+        levels[index].add(mesh); meshes.push({ mesh, local: o.matrixWorld.clone(), source });
       });
     }
     levels[1].visible = false;
@@ -48,12 +57,16 @@ export default function WorldCoasterTrainCraft({ cars }: { cars: RefObject<(Grou
     const shadowMaterial = new MeshBasicMaterial({ colorWrite: false, depthWrite: false, side: DoubleSide });
     const carrier = new InstancedMesh(shadowGeometry, shadowMaterial, 3);
     carrier.name = 'coaster-craft-shadow-carrier'; carrier.castShadow = true;
+    Object.assign(carrier.userData, { worldCollision: 'none', worldCollisionReason: 'Moving carriage shadow silhouette' });
     carrier.instanceMatrix.setUsage(DynamicDrawUsage);
     meshes.push({ mesh: carrier, local: new Matrix4() });
+    let contact: ReturnType<typeof coasterModelContact> | undefined;
     return { levels, meshes, materials, carrier, shadowGeometry, shadowMaterial,
+      parkedContact: () => contact ??= coasterModelContact(near.scene.clone(true), 'coaster-parked-car'),
       last: Array.from({ length: 3 }, () => { const m = new Matrix4(); m.elements.fill(NaN); return m; }),
       matrix: new Matrix4(), position: new Vector3(), night: NaN, lod: 0, stats: { lod: 0, uploads: 0, materials: materials.size, shadowTriangles: shadowGeometry.index!.count/3 } };
   }, [near.scene, far.scene]);
+  const contact = contactActive ? pack.parkedContact() : null;
   useEffect(() => {
     for (const material of pack.materials.values()) { material.envMap = environment; material.needsUpdate = true; }
   }, [pack, environment]);
@@ -69,7 +82,11 @@ export default function WorldCoasterTrainCraft({ cars }: { cars: RefObject<(Grou
       car!.updateMatrix();
       if (!car!.matrix.equals(pack.last[i])) {
         pack.last[i].copy(car!.matrix); changed = true;
-        for (const { mesh, local } of pack.meshes) mesh.setMatrixAt(i, pack.matrix.multiplyMatrices(car!.matrix, local));
+        for (const { mesh, local, source } of pack.meshes) {
+          pack.matrix.multiplyMatrices(car!.matrix, local);
+          mesh.setMatrixAt(i, pack.matrix);
+          source?.placements[i].matrix.copy(pack.matrix);
+        }
       }
       // Both visual and car roots have the same parent. Convert to world for LOD.
       pack.position.copy(car!.position); root.current!.parent!.localToWorld(pack.position);
@@ -96,5 +113,12 @@ export default function WorldCoasterTrainCraft({ cars }: { cars: RefObject<(Grou
   return <group ref={root} name="coaster-train-craft" userData={{ shadowDynamic: true }} dispose={null}>
     {pack.levels.map((level, i) => <primitive key={i} object={level} />)}
     <primitive object={pack.carrier}/>
+    {contact && [0, 1, 2].map(i => {
+      const frame = coasterFrame(-i * 3.55 / COASTER_LENGTH), id = carContactId(i);
+      return <RigidBody key={id} type="fixed" colliders={false} position={frame.point} quaternion={frame.rotation}
+        userData={{ solid: true, assetId: 'coaster-parked-car' }}>
+        <TrimeshCollider name={id} args={[contact.vertices, contact.indices]} />
+      </RigidBody>;
+    })}
   </group>;
 }

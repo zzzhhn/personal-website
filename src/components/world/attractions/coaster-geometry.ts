@@ -77,6 +77,8 @@ export interface CoasterCollider {
   rotation?: Vec3;
   surface?: boolean;
   boardingSupport?: true;
+  gatePortalFallback?: true;
+  stationCraftFallback?: true;
 }
 export type CoasterStructureScope = 'legacy' | 'short' | 'full';
 export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT, craftedRail = COASTER_RAIL_CRAFT) {
@@ -353,6 +355,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   box([0, .04, 55], [10, .08, 8], P.concrete, true, true);
   markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   const stationVisualStart = steel.parts.length;
+  const stationContactStart = colliders.length;
   // Functional boarding passage: six real treads and a flush bridge to the stopped car.
   for (const step of [...COASTER_BOARDING.stairs, COASTER_BOARDING.threshold]) {
     const yaw = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw);
@@ -379,6 +382,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   }
   box([-2, 7.55, 40], [9, .3, 6], P.steel);
   housing([10, 6.6, 43], [3.8, .8, 8], P.dark, false);
+  for (let i = stationContactStart; i < colliders.length; i++) colliders[i].stationCraftFallback = true;
   if (craftedArchitecture) discardCoasterVisuals(steel, stationVisualStart);
   addCoasterTower(steel, glow, colliders, detailed);
   // A tangible equipment house inside the descending helix, plus a separate rear power block.
@@ -439,6 +443,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   };
   const { mineralCladding: mineral, structuralCoat: coat, matteSoffit: matte } = INTENT_CRAFT;
   const gateVisualStart = steel.parts.length;
+  const gateContactStart = colliders.length;
   for (const x of [-5.8, 5.8]) {
     housing([x, 3.3, COASTER_GATE_Z], [1.6, 6.6, 1.8], '#829094', true, .095);
     markIntentCraft(steel.parts[steel.parts.length - 1], mineral);
@@ -457,6 +462,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   // Recess the upper fascia around the atlas and expose its folded lower return.
   // Keep the original full-depth collision envelope in its original order.
   housing([0, 6.4, COASTER_GATE_Z], [13.2, 1.3, 2], P.dark, true, .14);
+  for (let i = gateContactStart; i < colliders.length; i++) colliders[i].gatePortalFallback = true;
   markIntentCraft(steel.parts[steel.parts.length - 1], matte);
   finishBox([0, 5.82, COASTER_GATE_Z], [13.2, .14, 2], P.steel, coat);
   finishBox([0, 6.98, COASTER_GATE_Z], [13.2, .14, 2], '#a5aba5', mineral);

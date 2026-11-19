@@ -81,13 +81,17 @@ function IntentGate() {
       leaves.current[i]?.setNextKinematicRotation(rotation.current);
     });
   });
-  return <group onClick={e => { e.stopPropagation(); activateIntentTarget('gate'); }}>
-    {COASTER_GATE_LEAVES.map((leaf, i) => <RigidBody key={leaf.side} ref={body => { leaves.current[i] = body; }}
-      type="kinematicPosition" colliders={false} position={leaf.hinge} rotation={[0, coasterGateAngle(leaf.side, initial), 0]}
-      userData={{ solid: true, assetId: 'coaster-gate', shadowDynamic: true }}>
-      <CuboidCollider position={leaf.centre} args={leaf.half} />
-      {COASTER_ARCHITECTURE_CRAFT ? <group scale={[-leaf.side, 1, 1]}><Suspense fallback={null}><WorldCoasterGateCraft part="leaf" /></Suspense></group>
-        : geometry && <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentReflectiveSurface roughness={.8} /></mesh>}
-    </RigidBody>)}
+  return <group name="coaster-gate-leaves" onClick={e => { e.stopPropagation(); activateIntentTarget('gate'); }}>
+    {COASTER_GATE_LEAVES.map((leaf, i) => {
+      const surfaceId = `coaster-gate-leaf-${i + 1}`;
+      const temporaryContact = <CuboidCollider name={surfaceId} position={leaf.centre} args={leaf.half} />;
+      return <RigidBody key={leaf.side} ref={body => { leaves.current[i] = body; }}
+        type="kinematicPosition" colliders={false} position={leaf.hinge} rotation={[0, coasterGateAngle(leaf.side, initial), 0]}
+        userData={{ solid: true, assetId: 'coaster-gate', shadowDynamic: true }}>
+        {COASTER_ARCHITECTURE_CRAFT
+          ? <Suspense fallback={temporaryContact}><WorldCoasterGateCraft part="leaf" surfaceId={surfaceId} mirrorX={-leaf.side} /></Suspense>
+          : <>{temporaryContact}{geometry && <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentReflectiveSurface roughness={.8} /></mesh>}</>}
+      </RigidBody>;
+    })}
   </group>;
 }

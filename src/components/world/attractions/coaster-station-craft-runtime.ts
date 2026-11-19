@@ -29,6 +29,7 @@ export function createCoasterStationCraft(source: Object3D) {
   shadow.traverse(o => {
     if (!(o instanceof Mesh)) return;
     o.material = depth; o.castShadow = true; o.receiveShadow = false;
+    Object.assign(o.userData, { worldCollision: 'none', worldCollisionReason: 'Station shadow silhouette' });
   });
   far.visible = false;
   root.userData.stationCraft = { detailed: true };

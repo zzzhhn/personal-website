@@ -8,7 +8,9 @@ export function rideFootRouteClear(world:World,rapier:Pick<typeof Rapier,'Capsul
  include?: (collider: Collider) => boolean){
  for(let i=1;i<path.length;i++){
   const a=path[i-1],b=path[i],grade=Math.abs(b[1]-a[1])/Math.max(.001,Math.hypot(b[0]-a[0],b[2]-a[2])),lift=.012+PLAYER_RADIUS*(Math.sqrt(1+grade*grade)-1),from={x:a[0],y:a[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT+lift,z:a[2]},delta={x:b[0]-a[0],y:b[1]-a[1],z:b[2]-a[2]};
-  const hit=world.castShape(from,{x:0,y:0,z:0,w:1},delta,new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),.004,1,false,undefined,undefined,undefined,body,c=>!c.isSensor()&&(!include||include(c)));
+  // The query broad phase can still return a recently disabled actor.
+  const hit=world.castShape(from,{x:0,y:0,z:0,w:1},delta,new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),.004,1,false,undefined,undefined,undefined,body,
+    c=>c.isEnabled()&&c.parent()?.isEnabled()!==false&&!c.isSensor()&&(!include||include(c)));
   if(hit)return false;
  }
  return true;

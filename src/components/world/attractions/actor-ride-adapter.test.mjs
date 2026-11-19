@@ -68,6 +68,32 @@ test('the captured coaster apron can be checked against a new obstruction before
   }finally{port.cancel();world.free();}
 });
 
+test('boarding sees live obstacles while a disabled rider may still be in the query broad phase', async () => {
+  await R.init();
+  const world = new R.World({ x: 0, y: 0, z: 0 });
+  try {
+    const rider = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(55, 1.899, -152.4));
+    const capsule = world.createCollider(R.ColliderDesc.capsule(.48, .34), rider);
+    const path = [[55, 1.079, -152.4], [54.8, 1.08, -152.36]];
+    world.step();
+    assert.equal(rideFootRouteClear(world, R, undefined, path), false);
+    rider.setEnabled(false);
+    assert.ok(capsule.isEnabled(), 'the body can be disabled before its shape');
+    assert.equal(rideFootRouteClear(world, R, undefined, path), true);
+    world.step();
+    assert.equal(capsule.isEnabled(), false);
+    assert.equal(rideFootRouteClear(world, R, undefined, path), true);
+    const obstacle = world.createCollider(R.ColliderDesc.cuboid(.1, .4, .3).setTranslation(54.45, 1.9, -152.4));
+    world.step();
+    assert.equal(rideFootRouteClear(world, R, undefined, path), false);
+    obstacle.setEnabled(false);
+    assert.equal(rideFootRouteClear(world, R, undefined, path), true);
+    obstacle.setEnabled(true);
+    world.step();
+    assert.equal(rideFootRouteClear(world, R, undefined, path), false);
+  } finally { world.free(); }
+});
+
 test('coaster exit request is retained during boarding and standalone seat presentation remains supported',()=>{
   port.cancel();
   try {
