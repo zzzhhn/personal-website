@@ -508,19 +508,23 @@ export function yearPillar(lod: 0 | 1, cell: Cell) {
 export function billboard(lod: 0 | 1, cell: Cell) {
   const B = new Builder(), hi = lod === 0, w = 2.4, y0 = 1.02, h = 1.24;
   for (const x of [-1.12, 1.12]) {
-    B.part('foot'); box(B, [x - .1, 0, -.34], [x + .1, .08, .34], S.woodMid, hi ? .018 : 0);
-    B.part('post'); box(B, [x - .055, .04, -.06], [x + .055, 2.39, .06], S.woodLight, hi ? .012 : 0);
+    const side=x<0?'left':'right';
+    B.part('foot-'+side); box(B, [x - .1, 0, -.34], [x + .1, .08, .34], S.woodMid, hi ? .018 : 0);
+    B.part('post-'+side); box(B, [x - .055, .04, -.06], [x + .055, 2.39, .06], S.woodLight, hi ? .012 : 0);
     if (hi) {
-      B.part('braces'); for (const z of [-.27, .27]) bar(B, [x, .08, z], [x, .58, 0], .024, S.woodMid, 6);
-      B.part('pegs', false); for (const y of [y0 + .1, y0 + h - .1]) B.tr([x, y, .08], [Math.PI / 2, 0, 0], () => cyl(B, .014, .014, -.01, .01, S.woodDark, 10));
+      for (const z of [-.27,.27]) {
+        B.part('brace-'+side+(z<0?'-back':'-front'));
+        bar(B, [x,.08,z], [x,.58,0], .024, S.woodMid, 6);
+      }
+      B.part('pegs-'+side, false); for (const y of [y0 + .1, y0 + h - .1]) B.tr([x, y, .08], [Math.PI / 2, 0, 0], () => cyl(B, .014, .014, -.01, .01, S.woodDark, 10));
     }
   }
   B.part('panel'); box(B, [-w / 2, y0, -.035], [w / 2, y0 + h, .035], S.cream, hi ? .012 : 0);
-  for (const y of [y0 - .035, y0 + h + .035]) { B.part('rail'); box(B, [-w / 2 - .07, y - .035, -.06], [w / 2 + .07, y + .035, .065], S.woodLight, hi ? .012 : 0); }
-  for (const x of [-w / 2 - .035, w / 2 + .035]) { B.part('stile'); box(B, [x - .035, y0, -.06], [x + .035, y0 + h, .065], S.woodLight, hi ? .012 : 0); }
+  for (const y of [y0 - .035, y0 + h + .035]) { B.part(y<y0?'rail-bottom':'rail-top'); box(B, [-w / 2 - .07, y - .035, -.06], [w / 2 + .07, y + .035, .065], S.woodLight, hi ? .012 : 0); }
+  for (const x of [-w / 2 - .035, w / 2 + .035]) { B.part(x<0?'stile-left':'stile-right'); box(B, [x - .035, y0, -.06], [x + .035, y0 + h, .065], S.woodLight, hi ? .012 : 0); }
   B.part('cap'); box(B, [-w / 2 - .12, 2.33, -.105], [w / 2 + .12, 2.4, .105], S.woodMid, hi ? .018 : 0);
   B.part('campaign-face', false); B.cell = cell;
-  B.tr([0, y0 + h / 2, .039], [0, 0, 0], () => plate(B, rectPoly(w - .07, h - .07), .003, S.cream, { color: '#FFFFFF', rough: .95, metal: 0, sign: true }, S.cream));
+  B.tr([0, y0 + h / 2, .0365], [0, 0, 0], () => plate(B, rectPoly(w - .07, h - .07), .003, S.cream, { color: '#FFFFFF', rough: .95, metal: 0, sign: true }, S.cream));
   return B;
 }
 const _extra3 = extraAssets3;

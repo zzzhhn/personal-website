@@ -1,3 +1,4 @@
+import { streetBuilderRanges } from './street-builder-ranges';
 import { Builder } from './WorldStreetGeometry';
 import type { Terrain } from './WorldLandform';
 import type { Vec3 } from './types';
@@ -156,21 +157,9 @@ export function exposedFoundation(source: Builder, coverage: Burial[]) {
 }
 
 export function foundationRanges(source: Builder) {
-  let firstIndex = 0;
-  return source.parts.flatMap((part) => {
-    let next = firstIndex;
-    const end = part.end < 0 ? source.pos.length / 3 : part.end;
-    while (next < source.idx.length && source.idx[next] < end) next += 3;
-    if (next === firstIndex) return [];
+  return streetBuilderRanges(source).map(part => {
     if (part.name !== 'slab' && part.name !== 'scoring') throw new Error('Unclassified slab part ' + part.name);
-    const range = {
-      id: part.name,
-      firstIndex,
-      indexCount: next - firstIndex,
-      collision: part.collide ? ('solid' as const) : ('none' as const),
-      surfaceIds: part.collide ? ['concrete'] : undefined,
-    };
-    firstIndex = next;
-    return [range];
+    return {id: part.name, firstIndex: part.firstIndex, indexCount: part.indexCount,
+      collision: part.collide ? 'solid' as const : 'none' as const, surfaceIds: part.collide ? ['concrete'] : undefined};
   });
 }

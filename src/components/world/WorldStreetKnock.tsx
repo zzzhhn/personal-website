@@ -34,6 +34,7 @@ import type { Builder } from './WorldStreetGeometry';
 import { yearPillarSources } from './street-year-collision';
 import { roadblockContacts, roadblockSources } from './street-roadblock-contact';
 import { streetReachableContacts } from './street-reachable-contact';
+import { streetBuilderRanges } from './street-builder-ranges';
 import type { BatchedCollisionSources } from './world-collision-inventory';
 import type { Vec3 } from './types';
 
@@ -133,6 +134,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     // One batch kind per kind, except direction boards (one per instance: each has its own atlas cell).
     const kinds: BatchKind[] = [], kindOf = new Map<string, number>(), hulls = new Map<string, Float32Array[]>(), counts: number[] = [];
     const yearBuilders = new Map<string, [Builder, Builder]>();
+    const boards = new Map<string, [Builder, Builder]>();
     const roadblocks = new Map<string, [Builder, Builder]>(), contactMembers = new Map<string, string[]>();
     let dirIndex = 0;
     const states: KState[] = [];
@@ -146,6 +148,10 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
         kindOf.set(key, kinds.length); counts.push(0);
         kinds.push({ id: key, L0: b.L0.build(), L1: b.L1.build(), lodNear: SPEC[it.kind].lod, far: SPEC[it.kind].far });
         if (it.kind === 'year') yearBuilders.set(key, [b.L0, b.L1]);
+        if (it.kind === 'billboard') {
+          boards.set(key, [b.L0,b.L1]);
+          contactMembers.set(key, b.L0.parts.filter(part => part.collide).map(part => part.name));
+        }
         if (it.kind === 'roadblock') {
           const members = roadblockContacts(b.L0);
           roadblocks.set(key, [b.L0, b.L1]);
@@ -180,6 +186,22 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
         id: item.id, slot: batchId, matrix: batch.sourceMatrix(batchId), geometryIds, colliderPrefix: `street-collider-${item.id}/`,
       })) };
       batch.mesh.userData.worldCollisionBatchedInstances = sources;
+    }
+    if (boards.size) {
+      const geometries = [...boards].flatMap(([id, lods]) => ([0, 1] as const).map(level => ({
+        id: batch.geometryId(kindOf.get(id)!, level),
+        ranges: streetBuilderRanges(lods[level]).map(part => ({
+          id: part.name, firstIndex: part.firstIndex, indexCount: part.indexCount,
+          collision: part.collide ? 'pushable' as const : 'none' as const,
+          surfaceIds: part.collide ? [part.name] : undefined,
+        })),
+      })));
+      const sources: BatchedCollisionSources = {geometries, placements: states.map(({item,batchId}) => {
+        const kind=kindOf.get(item.id)!;
+        return {id:item.id,slot:batchId,matrix:batch.sourceMatrix(batchId),
+          geometryIds:[batch.geometryId(kind,0),batch.geometryId(kind,1)],colliderPrefix:'street-collider-'+item.id+'/'};
+      })};
+      batch.mesh.userData.worldCollisionBatchedInstances=sources;
     }
     if (yearBuilders.size) {
       const sources = [];
