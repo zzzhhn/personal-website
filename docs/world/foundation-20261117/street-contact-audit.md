@@ -12,3 +12,11 @@
 两档网格、材质和批绘制沿用现有构建，高低档实物登记在两边使用同一刚体。动态组形状增加约 119 件，其中 51 件来自三个垃圾桶的空腔，44 件来自 W 形栏板分段。运行时帧耗、普通入口上的坐下与起身、实车侧撞与复位、目标设备 Chrome/Safari 仍待浏览器复跑。
 
 离线回归见工作区 `evidence/city-foundation/street-installed-contact-tests.log` 和 `street-installed-contact-counts.json`。定向脚本为 `tools/world/street/installed-contact.test.mjs`。
+
+## 山脊风车
+
+`street-windmill-group` 包含塔身及旋转件两个明确接触。塔脚、塔身和检修门采用固定可见源。胶囊能沿圆形基座外侧走过，在穿越真实基座时仍被拦住。涂装和两档模型沿用原选择。
+
+转子原先没有物理形状。现在由一个 Rapier 运动学刚体驱动网格，按原共享风钟速度旋转。近远两档共用同一物理位姿及接触。球扫过叶片路径时，叶片朝向遮住该位置会在约 0.942 m 命中，转开后能穿过可见空隙。另一个 16 cm 直径的动态球实际撞上旋转叶片，入射 X 速度从 3 m/s 降至近零，沿 Z 获得约 0.74 m/s 速度。共享风钟暂停时两者位姿一起停住。裁剪范围围绕真实转轴计算，涵盖两档模型约 4.70 m 的最大扫掠半径。
+
+复跑 `node --import ./tools/world/alpha-mine-tests/register.mjs --test tools/world/street/windmill-contact.test.mjs`。原始记录在 `evidence/city-foundation/street-windmill-contact-tests.log`。风车、主街及保护站位相关的 14 个离线回归通过。全路网额外检查有一个既有失败，工厂进场道路距海岸的断言可在 `8c5b9a1` 原样复现。本批未做生产浏览器进入路径或实际目标机帧耗测量。
