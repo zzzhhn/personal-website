@@ -17,7 +17,7 @@ export const migratedCollisionRoots = [
   ...['C03-large-tent','C04-small-tents','C05-fire-pit','C06-instances','C07-pad1','C09-pad2','C10-pad3',
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id => 'park-exhibit-set-'+id),
-  'djc-mirror-contact', 'djc-north-bar-contact', 'djc-pool-lantern-contact', 'djc-umbrella-contact', 'djc-furniture-contact', 'djc-daybed-contact',
+  'djc-beach-club', 'djc-mirror-contact', 'djc-north-bar-contact', 'djc-pool-lantern-contact', 'djc-umbrella-contact', 'djc-furniture-contact', 'djc-daybed-contact',
   'street-fixed-group', 'street-knock-group', 'street-rails-group', 'park-signs', 'street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group', 'coaster-vegetation', 'brain-quarry-approach-contact', 'ibd-workstation-fixtures', 'ibd-parked-truck', 'ibd-static-yard-contact', 'ibd-dispatch-shutter', 'ibd-hoist-contact', 'world-ibd-yard', 'alpha-cable-fixed-infrastructure', 'alpha-sled-fixed-infrastructure', 'alpha-connected-grammar-tree', 'alpha-tumbling-wind-sign', 'alpha-wind-flag-stands', 'alpha-wind-gate', 'alpha-wind-control', 'alpha-bell-control', 'alpha-shelf-lanterns', 'alpha-physical-sand-route-model', 'alpha-mine-attraction', 'alpha-mine-backtest-basin', 'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp', 'alpha-mine-east-ramp', 'alpha-mine-middle-bridge',
   ...['west-entry', 'west-rise', 'west-link'].map(name => 'alpha-mine-gallery-'+name),
   'alpha-mine-north-ravine-bridge', ...['lower','middle','upper'].map(level => 'alpha-mine-'+level+'-vein-contact'),
