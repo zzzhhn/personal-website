@@ -204,7 +204,8 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       leaves:geometries[0].doors.map((leaf,i)=>({id:vehicleDoorId(id,leaf.side),points:vehicleContactHull(leaf.geometry),position:doors[i].position.toArray()})),
       ...(beacon?{beacon:{points:beacon.points,position:[0,hull.bodyY,0]}}:{})}:null;
     const retained=authoredHull&&retainedVehicleRoofSource(id,geometries[0].body,geometries[0].bodySources,geometries[1].bodySources);
-    return { geometries, material, instanced, wheelMatrices, pool, exhaust, doors, doorControls, walking, rack, retained, level: 0, distance: 0 };
+    const bodyUserData={shadowLodGeometry:geometries[1].body,worldCollisionSources:geometries[0].bodySources};
+    return { geometries, bodyUserData, material, instanced, wheelMatrices, pool, exhaust, doors, doorControls, walking, rack, retained, level: 0, distance: 0 };
   }, [gltfs, asset, id, wheelPoints, wheelRest, hull, authoredHull, publishWalkContacts]);
   useWalkRecipe(publishWalkContacts,built.walking);
   useEffect(() => {
@@ -252,7 +253,7 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       const level = built.distance >= 60 ? 1 : built.distance < 58 ? 0 : built.level;
       if (level !== built.level) {
         bodyMesh.current.geometry = built.geometries[level].body;
-        bodyMesh.current.userData.worldCollisionSources=built.geometries[level].bodySources;
+        built.bodyUserData.worldCollisionSources=built.geometries[level].bodySources;
         built.instanced.geometry = built.geometries[level].wheel;
         built.doors.forEach((door,i) => { door.geometry = built.geometries[level].doors[i].geometry; });
         built.level = level;
@@ -285,8 +286,8 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
   });
   return <group ref={visual} name={`vehicle-${id}-visual`} userData={{ vehicle: id, assetId: asset }}>
     <WheelAnchors wheelPoints={wheelPoints} wheelRest={wheelRest} wheels={wheels} />
-    <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]}
-      userData={{shadowLodGeometry:built.geometries[1].body,worldCollisionSources:built.geometries[0].bodySources}} castShadow receiveShadow />
+    <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[built.level].body} material={built.material} position={[0, hull.bodyY, 0]}
+      userData={built.bodyUserData} castShadow receiveShadow />
     {built.retained&&<mesh visible={false} name={`vehicle-${id}-roof-near-contact-source`} geometry={built.retained.geometry}
       material={built.material} position={[0,hull.bodyY,0]} userData={{worldCollisionSources:built.retained.ranges}}/>}
     {built.rack.map(part=><ConvexHullCollider key={part.id} name={part.id} args={[part.points]} position={[0,hull.bodyY,0]}

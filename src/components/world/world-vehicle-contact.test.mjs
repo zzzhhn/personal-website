@@ -277,6 +277,7 @@ test('shipping asset LODs keep convex roof parts on CCD and walking contacts on 
   fiber.extend({BoxGeometry,CylinderGeometry,Group,Mesh,MeshStandardMaterial,Object3D});
   globalThis.IS_REACT_ACT_ENVIRONMENT=true;
   const camera=new PerspectiveCamera(),root=fiber.createRoot({}),texture=new Texture();
+  camera.position.set(8,4,-8);
   const renderer={render(){},setSize(){},setPixelRatio(){},capabilities:{getMaxAnisotropy:()=>4}};
   await root.configure({gl:renderer,camera,frameloop:'never',dpr:1,size:{width:320,height:200,top:0,left:0}});
   const localAssets=new Map(),loadedAssets=new Map(),owned=[],compile=compileWorldComponent(new URL('WorldVehicleVisual.tsx',import.meta.url));
@@ -311,11 +312,10 @@ test('shipping asset LODs keep convex roof parts on CCD and walking contacts on 
       recipe&&h(physics.RigidBody,{type:'kinematicPosition',colliders:false,position:spec.position},h(VehicleWalkingColliders,
         {id:spec.id,points:dim.points,rest:dim.rest,recipe,contacts:{tyres:[],leaves:[],beacon:null}})));
   }
+  const renderFixtures=pass=>root.render(h(Suspense,{fallback:null},h(physics.Physics,{paused:true,colliders:false},h(ReadWorld),
+    ...VEHICLES.map(spec=>h(Fixture,{spec,key:spec.id,pass})))));
   try{
-    await act(async()=>{
-      store=root.render(h(Suspense,{fallback:null},h(physics.Physics,{paused:true,colliders:false},h(ReadWorld),
-        ...VEHICLES.map(spec=>h(Fixture,{spec,key:spec.id})))));
-    });
+    await act(async()=>{store=renderFixtures(0);store.getState().advance(0,false);});
     const capture=()=>[...context.colliderStates].map(([handle,{object}])=>{
       const collider=context.world.getCollider(handle);
       return {name:object.name,shape:collider.shapeType(),groups:collider.collisionGroups(),ccd:collider.parent().isCcdEnabled()};
@@ -328,8 +328,24 @@ test('shipping asset LODs keep convex roof parts on CCD and walking contacts on 
     assert.equal(walking.filter(row=>row.name.includes('-tyre-')).length,12);
     assert.ok(walking.every(row=>!row.ccd));
     assert.ok(before.every(row=>row.shape===wasm.ShapeType.ConvexPolyhedron),JSON.stringify(before));
+    const scene=store.getState().scene;
+    const sourceFit=()=>Object.fromEntries(VEHICLES.map(({id})=>{
+      const mesh=scene.getObjectByName(`vehicle-${id}-body`),range=mesh.userData.worldCollisionSources.at(-1);
+      const count=mesh.geometry.attributes.position.count;
+      assert.equal(range.firstVertex+range.vertexCount,count,`${id}: source end matches the geometry currently drawn`);
+      return [id,count];
+    }));
+    const near=sourceFit();
     await act(async()=>{camera.position.set(200,7,200);store.getState().advance(1,false);});
+    const far=sourceFit();
+    assert.ok(Object.keys(far).every(id=>far[id]<near[id]));
+    // Publishing a walking recipe and loading another district both schedule
+    // React commits between frames. A commit at rest must retain the far sources.
+    await act(async()=>{renderFixtures(1);});
+    assert.deepEqual(sourceFit(),far);
     assert.deepEqual(capture(),before);
+    await act(async()=>{camera.position.set(8,4,-8);store.getState().advance(2,false);});
+    assert.deepEqual(sourceFit(),near);
     t.diagnostic(JSON.stringify({roof:roof.length,walking:walking.length}));
   }finally{await act(async()=>root.unmount());texture.dispose();owned.forEach(source=>source.dispose());}
 });
