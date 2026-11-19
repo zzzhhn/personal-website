@@ -1,0 +1,8338 @@
+{
+ "factory": {
+  "head": "1f1768dfa82d9b8710f943fec554336ceed4ac81",
+  "entry": {
+   "location": "published factory appearance position through start=factory",
+   "diagnostics": "QA read-only scene inspection",
+   "movement": "QA position near each console, then real E and operations",
+   "progress": "fresh local progress"
+  },
+  "entrySha256": "c2d5aa9088df3985f4d30fa1731bc432dcc3b0a2cff6c0c198ac9875f42a8787",
+  "errors": [],
+  "runtimeUnchanged": true,
+  "rawSha256": "10a96d0a8d5746d49acb6f381fa77f8070262a9b415d940e772f0cf1006fbfa1",
+  "actions": [
+   {
+    "name": "extract-frame",
+    "action": {
+     "type": "extract",
+     "module": "frame"
+    },
+    "ms": 12255,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:1",
+     "action": "extract",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "extract-wheels",
+    "action": {
+     "type": "extract",
+     "module": "wheels"
+    },
+    "ms": 11099,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:2",
+     "action": "extract",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "extract-shell",
+    "action": {
+     "type": "extract",
+     "module": "shell"
+    },
+    "ms": 10963,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:3",
+     "action": "extract",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "group-steady",
+    "action": {
+     "type": "group",
+     "config": "steady"
+    },
+    "ms": 1534,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:4",
+     "action": "group",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "route-frame",
+    "action": {
+     "type": "route",
+     "module": "frame",
+     "line": "frame"
+    },
+    "ms": 8148,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:5",
+     "action": "route",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "route-wheels",
+    "action": {
+     "type": "route",
+     "module": "wheels",
+     "line": "wheels"
+    },
+    "ms": 8151,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:6",
+     "action": "route",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "route-shell",
+    "action": {
+     "type": "route",
+     "module": "shell",
+     "line": "shell"
+    },
+    "ms": 8132,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:7",
+     "action": "route",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "process-frame",
+    "action": {
+     "type": "process",
+     "module": "frame"
+    },
+    "ms": 8964,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:8",
+     "action": "process",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "process-wheels",
+    "action": {
+     "type": "process",
+     "module": "wheels"
+    },
+    "ms": 8955,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:9",
+     "action": "process",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "process-shell",
+    "action": {
+     "type": "process",
+     "module": "shell"
+    },
+    "ms": 8914,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:10",
+     "action": "process",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "trial-assemble",
+    "action": {
+     "type": "trial-assemble"
+    },
+    "ms": 22224,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:11",
+     "action": "trial-assemble",
+     "outcome": "completed"
+    },
+    "trials": []
+   },
+   {
+    "name": "single-slope",
+    "action": {
+     "type": "test",
+     "mode": "single",
+     "conditions": {
+      "testKind": "slope",
+      "loadKg": 0,
+      "courseVersion": "factory-course-v1",
+      "seed": 1,
+      "durationLimitS": 60
+     }
+    },
+    "ms": 13955,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12",
+     "action": "test",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "comparison-slope",
+    "action": {
+     "type": "test",
+     "mode": "comparison",
+     "conditions": {
+      "testKind": "slope",
+      "loadKg": 0,
+      "courseVersion": "factory-course-v1",
+      "seed": 1,
+      "durationLimitS": 60
+     }
+    },
+    "ms": 13867,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13",
+     "action": "test",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "rework-wheels",
+    "action": {
+     "type": "rework",
+     "module": "wheels",
+     "config": "nimble"
+    },
+    "ms": 3724,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:14",
+     "action": "rework",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "reroute-wheels",
+    "action": {
+     "type": "route",
+     "module": "wheels",
+     "line": "wheels"
+    },
+    "ms": 8172,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:15",
+     "action": "route",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "remanufacture-wheels",
+    "action": {
+     "type": "process",
+     "module": "wheels"
+    },
+    "ms": 8966,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:16",
+     "action": "process",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "reassemble",
+    "action": {
+     "type": "trial-assemble"
+    },
+    "ms": 11995,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:17",
+     "action": "trial-assemble",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "retest-single",
+    "action": {
+     "type": "test",
+     "mode": "single",
+     "conditions": {
+      "testKind": "slope",
+      "loadKg": 0,
+      "courseVersion": "factory-course-v1",
+      "seed": 1,
+      "durationLimitS": 60
+     }
+    },
+    "ms": 10724,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:18",
+     "action": "test",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:18:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 54
+     }
+    ]
+   },
+   {
+    "name": "retest-comparison",
+    "action": {
+     "type": "test",
+     "mode": "comparison",
+     "conditions": {
+      "testKind": "slope",
+      "loadKg": 0,
+      "courseVersion": "factory-course-v1",
+      "seed": 1,
+      "durationLimitS": 60
+     }
+    },
+    "ms": 14044,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:19",
+     "action": "test",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:18:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 54
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:19:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "fit-shell",
+    "action": {
+     "type": "final-assemble"
+    },
+    "ms": 19448,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:20",
+     "action": "final-assemble",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:18:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 54
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:19:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "inspect",
+    "action": {
+     "type": "inspect"
+    },
+    "ms": 4311,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:21",
+     "action": "inspect",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:18:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 54
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:19:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   },
+   {
+    "name": "release",
+    "action": {
+     "type": "release"
+    },
+    "ms": 7182,
+    "last": {
+     "token": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:22",
+     "action": "release",
+     "outcome": "completed"
+    },
+    "trials": [
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:12:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:13:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:18:trial",
+      "mode": "single",
+      "status": "completed",
+      "samples": 54
+     },
+     {
+      "id": "75ed1687-0c7e-4b6d-a999-99cde2b89e92:action:19:trial",
+      "mode": "comparison",
+      "status": "completed",
+      "samples": 70
+     }
+    ]
+   }
+  ],
+  "sampleCount": 107,
+  "contactSamples": [
+   {
+    "name": "initial",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 0,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1298,
+     "declared": 1298,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 22,
+     "declared": 22,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-frame",
+    "operation": "aim",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 10,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-frame",
+    "operation": "pickup",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 17,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1386,
+     "declared": 1386,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 39,
+     "declared": 39,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-frame",
+    "operation": "carry",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 17,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 39,
+     "declared": 39,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-frame",
+    "operation": "drop",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 16,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 38,
+     "declared": 38,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-frame",
+    "operation": "outfeed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.655426501726133e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 37,
+     "declared": 37,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-frame",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 37,
+     "declared": 37,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-wheels",
+    "operation": "aim",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 16,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 38,
+     "declared": 38,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-wheels",
+    "operation": "pickup",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 16,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 38,
+     "declared": 38,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-wheels",
+    "operation": "carry",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 16,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 38,
+     "declared": 38,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-wheels",
+    "operation": "drop",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 37,
+     "declared": 37,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-wheels",
+    "operation": "outfeed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 14,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 36,
+     "declared": 36,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-wheels",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 14,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 36,
+     "declared": 36,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-shell",
+    "operation": "aim",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 37,
+     "declared": 37,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-shell",
+    "operation": "pickup",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.10668239775838e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 37,
+     "declared": 37,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-shell",
+    "operation": "carry",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.104260643268605e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 37,
+     "declared": 37,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-shell",
+    "operation": "drop",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 14,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 36,
+     "declared": 36,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-shell",
+    "operation": "outfeed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 2.221648652028631e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 35,
+     "declared": 35,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "extract-shell",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 35,
+     "declared": 35,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "group-steady",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 3,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 22,
+     "declared": 22,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "group-steady",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 48,
+     "submitted": 2,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1301,
+     "declared": 1301,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 21,
+     "declared": 21,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "group-steady",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 2,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 21,
+     "declared": 21,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-frame",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 32,
+     "declared": 32,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-frame",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.665754304940787e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 32,
+     "declared": 32,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-frame",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-wheels",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-wheels",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-wheels",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-shell",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-shell",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.7755656423520151e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "route-shell",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "ready \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 508,
+     "declared": 508,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "cycle \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 508,
+     "declared": 508,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "cycle \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 15,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 508,
+     "declared": 508,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "cycle \u00b7 ram-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 12,
+     "active": 16,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 498,
+     "declared": 498,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "outfeed \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 17,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 7.413603351565048e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 510,
+     "declared": 510,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "outfeed \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 17,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 510,
+     "declared": 510,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-frame",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 17,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 510,
+     "declared": 510,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "ready \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 525,
+     "declared": 525,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "cycle \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 534,
+     "declared": 534,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "cycle \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 534,
+     "declared": 534,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "cycle \u00b7 ram-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 17,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 510,
+     "declared": 510,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 14
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "outfeed \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 29,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 5.630823979517541e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 542,
+     "declared": 542,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "outfeed \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 29,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.4436358080583135e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 542,
+     "declared": 542,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-wheels",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 29,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 543,
+     "declared": 543,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "ready \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 30,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 543,
+     "declared": 543,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "cycle \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 30,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 558,
+     "declared": 558,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "cycle \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 30,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 558,
+     "declared": 558,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "cycle \u00b7 ram-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 27,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 547,
+     "declared": 547,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "outfeed \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 34,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 562,
+     "declared": 562,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "outfeed \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 34,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 3.430420847583371e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 562,
+     "declared": 562,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "process-shell",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 34,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 562,
+     "declared": 562,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "fetch",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.774170124924482e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "aim",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.340320507929476e-07
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "pickup",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.336206284261367e-07
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "lift",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.183882107833813e-07
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "carry",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.340320507929476e-07
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "seat",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.512217223040997e-07
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "retract",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.113487841645975e-07
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "home",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 7.38419775696055e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 40,
+     "declared": 40,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "trial-assemble",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 19,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 39,
+     "declared": 39,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "single-slope",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 63,
+     "submitted": 12,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2053,
+     "declared": 2053,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 123,
+     "declared": 123,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13,
+     "factory-physical-trials": 1
+    }
+   },
+   {
+    "name": "single-slope",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 1,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 127,
+     "declared": 127,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "comparison-slope",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 77,
+     "submitted": 22,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2067,
+     "declared": 2067,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 136,
+     "declared": 136,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13,
+     "factory-physical-trials": 2
+    }
+   },
+   {
+    "name": "comparison-slope",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 1,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 123,
+     "declared": 123,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "rework-wheels",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 19,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 83,
+     "declared": 83,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "rework-wheels",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 19,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 103,
+     "declared": 103,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "rework-wheels",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 9,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 121,
+     "declared": 121,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "reroute-wheels",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 10,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "reroute-wheels",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 10,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.249105696178207e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 31,
+     "declared": 31,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "reroute-wheels",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 11,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 32,
+     "declared": 32,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "ready \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 25,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 518,
+     "declared": 518,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "cycle \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 25,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 535,
+     "declared": 535,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "cycle \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 25,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 539,
+     "declared": 539,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "cycle \u00b7 ram-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 22,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 514,
+     "declared": 514,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 15
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "outfeed \u00b7 guard-down",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 34,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 5.305352705633789e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 547,
+     "declared": 547,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "outfeed \u00b7 start",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 34,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 3.940703261269418e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 547,
+     "declared": 547,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "remanufacture-wheels",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 34,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 548,
+     "declared": 548,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "fetch",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 10,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 7.121318754362437e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 30,
+     "declared": 30,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "aim",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 5,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.2759080911051064e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 25,
+     "declared": 25,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "pickup",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 5,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.2734746990142145e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 25,
+     "declared": 25,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "lift",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 7,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.27328884497825e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 27,
+     "declared": 27,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "carry",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 6,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.2759080911051064e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 26,
+     "declared": 26,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "seat",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.279070917444324e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 40,
+     "declared": 40,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "retract",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 4.2733480598845575e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 40,
+     "declared": 40,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "home",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 20,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.94182003946539e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 40,
+     "declared": 40,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "reassemble",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 19,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 39,
+     "declared": 39,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "retest-single",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 63,
+     "submitted": 11,
+     "active": 17,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2053,
+     "declared": 2053,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 120,
+     "declared": 120,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13,
+     "factory-physical-trials": 1
+    }
+   },
+   {
+    "name": "retest-single",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 1,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2039,
+     "declared": 2039,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 127,
+     "declared": 127,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "retest-comparison",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 77,
+     "submitted": 22,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 2067,
+     "declared": 2067,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 136,
+     "declared": 136,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13,
+     "factory-physical-trials": 2
+    }
+   },
+   {
+    "name": "retest-comparison",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 1,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 123,
+     "declared": 123,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "fetch",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 19,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 3.3309137112183744e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 39,
+     "declared": 39,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "aim",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 33,
+     "declared": 33,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "pickup",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2391556734317202e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 33,
+     "declared": 33,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "lift",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 13,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2255773435433359e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 33,
+     "declared": 33,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "carry",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 14,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 34,
+     "declared": 34,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "seat",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 24,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2207032192694996e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 44,
+     "declared": 44,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "retract",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 24,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2207079541033775e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 44,
+     "declared": 44,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "home",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 24,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 5.995663647739632e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 44,
+     "declared": 44,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "fit-shell",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 23,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 43,
+     "declared": 43,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "inspect",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 23,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 43,
+     "declared": 43,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "inspect",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 23,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 43,
+     "declared": 43,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "release",
+    "operation": "ready",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 21,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 43,
+     "declared": 43,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "release",
+    "operation": "cycle",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 31,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2219825063691704e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 53,
+     "declared": 53,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "release",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 31,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 53,
+     "declared": 53,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "printed-card",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 49,
+     "submitted": 4,
+     "active": 19,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 1.2230849881600674e-06
+    },
+    "mounted": {
+     "meshes": 1302,
+     "declared": 1302,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 283,
+     "declared": 283,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 16
+    }
+   },
+   {
+    "name": "archived-next-batch",
+    "operation": "completed",
+    "coverage": {
+     "mounted": 63,
+     "submitted": 29,
+     "active": 18,
+     "gaps": [],
+     "missing": [],
+     "orphaned": [],
+     "maxPoseDrift": 6.103992449217993e-06
+    },
+    "mounted": {
+     "meshes": 1316,
+     "declared": 1316,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "submitted": {
+     "meshes": 51,
+     "declared": 51,
+     "unclassified": 0,
+     "invalid": 0
+    },
+    "roots": {
+     "factory-structure-contact": 51,
+     "factory-conveyor-contact": 4,
+     "factory-worklife-contact": 2,
+     "factory-walk-support": 1,
+     "factory-roof-support": 1,
+     "factory-report-printer-contact": 3,
+     "factory-live-mechanisms": 13,
+     "factory-completed-companion": 2
+    }
+   }
+  ]
+ },
+ "districts": {
+  "rawSha256": "0e1de136fb89e55c08b37b884e21ba73bf4a9c489c79bebe3f0462648dd305ce",
+  "rows": [
+   {
+    "route": "street-park",
+    "ok": true,
+    "hash": "f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1",
+    "spawn": {
+     "p": [
+      14.000181198120117,
+      1.968824863433838,
+      -2.500112771987915
+     ],
+     "grounded": true,
+     "step": 123,
+     "yaw": 0.9272952180016123
+    },
+    "marks": [
+     {
+      "stage": "walk to 18,-3",
+      "position": [
+       17.825183868408203,
+       1.960092306137085,
+       -3.275428056716919
+      ],
+      "grounded": true,
+      "lowest": 1.9540702104568481,
+      "highest": 1.968824863433838
+     },
+     {
+      "stage": "walk to 21,-11",
+      "position": [
+       20.984695434570312,
+       1.9578492641448975,
+       -10.697840690612793
+      ],
+      "grounded": true,
+      "lowest": 1.9577858448028564,
+      "highest": 1.96218740940094
+     },
+     {
+      "stage": "walk to 21,-26",
+      "position": [
+       21.031774520874023,
+       1.9616838693618774,
+       -25.54132843017578
+      ],
+      "grounded": true,
+      "lowest": 1.9577347040176392,
+      "highest": 1.96237313747406
+     },
+     {
+      "stage": "walk to 21,-41",
+      "position": [
+       21.270225524902344,
+       1.9577645063400269,
+       -40.858192443847656
+      ],
+      "grounded": true,
+      "lowest": 1.9576877355575562,
+      "highest": 1.9626952409744263
+     },
+     {
+      "stage": "walk to 26,-42",
+      "position": [
+       25.73664665222168,
+       1.9578660726547241,
+       -42.058712005615234
+      ],
+      "grounded": true,
+      "lowest": 1.9568248987197876,
+      "highest": 1.959220290184021
+     },
+     {
+      "stage": "walk to 40,-43.65",
+      "position": [
+       39.540836334228516,
+       1.9588242769241333,
+       -43.37333297729492
+      ],
+      "grounded": true,
+      "lowest": 1.9578660726547241,
+      "highest": 1.9628136157989502
+     },
+     {
+      "stage": "walk to 42.7,-42.1",
+      "position": [
+       42.54921340942383,
+       1.9588247537612915,
+       -42.304630279541016
+      ],
+      "grounded": true,
+      "lowest": 1.9588242769241333,
+      "highest": 1.9588345289230347
+     },
+     {
+      "stage": "walk to 47.3,-42.1",
+      "position": [
+       47.046104431152344,
+       1.9699931144714355,
+       -41.95341110229492
+      ],
+      "grounded": true,
+      "lowest": 1.9588247537612915,
+      "highest": 1.9787434339523315
+     },
+     {
+      "stage": "walk to 50,-44.5",
+      "position": [
+       49.90237045288086,
+       1.9746185541152954,
+       -44.09334945678711
+      ],
+      "grounded": true,
+      "lowest": 1.9699931144714355,
+      "highest": 1.9746185541152954
+     },
+     {
+      "stage": "walk to 49,-46",
+      "position": [
+       49.39546203613281,
+       1.974595069885254,
+       -45.77567672729492
+      ],
+      "grounded": true,
+      "lowest": 1.9743939638137817,
+      "highest": 1.975865364074707
+     },
+     {
+      "stage": "walk to 64,-40",
+      "position": [
+       63.76527404785156,
+       1.9577200412750244,
+       -40.14659118652344
+      ],
+      "grounded": true,
+      "lowest": 1.9555385112762451,
+      "highest": 1.9791325330734253
+     },
+     {
+      "stage": "walk to 64.57306590257879,-37.93696275071633",
+      "position": [
+       64.4559326171875,
+       1.962006688117981,
+       -38.09832763671875
+      ],
+      "grounded": true,
+      "lowest": 1.9569172859191895,
+      "highest": 1.962006688117981
+     },
+     {
+      "stage": "walk to 66.88550888569064,-38.57930802380296",
+      "position": [
+       66.84912872314453,
+       1.9552325010299683,
+       -38.50362014770508
+      ],
+      "grounded": true,
+      "lowest": 1.9551918506622314,
+      "highest": 1.962006688117981
+     },
+     {
+      "stage": "evalforge entrance",
+      "position": [
+       69.60829162597656,
+       1.9525749683380127,
+       -39.58120346069336
+      ],
+      "grounded": true,
+      "lowest": 1.9525749683380127,
+      "highest": 1.9625627994537354
+     },
+     {
+      "stage": "evalforge interior",
+      "position": [
+       70.98543548583984,
+       1.960733413696289,
+       -39.647483825683594
+      ],
+      "grounded": true,
+      "lowest": 1.9521347284317017,
+      "highest": 1.9612780809402466
+     },
+     {
+      "stage": "evalforge exit",
+      "position": [
+       69.91648864746094,
+       1.9557968378067017,
+       -39.216827392578125
+      ],
+      "grounded": true,
+      "lowest": 1.9557968378067017,
+      "highest": 1.961588978767395
+     },
+     {
+      "stage": "walk to 66.88550888569064,-38.57930802380296",
+      "position": [
+       66.9075698852539,
+       1.9589183330535889,
+       -38.64008331298828
+      ],
+      "grounded": true,
+      "lowest": 1.9557968378067017,
+      "highest": 1.9624829292297363
+     },
+     {
+      "stage": "walk to 64.57306590257879,-37.93696275071633",
+      "position": [
+       64.9830093383789,
+       1.9583979845046997,
+       -38.143714904785156
+      ],
+      "grounded": true,
+      "lowest": 1.9547449350357056,
+      "highest": 1.9589183330535889
+     },
+     {
+      "stage": "walk to 68.02578796561605,-25.507163323782237",
+      "position": [
+       67.85726165771484,
+       1.9597663879394531,
+       -25.991756439208984
+      ],
+      "grounded": true,
+      "lowest": 1.9541780948638916,
+      "highest": 1.9622306823730469
+     },
+     {
+      "stage": "walk to 70.3382309487279,-26.149508596868863",
+      "position": [
+       70.22985076904297,
+       1.957073450088501,
+       -26.09619903564453
+      ],
+      "grounded": true,
+      "lowest": 1.9556550979614258,
+      "highest": 1.9597663879394531
+     },
+     {
+      "stage": "djc entrance",
+      "position": [
+       74.56641387939453,
+       1.9613969326019287,
+       -27.495664596557617
+      ],
+      "grounded": true,
+      "lowest": 1.955377221107483,
+      "highest": 1.9623123407363892
+     },
+     {
+      "stage": "djc interior",
+      "position": [
+       75.84168243408203,
+       1.9600517749786377,
+       -27.603233337402344
+      ],
+      "grounded": true,
+      "lowest": 1.956079363822937,
+      "highest": 1.9613969326019287
+     },
+     {
+      "stage": "djc exit",
+      "position": [
+       74.7266845703125,
+       1.9585580825805664,
+       -27.4779109954834
+      ],
+      "grounded": true,
+      "lowest": 1.9539715051651,
+      "highest": 1.96188485622406
+     },
+     {
+      "stage": "walk to 70.3382309487279,-26.149508596868863",
+      "position": [
+       70.59573364257812,
+       1.9593790769577026,
+       -26.088504791259766
+      ],
+      "grounded": true,
+      "lowest": 1.9562588930130005,
+      "highest": 1.9621907472610474
+     },
+     {
+      "stage": "walk to 68.02578796561605,-25.507163323782237",
+      "position": [
+       68.19522094726562,
+       1.9569984674453735,
+       -25.4613094329834
+      ],
+      "grounded": true,
+      "lowest": 1.9566848278045654,
+      "highest": 1.9593790769577026
+     },
+     {
+      "stage": "walk to 69,-22",
+      "position": [
+       68.87562561035156,
+       1.9618258476257324,
+       -22.2423095703125
+      ],
+      "grounded": true,
+      "lowest": 1.9548860788345337,
+      "highest": 1.962838053703308
+     },
+     {
+      "stage": "walk to 67.74619289340102,-20.553299492385783",
+      "position": [
+       67.95533752441406,
+       1.9590703248977661,
+       -20.69135856628418
+      ],
+      "grounded": true,
+      "lowest": 1.958996295928955,
+      "highest": 1.962454080581665
+     },
+     {
+      "stage": "walk to 69.55984669209657,-18.981466200182968",
+      "position": [
+       69.44588470458984,
+       1.958642840385437,
+       -19.08041763305664
+      ],
+      "grounded": true,
+      "lowest": 1.9569456577301025,
+      "highest": 1.9608063697814941
+     },
+     {
+      "stage": "hepai entrance",
+      "position": [
+       71.02831268310547,
+       1.9591567516326904,
+       -17.473066329956055
+      ],
+      "grounded": true,
+      "lowest": 1.958275556564331,
+      "highest": 1.963606357574463
+     },
+     {
+      "stage": "hepai interior",
+      "position": [
+       72.05896759033203,
+       1.9591128826141357,
+       -16.802845001220703
+      ],
+      "grounded": true,
+      "lowest": 1.9591128826141357,
+      "highest": 1.960985779762268
+     },
+     {
+      "stage": "hepai exit",
+      "position": [
+       71.14200592041016,
+       1.9544179439544678,
+       -17.698894500732422
+      ],
+      "grounded": true,
+      "lowest": 1.9544179439544678,
+      "highest": 1.9614492654800415
+     },
+     {
+      "stage": "walk to 69.55984669209657,-18.981466200182968",
+      "position": [
+       69.35106658935547,
+       1.9569523334503174,
+       -19.117782592773438
+      ],
+      "grounded": true,
+      "lowest": 1.9544179439544678,
+      "highest": 1.9637161493301392
+     },
+     {
+      "stage": "walk to 67.74619289340102,-20.553299492385783",
+      "position": [
+       67.9228744506836,
+       1.9598807096481323,
+       -20.585556030273438
+      ],
+      "grounded": true,
+      "lowest": 1.9569523334503174,
+      "highest": 1.9598807096481323
+     },
+     {
+      "stage": "walk to 64.57868020304568,-16.898477157360404",
+      "position": [
+       64.79609680175781,
+       1.9570754766464233,
+       -17.131864547729492
+      ],
+      "grounded": true,
+      "lowest": 1.955101728439331,
+      "highest": 1.9614408016204834
+     },
+     {
+      "stage": "walk to 62.76502640435012,-18.470310449563225",
+      "position": [
+       62.714149475097656,
+       1.956283688545227,
+       -18.467668533325195
+      ],
+      "grounded": true,
+      "lowest": 1.956283688545227,
+      "highest": 1.9597803354263306
+     },
+     {
+      "stage": "accompany entrance",
+      "position": [
+       62.714149475097656,
+       1.956283688545227,
+       -18.467668533325195
+      ],
+      "grounded": true,
+      "lowest": 1.956283688545227,
+      "highest": 1.956283688545227
+     },
+     {
+      "stage": "accompany interior",
+      "position": [
+       61.65989303588867,
+       1.9580529928207397,
+       -19.180511474609375
+      ],
+      "grounded": true,
+      "lowest": 1.9558916091918945,
+      "highest": 1.9611784219741821
+     },
+     {
+      "stage": "accompany exit",
+      "position": [
+       62.82632827758789,
+       1.9563453197479248,
+       -18.3795166015625
+      ],
+      "grounded": true,
+      "lowest": 1.9563453197479248,
+      "highest": 1.9594181776046753
+     },
+     {
+      "stage": "walk to 62.76502640435012,-18.470310449563225",
+      "position": [
+       62.82632827758789,
+       1.9563453197479248,
+       -18.3795166015625
+      ],
+      "grounded": true,
+      "lowest": 1.9563453197479248,
+      "highest": 1.9563453197479248
+     },
+     {
+      "stage": "walk to 64.57868020304568,-16.898477157360404",
+      "position": [
+       64.52619934082031,
+       1.9540684223175049,
+       -17.115081787109375
+      ],
+      "grounded": true,
+      "lowest": 1.9540684223175049,
+      "highest": 1.9563453197479248
+     },
+     {
+      "stage": "terminal deck approach",
+      "position": [
+       56.73149871826172,
+       1.9626227617263794,
+       -7.83519983291626
+      ],
+      "grounded": true,
+      "lowest": 1.9540684223175049,
+      "highest": 1.9640231132507324
+     },
+     {
+      "stage": "terminal spur approach",
+      "position": [
+       54.8892822265625,
+       1.9595507383346558,
+       -9.129633903503418
+      ],
+      "grounded": true,
+      "lowest": 1.9583874940872192,
+      "highest": 1.9596221446990967
+     },
+     {
+      "stage": "interactive-learning entrance",
+      "position": [
+       52.0319938659668,
+       1.9561649560928345,
+       -10.45744800567627
+      ],
+      "grounded": true,
+      "lowest": 1.9552342891693115,
+      "highest": 1.962700366973877
+     },
+     {
+      "stage": "interactive-learning interior",
+      "position": [
+       50.95071029663086,
+       1.9626411199569702,
+       -11.523052215576172
+      ],
+      "grounded": true,
+      "lowest": 1.9561649560928345,
+      "highest": 1.9626411199569702
+     },
+     {
+      "stage": "interactive-learning exit",
+      "position": [
+       52.02754211425781,
+       1.9563955068588257,
+       -10.374981880187988
+      ],
+      "grounded": true,
+      "lowest": 1.9563955068588257,
+      "highest": 1.9626411199569702
+     },
+     {
+      "stage": "terminal spur exit",
+      "position": [
+       54.60893249511719,
+       1.9578218460083008,
+       -9.24034595489502
+      ],
+      "grounded": true,
+      "lowest": 1.9552814960479736,
+      "highest": 1.9620901346206665
+     },
+     {
+      "stage": "terminal deck return",
+      "position": [
+       56.47930145263672,
+       1.9591493606567383,
+       -7.817080974578857
+      ],
+      "grounded": true,
+      "lowest": 1.9543384313583374,
+      "highest": 1.9594552516937256
+     }
+    ],
+    "plaza": {
+     "hit": true,
+     "toi": 0.2661703824996948,
+     "other": {
+      "colliderHandle": 1.64e-321,
+      "name": "park-walk-structure-plaza/treads",
+      "assetId": null,
+      "kind": "surface"
+     },
+     "normal": null
+    },
+    "rooms": [
+     {
+      "id": "evalforge",
+      "entered": [
+       70.98543548583984,
+       1.960733413696289,
+       -39.647483825683594
+      ],
+      "before": {
+       "hit": true,
+       "toi": 0.26769039034843445,
+       "other": {
+        "colliderHandle": 6.917706289525e-312,
+        "name": "park-hut-structure-evalforge/treads",
+        "assetId": "park-hut-structure-evalforge",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "floor": {
+       "hit": true,
+       "toi": 0.2743852138519287,
+       "other": {
+        "colliderHandle": 6.917706289525e-312,
+        "name": "park-hut-structure-evalforge/treads",
+        "assetId": "park-hut-structure-evalforge",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "paused": [
+       70.98543548583984,
+       1.960733413696289,
+       -39.647483825683594
+      ]
+     },
+     {
+      "id": "djc",
+      "entered": [
+       75.84168243408203,
+       1.9600517749786377,
+       -27.603233337402344
+      ],
+      "before": {
+       "hit": true,
+       "toi": 0.2760622799396515,
+       "other": {
+        "colliderHandle": 6.917706289535e-312,
+        "name": "park-hut-structure-djc/edges",
+        "assetId": "park-hut-structure-djc",
+        "kind": "solid"
+       },
+       "normal": null
+      },
+      "floor": {
+       "hit": true,
+       "toi": 0.27328622341156006,
+       "other": {
+        "colliderHandle": 6.91770628954e-312,
+        "name": "park-hut-structure-djc/treads",
+        "assetId": "park-hut-structure-djc",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "paused": null
+     },
+     {
+      "id": "hepai",
+      "entered": [
+       72.05896759033203,
+       1.9591128826141357,
+       -16.802845001220703
+      ],
+      "before": {
+       "hit": true,
+       "toi": 0.2766226828098297,
+       "other": {
+        "colliderHandle": 6.917706289555e-312,
+        "name": "park-hut-structure-hepai/treads",
+        "assetId": "park-hut-structure-hepai",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "floor": {
+       "hit": true,
+       "toi": 0.2703934907913208,
+       "other": {
+        "colliderHandle": 6.917706289555e-312,
+        "name": "park-hut-structure-hepai/treads",
+        "assetId": "park-hut-structure-hepai",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "paused": null
+     },
+     {
+      "id": "accompany",
+      "entered": [
+       61.65989303588867,
+       1.9580529928207397,
+       -19.180511474609375
+      ],
+      "before": {
+       "hit": true,
+       "toi": 0.266086220741272,
+       "other": {
+        "colliderHandle": 1.685e-321,
+        "name": "park-walk-structure-walk-2/treads",
+        "assetId": null,
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "floor": {
+       "hit": true,
+       "toi": 0.2656918168067932,
+       "other": {
+        "colliderHandle": 6.91770628957e-312,
+        "name": "park-hut-structure-accompany/treads",
+        "assetId": "park-hut-structure-accompany",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "paused": null
+     },
+     {
+      "id": "interactive-learning",
+      "entered": [
+       50.95071029663086,
+       1.9626411199569702,
+       -11.523052215576172
+      ],
+      "before": {
+       "hit": true,
+       "toi": 0.27342915534973145,
+       "other": {
+        "colliderHandle": 6.917706289584e-312,
+        "name": "park-hut-structure-interactive-learning/treads",
+        "assetId": "park-hut-structure-interactive-learning",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "floor": {
+       "hit": true,
+       "toi": 0.2745459973812103,
+       "other": {
+        "colliderHandle": 6.917706289584e-312,
+        "name": "park-hut-structure-interactive-learning/treads",
+        "assetId": "park-hut-structure-interactive-learning",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "paused": null
+     }
+    ],
+    "hutRequests": 0,
+    "relocations": [],
+    "errors": []
+   },
+   {
+    "route": "park-fallback",
+    "ok": true,
+    "hash": "f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1",
+    "spawn": {
+     "p": [
+      14.000181198120117,
+      1.968824863433838,
+      -2.500112771987915
+     ],
+     "grounded": true,
+     "step": 116,
+     "yaw": 0.9272952180016123
+    },
+    "marks": [
+     {
+      "stage": "walk to 18,-3",
+      "position": [
+       18.271591186523438,
+       1.9603277444839478,
+       -2.9085662364959717
+      ],
+      "grounded": true,
+      "lowest": 1.9568214416503906,
+      "highest": 1.968824863433838
+     },
+     {
+      "stage": "walk to 21,-11",
+      "position": [
+       20.63187026977539,
+       1.9578628540039062,
+       -10.735462188720703
+      ],
+      "grounded": true,
+      "lowest": 1.957754135131836,
+      "highest": 1.9623504877090454
+     },
+     {
+      "stage": "walk to 21,-26",
+      "position": [
+       21.06412696838379,
+       1.9595547914505005,
+       -25.45819664001465
+      ],
+      "grounded": true,
+      "lowest": 1.9576753377914429,
+      "highest": 1.9624388217926025
+     },
+     {
+      "stage": "walk to 21,-41",
+      "position": [
+       20.869678497314453,
+       1.9603137969970703,
+       -40.6265754699707
+      ],
+      "grounded": true,
+      "lowest": 1.957672119140625,
+      "highest": 1.9626790285110474
+     },
+     {
+      "stage": "walk to 26,-42",
+      "position": [
+       25.76609992980957,
+       1.9603426456451416,
+       -41.79559326171875
+      ],
+      "grounded": true,
+      "lowest": 1.9568421840667725,
+      "highest": 1.9603426456451416
+     },
+     {
+      "stage": "walk to 40,-43.65",
+      "position": [
+       39.751182556152344,
+       1.95991849899292,
+       -43.748680114746094
+      ],
+      "grounded": true,
+      "lowest": 1.9588241577148438,
+      "highest": 1.9624414443969727
+     },
+     {
+      "stage": "walk to 42.7,-42.1",
+      "position": [
+       42.49333572387695,
+       1.9588266611099243,
+       -42.20457458496094
+      ],
+      "grounded": true,
+      "lowest": 1.9588266611099243,
+      "highest": 1.95991849899292
+     },
+     {
+      "stage": "walk to 47.3,-42.1",
+      "position": [
+       46.76444625854492,
+       1.9700828790664673,
+       -42.01850509643555
+      ],
+      "grounded": true,
+      "lowest": 1.9588247537612915,
+      "highest": 1.9780020713806152
+     },
+     {
+      "stage": "walk to 50,-44.5",
+      "position": [
+       49.87409973144531,
+       1.9753280878067017,
+       -44.11418151855469
+      ],
+      "grounded": true,
+      "lowest": 1.9700828790664673,
+      "highest": 1.9776705503463745
+     },
+     {
+      "stage": "walk to 49,-46",
+      "position": [
+       49.44121551513672,
+       1.974649429321289,
+       -45.709075927734375
+      ],
+      "grounded": true,
+      "lowest": 1.974649429321289,
+      "highest": 1.9757858514785767
+     },
+     {
+      "stage": "walk to 64,-40",
+      "position": [
+       63.56269073486328,
+       1.9626168012619019,
+       -40.265689849853516
+      ],
+      "grounded": true,
+      "lowest": 1.955747365951538,
+      "highest": 1.9776949882507324
+     },
+     {
+      "stage": "walk to 64.57306590257879,-37.93696275071633",
+      "position": [
+       64.38493347167969,
+       1.9590072631835938,
+       -38.406803131103516
+      ],
+      "grounded": true,
+      "lowest": 1.9542925357818604,
+      "highest": 1.9626168012619019
+     },
+     {
+      "stage": "walk to 66.88550888569064,-38.57930802380296",
+      "position": [
+       66.79655456542969,
+       1.958338975906372,
+       -38.74019241333008
+      ],
+      "grounded": true,
+      "lowest": 1.9550098180770874,
+      "highest": 1.9594497680664062
+     },
+     {
+      "stage": "evalforge entrance",
+      "position": [
+       69.61078643798828,
+       1.9629034996032715,
+       -39.174102783203125
+      ],
+      "grounded": true,
+      "lowest": 1.9566445350646973,
+      "highest": 1.9629034996032715
+     },
+     {
+      "stage": "evalforge interior",
+      "position": [
+       70.99517059326172,
+       1.9604873657226562,
+       -39.8427734375
+      ],
+      "grounded": true,
+      "lowest": 1.9559228420257568,
+      "highest": 1.9629034996032715
+     },
+     {
+      "stage": "evalforge exit",
+      "position": [
+       69.78559112548828,
+       1.9559153318405151,
+       -39.268978118896484
+      ],
+      "grounded": true,
+      "lowest": 1.954105019569397,
+      "highest": 1.9612294435501099
+     },
+     {
+      "stage": "walk to 66.88550888569064,-38.57930802380296",
+      "position": [
+       67.1064682006836,
+       1.9586039781570435,
+       -38.72626495361328
+      ],
+      "grounded": true,
+      "lowest": 1.9559153318405151,
+      "highest": 1.9622682332992554
+     },
+     {
+      "stage": "walk to 64.57306590257879,-37.93696275071633",
+      "position": [
+       64.95451354980469,
+       1.9568415880203247,
+       -38.06201171875
+      ],
+      "grounded": true,
+      "lowest": 1.9550855159759521,
+      "highest": 1.9586039781570435
+     }
+    ],
+    "plaza": {
+     "hit": true,
+     "toi": 0.26632627844810486,
+     "other": {
+      "colliderHandle": 1.7e-321,
+      "name": "park-walk-structure-plaza/treads",
+      "assetId": null,
+      "kind": "surface"
+     },
+     "normal": null
+    },
+    "rooms": [
+     {
+      "id": "evalforge",
+      "entered": [
+       70.99517059326172,
+       1.9604873657226562,
+       -39.8427734375
+      ],
+      "before": {
+       "hit": true,
+       "toi": 0.27547308802604675,
+       "other": {
+        "colliderHandle": 8.530423093875e-312,
+        "name": "park-hut-structure-evalforge/treads",
+        "assetId": "park-hut-structure-evalforge",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "floor": {
+       "hit": true,
+       "toi": 0.27386990189552307,
+       "other": {
+        "colliderHandle": 8.530423093875e-312,
+        "name": "park-hut-structure-evalforge/treads",
+        "assetId": "park-hut-structure-evalforge",
+        "kind": "surface"
+       },
+       "normal": null
+      },
+      "paused": [
+       70.99517059326172,
+       1.9604873657226562,
+       -39.8427734375
+      ]
+     }
+    ],
+    "fallback": {
+     "booth": false,
+     "park": false
+    },
+    "hutRequests": 1,
+    "relocations": [],
+    "errors": []
+   },
+   {
+    "route": "alpha-lodge",
+    "ok": true,
+    "hash": "f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1",
+    "spawn": {
+     "p": [
+      190.2264404296875,
+      12.730161666870117,
+      134
+     ],
+     "grounded": true,
+     "step": 34,
+     "yaw": 0.9272952180016123
+    },
+    "marks": [
+     {
+      "stage": "walk to 190,136",
+      "position": [
+       190.0357208251953,
+       12.292577743530273,
+       135.73788452148438
+      ],
+      "grounded": true,
+      "lowest": 12.292577743530273,
+      "highest": 12.733400344848633
+     },
+     {
+      "stage": "walk to 189.4,139",
+      "position": [
+       189.58084106445312,
+       11.242568016052246,
+       138.73883056640625
+      ],
+      "grounded": true,
+      "lowest": 11.242568016052246,
+      "highest": 12.245561599731445
+     },
+     {
+      "stage": "walk to 188.1,141.5",
+      "position": [
+       188.32716369628906,
+       10.330435752868652,
+       141.1784210205078
+      ],
+      "grounded": true,
+      "lowest": 10.330435752868652,
+      "highest": 11.222574234008789
+     },
+     {
+      "stage": "walk to 181,150",
+      "position": [
+       181.04335021972656,
+       6.838939189910889,
+       149.665283203125
+      ],
+      "grounded": true,
+      "lowest": 6.838939189910889,
+      "highest": 10.292776107788086
+     },
+     {
+      "stage": "walk to 177,146",
+      "position": [
+       177.52053833007812,
+       5.090866565704346,
+       146.1858367919922
+      ],
+      "grounded": true,
+      "lowest": 5.090866565704346,
+      "highest": 6.838939189910889
+     },
+     {
+      "stage": "walk to 177,155.5",
+      "position": [
+       176.93519592285156,
+       4.619619369506836,
+       155.0506134033203
+      ],
+      "grounded": true,
+      "lowest": 4.618886470794678,
+      "highest": 5.090866565704346
+     },
+     {
+      "stage": "walk to 171,155.5",
+      "position": [
+       171.4676513671875,
+       4.619876861572266,
+       155.39259338378906
+      ],
+      "grounded": true,
+      "lowest": 4.619043827056885,
+      "highest": 4.624029159545898
+     },
+     {
+      "stage": "lodge ramp",
+      "position": [
+       170.84523010253906,
+       4.676058769226074,
+       154.2551727294922
+      ],
+      "grounded": true,
+      "lowest": 4.4944376945495605,
+      "highest": 4.676058769226074
+     },
+     {
+      "stage": "lodge interior",
+      "position": [
+       171.1609649658203,
+       5.139941692352295,
+       151.52911376953125
+      ],
+      "grounded": true,
+      "lowest": 4.676058769226074,
+      "highest": 5.142663955688477
+     },
+     {
+      "stage": "lodge exit threshold",
+      "position": [
+       170.8135528564453,
+       4.775204658508301,
+       153.99749755859375
+      ],
+      "grounded": true,
+      "lowest": 4.775204658508301,
+      "highest": 5.1435112953186035
+     },
+     {
+      "stage": "lodge exit apron",
+      "position": [
+       170.96456909179688,
+       4.542218208312988,
+       155.44383239746094
+      ],
+      "grounded": true,
+      "lowest": 4.542218208312988,
+      "highest": 4.72145414352417
+     }
+    ],
+    "outside": {
+     "hit": true,
+     "toi": 0.26601070165634155,
+     "other": {
+      "colliderHandle": 6.747946626613e-312,
+      "name": "alpha-ground-floor",
+      "assetId": null,
+      "kind": "surface"
+     },
+     "normal": null
+    },
+    "threshold": {
+     "hit": true,
+     "toi": 0.26623448729515076,
+     "other": {
+      "colliderHandle": 6.747946627794e-312,
+      "name": "alpha-lodge-access-ramp/floor",
+      "assetId": null,
+      "kind": "surface"
+     },
+     "normal": null
+    },
+    "inside": {
+     "hit": true,
+     "toi": 0.2653435170650482,
+     "other": {
+      "colliderHandle": 6.747946626682e-312,
+      "name": "alpha-dock-lodge/floorboards/lodgeFloor/11",
+      "assetId": "alpha-dock-lodge",
+      "kind": "surface"
+     },
+     "normal": null
+    },
+    "paused": [
+     171.0100860595703,
+     5.139608860015869,
+     151.43310546875
+    ],
+    "relocations": [],
+    "errors": []
+   }
+  ]
+ },
+ "plazaVan": {
+  "rawSha256": "92cbb00df961ac7cac0653b09979b2e46fb5a7461076c701b4cd965f7aa3184e",
+  "rows": [
+   {
+    "route": "plaza-van",
+    "ok": true,
+    "hash": "f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1",
+    "spawn": {
+     "p": [
+      14.000181198120117,
+      1.968824863433838,
+      -2.500109910964966
+     ],
+     "grounded": true,
+     "step": 112,
+     "yaw": 0.9272952180016123
+    },
+    "marks": [
+     {
+      "stage": "walk to 14,-4.8",
+      "position": [
+       14.016036987304688,
+       1.9688245058059692,
+       -5.003617763519287
+      ],
+      "grounded": true,
+      "lowest": 1.9688245058059692,
+      "highest": 1.968824863433838
+     },
+     {
+      "stage": "walk to 18,-4.8",
+      "position": [
+       17.92938804626465,
+       1.95797860622406,
+       -4.890617370605469
+      ],
+      "grounded": true,
+      "lowest": 1.9192544221878052,
+      "highest": 1.9741177558898926
+     },
+     {
+      "stage": "walk to 21,-11",
+      "position": [
+       20.677675247192383,
+       1.9578156471252441,
+       -10.759761810302734
+      ],
+      "grounded": true,
+      "lowest": 1.9569079875946045,
+      "highest": 1.9624546766281128
+     },
+     {
+      "stage": "walk to 21,-26",
+      "position": [
+       20.93053436279297,
+       1.9608629941940308,
+       -25.99155044555664
+      ],
+      "grounded": true,
+      "lowest": 1.9576690196990967,
+      "highest": 1.9625110626220703
+     },
+     {
+      "stage": "walk to 21,-41",
+      "position": [
+       20.933713912963867,
+       1.9606201648712158,
+       -40.98493194580078
+      ],
+      "grounded": true,
+      "lowest": 1.9577003717422485,
+      "highest": 1.9626100063323975
+     },
+     {
+      "stage": "walk to 26,-42",
+      "position": [
+       25.4676513671875,
+       1.9605622291564941,
+       -42.11357879638672
+      ],
+      "grounded": true,
+      "lowest": 1.9568299055099487,
+      "highest": 1.9618241786956787
+     },
+     {
+      "stage": "walk to 40,-43.65",
+      "position": [
+       39.662479400634766,
+       1.9588241577148438,
+       -43.56401824951172
+      ],
+      "grounded": true,
+      "lowest": 1.9578219652175903,
+      "highest": 1.960882306098938
+     },
+     {
+      "stage": "walk to 42.7,-42.1",
+      "position": [
+       42.37078094482422,
+       1.9588390588760376,
+       -42.241432189941406
+      ],
+      "grounded": true,
+      "lowest": 1.9588241577148438,
+      "highest": 1.9599605798721313
+     },
+     {
+      "stage": "walk to 47.3,-42.1",
+      "position": [
+       46.83671569824219,
+       1.9699763059616089,
+       -42.02356719970703
+      ],
+      "grounded": true,
+      "lowest": 1.9588271379470825,
+      "highest": 1.9778035879135132
+     }
+    ],
+    "board": {
+     "id": "van",
+     "position": [
+      45.9982795715332,
+      2.4675869941711426,
+      -44.99724197387695
+     ],
+     "velocity": [
+      -1.1622222473306465e-06,
+      -0.06119050458073616,
+      1.64534501578828e-08
+     ],
+     "yaw": -5.652094156108639e-06,
+     "entering": false,
+     "mass": 2100,
+     "com": [
+      -0.07919997721910477,
+      -0.3244398534297943,
+      0
+     ],
+     "inertia": [
+      3808.345458984375,
+      3423.21826171875,
+      1211.8277587890625
+     ],
+     "inertiaFrame": [
+      -0.5098773241043091,
+      -0.4899235963821411,
+      0.48992258310317993,
+      0.5098783373832703
+     ],
+     "wheelContacts": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "upsideDownSeconds": 0,
+     "waterSeconds": 0,
+     "steering": 0,
+     "steerInput": 0,
+     "throttleInput": 0,
+     "driving": null
+    },
+    "reversed": {
+     "id": "van",
+     "position": [
+      41.129207611083984,
+      2.453878164291382,
+      -45.00163269042969
+     ],
+     "velocity": [
+      -0.15466396510601044,
+      -0.05462782457470894,
+      -0.001519217505119741
+     ],
+     "yaw": 0.00011473979890071862,
+     "entering": false,
+     "mass": 2100,
+     "com": [
+      -0.07919997721910477,
+      -0.3244398534297943,
+      0
+     ],
+     "inertia": [
+      3808.345458984375,
+      3423.21826171875,
+      1211.8277587890625
+     ],
+     "inertiaFrame": [
+      -0.5098773241043091,
+      -0.4899235963821411,
+      0.48992258310317993,
+      0.5098783373832703
+     ],
+     "wheelContacts": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "upsideDownSeconds": 0,
+     "waterSeconds": 0,
+     "steering": 0,
+     "steerInput": 0,
+     "throttleInput": 0,
+     "driving": null
+    },
+    "returned": {
+     "id": "van",
+     "position": [
+      45.69569396972656,
+      2.4635345935821533,
+      -45.00828552246094
+     ],
+     "velocity": [
+      -0.08313924074172974,
+      -0.06193370372056961,
+      -0.016556313261389732
+     ],
+     "yaw": 0.001528263337640626,
+     "entering": false,
+     "mass": 2100,
+     "com": [
+      -0.07919997721910477,
+      -0.3244398534297943,
+      0
+     ],
+     "inertia": [
+      3808.345458984375,
+      3423.21826171875,
+      1211.8277587890625
+     ],
+     "inertiaFrame": [
+      -0.5098773241043091,
+      -0.4899235963821411,
+      0.48992258310317993,
+      0.5098783373832703
+     ],
+     "wheelContacts": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "upsideDownSeconds": 0,
+     "waterSeconds": 0,
+     "steering": 0,
+     "steerInput": 0,
+     "throttleInput": 0,
+     "driving": null
+    },
+    "brakes": [
+     {
+      "position": [
+       44.17514419555664,
+       2.4614977836608887,
+       -45.001163482666016
+      ],
+      "velocity": [
+       -0.1834641695022583,
+       -0.05984381213784218,
+       -0.0006774772191420197
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        45.71640021670951,
+        1.6544743587846393,
+        -43.94416092011065
+       ],
+       [
+        45.71716895235549,
+        1.65186764034406,
+        -46.05615964456932
+       ],
+       [
+        42.65629450269371,
+        1.6401872468869032,
+        -43.94523757990883
+       ],
+       [
+        42.65702650685941,
+        1.6401654993269927,
+        -46.057237777966805
+       ]
+      ]
+     },
+     {
+      "position": [
+       43.40013122558594,
+       2.4607200622558594,
+       -45.000694274902344
+      ],
+      "velocity": [
+       -0.18705685436725616,
+       -0.060170978307724,
+       0.000699786760378629
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        44.940892176278595,
+        1.6503535975290937,
+        -43.94456064308291
+       ],
+       [
+        44.941615238450865,
+        1.6528733351040685,
+        -46.05655951761437
+       ],
+       [
+        41.880749707345466,
+        1.6400998223862704,
+        -43.94564209605577
+       ],
+       [
+        41.88150659992217,
+        1.6401270043904197,
+        -46.05764221507478
+       ]
+      ]
+     },
+     {
+      "position": [
+       42.538631439208984,
+       2.4612181186676025,
+       -45.00021743774414
+      ],
+      "velocity": [
+       -0.17560717463493347,
+       -0.06001335754990578,
+       1.1453064871602692e-05
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        44.079508347447586,
+        1.6506726079352223,
+        -43.94454699233008
+       ],
+       [
+        44.080226096914586,
+        1.6546669482963314,
+        -46.056543797329766
+       ],
+       [
+        41.019365570549695,
+        1.640107239984689,
+        -43.9456325944075
+       ],
+       [
+        41.020138079473796,
+        1.640109877528139,
+        -46.057633670327746
+       ]
+      ]
+     },
+     {
+      "position": [
+       41.690956115722656,
+       2.4549102783203125,
+       -45.00171661376953
+      ],
+      "velocity": [
+       -0.17135852575302124,
+       -0.060368020087480545,
+       -0.00021834320796187967
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        43.22821123658258,
+        1.6398266580471932,
+        -43.945202309390645
+       ],
+       [
+        43.22895954224296,
+        1.6398210872470762,
+        -46.05720217844641
+       ],
+       [
+        40.168076731627586,
+        1.640145233634268,
+        -43.94628542280997
+       ],
+       [
+        40.16882503728797,
+        1.6401396628341507,
+        -46.05828529186574
+       ]
+      ]
+     },
+     {
+      "position": [
+       41.129207611083984,
+       2.453878164291382,
+       -45.00163269042969
+      ],
+      "velocity": [
+       -0.15466396510601044,
+       -0.05462782457470894,
+       -0.001519217505119741
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        42.66943107882809,
+        1.6398711740084262,
+        -43.94610681628158
+       ],
+       [
+        42.66918941730642,
+        1.6398166512095758,
+        -46.05810695665505
+       ],
+       [
+        39.60919551710172,
+        1.6403012870682727,
+        -43.94574212191427
+       ],
+       [
+        39.60895385777378,
+        1.6402465854689563,
+        -46.057742262351866
+       ]
+      ]
+     },
+     {
+      "position": [
+       41.5073127746582,
+       2.438798189163208,
+       -44.9847412109375
+      ],
+      "velocity": [
+       0.15115870535373688,
+       -0.0787564069032669,
+       -0.020067181438207626
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        43.03200153665756,
+        1.640455342486319,
+        -43.94227762865678
+       ],
+       [
+        43.028800923072126,
+        1.6396633719080023,
+        -46.054507066948666
+       ],
+       [
+        39.97188143730548,
+        1.6396345220165638,
+        -43.9380472602149
+       ],
+       [
+        39.96868082475985,
+        1.6388426706305836,
+        -46.05027669678621
+       ]
+      ]
+     },
+     {
+      "position": [
+       42.22220230102539,
+       2.460998058319092,
+       -45.00352478027344
+      ],
+      "velocity": [
+       0.1660580337047577,
+       -0.059397030621767044,
+       9.501350723439828e-05
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        43.75789836931706,
+        1.6511744337428016,
+        -43.95059658411703
+       ],
+       [
+        43.75479016066724,
+        1.655178180584424,
+        -46.06259132486332
+       ],
+       [
+        40.697920102932784,
+        1.6397473925365071,
+        -43.946118602352634
+       ],
+       [
+        40.69483227074833,
+        1.6397594107984814,
+        -46.05811741651364
+       ]
+      ]
+     },
+     {
+      "position": [
+       42.98478317260742,
+       2.4577887058258057,
+       -45.00614929199219
+      ],
+      "velocity": [
+       -0.12117958068847656,
+       -0.08490537852048874,
+       0.012155428528785706
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        44.509432505840145,
+        1.6363946895009296,
+        -43.95191425978977
+       ],
+       [
+        44.50648783759424,
+        1.6367734502086981,
+        -46.06391258809339
+       ],
+       [
+        41.44936102761268,
+        1.6403098531073659,
+        -43.947633423942705
+       ],
+       [
+        41.44641636086376,
+        1.6406887926227838,
+        -46.05963175232846
+       ]
+      ]
+     },
+     {
+      "position": [
+       42.9686164855957,
+       2.469050884246826,
+       -45.00740051269531
+      ],
+      "velocity": [
+       -0.033897530287504196,
+       0.04764856398105621,
+       -4.488124613999389e-05
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        44.51110513505068,
+        1.6525082273342413,
+        -43.95130082263506
+       ],
+       [
+        44.508406046845714,
+        1.6512084647702538,
+        -46.06330238475391
+       ],
+       [
+        41.45100267429473,
+        1.6397096795449835,
+        -43.94743524789852
+       ],
+       [
+        41.44828577263047,
+        1.6397330757696893,
+        -46.059440074082
+       ]
+      ]
+     },
+     {
+      "position": [
+       44.124725341796875,
+       2.4616775512695312,
+       -45.007110595703125
+      ],
+      "velocity": [
+       0.1718735545873642,
+       -0.06183408200740814,
+       -0.001111079822294414
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        45.66108970143207,
+        1.6549305722439436,
+        -43.95291460192616
+       ],
+       [
+        45.65805499944152,
+        1.652314911350074,
+        -46.06491136693603
+       ],
+       [
+        42.60112866839221,
+        1.6398057673334359,
+        -43.948496760180575
+       ],
+       [
+        42.59807854153478,
+        1.6397752923594058,
+        -46.06049481373752
+       ]
+      ]
+     },
+     {
+      "position": [
+       45.69569396972656,
+       2.4635345935821533,
+       -45.00828552246094
+      ],
+      "velocity": [
+       -0.08313924074172974,
+       -0.06193370372056961,
+       -0.016556313261389732
+      ],
+      "wheelContacts": [
+       true,
+       true,
+       true,
+       true
+      ],
+      "wheels": [
+       [
+        47.22075980231884,
+        1.6489165294799268,
+        -43.95470234029285
+       ],
+       [
+        47.21752890918512,
+        1.6485210748318733,
+        -46.066699924597586
+       ],
+       [
+        44.16069331743624,
+        1.6526537204864162,
+        -43.95002804023085
+       ],
+       [
+        44.15749519901189,
+        1.6563057653421485,
+        -46.06202523389936
+       ]
+      ]
+     }
+    ],
+    "exit": {
+     "p": [
+      47.029239654541016,
+      1.97208833694458,
+      -42.66032028198242
+     ],
+     "grounded": true,
+     "step": 2942,
+     "yaw": 3.1390704778507255
+    },
+    "support": {
+     "hit": true,
+     "toi": 0.26569077372550964,
+     "other": {
+      "colliderHandle": 1.64e-321,
+      "name": "park-walk-structure-plaza/treads",
+      "assetId": null,
+      "kind": "surface"
+     },
+     "normal": null
+    },
+    "relocations": [],
+    "errors": []
+   }
+  ]
+ },
+ "highlandSupport": {
+  "rawSha256": "ec7c731a0826189daad335e8aea5b487f54e1bfd288ec15d4e50290489350740",
+  "rows": [
+   {
+    "route": "alpha-cave-multiple",
+    "ok": true,
+    "region": "alpha-island",
+    "browser": "157.0.8103.79",
+    "ordinary": {
+     "point": [
+      218.98434448242188,
+      156.0151824951172
+     ],
+     "sha256": "f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1"
+    },
+    "qa": {
+     "point": [
+      218.98489379882812,
+      156.01463317871094
+     ],
+     "sha256": "f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1"
+    },
+    "initial": {
+     "position": [
+      218.98416137695312,
+      24.509071350097656,
+      156.01536560058594
+     ],
+     "velocity": [
+      -0.0010596412466838956,
+      -0.00021312128228601068,
+      0.0010423156199976802
+     ],
+     "grounded": true,
+     "wheelContacts": null,
+     "step": 35,
+     "keys": [],
+     "card": null,
+     "activeVehicle": null
+    },
+    "entered": {
+     "position": [
+      218.398193359375,
+      24.534713745117188,
+      155.2521514892578
+     ],
+     "velocity": [
+      -2.0384085178375244,
+      -0.00232436484657228,
+      -2.6798810958862305
+     ],
+     "grounded": true,
+     "wheelContacts": null,
+     "step": 71,
+     "keys": [],
+     "card": null,
+     "activeVehicle": null
+    },
+    "mounted": {
+     "scene": [
+      "alpha-cave/floor/stone",
+      "alpha-ground-floor",
+      "alpha-ground-walls"
+     ],
+     "handles": [
+      {
+       "handle": 8.297003543593e-312,
+       "name": "alpha-cave/floor/stone",
+       "shape": "trimesh"
+      },
+      {
+       "handle": 6.747946626426e-312,
+       "name": "alpha-ground-floor",
+       "shape": "trimesh"
+      },
+      {
+       "handle": 6.74794662643e-312,
+       "name": "alpha-ground-walls",
+       "shape": "trimesh"
+      }
+     ]
+    },
+    "held": {
+     "position": [
+      218.25137329101562,
+      24.534297943115234,
+      155.0585479736328
+     ],
+     "velocity": [
+      0,
+      0,
+      0
+     ],
+     "grounded": false,
+     "wheelContacts": null,
+     "step": 94,
+     "keys": [
+      "KeyW"
+     ],
+     "toast": "The area ahead is preparing. Please wait.",
+     "displayedNotice": "The area ahead is preparing. Please wait.",
+     "card": null,
+     "activeVehicle": null
+    },
+    "still": {
+     "position": [
+      218.25137329101562,
+      24.534297943115234,
+      155.0585479736328
+     ],
+     "velocity": [
+      0,
+      0,
+      0
+     ],
+     "grounded": false,
+     "wheelContacts": null,
+     "step": 163,
+     "keys": [
+      "KeyW"
+     ],
+     "toast": "The area ahead is preparing. Please wait.",
+     "displayedNotice": "The area ahead is preparing. Please wait.",
+     "card": null,
+     "activeVehicle": null
+    },
+    "removed": {
+     "scene": [],
+     "handles": []
+    },
+    "activeBodies": [
+     {
+      "handle": 5.63e-322,
+      "name": "world-player-contact",
+      "regionHeld": false,
+      "enabled": true,
+      "position": [
+       218.25146484375,
+       24.534292221069336,
+       155.05897521972656
+      ],
+      "velocity": [
+       -0.014404715970158577,
+       0.002215713495388627,
+       -0.02817671187222004
+      ],
+      "colliders": [
+       1.635e-321
+      ],
+      "heldColliders": []
+     }
+    ],
+    "heldBodies": [
+     {
+      "handle": 5.63e-322,
+      "name": "world-player-contact",
+      "regionHeld": true,
+      "enabled": false,
+      "position": [
+       218.25137329101562,
+       24.534297943115234,
+       155.0585479736328
+      ],
+      "velocity": [
+       0,
+       0,
+       0
+      ],
+      "colliders": [
+       1.635e-321
+      ],
+      "heldColliders": [
+       1.635e-321
+      ]
+     }
+    ],
+    "resumed": {
+     "position": [
+      217.4543914794922,
+      24.466337203979492,
+      153.9981231689453
+     ],
+     "velocity": [
+      -2.0871217250823975,
+      0.15264299511909485,
+      -2.64490008354187
+     ],
+     "grounded": true,
+     "wheelContacts": null,
+     "step": 199,
+     "keys": [
+      "KeyW"
+     ],
+     "card": null,
+     "activeVehicle": null
+    },
+    "remounted": {
+     "scene": [
+      "alpha-cave/floor/stone",
+      "alpha-ground-floor",
+      "alpha-ground-walls"
+     ],
+     "handles": [
+      {
+       "handle": 2.0647019047e-311,
+       "name": "alpha-ground-floor",
+       "shape": "trimesh"
+      },
+      {
+       "handle": 2.0647019058335e-311,
+       "name": "alpha-cave/floor/stone",
+       "shape": "trimesh"
+      },
+      {
+       "handle": 2.0647019060005e-311,
+       "name": "alpha-ground-walls",
+       "shape": "trimesh"
+      }
+     ]
+    },
+    "resumedBodies": [
+     {
+      "handle": 5.63e-322,
+      "name": "world-player-contact",
+      "regionHeld": false,
+      "enabled": true,
+      "position": [
+       217.19851684570312,
+       24.4935245513916,
+       153.68927001953125
+      ],
+      "velocity": [
+       -2.5317888259887695,
+       0.20081081986427307,
+       -2.273068428039551
+      ],
+      "colliders": [
+       1.635e-321
+      ],
+      "heldColliders": []
+     }
+    ],
+    "errors": [],
+    "analytics": [
+     "Failed to load resource: the server responded with a status of 501 (Unsupported method ('POST'))"
+    ],
+    "placements": []
+   }
+  ]
+ },
+ "publicFerryRoundTrip": {
+  "rawSha256": "7a6a96a679934f73dd3de7a0c6e6899fdb311f430877f4cd0871119cac81d13b",
+  "rows": [
+   {
+    "url": "http://127.0.0.1:4363/world/?qa=1",
+    "walk": [
+     {
+      "target": [
+       -39,
+       37.8
+      ],
+      "begin": {
+       "position": [
+        -41.99941635131836,
+        5.619417190551758,
+        35.006927490234375
+       ],
+       "step": 269,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 270,
+        "position": [
+         -41.99941635131836,
+         5.619417190551758,
+         35.006927490234375
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 336,
+        "position": [
+         -40.194175720214844,
+         5.6199116706848145,
+         37.413246154785156
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -39.07212448120117,
+        5.619997501373291,
+        37.83794021606445
+       ],
+       "step": 358,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyS",
+        "KeyD"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -33.5,
+       37.8
+      ],
+      "begin": {
+       "position": [
+        -39.07212448120117,
+        5.619997501373291,
+        37.83794021606445
+       ],
+       "step": 358,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 358,
+        "position": [
+         -39.07212448120117,
+         5.619997501373291,
+         37.83794021606445
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 430,
+        "position": [
+         -34.9970588684082,
+         5.624632358551025,
+         38.41598892211914
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -33.700931549072266,
+        5.619832515716553,
+        37.82783126831055
+       ],
+       "step": 456,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -31.4,
+       35
+      ],
+      "begin": {
+       "position": [
+        -33.700931549072266,
+        5.619832515716553,
+        37.82783126831055
+       ],
+       "step": 456,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 456,
+        "position": [
+         -33.700931549072266,
+         5.619832515716553,
+         37.82783126831055
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 482,
+        "position": [
+         -32.504337310791016,
+         5.619944095611572,
+         36.9344482421875
+        ],
+        "keys": [
+         "KeyW",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 496,
+        "position": [
+         -32.166629791259766,
+         5.619861602783203,
+         36.26909637451172
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 509,
+        "position": [
+         -31.76946258544922,
+         5.6198039054870605,
+         35.68047332763672
+        ],
+        "keys": [
+         "KeyW",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -31.45433807373047,
+        5.61978816986084,
+        35.10029983520508
+       ],
+       "step": 521,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD",
+        "KeyW"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -28.3,
+       34
+      ],
+      "begin": {
+       "position": [
+        -31.45433807373047,
+        5.61978816986084,
+        35.10029983520508
+       ],
+       "step": 521,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 521,
+        "position": [
+         -31.45433807373047,
+         5.61978816986084,
+         35.10029983520508
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 534,
+        "position": [
+         -31.057912826538086,
+         5.62204122543335,
+         34.515174865722656
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 560,
+        "position": [
+         -29.65488624572754,
+         5.6366095542907715,
+         34.438045501708984
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -28.411043167114258,
+        5.659161567687988,
+        33.79313278198242
+       ],
+       "step": 586,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -28.1,
+       35.85
+      ],
+      "begin": {
+       "position": [
+        -28.411043167114258,
+        5.659161567687988,
+        33.79313278198242
+       ],
+       "step": 586,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 586,
+        "position": [
+         -28.411043167114258,
+         5.659161567687988,
+         33.79313278198242
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 652,
+        "position": [
+         -28.573457717895508,
+         5.658827304840088,
+         35.085872650146484
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 663,
+        "position": [
+         -28.434358596801758,
+         5.658827304840088,
+         35.68331527709961
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -28.102128982543945,
+        5.65882682800293,
+        35.96541976928711
+       ],
+       "step": 671,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyS",
+        "KeyD"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -23.2,
+       35.85
+      ],
+      "begin": {
+       "position": [
+        -28.102128982543945,
+        5.65882682800293,
+        35.96541976928711
+       ],
+       "step": 671,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 671,
+        "position": [
+         -28.102128982543945,
+         5.65882682800293,
+         35.96541976928711
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 722,
+        "position": [
+         -25.152864456176758,
+         5.6588263511657715,
+         36.45095443725586
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 747,
+        "position": [
+         -23.88254737854004,
+         5.6588263511657715,
+         35.84640121459961
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -23.175844192504883,
+        5.6588263511657715,
+        35.68784713745117
+       ],
+       "step": 760,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -18,
+       34
+      ],
+      "begin": {
+       "position": [
+        -23.175844192504883,
+        5.6588263511657715,
+        35.68784713745117
+       ],
+       "step": 760,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 760,
+        "position": [
+         -23.175844192504883,
+         5.6588263511657715,
+         35.68784713745117
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 796,
+        "position": [
+         -21.396575927734375,
+         5.659635066986084,
+         34.68380355834961
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 822,
+        "position": [
+         -19.93488311767578,
+         5.658829689025879,
+         34.6131706237793
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 847,
+        "position": [
+         -18.66485595703125,
+         5.658827304840088,
+         34.007049560546875
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -18.01908302307129,
+        5.66220760345459,
+        33.84584045410156
+       ],
+       "step": 859,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -14,
+       32
+      ],
+      "begin": {
+       "position": [
+        -18.01908302307129,
+        5.66220760345459,
+        33.84584045410156
+       ],
+       "step": 859,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 859,
+        "position": [
+         -18.01908302307129,
+         5.66220760345459,
+         33.84584045410156
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 911,
+        "position": [
+         -15.488170623779297,
+         4.954843521118164,
+         32.2601318359375
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -14.027938842773438,
+        4.583193302154541,
+        32.18791198730469
+       ],
+       "step": 937,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -5,
+       29
+      ],
+      "begin": {
+       "position": [
+        -14.027938842773438,
+        4.583193302154541,
+        32.18791198730469
+       ],
+       "step": 937,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 937,
+        "position": [
+         -14.027938842773438,
+         4.583193302154541,
+         32.18791198730469
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1000,
+        "position": [
+         -10.954582214355469,
+         3.6562163829803467,
+         30.23798370361328
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1033,
+        "position": [
+         -9.082469940185547,
+         3.164276123046875,
+         30.222610473632812
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1058,
+        "position": [
+         -7.816019058227539,
+         2.7718050479888916,
+         29.619184494018555
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1084,
+        "position": [
+         -6.352447986602783,
+         2.381351947784424,
+         29.54833221435547
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -5.312356948852539,
+        2.0698421001434326,
+        29.16008186340332
+       ],
+       "step": 1104,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       5,
+       29.4
+      ],
+      "begin": {
+       "position": [
+        -5.312356948852539,
+        2.0698421001434326,
+        29.16008186340332
+       ],
+       "step": 1104,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 1104,
+        "position": [
+         -5.312356948852539,
+         2.0698421001434326,
+         29.16008186340332
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1244,
+        "position": [
+         2.7909767627716064,
+         1.9577587842941284,
+         30.040828704833984
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1269,
+        "position": [
+         4.052343845367432,
+         1.9579994678497314,
+         29.443227767944336
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        4.815849781036377,
+        1.957343578338623,
+        29.291847229003906
+       ],
+       "step": 1283,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       17,
+       30
+      ],
+      "begin": {
+       "position": [
+        4.815849781036377,
+        1.957343578338623,
+        29.291847229003906
+       ],
+       "step": 1283,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 1283,
+        "position": [
+         4.815849781036377,
+         1.957343578338623,
+         29.291847229003906
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1451,
+        "position": [
+         14.618040084838867,
+         1.9570634365081787,
+         30.666494369506836
+        ],
+        "keys": [
+         "KeyD"
+        ]
+       },
+       {
+        "step": 1476,
+        "position": [
+         15.887809753417969,
+         1.9575591087341309,
+         30.070507049560547
+        ],
+        "keys": [
+         "KeyS",
+         "KeyD"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        16.584049224853516,
+        1.9575203657150269,
+        29.918560028076172
+       ],
+       "step": 1489,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyD",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       18.1,
+       36.7
+      ],
+      "begin": {
+       "position": [
+        16.584049224853516,
+        1.9575203657150269,
+        29.918560028076172
+       ],
+       "step": 1489,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 1489,
+        "position": [
+         16.584049224853516,
+         1.9575203657150269,
+         29.918560028076172
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1540,
+        "position": [
+         16.841739654541016,
+         1.9577467441558838,
+         32.42036437988281
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 1565,
+        "position": [
+         17.44826316833496,
+         1.9579263925552368,
+         33.64252853393555
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1591,
+        "position": [
+         17.517566680908203,
+         1.960323452949524,
+         35.063541412353516
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        18.16261100769043,
+        1.960283875465393,
+        36.327964782714844
+       ],
+       "step": 1617,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       14.4,
+       45.7
+      ],
+      "begin": {
+       "position": [
+        18.16261100769043,
+        1.960283875465393,
+        36.327964782714844
+       ],
+       "step": 1617,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 1617,
+        "position": [
+         18.16261100769043,
+         1.960283875465393,
+         36.327964782714844
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1682,
+        "position": [
+         17.92098617553711,
+         1.9578585624694824,
+         39.894500732421875
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1707,
+        "position": [
+         16.98749542236328,
+         1.9575893878936768,
+         40.90475845336914
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1733,
+        "position": [
+         16.511934280395508,
+         1.9579108953475952,
+         42.2375373840332
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1759,
+        "position": [
+         15.53031063079834,
+         1.9594871997833252,
+         43.28370666503906
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1785,
+        "position": [
+         15.065135955810547,
+         1.957969069480896,
+         44.63154220581055
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1798,
+        "position": [
+         14.680703163146973,
+         1.9578856229782104,
+         45.225189208984375
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        14.364562034606934,
+        1.9578272104263306,
+        45.80360794067383
+       ],
+       "step": 1810,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyA",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       11.4,
+       51.9
+      ],
+      "begin": {
+       "position": [
+        14.364562034606934,
+        1.9578272104263306,
+        45.80360794067383
+       ],
+       "step": 1810,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 1810,
+        "position": [
+         14.364562034606934,
+         1.9578272104263306,
+         45.80360794067383
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1850,
+        "position": [
+         14.011920928955078,
+         1.9622682332992554,
+         48.05257797241211
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1888,
+        "position": [
+         12.468555450439453,
+         1.960584282875061,
+         49.52003479003906
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 1925,
+        "position": [
+         11.909073829650879,
+         1.9614856243133545,
+         51.47362518310547
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        11.567593574523926,
+        1.960504412651062,
+        52.0150146484375
+       ],
+       "step": 1937,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyA"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       3.5,
+       59.9
+      ],
+      "begin": {
+       "position": [
+        11.53334903717041,
+        1.9583455324172974,
+        52.04527282714844
+       ],
+       "step": 1938,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 1938,
+        "position": [
+         11.53334903717041,
+         1.9583455324172974,
+         52.04527282714844
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2071,
+        "position": [
+         5.342623233795166,
+         1.9579253196716309,
+         56.6410026550293
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2096,
+        "position": [
+         4.881345748901367,
+         1.9577165842056274,
+         57.93497085571289
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2121,
+        "position": [
+         3.9465532302856445,
+         1.9576053619384766,
+         58.943992614746094
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        3.597174882888794,
+        1.9603430032730103,
+        59.562686920166016
+       ],
+       "step": 2134,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyA",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -4,
+       67.5
+      ],
+      "begin": {
+       "position": [
+        3.5852267742156982,
+        1.9615840911865234,
+        59.61616516113281
+       ],
+       "step": 2135,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 2135,
+        "position": [
+         3.5852267742156982,
+         1.9615840911865234,
+         59.61616516113281
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2265,
+        "position": [
+         -2.297482490539551,
+         1.9577898979187012,
+         64.2682113647461
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2290,
+        "position": [
+         -2.7575724124908447,
+         1.9603036642074585,
+         65.55736541748047
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2315,
+        "position": [
+         -3.6908836364746094,
+         1.9591048955917358,
+         66.57345581054688
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -4.039789199829102,
+        1.9579051733016968,
+        67.18812561035156
+       ],
+       "step": 2328,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyA",
+        "KeyS"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -10,
+       69.7
+      ],
+      "begin": {
+       "position": [
+        -4.039789199829102,
+        1.9579051733016968,
+        67.18812561035156
+       ],
+       "step": 2328,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 2328,
+        "position": [
+         -4.039789199829102,
+         1.9579051733016968,
+         67.18812561035156
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2366,
+        "position": [
+         -5.6068620681762695,
+         1.9579699039459229,
+         68.64888763427734
+        ],
+        "keys": [
+         "KeyW",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2392,
+        "position": [
+         -7.051584720611572,
+         1.9572430849075317,
+         68.7166976928711
+        ],
+        "keys": [
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2419,
+        "position": [
+         -8.415247917175293,
+         1.9580084085464478,
+         69.38368225097656
+        ],
+        "keys": [
+         "KeyW",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -10.344559669494629,
+        1.9573111534118652,
+        69.38335418701172
+       ],
+       "step": 2453,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyA",
+        "KeyW"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -10,
+       72
+      ],
+      "begin": {
+       "position": [
+        -10.40306568145752,
+        1.9572629928588867,
+        69.37508392333984
+       ],
+       "step": 2454,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 2454,
+        "position": [
+         -10.40306568145752,
+         1.9572629928588867,
+         69.37508392333984
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2467,
+        "position": [
+         -11.000407218933105,
+         1.9581326246261597,
+         69.64259338378906
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 2494,
+        "position": [
+         -10.324750900268555,
+         1.961191177368164,
+         70.5450668334961
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -10.269363403320312,
+        1.959987759590149,
+        72.06624603271484
+       ],
+       "step": 2522,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyS",
+        "KeyA"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -10,
+       91
+      ],
+      "begin": {
+       "position": [
+        -10.277351379394531,
+        1.9599363803863525,
+        72.12291717529297
+       ],
+       "step": 2523,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 2523,
+        "position": [
+         -10.277351379394531,
+         1.9599363803863525,
+         72.12291717529297
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 2830,
+        "position": [
+         -10.895371437072754,
+         1.9598164558410645,
+         88.24688720703125
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 2856,
+        "position": [
+         -10.215411186218262,
+         1.9627752304077148,
+         89.53244018554688
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -10.15204906463623,
+        1.9597854614257812,
+        91.01588439941406
+       ],
+       "step": 2883,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyS",
+        "KeyA"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -10,
+       103
+      ],
+      "begin": {
+       "position": [
+        -10.15204906463623,
+        1.9597854614257812,
+        91.01588439941406
+       ],
+       "step": 2883,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 2884,
+        "position": [
+         -10.158629417419434,
+         1.9604278802871704,
+         91.06248474121094
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 3047,
+        "position": [
+         -10.896821022033691,
+         1.9598727226257324,
+         99.88023376464844
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 3074,
+        "position": [
+         -10.184643745422363,
+         1.961287260055542,
+         101.20866394042969
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -10.112984657287598,
+        1.9598605632781982,
+        102.6343765258789
+       ],
+       "step": 3100,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [
+        "KeyS",
+        "KeyA"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "target": [
+       -10,
+       109
+      ],
+      "begin": {
+       "position": [
+        -10.119511604309082,
+        1.9598108530044556,
+        102.6810073852539
+       ],
+       "step": 3101,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "headings": [
+       {
+        "step": 3101,
+        "position": [
+         -10.119511604309082,
+         1.9598108530044556,
+         102.6810073852539
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       },
+       {
+        "step": 3178,
+        "position": [
+         -10.7550048828125,
+         1.9599910974502563,
+         107.00468444824219
+        ],
+        "keys": [
+         "KeyS"
+        ]
+       },
+       {
+        "step": 3204,
+        "position": [
+         -10.115375518798828,
+         1.9598844051361084,
+         108.28754425048828
+        ],
+        "keys": [
+         "KeyS",
+         "KeyA"
+        ]
+       }
+      ],
+      "end": {
+       "position": [
+        -9.956512451171875,
+        1.959985613822937,
+        108.97795867919922
+       ],
+       "step": 3217,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": "alpha-ferry-board-0",
+       "input": [
+        "KeyS",
+        "KeyA"
+       ],
+       "ride": {
+        "active": false
+       }
+      }
+     }
+    ],
+    "rides": [
+     {
+      "id": "alpha-ferry-board-0",
+      "input": [
+       "KeyE",
+       "Skip travel to arrival"
+      ],
+      "before": {
+       "position": [
+        -9.958979606628418,
+        1.9616893529891968,
+        109.02305603027344
+       ],
+       "step": 3218,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": "alpha-ferry-board-0",
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "boarded": {
+       "position": [
+        -16.000274658203125,
+        2.0999999046325684,
+        112.07142639160156
+       ],
+       "step": 3812,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": true,
+        "phase": "riding",
+        "u": 0.00036941726609461
+       }
+      },
+      "landing": {
+       "position": [
+        156,
+        2.3478047847747803,
+        148
+       ],
+       "step": 4545,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": "alpha-ferry-board-1",
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      }
+     },
+     {
+      "id": "alpha-ferry-board-1",
+      "input": [
+       "KeyE",
+       "Skip travel to arrival"
+      ],
+      "before": {
+       "position": [
+        156,
+        2.3478047847747803,
+        148
+       ],
+       "step": 4545,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": "alpha-ferry-board-1",
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      },
+      "boarded": {
+       "position": [
+        143,
+        2.0999999046325684,
+        145.95570373535156
+       ],
+       "step": 5349,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": true,
+        "phase": "riding",
+        "u": 0.9997721538277521
+       }
+      },
+      "landing": {
+       "position": [
+        -10,
+        1.959995150566101,
+        109
+       ],
+       "step": 5851,
+       "grounded": true,
+       "yaw": 0.9272952180016123,
+       "activeVehicle": null,
+       "shot": null,
+       "paused": false,
+       "nearby": null,
+       "input": [],
+       "ride": {
+        "active": false
+       }
+      }
+     }
+    ],
+    "pageErrors": [],
+    "analyticsErrors": [],
+    "htmlSha256": "1cde5afcf50450e9b44e90c7fa41b7b9a3b9d7fd710893e2faae16d6bd177cda",
+    "spawn": {
+     "position": [
+      -41.99941635131836,
+      5.619417190551758,
+      35.006927490234375
+     ],
+     "step": 267,
+     "grounded": true,
+     "yaw": 0.9272952180016123,
+     "activeVehicle": null,
+     "shot": null,
+     "paused": false,
+     "nearby": null,
+     "input": [],
+     "ride": {
+      "active": false
+     }
+    },
+    "egress": {
+     "key": "KeyW",
+     "distance": 1.0123644598754564,
+     "after": {
+      "position": [
+       -10.615035057067871,
+       1.9598100185394287,
+       108.19587707519531
+      ],
+      "step": 5884,
+      "grounded": true,
+      "yaw": 0.9272952180016123,
+      "activeVehicle": null,
+      "shot": null,
+      "paused": false,
+      "nearby": "alpha-ferry-board-0",
+      "input": [],
+      "ride": {
+       "active": false
+      }
+     }
+    },
+    "ok": true,
+    "keys": [
+     {
+      "t": 59.409,
+      "press": "KeyE"
+     },
+     {
+      "t": 81.526,
+      "press": "KeyE"
+     }
+    ],
+    "fixtureCalls": []
+   }
+  ]
+ }
+}
