@@ -4,6 +4,7 @@ import { Builder, cbox, type V3 } from '../WorldStreetGeometry.ts';
 import { useWorldStore } from '../store';
 import { ibdLocal, ibdReach, ibdStation, IBD_SLOTS, IBD_CARGO_HOME, IBD_MOVED_COIL, IBD_TRUCK } from './ibd-yard-layout.ts';
 import { ibdGuideRoute, ibdGuideStep } from './ibd-yard-guide.ts';
+import { ibdGuideStandingPoint } from './ibd-guide-route.ts';
 import { yardItemJudged, yardItemDifferent, yardItemId } from './ibd-yard-game.ts';
 import { useIbdYardStore } from './ibd-yard-store.ts';
 import { buildIbdTools } from './ibd-yard-geometry.ts';
@@ -26,6 +27,7 @@ export default memo(function WorldIbdGuide({ toolsMaterial }: { toolsMaterial: M
   const lang = useWorldStore(s => s.lang);
   const suppressed = useWorldStore(s => s.paused || !!s.card || s.poolInspect || !!s.shot || !!s.activeVehicle || !!s.seat);
   const step = ibdGuideStep(game), station = ibdStation(step.action.station, game.core.moved);
+  const stand = ibdGuideStandingPoint(station.id, game.core.moved);
   const near = useWorldStore(s => s.nearbyInteract?.id === `ibd-${station.id}` && ibdReach(ibdLocal(s.position), station));
   const atWorkstation = useWorldStore(s => ibdReach(ibdLocal(s.position), station));
   const inYard = useWorldStore(s => Math.abs(s.position[0] - IBD_YARD.center[0]) <= IBD_YARD.size[0] / 2 + 4
@@ -63,18 +65,23 @@ export default memo(function WorldIbdGuide({ toolsMaterial }: { toolsMaterial: M
   }), [step.action.kind, step.action.station, game.completedAction?.station, game.core.moved, game.pending?.token, game.released, lang, near]);
   useEffect(() => () => { cue.geometry.dispose(); cue.material.dispose(); cue.texture.dispose(); cue.label.dispose(); }, [cue]);
   return <group name="ibd-work-guidance" dispose={null}>
-    <mesh name="ibd-pickup-manifest" geometry={props.paper} material={props.material} position={[-3, .96, 26]} rotation={[.12, 0, 0]} scale={1.5} />
-    <mesh name="ibd-takeable-tools" geometry={props.tools} material={toolsMaterial} position={[-6, 1.4, 19]} scale={1.6} visible={!game.equipped} />
-    <mesh name="ibd-received-stamp" position={[-2.65, 1.06, 26.1]} rotation={[-Math.PI / 2, 0, 0]} visible={game.started} geometry={props.stamp} material={props.good} />
+    <mesh name="ibd-pickup-manifest" geometry={props.paper} material={props.material} position={[-3, .96, 26]} rotation={[.12, 0, 0]} scale={1.5}
+      userData={{worldCollision:'none',collisionReason:'Manifest follows the receiving interaction, with a solid desk beneath it'}} />
+    <mesh name="ibd-takeable-tools" geometry={props.tools} material={toolsMaterial} position={[-6, 1.4, 19]} scale={1.6} visible={!game.equipped}
+      userData={{worldCollision:'none',collisionReason:'Portable inspection tools use the existing pickup action'}} />
+    <mesh name="ibd-received-stamp" position={[-2.65, 1.06, 26.1]} rotation={[-Math.PI / 2, 0, 0]} visible={game.started} geometry={props.stamp} material={props.good}
+      userData={{worldCollision:'none',collisionReason:'Receiving status overlay'}} />
     {IBD_SLOTS.map(slot => {
       const id = yardItemId(game, slot), loaded = game.core.loaded.includes(id), checked = yardItemJudged(game, slot);
       const at = loaded ? IBD_TRUCK[slot]! : slot === 'coil-front' && game.core.moved.includes(id) ? IBD_MOVED_COIL : IBD_CARGO_HOME[slot];
       return <mesh key={slot} name={`ibd-cargo-checked-${slot}`} position={[at[0], at[1] + (slot.startsWith('coil') ? 2.35 : 1.55), at[2]]}
-        rotation={[-Math.PI / 2, 0, 0]} visible={checked && !game.pending} geometry={props.checked} material={yardItemDifferent(game, slot) ? props.bad : props.good} />;
+        rotation={[-Math.PI / 2, 0, 0]} visible={checked && !game.pending} geometry={props.checked} material={yardItemDifferent(game, slot) ? props.bad : props.good}
+        userData={{worldCollision:'none',collisionReason:'Inspection status overlay above the cargo'}} />;
     })}
-    <group visible={enabled && inYard && !suppressed && !game.released}>
+    <group visible={enabled && inYard && !suppressed && !game.released}
+      userData={{worldCollision:'none',collisionReason:'Optional route arrow, standing-point ring and guidance label'}}>
       <mesh name="ibd-next-work-route" geometry={cue.geometry} material={cue.material} />
-      <mesh name="ibd-next-work-standing-point" position={[station.at[0], station.id.startsWith('gallery') ? 4.13 : .15, station.at[2]]} rotation={[-Math.PI / 2, 0, 0]}
+      <mesh name="ibd-next-work-standing-point" position={[stand[0], station.id.startsWith('gallery') ? 4.13 : .15, stand[2]]} rotation={[-Math.PI / 2, 0, 0]}
         geometry={props.standing} material={near ? props.good : props.amber} />
       <sprite name="ibd-next-work-label" visible={!atWorkstation && !game.pending}
         position={[station.at[0], station.at[1] + 2.25, station.at[2]]} scale={[4, .84, 1]} material={cue.label} renderOrder={10} />

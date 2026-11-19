@@ -14,5 +14,6 @@ export default function WorldIbdSigns() {
     sceneWorkProbe.measure('ibd-sign-position', () => data.updateMoved(moved));
   }, [data, moved]);
   useEffect(() => () => data.dispose(), [data]);
-  return <mesh name="ibd-physical-sign-atlas" geometry={data.geometry} material={data.material} dispose={null} />;
+  return <mesh name="ibd-physical-sign-atlas" geometry={data.geometry} material={data.material} dispose={null}
+    userData={{worldCollision:'none',collisionReason:'Printed sign fronts and station identifiers use the installed frames beneath them'}} />;
 }

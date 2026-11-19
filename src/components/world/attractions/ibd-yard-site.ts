@@ -9,6 +9,7 @@ import { IBD_BOUNDARY_SEGMENTS, IBD_FOOTPRINT, IBD_YARD } from './attraction-lay
 import { addIbdPlant, addIbdFencePanel, addIbdLanternFrame } from './ibd-site-craft.ts';
 
 type P2 = [number, number];
+export type IbdSiteRange = (id:string, firstIndex:number, collision:'solid'|'soft'|'none') => void;
 const local = ([x, z]: readonly number[]): P2 => [x - IBD_YARD.center[0], z - IBD_YARD.center[2]];
 const area = (p: P2[]) => p.reduce((sum, a, i) => { const c = p[(i + 1) % p.length]; return sum + a[0] * c[1] - c[0] * a[1]; }, 0) / 2;
 function clip(points: P2[], axis: 0 | 1, bound: number, keepAbove: boolean): P2[] {
@@ -67,16 +68,18 @@ export function buildIbdPaving(b: Builder) {
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(b.idx.slice(startIndex).map(i => remap[i - startVertex])) };
 }
 
-function perimeter(b: Builder, cube: IbdCube) {
-  for (const edge of IBD_BOUNDARY_SEGMENTS) {
+function perimeter(b: Builder, cube: IbdCube, range?: IbdSiteRange) {
+  for (const [segment,edge] of IBD_BOUNDARY_SEGMENTS.entries()) {
     const a = local(edge.a), end = local(edge.b), dx = end[0] - a[0], dz = end[1] - a[1];
     const length = Math.hypot(dx, dz), rotation: V3 = [0, -Math.atan2(dz, dx), 0];
     const x = (a[0] + end[0]) / 2, z = (a[1] + end[1]) / 2;
     if (edge.kind === 'open') continue;
+    const first=b.idx.length;
     if (edge.kind === 'drain') {
       // Flush grated boundary, not a raised invisible perimeter wall across the service setback.
       cube([x, .092, z], [length, .012, .5], P.dark, false, 0, rotation);
       for (let d = .2; d < length; d += .4) cube([a[0] + dx * d / length, .105, a[1] + dz * d / length], [.06, .015, .48], P.steel, false, 0, rotation);
+      range?.(`flush-perimeter-drain-${segment+1}`,first,'none');
       continue;
     }
     cube([x, .22, z], [length - .12, .28, .22], P.concrete, true, 0, rotation);
@@ -90,18 +93,26 @@ function perimeter(b: Builder, cube: IbdCube) {
       addIbdFencePanel(b,[xx+dx/length*.12,0,zz+dz/length*.12],
         [a[0]+dx*(i+1)/count-dx/length*.12,0,a[1]+dz*(i+1)/count-dz/length*.12]);
     }
+    range?.(`perimeter-fence-${segment+1}`,first,'solid');
   }
   // Green soakaway occupies the actual eastern notch. It stays below the paving and has no wall collider.
+  const soakaway=b.idx.length;
   b.face([[25.3, .045, -4.3], [25.3, .045, -.2], [33.5, .045, 1.8], [33, .045, -6]], P.leafDark, [0, 1, 0]);
+  range?.('soakaway-below-paving',soakaway,'none');
+  const shrubs=b.idx.length;
   for (const z of [-4.5, -1.5]) addIbdPlant(b,[31,.045,z],z,.95);
+  range?.('soakaway-leaves',shrubs,'soft');
   // Broad turning path in the west apron, separated from the pedestrian approach and quarantine pad.
+  const turning=b.idx.length;
   for (let angle = -.3; angle <= Math.PI + .3; angle += .3) {
     const x = -34 + Math.cos(angle) * 8, z = 22 + Math.sin(angle) * 6;
     cube([x, .105, z], [1.1, .012, .12], P.pale, false, 0, [0, -angle - Math.PI / 2, 0]);
   }
+  range?.('turning-path-markings',turning,'none');
 }
 
-export function buildIbdSite(b: Builder, cube: IbdCube) {
+export function buildIbdSite(b: Builder, cube: IbdCube, range?: IbdSiteRange) {
+  const markings=b.idx.length;
   // Working bays and clear forecourt. Flush paint has no collision geometry.
   for (const [x, z, w, d] of [[-17, -5, 20, 14], [14, -12, 18, 5], [-19, 12, 12, 9], [17, 14, 22, 19]]) {
     for (const xx of [x - w / 2, x + w / 2]) cube([xx, .1, z], [.12, .015, d], P.amber, false, 0);
@@ -114,16 +125,22 @@ export function buildIbdSite(b: Builder, cube: IbdCube) {
   }
   cube([0, .1, 29], [24, .02, .6], P.dark, false, 0);
   for (let x = -12; x < 12; x += .4) cube([x, .115, 29], [.06, .02, .58], P.steel, false, 0);
-  perimeter(b, cube);
+  range?.('bay-paint-and-flush-arrival-drain',markings,'none');
+  perimeter(b, cube, range);
   // Few large faceted shrubs in contained planters, away from the inspection faces.
   for (const x of [-24, 24]) {
+    const side=x<0?'west':'east', first=b.idx.length;
     cube([x, .5, 27], [6, .85, 2.3], P.concrete, true);
     cube([x, .95, 27], [5.6, .1, 1.9], P.timber, false, 0);
     for(const zz of [-1.06,1.06])cube([x,1.0,27+zz],[6,.14,.18],P.pale,false,.025);
     for(const xx of [-2.9,2.9])cube([x+xx,1.0,27],[.18,.14,1.96],P.pale,false,.025);
+    range?.(`forecourt-planter-${side}`,first,'solid');
+    const shrubs=b.idx.length;
     for (const xx of [-1.8,0,1.8]) addIbdPlant(b,[x+xx,1.0,27],x+xx,1.35);
+    range?.(`forecourt-planter-leaves-${side}`,shrubs,'soft');
   }
-  for (const f of IBD_FIXTURES) {
+  for (const [fixture,f] of IBD_FIXTURES.entries()) {
+    const first=b.idx.length;
     const [x, y, z] = f.at;
     if (f.mount) {
       if (f.mount === 'bench') {
@@ -162,5 +179,6 @@ export function buildIbdSite(b: Builder, cube: IbdCube) {
       cube([x, y + .38, z], [.48, .12, .48], P.dark);
       addIbdLanternFrame(b,x,y,z);
     }
+    range?.(`lighting-fixture-${fixture+1}`,first,'solid');
   }
 }

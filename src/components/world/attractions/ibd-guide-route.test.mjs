@@ -4,7 +4,8 @@ import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions } from './ibd-yard-game.ts';
-import { ibdStation, IBD_SLOTS } from './ibd-yard-layout.ts';
+import { ibdStation, ibdReach, IBD_SLOTS } from './ibd-yard-layout.ts';
+import { ibdCraftOptions } from './ibd-craft-options.ts';
 import { ibdCargoPose } from './ibd-yard-motion.ts';
 import { ibdGuideRoute, ibdGuideStep } from './ibd-yard-guide.ts';
 import { ibdRouteBetween } from './ibd-guide-route.ts';
@@ -20,11 +21,10 @@ function act(game, action) {
 }
 
 test('all batch routes sweep a player capsule clear of real guards, rollers, controls and current cargo', () => {
-  const data = buildIbdStatic(), world = new RAPIER.World({ x: 0, y: -9.81, z: 0 });
+  const data = buildIbdStatic({completeSiteContacts:true,...ibdCraftOptions(null)}), world = new RAPIER.World({ x: 0, y: -9.81, z: 0 });
   try {
-    for (const s of data.solids) world.createCollider(RAPIER.ColliderDesc.cuboid(...s.size.map(n => n / 2))
-      .setTranslation(...s.at).setRotation(new Quaternion().setFromEuler(new Euler(...(s.rotation ?? [0, 0, 0])))));
-    world.createCollider(RAPIER.ColliderDesc.trimesh(data.walkSurface.vertices, data.walkSurface.indices));
+    for(const s of [...data.contactSurfaces,...data.workstationContacts,...data.truckContacts])
+      world.createCollider(RAPIER.ColliderDesc.trimesh(s.vertices,s.indices,RAPIER.TriMeshFlags.FIX_INTERNAL_EDGES));
     const cargo = IBD_SLOTS.map(slot => world.createCollider(RAPIER.ColliderDesc.cuboid(...(slot.startsWith('coil') ? [2, 2, 1.4] : [1.4, .55, 1.3]))));
     const check = (game, route, label) => {
       for (let i = 0; i < IBD_SLOTS.length; i++) {
@@ -56,8 +56,12 @@ test('all batch routes sweep a player capsule clear of real guards, rollers, con
     let game = act(act(createIbdYardGame(), { kind: 'brief', station: 'manifest' }), { kind: 'kit', station: 'kit' });
     game = act(game, yardActions(game, 'gallery-front')[0]);
     check(game, ibdGuideRoute(game), 'free-exploration gallery return');
-    for (const id of ['gallery-front', 'gallery-rear']) check(game, ibdRouteBetween(id, 'manifest', []), `${id} ramp exit`);
-  } finally { world.free(); data.geometry.dispose(); }
+    for (const id of ['gallery-front', 'gallery-rear']) {
+      const exit=ibdRouteBetween(id,'manifest',[]),[x,y,z]=exit[0];
+      assert.ok(ibdReach([x,y+.86,z],ibdStation(id)),`${id} remains within its original interaction radius`);
+      check(game,exit,`${id} ramp exit`);
+    }
+  } finally { world.free(); data.geometry.dispose();data.craftShellGeometry.dispose();data.truckGeometry.dispose(); }
 });
 
 test('neighboring cartons share the clear standing gap and never send the player back to the central entrance', () => {

@@ -4,7 +4,7 @@ import { IBD_RAMP } from './ibd-yard-layout.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdArchitecture, buildIbdStores, type IbdCube, type IbdSolid } from './ibd-yard-architecture.ts';
 import { ibdTriangleContact, mergeIbdTriangleContacts, type IbdContactSurface } from './ibd-static-contact.ts';
-import { buildIbdSite } from './ibd-yard-site.ts';
+import { buildIbdSite, type IbdSiteRange } from './ibd-yard-site.ts';
 import { bakeIbdLight } from './ibd-yard-lighting.ts';
 import { addInspectionTools, addInspectionTorch, addWoundCoil, addYardControl, addIbdRollerFrame, applyIbdMachinedFinish } from './ibd-craft-geometry.ts';
 import { buildIbdTruck } from './ibd-truck-geometry.ts';
@@ -12,6 +12,7 @@ import { IBD_CONTROL_PEDESTALS, IBD_INSPECTION_BENCHES, IBD_UTILITY_BENCHES } fr
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
 export { buildIbdPack } from './ibd-pack-geometry.ts';
+export const IBD_STATIC_YARD_CONTACT_ROOT='ibd-static-yard-contact';
 function buildIbdWalkSurface(b: Builder) {
   const vertices: number[] = [], indices: number[] = [], ids = new Map<string, number>();
   const boundary = new Map<string, { a: V3; end: V3; count: number }>();
@@ -41,21 +42,29 @@ function buildIbdWalkSurface(b: Builder) {
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) };
 }
-export function buildIbdStatic(options: { separateCraftShells?: boolean; separateTruck?: boolean; coilBaySample?: boolean; shedExpansion?: boolean; rackMode?: 'sample' | 'family'; bridgeSample?: boolean; crateSample?: 'reference' | 'grain' } = {}) {
+export function buildIbdStatic(options: { completeSiteContacts?: boolean; separateCraftShells?: boolean; separateTruck?: boolean; coilBaySample?: boolean; shedExpansion?: boolean; rackMode?: 'sample' | 'family'; bridgeSample?: boolean; crateSample?: 'reference' | 'grain' } = {}) {
   const b = new Builder(), craftShells = new Builder(), solids: IbdSolid[] = [];
   const buildingContacts: IbdContactSurface[] = [], rollerContacts: IbdContactSurface[] = [], workstationContacts: IbdContactSurface[] = [];
+  const complete=options.completeSiteContacts===true;
+  const separateCraftShells=complete||options.separateCraftShells, separateTruck=complete||options.separateTruck;
+  const siteContacts:IbdContactSurface[]=[];
+  const visualOnly:{id:string;firstIndex:number;indexCount:number;collision:'soft'|'none'}[]=[];
+  const siteRange:IbdSiteRange|undefined=complete?(id,firstIndex,collision)=>{
+    if(collision==='solid') siteContacts.push(ibdTriangleContact(b,id,firstIndex));
+    else visualOnly.push({id,firstIndex,indexCount:b.idx.length-firstIndex,collision});
+  }:undefined;
   const buildingContact = (id: string, start: number) => { buildingContacts.push(ibdTriangleContact(b, id, start)); };
   let shell = false;
   const drawCube = (target: Builder, at: V3, size: V3, s: Surf, bevel = .03, rotation?: V3) => {
     if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
   };
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
-    const target = shell && options.separateCraftShells ? craftShells : b;
+    const target = shell && separateCraftShells ? craftShells : b;
     drawCube(target,at,size,s,bevel,rotation);
-    if (solid && target !== craftShells) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
+    if (solid && !complete && target !== craftShells) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
   const workstationContact = (id: string, start: number) => {
-    if (options.separateCraftShells) workstationContacts.push(ibdTriangleContact(craftShells, 'workstation-' + id, start));
+    if (separateCraftShells) workstationContacts.push(ibdTriangleContact(craftShells, 'workstation-' + id, start));
   };
   // These structures already have exact triangle contacts. Keep the render
   // callbacks and material treatments, and suppress the former envelope boxes.
@@ -63,17 +72,21 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; separat
   const coilFinish = options.coilBaySample || options.shedExpansion || options.crateSample === 'grain' ? new CoilBayFinish(b) : undefined;
   const groundSurface = buildIbdArchitecture(b, structureCube, buildingContact, options.coilBaySample || options.shedExpansion ? coilFinish : undefined, options.shedExpansion, options.bridgeSample);
   buildIbdStores(b, structureCube, buildingContact, options.rackMode, options.crateSample, coilFinish);
-  buildIbdSite(b, cube);
+  buildIbdSite(b, cube, siteRange);
+  const coilMarkings=b.idx.length;
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {
     cube([x, .095, z], [4.6, .02, 3.4], P.dark, false, 0);
     for (const side of [-1, 1]) cube([x + side * 2.35, .11, z], [.25, .015, 3.2], P.amber, false, 0);
   }
+  siteRange?.('coil-dolly-floor-markings',coilMarkings,'none');
   // The narrow crane lane makes the front coil a physical occluder. The gantry lifts above its guards.
+  const craneGuards=b.idx.length;
   for (const x of [-14.5, -9.5]) {
     cube([x, .75, -6.85], [.12, 1.5, 9.7], P.dark, true);
     cube([x, 1.53, -6.85], [.16, .06, 9.7], P.amber);
   }
   cube([-12, .75, -11.7], [5.1, 1.5, .12], P.dark, true);
+  siteRange?.('crane-lane-guards',craneGuards,'solid');
   // One welded shell has no internal vertical box ends for the character's swept guard to hit.
   const galleryFirst = b.idx.length;
   const gallerySurface = buildIbdWalkSurface(b);
@@ -85,15 +98,19 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; separat
   };
   const rail = (a: V3, end: V3) => {
     bar(b, a, end, .06, P.amber, 6);
+    if(complete)return;
     const dx = end[0] - a[0], dy = end[1] - a[1], dz = end[2] - a[2];
     solids.push({ at: [(a[0] + end[0]) / 2, (a[1] + end[1]) / 2, (a[2] + end[2]) / 2],
       size: dx ? [Math.abs(dx), .12, .12] : [.12, .12, Math.hypot(dy, dz)],
       ...(dx ? {} : { rotation: [Math.atan2(-dy, dz), 0, 0] as V3 }) });
   };
+  const rampRails=b.idx.length;
   for (const x of [-25.5, -22.5]) {
     for (const h of [.55, 1.05]) rail([x, .1 + h, IBD_RAMP.south], [x, 4.1 + h, IBD_RAMP.north]);
     for (let i = 0; i <= 8; i++) bar(b, [x, .1 + i / 2, IBD_RAMP.south - i * IBD_RAMP.length / 8], [x, 1.15 + i / 2, IBD_RAMP.south - i * IBD_RAMP.length / 8], .05, P.steel, 6);
   }
+  siteRange?.('gallery-ramp-rails-and-posts',rampRails,'solid');
+  const galleryRails=b.idx.length;
   const edges: [V3, V3][] = [
     [[-25.5, 0, -12.2], [-25.5, 0, -15.9]], [[-25.5, 0, -15.9], [-4.8, 0, -15.9]],
     [[-22.4, 0, -12.3], [-7.3, 0, -12.3]], [[-4.8, 0, -15.9], [-4.8, 0, -2.6]],
@@ -107,6 +124,7 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; separat
       bar(b, [x, 4.1, z], [x, 5.15, z], .05, P.steel, 6);
     }
   }
+  siteRange?.('gallery-rails-and-posts',galleryRails,'solid');
   // Benches, load rollers and the prominent empty spaces in their trays carry the interaction.
   for (const { id, x, z: benchZ } of IBD_INSPECTION_BENCHES) {
     const first = craftShells.idx.length;
@@ -138,6 +156,7 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; separat
   }
   for (const { id, x, z, kind } of IBD_CONTROL_PEDESTALS) {
     const first = craftShells.idx.length;
+    const controls=b.idx.length;
     let part = 0;
     addYardControl(b, (...args) => {
       // Only cabinet, foot and cap move to the portable pack. Controls remain
@@ -145,38 +164,61 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; separat
       shell = part++ < 3; cube(...args); shell = false;
     }, x, z, kind);
     workstationContact(id, first);
+    siteRange?.('control-hardware-'+id,controls,'solid');
   }
-  const truck = options.separateTruck ? new Builder() : null;
+  const truck = separateTruck ? new Builder() : null;
   const truckContacts: IbdContactSurface[] = [];
   if (truck) buildIbdTruck(truck, (at,size,surface,_solid,bevel,rotation) => drawCube(truck,at,size,surface,bevel,rotation), [],
     (part,first,end) => truckContacts.push(ibdTriangleContact(truck,'parked-truck-'+part,first,end)));
   else buildIbdTruck(b, cube, solids);
   // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
+  const quarantineMarkings=b.idx.length;
   for (const z of [-18.5, -14.5]) cube([15.5, .11, z], [15, .015, .14], P.rust, false, 0);
   for (const x of [8, 23]) cube([x, .11, -16.5], [.14, .015, 4], P.rust, false, 0);
+  siteRange?.('quarantine-floor-markings',quarantineMarkings,'none');
   // Rack-mounted sign leaves the closed-carton transfer corridor clear below it.
+  const quarantinePlaque=b.idx.length;
   cube([14, 5.6, -21.15], [5.2, .95, .12], P.dark);
+  siteRange?.('quarantine-sign-panel',quarantinePlaque,'solid');
+  const laneMarkings=b.idx.length;
   for (let z = 3; z < 21; z += 3) cube([1, .092, z], [.15, .012, 1.7], P.pale, false, 0);
+  siteRange?.('pedestrian-lane-markings',laneMarkings,'none');
+  const entrySign=b.idx.length;
   for (const x of [-4.6, 4.6]) cube([x, 1.8, 28.2], [.22, 3.6, .22], P.dark, true);
   cube([0, 3.6, 28.2], [9.4, 1.6, .18], P.dark);
+  siteRange?.('entry-sign-posts-and-panel',entrySign,'solid');
+  const scopes=b.idx.length;
   for (const [x, z] of [[-6, -3.5], [-10, -13.5]]) {
     cube([x, 4.6, z - .4], [.18, 1.2, .18], P.steel);
     bar(b, [x, 5.25, z - .8], [x, 5.25, z + .2], .13, P.dark, 8);
   }
+  siteRange?.('gallery-observation-scopes',scopes,'solid');
+  const gallerySign=b.idx.length;
   cube([-28.3, .8, 3.96], [.14, 1.6, .14], P.dark, true);
   cube([-28.3, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
+  siteRange?.('gallery-sign-post-and-panel',gallerySign,'solid');
   const floorContacts = [
     { id: 'ibd-paving', firstIndex: 0, indexCount: groundSurface.indices.length, ...groundSurface },
     { id: 'ibd-gallery-walk', firstIndex: galleryFirst, indexCount: galleryLast - galleryFirst, ...gallerySurface },
   ];
-  const contactSurfaces = [...floorContacts, ...buildingContacts, ...rollerContacts];
+  const contactSurfaces = [...floorContacts, ...buildingContacts, ...rollerContacts, ...siteContacts];
+  const collisionSources=[...contactSurfaces.map(({id,firstIndex,indexCount})=>({id,firstIndex,indexCount,collision:'solid' as const})),...visualOnly]
+    .sort((a,b)=>a.firstIndex-b.firstIndex);
+  if(complete){
+    let next=0;
+    for(const {id,firstIndex,indexCount} of collisionSources){
+      if(firstIndex!==next||!indexCount)throw new Error('Incomplete yard contact range at '+id);
+      next+=indexCount;
+    }
+    if(next!==b.idx.length)throw new Error('Incomplete IBD static yard contact coverage');
+  }
   // The CPU walking fixtures can still mount a single copy of the same triangle contacts.
   let merged: ReturnType<typeof mergeIbdTriangleContacts> | undefined;
   const geometry = bakeIbdLight(b.build());
   coilFinish?.bind(geometry);
-  return { geometry, solids, contactSurfaces, groundSurface, workstationContacts, truckContacts,
+  return { geometry, solids, contactSurfaces, collisionSources, groundSurface, workstationContacts, truckContacts,
     get walkSurface() { return merged ??= mergeIbdTriangleContacts(contactSurfaces); },
-    craftShellGeometry: options.separateCraftShells ? bakeIbdLight(craftShells.build()) : null,
+    craftShellGeometry: separateCraftShells ? bakeIbdLight(craftShells.build()) : null,
     truckGeometry: truck ? bakeIbdLight(truck.build()) : null };
 }
 
