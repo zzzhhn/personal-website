@@ -1,13 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as React from 'react';
-import * as RapierReact from '@react-three/rapier';
+
 import R from '@dimforge/rapier3d-compat';
 import { Matrix4, Object3D, PerspectiveCamera, Quaternion, Raycaster, Scene, Vector3 } from 'three';
 import { loadWorldModule } from '../facility-craft/street/runtime.mjs';
 import { compareContact, meshFromBatch } from '../facility-craft/street/contact-fixture.mjs';
 import { collisionInventory } from '../../../src/components/world/world-collision-inventory.ts';
 
+// Load the renderer bridge after Three's ESM exports are initialized on Node 22.16.
+const RapierReact = await import('@react-three/rapier');
 await R.init();
 const identity = { x:0,y:0,z:0,w:1 }, axis = new Vector3(1,0,0);
 const close = (a,b,margin = .001) => assert.ok(Math.abs(a-b)<margin, `${a} vs ${b}`);
