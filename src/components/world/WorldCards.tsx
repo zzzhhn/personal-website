@@ -54,7 +54,6 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   if (paused) return null;
   if (card) return <WorldCardPanel content={content} />;
   if (driving || seat) return null;
-  if (canVault) return <div className='world-prompt' aria-live='polite'><ul><li className='is-active'><kbd className='world-key world-vault-key'>{device==='pad'?'A':lang==='zh'?'空格':'Space'}</kbd><span>{t.vault}</span></li></ul></div>;
   if (nearby) {
     const rows = nearby.choices;
     return <div className='world-prompt' aria-live='polite'>
@@ -63,6 +62,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
     </div>;
   }
   if (nearbyVehicle) return <div className='world-prompt' aria-live='polite'><ul><li className='is-active'><KeyCap device={device} k='E' /><span>{t.enter.replace(/^E · /, '')} · {t[nearbyVehicle]}</span></li></ul></div>;
+  if (canVault) return <div className='world-prompt' aria-live='polite'><ul><li className='is-active'><kbd className='world-key world-vault-key'>{device==='pad'?'A':lang==='zh'?'空格':'Space'}</kbd><span>{t.vault}</span></li></ul></div>;
   return null;
 }
 

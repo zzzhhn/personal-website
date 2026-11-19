@@ -92,6 +92,16 @@ export function resolvePromptTarget(row: InteractionChoice) {
   return item && sameChoice(row, item) ? item : null;
 }
 
+/** Panels submit the row they rendered. The actor consumes it through the same live checks as E. */
+let panelInput: ((row: InteractionChoice) => void) | null = null;
+export function bindInteractionPanelInput(handler: (row: InteractionChoice) => void) {
+  panelInput = handler;
+  return () => { if (panelInput === handler) panelInput = null; };
+}
+export function requestPanelInteraction(row: InteractionChoice) {
+  panelInput?.(row);
+}
+
 export function cycleInteractPick(step = 1) {
   const s = useWorldStore.getState(), prompt = s.nearbyInteract;
   if (s.paused || s.card || s.seat || s.activeVehicle || s.clubMode || s.factoryStation || !prompt) return;

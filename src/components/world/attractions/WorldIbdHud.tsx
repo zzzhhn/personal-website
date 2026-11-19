@@ -1,5 +1,6 @@
 import { memo, useState } from 'react';
 import { useWorldStore } from '../store';
+import { requestPanelInteraction } from '../WorldInteract';
 import { sampleTimeLight } from '../world-climate';
 import { IBD_YARD } from './attraction-layout';
 import { assessIbd } from './ibd-model';
@@ -27,7 +28,8 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
     && s.position[2] >= IBD_YARD.center[2] - IBD_YARD.size[1] / 2 - 4 && s.position[2] <= IBD_YARD.center[2] + IBD_YARD.size[1] / 2 + 6);
   const distance = useWorldStore(s => inYard && guided ? Math.ceil(Math.hypot(s.position[0] - IBD_YARD.center[0] - target.at[0], s.position[2] - IBD_YARD.center[2] - target.at[2])) : 0);
   const suppressed = useWorldStore(s => s.paused || !!s.card || s.poolInspect || !!s.shot || !!s.activeVehicle || !!s.seat);
-  const nearby = useWorldStore(s => inYard && s.nearbyInteract?.id.startsWith('ibd-') ? s.nearbyInteract.id : null), [details, setDetails] = useState(false);
+  const nearbyChoice = useWorldStore(s => inYard && s.nearbyInteract?.id.startsWith('ibd-') ? s.nearbyInteract : null);
+  const nearby = nearbyChoice?.id, [details, setDetails] = useState(false);
   if (!active || !mounted || suppressed || !inYard) return null;
   const local = ibdLocal(useWorldStore.getState().position);
   const zh = lang === 'zh', t = (cn: string, en: string) => zh ? cn : en;
@@ -69,7 +71,12 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
         <div className="ibd-actions">{ibdVerdictOptions(judgement.slot).map(verdict => <button key={verdict} className="ibd-secondary"
           onClick={() => dispatchIbdAction({ ...judgement, verdict })}>{IBD_VERDICT_LABEL[verdict][lang]}</button>)}</div>
       </div> : actions.length > 0 && <div className="ibd-actions">{actions.map((a, i) => <button key={a.kind} className={i === 0 ? 'ibd-primary' : 'ibd-secondary'}
-        onClick={() => {if(ibdPackWorkBusy())return;if(a.kind==='contents'&&isIbdPackStation(a.station))openIbdPack(a.station);else dispatchIbdAction(a);}}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{guided && !game.released && !atStock ? guide.title[lang] : IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
+        onClick={() => {
+          if(i===0&&nearbyChoice){requestPanelInteraction(nearbyChoice);return;}
+          if(ibdPackWorkBusy())return;
+          if(a.kind==='contents'&&isIbdPackStation(a.station))openIbdPack(a.station);
+          else dispatchIbdAction(a);
+        }}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{i===0&&nearbyChoice?nearbyChoice.label[lang]:IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
     {notice && !packView.pack && <p className="ibd-feedback" role="status" aria-live="polite">{notice}</p>}
     {!!samples?.length&&!packView.pack&&<p className="ibd-feedback">{t('这箱的已验样记录：','Recorded samples from this carton: ')}{samples.map(p=>`${p.index+1} · ${p.reading}`).join(' / ')}</p>}
     <button className="ibd-details-toggle" aria-expanded={details} onClick={() => setDetails(v => !v)}>{t('货单、已见证据与退换记录', 'Manifest, observed evidence and exchanges')} {details ? '−' : '+'}</button>

@@ -1,4 +1,5 @@
-import { lazy, Suspense } from 'react';
+import { lazy } from 'react';
+import RegionSceneBoundary from '../RegionSceneBoundary';
 import { useWorldStore } from '../store';
 import { IBD_YARD, INTENT_COASTER } from './attraction-layout';
 import WorldAttractionApproach from './WorldAttractionApproach';
@@ -17,8 +18,8 @@ export default function WorldAttractions(){
   });
   return <group name="northern-attractions">
     <WorldAttractionApproach/>
-    <Suspense fallback={null}><Ibd active={ibdActive}/></Suspense>
-    <Suspense fallback={null}><Coaster active={coasterActive}/></Suspense>
-    <Suspense fallback={null}><Factory active={factoryActive}/></Suspense>
+    <RegionSceneBoundary id="ibd"><Ibd active={ibdActive}/></RegionSceneBoundary>
+    <RegionSceneBoundary id="coaster"><Coaster active={coasterActive}/></RegionSceneBoundary>
+    <RegionSceneBoundary id="factory"><Factory active={factoryActive}/></RegionSceneBoundary>
   </group>;
 }

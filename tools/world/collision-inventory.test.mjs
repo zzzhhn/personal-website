@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { BoxGeometry, Group, InstancedMesh, Mesh, Scene } from 'three';
+import { readWorldCraftGltf, disposeWorldCraftGltf } from '../../src/components/world/world-craft-gltf-test.mjs';
 import { collisionInventory } from '../../src/components/world/world-collision-inventory.ts';
 
 test('colour-pass inventory counts material batches once and distinguishes inactive LODs and missing labels', () => {
   const scene = new Scene(), region = new Group(), decoration = new Group();
   region.name = 'trail';
-  decoration.userData.collision = 'none';
+  decoration.userData.worldCollision = 'none';
   const rock = new Mesh(), sign = new Mesh(), lod = new InstancedMesh(undefined, undefined, 2);
   rock.userData.solid = true;
   lod.count = 0;
@@ -15,6 +16,7 @@ test('colour-pass inventory counts material batches once and distinguishes inact
   assert.deepEqual(report.mounted, { meshes: 3, declared: 1, unclassified: 2, invalid: 0 });
   assert.deepEqual(report.submitted, { meshes: 2, declared: 1, unclassified: 1, invalid: 0 });
   assert.deepEqual(report.submittedGapsByRegion, { trail: 1 });
+  assert.deepEqual(report.mountedGapsByRegion, { trail: 2 });
   assert.deepEqual(report.errors, []);
 });
 
@@ -24,14 +26,73 @@ test('merged ranges must cover their geometry and name one active collider insid
   root.name = 'house'; collider.name = wrong.name = 'board';
   scene.add(root, other); root.add(mesh, collider); other.add(wrong);
   const p = { id: 'board', firstVertex: 0, vertexCount: mesh.geometry.attributes.position.count, collision: 'solid' };
-  mesh.userData = { collision: 'solid', sources: [p] };
+  mesh.userData = { worldCollision: 'solid', worldCollisionSources: [p] };
   const run = active => collisionInventory(scene, [mesh], active, ['house']);
   assert.deepEqual(run([collider, wrong]).errors, []);
   assert.ok(run([wrong]).errors.length);
   assert.ok(run([collider, collider]).errors.length);
   p.firstVertex++;
   assert.equal(run([collider]).submitted.invalid, 1);
-  delete mesh.userData.sources;
-  mesh.userData.collision = 'typo';
+  delete mesh.userData.worldCollisionSources;
+  mesh.userData.worldCollision = 'typo';
   assert.equal(run([collider]).mounted.invalid, 1);
+});
+
+test('shipping camp GLB keeps artist prose separate from the enforceable runtime contract', async () => {
+  const gltf = await readWorldCraftGltf(['public/assets/world/facility-craft/camp/camp-facilities-v1.glb']);
+  const scene = new Scene(), lamp = gltf.scene.getObjectByName('C16'), guitar = gltf.scene.getObjectByName('C12');
+  try {
+    assert.match(lamp.userData.collision, /desk/);
+    assert.match(guitar.userData.collision, /pushable/);
+    scene.add(gltf.scene);
+    const raw = collisionInventory(scene, [], [], []);
+    assert.equal(raw.mounted.invalid, 0);
+    assert.equal(raw.mounted.declared, 0);
+    lamp.userData.worldCollision = 'none';
+    const declared = collisionInventory(scene, [], [], []);
+    assert.ok(declared.mounted.declared > 0);
+    assert.ok(declared.mounted.unclassified > 0);
+    guitar.userData.worldCollision = 'pushabel';
+    assert.ok(collisionInventory(scene, [], [], []).errors.some(e => e.includes('C12')));
+  } finally { disposeWorldCraftGltf(gltf.scene); }
+});
+
+test('explicit pieces can share one aggregate collider but cannot borrow a duplicate or absent one', () => {
+  const scene = new Scene(), root = new Group(), collider = new Group(), visual = new Mesh();
+  root.name = 'hall'; collider.name = 'shell'; scene.add(root); root.add(visual, collider);
+  visual.userData = { worldCollision: 'solid', surfaceId: 'shell', worldCollisionSharedSurface: true };
+  root.add(visual.clone());
+  const report = active => collisionInventory(scene, [], active, ['hall']);
+  assert.deepEqual(report([collider]).registrations, { hall: 1 });
+  assert.deepEqual(report([collider]).errors, []);
+  assert.ok(report([]).errors.length);
+  assert.ok(report([collider,collider]).errors.length);
+  visual.userData.worldCollisionSharedSurface = false;
+  assert.ok(report([collider]).errors.length);
+});
+
+test('indexed material batches cover every referenced triangle in index space', () => {
+  const scene = new Scene(), mesh = new Mesh(new BoxGeometry()), root = new Group(), collider = new Group();
+  scene.add(root); root.name = 'town'; root.add(mesh,collider); collider.name = 'desk';
+  const source = { id: 'case', collision: 'solid', surfaceId: 'desk', firstIndex:0, indexCount: mesh.geometry.index.count };
+  mesh.userData.worldCollisionSources = [source];
+  const run = () => collisionInventory(scene, [mesh],[collider],['town']);
+  assert.deepEqual(run().errors, []);
+  source.indexCount -= 3;
+  assert.equal(run().submitted.invalid,1);
+  source.indexCount += 3; source.firstVertex = 0;
+  assert.equal(run().submitted.invalid,1);
+});
+
+test('a partially migrated batch reports its gaps and remains ineligible for strict coverage', () => {
+  const scene = new Scene(), root = new Group(), model = new Mesh(new BoxGeometry()), wall = new Group();
+  root.name='street'; wall.name='reader'; scene.add(root);root.add(model,wall);
+  const source={id:'panel',collision:'solid',surfaceId:'reader',firstIndex:3,indexCount:3};
+  model.userData={worldCollisionPartial:true,worldCollisionSources:[source]};
+  const sample = strict => collisionInventory(scene,[model],[wall],strict?['street']:[]);
+  assert.equal(sample(false).submitted.unclassified,1);
+  assert.deepEqual(sample(false).errors,[]);
+  assert.ok(sample(true).errors.some(e=>e.includes('unclassified')));
+  model.userData.worldCollisionSources.push({...source,id:'overlap'});
+  assert.equal(sample(false).submitted.invalid,1);
 });

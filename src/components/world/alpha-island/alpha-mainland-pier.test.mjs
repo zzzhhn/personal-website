@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { alphaMainlandPierStructure, alphaPierDeckHeight } from './alpha-mainland-pier.ts';
-import { Quaternion, Vector3 } from 'three';
+import { Object3D, Quaternion, Vector3 } from 'three';
+import { arrivalColliderRequirements, worldActorSites } from '../world-actor-sites.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics.ts';
 import { playerSupport, followPlayerGround } from '../player-ground.ts';
 
@@ -98,4 +99,42 @@ test('mainland pier rail openings, deck survey and capsule crossing use the visi
     assert.equal(unsupported,0,'capsule should bridge the narrow slots between planks');
     t.diagnostic('Mainland pier crossing reached z='+body.translation().z.toFixed(2)+'; unsupported steps='+unsupported);
   } finally { world.free(); parts.forEach(part=>part.geometry.dispose()); }
+});
+
+
+test('the ferry pier boundary waits for all installed pieces and reopens after a deck plank remounts', () => {
+  const { parts, pieces } = alphaMainlandPierStructure();
+  const world = new R.World({ x: 0, y: -12.5, z: 0 }), states = new Map();
+  const pier = new Object3D();
+  pier.name = 'alpha-mainland-pier-r4-candidate';
+  const fixed = world.createRigidBody(R.RigidBodyDesc.fixed());
+  const register = (name, desc, group) => {
+    const collider = world.createCollider(desc, fixed), object = new Object3D();
+    object.name = name;
+    group?.add(object);
+    states.set(collider.handle, { object });
+    return collider;
+  };
+  const install = piece => {
+    const [x, y, z, w] = piece.quaternion;
+    return register(piece.id, R.ColliderDesc.roundCuboid(...piece.args).setTranslation(...piece.position).setRotation({ x, y, z, w }), pier);
+  };
+  try {
+    for (const need of arrivalColliderRequirements(null)) {
+      register(need.name, R.ColliderDesc.trimesh(new Float32Array([0,0,0,1,0,0,0,0,1]), new Uint32Array([0,2,1])));
+    }
+    const from = [-10, 2, 68], to = [-10, 2, 72];
+    const passage = worldActorSites.passage(world, states);
+    for (const piece of pieces.slice(0, -1)) install(piece);
+    assert.equal(passage.allows(from, to, PLAYER_RADIUS), false);
+    install(pieces.at(-1));
+    assert.equal(passage.allows(from, to, PLAYER_RADIUS), true);
+    const plank = pieces.find(piece => piece.id === 'mainland-pier/1/plank/0');
+    let collider;
+    for (const [handle, state] of states) if (state.object.name === plank.id) collider = world.getCollider(handle);
+    world.removeCollider(collider, false); states.delete(collider.handle);
+    assert.equal(passage.at([-10, 2, 112], PLAYER_RADIUS), false);
+    install(plank);
+    assert.equal(passage.at([-10, 2, 112], PLAYER_RADIUS), true);
+  } finally { world.free(); parts.forEach(part => part.geometry.dispose()); }
 });

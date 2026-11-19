@@ -4,6 +4,7 @@ import { localWindPace } from './rides/local-wind';
 import { holdWorldArrival, activateReadyArrival } from './world-arrival-readiness';
 import type { ActorSites } from './actor-sites';
 import { passageVelocity, passageRoute } from './region-passage';
+import { createRegionBodyGuard } from './region-body-guard';
 import { vehiclePassageRadius } from './vehicle-passage';
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type RefObject } from 'react';
@@ -11,12 +12,12 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { actorActivities, activityApproachMotion } from './actor-activities';
-import { useWorldStore } from './store';
+import { useWorldStore, type InteractionChoice } from './store';
 import type { ActorRide } from './rides/actor-ride';
 import { RideCameraOrientation, rideCameraPose, rideCameraSweepOrigin, rideLook, turnRideLook, zoomRideLook } from './rides/ride-camera';
 import { RideCameraObstruction } from './rides/ride-camera-obstruction';
 import { RideCabinCamera } from './rides/ride-camera-cabin';
-import { cycleInteractPick, nearestInteractable, publishInteractionPrompt, resolvePromptTarget, type Interactable } from './WorldInteract';
+import { bindInteractionPanelInput, cycleInteractPick, nearestInteractable, publishInteractionPrompt, resolvePromptTarget, type Interactable } from './WorldInteract';
 import { cacheGroundRoute } from './activity-ground-route';
 import { findPickupStand, pickupGroundRoute } from './pickup-approach';
 import { createInteractionApproach, createInteractionOfferResolver, interactionVisible, type InteractionOfferContext } from './interaction-offer';
@@ -333,7 +334,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const keys = useRef(new Set<string>());
   const releasedKeys = useRef(new Set<string>());
   const resetPad = useRef(false);
-  type PromptAtPress = Pick<ReturnType<typeof useWorldStore.getState>, 'nearbyInteract' | 'nearbyVehicle'>;
+  type PromptAtPress = { nearbyInteract: InteractionChoice | null; nearbyVehicle: VehicleId | null; panel?: boolean };
   const actions = useRef<{interact: (PromptAtPress & { movement: [number, number] }) | null; jump: boolean; recover: boolean}>({interact:null,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
   const grounded = useRef(false);
@@ -358,6 +359,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const firstPerson = useWorldStore(s=>s.zoom===3);
   const { world, rapier, colliderStates } = useRapier();
   const passage=useMemo(()=>sites.passage(world,colliderStates),[sites,world,colliderStates]);
+  const regionBodies=useMemo(()=>createRegionBodyGuard(passage),[passage]);
   const groundRoute=useMemo(()=>cacheGroundRoute((from,destination,limit)=>{
     const body=player.current;
     return body && passage.allows(from,destination,PLAYER_RADIUS)
@@ -376,8 +378,13 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   }, [arrival,sites]);
   useLayoutEffect(() => {
     if (!entry.waitForColliders || arrivalActive) return;
-    const blocked = () => !entry.collidersReady(world, colliderStates);
-    const release = holdWorldArrival(blocked);
+    const blocked = () => {
+      const state = useWorldStore.getState();
+      // A fixed camera or pause can render before the first physics queries. For a
+      // live player, release the loading screen only after actual body activation.
+      return !entry.collidersReady(world, colliderStates) || !(state.paused || state.poolInspect || state.shot);
+    };
+    const release = holdWorldArrival(blocked, entry.loadFailed);
     // WorldActors may resolve after SceneLifecycle's first three frames.
     if (blocked()) useWorldStore.setState(s => ({ ready: false, loading: { ...s.loading, phase: 'scene' } }));
     releaseArrival.current = release;
@@ -464,15 +471,30 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     return true;
   }
   function returnToCamp() {
+    const body = player.current;
+    if (!body) return false;
+    if (!passage.at(home.position, PLAYER_RADIUS)) { noticeRegionWaiting(home.position); return false; }
+    const ground: Vec3 = [home.position[0], home.position[1] - PLAYER_CENTER_HEIGHT, home.position[2]];
+    const landing = findSafePlayerLanding(world, rapier, body, [ground], waterY);
+    if (!landing) {
+      actorNotice('营地的落脚点暂不可用。请稍后重试。','There is no safe footing at camp yet. Try again shortly.');
+      return false;
+    }
+    regionBodies.forget(body);
+    if (arrivalPending.current) {
+      arrivalPending.current = false;
+      releaseArrival.current?.(); releaseArrival.current = null;
+      setArrivalActive(true);
+    }
     releaseGuideActionHand();ride.cancel();rideHeld.current=false;
     const vehicle=useWorldStore.getState().activeVehicle;
-    return recoverActor(home,player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
+    return recoverActor({...home,position:landing},body,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
       nearbyItem.current=null;guideYaw.current=0;publishedTime.current=0;
-      portalTravel.current={previous:home.position,cooldown:2,armed:false};
+      portalTravel.current={previous:landing,cooldown:2,armed:false};
       cars.current.forEach(car=>{for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,0);}});
     },()=>{
-      cameraReady.current=false;target.current.set(...home.position);impact.current=0;lastCarYaw.current=null;
+      cameraReady.current=false;target.current.set(...landing);impact.current=0;lastCarYaw.current=null;
       if(guideView.current)guideView.current.visible=true;
       Object.assign(cam.current,{yaw:CAMERA_DEFAULT_YAW,pitch:CAMERA_DEFAULT_PITCH,actual:CAMERA_PRESETS[1],distance:CAMERA_PRESETS[1],desiredDistance:CAMERA_PRESETS[1],
         firstPerson:false,collided:false,hitDistance:null,mode:'walk',recentering:false,driveManualZoom:false,lastManual:-Infinity,fov:50});
@@ -573,20 +595,33 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     const car=state.activeVehicle && cars.current.get(state.activeVehicle);
     if (!car || car.flipped<RECOVERY_SECONDS) return false;
     const p=car.body.translation();
+    if (!passage.at(asTuple(p), car.passageRadius)) {
+      noticeRegionWaiting(asTuple(p), car.passageRadius);
+      return false;
+    }
     resetBody(car.body,[p.x,p.y+wheelGeometry(car.spec.size).height*.8,p.z],heading(car.body.rotation()));
     car.flipped=0; car.wet=0; clearPlayerMotion(true);clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
   }
 
-  function noticeRegionWaiting() {
+  function noticeRegionWaiting(position?: Vec3, radius = PLAYER_RADIUS) {
     const now=performance.now();
     if(now-regionNoticeAt.current<=2500)return;
     regionNoticeAt.current=now;
+    if (position && passage.failureAt?.(position, radius)) {
+      actorNotice('此区域加载失败。可回到营地，或刷新页面重试。','This area failed to load. Return to camp or reload to try again.');
+      return;
+    }
     actorNotice('前方区域正在准备，请稍候。','The area ahead is preparing. Please wait.');
   }
   /** Suspension and recovery belong to the world, even when the player is on a ride. */
   function stepWorldVehicles(dt:number,active?:Car,throttle=0,steer=0,transitioning=false,debugging=false,brake=false,handbrake=false,boost=false) {
     cars.current.forEach(car=>{
-      const driven=active===car,velocity=car.body.linvel();
+      const driven=active===car;
+      if (!regionBodies.admit(car.body, car.passageRadius)) {
+        if (driven) noticeRegionWaiting(asTuple(car.body.translation()), car.passageRadius);
+        return;
+      }
+      const velocity=car.body.linvel();
       const front=rotateVector([1,0,0],car.body.rotation());
       const speed=velocity.x*front[0]+velocity.z*front[2];
       if(car.spec.id==='coupe'){
@@ -631,11 +666,12 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       });
       // updateVehicle has applied engine/suspension impulses. Gate that resulting
       // motion before physics integration, retaining vertical suspension/gravity.
-      const motion=passageVelocity(passage,asTuple(car.body.translation()),car.body.linvel(),dt,car.passageRadius);
+      const { x, y, z }=car.body.translation(), currentVelocity=car.body.linvel();
+      const motion=passageVelocity(passage,[x,y,z],currentVelocity,dt,car.passageRadius);
       if(motion.blocked){
         car.body.setLinvel(motion.velocity,true);
         for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,car.spec.mass*.035);}
-        if(driven){car.lights.brake=true;if(Math.abs(throttle)>.01||Math.abs(speed)>.01)noticeRegionWaiting();}
+        if(driven){car.lights.brake=true;if(Math.abs(throttle)>.01||Math.abs(speed)>.01)noticeRegionWaiting([x+currentVelocity.x*dt,y+currentVelocity.y*dt,z+currentVelocity.z*dt],car.passageRadius+.125);}
       }
       const wheelShape=wheelGeometry(car.spec.size);
       car.guards.forEach((guard,i)=>{
@@ -676,12 +712,22 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   useEffect(() => {
     const releaseAction=()=>{pickupApproach.cancel();releaseGuideActionHand();};
     const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||actorActivities.inputOwner()||s.poolInspect||s.shot||actorActivities.blocksOffers())releaseAction();});
+    const unbindPanelInput=bindInteractionPanelInput(row=>{
+      const state=useWorldStore.getState();
+      if(ride.active||state.paused||state.poolInspect||state.shot)return;
+      actions.current.interact={nearbyInteract:row,nearbyVehicle:null,panel:true,movement:walkAxes(keys.current,pad.current)};
+    });
     const hiddenAction=()=>{if(document.hidden)releaseAction();};
     document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
-      if(ride.active)return;
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
+      if(ride.active){
+        if(event.code==='KeyE'&&!event.repeat&&!document.hidden){
+          event.preventDefault();ride.requestExit();
+        }
+        return;
+      }
       releasedKeys.current.delete(event.code);
       const activityKey=actorActivities.keyboard({code:event.code,repeat:event.repeat});
       if(activityKey){if(activityKey==='handled')event.preventDefault();return;}
@@ -927,7 +973,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     };
     debugTarget=api;
     return ()=>{
-      unsubscribeAction();releaseAction();actorActivities.sync({available:false,grounded:false});document.removeEventListener('visibilitychange',hiddenAction);window.removeEventListener('blur',releaseAction);
+      unbindPanelInput();unsubscribeAction();releaseAction();actorActivities.sync({available:false,grounded:false});document.removeEventListener('visibilitychange',hiddenAction);window.removeEventListener('blur',releaseAction);
       window.removeEventListener('keydown',down);window.removeEventListener('keyup',up);window.removeEventListener('blur',clearInput);
       document.removeEventListener('visibilitychange',hidden);gl.domElement.removeEventListener('wheel',wheel);unsubscribe();clearInput();
       el.removeEventListener('pointerdown',pointerDown);el.removeEventListener('pointermove',pointerMove);el.removeEventListener('pointerup',pointerUp);
@@ -939,7 +985,18 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     };
   },[world,rapier,gl,colliderStates,ride]);
 
-  useAfterPhysicsStep(()=>{if(player.current)clearPlayerSlopeGravity(player.current);});
+  useAfterPhysicsStep(() => {
+    if (player.current) {
+      clearPlayerSlopeGravity(player.current);
+      const blocked = regionBodies.finish(player.current, PLAYER_RADIUS);
+      if (blocked) noticeRegionWaiting(blocked);
+    }
+    const active = useWorldStore.getState().activeVehicle;
+    cars.current.forEach(car => {
+      const blocked = regionBodies.finish(car.body, car.passageRadius);
+      if (blocked && active === car.spec.id) noticeRegionWaiting(blocked, car.passageRadius);
+    });
+  });
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     if (arrivalPending.current) {
@@ -1004,6 +1061,22 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const landing=findSafePlayerLanding(world,rapier,player.current,candidates.filter(v=>passage.at(v,PLAYER_RADIUS)),waterY);
       if(!landing){noticeRegionWaiting();stepWorldVehicles(dt);return;}
       relocatePlayer(landing);
+    }
+    if (!regionBodies.admit(player.current, PLAYER_RADIUS)) {
+      grounded.current = false;
+      if (nearbyItem.current || useWorldStore.getState().nearbyVehicle) {
+        nearbyItem.current = null;
+        useWorldStore.setState({ nearbyInteract: null, interactPick: null, nearbyVehicle: null, canVault: false });
+      }
+      actions.current.interact = null;
+      actions.current.jump = false;
+      actorActivities.sync({ available: false, grounded: false });
+      if (pickupApproach.active || railVault.current || vault.current) clearPlayerMotion();
+      guideTargetSpeed.current = 0;
+      moveIntent.current = 'idle';
+      noticeRegionWaiting(asTuple(player.current.translation()));
+      stepWorldVehicles(dt);
+      return;
     }
     portalTravel.current.cooldown=Math.max(0,portalTravel.current.cooldown-dt);
     if(guideTransition.current){
@@ -1072,10 +1145,12 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     if(seated||carded||actorActivities.inputOwner())nearby=null;
     const interactNow=(shown: PromptAtPress, movement: [number, number])=>{
       const now=useWorldStore.getState();
-      if(actorActivities.interact())return;
-      if(actorActivities.inputOwner())return;
-      if(now.seat){useWorldStore.setState({seat:null});return;}
-      if(now.card){useWorldStore.setState({card:null});return;}
+      if(!shown.panel){
+        if(actorActivities.interact())return;
+        if(actorActivities.inputOwner())return;
+        if(now.seat){useWorldStore.setState({seat:null});return;}
+        if(now.card){useWorldStore.setState({card:null});return;}
+      }
       if (actorActivities.busy() || railVault.current) return;
       const prompt = shown.nearbyInteract;
       if (prompt && !actorActivities.allowsInteraction(prompt.id)) {
@@ -1083,7 +1158,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         if(notice)actorNotice(notice.zh,notice.en);
         return;
       }
-      if(active)exit();else if(prompt){
+      if(active&&!shown.panel)exit();else if(prompt){
         const item = resolvePromptTarget(prompt);
         if(!item || !pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true),()=>resolvePromptTarget(prompt)===item,movement)){
           actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;
@@ -1146,7 +1221,9 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         capsuleSupport:ground?{gap:ground.gap,normal:asTuple(ground.normal),centerY:ground.centerY}:null};
       // Raw input in camera space (x right, z forward): keys plus the left stick (analogue magnitude).
       let [rx,rz]=walkAxes(keys.current,gp);
+      const approaching=pickupApproach.active;
       if(pickupApproach.consumeHeldMovement(rx,rz)){rx=0;rz=0;}
+      if(approaching&&!pickupApproach.active)actorNotice('已取消自动走近，可继续移动。','Approach cancelled. You can move again.');
       const operating=actorActivities.inputOwner();
       if(operating){rx=0;rz=0;actions.current.jump=false;}
       let rm=Math.hypot(rx,rz);if(rm>1){rx/=rm;rz/=rm;rm=1;}
@@ -1248,7 +1325,10 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         const position:Vec3=[p.x,p.y,p.z];
         const motion=pickupApproach.step(dt,position,guideYaw.current,Math.hypot(velocity.x,velocity.z),grounded.current,
           (item,stand,ready)=>sight(item)&&passage.allows(position,stand,PLAYER_RADIUS)&&(ready||!!pickupGroundRoute(world,rapier,player.current!,position,stand)));
-        if(motion?.blocked)actorNotice('没有走到可取用的位置，请换一侧再试。','Could not reach the pickup spot. Try another side.');
+        if(motion?.blocked){
+          if(motion.reason==='target-changed')actorNotice('物件或操作已变化，请重新靠近。','The object or action changed. Approach again.');
+          else actorNotice('未能到达站位，请从畅通的一侧重试。','Could not reach the standing position. Try again from a clear side.');
+        }
         else if(motion){
           vx=motion.vx;vz=motion.vz;guideYaw.current=motion.heading;
           moveIntent.current=Math.hypot(vx,vz)>.05?'walk':'idle';
@@ -1336,7 +1416,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         player.current.setLinvel(passageMotion.velocity,true);
         railVault.current=null;vault.current=null;pickupApproach.cancel();
         guideTargetSpeed.current=0;moveIntent.current='idle';
-        if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01)noticeRegionWaiting();
+        if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01)noticeRegionWaiting([p.x+nextVelocity.x*dt,p.y+nextVelocity.y*dt,p.z+nextVelocity.z*dt],PLAYER_RADIUS+.125);
       }
       const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,waterY);
       wetPlayer.current=wet.submergedSeconds;
@@ -1379,6 +1459,13 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const interactPick=nearbyInteract?.choices.some(row=>row.id===previous.interactPick)?previous.interactPick:null;
       useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,interactPick,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:sites.zone(asTuple(p))});
     }
+  });
+
+  // Capture after intentional movement (arrival, portal, boarding and recovery)
+  // and immediately before Rapier applies contact and drivetrain impulses.
+  useBeforePhysicsStep(() => {
+    if (player.current && !arrivalPending.current) regionBodies.capture(player.current);
+    cars.current.forEach(car => regionBodies.capture(car.body));
   });
 
   useFrame((_,delta)=>{

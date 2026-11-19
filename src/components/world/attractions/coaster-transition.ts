@@ -1,4 +1,5 @@
 import { Vector3 } from 'three';
+import { PLAYER_RADIUS } from '../actor-physics.ts';
 import { registerRideGround } from '../rides/ride-contract.ts';
 registerRideGround('coaster-boarding',coasterBoardingGround);
 import type { Vec3 } from '../types';
@@ -19,18 +20,20 @@ const side = new Vector3(Math.sin(station.yaw), 0, Math.cos(station.yaw));
 const floorPoint = station.point.clone().addScaledVector(station.forward, .82).addScaledVector(station.up, .445);
 const platformY = coasterWorld([0, .08, 0])[1];
 const stationPoint = (lateral: number, y: number): Vec3 => floorPoint.clone().addScaledVector(side, lateral).setY(y).toArray() as Vec3;
+const firstTread = 3.65, treadDepth = .48, treadEdge = firstTread + treadDepth / 2;
 /** The model, collider, foot route and surface probe all share these actual tread bounds. */
 export const COASTER_BOARDING = {
   yaw: station.yaw, platformY, floorY: floorPoint.y,
   // +side is the rider's right when facing the train's direction of travel.
-  approach: stationPoint(4.15, platformY),
+  // Stop the standing capsule outside the first riser before the step-in animation.
+  approach: stationPoint(treadEdge + PLAYER_RADIUS + .04, platformY),
   inside: stationPoint(0, floorPoint.y),
   exit: stationPoint(5.3, platformY),
   threshold: { position: stationPoint(.975, floorPoint.y - .05), size: [1.08, .1, .18] as Vec3, yaw: station.yaw },
   stairs: Array.from({ length: 6 }, (_, i) => {
     const top = platformY + (floorPoint.y - platformY) * (i + 1) / 6;
-    return { position: stationPoint(3.65 - i * .48, (platformY + top) / 2),
-      size: [1.08, top - platformY, .48] as Vec3, top, yaw: station.yaw };
+    return { position: stationPoint(firstTread - i * treadDepth, (platformY + top) / 2),
+      size: [1.08, top - platformY, treadDepth] as Vec3, top, yaw: station.yaw };
   }),
 };
 const stairPath: Vec3[] = [COASTER_BOARDING.approach,
@@ -64,9 +67,9 @@ export function coasterBoardingGround(x: number, z: number): number | null {
   if (lateral >= -.6 && lateral <= 1.065) return COASTER_BOARDING.floorY;
   for (let i = COASTER_BOARDING.stairs.length - 1; i >= 0; i--) {
     const s = COASTER_BOARDING.stairs[i];
-    if (Math.abs((x - s.position[0]) * side.x + (z - s.position[2]) * side.z) <= .2401) return s.top;
+    if (Math.abs((x - s.position[0]) * side.x + (z - s.position[2]) * side.z) <= treadDepth / 2 + .0001) return s.top;
   }
-  return lateral > 3.89 ? platformY : null;
+  return lateral > treadEdge ? platformY : null;
 }
 /** Start from the clear apron, never route through the side of the staircase. */
 export function coasterAtBoardingEntrance(foot: Vec3): boolean {

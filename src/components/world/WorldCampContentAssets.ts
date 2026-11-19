@@ -1,4 +1,5 @@
 import { useLoader } from '@react-three/fiber';
+import { useMemo } from 'react';
 import { BufferGeometry, CanvasTexture, Color, Euler, Matrix4, Mesh, MeshStandardMaterial, Quaternion, SRGBColorSpace, Vector3, type Material } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
@@ -14,7 +15,7 @@ export const CONTENT_IDS = ['C11', 'C12', 'C13', 'C14', 'C15', 'C16', 'L01', 'C0
 export type ContentId = typeof CONTENT_IDS[number];
 export function useContentGltfs() {
   const list = useLoader(GLTFLoader, CONTENT_IDS.map(id => `/assets/world/camp/${id}.glb`), withDraco) as GLTF[];
-  return Object.fromEntries(CONTENT_IDS.map((id, i) => [id, list[i]])) as Record<ContentId, GLTF>;
+  return useMemo(() => Object.fromEntries(CONTENT_IDS.map((id, i) => [id, list[i]])) as Record<ContentId, GLTF>, [list]);
 }
 
 export interface NodePart { name: string; geometry: BufferGeometry; matrix: Matrix4; glow: boolean }

@@ -16,9 +16,9 @@ import { surfaceColliderBuffers } from '../../static-surface-asset';
 import { cycleWaterwheelGate, getWaterwheelSnapshot, subscribeWaterwheel, createWaterwheelIrrigation, stepWaterwheelIrrigation, completeWaterwheelIrrigation, type WaterwheelSnapshot } from './waterwheel-state';
 
 type CraftParts = WaterwheelPart[];
-const WATER_EFFECT_DATA = {collision:'none',collisionReason:'Animated liquid and foam are nonblocking visual effects'};
+const WATER_EFFECT_DATA = {worldCollision:'none',collisionReason:'Animated liquid and foam are nonblocking visual effects'};
 function Craft({ parts, materials, name }: { parts: CraftParts; materials: Map<AlphaFinish, MeshStandardMaterial>; name: string }) {
-  return <group name={name}>{parts.map(p => <mesh key={p.id} geometry={p.geometry} material={materials.get(p.finish)} userData={{collision:p.collision,collisionReason:p.reason,assetPart:p.id,space:p.space}} castShadow={p.role!=='floor'} receiveShadow />)}</group>;
+  return <group name={name}>{parts.map(p => <mesh key={p.id} geometry={p.geometry} material={materials.get(p.finish)} userData={{worldCollision:p.collision,collisionReason:p.reason,assetPart:p.id,space:p.space}} castShadow={p.role!=='floor'} receiveShadow />)}</group>;
 }
 function FixedCraft({parts,materials,name,position,scale}:{parts:CraftParts;materials:Map<AlphaFinish,MeshStandardMaterial>;name:string;position?:Vec3;scale?:Vec3}) {
   const colliders=useMemo(()=>parts.map(p=>({id:p.id,buffers:surfaceColliderBuffers(p)!})),[parts]);

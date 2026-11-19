@@ -107,15 +107,21 @@ const useLang = () => useWorldStore(s => s.lang);
 /** Common one-shot runner: E starts `run(t)` for `dur` seconds; presses during a run are ignored. */
 function useOneShot(dur: number) {
   const state = useRef({ t: -1, n: 0 });
-  const start = () => { if (state.current.t >= 0) return false; state.current.t = 0; state.current.n++; return true; };
+  const available = () => state.current.t < 0;
+  const start = () => { if (!available()) return false; state.current.t = 0; state.current.n++; return true; };
   const advance = (dt: number) => { if (state.current.t < 0) return -1; state.current.t += dt; if (state.current.t > dur) { state.current.t = -1; return -1; } return state.current.t; };
-  return { state, start, advance };
+  return { state, available, start, advance };
 }
 
-function useExhibitE(p: Placed, kind: 'exhibit' | 'seat', label: { en: string; zh: string }, onPress: () => void, radius = 1.6) {
+function useExhibitE(p: Placed, kind: 'exhibit' | 'seat', label: { en: string; zh: string }, onPress: () => void,
+  { radius = 1.6, enabled }: { radius?: number; enabled?: () => boolean } = {}) {
   const a = EXHIBIT_ANCHOR[p.hut.id];
   const position = useMemo(() => p.hut.local(a[0], 0.9, a[1]), [p.hut, a]);
-  useInteractable({ id: `park-${p.id}-${p.hut.id}`, position, radius, label, kind, onInteract: () => { if (!new URLSearchParams(location.search).has('qa')) trackPortfolioEvent('world_booth_open', p.hut.slug); onPress(); } });
+  useInteractable({ id: `park-${p.id}-${p.hut.id}`, position, radius, label, kind, enabled, onInteract: () => {
+    if (enabled?.() === false) return;
+    if (!new URLSearchParams(location.search).has('qa')) trackPortfolioEvent('world_booth_open', p.hut.slug);
+    onPress();
+  } });
 }
 
 /* ------------------------------------------------------------------ P13 review booth */
@@ -145,7 +151,7 @@ function ReviewBooth({ p }: { p: Placed }) {
   useExhibitE(p, 'exhibit', { en: 'Watch both clips and vote', zh: '看两段短片并投票' }, () => {
     if (!shot.start()) return;
     side.current = 1 - side.current;
-  });
+  }, { enabled: shot.available });
   const sel = p.movers.selector, btn = p.movers.button;
   useFrame((_, dt) => {
     if (!isWorldRunning()) return;
@@ -198,7 +204,7 @@ function RecordWall({ p }: { p: Placed }) {
     move.current = { a, b };
     const o = order.current; [o[a], o[b]] = [o[b], o[a]];
     goal.current = target();
-  });
+  }, { enabled: shot.available });
   useFrame((_, dt) => {
     if (!isWorldRunning()) return;
     const t = shot.advance(dt), { a, b } = move.current;
@@ -235,7 +241,7 @@ function CampChairs({ p, lamp }: { p: Placed; lamp?: Placed }) {
   const seatYaw = useMemo(() => { const f = new Vector3(0, 0, -1).transformDirection(p.matrix); return Math.atan2(-f.z, f.x); }, [p.matrix]);
   useExhibitE(p, 'seat', { en: 'Sit down and talk', zh: '坐下来聊聊' }, () => {
     useWorldStore.setState({ seat: { id: seatId, position: [seatPoint.x, seatPoint.y, seatPoint.z], yaw: seatYaw } });
-  }, 1.8);
+  }, { radius: 1.8 });
   const [shown, setShown] = useState(0);
   const since = useRef(0);
   useExhibitProbe(p.id, () => ({ seated: useWorldStore.getState().seat?.id === seatId, bubbles: shown, lantern: level.current, seat: [seatPoint.x, seatPoint.y, seatPoint.z], yaw: seatYaw }));
@@ -329,7 +335,7 @@ function Blackboard({ p, project }: { p: Placed; project?: WorldProject }) {
     const showing = Math.round((board?.rotation.x ?? 0) / Math.PI) % 2 === 0 ? back : front;
     draw(showing, next, 0, showing === back);
     page.current = next;
-  });
+  }, { enabled: () => courses.length > 0 && shot.available() });
   const base = useRef(0);
   useFrame((_, dt) => {
     if (!isWorldRunning()) return;

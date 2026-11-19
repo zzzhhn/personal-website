@@ -57,6 +57,7 @@ export function intentActorAvailable() {
 }
 export function intentAvailable(target: IntentTarget) {
   const w = useWorldStore.getState(), s = useIntentStore.getState();
+  if ((target === 'chest' && s.progress.keyTaken) || (target === 'gate' && s.progress.gateOpen)) return false;
   return intentActorAvailable() && intentInReach(w.position, target) && (target !== 'board' || (s.progress.gateOpen && mineActor.available && mineActor.grounded && coasterAtBoardingEntrance([w.position[0], w.position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), w.position[2]])));
 }
 // DOM buttons and pointer picks share the actor's line-of-sight result, not just screen visibility.

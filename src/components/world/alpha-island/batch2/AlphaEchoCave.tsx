@@ -28,12 +28,12 @@ function Craft({parts,name,wet=false,glow=false}:{parts:Parts;name:string;wet?:b
     if(glow&&(p.finish==='metal'||p.finish==='glass')){m.emissive.set('#e9a45a');m.emissiveIntensity=p.finish==='glass'?.65:.22;}
     return m;}),[parts,wet,glow]);
   useEffect(()=>()=>{materials.forEach(m=>m.dispose());},[materials]);
-  return <group name={name}>{parts.map((p,i)=><mesh key={p.finish} geometry={p.geometry} material={materials[i]} userData={{surfaceId:p.id,surfaceSpace:p.space,collision:p.collision,surfaceRole:p.role,collisionReason:p.reason}} castShadow receiveShadow/>)}</group>;
+  return <group name={name}>{parts.map((p,i)=><mesh key={p.finish} geometry={p.geometry} material={materials[i]} userData={{surfaceId:p.id,surfaceSpace:p.space,worldCollision:p.collision,surfaceRole:p.role,collisionReason:p.reason}} castShadow receiveShadow/>)}</group>;
 }
 function SameMeshCollider({part}:{part:CavePart}) {
   const buffers=useMemo(()=>surfaceColliderBuffers(part),[part]);
-  return buffers?<group name={`${part.id}/collider`} userData={{surfaceId:part.id,surfaceSpace:part.space,collision:part.collision,surfaceRole:part.role}}>
-    <TrimeshCollider args={[buffers.vertices,buffers.indices]} friction={.9}/>
+  return buffers?<group name={`${part.id}/collider`} userData={{surfaceId:part.id,surfaceSpace:part.space,worldCollision:part.collision,surfaceRole:part.role}}>
+    <TrimeshCollider name={part.id} args={[buffers.vertices,buffers.indices]} friction={.9}/>
   </group>:null;
 }
 function StaticCraft({parts,name,bodyName,wet=false}:{parts:CavePart[];name:string;bodyName:string;wet?:boolean}) {
@@ -156,6 +156,6 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
     </group>
     <group position={built.muralPosition} rotation={[0,built.muralYaw,0]}><Craft parts={mural} name="alpha-cave-carved-mountain-water-sun-mural" glow/></group>
     {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring} enabled={alphaActorCanAct}/>)}
-    {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`} userData={{surfaceId:`alpha-cave/echo-ring/${i}`,surfaceSpace:'alpha-cave/echo-ring',collision:'none',surfaceRole:'decoration',collisionReason:'Transient camera-facing echo guide; no physical obstruction'}}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
+    {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`} userData={{surfaceId:`alpha-cave/echo-ring/${i}`,surfaceSpace:'alpha-cave/echo-ring',worldCollision:'none',surfaceRole:'decoration',collisionReason:'Transient camera-facing echo guide; no physical obstruction'}}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
   </group>;
 }

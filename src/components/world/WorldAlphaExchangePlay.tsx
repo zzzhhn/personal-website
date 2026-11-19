@@ -47,13 +47,17 @@ function paperFaceGeometry(width: number, depth: number, rect: number[]) {
   for (let i=0;i<uv.count;i++) uv.setXY(i,(x+uv.getX(i)*w)/1024,1-(y+(1-uv.getY(i))*h)/1024);
   g.rotateX(-Math.PI/2); g.translate(0,.009,0); return g;
 }
+// Hand props are animated by the exchange action clock and retain their own
+// input anchors. They do not block the standing capsule or simulate a rigid body.
+const handProp = { worldCollision: 'none' } as const;
+
 function Nudge({ direction }: { direction: -1 | 1 }) {
   const at = detent(direction < 0 ? 0 : 50); at[0] += direction * .14;
   useInteractable({ id: `alpha-exchange-nudge-${direction}`, kind: 'exhibit', position: exchangeWorld(at), radius: 1.1,
     label: direction < 0 ? { zh: '左拨一档，减 10 份', en: 'Nudge left: minus 10 units' } : { zh: '右拨一档，加 10 份', en: 'Nudge right: plus 10 units' },
     enabled: () => { const r = useExchangePlay.getState().round; return canRequestExchangePlay('desk') && r?.phase === 'selecting' && r.targetUnits + direction * 10 >= 0 && r.targetUnits + direction * 10 <= 50; },
     onInteract: () => { const r = useExchangePlay.getState().round; if (r) adjustExchangePlay(r.targetUnits + direction * 10); } });
-  return <mesh position={at} onClick={event => { event.stopPropagation(); const r = useExchangePlay.getState().round; if (r) adjustExchangePlay(r.targetUnits + direction * 10); }}>
+  return <mesh position={at} userData={handProp} onClick={event => { event.stopPropagation(); const r = useExchangePlay.getState().round; if (r) adjustExchangePlay(r.targetUnits + direction * 10); }}>
     <boxGeometry args={[.075,.09,.11]} /><meshStandardMaterial color="#b8975a" roughness={.45} metalness={.5}/>
   </mesh>;
 }
@@ -104,23 +108,23 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
   return <group name="alpha-exchange-play-props">
     {(['archive','desk','bell','clearing','review'] as const).map(id => <Station key={id} id={id}/>)}
     <group name="exchange-review-selector" position={P.review.selector} rotation={[0,(state.reviewIndex ?? -1)*Math.PI/2,0]}>
-      <mesh material={brass}><cylinderGeometry args={[.14,.17,.05,12]}/></mesh>
-      <mesh material={parts.ink} position={[0,.04,.035]}><boxGeometry args={[.035,.045,.2]}/></mesh>
+      <mesh material={brass} userData={handProp}><cylinderGeometry args={[.14,.17,.05,12]}/></mesh>
+      <mesh material={parts.ink} position={[0,.04,.035]} userData={handProp}><boxGeometry args={[.035,.045,.2]}/></mesh>
     </group>
-    <mesh ref={ticket} name="exchange-archive-ticket" geometry={parts.ticket} material={parts.paper} position={P.archive.ticketRest}>
-      <mesh geometry={parts.ticketFace} material={paperFace}/></mesh>
+    <mesh ref={ticket} name="exchange-archive-ticket" geometry={parts.ticket} material={parts.paper} position={P.archive.ticketRest} userData={handProp}>
+      <mesh geometry={parts.ticketFace} material={paperFace} userData={handProp}/></mesh>
     <WorldAlphaArchiveTickets paper={parts.paper} ticket={parts.ticket}/>
-    <mesh ref={receipt} name="exchange-clearing-receipt" geometry={parts.receipt} material={parts.paper} position={P.clearing.receiptRest} visible={false}>
-      <mesh geometry={parts.receiptFace} material={paperFace}/></mesh>
-    <mesh ref={stamp} name="exchange-clearing-stamp" geometry={parts.stamp} material={brass} position={P.clearing.stampRest}/>
-    <mesh ref={slider} name="exchange-position-grip" geometry={parts.grip} material={brass} position={detent(state.round?.targetUnits ?? 0)}/>
+    <mesh ref={receipt} name="exchange-clearing-receipt" geometry={parts.receipt} material={parts.paper} position={P.clearing.receiptRest} visible={false} userData={handProp}>
+      <mesh geometry={parts.receiptFace} material={paperFace} userData={handProp}/></mesh>
+    <mesh ref={stamp} name="exchange-clearing-stamp" geometry={parts.stamp} material={brass} position={P.clearing.stampRest} userData={handProp}/>
+    <mesh ref={slider} name="exchange-position-grip" geometry={parts.grip} material={brass} position={detent(state.round?.targetUnits ?? 0)} userData={handProp}/>
     {[0,10,20,30,40,50].map(units => <mesh key={units} name={`exchange-detent-${units}`} geometry={parts.marker} material={brass}
-      position={detent(units)} onClick={event => { event.stopPropagation(); adjustExchangePlay(units); }}/>) }
+      position={detent(units)} userData={handProp} onClick={event => { event.stopPropagation(); adjustExchangePlay(units); }}/>) }
     <Nudge direction={-1}/><Nudge direction={1}/>
-    <group ref={bell} name="exchange-opening-bell" position={P.bell.pivot}><mesh geometry={parts.bell} material={brass}/></group>
-    <mesh ref={pull} name="exchange-bell-pull" geometry={parts.pull} material={brass} position={P.bell.pullRest}/>
-    <mesh ref={rope} name="exchange-bell-cord" geometry={parts.rope} material={parts.ink} position={[0,1.95,P.bell.pullRest[2]]}/>
+    <group ref={bell} name="exchange-opening-bell" position={P.bell.pivot}><mesh geometry={parts.bell} material={brass} userData={handProp}/></group>
+    <mesh ref={pull} name="exchange-bell-pull" geometry={parts.pull} material={brass} position={P.bell.pullRest} userData={handProp}/>
+    <mesh ref={rope} name="exchange-bell-cord" geometry={parts.rope} material={parts.ink} position={[0,1.95,P.bell.pullRest[2]]} userData={handProp}/>
     {state.round?.choices.map(choice => <mesh key={choice.checkpoint} name={`exchange-paper-segment-${choice.checkpoint}`} geometry={parts.ticket}
-      material={parts.paper} position={[0,2.58-choice.checkpoint*.14,-19.825]} rotation={[Math.PI/2,0,0]}/>) }
+      material={parts.paper} position={[0,2.58-choice.checkpoint*.14,-19.825]} rotation={[Math.PI/2,0,0]} userData={handProp}/>) }
   </group>;
 }

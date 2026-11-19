@@ -39,8 +39,8 @@ function segments() {
     quad = [add(quad[0], d, -6), add(quad[1], d, 6), add(quad[2], d, 6), add(quad[3], d, -6)];
     // Mitre planes at interior joints: bisector of the two directions.
     if (i > 0) { const dp = unit(sub(a, P[i - 1])), m = unit(add(dp, d)); quad = clipHalf(quad, m, dot(m, a)); }
-    // Visual planks meet the existing flagstone edge (x1-.35); the original support boxes below
-    // remain unchanged. The old x1-.02 cut left a 33 cm exposed bedding / coping sawtooth.
+    // Visual planks meet the existing flagstone edge (x1-.35); the physical treads use these clipped triangles.
+    // The old x1-.02 cut left a 33 cm exposed bedding / coping sawtooth.
     else quad = clipHalf(quad, [1, 0], PLAZA.x1 - 0.35);
     if (i < P.length - 2) { const dn = unit(sub(P[i + 2], b)), m = unit(add(d, dn)); quad = clipHalf(quad, [-m[0], -m[1]], -dot(m, b)); }
     else quad = clipHalf(quad, [-d[0], -d[1]], -dot(d, b));
@@ -114,8 +114,7 @@ export function buildWalk(low = false) {
         solid.cyl([A[0], -1.2, A[1]], [B[0], DECK_Y - 0.48, B[1]], 0.045, 0.045, 6, '#5A4634');
       }
     }
-    // collider: one support slab per segment (mitred quads are approximated by the unclipped rectangle
-    // trimmed to the joints; overlaps at the mitre are coplanar supports).
+    // Retain the original box layout for the offline craft comparison and regression fixture.
     const len = s.L + (i === 0 ? 0 : 0.3) + (i === P.length - 2 ? 0 : 0.3) - (i === 0 ? start - 0.4 : 0);
     const mid = add(s.a, s.dir, (i === 0 ? start - 0.4 : -0.3) + len / 2);
     surfaces.push({ position: [mid[0], DECK_Y - 0.15, mid[1]], size: [BOARDWALK_WIDTH, 0.3, len], rotation: [0, Math.atan2(s.dir[0], s.dir[1]), 0] });
@@ -391,6 +390,6 @@ export function LampPools({ lamps, extra = [] }: { lamps: LampPost[]; extra?: { 
   }, [lamps, extra]);
   useEffect(() => () => { geometry.dispose(); material.map?.dispose(); material.dispose(); }, [geometry, material]);
   useFrame(() => { const k = parkNight.value * 0.4; material.color.setRGB(k, k, k); });
-  return <mesh name="park-lamp-pools" geometry={geometry} material={material} renderOrder={2} userData={{ noOcclusionFade: true }} />;
+  return <mesh name="park-lamp-pools" geometry={geometry} material={material} renderOrder={2} userData={{ noOcclusionFade: true, worldCollision: 'none' }} />;
 }
 

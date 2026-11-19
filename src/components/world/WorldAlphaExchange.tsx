@@ -5,7 +5,7 @@ import { TrimeshCollider, RigidBody } from '@react-three/rapier';
 import { CanvasTexture, CircleGeometry, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { exchangeCraftMaterial } from './alpha-exchange-craft';
-import { buildAlphaExchangeGeometry } from './WorldAlphaExchangeGeometry';
+import { buildAlphaExchangeGeometry, EXCHANGE_COLLIDER_NAMES } from './WorldAlphaExchangeGeometry';
 import { exchangeGlassBays } from './exchange-glass-bays';
 import WorldAlphaExchangePlay, { exchangePlayInstruction } from './WorldAlphaExchangePlay';
 import { night } from './WorldNight';
@@ -50,8 +50,19 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
       texturePlane(3,3,[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.42],[0,752,256,256],true),
       texturePlane(...EXCHANGE_PLAY_PROPS.review.displaySize,EXCHANGE_PLAY_PROPS.review.display,[0,0,1024,288],false,EXCHANGE_PLAY_PROPS.review.displayPitch),
     ];
-    const faces = mergeGeometries(planes)!; planes.forEach(g => g.dispose());
-    return { ...architecture, faces, glassBays:exchangeGlassBays(architecture.glass,architecture.glassRanges) };
+    const displayIds=['market-board-face','entry-sign-face','west-desk-display','east-desk-display',
+      'archive-sign-face','clearing-sign-face','desk-detent-scale','clock-face','review-console-display'];
+    const displayParts=planes.map(g=>g.toNonIndexed());
+    let firstVertex=0;
+    const displaySources=displayParts.map((g,i)=>{
+      const vertexCount=g.getAttribute('position').count;
+      const source={id:displayIds[i],firstVertex,vertexCount,collision:'none' as const};
+      firstVertex+=vertexCount;
+      return source;
+    });
+    const faces = mergeGeometries(displayParts)!;
+    [...planes,...displayParts].forEach(g => g.dispose());
+    return { ...architecture, faces, displaySources, glassBays:exchangeGlassBays(architecture.glass,architecture.glassRanges) };
   }, []);
   const atlas = useMemo(() => {
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1024;
@@ -153,14 +164,17 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     atlas.brass.emissiveIntensity=.12*night.value;
   });
   return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN} userData={{ noOcclusionFade:true }}>
-    <mesh name="alpha-exchange-architecture" geometry={built.body} material={atlas.architecture} castShadow receiveShadow/>
-    <mesh name="alpha-exchange-displays" geometry={built.faces} material={atlas.material}/>
-    {built.glassBays.map((g,i)=><mesh key={i} name={`alpha-exchange-window-${i}`} geometry={g} material={atlas.glass} receiveShadow renderOrder={1}/>)}
+    <mesh name="alpha-exchange-architecture" geometry={built.body} material={atlas.architecture}
+      userData={{worldCollisionSources:built.bodySources}} castShadow receiveShadow/>
+    <mesh name="alpha-exchange-displays" geometry={built.faces} material={atlas.material} userData={{worldCollisionSources:built.displaySources}}/>
+    {built.glassBays.map((g,i)=><mesh key={i} name={`alpha-exchange-window-${i}`} geometry={g} material={atlas.glass}
+      userData={{worldCollision:'solid',surfaceId:EXCHANGE_COLLIDER_NAMES.solid,worldCollisionSharedSurface:true}}
+      receiveShadow renderOrder={1}/>)}
     <pointLight position={[-7,6,-18]} color="#ffdb9d" intensity={130} distance={26} decay={2} castShadow={false}/>
     <pointLight position={[7,6,-31]} color="#ffd293" intensity={130} distance={26} decay={2} castShadow={false}/>
     {(['surface','solid'] as const).map(kind => <RigidBody key={kind} type="fixed" colliders={false} userData={{ [kind]:true, assetId:'alpha-exchange' }}>
       {/* Rapier accepts flags as the third argument; R3 Rapier's tuple type omits it. */}
-      <TrimeshCollider name={`alpha-exchange-${kind}`}
+      <TrimeshCollider name={EXCHANGE_COLLIDER_NAMES[kind]}
         args={[built.colliders[kind].vertices,built.colliders[kind].indices,built.colliders[kind].flags] as unknown as [Float32Array,Uint32Array]}
         friction={.85}/>
     </RigidBody>)}

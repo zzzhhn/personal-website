@@ -41,10 +41,10 @@ export default function WorldFactoryHud(){
     (zh?'轮组正在转动。按 E 急停，检查是否完全停止。':'Wheels are turning. Press E for the emergency stop.'):
     inspectionHints[inspection.step]):crane&&op?factoryHoistCue(op,state.aligned,zh):
     p?.action.type==='process'?(state.phase==='outfeed'?(zh?'加工完成，部件正沿输送线出料。':'The finished part is travelling down the line.'):
-    (zh?'按住 E，护罩闭合后开始冲压。松开会安全收回。':'Hold E to close the guard and press. Release to retract safely.')):
+    (zh?'按住 E／手柄 Y，护罩闭合后开始冲压。松开会安全收回。':'Hold E / Y to close the guard and press. Release to retract safely.')):
     p?.action.type==='test'?(zh?'观察机械伙伴通过试验段。结果来自实际运行。':'Watch the companion on the course. Readings come from this run.'):
     state.phase==='cycle'?(zh?'工序正在进行，完成后会保留进度。':'The machine is working. Progress is retained when it finishes.'):
-    zh?'按 E 操作手柄。':'Press E to operate the lever.';
+    zh?'按 E／手柄 Y 操作手柄。':'Press E / Y to operate the lever.';
   return <section className="factory-console" aria-label={title}>
     <header><h2>{title}</h2><button onClick={closeFactoryStation} aria-label={zh?'退出操作':'Leave console'}>Esc</button></header>
     {(station==='test'||station==='compare')&&<WorldFactoryReadings game={state.game}
@@ -60,7 +60,7 @@ export default function WorldFactoryHud(){
         onPointerDown={e=>{e.currentTarget.setPointerCapture(e.pointerId);factoryControl.input.held=true;factoryControl.input.confirm=true;}}
         onPointerUp={()=>{factoryControl.input.held=false;}} onPointerCancel={clearFactoryInput}
         onKeyDown={e=>{if((e.key==='Enter'||e.key===' ')&&!e.repeat){e.preventDefault();factoryControl.input.held=true;factoryControl.input.confirm=true;}}}
-        onKeyUp={()=>{factoryControl.input.held=false;}}>{p.action.type==='process'?(zh?'按住手柄':'Hold lever'):(zh?'操作手柄 · E':'Operate · E')}</button>}
+        onKeyUp={()=>{factoryControl.input.held=false;}}>{p.action.type==='process'?(zh?'按住手柄':'Hold lever'):(zh?'操作手柄 · E／Y':'Operate · E / Y')}</button>}
     </>:<>
       <p>{FACTORY_STATION_PURPOSE[station][zh?0:1]}</p>
       {station==='rework'&&factoryWheelExperiment(state.game,zh)&&<p className="factory-experiment-advice">{factoryWheelExperiment(state.game,zh)}</p>}

@@ -70,7 +70,7 @@ test('a same-size replacement is found after the bounded negative retry',()=>{
 
 test('all current district footprints supply nonempty live collider contracts; legacy layout omits absent attractions',()=>{
   const regions=worldPassageRegions(true);
-  const points={'alpha-island':[235,1,190],'alpha-waterwheel':[206,24,199],brain:[-84,1,-55],exchange:[60,2,-60],club:[45,1,55],
+  const points={'alpha-island':[235,1,190],'alpha-waterwheel':[206,24,199],'alpha-cave':[220,24,155],'mainland-pier':[-10,1,112],brain:[-84,1,-55],exchange:[60,2,-60],club:[45,1,55],
     factory:[-180,1,10],ibd:[-88,1,-177],coaster:[50,1,-195]};
   for(const r of regions) {
     assert.ok(r.requirements.length,r.id);assert.equal(r.contains(points[r.id],0),true,r.id);
@@ -79,7 +79,7 @@ test('all current district footprints supply nonempty live collider contracts; l
     assert.equal(gate.at(points[r.id],.3),false,r.id);
     ready.add(r.requirements);assert.equal(gate.at(points[r.id],.3),true,r.id);
   }
-  assert.deepEqual(worldPassageRegions(false).map(r=>r.id),['alpha-island','alpha-waterwheel','brain','exchange','club']);
+  assert.deepEqual(worldPassageRegions(false).map(r=>r.id),['alpha-island','alpha-waterwheel','alpha-cave','mainland-pier','brain','exchange','club']);
 });
 
 test('the real body cannot walk across the cold boundary and resumes after mounting without a teleport',()=>{

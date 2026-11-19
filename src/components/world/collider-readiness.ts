@@ -11,7 +11,8 @@ export function mountedCollidersReady(world: Pick<World,'getCollider'>, states: 
   const counts=requirements.map(()=>0);
   for(const [handle,state] of states) {
     const collider=world.getCollider(handle);
-    if(!collider || !collider.isEnabled() || collider.isSensor() || !collider.parent()?.isFixed())continue;
+    const body=collider?.parent();
+    if(!collider || !collider.isEnabled() || collider.isSensor() || !body?.isFixed() || !body.isEnabled())continue;
     const names=new Set<string>();
     for(let object:Object3D|null=state.object;object;object=object.parent)names.add(object.name);
     for(let i=0;i<requirements.length;i++) {
@@ -31,7 +32,8 @@ export function createColliderReadinessProbe(world: Pick<World,'getCollider'>, s
   const cache=new WeakMap<readonly ColliderRequirement[],{handles:number[][];size:number;at:number;ready:boolean}>();
   const matches=(handle:number,need:ColliderRequirement)=>{
     const state=states.get(handle),collider=world.getCollider(handle);
-    if(!state||!collider||!collider.isEnabled()||collider.isSensor()||!collider.parent()?.isFixed()
+    const body=collider?.parent();
+    if(!state||!collider||!collider.isEnabled()||collider.isSensor()||!body?.isFixed()||!body.isEnabled()
       ||need.shape!==undefined&&collider.shapeType()!==need.shape)return false;
     for(let object:Object3D|null=state.object;object;object=object.parent)if(object.name===need.name)return true;
     return false;

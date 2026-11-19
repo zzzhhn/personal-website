@@ -395,6 +395,6 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     }
   });
 
-  return <instancedMesh ref={ref} name="ground-grass-blades" args={[geometry, material, GRASS_PROFILE.high.cap]} receiveShadow frustumCulled={false} />;
+  return <instancedMesh ref={ref} name="ground-grass-blades" userData={{worldCollision:'soft',collisionReason:'Grass bends around actors and has no rigid core'}} args={[geometry, material, GRASS_PROFILE.high.cap]} receiveShadow frustumCulled={false} />;
 }
 

@@ -2,6 +2,7 @@ import type { ActorRide } from '../rides/actor-ride';
 import type { ActorSites } from '../actor-sites';
 import { attractionRide, attractionActorFrame, attractionPhase, captureAttractionStart,
   completeAttractionRide, endAttractionRide, requestAttractionExit } from './attraction-ride';
+import { COASTER_BOARDING } from './coaster-transition';
 
 /** Keeps legacy coaster transitions and transport drivers behind the same actor-facing contract. */
 export function createAttractionActorRide(zone: ActorSites['rideZone']): ActorRide {
@@ -14,7 +15,11 @@ export function createAttractionActorRide(zone: ActorSites['rideZone']): ActorRi
     get seatOnly() { return !attractionRide.transition && !attractionRide.driver; },
     get complete() { return attractionPhase() === 'complete'; },
     get exit() { return attractionRide.exit; },
-    get boardingPath() { return attractionRide.driver?.boardingPath; },
+    get boardingPath() {
+      const { driver, transition } = attractionRide;
+      if (driver) return driver.boardingPath;
+      if (transition?.captured && transition.phase === 'approach') return [transition.from, COASTER_BOARDING.approach];
+    },
     get egressPath() {
       const driver = attractionRide.driver;
       return driver?.phase === 'stand' ? driver.egressPath : undefined;

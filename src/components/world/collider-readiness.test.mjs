@@ -32,6 +32,8 @@ test('readiness requires every live fixed collider group, including shape and di
     actual.collider.setSensor(false);actual.collider.setEnabled(false);assert.equal(mountedCollidersReady(f.world,f.states,requirements),false);
     actual.collider.setEnabled(true);actual.body.setBodyType(R.RigidBodyType.Dynamic,true);assert.equal(mountedCollidersReady(f.world,f.states,requirements),false);
     actual.body.setBodyType(R.RigidBodyType.Fixed,true);assert.equal(mountedCollidersReady(f.world,f.states,requirements),true);
+    actual.body.setEnabled(false);assert.equal(mountedCollidersReady(f.world,f.states,requirements),false,'a disabled parent cannot support the actor');
+    actual.body.setEnabled(true);assert.equal(mountedCollidersReady(f.world,f.states,requirements),true);
     f.world.removeRigidBody(actual.body);assert.equal(mountedCollidersReady(f.world,f.states,requirements),false,'a stale scene node is not a registered collider');
   } finally {f.world.free();}
 });

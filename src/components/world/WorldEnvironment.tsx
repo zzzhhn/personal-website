@@ -185,10 +185,10 @@ function Island() {
   return <>
     <IslandTerrain />
     {/* Closed greybox seabed and the park block's submerged base: visual only, under opaque water. */}
-    {!plazaClaimed && <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
+    {!plazaClaimed && <mesh name="greybox-submerged-plaza" userData={{worldCollision:'none',collisionReason:'Submerged visual footing below the park plaza'}} position={[45, -9.5, -45]}>
       <boxGeometry args={[18, 17, 18]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>}
-    <mesh name="greybox-seabed" position={[0, -19, 0]}>
+    <mesh name="greybox-seabed" userData={{worldCollision:'none',collisionReason:'Distant seabed backdrop below player recovery'}} position={[0, -19, 0]}>
       <boxGeometry args={[560, 2, 560]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
     {/* Park plaza block: support-only top (surface) and solid sides; same box visual and coordinates. */}
@@ -448,7 +448,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     <pointLight ref={fire} name="camp-fire-key" position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
     {parkFillPositions.map((position, i) => <pointLight key={i} ref={lamp => { parkFill.current[i] = lamp; }}
       position={position} color="#FFD08A" intensity={0} distance={25} decay={2} castShadow={false} />)}
-    <mesh name="world-sky" frustumCulled={false} renderOrder={-10}>
+    <mesh name="world-sky" userData={{worldCollision:'none',collisionReason:'Distant sky dome'}} frustumCulled={false} renderOrder={-10}>
       <sphereGeometry args={[290, 24, 16]} />
       <shaderMaterial side={BackSide} depthWrite={false} uniforms={skyUniforms}
         vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*mat4(mat3(viewMatrix))*vec4(position,1.0);}'}

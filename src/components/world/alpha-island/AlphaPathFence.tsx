@@ -15,7 +15,7 @@ export default function AlphaPathFence() {
   return <RigidBody name="alpha-path-fence" type="fixed" colliders={false} userData={{ solid: true }}>
     {visual.parts.map(part => <group key={part.id} dispose={null}>
       <mesh name={part.id} geometry={part.geometry} material={part.material} castShadow receiveShadow
-        userData={{ surfaceId: part.id, collision: part.collision, surfaceRole: part.role, collisionReason: part.reason }} />
+        userData={{ surfaceId: part.id, worldCollision: part.collision, surfaceRole: part.role, collisionReason: part.reason }} />
       <TrimeshCollider name={part.id} args={[part.buffers.vertices, part.buffers.indices]} />
     </group>)}
   </RigidBody>;

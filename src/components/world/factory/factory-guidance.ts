@@ -43,12 +43,12 @@ export function factoryHoistCue(op:FactoryOperation,aligned:boolean,zh:boolean){
     case 'seat':return zh?'正在扣合部件。':'Seating the part in its fixture.';
     case 'retract':return zh?'部件已贴合，空夹爪正在收回。':'Part seated. Retracting the empty gripper.';
     case 'home':return zh?'装配完成，吊臂正在归位。':'Assembly complete. Parking the hoist.';
-    case 'carry':return extract?(aligned?(zh?'已对准筛选槽，按 E 放下。':'Over the hopper. Press E to lower.'):
-      (zh?'W A S D 搬运到筛选槽，圆环变绿后按 E 放下。':'Move to the hopper with W A S D. Press E when the ring turns green.')):
-      aligned?(zh?'已接近夹具，按 E 对中并扣合。':'At the fixture. Press E to center and seat.'):
-      (zh?'W A S D 搬运到夹具，圆环变绿后按 E 扣合。':'Move to the fixture with W A S D. Press E when the ring turns green.');
-    default:return aligned?(extract?(zh?'已对准料块，按 E 吸取。':'Aligned. Press E to pick up.'):
-      (zh?'已对准出料部件，按 E 夹取。':'Over the outfeed part. Press E to pick up.')):
-      (zh?'W A S D 移动吊头，对准目标圆环。':'Move the hoist with W A S D to the target ring.');
+    case 'carry':return extract?(aligned?(zh?'已对准筛选槽，按 E／Y 放下。':'Over the hopper. Press E / Y to lower.'):
+      (zh?'用 WASD 或左摇杆搬运到筛选槽，圆环变绿后按 E／Y 放下。':'Move to the hopper with WASD or the left stick. Press E / Y when the ring turns green.')):
+      aligned?(zh?'已接近夹具，按 E／Y 对中并扣合。':'At the fixture. Press E / Y to center and seat.'):
+      (zh?'用 WASD 或左摇杆搬运到夹具，圆环变绿后按 E／Y 扣合。':'Move to the fixture with WASD or the left stick. Press E / Y when the ring turns green.');
+    default:return aligned?(extract?(zh?'已对准料块，按 E／Y 吸取。':'Aligned. Press E / Y to pick up.'):
+      (zh?'已对准出料部件，按 E／Y 夹取。':'Over the outfeed part. Press E / Y to pick up.')):
+      (zh?'用 WASD 或左摇杆移动吊头，对准目标圆环。':'Move the hoist with WASD or the left stick to the target ring.');
   }
 }

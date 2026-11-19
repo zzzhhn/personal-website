@@ -1,4 +1,5 @@
-import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import RegionSceneBoundary from './RegionSceneBoundary';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { CanvasTexture, Color, FileLoader, Group, InstancedMesh, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
@@ -302,11 +303,6 @@ function MineAssets({ content }: { content: WorldContent }) {
   </group>;
 }
 
-class MineGuard extends Component<{children:ReactNode},{failed:boolean}> {
-  state={failed:false};static getDerivedStateFromError(){return {failed:true};}
-  componentDidCatch(error:unknown){console.error('[alpha-mine] asset loading failed',error);mineNotice('矿场资源暂未加载完成，请刷新后再试。','Mine assets failed to load. Refresh to try again.');}
-  render(){return this.state.failed?null:this.props.children;}
-}
 export default function WorldAlphaMine({content}:{content:WorldContent}) {
   useEffect(() => registerMineActivity(), []);
   useEffect(()=>{
@@ -314,5 +310,5 @@ export default function WorldAlphaMine({content}:{content:WorldContent}) {
     const unsubscribe=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.card&&!p.card)||(s.poolInspect&&!p.poolInspect)||s.activeVehicle)cancelMineAction();});
     return()=>{release();unsubscribe();cancelMineAction();releaseMineOnline();mineActor.available=false;};
   },[]);
-  return <><WorldAlphaMineFoundation/><MineGuard><Suspense fallback={null}><MineAssets content={content}/></Suspense></MineGuard></>;
+  return <><WorldAlphaMineFoundation/><RegionSceneBoundary id="brain"><MineAssets content={content}/></RegionSceneBoundary></>;
 }

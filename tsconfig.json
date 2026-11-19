@@ -1,5 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
+  // Archived art comparisons are standalone source copies with their original relative imports.
+  "exclude": ["node_modules", "dist", "docs/world/phase-2-playground/asset-batch5-20261102/rejected-ground-*", "tools/world/*-craft/baseline-*.ts", "tools/world/*-craft/baseline-*.tsx"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react"

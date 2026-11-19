@@ -1,9 +1,7 @@
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
-import ts from 'typescript';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { createMapPathCache } from '../../../src/components/world/map-path-cache.ts';
-import { loadMapGeometry } from '../../../src/components/world/WorldMap.tsx';
+import type { WORLD_MAP_GEOMETRY } from '../../../src/components/world/WorldMap.tsx';
 import * as layout from '../../../src/components/world/layout.ts';
 import * as mine from '../../../src/components/world/alpha-mine-layout.ts';
 import * as exchange from '../../../src/components/world/alpha-exchange-layout.ts';
@@ -14,12 +12,15 @@ import * as visitor from '../../../src/components/world/alpha-island/alpha-visit
 import { FACTORY_FOOTPRINT } from '../../../src/components/world/factory/factory-layout.ts';
 
 async function main() {
-  // Execute the actual baseline source; expectations do not copy the serializer.
-  const source = execFileSync('git', ['show', 'facdc92:src/components/world/WorldMap.tsx'], { cwd: process.cwd(), encoding: 'utf8' });
-  const original = ['path', 'shorePath'].map(name => source.match(new RegExp(`^const ${name} = .*;$`, 'm'))![0]).join('\n');
-  const js = ts.transpileModule(original, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
-  const old = new Function(`${js}; return {path, shorePath};`)();
-  const geometry = await loadMapGeometry();
+  type Points = ReadonlyArray<readonly number[]>;
+  // Uncached SVG polygon/polyline coordinates consumed by the minimap.
+  const svgPoints = (points: Points) => Array.from(points, point => [point[0],point.length === 3 ? point[2] : point[1]].join(',')).join(' ');
+  const old = { path: svgPoints, shorePath: (loops: readonly Points[]) =>
+    Array.from(loops, loop => 'M' + svgPoints(loop) + 'Z').join(' ') };
+  assert.equal(old.path([[3,7,4],[5,6]]), '3,4 5,6');
+  const variant = layout.LAYOUT_V4 ? 'v4' : 'v3';
+  const file = new URL('../../../src/components/world/world-map-' + variant + '.generated.json', import.meta.url);
+  const geometry: typeof WORLD_MAP_GEOMETRY = JSON.parse(readFileSync(file, 'utf8'));
   const points = [
     alpha.ALPHA_MAINLAND_PIER_POLYGON, alpha.ALPHA_MAINLAND_APPROACH, visitor.ALPHA_VISITOR_PATH,
     ...visitor.ALPHA_VISITOR_SPURS.map(s => s.path), mine.ALPHA_MINE_FOOTPRINT_POINTS,
@@ -58,11 +59,11 @@ async function main() {
   // the repeated render workload (they remain covered by the equality checks).
   const renderedPoints = points.filter(p => !geometry.shores.includes(p as number[][]) && (!layout.LAYOUT_V4 || p !== layout.ROAD_POINTS));
   let checksum = 0;
-  const frame = (f: typeof cache) => {
+  const frame = (f: Pick<typeof cache, 'path' | 'shorePath'>) => {
     checksum += f.shorePath(geometry.shores).length + f.shorePath(geometry.shores).length;
     for (const p of renderedPoints) checksum += f.path(p).length;
   };
-  const measure = (f: typeof cache) => {
+  const measure = (f: Pick<typeof cache, 'path' | 'shorePath'>) => {
     const start = performance.now(); for (let i = 0; i < 900; i++) frame(f); return performance.now() - start;
   };
   for (let i = 0; i < 10; i++) { frame(old); frame(cache); }
@@ -70,14 +71,14 @@ async function main() {
   for (let i = 0; i < 5; i++) { baseline.push(measure(old)); cached.push(measure(cache)); }
   const median = (values: number[]) => [...values].sort((a,b) => a-b)[2];
   const result = {
-    baselineCommit: 'facdc92', pointArraysCompared: points.length, totalPoints: points.reduce((n,p)=>n+p.length,0),
+    reference: 'Uncached SVG serialization of the current shipped map', pointArraysCompared: points.length, totalPoints: points.reduce((n,p)=>n+p.length,0),
     shorelinePoints: geometry.shores.reduce((n,p)=>n+p.length,0), geometryRoads: geometry.roads?.length,
     equalOutputs: true, registeredSerializationsAcross900Updates: serializations, unregisteredMutationsObserved: true,
     ticksPerSample: 900, samples: 5, baselineMs: baseline, cachedMs: cached,
     medianBaselineMs: median(baseline), medianCachedMs: median(cached), speedup: median(baseline)/median(cached),
     checksum, warning: 'Focused serialization CPU benchmark only; excludes React reconciliation, SVG painting, Three rendering and app FPS.',
   };
-  writeFileSync('docs/world/performance-20261114/map-cache-results.json', JSON.stringify(result, null, 2));
+  if (process.argv[2]) writeFileSync(process.argv[2], JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result, null, 2));
 }
 main();

@@ -1,4 +1,4 @@
-import type { RigidBody, RigidBodyType, Vector, World } from '@dimforge/rapier3d-compat';
+import type { Collider, RigidBody, RigidBodyType, Vector, World } from '@dimforge/rapier3d-compat';
 import { angleDelta, rotateVector, yawRotation, type Rotation } from './actor-physics';
 import type { Vec3 } from './types';
 import { heldPropPoint } from './accepted-action';
@@ -104,6 +104,13 @@ export function campDumbbellGrip(position: Vec3, rotation: Rotation, actor: Vec3
 /** Isolate a held weight before changing its body type. Rapier can retain a
  * solver manifold across the transition even when the collider reports disabled. */
 type DumbbellDrop = { position: Vector; rotation: Rotation };
+const isolatedDumbbells = new WeakMap<Collider, RigidBody>();
+
+/** The real hold or pending drop owns this intentionally inactive collider. */
+export function isHeldCampDumbbellCollider(collider: Collider, body: RigidBody | null | undefined) {
+  return !!body && isolatedDumbbells.get(collider) === body && body.isValid() && collider.isValid() && body.isKinematic()
+    && !collider.isEnabled() && collider.isSensor() && collider.collisionGroups() === 0 && collider.solverGroups() === 0;
+}
 
 export function holdCampDumbbell(body: RigidBody, types: typeof RigidBodyType) {
   const collider = body.collider(0);
@@ -121,6 +128,7 @@ export function holdCampDumbbell(body: RigidBody, types: typeof RigidBodyType) {
   body.setBodyType(types.KinematicPositionBased, true);
   body.setNextKinematicTranslation(body.translation());
   body.setNextKinematicRotation(body.rotation());
+  isolatedDumbbells.set(collider, body);
   return ({ position, rotation }: DumbbellDrop) => {
     body.setTranslation(position, false);
     body.setRotation(rotation, false);
@@ -131,6 +139,7 @@ export function holdCampDumbbell(body: RigidBody, types: typeof RigidBodyType) {
     collider.setCollisionGroups(collision);
     collider.setSolverGroups(solver);
     collider.setEnabled(enabled);
+    isolatedDumbbells.delete(collider);
   };
 }
 

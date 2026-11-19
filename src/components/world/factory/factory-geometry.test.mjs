@@ -203,3 +203,21 @@ test('every factory console advertises clear capsule routes and rejects visible 
     }
   }finally{release();work.dispose();dispose(g);w.free();}
 });
+
+test('rechecking the moving raw-console approach sees its continuous floor at the live coordinates',()=>{
+  const g=buildFactoryGeometry(), w=worldFor(g), origin=factoryWorld([0,0,0]);
+  const fixed=[];w.forEachRigidBody(body=>fixed.push(body));
+  for(const body of fixed)body.setTranslation({x:origin[0],y:origin[1],z:origin[2]},false);
+  const stand=factoryWorld(FACTORY_STATIONS.find(s=>s.id==='raw').at);
+  const player=w.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations());
+  w.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),player);
+  w.step();
+  try {
+    const from=[-234.5,1.9388248920440674,-13.49];
+    assert.ok(pickupGroundRoute(w,R,player,from,stand,2.1),'the capsule must reproduce the clear south aisle');
+    assert.ok(pickupGroundRoute(w,R,player,[-234.501953125,1.93882417678833,-13.437],stand,2.1),'the same route remains grounded after moving');
+    w.createCollider(R.ColliderDesc.cuboid(.2,.4,.12).setTranslation(-234.5,1.52,-12.95));
+    w.step();
+    assert.equal(pickupGroundRoute(w,R,player,from,stand,2.1),null,'a later physical obstacle still rejects the route');
+  }finally{w.free();dispose(g);}
+});

@@ -77,7 +77,7 @@ export function exchangePlatformSlabs():ExchangePlatform[] {
     slab('entry-porch',[[-3.25,1.2],[3.25,1.2],[3.25,3.4],[right,3.4],[left,3.4],[-3.25,3.4]],'#bba98a',[0,3]),
     approach,
     rect('side-exit-landing',18,20.8,-35,-30,.45,'#bba98a',[3]),
-    rect('side-exit-ground',23.5,24.5,-35,-30,0,'#bba98a',[3]),
+    rect('side-exit-ground',23.5,24.5,-35,-30,0,'#bba98a',[1,3]),
     rect('gallery-rear',-17.4,17.4,-40,-35.8,5.2,'#927456',[2]),
     rect('gallery-west',-13.4,-10,-35.8,-17,5.2,'#927456',[0]),
     rect('gallery-east',10,13.4,-35.8,-17,5.2,'#927456',[0]),

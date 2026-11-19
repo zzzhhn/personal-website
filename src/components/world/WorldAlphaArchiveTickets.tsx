@@ -14,7 +14,7 @@ function Drawer({ index, paper, ticket }: { index:number; paper:MeshStandardMate
     enabled:()=>canRequestExchangeArchiveTicket(entry.id), onInteract:()=>{requestExchangeArchiveTicket(entry.id);} } : null);
   const used = entry?.id === state.ticketId && !!state.round && state.round.phase !== 'complete' && !state.ticketReturned;
   return <mesh name={`exchange-drawer-ticket-${index}`} geometry={ticket} material={paper}
-    position={station.contact} visible={!!entry && !used}
+    position={station.contact} visible={!!entry && !used} userData={{worldCollision:'none'}}
     onClick={event=>{event.stopPropagation();if(entry)requestExchangeArchiveTicket(entry.id);}}/>;
 }
 
@@ -47,7 +47,7 @@ export default function WorldAlphaArchiveTickets({paper,ticket}:{paper:MeshStand
   },[catalog,zh,labels]);
   useEffect(()=>()=>{labels.texture.dispose();labels.material.dispose();labels.geometry.dispose();},[labels]);
   return <group name="exchange-archive-catalog">
-    <mesh geometry={labels.geometry} material={labels.material}/>
+    <mesh name="exchange-drawer-labels" geometry={labels.geometry} material={labels.material} userData={{worldCollision:'none'}}/>
     {EXCHANGE_ARCHIVE_DRAWERS.map((_,i)=><Drawer key={i} index={i} paper={paper} ticket={ticket}/>)}
   </group>;
 }

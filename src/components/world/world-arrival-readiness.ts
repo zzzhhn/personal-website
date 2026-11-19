@@ -5,16 +5,17 @@ import { resetPlayerBody } from './player-ground';
 import type { Vec3 } from './types';
 import type { ActorArrival } from './actor-sites';
 
-const blockers = new Map<object, () => boolean>();
+const blockers = new Map<object, { blocked: () => boolean; failed: () => boolean }>();
 /** Loading waits for collider registration, not for Physics to run. This permits
  * a paused entry to become ready before its first spatial-query update. */
-export function holdWorldArrival(blocked: () => boolean) {
+export function holdWorldArrival(blocked: () => boolean, failed: () => boolean = () => false) {
   const token = {};
-  blockers.set(token, blocked);
+  blockers.set(token, { blocked, failed });
   let held = true;
   return () => { if (held) { held = false; blockers.delete(token); } };
 }
-export const worldArrivalBlocked = () => [...blockers.values()].some(blocked => blocked());
+export const worldArrivalBlocked = () => [...blockers.values()].some(entry => entry.blocked());
+export const worldArrivalFailed = () => [...blockers.values()].some(entry => entry.failed() && entry.blocked());
 
 /** Called only during the initial held arrival, independently of the ready flag.
  * The existing real support-ring, capsule and escape queries own acceptance.

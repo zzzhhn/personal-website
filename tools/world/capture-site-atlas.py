@@ -19,9 +19,16 @@ VIEWPORT = {"width": 960, "height": 540}
 # Wait for independently suspended districts before framing a site. The player can
 # reach "ready" at camp while some of these objects are still downloading.
 DISTRICTS = ["world-camp-content", "world-town", "world-street", "world-districts-v4",
-             "djc-beach-club", "alpha-island-batch2", "world-ibd-yard", "factory-structure", "alpha-mainland-pier-r4-candidate"]
+             "djc-beach-club", "alpha-island-batch2", "alpha-echo-cave-station-6",
+             "alpha-station5-three-sluices-waterwheel", "world-ibd-yard", "factory-structure", "alpha-mainland-pier-r4-candidate"]
 TILE_WIDTH, TILE_HEIGHT, LABEL_HEIGHT = 600, 338, 32
 ROW_HEIGHT = TILE_HEIGHT + LABEL_HEIGHT
+# A missing day/night pair cannot be discovered by enumerating the UI alone.
+REQUIRED_SITES = frozenset("site-" + label for label in (
+    "alpha-shallows alpha-lodge alpha-lodge-entry alpha-cave alpha-summit alpha-wind-sign "
+    "alpha-cairns alpha-wheel coaster-infield road-edge exchange-foot club-span club-pool "
+    "club-apron ibd-truck camp town quarry factory mainland-ferry sled-bend").split())
+
 
 
 def pairs(ids):
@@ -33,10 +40,13 @@ def pairs(ids):
         result[site][time] = shot
     if not result or any(set(group) != {"day", "night"} for group in result.values()):
         raise ValueError("Each site needs one day and one night camera")
+    missing = REQUIRED_SITES.difference(result)
+    if missing:
+        raise ValueError(f'Missing required atlas sites: {sorted(missing)}')
     return result
 
 
-def shoot(page, select, shot):
+def shoot(page, select, shot, diagnostics):
     old_frame = page.evaluate("window.__worldDebug.renderLoop().frame")
     select.evaluate("""(el, shot) => {
         el.value = shot;
@@ -80,17 +90,25 @@ def shoot(page, select, shot):
         raise RuntimeError(f"Invalid render at {shot}: {image.size}, channel deviation {ImageStat.Stat(image).stddev}")
     coverage = capture["coverage"]
     if coverage["errors"] or not coverage["submitted"]["meshes"]:
+        diagnostics.mkdir(parents=True, exist_ok=True)
+        image.save(diagnostics / (shot + ".png"))
+        (diagnostics / (shot + ".json")).write_text(json.dumps({
+            "shot": shot, "camera": capture["camera"], "coverage": coverage,
+            "url": page.url, "viewport": VIEWPORT, "quality": "balanced",
+        }, indent=2) + "\n")
         raise RuntimeError(f"Collision inventory failed at {shot}: {coverage['errors'][:10]}, submitted={coverage['submitted']}")
     return capture["camera"], image, coverage
 
 
-def capture(browser, base, shard, shards):
+def capture(browser, base, shard, shards, diagnostics):
     errors = []
     context = browser.new_context(viewport=VIEWPORT, device_scale_factor=1)
     try:
         page = context.new_page()
         def record_error(message):
             errors.append(message)
+            diagnostics.mkdir(parents=True, exist_ok=True)
+            (diagnostics / "browser-errors.json").write_text(json.dumps(errors, indent=2) + "\n")
             print(f"Browser error: {message}", flush=True)
 
         page.on("pageerror", lambda error: record_error(str(error)))
@@ -101,6 +119,12 @@ def capture(browser, base, shard, shards):
             if r.status >= 400 and path.startswith(("/_astro/", "/assets/world/")):
                 record_error(f"{r.status} {path}")
 
+        def request_failed(request):
+            path = urlsplit(request.url).path
+            if path.startswith(("/_astro/", "/assets/world/")):
+                record_error(f"Resource request failed: {request.failure} {path}")
+
+        page.on("requestfailed", request_failed)
         page.on("response", response)
         entry = page.goto(urljoin(base, "/world/?quality=balanced&siteReview=1&qa=1"),
                           wait_until="domcontentloaded", timeout=60000)
@@ -140,8 +164,8 @@ def capture(browser, base, shard, shards):
         records = {}
         for index, site in enumerate(selected):
             group = sites[site]
-            day_camera, day, day_coverage = shoot(page, select, group["day"])
-            night_camera, night, night_coverage = shoot(page, select, group["night"])
+            day_camera, day, day_coverage = shoot(page, select, group["day"], diagnostics)
+            night_camera, night, night_coverage = shoot(page, select, group["night"], diagnostics)
             if day_camera != night_camera:
                 raise RuntimeError(f"Camera/projection/exposure mismatch at {site}: {day_camera} vs {night_camera}")
             change = ImageStat.Stat(ImageChops.difference(day, night)).mean
@@ -162,6 +186,10 @@ def capture(browser, base, shard, shards):
             raise RuntimeError("Browser errors: " + "; ".join(errors[:5]))
         return atlas, {"browser": browser.version, "viewport": VIEWPORT, "quality": "balanced",
                        "preview": entry.url, "entrySha256": hashlib.sha256(html).hexdigest(), "siteOrder": order, "sites": records}
+    except Exception as error:
+        diagnostics.mkdir(parents=True, exist_ok=True)
+        (diagnostics / "capture-error.txt").write_text(str(error) + "\n")
+        raise
     finally:
         context.close()
 
@@ -217,7 +245,7 @@ def main():
             browser = (p.chromium.connect_over_cdp(args.cdp) if args.cdp
                        else p.chromium.launch(channel=args.channel, headless=True))
             try:
-                atlas, manifest = capture(browser, args.base, args.shard, args.shards)
+                atlas, manifest = capture(browser, args.base, args.shard, args.shards, args.out / "diagnostics")
             finally:
                 if not args.cdp:
                     browser.close()

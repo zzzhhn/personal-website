@@ -54,8 +54,9 @@ test('clearing furniture preserves the hand approach, rear aisle and passage bes
   const w=new R.World({x:0,y:-12.5,z:0});
   const m=geometry.colliders.solid;
   w.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices),w.createRigidBody(R.RigidBodyDesc.fixed()));w.step();
-  const routes=[[[11.7,.45,-23],[11.7,.45,-25.34]],[[9.4,.45,-28.4],[15,.45,-28.4]],[[13.95,.45,-25.4],[13.95,.45,-28.4]]];
-  for(const [a,b] of routes)for(let t=0;t<=1;t+=.025) {
+  const routes=[[[11.7,.45,-23],EXCHANGE_PLAY_STATIONS.clearing.stand],[[9.4,.45,-28.4],[15,.45,-28.4]],[[13.95,.45,-25.4],[13.95,.45,-28.4]]];
+  for(const [a,b] of routes)for(let i=0;i<=40;i++) {
+    const t=i/40;
     const p=a.map((v,i)=>v+(b[i]-v)*t),hits=[];
     w.intersectionsWithShape({x:p[0],y:p[1]+.88,z:p[2]},{x:0,y:0,z:0,w:1},new R.Capsule(.48,.34),c=>{hits.push(c.handle);return true;});
     assert.equal(hits.length,0,`clear working route at ${p}`);

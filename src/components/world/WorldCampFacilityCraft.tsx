@@ -62,12 +62,22 @@ export function updateCampFacilityNight(visual: { materials: MeshStandardMateria
   }
 }
 
-function CraftVisual({ family, node }: { family: CampFacilityFamily; node?: string }) {
+interface CampCraftPhysics {
+  create: (root: Object3D) => Float32Array;
+  mount: (points: Float32Array) => () => void;
+}
+
+function CraftVisual({ family, node, physics }: { family: CampFacilityFamily; node?: string; physics?: CampCraftPhysics }) {
   const gltf = useLoader(GLTFLoader, CAMP_FACILITY_URL);
   const environment = useDjcFurnitureEnvironment();
   const visual = useMemo(() => createCampFacilityVisual(gltf.scene, family, node, environment), [gltf, family, node, environment]);
+  const hull = useMemo(() => physics?.create(visual.root), [physics, visual]);
   const registerContact = useContext(CampSuitcaseContactContext);
-  useLayoutEffect(() => family === 'C15' ? registerContact?.(visual.root) : undefined, [family, registerContact, visual]);
+  useLayoutEffect(() => {
+    const releaseHull = hull && physics ? physics.mount(hull) : undefined;
+    const releaseContact = family === 'C15' ? registerContact?.(visual.root) : undefined;
+    if (releaseHull || releaseContact) return () => { releaseContact?.(); releaseHull?.(); };
+  }, [family, hull, physics, registerContact, visual]);
   useEffect(() => {
     visual.users++;
     return () => { visual.users--; queueMicrotask(() => { if (!visual.users) visual.materials.forEach(material => material.dispose()); }); };
@@ -82,9 +92,9 @@ class CraftBoundary extends Component<{ children: ReactNode; fallback: ReactNode
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-/** Original GLBs always supply the collider and articulation frame. Missing candidate art falls
- * back locally. facilityCraft=legacy reproduces the batch-4 visual without loading this pack. */
-export default function WorldCampFacilityCraft({ family, node, fallback }: { family: CampFacilityFamily; node?: string; fallback: ReactNode }) {
+/** Missing candidate art and its shape fall back together. Static props keep their
+ * original articulation frame. facilityCraft=legacy skips loading this pack. */
+export default function WorldCampFacilityCraft({ family, node, fallback, physics }: { family: CampFacilityFamily; node?: string; fallback: ReactNode; physics?: CampCraftPhysics }) {
   const legacy = useMemo(() => typeof window !== 'undefined' && campFacilityLegacy(window.location.search), []);
-  return legacy ? fallback : <CraftBoundary fallback={fallback}><Suspense fallback={fallback}><CraftVisual family={family} node={node} /></Suspense></CraftBoundary>;
+  return legacy ? fallback : <CraftBoundary fallback={fallback}><Suspense fallback={fallback}><CraftVisual family={family} node={node} physics={physics} /></Suspense></CraftBoundary>;
 }

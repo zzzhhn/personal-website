@@ -1,14 +1,15 @@
+import { ShapeType } from '@dimforge/rapier3d-compat';
 import { PLAYER_CENTER_HEIGHT, CAMERA_DEFAULT_YAW, CAMERA_DEFAULT_PITCH } from './actor-physics';
 import type { ActorArrival, ActorSites, ActorZone, ActorHome } from './actor-sites';
 import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
-import { ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
+import { ALPHA_MAINLAND_PIER_POLYGON, ALPHA_ORIGIN, ALPHA_SAFE_GROUND, alphaContainsWorld, alphaWorld } from './alpha-island/alpha-layout';
 import { ALPHA_MINE_ORIGIN, ALPHA_MINE_FOOTPRINT_POINTS } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { FACTORY, FACTORY_STATIONS, factoryWorld, inFactory, FACTORY_FOOTPRINT } from './factory/factory-layout';
 import { CLUB, CLUB_POOL, CLUB_CAPE } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROAD_SAMPLES, IBD_FOOTPRINT } from './attractions/attraction-layout';
-import { namedAlphaArrival, alphaTerrainColliderMounted } from './alpha-island/alpha-arrival';
-import { ALPHA_WATERWHEEL } from './alpha-island/alpha-batch2-layout';
+import { namedAlphaArrival } from './alpha-island/alpha-arrival';
+import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END, ALPHA_WATERWHEEL, ALPHA_WATER_PASSAGE, batch2Segment } from './alpha-island/alpha-batch2-layout';
 import { WATERWHEEL_FRAME_BODY, WATERWHEEL_FLOOR_BODY } from './alpha-island/batch2/waterwheel-layout';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag';
 import { nearestDryPoint, requireMeshHeight } from './WorldLandform';
@@ -17,43 +18,67 @@ import { WORLD_PORTALS } from './world-portals';
 import type { Vec3 } from './types';
 import { mountedCollidersReady, createColliderReadinessProbe, FIXED_TRIMESH, type ColliderRequirement } from './collider-readiness';
 import { createRegionPassage, polygonPassageFootprint, type PassageRegion } from './region-passage';
+import { regionLoadFailed } from './region-load-failure';
 
-/** Named collider groups belong to the independently mounted district, not its visual asset load. */
-export function arrivalColliderRequirements(start: string | null, layoutV4=LAYOUT_V4): ColliderRequirement[] {
-  const mesh=(name:string):ColliderRequirement=>({name,shape:FIXED_TRIMESH});
-  const requirements=[mesh('island-terrain-surface-top'),mesh('island-terrain-solid-faces')];
-  if(layoutV4 && (start==='factory'||start?.startsWith('factory-')))requirements.push(mesh('factory-collision'));
-  if(layoutV4 && start==='ibd')requirements.push(mesh('ibd-yard-architecture'));
-  if(layoutV4 && start==='coaster')requirements.push({name:'coaster-station-surfaces'},mesh('coaster-relief-surface'));
-  if(start==='alpha'||start==='brain')requirements.push(mesh('alpha-mine-surface'),mesh('alpha-mine-solid'));
-  if(start==='exchange')requirements.push(mesh('alpha-exchange-surface'),mesh('alpha-exchange-solid'));
-  if(start?.startsWith('club'))requirements.push(mesh('djc-surface-same-mesh'),mesh('djc-solid-same-mesh'));
-  if(start==='alpha-waterwheel')requirements.push({...mesh(WATERWHEEL_FRAME_BODY),count:4},mesh(WATERWHEEL_FLOOR_BODY));
-  return requirements;
-}
+const mesh = (name: string): ColliderRequirement => ({ name, shape: FIXED_TRIMESH });
+const mainlandRequirements = [mesh('island-terrain-surface-top'), mesh('island-terrain-solid-faces')];
+const alphaTerrainRequirements = [{ ...mesh('alpha-terrain-patch'), count: 2 }];
+const quarryRequirements = [mesh('alpha-mine-surface'), mesh('alpha-mine-solid')];
+const exchangeRequirements = [mesh('alpha-exchange-surface'), mesh('alpha-exchange-solid')];
+const clubRequirements = [mesh('djc-surface-same-mesh'), mesh('djc-solid-same-mesh')];
+const factoryRequirements = [mesh('factory-collision')];
+const yardRequirements = [mesh('ibd-yard-architecture')];
+const coasterRequirements = [{ name: 'coaster-station-surfaces' }, mesh('coaster-relief-surface')];
+const waterwheelRequirements = [{ ...mesh(WATERWHEEL_FRAME_BODY), count: 4 }, mesh(WATERWHEEL_FLOOR_BODY)];
+const caveRequirements = [mesh('alpha-cave-floor-support'), mesh('alpha-cave-solid-rock')];
+// The pier is mounted as one structure. The contact regression ties this count
+// to all of its production pieces, including the approach and the ferry platform.
+const pierRequirements = [{ name: 'alpha-mainland-pier-r4-candidate', shape: ShapeType.RoundCuboid, count: 184 }];
 
-export function worldPassageRegions(layoutV4=LAYOUT_V4):PassageRegion[] {
-  const box=(b:{minX:number;maxX:number;minZ:number;maxZ:number})=>(p:Vec3,r:number)=>
-    p[0]>=b.minX-r&&p[0]<=b.maxX+r&&p[2]>=b.minZ-r&&p[2]<=b.maxZ+r;
-  const district=(id:string,contains:PassageRegion['contains']):PassageRegion=>
-    ({id,contains,requirements:arrivalColliderRequirements(id,layoutV4).slice(2)});
+export function worldPassageRegions(layoutV4=LAYOUT_V4): PassageRegion[] {
+  const box = (b: { minX: number; maxX: number; minZ: number; maxZ: number }) => (p: Vec3, r: number) =>
+    p[0] >= b.minX - r && p[0] <= b.maxX + r && p[2] >= b.minZ - r && p[2] <= b.maxZ + r;
+  const pier = polygonPassageFootprint(ALPHA_MAINLAND_PIER_POLYGON.map(([x,,z]) => [x,z]));
   return [
-    {id:'alpha-island',contains:alphaContainsWorld,requirements:[{name:'alpha-terrain-patch',shape:FIXED_TRIMESH,count:2}]},
-    district('alpha-waterwheel',(p,r)=>{
-      const c=alphaWorld(ALPHA_WATERWHEEL.center);
-      return Math.abs(p[0]-c[0])<=ALPHA_WATERWHEEL.size[0]/2+r&&Math.abs(p[2]-c[2])<=ALPHA_WATERWHEEL.size[1]/2+r;
-    }),
-    district('brain',polygonPassageFootprint(ALPHA_MINE_FOOTPRINT_POINTS)),
-    district('exchange',box(ALPHA_EXCHANGE_FOOTPRINT)),
-    district('club',(p,r)=>(Math.hypot((p[0]-CLUB_CAPE.center[0])/CLUB_CAPE.radii[0],(p[2]-CLUB_CAPE.center[1])/CLUB_CAPE.radii[1])-1)*Math.min(...CLUB_CAPE.radii)<=r),
-    ...(layoutV4?[
-      district('factory',polygonPassageFootprint(FACTORY_FOOTPRINT)),
-      district('ibd',polygonPassageFootprint(IBD_FOOTPRINT)),
-      district('coaster',box(INTENT_COASTER.bounds)),
-    ]:[]),
+    { id: 'alpha-island', contains: alphaContainsWorld, requirements: alphaTerrainRequirements },
+    { id: 'alpha-waterwheel', requirements: waterwheelRequirements, contains: (p,r) => {
+      const { center, size } = ALPHA_WATERWHEEL;
+      const x = p[0] - ALPHA_ORIGIN[0], z = p[2] - ALPHA_ORIGIN[2];
+      return (Math.abs(x - center[0]) <= size[0]/2 + r && Math.abs(z - center[2]) <= size[1]/2 + r)
+        || batch2Segment(x,z,ALPHA_WATER_PASSAGE).distance <= 2.5 + r;
+    } },
+    { id: 'alpha-cave', requirements: caveRequirements, contains: (p,r) => {
+      // The mountain trail and transit lines may pass above the cave footprint.
+      if (p[1] < 20 || p[1] > 36) return false;
+      const x = p[0] - ALPHA_ORIGIN[0], z = p[2] - ALPHA_ORIGIN[2];
+      return Math.min(batch2Segment(x,z,ALPHA_CAVE_PATH).distance,batch2Segment(x,z,ALPHA_CAVE_DEAD_END).distance) <= 4.5 + r;
+    } },
+    { id: 'mainland-pier', loadSource: 'alpha-island', contains: pier, requirements: pierRequirements },
+    { id: 'brain', contains: polygonPassageFootprint(ALPHA_MINE_FOOTPRINT_POINTS), requirements: quarryRequirements },
+    { id: 'exchange', contains: box(ALPHA_EXCHANGE_FOOTPRINT), requirements: exchangeRequirements },
+    { id: 'club', requirements: clubRequirements,
+      contains: (p,r) => (Math.hypot((p[0]-CLUB_CAPE.center[0])/CLUB_CAPE.radii[0],(p[2]-CLUB_CAPE.center[1])/CLUB_CAPE.radii[1])-1)*Math.min(...CLUB_CAPE.radii)<=r },
+    ...(layoutV4 ? [
+      { id: 'factory', contains: polygonPassageFootprint(FACTORY_FOOTPRINT), requirements: factoryRequirements },
+      { id: 'ibd', contains: polygonPassageFootprint(IBD_FOOTPRINT), requirements: yardRequirements },
+      { id: 'coaster', contains: box(INTENT_COASTER.bounds), requirements: coasterRequirements },
+    ] : []),
   ];
 }
-const passageRegions=worldPassageRegions(),mainlandRequirements=arrivalColliderRequirements(null);
+const v3PassageRegions = worldPassageRegions(false);
+const v4PassageRegions = worldPassageRegions(true);
+const passageRegions = LAYOUT_V4 ? v4PassageRegions : v3PassageRegions;
+
+function arrivalRegions(start: string | null, layoutV4: boolean) {
+  const regions = layoutV4 ? v4PassageRegions : v3PassageRegions;
+  if (namedAlphaArrival(start)) return regions.filter(region => region.id === 'alpha-island' || region.id === start);
+  const id = start === 'alpha' ? 'brain' : start?.startsWith('club-') ? 'club' : start?.startsWith('factory-') ? 'factory' : start;
+  return regions.filter(region => region.id === id);
+}
+
+export function arrivalColliderRequirements(start: string | null, layoutV4=LAYOUT_V4): ColliderRequirement[] {
+  return [...mainlandRequirements, ...arrivalRegions(start,layoutV4).flatMap(region => region.requirements)];
+}
 
 const bodyPoint = (ground: Vec3): Vec3 => [ground[0],ground[1]+PLAYER_CENTER_HEIGHT,ground[2]];
 const attractionRoads=ATTRACTION_ROAD_SAMPLES.map(path=>path.map(([x,z])=>[x,1.045,z] as Vec3));
@@ -78,7 +103,7 @@ export function worldActorArrival(search: string, development: boolean, layoutV4
     }
     if(start==='town')return bodyPoint([14,1.2,-2.5]);
     if(start==='tent')return bodyPoint([-42,4.8,20]);
-    if(start==='ibd'||start==='coaster')return bodyPoint((start==='ibd'?IBD_YARD:INTENT_COASTER).entrance);
+    if(layoutV4&&(start==='ibd'||start==='coaster'))return bodyPoint((start==='ibd'?IBD_YARD:INTENT_COASTER).entrance);
     if(start==='club')return bodyPoint([CLUB.spawn[0],1,CLUB.spawn[2]]);
     if(start==='exchange')return bodyPoint([ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1],ALPHA_EXCHANGE_ORIGIN[2]+2.4]);
     if(development&&start==='club-dance')return bodyPoint(CLUB.dance);
@@ -102,12 +127,13 @@ export function worldActorArrival(search: string, development: boolean, layoutV4
   const club=start?.startsWith('club'),attraction=start==='ibd'||start==='coaster';
   const cameraYaw=portal?Math.PI/2-portal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attraction?Math.PI/2:qaStart==='club-view'?0:club?-Math.PI/2:CAMERA_DEFAULT_YAW;
   const cameraPitch=qaStart==='exchange-gallery'?.4554:club?.4:CAMERA_DEFAULT_PITCH;
-  const initialPosition=position(),requirements=arrivalColliderRequirements(resolvedStart,layoutV4);
-  return {position:initialPosition,yaw,cameraYaw,cameraPitch,ground,
-    waitForColliders:!!ground||!qaStart,
-    collidersReady:ground?(world,states)=>alphaTerrainColliderMounted(world,states)
-      &&(start!=='alpha-waterwheel'||mountedCollidersReady(world,states,requirements))
-      :(world,states)=>mountedCollidersReady(world,states,requirements)};
+  const initialPosition = position();
+  const requirements = arrivalColliderRequirements(resolvedStart,layoutV4);
+  const regions = arrivalRegions(resolvedStart,layoutV4);
+  return { position: initialPosition, yaw, cameraYaw, cameraPitch, ground,
+    waitForColliders: !!ground || !qaStart,
+    loadFailed: () => regions.some(region => regionLoadFailed(region.loadSource ?? region.id)),
+    collidersReady: (world,states) => mountedCollidersReady(world,states,requirements) };
 }
 
 export function worldActorZone(position:Vec3,fallback?:ActorZone,layoutV4=LAYOUT_V4):ActorZone {
@@ -127,7 +153,7 @@ export const worldActorSites: ActorSites = {
   portals:WORLD_PORTALS.map(portal=>({...portal,fallbackZone:portal.id==='camp'?'camp':'park',
     notice:{zh:`已抵达${portalNames[portal.id].zh}。离开门口后可再次穿行。`,
       en:`Arrived at ${portalNames[portal.id].en}. Walk away to rearm the gate.`}})),
-  passage:(world,states)=>createRegionPassage(passageRegions,createColliderReadinessProbe(world,states),mainlandRequirements),
+  passage:(world,states)=>createRegionPassage(passageRegions,createColliderReadinessProbe(world,states),mainlandRequirements,regionLoadFailed),
   arrival:worldActorArrival,
   zone:worldActorZone,
   roadCandidates:worldRoadLandingCandidates,

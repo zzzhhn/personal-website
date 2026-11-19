@@ -10,7 +10,7 @@ import { createCaveArt } from '../../src/components/world/alpha-island/batch2/ca
 import { encodeCaveArtifact, decodeCaveArtifact, CAVE_PART_GROUPS } from '../../src/components/world/alpha-island/batch2/cave-artifact.ts';
 import { encodeStaticSurfaces, decodeStaticSurfaces, surfaceColliderBuffers, castStaticSurface } from '../../src/components/world/static-surface-asset.ts';
 import { ALPHA_CAVE_PATH, ALPHA_CAVE_DEAD_END } from '../../src/components/world/alpha-island/alpha-batch2-layout.ts';
-import { ALPHA_ORIGIN } from '../../src/components/world/alpha-island/alpha-layout.ts';
+import { ALPHA_ORIGIN, alphaWorld } from '../../src/components/world/alpha-island/alpha-layout.ts';
 import { CAVE_LAMP_HOME, CAVE_CHIME_ANCHOR, CAVE_CHIME_YAW, createCaveState, cancelCaveState, tickCaveState } from '../../src/components/world/alpha-island/batch2/cave-state.ts';
 import { decodeAlphaTerrain } from '../../src/components/world/alpha-island/alpha-terrain-artifact.ts';
 import { caveLampStation, CAVE_HAND_OWNER } from '../../src/components/world/alpha-island/batch2/cave-lamp-station.ts';
@@ -21,6 +21,8 @@ import { playerSupport, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, f
 import { playerVelocityChange } from '../../src/components/world/player-motion.ts';
 import { createInteractionApproach, createInteractionOfferResolver, interactionVisible } from '../../src/components/world/interaction-offer.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../../src/components/world/actor-physics.ts';
+import { namedAlphaArrival } from '../../src/components/world/alpha-island/alpha-arrival.ts';
+import { activatePlayerArrival } from '../../src/components/world/world-arrival-readiness.ts';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const manifest = JSON.parse(await readFile(path.join(root, 'src/components/world/terrain-artifacts.generated.json'), 'utf8'));
@@ -92,6 +94,48 @@ test('lamp discovery, approach, turn and pickup finish once on the installed cav
     releaseGuideActionHand();
     assert.equal(lamp.lamp,'rack');
   }
+});
+
+test('the public cave arrival activates on the installed outdoor apron and settles normally', async t => {
+  await R.init();
+  const world = new R.World({ x: 0, y: -12.5, z: 0 });
+  t.after(() => world.free());
+  const file = gunzipSync(await readFile(path.join(root, 'public', manifest.alpha.url)));
+  const terrain = decodeAlphaTerrain(file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength));
+  const island = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...ALPHA_ORIGIN));
+  for (const faces of [terrain.surface, terrain.solid]) world.createCollider(R.ColliderDesc.trimesh(terrain.positions, faces), island);
+  const rack = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...alphaWorld(baked.rackPosition)));
+  const chimes = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...alphaWorld(baked.scaffoldPosition))
+    .setRotation({ x: 0, y: Math.sin(baked.scaffoldYaw / 2), z: 0, w: Math.cos(baked.scaffoldYaw / 2) }));
+  for (const [body, parts] of [[island, [...baked.solid, ...baked.floor]], [rack, baked.rack], [chimes, baked.scaffold]]) {
+    for (const part of parts) {
+      const b = surfaceColliderBuffers(part);
+      if (b) world.createCollider(R.ColliderDesc.trimesh(b.vertices, b.indices), body);
+    }
+  }
+  const guide = world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations().setLinearDamping(.2)
+    .setCcdEnabled(true).setSoftCcdPrediction(.1).setCanSleep(false));
+  world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS).setFriction(0).setMass(72), guide);
+  guide.setEnabled(false);
+  world.step();
+  assert.equal(activatePlayerArrival(world, R, guide, [220, 24.12, 155], -.7), null, 'the old mouth origin failed its physical clearance check');
+  const landing = activatePlayerArrival(world, R, guide, namedAlphaArrival('alpha-cave'), -.7);
+  assert.ok(landing);
+  assert.ok(Math.hypot(landing[0] - 220, landing[2] - 155) < 1.5);
+  for (let i = 0; i < 120; i++) {
+    const dt = 1 / 60, support = playerSupport(world, R, guide);
+    const change = playerVelocityChange(guide.linvel(), { x: 0, y: 0, z: 0 }, dt, !!support?.grounded);
+    guide.applyImpulse({ x: change.x * guide.mass(), y: 0, z: change.z * guide.mass() }, true);
+    compensatePlayerSlopeGravity(world, guide, support, dt, false);
+    followPlayerGround(world, R, guide, guide.linvel(), dt, false);
+    world.step();
+    clearPlayerSlopeGravity(guide);
+  }
+  const settled = guide.translation();
+  t.diagnostic(`cave arrival centre ${landing.map(value => value.toFixed(3))}; after 120 steps ${[settled.x, settled.y, settled.z].map(value => value.toFixed(3))}`);
+  assert.equal(playerSupport(world, R, guide)?.grounded, true);
+  assert.ok(Math.hypot(settled.x - landing[0], settled.z - landing[2]) < .25, `drifted to ${JSON.stringify(settled)}`);
+  assert.ok(landing[1] - settled.y < .24, `landing ${landing} settled at ${settled.y}`);
 });
 
 test('built cave preserves every visible attribute, triangle, finish and mural anchor', () => {

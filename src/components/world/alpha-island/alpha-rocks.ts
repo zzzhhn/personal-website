@@ -8,7 +8,8 @@ import { batch2PlantClearance } from './alpha-batch2-layout';
 type Position = [number, number, number];
 export interface AlphaBoulderField {
   parts: { finish: 'stone'; geometry: BufferGeometry }[];
-  colliders: { points: Float32Array }[];
+  colliders: { id: string; points: Float32Array }[];
+  sources: { id: string; firstVertex: number; vertexCount: number; collision: 'solid' }[];
   witnesses: { position: Position; supportHeights: number[]; slopeY: number }[];
 }
 const TAU = Math.PI * 2;
@@ -86,6 +87,8 @@ function socketDistance(x: number, z: number) {
  */
 export function createAlphaBoulderField(): AlphaBoulderField {
   const geometries: BufferGeometry[] = [], colliders: AlphaBoulderField['colliders'] = [];
+  const sources: AlphaBoulderField['sources'] = [];
+  let firstVertex = 0;
   const witnesses: AlphaBoulderField['witnesses'] = [];
   const occupied: { x: number; z: number; radius: number }[] = [];
   const rnd = random(20261113);
@@ -147,14 +150,17 @@ export function createAlphaBoulderField(): AlphaBoulderField {
     geometry.computeBoundingBox(); geometry.computeBoundingSphere();
     geometries.push(geometry);
     // Already transformed LOCAL island coordinates: no second instance transform.
-    colliders.push({ points: new Float32Array(positions.array) });
+    const id = 'alpha-boulder/' + candidate;
+    colliders.push({ id, points: new Float32Array(positions.array) });
+    sources.push({ id, firstVertex, vertexCount: positions.count, collision: 'solid' });
+    firstVertex += positions.count;
     witnesses.push({ position: [x, height, z], supportHeights, slopeY });
     occupied.push({ x, z, radius });
   }
-  if (!geometries.length) return { parts: [], colliders, witnesses };
+  if (!geometries.length) return { parts: [], colliders, sources, witnesses };
   const geometry = mergeGeometries(geometries, false);
   for (const part of geometries) part.dispose();
   if (!geometry) throw new Error('Alpha boulders must have compatible geometry attributes');
   geometry.computeBoundingBox(); geometry.computeBoundingSphere();
-  return { parts: [{ finish: 'stone', geometry }], colliders, witnesses };
+  return { parts: [{ finish: 'stone', geometry }], colliders, sources, witnesses };
 }

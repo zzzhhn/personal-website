@@ -294,7 +294,7 @@ function Scatter({ name, data, geometry, material, tint, cap }: { name: string; 
     if (Math.hypot(fx - last.current[0], fz - last.current[1]) < 2) return;
     last.current = [fx, fz]; refill(fx, fz);
   });
-  return <instancedMesh ref={ref} name={name} args={[geometry, material, Math.max(1, count)]} receiveShadow frustumCulled={false} />;
+  return <instancedMesh ref={ref} name={name} userData={{worldCollision:'none',collisionReason:'Pebble scatter below the sole clearance'}} args={[geometry, material, Math.max(1, count)]} receiveShadow frustumCulled={false} />;
 }
 
 /** Wall-clock span of the sliced grass build (QA). */
@@ -331,6 +331,8 @@ function EnvDebug() {
  * tiles within 28 m of the focus keep the 0.5 m mesh, farther tiles draw 2 m fans stitched to their
  * fine neighbours. Indices are rebuilt only when the focus moves > 6 m. Colliders stay the full
  * 0.5 m trimesh pair (physics is unaffected). */
+const terrainCollision = { worldCollision: 'solid', worldCollisionPartitions:
+  { floor: 'island-terrain-surface-top', wall: 'island-terrain-solid-faces' } };
 function TerrainLodChunks({ geometry, material }: { geometry: BufferGeometry; material: Material }) {
   // Blocks fully under opaque field paving (>= 0.6 m inside its outer edge) are skipped while `paved` is
   // claimed, i.e. while WorldTerrainRoads is actually mounted; otherwise the full ground is drawn.
@@ -367,7 +369,7 @@ function TerrainLodChunks({ geometry, material }: { geometry: BufferGeometry; ma
     apply(fx, fz);
   });
   useEffect(() => () => subs.forEach(g => g.dispose()), [subs]);
-  return <>{subs.map((g, i) => <mesh key={i} name={`island-terrain-v4-chunk-${i}`} geometry={g} material={material} receiveShadow />)}</>;
+  return <>{subs.map((g, i) => <mesh key={i} name={`island-terrain-v4-chunk-${i}`} userData={terrainCollision} geometry={g} material={material} receiveShadow />)}</>;
 }
 /** QA: current render LOD state. */
 export const terrainLodDebug = { triangles: 0, fineTiles: 0, updates: 0 };
@@ -421,7 +423,7 @@ export function IslandTerrain() {
       <TrimeshCollider name="island-terrain-solid-faces" args={[terrain.positions, terrain.solid]} friction={.65} restitution={.05} />
     </RigidBody>
     {LAYOUT_V4 ? <TerrainLodChunks geometry={geometry} material={material} />
-      : <mesh name="island-terrain-v3-mesh" geometry={geometry} material={material} receiveShadow />}
+      : <mesh name="island-terrain-v3-mesh" userData={terrainCollision} geometry={geometry} material={material} receiveShadow />}
     <ActorTracker />
     <EnvDebug />
     <WorldGrass data={allBlades} />

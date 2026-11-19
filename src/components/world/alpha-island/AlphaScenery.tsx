@@ -38,7 +38,7 @@ export function AlphaSign({position,text,width=3.3,height=1.35,nightLegible=true
  },[text]);
  useFrame(()=>{if(material.current)material.current.emissiveIntensity=nightLegible ? .025+alphaMaterialUniforms.night.value*.4 : 0;});
  useEffect(()=>()=>{textures.t.dispose();textures.e.dispose();},[textures]);
- return <group position={position} userData={{collision:'none',collisionReason:'Nonblocking trail or pier sign'}}><mesh position={[0,(height+.05)/2,0]}><cylinderGeometry args={[.065,.085,height+.05,8]}/><meshStandardMaterial color="#75583d" roughness={.95}/></mesh><mesh position={[0,height,.07]}><boxGeometry args={[width,width/4,.09]}/><meshStandardMaterial ref={material} map={textures.t} emissiveMap={nightLegible?textures.e:undefined} emissive="#fff0cc" emissiveIntensity={0} roughness={.88}/></mesh></group>;
+ return <group position={position} userData={{worldCollision:'none',collisionReason:'Nonblocking trail or pier sign'}}><mesh position={[0,(height+.05)/2,0]}><cylinderGeometry args={[.065,.085,height+.05,8]}/><meshStandardMaterial color="#75583d" roughness={.95}/></mesh><mesh position={[0,height,.07]}><boxGeometry args={[width,width/4,.09]}/><meshStandardMaterial ref={material} map={textures.t} emissiveMap={nightLegible?textures.e:undefined} emissive="#fff0cc" emissiveIntensity={0} roughness={.88}/></mesh></group>;
 }
 export default function AlphaScenery(){return <group name="alpha-craft-assemblies">
  <AlphaStationStructure station="lodge"/>
@@ -61,9 +61,9 @@ function LodgeRamp() {
   return {geometry,material,surface,buffers:surfaceColliderBuffers(surface)!,dispose(){geometry.dispose();material.dispose();}};
  },[]);
  useOwnedWorldVisual(ramp);
- return <RigidBody type="fixed" colliders={false} userData={{surface:true}}>
-  <TrimeshCollider args={[ramp.buffers.vertices,ramp.buffers.indices]}/>
-  <mesh name={ramp.surface.id} geometry={ramp.geometry} material={ramp.material} dispose={null} userData={{collision:'solid',surfaceRole:'floor'}} receiveShadow/>
+ return <RigidBody name="alpha-lodge-threshold" type="fixed" colliders={false} userData={{surface:true}}>
+  <TrimeshCollider name={ramp.surface.id+'/floor'} args={[ramp.buffers.vertices,ramp.buffers.indices]}/>
+  <mesh name={ramp.surface.id} geometry={ramp.geometry} material={ramp.material} dispose={null} userData={{worldCollision:'solid',surfaceId:ramp.surface.id+'/floor',surfaceRole:'floor'}} receiveShadow/>
  </RigidBody>;
 }
 function bellParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[0,.35,0],.04);b.add(new LatheGeometry([[.04,0],[.11,-.06],[.15,-.32],[.28,-.49],[.27,-.53],[.23,-.5],[.12,-.3],[.08,-.07]].map(p=>new Vector2(p[0],p[1])),20),'metal');b.beam('rope',[0,-.35,0],[0,-1.3,0],.022);b.cyl('wood',[0,-1.3,0],.075,.2);b.cyl('metal',[0,-.43,0],.055,.19);const parts=b.finish();parts.forEach(p=>p.geometry.translate(0,-.35,0));return parts;}
@@ -74,7 +74,7 @@ function TrailLamps(){
  const last=useRef<boolean[]>([]);
  useEffect(()=>{const mesh=ref.current;if(!mesh)return;lampLocations.forEach((p,i)=>{dummy.position.set(p[0],alphaHeight(p[0],p[2])+1.5,p[2]);dummy.scale.set(.25,.28,.25);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);color.set('#5a5544');mesh.setColorAt(i,color);});mesh.instanceMatrix.needsUpdate=true;if(mesh.instanceColor)mesh.instanceColor.needsUpdate=true;mesh.computeBoundingSphere();last.current=lampLocations.map(()=>false);},[dummy,color]);
  useFrame(()=>{const mesh=ref.current;if(!mesh)return;const age=alphaMotion.time-alphaMotion.bellAt;let changed=false;for(let i=0;i<lampLocations.length;i++){const lit=age>i*.25&&age<28;if(lit===last.current[i])continue;last.current[i]=lit;color.set(lit?'#ffd893':'#5a5544');mesh.setColorAt(i,color);changed=true;}if(changed&&mesh.instanceColor)mesh.instanceColor.needsUpdate=true;});
- return <group userData={{collision:'none',collisionReason:'Decorative trail lamps'}}><Craft build={lampParts} name="alpha-timber-trail-lamps"/><instancedMesh ref={ref} args={[undefined,undefined,lampLocations.length]} name="alpha-trail-lamp-sequence"><boxGeometry args={[1,1,1]}/><meshStandardMaterial emissive="#e0ab64" emissiveIntensity={.5}/></instancedMesh></group>;
+ return <group userData={{worldCollision:'none',collisionReason:'Decorative trail lamps'}}><Craft build={lampParts} name="alpha-timber-trail-lamps"/><instancedMesh ref={ref} args={[undefined,undefined,lampLocations.length]} name="alpha-trail-lamp-sequence"><boxGeometry args={[1,1,1]}/><meshStandardMaterial emissive="#e0ab64" emissiveIntensity={.5}/></instancedMesh></group>;
 }
 
 function CairnField() {
@@ -91,4 +91,4 @@ function CairnField() {
 function handleParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[.6,0,0],.06);b.beam('wood',[.6,0,0],[.6,0,.4],.08);b.cyl('metal',[0,0,0],.1,.12);return b.finish();}
 function WindHandle(){const ref=useRef<Group>(null);useFrame((_,dt)=>{if(ref.current)ref.current.rotation.y+=(useAlphaStore.getState().wind*.7-ref.current.rotation.y)*Math.min(1,dt*8);});return <group ref={ref} position={[16.8,ALPHA_WIND_GATE_Y+1.05,-44]}><Craft build={handleParts} name="alpha-working-wind-crank"/></group>;}
 
-function BoulderField(){const field=useMemo(createAlphaBoulderField,[]),m=useMemo(()=>alphaMaterial('stone'),[]);useEffect(()=>()=>{field.parts.forEach(p=>p.geometry.dispose());m.dispose();},[field,m]);return <group name="alpha-supported-boulder-field">{field.parts.map((p,i)=><mesh key={i} name="alpha-supported-rock-batch" geometry={p.geometry} material={m} castShadow receiveShadow/>)}<RigidBody type="fixed" colliders={false} userData={{solid:true}}>{field.colliders.map((c,i)=><ConvexHullCollider key={i} args={[c.points]}/>)}</RigidBody></group>;}
+function BoulderField(){const field=useMemo(createAlphaBoulderField,[]),m=useMemo(()=>alphaMaterial('stone'),[]);useEffect(()=>()=>{field.parts.forEach(p=>p.geometry.dispose());m.dispose();},[field,m]);return <group name="alpha-supported-boulder-field">{field.parts.map((p,i)=><mesh key={i} name="alpha-supported-rock-batch" userData={{worldCollisionSources:field.sources}} geometry={p.geometry} material={m} castShadow receiveShadow/>)}<RigidBody type="fixed" colliders={false} userData={{solid:true}}>{field.colliders.map(c=><ConvexHullCollider key={c.id} name={c.id} args={[c.points]}/>)}</RigidBody></group>;}

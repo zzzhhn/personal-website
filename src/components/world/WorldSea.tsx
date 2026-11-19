@@ -46,5 +46,5 @@ export default function WorldSea({ material }: { material: MeshStandardMaterial 
     }
     seaSpotDebug.spots = spots.slice(0, SEA_SPOTS).map(s => ({ ...s, x: +s.x.toFixed(2), z: +s.z.toFixed(2), strength: +s.strength.toFixed(2) }));
   });
-  return <mesh ref={ref} name="world-sea-gerstner" geometry={geometry} material={material} position={[0, WATER_Y, 0]} receiveShadow frustumCulled={false} />;
+  return <mesh ref={ref} name="world-sea-gerstner" userData={{worldCollision:'soft',collisionReason:'Traversable water with swim and recovery behavior'}} geometry={geometry} material={material} position={[0, WATER_Y, 0]} receiveShadow frustumCulled={false} />;
 }

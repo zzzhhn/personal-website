@@ -4,7 +4,7 @@ import { createFactoryGame, restoreFactoryGame, saveFactoryGame, factoryActions,
   finishFactoryAction, cancelFactoryAction, appendFactoryTrialSample, addFactoryObservation,
   canStartNextFactoryBatch as batchReady, startNextFactoryBatch as nextBatch,
   type FactoryGame, type FactoryAction, type FactoryActionResult, type FactoryTicket, type FactoryTrialSample } from './factory-game.ts';
-import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics';
+import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, radialDeadzone } from '../actor-physics';
 import { canReachActivityStand, type GroundRouteQuery } from '../activity-ground-route';
 import { factoryStation, factoryWorld, type FactoryStationId } from './factory-layout.ts';
 import { createFactoryOperation, stepFactoryOperation, factoryAssemblyModules, factoryToolAligned, type FactoryOperation, type FactoryInput } from './factory-operation.ts';
@@ -18,6 +18,7 @@ interface FactoryStore {game:FactoryGame;active:boolean;save:'saved'|'memory'|'i
 export const useFactoryStore=create<FactoryStore>(()=>({game:createFactoryGame(),active:false,save:'memory',notice:null,phase:'',aligned:false,route:null,printSequence:0,dispatchView:'dock'}));
 export const factoryActor={available:false,position:[0,0,0] as FactoryPoint,grounded:false,groundRoute:undefined as GroundRouteQuery | undefined};
 export const factoryControl:{operation:FactoryOperation|null;inspection:FactoryInspectionSession|null;input:FactoryInput}={operation:null,inspection:null,input:{x:0,z:0,held:false,confirm:false}};
+const factoryPad = { index: -1, waitingForNeutral: true, held: false };
 let loaded=false;
 export function loadFactorySave(){
   if(loaded||typeof window==='undefined')return;loaded=true;
@@ -31,7 +32,29 @@ function persistFactory(){
   try{localStorage.setItem(SAVE_KEY,saveFactoryGame(useFactoryStore.getState().game));useFactoryStore.setState({save:'saved'});}
   catch{useFactoryStore.setState({save:'memory'});}
 }
-export function clearFactoryInput(){Object.assign(factoryControl.input,{x:0,z:0,held:false,confirm:false});}
+export function clearFactoryInput(){
+  Object.assign(factoryControl.input,{x:0,z:0,held:false,confirm:false});
+  factoryPad.waitingForNeutral=true;factoryPad.held=false;
+}
+function sampleFactoryInput(): FactoryInput {
+  const input=factoryControl.input;
+  const pads=typeof navigator==='undefined'?[]:Array.from(navigator.getGamepads?.()??[]);
+  const pad=pads.find(g=>g?.connected&&g.mapping==='standard')??pads.find(g=>g?.connected);
+  const index=pad?.index??-1;
+  if(index!==factoryPad.index){
+    factoryPad.index=index;factoryPad.waitingForNeutral=true;factoryPad.held=false;
+  }
+  if(!pad)return input;
+  const [x,z]=radialDeadzone(pad.axes[0]??0,pad.axes[1]??0);
+  const held=!!pad.buttons[3]?.pressed;
+  if(factoryPad.waitingForNeutral){
+    if(!held&&x===0&&z===0)factoryPad.waitingForNeutral=false;
+    return input;
+  }
+  const confirm=held&&!factoryPad.held;
+  factoryPad.held=held;
+  return {x:input.x||x,z:input.z||z,held:input.held||held,confirm:input.confirm||confirm};
+}
 export function printFactoryReport(){
   const state=useFactoryStore.getState(),world=useWorldStore.getState();
   if(!state.active||!state.game.report||state.game.pending||world.factoryStation!=='release'||world.paused||world.poolInspect)return false;
@@ -133,7 +156,7 @@ export function tickFactoryOperation(dt:number){
   const paused=w.paused||w.poolInspect||(typeof document!=='undefined'&&document.hidden);
   if(paused){clearFactoryInput();return;}
   if(op.action.type==='inspect')return;
-  stepFactoryOperation(op,factoryControl.input,dt);factoryControl.input.confirm=false;
+  stepFactoryOperation(op,sampleFactoryInput(),dt);factoryControl.input.confirm=false;
   const aligned=factoryToolAligned(op);
   if(s.phase!==op.phase||s.aligned!==aligned)useFactoryStore.setState({phase:op.phase,aligned});
   if(op.phase==='done')finishFactoryOperation(s.game.pending);
@@ -141,7 +164,7 @@ export function tickFactoryOperation(dt:number){
 export function tickFactoryInspection(probe:FactoryInspectionProbe,dt:number){
   const inspection=factoryControl.inspection,s=useFactoryStore.getState(),w=useWorldStore.getState();
   if(!inspection||s.game.pending?.action.type!=='inspect'||w.paused||w.poolInspect||!w.factoryStation||document.hidden)return;
-  advanceFactoryInspection(inspection,probe,factoryControl.input.confirm,dt);factoryControl.input.confirm=false;
+  advanceFactoryInspection(inspection,probe,sampleFactoryInput().confirm,dt);factoryControl.input.confirm=false;
   const phase=`inspect-${inspection.step}${inspection.motor?'-motor':''}`;
   if(s.phase!==phase)useFactoryStore.setState({phase});
   if(inspection.step===6)finishFactoryOperation(s.game.pending,{inspection:inspection.evidence});

@@ -25,7 +25,7 @@ export default function WorldCampSuitcaseContact({ slot }: { slot: SuitcaseConta
     mesh.raycast = () => {}; // Optional shading must never intercept exploration/interaction rays.
     mesh.castShadow = false; mesh.receiveShadow = false; mesh.frustumCulled = false;
     mesh.matrixAutoUpdate = false; mesh.matrixWorldAutoUpdate = false;
-    mesh.userData = { noOcclusionFade: true, assetId: 'C15', contactOnly: true };
+    mesh.userData = { noOcclusionFade: true, assetId: 'C15', contactOnly: true, worldCollision: 'none' };
     return { mesh, geometry, material, users: 0 };
   }, []);
   useLayoutEffect(() => {

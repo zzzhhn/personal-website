@@ -6,12 +6,15 @@ import type { Vec3 } from './types';
 export interface ExchangePlayStation {
   stand:Vec3; yaw:number; contact:Vec3; slideStart?:Vec3; slideEnd?:Vec3;
 }
+const receiptTray:Vec3=[11.7,1.48,-25.88],receiptTraySize:Vec3=[.8,.06,.42],receiptSize:Vec3=[.29,.015,.21];
+const receiptRest:Vec3=[receiptTray[0],receiptTray[1]+(receiptTraySize[1]+receiptSize[1])/2,-25.8];
+
 export const EXCHANGE_PLAY_STATIONS = {
-  archive:{stand:[-11.7,.45,-18.2],yaw:Math.PI/2,contact:[-11.7,1.48,-18.66]},
+  archive:{stand:[-11.7,.45,-18.12],yaw:Math.PI/2,contact:[-11.7,1.48,-18.60]},
   desk:{stand:[-1.35,0,-14.98],yaw:Math.PI/2,contact:[-1.35,1.05,-15.44],
     slideStart:[-1.54,1.1,-15.40],slideEnd:[-1.16,1.1,-15.40]},
   bell:{stand:[0,.45,-36.2],yaw:Math.PI/2,contact:[0,1.48,-36.66]},
-  clearing:{stand:[11.7,.45,-25.34],yaw:Math.PI/2,contact:[11.7,1.49,-25.8]},
+  clearing:{stand:[11.7,.45,-25.30],yaw:Math.PI/2,contact:receiptRest},
   review:{stand:[-3,5.2,-38.26],yaw:Math.PI/2,contact:[-3,6.26,-38.72]},
 } as const satisfies Record<string,ExchangePlayStation>;
 
@@ -40,6 +43,5 @@ export const EXCHANGE_PLAY_PROPS = {
     machineBase:[11.7,1.39,-26.38] as Vec3,machineSize:[1.15,.18,.94] as Vec3,
     stampPivot:[11.7,2.16,-26.38] as Vec3,stampRest:[11.7,1.86,-26.38] as Vec3,
     stampTravel:.33,stampSize:[.42,.16,.34] as Vec3,
-    receiptTray:[11.7,1.48,-25.88] as Vec3,receiptRest:[11.7,1.49,-25.8] as Vec3,
-    receiptSize:[.29,.015,.21] as Vec3},
+    receiptTray,receiptTraySize,receiptRest,receiptSize},
 } as const;

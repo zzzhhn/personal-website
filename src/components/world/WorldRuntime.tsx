@@ -16,7 +16,8 @@ import { useWindClock, windUniforms } from './WorldWind';
 import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
-import { collisionInventory } from './world-collision-inventory';
+import { collisionInventory, migratedCollisionRoots } from './world-collision-inventory';
+import { isHeldCampDumbbellCollider } from './camp-prop-interactions';
 import type { Object3D } from 'three';
 import { night, NightClock } from './WorldNight';
 import { claimedKeys } from './WorldVisualClaims';
@@ -42,11 +43,20 @@ import { worldResumeProbe } from './world-resume-probe';
 import { createResumeTimeBoundary } from './world-resume-time';
 import WorldMaterialWarmup from './WorldMaterialWarmup';
 import AlphaLocalLights from './alpha-island/AlphaLocalLights';
-import { worldArrivalBlocked } from './world-arrival-readiness';
+import { worldArrivalBlocked, worldArrivalFailed } from './world-arrival-readiness';
+import RegionSceneBoundary from './RegionSceneBoundary';
 
 const worldActorRide = createAttractionActorRide(worldActorSites.rideZone);
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
-const WorldAlphaIsland = lazy(() => import('./alpha-island/WorldAlphaIsland'));
+const WorldAlphaIsland = lazy(async () => {
+  const [{ downloadTerrainArtifact }, { default: manifest }, alpha] = await Promise.all([
+    import('./load-terrain-artifact'), import('./terrain-artifacts.generated.json'),
+    import('./alpha-island/alpha-terrain-artifact'), import('./alpha-island/batch2/cave-artifact'),
+    import('./alpha-island/batch2/waterwheel-artifact'),
+  ]);
+  alpha.installAlphaTerrain(alpha.decodeAlphaTerrain(await downloadTerrainArtifact(manifest.alpha)));
+  return import('./alpha-island/WorldAlphaIsland');
+});
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
 
 function usePageVisible() {
@@ -169,13 +179,18 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
         frameSample.count = Math.min(frameSample.count + 1, frameSample.values.length);
       }
     }
-    // The player stays disabled while its lazy district has no real collider.
-    // Collider registration can finish while paused; activation waits for Physics.
-    if (worldArrivalBlocked()) { frames.current = 0; invalidate(); return; }
+    // The player stays disabled while its destination has no physical footing.
+    if (worldArrivalBlocked()) {
+      frames.current = 0;
+      const failed = worldArrivalFailed();
+      if (failed !== useWorldStore.getState().arrivalLoadFailed) useWorldStore.setState({ arrivalLoadFailed: failed });
+      if (!failed) invalidate();
+      return;
+    }
     frames.current++;
     // Loading may finish while paused; still deliver the existing ready signal.
     if (frames.current < 3) invalidate();
-    if (frames.current === 3) useWorldStore.setState(s => ({ ready: true, loading: { ...s.loading, phase: 'ready' } }));
+    if (frames.current === 3) useWorldStore.setState(s => ({ ready: true, arrivalLoadFailed: false, loading: { ...s.loading, phase: 'ready' } }));
   });
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
@@ -262,12 +277,15 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
       },
       reviewCollisionInventory: () => {
         const list = gl.renderLists.get(scene, 0);
-        const active: Object3D[] = [];
+        const active: Object3D[] = [], held: Object3D[] = [];
         world.forEachCollider(c => {
           const node = colliderStates.get(c.handle)?.object;
-          if (node && c.isEnabled() && !c.isSensor()) active.push(node);
+          if (!node) return;
+          if (c.isEnabled() && !c.isSensor()) active.push(node);
+          else if (isHeldCampDumbbellCollider(c,c.parent())) held.push(node);
         });
-        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active);
+        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => name !== 'street-year-group');
+        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, roots, held);
       },
       reviewCamera: () => {
         const view = WORLD_SHOTS.find(v => v.id === useWorldStore.getState().shot);
@@ -332,7 +350,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>
       <WorldAlphaMine content={content} />
-      <Suspense fallback={null}><WorldAlphaIsland /></Suspense>
+      <RegionSceneBoundary id="alpha-island"><WorldAlphaIsland /></RegionSceneBoundary>
       {LAYOUT_V4&&<WorldAttractions/>}
       <Suspense fallback={null}><WorldStreet experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldCampContent /></Suspense>

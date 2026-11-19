@@ -28,6 +28,7 @@ export interface LampOpts {
   /** Cyan light-tech ring on the head (Art Lock v1 5: lamp heads are one of the six places). */
   cyanRing?: boolean;
   lod?: 0 | 1;
+  splitFooting?: boolean;
 }
 
 /** G10 street lamp / G11 / P04 lantern post: cast footing, fluted base flare, tapered pole with collars,
@@ -36,8 +37,9 @@ export function lampGeometry(o: LampOpts) {
   const B = new Builder(), hi = (o.lod ?? 0) === 0, pole = o.pole ?? S.slate, base = o.base ?? S.slateDark;
   const sides = hi ? 12 : 6, H = o.height;
   // Separate convex parts (base flare / shaft) keep the hull colliders within ~2 cm of the visual.
-  B.part('base');
+  B.part(o.splitFooting ? 'footing' : 'base');
   lathe(B, [[.2, 0], [.2, .06], [.17, .09]], S.stoneLight, { sides: hi ? 10 : 6, faceted: true });
+  if (o.splitFooting) B.part('base');
   lathe(B, hi ? [[.15, .09], [.15, .16], [.12, .2], [.11, .55], [.085, .62], [.07, .66]] : [[.14, .09], [.11, .55], [.07, .66]], base, { sides, smooth: 50 });
   if (hi) lathe(B, [[.072, .63], [.085, .645], [.085, .675], [.072, .69]], base, { sides, smooth: 50 });
   B.part('shaft');
@@ -46,8 +48,8 @@ export function lampGeometry(o: LampOpts) {
     lathe(B, [[.068, H * .55 - .03], [.08, H * .55 - .015], [.08, H * .55 + .015], [.067, H * .55 + .03]], base, { sides, smooth: 50 });
     B.part('hatch', false);
     box(B, [-.05, .26, .1], [.05, .46, .128], base, .008);
-    B.part('cap');
   }
+  if (hi || o.splitFooting) B.part('cap');
   // Arm root cap.
   lathe(B, [[.06, H], [.07, H + .04], [.05, H + .1], [0, H + .14]], pole, { sides, smooth: 60 });
   let head: V3 = [0, H + .02, 0];
@@ -484,7 +486,7 @@ export const extraAssets3 = () => ({ ..._extra2(), windmillTower: { L0: windmill
 
 /* G11: shared G10/P04 lamp generator with a portrait date placard; plate and light move with the post. */
 export function yearPillar(lod: 0 | 1, cell: Cell) {
-  const B = lampGeometry({ height: 2.3, arm: 0, cyanRing: true, lod }), hi = lod === 0;
+  const B = lampGeometry({ height: 2.3, arm: 0, cyanRing: true, lod, splitFooting: true }), hi = lod === 0;
   B.part('date-frame');
   box(B, [-.29, 1.02, .035], [.29, 2.15, .145], S.slate, hi ? .025 : 0);
   if (hi) {

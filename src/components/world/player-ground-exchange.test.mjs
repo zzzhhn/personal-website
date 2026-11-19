@@ -7,6 +7,7 @@ import { BOARDWALK_POINTS, BOARDWALK_WIDTH } from './layout.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground.ts';
 import { createPlayerClearance, sweptPlayerVelocity, playerVelocityChange } from './player-motion.ts';
+import { buildTerrain, requireMeshHeight } from './WorldLandform.ts';
 await R.init();
 const dt=1/60,restHeight=PLAYER_HALF_HEIGHT+PLAYER_RADIUS,q={x:0,y:0,z:0,w:1};
 const point=v=>({x:v[0],y:v[1],z:v[2]});
@@ -15,7 +16,7 @@ const p=point([gallerySole[0],gallerySole[1]+restHeight,gallerySole[2]]);
 // The rebuilt hall has no old low clock beam. This explicit regression obstacle retains
 // the 3 cm head-clearance bug case over the actual 5.2 m gallery, without adding runtime art.
 const beamUnderside=p.y+restHeight+.03;
-function fixture(run,{includeSurface=true,overhead=false,start=p,park=false}={}){
+function fixture(run,{includeSurface=true,overhead=false,start=p,park=false,landform=false}={}){
   const built=buildAlphaExchangeGeometry(),world=new R.World({x:0,y:-12.5,z:0}),kinds=new Map();world.timestep=dt;
   try{
     for(const[kind,mesh]of Object.entries(built.colliders)){
@@ -31,6 +32,13 @@ function fixture(run,{includeSurface=true,overhead=false,start=p,park=false}={})
       const[a,b]=BOARDWALK_POINTS,dx=b[0]-a[0],dz=b[2]-a[2],length=Math.hypot(dx,dz),n=[-dz/length,dx/length];
       const vertices=[[a,-1],[b,-1],[b,1],[a,1]].flatMap(([v,s])=>[v[0]+n[0]*s*BOARDWALK_WIDTH/2,v[1],v[2]+n[1]*s*BOARDWALK_WIDTH/2]);
       const c=world.createCollider(R.ColliderDesc.trimesh(new Float32Array(vertices),new Uint32Array([0,2,1,0,3,2])));kinds.set(c.handle,'surface');
+    }
+    if(landform){
+      const terrain=buildTerrain();
+      for(const [kind,indices] of [['surface',terrain.surface],['solid',terrain.solid]]) {
+        const c=world.createCollider(R.ColliderDesc.trimesh(terrain.positions,indices));
+        kinds.set(c.handle,kind);
+      }
     }
     const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(start.x,start.y,start.z).lockRotations().setLinearDamping(.2).setCcdEnabled(true).setSoftCcdPrediction(.1));
     world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72).setFriction(0)
@@ -121,7 +129,7 @@ test('the lower-hemisphere probe keeps the 25 degree walkable slope boundary',()
   }
 });
 
-function walkRoute(route,{park=false}={}){
+function walkRoute(route,{park=false,landform=false}={}){
   const start=route[0],spawn=point([start[0],start[1]+PLAYER_CENTER_HEIGHT,start[2]]);
   fixture((world,body,kinds)=>{
     const guard=createPlayerClearance(world);
@@ -160,7 +168,7 @@ function walkRoute(route,{park=false}={}){
       const last=route.at(-1);
       assert.ok(Math.abs(body.translation().y-(last[1]+restHeight))<.002,'stopped capsule rests on the destination floor');
     }finally{clearPlayerSlopeGravity(body);world.removeCharacterController(guard);}
-  },{start:spawn,park});
+  },{start:spawn,park,landform});
 }
 
 test('the production capsule crosses the real park, 3.1 m bridge, porch and entrance floor in both directions',()=>{
@@ -180,6 +188,15 @@ test('the production capsule crosses the second exit landing and its downhill re
   // exterior ramp. The reverse run checks the uphill return through the same opening.
   const route=EXCHANGE_OUTER_ROUTES[0].slice(-5).map(exchangeWorld);
   for(const reverse of [false,true])walkRoute(reverse?[...route].reverse():route);
+});
+
+test('the capsule stays grounded through the side-door pavement seam onto island terrain and back',()=>{
+  for(const z of [-34,-32.5,-31]){
+    const entry=exchangeWorld([18.6,.45,z]), ground=exchangeWorld([25.8,0,z]);
+    ground[1]=requireMeshHeight(ground[0],ground[2]);
+    walkRoute([entry,ground],{landform:true});
+    walkRoute([ground,entry],{landform:true});
+  }
 });
 
 test('the production capsule reaches the bell from the dealing desk through the continuous rear pit ramp and returns',()=>{

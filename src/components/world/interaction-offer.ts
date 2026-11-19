@@ -29,6 +29,8 @@ export interface InteractionOfferContext {
 
 const samePoint = (a: Vec3, b: Vec3, tolerance = .001) =>
   Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]) <= tolerance;
+const ACCEPTED_TARGET_TOLERANCE = .15;
+type ApproachFailure = 'target-changed' | 'route-blocked' | 'lost-ground';
 
 /** The prompt and activation use the same eligibility query. Only the expensive stance search
  * is briefly cached; enabled state, actor ownership and visibility are always live. Activation
@@ -73,11 +75,16 @@ export function createInteractionOfferResolver() {
 
 /** Own the interval between selecting a reachable item and invoking its action. */
 export function createInteractionApproach() {
-  let pending: { item: Interactable; stand: Vec3; elapsed: number; stillSelected?: () => boolean } | null = null;
+  let pending: { item: Interactable; stand: Vec3; anchor: Vec3; target: Vec3;
+    elapsed: number; stillSelected?: () => boolean } | null = null;
   let heldHeading: number | null = null;
   function cancel() {
     pending = null;
     heldHeading = null;
+  }
+  function fail(reason: ApproachFailure) {
+    cancel();
+    return { blocked: true as const, reason };
   }
   return {
     get active() { return pending !== null; },
@@ -98,7 +105,10 @@ export function createInteractionApproach() {
       if (pending?.item === item && pending.stillSelected?.() !== false) return true;
       const offer = resolve();
       if (!offer) return false;
-      pending = offer.stand ? { item, stand: offer.stand, elapsed: 0, stillSelected } : null;
+      const target = item.approach?.target();
+      if (offer.stand && !target?.every(Number.isFinite)) return false;
+      pending = offer.stand && target ? { item, stand: offer.stand, anchor: [...item.position],
+        target: [...target], elapsed: 0, stillSelected } : null;
       heldHeading = pending && movement && Math.hypot(...movement) > .05 ? Math.atan2(movement[1], movement[0]) : null;
       if (!pending) item.onInteract();
       return true;
@@ -106,15 +116,15 @@ export function createInteractionApproach() {
     step(dt: number, position: Vec3, yaw: number, speed: number, grounded: boolean,
       routeClear: (item: Interactable, stand: Vec3, ready: boolean) => boolean) {
       if (!pending) return null;
-      const { item, stand } = pending, approach = item.approach;
-      if (!approach || !grounded || pending.stillSelected?.() === false || item.enabled?.() === false) { cancel(); return null; }
+      const { item, stand } = pending, approach = item.approach, target = approach?.target();
+      if (!target || !approach || pending.stillSelected?.() === false || item.enabled?.() === false
+        || !samePoint(item.position, pending.anchor, ACCEPTED_TARGET_TOLERANCE)
+        || !samePoint(target, pending.target, ACCEPTED_TARGET_TOLERANCE)) return fail('target-changed');
+      if (!grounded) return fail('lost-ground');
       pending.elapsed += dt;
       const ready = approach.ready(position);
-      if (pending.elapsed > PICKUP_APPROACH_TIMEOUT || !routeClear(item, stand, ready)) {
-        cancel();
-        return { blocked: true as const };
-      }
-      const motion = pickupApproachMotion(position, stand, approach.target(), ready);
+      if (pending.elapsed > PICKUP_APPROACH_TIMEOUT || !routeClear(item, stand, ready)) return fail('route-blocked');
+      const motion = pickupApproachMotion(position, stand, target, ready);
       const heading = yaw + Math.max(-dt * 10, Math.min(dt * 10, angleDelta(yaw, motion.yaw)));
       const arrived = ready && Math.abs(angleDelta(heading, motion.yaw)) < .12 && speed < .18;
       if (arrived) pending = null;

@@ -141,7 +141,7 @@ test('a changed command or a newly mounted rack cannot finish an older approach'
       driver.request(rack, () => ({item:rack,stand:[.5,H,0]}), () => resolvePromptTarget(prompt) === rack);
       if (change === 'command') rack.label = {en:'Return',zh:'归还'};
       else cleanup = registerInteractable({...rack});
-      assert.equal(driver.step(1/60,[.5,H,0],Math.PI,0,true,()=>true),null);
+      assert.equal(driver.step(1/60,[.5,H,0],Math.PI,0,true,()=>true)?.reason,'target-changed');
       assert.equal(driver.active,false);
     } finally {cleanup?.(); release();}
   }
@@ -166,4 +166,26 @@ test('accepting while walking consumes only the held heading through arrival and
   assert.equal(driver.consumeHeldMovement(1, 0), false, 'route failure gives control back immediately');
   assert.ok(take([0,-1])); driver.cancel();
   assert.equal(driver.consumeHeldMovement(0, -1), false);
+});
+
+test('an accepted approach stops if its anchor or grip moves, then allows a fresh request', () => {
+  for (const moving of ['anchor', 'grip']) {
+    const anchor = [...item.position], grip = [...approach.target()];
+    let commits = 0;
+    const target = { ...item, position: anchor, approach: { ...approach, target: () => grip },
+      onInteract: () => commits++ };
+    const driver = createInteractionApproach();
+    const request = () => driver.request(target, () => ({ item: target, stand: [.5, H, 0] }), undefined, [0, 1]);
+    assert.ok(request());
+    (moving === 'anchor' ? anchor : grip)[0] += .25;
+    const cancelled = driver.step(1/60, [.5, H, 0], Math.PI, 0, true, () => true);
+    cancelled?.arrived?.onInteract();
+    assert.equal(cancelled?.reason, 'target-changed', moving);
+    assert.equal(commits, 0);
+    assert.equal(driver.active, false);
+    assert.equal(driver.consumeHeldMovement(0, 1), false);
+    assert.ok(request());
+    driver.step(1/60, [.5, H, 0], Math.PI, 0, true, () => true)?.arrived?.onInteract();
+    assert.equal(commits, 1);
+  }
 });

@@ -1,10 +1,10 @@
 import { memo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useWorldStore } from '../store';
+import { requestPanelInteraction } from '../WorldInteract';
 import { COASTER_DURATION, COASTER_DISPLAY_SECONDS, coasterPhase, coasterVisibleView, type CoasterView } from './coaster-track';
-import { INTENT_TARGETS, intentInReach, type IntentTarget } from './intent-stations';
 import { findIntentTask, type IntentText } from './intent-tasks';
-import { activateIntentTarget, intentContact, resetIntentVisit, skipIntentRide, stopIntentRide, useIntentStore } from './intent-state';
+import { resetIntentVisit, skipIntentRide, stopIntentRide, useIntentStore } from './intent-state';
 import { INTENT_COASTER } from './attraction-layout';
 import type { CoasterBoardingPhase } from './coaster-transition';
 import { resetAttractionLook } from './attraction-camera';
@@ -35,28 +35,22 @@ const VIEWS: { id: CoasterView; label: IntentText }[] = [
   { id: 'first-person', label: { zh: '座舱观景', en: 'Cabin view' } },
   { id: 'chase', label: { zh: '外部追随', en: 'Exterior view' } },
 ];
+const PANEL_TARGETS = ['intent-chest', 'intent-gate', 'intent-board'];
 /** Mount beside the world's other DOM overlays, outside Canvas. */
 function WorldIntentHud() {
   const w = useWorldStore(useShallow(state => {
     const [x, , z] = state.position;
     const b = INTENT_COASTER.bounds;
     const inside = x > b.minX - 6 && x < b.maxX + 6 && z > b.minZ - 6 && z < b.maxZ + 6;
-    let target: IntentTarget | undefined, distance = Infinity;
-    if (inside) for (const id of Object.keys(INTENT_TARGETS) as IntentTarget[]) {
-      if (['route', 'press', 'visitor'].includes(id) || !intentInReach(state.position, id)) continue;
-      const p = INTENT_TARGETS[id], d = Math.hypot(x - p[0], z - p[2]);
-      if (d < distance) { target = id; distance = d; }
-    }
-    return { lang: state.lang, light: state.light, inside, target,
+    const prompt = state.nearbyInteract;
+    return { lang: state.lang, light: state.light, inside,
       blocked: state.paused || state.poolInspect || !!state.card || !!state.shot || !!state.activeVehicle || !!state.clubMode,
-      interactId: inside ? state.nearbyInteract?.id : undefined };
+      interaction: inside && prompt && PANEL_TARGETS.includes(prompt.id) ? prompt : null };
   }));
   const s = useIntentStore(), workshop = useWorkshopStore(), [details, setDetails] = useState(false);
   const lang = w.lang, t = (zh: string, en: string) => lang === 'zh' ? zh : en;
   if (!s.active || (!s.riding && !w.inside) || w.blocked) return null;
-  const target = w.target === 'board' && !s.progress.gateOpen ? undefined : w.target;
   const task = findIntentTask(workshop.taskId ?? '');
-  const contact = target ? intentContact(target) : false;
   const theme = ['night', 'evening'].includes(w.light) ? 'dark' : 'light';
   const viewControls = <div className="intent-views" role="group" aria-label={t('乘坐视角', 'Ride view')}>
     {VIEWS.map(view => <button key={view.id} type="button" aria-pressed={coasterVisibleView(s.view) === view.id} onClick={() => useIntentStore.setState({ view: view.id })}>{view.label[lang]}</button>)}
@@ -68,10 +62,9 @@ function WorldIntentHud() {
     <p><small>{t('拖拽自由观察 · 滚轮缩放 · 手柄右摇杆转头', 'Drag to look · scroll to zoom · right stick to look')}</small></p>
     {s.ridePhase === 'riding' && <button type="button" className="intent-primary" onClick={skipIntentRide}>{t('跳过行程并回站', 'Skip travel and return to station')}</button>}
     <button type="button" className="intent-primary" disabled={s.exitRequested || ['stand', 'turn-out', 'step-out', 'walk-out', 'complete'].includes(s.ridePhase ?? '')} onClick={stopIntentRide}>{s.exitRequested ? t('已登记，回站后下车', 'Exit requested. Leaving at the station') : s.ridePhase === 'riding' ? t('回站后下车', 'Leave at the station') : t('取消本次发车并下车', 'Cancel departure and step out')}</button>
-    <small>{t('Esc／手柄 Start 暂停；手柄 B 申请下车。可跳过行程，停稳后沿踏步下车。', 'Esc / Start pauses; B requests an exit. Skip travel to stop at the station, then leave via the steps.')}</small>
+    <small>{t('Esc／手柄 Start 暂停。E／手柄 B 申请下车。可跳过行程，停稳后沿踏步下车。', 'Esc / Start pauses. E / B requests an exit. Skip travel to stop at the station, then leave via the steps.')}</small>
   </aside>;
-  const primaryText = target === 'chest' ? s.progress.keyTaken ? t('钥匙已在身上', 'You have the key') : s.progress.chestOpen ? t('拿起钥匙', 'Take the key') : t('掀开宝箱', 'Open the chest')
-    : target === 'gate' ? t('用钥匙开门', 'Unlock the gate') : t('沿踏步登车', 'Board using the steps');
+  const interaction = w.interaction;
   const clarified = workshop.practice ? workshop.practiceClarified : !!task && s.progress.clarified.includes(task.id);
   const request = task?.clarification && clarified ? task.clarification.reply[lang] : task?.request[lang];
   const busy = ['ready', 'processing', 'returning'].includes(workshop.phase);
@@ -86,7 +79,8 @@ function WorldIntentHud() {
     <p>{guidance}</p>
     {request && ['ready', 'processing', 'returning'].includes(workshop.phase) && <blockquote>{request}</blockquote>}
     {s.notice && <p role="status">{s.notice[lang]}</p>}
-    {target && <button type="button" className="intent-primary" disabled={!contact || (target === 'chest' && s.progress.keyTaken) || (target === 'gate' && s.progress.gateOpen)} onClick={() => activateIntentTarget(target)}><kbd>E</kbd>{primaryText}</button>}
+    {interaction && <button type="button" className="intent-primary" onClick={() => requestPanelInteraction(interaction)}>
+      <kbd>E</kbd>{interaction.label[lang]}</button>}
     {s.saveIssue && <p role="status">{s.saveIssue[lang]}</p>}
     <button type="button" className="intent-text-button" aria-expanded={details} onClick={() => setDetails(!details)}>{t('玩法与本机进度', 'About & local progress')}</button>
     {details && <div className="intent-details"><p>{t('请求和席位是原创虚构场景，不是真实用户数据或订单。成功处理六件即可开箱；选错退回，不扣进度。', 'These requests and seats are fictional. Complete six to open the chest. Mistakes return the original without losing progress.')}</p><button type="button" onClick={() => { resetIntentVisit(); if (!useIntentStore.getState().progress.gateOpen) resetWorkshop(); }}>{t('重开本设施的任务与钥匙', 'Restart this attraction’s tasks and key')}</button></div>}

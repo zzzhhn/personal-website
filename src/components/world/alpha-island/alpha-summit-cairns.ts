@@ -48,7 +48,7 @@ export function createSummitCairns(material: Material) {
   }
   field.count = count;
   field.name = 'alpha-summit-decorative-cairn-instances';
-  field.userData = { collision: 'none', collisionReason: 'Decorative stone stacks outside visitor routes' };
+  field.userData = { worldCollision: 'none', collisionReason: 'Decorative stone stacks outside visitor routes' };
   field.computeBoundingSphere();
   field.castShadow = field.receiveShadow = true;
   return field;

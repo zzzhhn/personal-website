@@ -42,7 +42,7 @@ export function surveyStationStructures(scene, ground, t) {
       for (const mesh of station.children.filter(n => n.isMesh)) {
         const vertices = mesh.geometry.getAttribute('position');
         let start = 0;
-        for (const piece of mesh.userData.sources) {
+        for (const piece of mesh.userData.worldCollisionSources) {
           assert.equal(piece.firstVertex,start);
           start += piece.vertexCount;
           const shape = shapes.get(piece.id);
@@ -95,7 +95,7 @@ export function surveyStationStructures(scene, ground, t) {
     compareRay(lodge,[0,.8,1.9],[0,-1,0],.6,true);
 
     const foundation = lodge.children.find(n=>n.isMesh && n.name.endsWith('/stone'));
-    const base = foundation.userData.sources.find(p=>p.id.includes('/foundation/'));
+    const base = foundation.userData.worldCollisionSources.find(p=>p.id.includes('/foundation/'));
     const pos = foundation.geometry.attributes.position;
     const bottom = Math.min(...Array.from({length:base.vertexCount},(_,i)=>pos.getY(base.firstVertex+i)));
     let highestSeam = -Infinity;

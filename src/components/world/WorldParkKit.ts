@@ -121,8 +121,10 @@ export function gltfPieces(root: Object3D, placement: Matrix4, keep: (node: stri
       const piece = new BufferGeometry();
       for (const [key, attr] of Object.entries(source.attributes)) piece.setAttribute(key,
         new BufferAttribute(attr.array.slice(group.start * attr.itemSize, (group.start + group.count) * attr.itemSize), attr.itemSize, attr.normalized));
-      out.push(toBatch(piece, m.multiplyMatrices(placement, mesh.matrixWorld), spec.color, spec.emit, 0, 0,
-        root.name.startsWith('hut_') ? parkSurfaceSlot(name) : 0));
+      const baked = toBatch(piece, m.multiplyMatrices(placement, mesh.matrixWorld), spec.color, spec.emit, 0, 0,
+        root.name.startsWith('hut_') ? parkSurfaceSlot(name) : 0);
+      baked.name = node;
+      out.push(baked);
       piece.dispose();
     }
     if (source !== mesh.geometry) source.dispose();

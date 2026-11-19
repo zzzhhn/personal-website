@@ -15,6 +15,7 @@ import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, p
 import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
 import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityCraft';
 import { bindCampPushableVisual } from './WorldCampPushableVisual';
+import { campCraftPushableHull, campLegacyPushableHull, createCampPushableHullBinding, type CampPushableFamily } from './camp-pushable-hull';
 import WorldCampSuitcaseContact, { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
 import { createSuitcaseContactSlot } from './camp-suitcase-contact';
 import { ToolWallVisual } from './WorldCampWorkshopCraft';
@@ -37,8 +38,8 @@ const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.l
  * they are instead of baking them into its static chunks. No light source is added; claiming
  * 'camp-lamps' also removes the greybox lamp-pool point light (one point light fewer than before).
  *
- * Collision classes (from the same GLB geometry and placement matrices): hard fixed trimesh for C11,
- * C14 and both L01; pushable sleeping dynamic convex hulls for C12 (4 kg), C13 (10 kg each) and C15
+ * Hard fixed trimeshes for C11, C14 and both L01. The selected visual supplies the
+ * pushable sleeping dynamic convex hulls for C12 (4 kg), C13 (16 kg each) and C15
  * (12 kg) that fade out and return home 30 s after being displaced; C16 none (on the desk, inside the
  * C07 collider footprint).
  *
@@ -128,13 +129,13 @@ function CampContent() {
     return {
       place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postM, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
       tools: sub('C11', 'C11_tools', m11), wok: sub('C14', 'C14_wok', m14),
-      guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: localPoints(parts.C12) },
-      dumbbell: { geometry: mergeGeometries(parts.C13.map(p => bake(p, new Matrix4().makeScale(SCALE.C13, SCALE.C13, SCALE.C13))))!, hull: localPoints(parts.C13, SCALE.C13) },
-      suitcase: { geometry: local(parts.C15), hull: localPoints(byName('C15', 'C15_case')) },
+      guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: campLegacyPushableHull(parts.C12, 'C12') },
+      dumbbell: { geometry: local(parts.C13), hull: campLegacyPushableHull(parts.C13, 'C13', SCALE.C13) },
+      suitcase: { body: local(byName('C15', 'C15_case')), handle: local(byName('C15', 'C15_handle')), hull: campLegacyPushableHull(parts.C15, 'C15') },
       plates, toolCentres: plates.map(plate => plate.centre[2]), m11,
     };
   }, [g, legacy]);
-  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.geometry]) geo?.dispose(); }, [data]);
+  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.body, data.suitcase.handle]) geo?.dispose(); }, [data]);
 
   // Formal replacements for the five pad stand-ins and both exit lamps are mounted (visual + collider).
   useGreyboxClaim('camp-placeholder', 'camp-lamps');
@@ -157,7 +158,7 @@ function CampContent() {
     {!legacy && <group matrix={data.m14} matrixAutoUpdate={false}>
       <WorldCampFacilityCraft family="C14" node="C14_stove" fallback={<mesh geometry={data.stoveGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'C14', solid: true }} />} />
     </group>}
-    {!legacy && <group matrix={data.lanternM} matrixAutoUpdate={false}>
+    {!legacy && <group matrix={data.lanternM} matrixAutoUpdate={false} userData={{ worldCollision: 'none', collisionReason: 'Tabletop lantern inside the solid desk footprint' }}>
       <WorldCampFacilityCraft family="C16" fallback={<><mesh geometry={data.lanternFrame} material={vc} castShadow receiveShadow /><mesh geometry={data.lanternGlass} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
     </group>}
     <HardColliders hard={data.hard} />
@@ -168,14 +169,16 @@ function CampContent() {
     </CampToolWall>
     <AnimatedWok frame={data.wok.frame}><WorldCampFacilityCraft family="C14" node="C14_wok" fallback={<mesh geometry={data.wok.geometry} material={vc} castShadow receiveShadow />} /></AnimatedWok>
     <LabelPlates plates={data.plates} frame={data.m11} lang={lang} />
-    <Pushable id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">
-      <WorldCampFacilityCraft family="C12" fallback={<><mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow /><mesh name="camp-content-C12-strings" geometry={data.guitar.strings} material={vc} /></>} />
+    <Pushable family="C12" id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">
+      <mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow />
+      <mesh name="camp-content-C12-strings" geometry={data.guitar.strings} material={vc} userData={{ worldCollision: 'none' }} />
     </Pushable>
-    {data.dumbbells.map((home, i) => <Pushable key={i} id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16}>
-      <group scale={SCALE.C13}><WorldCampFacilityCraft family="C13" fallback={<mesh geometry={data.dumbbell.geometry} scale={1 / SCALE.C13} material={vc} castShadow receiveShadow />} /></group>
+    {data.dumbbells.map((home, i) => <Pushable key={i} family="C13" id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16} scale={SCALE.C13}>
+      <mesh geometry={data.dumbbell.geometry} material={vc} castShadow receiveShadow />
     </Pushable>)}
-    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} clearance={legacy ? 0.004 : 0} contactEnabled={!legacy}>
-      <WorldCampFacilityCraft family="C15" fallback={<mesh geometry={data.suitcase.geometry} material={vc} castShadow receiveShadow />} />
+    <Pushable family="C15" id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} clearance={legacy ? 0.004 : 0} contactEnabled={!legacy}>
+      <mesh geometry={data.suitcase.body} material={vc} castShadow receiveShadow />
+      <mesh name="camp-content-C15-handle" geometry={data.suitcase.handle} material={vc} castShadow receiveShadow userData={{ worldCollision: 'none' }} />
     </Pushable>
     <LightPools lantern={data.lanternPos} />
     <SceneFeedback />
@@ -264,8 +267,22 @@ function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: numbe
 
 const pushables = new Map<string, { body: RefObject<RapierRigidBody | null>; home: Vec3; state: { displacedAt: number; clock: number } }>();
 /** Pushable prop: sleeping dynamic convex hull; 30 s after it leaves home it fades and returns. */
-function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.004, contactEnabled = false }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey?: FeedbackKey; children: ReactNode; clearance?: number; contactEnabled?: boolean }) {
+function Pushable({ family, id, home, hull, mass, feedbackKey, children, scale = 1, clearance = 0.004, contactEnabled = false }: {
+  family: CampPushableFamily; id: string; home: Place; hull: Float32Array; mass: number; feedbackKey?: FeedbackKey;
+  children: ReactNode; scale?: number; clearance?: number; contactEnabled?: boolean;
+}) {
   const body = useRef<RapierRigidBody>(null), visual = useRef<Group>(null);
+  const { rapier } = useRapier();
+  const surfaceId = `camp-content-${id}-hull`;
+  const hullBinding = useMemo(() => createCampPushableHullBinding(hull, (collider, vertices) => {
+    collider.setShape(new rapier.ConvexPolyhedron(vertices));
+    collider.setMass(mass);
+    collider.parent()?.recomputeMassPropertiesFromColliders();
+  }), [hull, mass, rapier]);
+  const physics = useMemo(() => ({
+    create: (root: Object3D) => campCraftPushableHull(root, family, scale, surfaceId),
+    mount: hullBinding.mount,
+  }), [family, hullBinding, scale, surfaceId]);
   const state = useRef({ displacedAt: -1, clock: 0 });
   const contact = useMemo(createSuitcaseContactSlot, []);
   // Own material copy so the 30 s fade touches only this prop.
@@ -315,10 +332,14 @@ function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.0
     }
     contact.update?.();
   });
+  const fallback = <group userData={{ worldCollision: 'pushable', surfaceId, worldCollisionSharedSurface: true }}>{children}</group>;
+  const model = <WorldCampFacilityCraft family={family} physics={physics} fallback={fallback} />;
   return <><RigidBody ref={body} name={`camp-content-push-${id}`} position={start} rotation={[0, home.yaw, 0]} colliders={false} canSleep ccd
     linearDamping={0.35} angularDamping={0.8} userData={{ obstacle: true, assetId: id.slice(0, 3), interactable: id }}>
-    <ConvexHullCollider args={[hull]} mass={mass} friction={0.7} restitution={0.12} />
-    <group ref={visual} name={`camp-content-${id}`} userData={{ assetId: id.slice(0, 3) }}>{contactEnabled ? <CampSuitcaseContactContext.Provider value={contact.register}>{children}</CampSuitcaseContactContext.Provider> : children}</group>
+    <ConvexHullCollider ref={hullBinding.connect} name={surfaceId} args={[hull]} mass={mass} friction={0.7} restitution={0.12} />
+    <group ref={visual} name={`camp-content-${id}`} scale={scale} userData={{ assetId: family }}>
+      {contactEnabled ? <CampSuitcaseContactContext.Provider value={contact.register}>{model}</CampSuitcaseContactContext.Provider> : model}
+    </group>
   </RigidBody>{contactEnabled && <WorldCampSuitcaseContact slot={contact} />}</>;
 }
 
@@ -353,7 +374,7 @@ function LightPools({ lantern }: { lantern: Vector3 }) {
     quads.forEach((q, i) => { for (let k = 0; k < 4; k++) col.setXYZ(i * 4 + k, q.color[0] * levels[i], q.color[1] * levels[i], q.color[2] * levels[i]); });
     col.needsUpdate = true;
   });
-  return <mesh name="camp-content-light-pools" geometry={geometry} material={material} renderOrder={1} frustumCulled={false} userData={{ noOcclusionFade: true }} />;
+  return <mesh name="camp-content-light-pools" geometry={geometry} material={material} renderOrder={1} frustumCulled={false} userData={{ noOcclusionFade: true, worldCollision: 'none', collisionReason: 'Additive light on the ground' }} />;
 }
 
 /** C09 brass and C10 flags belong to WorldCamp and are driven from the camp exhibit callbacks. */
@@ -454,7 +475,19 @@ function useQa(data: { place: Record<string, Place>; dumbbells: Place[]; lantern
     const api = {
       placements: () => ({ ...data.place, C13: data.dumbbells, C16: data.lanternPos.toArray(), L01: EXIT_POSTS, benchTop: data.benchTop }),
       hard: () => hardRecords,
-      pushables: () => [...pushables].map(([id, p]) => { const b = p.body.current, t = b?.translation(); return { id, home: p.home, position: t ? [t.x, t.y, t.z] : null, sleeping: b?.isSleeping() ?? null, displacedFor: p.state.displacedAt < 0 ? null : +(p.state.clock - p.state.displacedAt).toFixed(2) }; }),
+      pushables: () => [...pushables].map(([id, p]) => {
+        const body = p.body.current, position = body?.translation();
+        const colliderCount = body?.numColliders() ?? 0, collider = colliderCount ? body?.collider(0) : undefined;
+        const shape = collider?.shape;
+        let hullTop: number | null = null;
+        if (shape && 'vertices' in shape && (Array.isArray(shape.vertices) || shape.vertices instanceof Float32Array)) {
+          hullTop = -Infinity;
+          for (let i = 1; i < shape.vertices.length; i += 3) hullTop = Math.max(hullTop, shape.vertices[i]);
+        }
+        return { id, home: p.home, position: position ? [position.x, position.y, position.z] : null,
+          sleeping: body?.isSleeping() ?? null, displacedFor: p.state.displacedAt < 0 ? null : +(p.state.clock - p.state.displacedAt).toFixed(2),
+          colliderCount, colliderHandle: collider?.handle ?? null, hullTop, colliderEnabled: collider?.isEnabled() ?? false };
+      }),
       exhibits: () => EXHIBITS.map(e => ({ key: e.key, id: e.id, page: e.page ?? null, position: [...e.position], radius: e.radius })),
       seats: () => seatsQa,
       feedback: () => [...feedback.keys()],

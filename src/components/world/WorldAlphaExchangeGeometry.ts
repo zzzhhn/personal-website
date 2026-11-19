@@ -12,35 +12,59 @@ import { requireMeshHeight } from './WorldLandform';
 import { exchangeGroundSkirt } from './facility-site-contact';
 
 export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
+export const EXCHANGE_COLLIDER_NAMES = { surface:'alpha-exchange-surface', solid:'alpha-exchange-solid' } as const;
+type CollisionKind = keyof typeof EXCHANGE_COLLIDER_NAMES;
+type ExchangeSource = {id:string;firstVertex:number;vertexCount:number} & (
+  {collision:'none'} | {collision:'solid';surfaceId:(typeof EXCHANGE_COLLIDER_NAMES)[CollisionKind];colliderFirstVertex:number}
+);
 /** Local to the unchanged entrance origin. Visible and collider faces share source vertices.
  * Caller owns/disposes the two merged geometries, as with the original model. */
 export function buildAlphaExchangeGeometry() {
-  const parts:BufferGeometry[]=[],glass:BufferGeometry[]=[],support:number[]=[],solid:number[]=[];
-  const add=(g:BufferGeometry,color:string,p:Vec3=[0,0,0],rotation:Vec3=[0,0,0],kind:'solid'|'surface'|'visual'='solid',emit:Emit=[0,0,0],window=false)=>{
+  const parts:BufferGeometry[]=[],glass:BufferGeometry[]=[],positions:Record<CollisionKind,number[]>={surface:[],solid:[]};
+  const bodySources:ExchangeSource[]=[],glassSources:ExchangeSource[]=[];
+  const add=(g:BufferGeometry,color:string,p:Vec3=[0,0,0],rotation:Vec3=[0,0,0],kind:'solid'|'surface'|'visual'='solid',emit:Emit=[0,0,0],window=false,id?:string)=>{
     const m=new Matrix4().compose(new Vector3(...p),new Quaternion().setFromEuler(new Euler(...rotation)),new Vector3(1,1,1));
     const baked=toBatch(g,m,color,emit),v=baked.getAttribute('position'),n=baked.getAttribute('normal');g.dispose();
     const response=exchangeSurface(color),surface=new Float32Array(v.count*2);
     for(let i=0;i<v.count;i++){surface[i*2]=response[0];surface[i*2+1]=response[1];}
     baked.setAttribute('aExchangeSurface',new Float32BufferAttribute(surface,2));
-    if(kind!=='visual')for(let i=0;i<v.count;i+=3){const list=kind==='surface'&&n.getY(i)>.7?support:solid;for(let k=0;k<3;k++)list.push(v.getX(i+k),v.getY(i+k),v.getZ(i+k));}
-    (window?glass:parts).push(baked);
+    const batch=window?glass:parts,sources=window?glassSources:bodySources;
+    const partId=id??`part-${batch.length}`;
+    const previous=sources.at(-1),start=previous?previous.firstVertex+previous.vertexCount:0;
+    const faceKind=(at:number)=>kind==='surface'?(n.getY(at)>.7?'surface':'solid'):kind;
+    // Keep render order and physics buckets intact, retaining a contiguous source
+    // range on both sides of every supporting, blocking or decorative run.
+    for(let first=0;first<v.count;){
+      const bucket=faceKind(first);
+      let end=first+3;
+      while(end<v.count&&faceKind(end)===bucket)end+=3;
+      const source={id:first===0?partId:`${partId}.${first/3}`,firstVertex:start+first,vertexCount:end-first};
+      if(bucket==='visual')sources.push({...source,collision:'none'});
+      else {
+        const collider=positions[bucket];
+        sources.push({...source,collision:'solid',surfaceId:EXCHANGE_COLLIDER_NAMES[bucket],colliderFirstVertex:collider.length/3});
+        for(let i=first;i<end;i++)collider.push(v.getX(i),v.getY(i),v.getZ(i));
+      }
+      first=end;
+    }
+    batch.push(baked);
   };
-  const box=(p:Vec3,s:Vec3,c:string,kind:'solid'|'surface'|'visual'='solid',yaw=0,emit:Emit=[0,0,0])=>add(new BoxGeometry(...s),c,p,[0,yaw,0],kind,emit);
-  const chamfer=(p:Vec3,s:Vec3,c:string,kind:'solid'|'visual'='solid',yaw=0,bevel=.025,emit:Emit=[0,0,0])=>add(exchangeChamferBox(s,bevel),c,p,[0,yaw,0],kind,emit);
-  const rod=(a:Vec3,b:Vec3,r:number,c:string,kind:'solid'|'visual'='solid')=>{
+  const box=(p:Vec3,s:Vec3,c:string,kind:'solid'|'surface'|'visual'='solid',yaw=0,emit:Emit=[0,0,0],id?:string)=>add(new BoxGeometry(...s),c,p,[0,yaw,0],kind,emit,false,id);
+  const chamfer=(p:Vec3,s:Vec3,c:string,kind:'solid'|'visual'='solid',yaw=0,bevel=.025,emit:Emit=[0,0,0],id?:string)=>add(exchangeChamferBox(s,bevel),c,p,[0,yaw,0],kind,emit,false,id);
+  const rod=(a:Vec3,b:Vec3,r:number,c:string,kind:'solid'|'visual'='solid',id?:string)=>{
     const av=new Vector3(...a),bv=new Vector3(...b),d=bv.clone().sub(av),g=new CylinderGeometry(r,r,d.length(),6);
-    g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.normalize()));add(g,c,av.add(bv).multiplyScalar(.5).toArray() as Vec3,[0,0,0],kind);
+    g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.normalize()));add(g,c,av.add(bv).multiplyScalar(.5).toArray() as Vec3,[0,0,0],kind,[0,0,0],false,id);
   };
-  const raw=(p:number[],c:string,kind:'surface'|'solid'|'visual'='solid',emit:Emit=[0,0,0])=>{
-    if(!p.length)return;const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(p,3));g.computeVertexNormals();add(g,c,[0,0,0],[0,0,0],kind,emit);
+  const raw=(p:number[],c:string,kind:'surface'|'solid'|'visual'='solid',emit:Emit=[0,0,0],id?:string)=>{
+    if(!p.length)return;const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(p,3));g.computeVertexNormals();add(g,c,[0,0,0],[0,0,0],kind,emit,false,id);
   };
-  const ring=(cx:number,cz:number,inner:number,outer:number,y:number,depth:number,c:string,n=48,kind:'solid'|'visual'='solid',emit:Emit=[0,0,0])=>{
+  const ring=(cx:number,cz:number,inner:number,outer:number,y:number,depth:number,c:string,n=48,kind:'solid'|'visual'='solid',emit:Emit=[0,0,0],id?:string)=>{
     const p:number[]=[];
     for(let i=0;i<n;i++) {
       const a=i*Math.PI*2/n,b=(i+1)*Math.PI*2/n,v=(t:number,r:number,h:number):Vec3=>[cx+r*Math.cos(t),h,cz+r*Math.sin(t)];
       const a0=v(a,inner,y),a1=v(a,outer,y),b1=v(b,outer,y),b0=v(b,inner,y),a2=v(a,outer,y-depth),b2=v(b,outer,y-depth),a3=v(a,inner,y-depth),b3=v(b,inner,y-depth);
       p.push(...a0,...b1,...a1,...a0,...b0,...b1,...a1,...b1,...b2,...a1,...b2,...a2,...a0,...a3,...b3,...a0,...b3,...b0);
-    }raw(p,c,kind,emit);
+    }raw(p,c,kind,emit,id);
   };
   const rail=(a:Vec3,b:Vec3,height=1.1)=>{
     const d=Math.hypot(...b.map((v,i)=>v-a[i])),n=Math.ceil(d/1.4);
@@ -48,16 +72,17 @@ export function buildAlphaExchangeGeometry() {
     rod([a[0],a[1]+height*.48,a[2]],[b[0],b[1]+height*.48,b[2]],.035,'#927446');
     for(let i=0;i<=n;i++){const t=i/n,p=a.map((v,k)=>v+(b[k]-v)*t) as Vec3;rod(p,[p[0],p[1]+height,p[2]],.04,'#aa8950');}
   };
-  const slope=(x0:number,x1:number,z0:number,z1:number,y0:number,y1:number,c='#947451')=>{
+  const slope=(x0:number,x1:number,z0:number,z1:number,y0:number,y1:number,id:string,c='#947451')=>{
     const a:Vec3=[x0,y0,z0],b:Vec3=[x1,y0,z0],d:Vec3=[x0,y1,z1],e:Vec3=[x1,y1,z1];
-    raw(z1<z0?[...a,...b,...e,...a,...e,...d]:[...a,...e,...b,...a,...d,...e],c,'surface',[0,.09,1]);
-    for(const [u,v]of[[a,d],[b,e]])raw([...u,...v,u[0],u[1]-.22,u[2],...v,v[0],v[1]-.22,v[2],u[0],u[1]-.22,u[2]],'#765a3d');
+    raw(z1<z0?[...a,...b,...e,...a,...e,...d]:[...a,...e,...b,...a,...d,...e],c,'surface',[0,.09,1],`${id}-top`);
+    for(const [i,[u,v]] of [[a,d],[b,e]].entries())
+      raw([...u,...v,u[0],u[1]-.22,u[2],...v,v[0],v[1]-.22,v[2],u[0],u[1]-.22,u[2]],'#765a3d','solid',undefined,`${id}-side-${i}`);
   };
-  const rampWedge=(x0:number,x1:number,z0:number,z1:number,y0:number,y1:number,c:string)=>{
+  const rampWedge=(x0:number,x1:number,z0:number,z1:number,y0:number,y1:number,c:string,id:string)=>{
     const a:Vec3=[x0,y0,z0],b:Vec3=[x1,y0,z0],d:Vec3=[x0,y1,z1],e:Vec3=[x1,y1,z1];
     const low=Math.min(y0,y1),lowZ=y0<y1?z1:z0;
-    raw([...a,...b,...e,...a,...e,...d],c,'surface',[0,.09,1]);
-    raw([...a,...d,x0,low,lowZ,...b,x1,low,lowZ,...e],c);
+    raw([...a,...b,...e,...a,...e,...d],c,'surface',[0,.09,1],`${id}-top`);
+    raw([...a,...d,x0,low,lowZ,...b,x1,low,lowZ,...e],c,'solid',undefined,`${id}-sides`);
   };
   // Butt-jointed slab ownership preserves the existing bridge/park seam exactly.
   for(const slab of exchangePlatformSlabs()) {
@@ -68,17 +93,19 @@ export function buildAlphaExchangeGeometry() {
       for(const i of [0,2,1])bottom.push(v[i][0],slab.y-slab.depth,v[i][2]);
     }
     slab.outline.forEach((a,i)=>{if(!slab.walls[i])return;const b=slab.outline[(i+1)%slab.outline.length],p:Vec3=[a[0],slab.y,a[1]],q:Vec3=[b[0],slab.y,b[1]],r:Vec3=[b[0],slab.y-slab.depth,b[1]],s:Vec3=[a[0],slab.y-slab.depth,a[1]];walls.push(...p,...q,...r,...p,...r,...s);});
-    raw(top,slab.color,'surface',[0,.09,1]);raw(bottom,slab.color);raw(walls,slab.color);
-    raw(exchangeGroundSkirt(slab,ALPHA_EXCHANGE_ORIGIN,requireMeshHeight),slab.color);
+    raw(top,slab.color,'surface',[0,.09,1],`${slab.id}-top`);
+    raw(bottom,slab.color,'solid',undefined,`${slab.id}-underside`);
+    raw(walls,slab.color,'solid',undefined,`${slab.id}-sides`);
+    raw(exchangeGroundSkirt(slab,ALPHA_EXCHANGE_ORIGIN,requireMeshHeight),slab.color,'solid',undefined,`${slab.id}-skirt`);
   }
-  for(const b of exchangeBoxes())add(new BoxGeometry(...b.size),b.color,b.center,b.rotation??[0,0,0],b.surface?'surface':'solid');
+  for(const b of exchangeBoxes())add(new BoxGeometry(...b.size),b.color,b.center,b.rotation??[0,0,0],b.surface?'surface':'solid',undefined,false,b.id);
   // Broad visible steps are complemented by continuous entrance and pit side routes.
   // Their central stair cores are cut out in the slab layout: these visible stone
   // wedges own both the walk surface and collider, with no hidden stair risers.
-  rampWedge(-3,3,-5,-7,0,.45,'#d4c4a5');
-  rampWedge(-2,2,-11,-12.8,.45,0,'#c9b99a');
-  slope(-14.2,-10.5,-5,-7,0,.45);slope(10.5,14.2,-5,-7,0,.45);
-  slope(-8.8,-6.4,-11,-17,.45,0);
+  rampWedge(-3,3,-5,-7,0,.45,'#d4c4a5','entry-ramp');
+  rampWedge(-2,2,-11,-12.8,.45,0,'#c9b99a','pit-entry-ramp');
+  slope(-14.2,-10.5,-5,-7,0,.45,'side-entry-west');slope(10.5,14.2,-5,-7,0,.45,'side-entry-east');
+  slope(-8.8,-6.4,-11,-17,.45,0,'pit-side-ramp');
   // Full-height stone retaining faces hide the earth below the raised walk. The old
   // omitted slab edges exposed a 0.45 m opening around the otherwise paved pit.
   const pitRiser=(a:Vec3,b:Vec3)=>raw([...a,...b,b[0],.45,b[2],...a,b[0],.45,b[2],a[0],.45,a[2]],'#b9a583');
@@ -86,9 +113,9 @@ export function buildAlphaExchangeGeometry() {
   pitRiser([-8.8,0,-28],[-3,0,-28]);pitRiser([3,0,-28],[8.8,0,-28]);
   // A 6 m wide, 2.4 m long rear ramp connects directly to the bell walk. Side
   // cheeks close the wedge to the pit floor; no vertical face crosses its top joint.
-  raw([-3,0,-25.6,3,0,-25.6,3,.45,-28,-3,0,-25.6,3,.45,-28,-3,.45,-28],'#c9b99a','surface',[0,.09,1]);
-  raw([-3,0,-25.6,-3,.45,-28,-3,0,-28,3,0,-25.6,3,0,-28,3,.45,-28],'#b9a583');
-  slope(-17,-14.4,-8,-30,.45,5.2);
+  raw([-3,0,-25.6,3,0,-25.6,3,.45,-28,-3,0,-25.6,3,.45,-28,-3,.45,-28],'#c9b99a','surface',[0,.09,1],'pit-rear-ramp-top');
+  raw([-3,0,-25.6,-3,.45,-28,-3,0,-28,3,0,-25.6,3,0,-28,3,.45,-28],'#b9a583','solid',undefined,'pit-rear-ramp-sides');
+  slope(-17,-14.4,-8,-30,.45,5.2,'gallery-west-ramp');
   rail([-16.95,.45,-8],[-16.95,5.2,-30]);rail([-14.45,.45,-8],[-14.45,5.2,-30]);
   rail([-8.75,.45,-11],[-8.75,0,-17],.9);
   // Each east tread has a visible shallow stone bevel, not a hidden collision ramp.
@@ -96,14 +123,22 @@ export function buildAlphaExchangeGeometry() {
   // run keeps its real contact below the motor's 25 degree walkable limit.
   for(let i=0;i<22;i++){
     const low=.45+i*4.75/22,y=.45+(i+1)*4.75/22,front=-10.8-i*19.2/22,back=front-19.2/22,bevel=.5;
-    rampWedge(14.4,17,front,front-bevel,low,y,'#bba88b');
-    box([15.7,y-.12,(front-bevel+back)/2],[2.6,.24,19.2/22-bevel],'#bba88b','surface');
+    rampWedge(14.4,17,front,front-bevel,low,y,'#bba88b',`east-step-${i}-bevel`);
+    box([15.7,y-.12,(front-bevel+back)/2],[2.6,.24,19.2/22-bevel],'#bba88b','surface',0,undefined,`east-step-${i}-tread`);
     box([15.7,y+.012,front-bevel-.04],[2.48,.024,.055],'#d7c5a4','visual');
   }
   rail([14.45,.45,-10.8],[14.45,5.2,-30]);rail([16.95,.45,-10.8],[16.95,5.2,-30]);
-  // Raised exit landing returns to the original local ground level outside the building.
-  const exitTop=[20.8,.45,-35,23.5,0,-35,23.5,0,-30,20.8,.45,-30];
-  raw([...exitTop.slice(0,3),...exitTop.slice(6,9),...exitTop.slice(3,6),...exitTop.slice(0,3),...exitTop.slice(9,12),...exitTop.slice(6,9)],'#bba98a','surface');
+  // Match the visible edge and walking height to the terrain beyond the existing apron.
+  const grade=(x:number,z:number)=>requireMeshHeight(x+ALPHA_EXCHANGE_ORIGIN[0],z+ALPHA_EXCHANGE_ORIGIN[2])-ALPHA_EXCHANGE_ORIGIN[1];
+  const exitRamp=(id:string,from:number,to:number,y:number,landing:(z:number)=>number)=>{
+    const a:Vec3=[from,y,-35],b:Vec3=[to,landing(-35),-35],c:Vec3=[to,landing(-30),-30],d:Vec3=[from,y,-30];
+    raw([...a,...c,...b,...a,...d,...c],'#bba98a','surface',undefined,`${id}-top`);
+    const under=([x,h,z]:Vec3):Vec3=>[x,Math.min(h,grade(x,z)-.025),z];
+    raw([...a,...b,...under(b),...a,...under(b),...under(a),
+      ...d,...under(d),...under(c),...d,...under(c),...c],'#bba98a','solid',undefined,`${id}-sides`);
+  };
+  exitRamp('side-exit-ramp',20.8,23.5,.45,()=>0);
+  exitRamp('side-exit-grade',24.5,25.1,0,z=>grade(25.1,z));
   // Deep limestone bays, faceted column drums and walnut window reveals.
   for(const side of [-1,1])for(const z of EXCHANGE_COLUMNS.bays) {
     if(side===1&&z===-32)continue;
@@ -113,7 +148,7 @@ export function buildAlphaExchangeGeometry() {
   }
   const windowBay=(side:number,z:number,width:number,low=2.3)=>{
     const x=side*17.55,high=12.2;
-    add(new BoxGeometry(.12,high-low,width),'#c8b890',[x,(high+low)/2,z],[0,0,0],'solid',[.025,.12,1],true);
+    add(new BoxGeometry(.12,high-low,width),'#c8b890',[x,(high+low)/2,z],[0,0,0],'solid',[.025,.12,1],true,`window-${side}-${z}`);
     for(const zz of [z-width/2,z,z+width/2])box([x,(high+low)/2,zz],[.38,high-low,.16],'#725c43');
     for(const y of [low,5.65,9.2,high])if(y>=low)box([x,y,z],[.5,.18,width+.3],'#9c8057');
     // Deep stone jambs and a flattened arch retain readable thickness from the entrance.
@@ -184,10 +219,10 @@ export function buildAlphaExchangeGeometry() {
   }
   // One circular walnut trading island, two working positions and a central paper ticker.
   const desk=EXCHANGE_PLAY_PROPS.desk;
-  ring(0,-20,desk.innerRadius,desk.outerRadius-.1,.96,.91,'#5a4230',48,'solid',[0,.045,0]);
-  ring(0,-20,desk.innerRadius-.1,desk.outerRadius,desk.top,.12,'#987348',48,'solid',[0,.1,1]);
+  ring(0,-20,desk.innerRadius,desk.outerRadius-.1,.96,.91,'#5a4230',48,'solid',[0,.045,0],'trading-island-base');
+  ring(0,-20,desk.innerRadius-.1,desk.outerRadius,desk.top,.12,'#987348',48,'solid',[0,.1,1],'trading-island-counter');
   ring(0,-20,desk.outerRadius-.12,desk.outerRadius-.07,.22,.07,'#b2945a',48,'visual');
-  ring(0,-20,desk.outerRadius-.015,desk.outerRadius+.005,1.025,.025,'#b8975a',64,'visual');
+  ring(0,-20,desk.outerRadius-.015,desk.outerRadius+.005,1.025,.025,'#b8975a',64,'visual',undefined,'trading-island-brass-inlay');
   // Joinery has a raised frame, a recessed field and a narrow shadow line. Its
   // chord stays inside the counter lip; the existing body still owns the collision.
   for(let i=0;i<24;i++) {
@@ -206,12 +241,12 @@ export function buildAlphaExchangeGeometry() {
   box([0,2.23,-19.87],[.58,.9,.025],'#e2d7be','visual');
   for(let i=0;i<6;i++)box([0,2.56-i*.12,-19.85],[.36,.02,.01],'#8f9278','visual');
   // Only two CRTs, one per actual working position. No decorative terminal rows.
-  for(const s of [EXCHANGE_PLAY_STATIONS.desk,EXCHANGE_SECOND_DESK]) {
+  for(const [i,s] of [EXCHANGE_PLAY_STATIONS.desk,EXCHANGE_SECOND_DESK].entries()) {
     const x=s.stand[0];
-    chamfer([x,1.4,-16.12],[.78,.62,.62],'#c1b69c','solid',0,.045);
-    chamfer([x,1.09,-16.12],[.48,.1,.45],'#847d68','solid',0,.018);
+    chamfer([x,1.4,-16.12],[.78,.62,.62],'#c1b69c','solid',0,.045,undefined,`desk-${i}-crt`);
+    chamfer([x,1.09,-16.12],[.48,.1,.45],'#847d68','solid',0,.018,undefined,`desk-${i}-crt-base`);
     box([x,1.43,-15.794],[.64,.43,.035],'#203d34','visual',0,[.025,.1,0]);
-    chamfer([x,1.09,-15.66],[.76,.055,.24],'#c8bea7','solid',0,.012);
+    chamfer([x,1.09,-15.66],[.76,.055,.24],'#c8bea7','solid',0,.012,undefined,`desk-${i}-keyboard`);
     for(let row=0;row<3;row++)for(let col=0;col<9;col++)box([x-.28+col*.07,1.124,-15.73+row*.065],[.052,.018,.039],'#807968','visual');
     for(let i=0;i<5;i++)box([x+.391,1.36+i*.045,-16.21],[.008,.016,.24],'#665e4c','visual');
     add(new CylinderGeometry(.028,.028,.013,8),'#b8975a',[x+.27,1.19,-15.799],[Math.PI/2,0,0],'visual');
@@ -227,21 +262,21 @@ export function buildAlphaExchangeGeometry() {
     rod([x+.24,1.61,z+.07],[x+.24,1.39,z+.07],.009,'#b8975a','visual');
   }
   const slot=desk.ticketSlot;
-  box([slot[0],slot[1]+.015,slot[2]],[.52,.035,.21],'#b8975a','visual');
+  box([slot[0],slot[1]+.015,slot[2]],[.52,.035,.21],'#b8975a','solid',0,undefined,'desk-ticket-rim');
   box([slot[0],slot[1]+.035,slot[2]+.025],desk.slotSize,'#253c35','visual');
   const a=EXCHANGE_PLAY_STATIONS.desk.slideStart,b=EXCHANGE_PLAY_STATIONS.desk.slideEnd;
-  rod([a[0]-.12,a[1],a[2]],[b[0]+.12,b[1],b[2]],.028,'#c4a369','visual');
-  for(const x of [a[0]-.12,b[0]+.12])box([x,1.075,a[2]],[.08,.07,.13],'#6b5b3e','visual');
+  rod([a[0]-.12,a[1],a[2]],[b[0]+.12,b[1],b[2]],.028,'#c4a369','solid','desk-position-rail');
+  for(const [i,x] of [a[0]-.12,b[0]+.12].entries())box([x,1.075,a[2]],[.08,.07,.13],'#6b5b3e','solid',0,undefined,`desk-position-rail-mount-${i}`);
   // Open archive wing: service counter, real ticket throat, index drawers and reading ledgers.
   const archive=EXCHANGE_PLAY_PROPS.archive;
   box([-11.7,.84,-19.31],[3.15,.78,1.15],'#5a4634');
   chamfer([-11.7,.9,-18.69],[2.65,.49,.08],'#5a4634','solid',0,.015);
-  chamfer(archive.counter,archive.counterSize,'#9a7952','solid',0,.035);
+  chamfer(archive.counter,archive.counterSize,'#9a7952','solid',0,.035,undefined,'archive-counter-top');
   chamfer([-11.7,1.4,-19],[1.1,.3,.62],'#536359','solid',0,.045);
   box(archive.ticketSlot,archive.slotSize,'#233b33','visual');
-  for(const x of [-12.08,-11.32])box([x,1.48,-18.7],[.08,.2,.16],'#b8975a','visual');
-  box([-11.7,1.56,-18.72],[.84,.07,.18],'#b8975a','visual');
-  box([-11.7,1.43,-18.63],[.79,.055,.28],'#b8975a','visual');
+  for(const [i,x] of [-12.08,-11.32].entries())box([x,1.48,-18.7],[.08,.2,.16],'#b8975a','solid',0,undefined,`archive-ticket-jamb-${i}`);
+  box([-11.7,1.56,-18.72],[.84,.07,.18],'#b8975a','solid',0,undefined,'archive-ticket-lintel');
+  box([-11.7,1.43,-18.63],[.79,.055,.28],'#b8975a','solid',0,undefined,'archive-ticket-tray');
   // A shallow limestone surround makes the cabinets a room-sized destination.
   // Its outer x edges are -14.23/-9.87: both side routes retain their clear width.
   box([-12.05,2.26,-24.12],[4.3,3.62,.12],'#725c43');
@@ -279,30 +314,30 @@ export function buildAlphaExchangeGeometry() {
   // Four physical trays share the interaction anchors. Their foremost face is
   // z=-22.76, leaving the stand capsule and z>-22.65 aisle unobstructed.
   // Dynamic paper belongs to the interaction component, not this static batch.
-  for(const {contact:[x,y,z]} of EXCHANGE_ARCHIVE_DRAWERS) {
-    box([x,y-.035,z-.195],[.68,.04,.59],'#b8975a');
-    box([x,y-.024,z+.085],[.68,.028,.03],'#927446');
-    for(const dx of [-.325,.325])box([x+dx,y+.005,z-.195],[.03,.065,.59],'#927446');
-    box([x,y+.055,-23.115],[.64,.105,.035],'#233b33');
+  for(const [i,{contact:[x,y,z]}] of EXCHANGE_ARCHIVE_DRAWERS.entries()) {
+    box([x,y-.035,z-.195],[.68,.04,.59],'#b8975a','solid',0,undefined,`archive-drawer-${i}-floor`);
+    box([x,y-.024,z+.085],[.68,.028,.03],'#927446','solid',0,undefined,`archive-drawer-${i}-lip`);
+    for(const [j,dx] of [-.325,.325].entries())box([x+dx,y+.005,z-.195],[.03,.065,.59],'#927446','solid',0,undefined,`archive-drawer-${i}-side-${j}`);
+    box([x,y+.055,-23.115],[.64,.105,.035],'#233b33','solid',0,undefined,`archive-drawer-${i}-back`);
   }
   for(let i=0;i<3;i++)box([-12.65,1.33+i*.08,-19.42],[.65,.075,.84],['#61735b','#7a5a43','#a98d58'][i],'visual',-.12+i*.07);
   // Clearing wing: a physical press with platen, guide columns, flywheel and output tray.
   const clearing=EXCHANGE_PLAY_PROPS.clearing;
-  box([11.7,.84,-26.45],[3.15,.78,1.15],'#5a4634');chamfer(clearing.counter,clearing.counterSize,'#9a7952','solid',0,.035);
-  chamfer(clearing.machineBase,clearing.machineSize,'#4e6158','solid',0,.035);
+  box([11.7,.84,-26.45],[3.15,.78,1.15],'#5a4634');chamfer(clearing.counter,clearing.counterSize,'#9a7952','solid',0,.035,undefined,'clearing-counter-top');
+  chamfer(clearing.machineBase,clearing.machineSize,'#4e6158','solid',0,.035,undefined,'clearing-press-base');
   for(const x of [11.23,12.17])rod([x,1.47,-26.45],[x,2.4,-26.45],.075,'#a78b56');
   box([11.7,2.43,-26.45],[1.17,.2,.5],'#4e6158');
   box([11.7,1.52,-26.38],[.56,.075,.48],'#b8975a');
   add(new TorusGeometry(.29,.055,6,16),'#b8975a',[10.9,1.95,-26.45]);
   for(let i=0;i<4;i++){const a=i*Math.PI/2;rod([10.9,1.95,-26.45],[10.9+.27*Math.cos(a),1.95+.27*Math.sin(a),-26.45],.035,'#92784b','visual');}
-  box(clearing.receiptTray,[.8,.06,.42],'#b8975a','visual');
-  for(const x of [11.28,12.12])box([x,1.52,-25.9],[.045,.12,.43],'#b8975a','visual');
+  box(clearing.receiptTray,clearing.receiptTraySize,'#b8975a','solid',0,undefined,'clearing-receipt-tray');
+  for(const [i,x] of [11.28,12.12].entries())box([x,1.52,-25.9],[.045,.12,.43],'#b8975a','solid',0,undefined,`clearing-receipt-guide-${i}`);
   box([12.82,1.44,-26.52],[.38,.24,.43],'#293f37');
   box([12.82,1.57,-26.52],[.42,.04,.48],'#b8975a');
   // A shallow gallery console leaves the through-route clear. Its selector uses the same contact anchor.
   const review=EXCHANGE_PLAY_PROPS.review;
   chamfer([-3,5.65,-39.04],[2.62,.9,.48],'#5a4634','solid',0,.035);
-  chamfer(review.counter,review.counterSize,'#9a7952','solid',0,.025);
+  chamfer(review.counter,review.counterSize,'#9a7952','solid',0,.025,undefined,'gallery-review-counter-top');
   box([-3,6.235,-39.04],[2.74,.025,.53],'#b8975a','visual');
   for(const x of [-4.14,-1.86])box([x,5.65,-38.779],[.055,.64,.035],'#9a7952','visual');
   for(const y of [5.33,5.97])box([-3,y,-38.779],[2.32,.055,.035],'#9a7952','visual');
@@ -316,12 +351,12 @@ export function buildAlphaExchangeGeometry() {
   for(const y of [-.48,.48])add(new BoxGeometry(2.76,.055,.025),'#b8975a',screen(0,y,-.01),[pitch,0,0],'visual');
   for(let i=0;i<4;i++)box([-3.42+i*.28,6.255,-39.15],[.055,.018,.13],'#354d43','visual');
   // Clock, board and floor bell form the rear focal axis. Dynamic bell/striker use the exported pivots.
-  add(new CylinderGeometry(1.65,1.65,.3,48),'#b19254',EXCHANGE_HALL.clock,[-Math.PI/2,0,0]);
-  add(new TorusGeometry(1.57,.12,8,48),'#c7a86b',[0,EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.26]);
+  add(new CylinderGeometry(1.65,1.65,.3,48),'#b19254',EXCHANGE_HALL.clock,[-Math.PI/2,0,0],'solid',undefined,false,'clock-housing');
+  add(new TorusGeometry(1.57,.12,8,48),'#c7a86b',[0,EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.26],undefined,'solid',undefined,false,'clock-bezel');
   box([0,5.45,-39.55],[11,.25,.65],'#856540');
   const bell=EXCHANGE_PLAY_PROPS.bell;
-  for(const x of [-.56,.56])rod([x,1.5,-37.16],[x,bell.frameTop[1],-37.16],.075,'#b8975a');
-  rod([-.65,bell.frameTop[1],-37.16],[.65,bell.frameTop[1],-37.16],.09,'#b8975a');
+  for(const [i,x] of [-.56,.56].entries())rod([x,1.5,-37.16],[x,bell.frameTop[1],-37.16],.075,'#b8975a','solid',`opening-bell-column-${i}`);
+  rod([-.65,bell.frameTop[1],-37.16],[.65,bell.frameTop[1],-37.16],.09,'#b8975a','solid','opening-bell-frame-top');
   rod([0,2.22,-37.16],[0,1.61,-36.66],.022,'#ab9057','visual');
   box([0,1.52,-36.66],[.25,.045,.17],'#72583c','visual');
   buildExchangeInteriorCraft({box,chamfer});
@@ -331,7 +366,7 @@ export function buildAlphaExchangeGeometry() {
   // Coplanar floor diagonals are mesh seams, not physical ridges. Apply Rapier's
   // local adjacent-face normal correction without changing vertices or player tolerances.
   const body=mergeBatch(parts);bakeExchangeWorklights(body);
-  let glassStart=0;
-  const glassRanges=glass.map(g=>{const range={start:glassStart,count:g.getAttribute('position').count};glassStart+=range.count;return range;});
-  return {body,glass:mergeBatch(glass),glassRanges,colliders:{surface:collision(support,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(solid)}};
+  const glassRanges=glassSources.map(source=>({start:source.firstVertex,count:source.vertexCount}));
+  return {body,bodySources,glass:mergeBatch(glass),glassRanges,glassSources,
+    colliders:{surface:collision(positions.surface,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(positions.solid)}};
 }

@@ -3,12 +3,14 @@ import type { ColliderRequirement } from './collider-readiness';
 
 export interface PassageRegion {
   id:string;
+  loadSource?:string;
   /** A signed-distance footprint expanded by padding; must include its interior. */
   contains:(position:Vec3,padding:number)=>boolean;
   requirements:readonly ColliderRequirement[];
 }
 export interface RegionPassage {
   at:(position:Vec3,radius?:number)=>boolean;
+  failureAt?:(position:Vec3,radius?:number)=>boolean;
   allows:(from:Vec3,to:Vec3,radius?:number)=>boolean;
 }
 
@@ -39,11 +41,14 @@ export function passageRoute(passage:RegionPassage,points:readonly Vec3[],radius
  * still decide walls, support and slopes after the region is available. */
 export function createRegionPassage(regions:readonly PassageRegion[],
   ready:(requirements:readonly ColliderRequirement[])=>boolean,
-  base:readonly ColliderRequirement[]=[]):RegionPassage {
+  base:readonly ColliderRequirement[]=[], failed: (region:string)=>boolean = ()=>false):RegionPassage {
   const valid=(p:Vec3)=>p.length===3&&p.every(Number.isFinite);
   const at=(p:Vec3,radius=0)=>valid(p)&&Number.isFinite(radius)&&radius>=0&&ready(base)
     &&regions.every(region=>!region.contains(p,radius)||ready(region.requirements));
-  return {at,allows(from,to,radius=0) {
+  return {at,
+    failureAt:(p,radius=0)=>regions.some(region=>region.contains(p,radius)
+      &&failed(region.loadSource??region.id)&&!ready(region.requirements)),
+    allows(from,to,radius=0) {
     if(!valid(from)||!valid(to)||!Number.isFinite(radius)||radius<0||!ready(base))return false;
     const distance=Math.hypot(to[0]-from[0],to[2]-from[2]);
     // Locomotion paths only. Teleports validate the destination with at(), not an imaginary corridor.

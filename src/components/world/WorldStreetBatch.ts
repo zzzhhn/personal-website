@@ -38,6 +38,9 @@ export class StreetBatch {
       this.tris.push([k.L0.index!.count / 3, k.L1.index!.count / 3]);
     }
   }
+  geometryRange(kind: number, level: 0 | 1) {
+    return this.mesh.getGeometryRangeAt(this.geo[kind][level]);
+  }
   add(kind: number, matrix: Matrix4) {
     const id = this.mesh.addInstance(this.geo[kind][0]);
     this.mesh.setMatrixAt(id, matrix);

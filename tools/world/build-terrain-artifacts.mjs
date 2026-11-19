@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { readFile, writeFile, mkdir, rename } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -11,7 +11,11 @@ const script = fileURLToPath(import.meta.url), root = fileURLToPath(new URL('../
 const manifestFile = path.join(root, 'src/components/world/terrain-artifacts.generated.json');
 const run = promisify(execFile);
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-async function atomic(file, bytes) { await writeFile(`${file}.tmp`, bytes); await rename(`${file}.tmp`, file); }
+async function atomic(file, bytes) {
+  const temp = file + '.' + randomUUID() + '.tmp';
+  await writeFile(temp, bytes);
+  await rename(temp, file);
+}
 
 export async function ensureTerrainArtifacts({ check = false } = {}) {
   const inputs = snapshotInputs(['alpha-island/batch2/cave-art.ts','alpha-island/batch2/waterwheel-art.ts']);
@@ -70,9 +74,22 @@ if (process.argv[1] && path.resolve(process.argv[1]) === script) {
       raw = encodeTerrainArtifact({ terrain: buildTerrain(), grid: GRID, cell: CELL, variant });
       decodeTerrainArtifact(raw, variant);
     }
-    const bytes = gzipSync(new Uint8Array(raw), { level: 9 });
+    const rawBytes = Buffer.from(raw);
     const url = `/assets/world/terrain/${['alpha', 'cave', 'waterwheel'].includes(variant) ? variant : 'mainland-' + variant}.bin.gz`;
-    await atomic(path.join(root, 'public', url), bytes);
+    const file = path.join(root, 'public', url);
+    // Preserve the shipped representation when zlib versions compress identical
+    // geometry differently. A damaged or outdated payload is still regenerated.
+    let bytes;
+    try {
+      const shipped = await readFile(file);
+      if (gunzipSync(shipped).equals(rawBytes)) bytes = shipped;
+    } catch (error) {
+      if (!['ENOENT', 'Z_DATA_ERROR', 'Z_BUF_ERROR'].includes(error.code)) throw error;
+    }
+    if (!bytes) {
+      bytes = gzipSync(rawBytes, {level:9});
+      await atomic(file,bytes);
+    }
     process.stdout.write(JSON.stringify({ url, bytes: bytes.length, rawBytes: raw.byteLength, sha256: sha(bytes), rawSha256: sha(new Uint8Array(raw)) }));
   } else {
     const { sources, changed } = await ensureTerrainArtifacts({ check: process.argv.includes('--check') });

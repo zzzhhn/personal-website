@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { createAttractionActorRide } from './actor-ride-adapter.ts';
 import { attractionRide, beginAttractionRide, beginDrivenAttractionRide, updateAttractionRide } from './attraction-ride.ts';
 import { COASTER_BOARDING, advanceCoasterTransition, returnCoasterToStation } from './coaster-transition.ts';
 import { coasterRidePose } from './coaster-track.ts';
 import { TransportDriver } from '../rides/transport-driver.ts';
 import { transportWorld } from '../rides/transport-route.ts';
+import { rideFootRouteClear } from '../rides/ride-clearance.ts';
 
 const port=createAttractionActorRide((p,driven)=>p[0]>200?'alpha':driven?'shore':'coaster');
 const ready={at:()=>true,allows:()=>true};
@@ -27,7 +29,7 @@ test('legacy coaster capture, all phases and finish are exposed without a transp
     assert.equal(port.revision,revision+1);assert.equal(port.active,true);assert.equal(port.seatOnly,false);
     port.capture(from,.4,ready);assert.deepEqual(port.actor.root,from);assert.equal(port.actor.yaw,.4);
     port.capture([0,0,0],0,ready);assert.deepEqual(port.actor.root,from);
-    assert.equal(port.boardingPath,undefined);assert.equal(port.egressPath,undefined);
+    assert.deepEqual(port.boardingPath,[from,COASTER_BOARDING.approach]);assert.equal(port.egressPath,undefined);
     assert.equal(port.zone([0,0,0]),'coaster');assert.equal(port.zone([235,0,190]),'alpha');
     port.viewBlocked();assert.equal(attractionRide.transition.exitRequested,false);
     const phases=new Set();
@@ -41,6 +43,29 @@ test('legacy coaster capture, all phases and finish are exposed without a transp
     assert.deepEqual(port.actor.root,COASTER_BOARDING.exit);
     port.finish();assert.equal(port.active,false);assert.equal(attractionRide.completed,true);
   } finally {port.cancel();}
+});
+
+test('the captured coaster apron can be checked against a new obstruction before boarding', async ()=>{
+  await R.init();
+  const world=new R.World({x:0,y:-9.81,z:0}), from=COASTER_BOARDING.exit;
+  port.cancel();
+  try {
+    beginAttractionRide(coasterRidePose(0,'chase'),COASTER_BOARDING.exit,from);
+    port.capture(from,0,ready);
+    const path=port.boardingPath;
+    assert.deepEqual(path,[from,COASTER_BOARDING.approach]);
+    const player=world.createRigidBody(R.RigidBodyDesc.dynamic());
+    for(const step of COASTER_BOARDING.stairs)world.createCollider(R.ColliderDesc.cuboid(...step.size.map(v=>v/2))
+      .setTranslation(...step.position).setRotation({x:0,y:Math.sin(step.yaw/2),z:0,w:Math.cos(step.yaw/2)}));
+    world.step();
+    assert.equal(rideFootRouteClear(world,R,player,path),true,'the standing apron clears the actual first riser');
+    const obstacle=world.createCollider(R.ColliderDesc.cuboid(.13,.72,.13).setTranslation(
+      (path[0][0]+path[1][0])*.5,from[1]+.75,(path[0][2]+path[1][2])*.5));
+    world.step();
+    assert.equal(rideFootRouteClear(world,R,player,path),false);
+    world.removeCollider(obstacle,false);world.step();
+    assert.equal(rideFootRouteClear(world,R,player,path),true);
+  }finally{port.cancel();world.free();}
 });
 
 test('coaster exit request is retained during boarding and standalone seat presentation remains supported',()=>{

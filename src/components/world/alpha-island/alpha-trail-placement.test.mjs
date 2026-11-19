@@ -36,7 +36,7 @@ async function mount(){
  const motion={time:0,bellAt:-100},empty=()=>null;
  const canvas=()=>({getContext:()=>new Proxy({},{get:()=>()=>{}})});
  const rapier={RigidBody:({children,position,name,userData})=>h('group',{position,name,userData},children),CuboidCollider:()=>null,
-  TrimeshCollider:({args,name})=>h('group',{name,userData:{colliderArgs:args}}),ConvexHullCollider:()=>null,
+  TrimeshCollider:({args,name})=>h('group',{name,userData:{colliderArgs:args}}),ConvexHullCollider:({args,name})=>h('group',{name,userData:{convexArgs:args}}),
   RoundCuboidCollider:({args,name,position,quaternion})=>h('group',{name,position,quaternion,userData:{roundBox:args}})};
  const Station=compileWorldComponent(new URL('./AlphaStationStructure.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-station-structures':structures,'./alpha-layout':layout,'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
@@ -63,7 +63,7 @@ async function mount(){
  camera.position.set(172.8,5.25,156.9);camera.lookAt(171,4.35,152.8);camera.updateMatrixWorld();
  await act(async()=>{store=root.render(h('group',{position:layout.ALPHA_ORIGIN},h(Component),h(Nature)));});
  const scene=store.getState().scene;scene.updateMatrixWorld(true);
- return {scene,motion,advance:async time=>act(async()=>{motion.time=time;store.getState().advance(time,false);}),dispose:async()=>act(async()=>root.unmount())};
+ return {scene,motion,camera,advance:async time=>act(async()=>{motion.time=time;store.getState().advance(time,false);}),dispose:async()=>act(async()=>root.unmount())};
 }
 
 test('shipping Alpha trail fixtures meet their terrain, collision and clearance contracts',async t=>{
@@ -78,12 +78,78 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
    assert.equal(report.registrations['alpha-dock-lodge']+report.registrations['alpha-lantern-rack'],247);
    assert.ok(report.registrations['alpha-path-fence']>0);
   });
+  await t.test('every mountainside boulder matches its rendered triangles and the fixed hull on the path',child=>{
+   const field=scene.getObjectByName('alpha-supported-boulder-field'),mesh=field.getObjectByProperty('isMesh',true);
+   const nodes=[];field.traverse(n=>{if(n.userData.convexArgs)nodes.push(n);});
+   const report=collisionInventory(scene,[mesh],nodes,['alpha-supported-boulder-field']);
+   assert.deepEqual(report.errors,[]);assert.equal(report.registrations[field.name],32);
+   const position=mesh.geometry.attributes.position,point=new THREE.Vector3();
+   const world=new R.World({x:0,y:0,z:0});let maximum=0,checked=0;
+   try {
+    for(const range of mesh.userData.worldCollisionSources) {
+     const args=nodes.find(n=>n.name===range.id).userData.convexArgs;
+     assert.deepEqual(args[0],position.array.subarray(3*range.firstVertex,3*(range.firstVertex+range.vertexCount)));
+     const collider=world.createCollider(R.ColliderDesc.convexHull(args[0]));
+     for(let i=range.firstVertex;i<range.firstVertex+range.vertexCount;i+=3){
+      point.fromBufferAttribute(position,i).add(new THREE.Vector3().fromBufferAttribute(position,i+1))
+       .add(new THREE.Vector3().fromBufferAttribute(position,i+2)).divideScalar(3);
+      const contact=collider.projectPoint(point,false).point;
+      maximum=Math.max(maximum,point.distanceTo(contact));checked++;
+     }
+    }
+    assert.ok(maximum<.012,'rendered rock surface to Rapier hull '+maximum);
+    child.diagnostic(JSON.stringify({boulders:nodes.length,triangleCenters:checked,maxHullError:maximum}));
+   } finally {world.free();}
+  });
+  await t.test('pine contact tracks individual bark instances across LOD and leaves empty space beside trunks',async child=>{
+   const forest=scene.getObjectByName('alpha-crafted-alpine-forest');
+   const nodes=[];forest.traverse(n=>{if(n.userData.colliderArgs)nodes.push(n);});
+   const near=forest.children.filter(n=>n.name.endsWith('near-bark'));
+   const total=near.reduce((n,mesh)=>n+mesh.userData.worldCollisionInstances.placements.length,0);
+   assert.ok(total>0);assert.equal(nodes.length,total);
+   const world=new R.World({x:0,y:0,z:0}),raycaster=new THREE.Raycaster(),direction=new THREE.Vector3(1,0,0);
+   let probes=0,maxError=0,maxProxyError=0,upperMisses=0;const contacts=[];
+   try {
+    for(const mesh of near)for(const placement of mesh.userData.worldCollisionInstances.placements){
+     const node=nodes.find(n=>n.name===placement.id),[vertices,indices]=node.userData.colliderArgs;
+     const model=new THREE.Mesh(mesh.geometry,new THREE.MeshBasicMaterial({side:THREE.DoubleSide}));
+     model.matrixAutoUpdate=false;model.matrixWorld.copy(placement.matrix);
+     const physical=world.createCollider(R.ColliderDesc.trimesh(vertices,indices));
+     const pos=new THREE.Vector3().setFromMatrixPosition(placement.matrix);
+     for(const localHeight of [.95,3.6]){
+      const target=new THREE.Vector3(0,localHeight,0).applyMatrix4(placement.matrix);
+      const from=target.clone().addScaledVector(direction,-3.5);
+      raycaster.set(from,direction);const visible=raycaster.intersectObject(model,false)[0];
+      assert.ok(visible,placement.id+' lacks a bark silhouette across its central trunk');
+      const ray=new R.Ray(from,direction),t=physical.castRay(ray,7,false);
+      assert.ok(t>=0 && t<=7);maxError=Math.max(maxError,Math.abs(visible.distance-t));probes++;
+      if(localHeight===.95) {
+       maxProxyError=Math.max(maxProxyError,Math.abs(visible.distance-(pos.x-.22-from.x)));
+       contacts.push({id:placement.id,x:pos.x,z:pos.z,rayAboveGround:localHeight});
+      } else if(target.y>pos.y+3.015)upperMisses++;
+     }
+     model.material.dispose();
+    }
+    assert.ok(maxError<.001);assert.ok(maxProxyError>.03);assert.ok(upperMisses>0);
+    const witness=near.flatMap(m=>m.userData.worldCollisionInstances.placements)[0];
+    const trunk=new THREE.Vector3().setFromMatrixPosition(witness.matrix).add(new THREE.Vector3(...layout.ALPHA_ORIGIN));
+    for(const distance of [12,55,12]){
+     mounted.camera.position.copy(trunk).add(new THREE.Vector3(0,4,distance));mounted.camera.lookAt(trunk);mounted.camera.updateMatrixWorld();
+     await mounted.advance(distance);
+     const report=collisionInventory(scene,forest.children,nodes,[forest.name]);
+     assert.deepEqual(report.errors,[]);assert.equal(report.registrations[forest.name],total);
+     const lod=distance<43?'near-bark':'far-bark';
+     assert.ok(forest.children.filter(m=>m.name.endsWith(lod)).some(m=>m.userData.worldCollisionInstances.slots.some(i=>m.userData.worldCollisionInstances.placements[i].id===witness.id)));
+    }
+    child.diagnostic(JSON.stringify({trees:total,rays:probes,maxSurfaceError:maxError,oldSquareMaxEdgeError:maxProxyError,aboveOldBox:upperMisses,first:contacts[0]}));
+   } finally {world.free();}
+  });
   await t.test('lodge and lantern rack use the visible structure and leave their controls reachable', child => surveyStationStructures(scene,ground,child));
   await t.test('nearby alpine plants leave the lodge floor and entry ramp clear',async child=>{
    await mounted.advance(.01);
    const lodge=scene.getObjectByName('alpha-dock-lodge'),ramp=scene.getObjectByName('alpha-lodge-access-ramp');
    const floor=lodge.children.find(n=>n.name.endsWith('/lodgeFloor'));
-   const range=floor.userData.sources.filter(p=>p.role==='floor'),boards=new THREE.Box3();
+   const range=floor.userData.worldCollisionSources.filter(p=>p.role==='floor'),boards=new THREE.Box3();
    const v=new THREE.Vector3();
    for(const p of range)for(let i=p.firstVertex;i<p.firstVertex+p.vertexCount;i++)
     boards.expandByPoint(v.fromBufferAttribute(floor.geometry.attributes.position,i).applyMatrix4(floor.matrixWorld));
@@ -93,7 +159,7 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
    const bad=[],counts={};
    for(const name of ['alpha-alpine-shrubs','alpha-path-grass']){
     const plants=scene.getObjectByName(name),verts=plants.geometry.attributes.position;
-    assert.equal(plants.userData.collision,'none');
+    assert.equal(plants.userData.worldCollision,'none');
     counts[name]=plants.count;assert.ok(plants.count>0,'nearby outdoor plants must be present');
     for(let i=0;i<plants.count;i++){
      plants.getMatrixAt(i,matrix);matrix.premultiply(plants.matrixWorld);
@@ -201,7 +267,7 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
     fence.traverse(node=>{if(node.isMesh)meshes.push(node);});
     assert.equal(meshes.length,3);
     for(const mesh of meshes){
-     assert.equal(mesh.userData.collision,'solid');
+     assert.equal(mesh.userData.worldCollision,'solid');
      const collider=mesh.parent.children.find(node=>node.userData.colliderArgs);
      assert.ok(collider,mesh.name+' has no physics');
      assert.deepEqual(collider.matrixWorld.toArray(),mesh.matrixWorld.toArray());
@@ -246,7 +312,7 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
 
   await t.test('the base of every summit cairn meets the terrain and each upper stone rests on the visible facet below',()=>{
    const stones=scene.getObjectByName('alpha-summit-decorative-cairn-instances');
-   assert.ok(stones?.isInstancedMesh);assert.equal(stones.userData.collision,'none');
+   assert.ok(stones?.isInstancedMesh);assert.equal(stones.userData.worldCollision,'none');
    const prior=new THREE.Mesh(stones.geometry,stones.material),matrix=new THREE.Matrix4();
    const position=new THREE.Vector3(),last=new THREE.Vector3(),down=new THREE.Vector3(0,-1,0);
    const ray=new THREE.Raycaster();

@@ -30,14 +30,18 @@ export function pickupGroundRoute(world: World, rapier: Physics, body: RigidBody
   const distance = Math.hypot(candidate[0] - from[0], candidate[2] - from[2]);
   if (!from.every(Number.isFinite) || !candidate.every(Number.isFinite) || !Number.isFinite(maxDistance)
     || maxDistance<=0 || maxDistance>3 || distance > maxDistance) return null;
-  const support = playerSupport(world, rapier, body, vector(from), true);
+  // A support cast can miss a continuous triangle near a numerical edge case. Recast at the
+  // same XZ from slightly higher, preserving the floor range below the original point.
+  const findSupport = (point: ReturnType<typeof vector>, search?: number) =>
+    playerSupport(world, rapier, body, point, true, search) ?? playerSupport(world, rapier, body, point, true, search, .01);
+  const support = findSupport(vector(from));
   if (!support?.grounded) return null;
   const count = Math.max(1, Math.ceil(distance / .14));
   let previous: Vec3 = [...from];
   for (let i = 1; i <= count; i++) {
     const x = from[0] + (candidate[0] - from[0]) * i / count;
     const z = from[2] + (candidate[2] - from[2]) * i / count;
-    const floor = playerSupport(world, rapier, body, { x, y: previous[1] + .1, z }, true, .22);
+    const floor = findSupport({ x, y: previous[1] + .1, z }, .22);
     if (!floor) return null;
     const next: Vec3 = [x, floor.centerY + .001, z];
     const step = Math.hypot(x - previous[0], z - previous[2]);

@@ -2,11 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { Object3D } from 'three';
-import { holdWorldArrival, worldArrivalBlocked, activatePlayerArrival } from './world-arrival-readiness.ts';
-import { namedAlphaArrival, alphaTerrainColliderMounted } from './alpha-island/alpha-arrival.ts';
+import { holdWorldArrival, worldArrivalBlocked, worldArrivalFailed, activatePlayerArrival } from './world-arrival-readiness.ts';
+import { namedAlphaArrival } from './alpha-island/alpha-arrival.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { updateHeadSubmersion } from './safe-landing.ts';
-import { worldActorArrival, arrivalColliderRequirements } from './world-actor-sites.ts';
+import { worldActorArrival, arrivalColliderRequirements, worldActorSites } from './world-actor-sites.ts';
+import { reportRegionLoadFailure } from './region-load-failure.ts';
 await R.init();
 
 function scene() {
@@ -25,7 +26,7 @@ function terrain(world) {
 
 test('only exact named Alpha arrivals use the initial support gate',()=>{
   assert.deepEqual(namedAlphaArrival('alpha-waterwheel'),[206,24,206]);
-  assert.deepEqual(namedAlphaArrival('alpha-cave'),[220,24.12,155]);
+  assert.deepEqual(namedAlphaArrival('alpha-cave'),[219,23.69,156]);
   for(const key of [null,'camp','alpha','factory','constructor','toString'])assert.equal(namedAlphaArrival(key),null);
 });
 
@@ -52,16 +53,15 @@ test('cold Alpha arrival cannot fall or enter rescue before its actual terrain c
     }
     assert.deepEqual({...body.translation()},original);assert.equal(body.isEnabled(),false);assert.equal(rescues,0);
     const mounted=terrain(world);
-    assert.equal(alphaTerrainColliderMounted(world,states),false,'asset/mesh availability alone is not collider registration');
+    assert.equal(entry.collidersReady(world,states),false,'asset/mesh availability alone is not collider registration');
     states.set(mounted.collider.handle,mounted.state);
     assert.equal(entry.collidersReady(world,states),false,'waterwheel structure has its own readiness gate');
-    for(const requirement of arrivalColliderRequirements('alpha-waterwheel'))for(let i=0;i<(requirement.count??1);i++) {
+    for(const requirement of arrivalColliderRequirements('alpha-waterwheel'))for(let i=0;i<(requirement.count??1)-(requirement.name==='alpha-terrain-patch'?1:0);i++) {
       const parent=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(1000+i,0,1000));
       const collider=world.createCollider(R.ColliderDesc.trimesh(new Float32Array([0,0,0,1,0,0,0,0,1]),new Uint32Array([0,2,1])),parent);
       const group=new Object3D(),object=new Object3D();group.name=requirement.name;group.add(object);states.set(collider.handle,{object});
     }
     assert.equal(entry.collidersReady(world,states),true);
-    assert.equal(alphaTerrainColliderMounted(world,states),true,'the real fixed Rapier trimesh is registered');
     assert.equal(worldArrivalBlocked(),false,'paused loading can finish without waiting for an enabled actor or Physics');
     assert.equal(activatePlayerArrival(world,R,body,ground,-.7),null,'spatial queries still wait for their first actual pipeline update');
     world.step();
@@ -82,14 +82,53 @@ test('cold Alpha arrival cannot fall or enter rescue before its actual terrain c
   } finally {release();world.free();}
 });
 
-test('terrain registration ignores sensors, dynamic objects and colliders outside the named patch',()=>{
-  const {world,body}=scene(),states=new Map();
+test('Alpha arrival and regional passage require both fixed terrain parts on their live physics parents', () => {
+  const {world,body}=scene(), states=new Map();
+  const entry=worldActorArrival('?start=alpha-shallows',false), passage=worldActorSites.passage(world,states);
+  const install = name => {
+    const mounted=terrain(world);
+    mounted.state.object.parent.name=name;
+    states.set(mounted.collider.handle,mounted.state);
+    return mounted;
+  };
   try {
-    const mounted=terrain(world);states.set(mounted.collider.handle,mounted.state);
-    mounted.collider.setSensor(true);assert.equal(alphaTerrainColliderMounted(world,states),false);
-    mounted.collider.setSensor(false);mounted.parent.setBodyType(R.RigidBodyType.Dynamic,true);assert.equal(alphaTerrainColliderMounted(world,states),false);
-    mounted.parent.setBodyType(R.RigidBodyType.Fixed,true);mounted.state.object.parent.name='unrelated-mesh';assert.equal(alphaTerrainColliderMounted(world,states),false);
-    world.removeRigidBody(mounted.parent);assert.equal(alphaTerrainColliderMounted(world,states),false);
+    for(const requirement of arrivalColliderRequirements(null))install(requirement.name);
+    install('alpha-terrain-patch');
+    assert.equal(entry.collidersReady(world,states),false);
+    assert.equal(passage.at(entry.position),false);
+    const last=install('alpha-terrain-patch');
+    assert.equal(entry.collidersReady(world,states),true);
+    assert.equal(passage.at(entry.position),true);
+    last.collider.setSensor(true);
+    assert.equal(entry.collidersReady(world,states),false);
+    assert.equal(passage.at(entry.position),false);
+    last.collider.setSensor(false);
+    last.parent.setBodyType(R.RigidBodyType.Dynamic,true);
+    assert.equal(entry.collidersReady(world,states),false);
+    last.parent.setBodyType(R.RigidBodyType.Fixed,true);
+    world.removeRigidBody(last.parent);
+    assert.equal(entry.collidersReady(world,states),false);
     assert.equal(body.isEnabled(),false);
   } finally {world.free();}
+});
+
+test('only a failed active arrival is diagnosed; a stale failure is dropped on remount', () => {
+  const cave = worldActorArrival('?start=alpha-cave', false);
+  const camp = worldActorArrival('', false);
+  const ready = { cave: false, camp: false };
+  const holdCave = holdWorldArrival(() => !ready.cave, cave.loadFailed);
+  const holdCamp = holdWorldArrival(() => !ready.camp, camp.loadFailed);
+  const other = reportRegionLoadFailure('alpha-waterwheel');
+  const first = reportRegionLoadFailure('alpha-cave');
+  const second = reportRegionLoadFailure('alpha-cave');
+  try {
+    assert.equal(worldArrivalFailed(), true);
+    first(); first();
+    assert.equal(worldArrivalFailed(), true, 'first scene cleanup leaves its replacement failure');
+    second();
+    assert.equal(worldArrivalFailed(), false, 'another site failure does not interrupt this arrival');
+    assert.equal(worldArrivalBlocked(), true, 'an unmounted scene can still be preparing');
+    ready.cave = ready.camp = true;
+    assert.equal(worldArrivalBlocked(), false);
+  } finally { first(); second(); other(); holdCamp(); holdCave(); }
 });

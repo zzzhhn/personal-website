@@ -14,7 +14,7 @@ export default function AlphaMainlandPier() {
   }, [parts, materials]);
   return <group name="alpha-mainland-pier-r4-candidate">
     {parts.map(p => <mesh key={p.finish} geometry={p.geometry} material={materials.get(p.finish)} castShadow receiveShadow
-      userData={{ collision:'solid', surfaceSpace:'world', sources:p.sources }}/>)}
+      userData={{ worldCollision:'solid', surfaceSpace:'world', worldCollisionSources:p.sources }}/>)}
     {(['floor','enclosure'] as const).map(role => <RigidBody key={role} type="fixed" colliders={false}
       userData={{ surface:role==='floor', solid:role==='enclosure', assetId:'mainland-pier' }}>
       {pieces.filter(p=>p.role===role).map(p => <RoundCuboidCollider key={p.id} name={p.id}

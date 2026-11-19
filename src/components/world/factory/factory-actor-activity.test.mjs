@@ -100,3 +100,29 @@ test('blocked stance or unmount exits its console and releases the generic camer
   assert.equal(factoryActor.available,false);assert.equal(factoryControl.operation,null);
   assert.equal(useFactoryStore.getState().game.pending,null);
 });
+
+test('standard gamepad controls the live factory hoist, with a neutral rearm after pause',()=>{
+  const f=fixture(), descriptor=Object.getOwnPropertyDescriptor(globalThis,'navigator');
+  const pad={connected:true,mapping:'standard',index:0,axes:[0,0],buttons:[{},{},{},{pressed:false}]};
+  Object.defineProperty(globalThis,'navigator',{configurable:true,value:{getGamepads:()=>[pad]}});
+  try {
+    assert.equal(openFactoryStation('raw'),true);f.sync();
+    assert.equal(startFactoryOperation({type:'extract',module:'frame'}),true);
+    const op=factoryControl.operation, before=op.tool[0];
+    tickFactoryOperation(.02);
+    pad.axes[0]=-.8;
+    tickFactoryOperation(.1);
+    assert.ok(op.tool[0]<before,'left stick drives the hoist');
+    useWorldStore.setState({paused:true});tickFactoryOperation(.1);
+    const stoppedAt=op.tool[0];
+    useWorldStore.setState({paused:false});tickFactoryOperation(.1);
+    assert.equal(op.tool[0],stoppedAt,'a held stick must be released after pause');
+    pad.axes[0]=0;tickFactoryOperation(.02);
+    op.tool.splice(0,3,...op.target);
+    pad.buttons[3].pressed=true;tickFactoryOperation(.02);
+    assert.equal(op.phase,'pickup','Y confirms the same contact as E');
+  } finally {
+    if(descriptor)Object.defineProperty(globalThis,'navigator',descriptor);else delete globalThis.navigator;
+    useWorldStore.setState({paused:false});f.release();
+  }
+});

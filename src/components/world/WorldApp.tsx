@@ -20,17 +20,11 @@ import './world.css';
 const Runtime = lazy(async () => {
   const { attachLoadProgress } = await import('./WorldLoadProgress');
   attachLoadProgress();
-  const [{ loadTerrainArtifact, downloadTerrainArtifact }, { default: manifest }, { LAYOUT_V4 }, alpha, cave, waterwheel] = await Promise.all([
+  const [{ loadTerrainArtifact }, { default: manifest }, { LAYOUT_V4 }] = await Promise.all([
     import('./load-terrain-artifact'), import('./terrain-artifacts.generated.json'), import('./layout-v4-flag'),
-    import('./alpha-island/alpha-terrain-artifact'),
-    import('./alpha-island/batch2/cave-artifact'),
-    import('./alpha-island/batch2/waterwheel-artifact'),
   ]);
   const variant = LAYOUT_V4 ? 'v4' : 'v3';
   await loadTerrainArtifact(variant, manifest[variant]);
-  alpha.installAlphaTerrain(alpha.decodeAlphaTerrain(await downloadTerrainArtifact(manifest.alpha)));
-  cave.installCaveArtifact(cave.decodeCaveArtifact(await downloadTerrainArtifact(manifest.cave)));
-  waterwheel.installWaterwheelArtifact(waterwheel.decodeWaterwheelArtifact(await downloadTerrainArtifact(manifest.waterwheel)));
   return import('./WorldRuntime');
 });
 const IbdHud=memo(lazy(()=>import('./attractions/WorldIbdHud')));
@@ -57,6 +51,7 @@ class WorldErrorBoundary extends Component<{ children: ReactNode; message: strin
 function Loading() {
   const t = worldText[useWorldStore(s => s.lang)];
   const loading = useWorldStore(s => s.loading);
+  const regionFailed = useWorldStore(s => s.arrivalLoadFailed);
   const viewBox = WORLD_MAP_GEOMETRY.viewBox;
   const observed = loading.phase === 'ready' ? 1 : loading.phase === 'scene' ? .94 : loading.total ? .08 + .8 * loading.loaded / loading.total : .04;
   // Keep earned colour when another dependency is discovered. This is a visual frontier, not a byte percentage.
@@ -65,6 +60,16 @@ function Loading() {
   const cx = (CAMP_CENTER[0] - viewBox[0]) / viewBox[2], cy = (CAMP_CENTER[2] - viewBox[1]) / viewBox[3];
   const radius = Math.hypot(Math.max(cx, 1 - cx) * viewBox[2], Math.max(cy, 1 - cy) * viewBox[3]) / (Math.hypot(viewBox[2], viewBox[3]) / Math.SQRT2) * 100;
   const stage = loading.phase === 'runtime' ? t.loadingArrival : loading.phase === 'assets' ? t.loadingPlaces : t.loadingStart;
+  if (regionFailed) {
+    const camp = new URL(window.location.href);
+    camp.searchParams.delete('start');
+    camp.searchParams.delete('shot');
+    return <div className="world-cover" role="alert">
+      <p>{t.arrivalRegionFailed}</p>
+      <button onClick={() => window.location.reload()}>{t.retry}</button>
+      <a href={camp.pathname + camp.search}>{t.returnCamp}</a>
+    </div>;
+  }
   return <div className="world-cover world-loading" role="status" aria-live="polite" aria-busy="true">
     <span className="world-eyebrow">{t.title}</span>
     <div className="world-loading-map" aria-hidden="true">

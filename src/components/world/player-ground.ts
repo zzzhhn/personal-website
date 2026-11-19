@@ -28,12 +28,13 @@ export function resetPlayerBody(body: RigidBody, position: Vec3, yaw = 0) {
  * Lifting the whole standing capsule can overlap a ceiling and mask the floor at TOI=0.
  * The small lift still recovers a usable floor normal from slight sole penetration. */
 export function playerSupport(world: World, rapier: ShapeFactory, body: RigidBody,
-  position: Vector = body.translation(), staticOnly = false, search = SEARCH) {
-  const hit = world.castShape({ ...position, y: position.y - PLAYER_HALF_HEIGHT + UP }, body.rotation(), { x: 0, y: -1, z: 0 },
-    new rapier.Ball(PLAYER_RADIUS), 0, UP + search, true,
+  position: Vector = body.translation(), staticOnly = false, search = SEARCH, extraProbeLift = 0) {
+  const lift = UP + extraProbeLift;
+  const hit = world.castShape({ ...position, y: position.y - PLAYER_HALF_HEIGHT + lift }, body.rotation(), { x: 0, y: -1, z: 0 },
+    new rapier.Ball(PLAYER_RADIUS), 0, lift + search, true,
     undefined, undefined, undefined, body, staticOnly ? staticSolid : c => !c.isSensor());
   if (!hit || hit.normal1.y < WALKABLE) return null;
-  const gap = hit.time_of_impact - UP;
+  const gap = hit.time_of_impact - lift;
   const n = hit.normal1;
   return { gap, centerY: position.y - gap, normal: n, handle: hit.collider.handle,
     grounded: gap <= CONTACT };

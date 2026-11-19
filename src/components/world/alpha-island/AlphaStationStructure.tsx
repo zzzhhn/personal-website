@@ -22,7 +22,7 @@ export default function AlphaStationStructure({ station }: { station: keyof type
   useOwnedWorldVisual(visual);
   return <group name={name} position={position} dispose={null}>
     {visual.parts.map(p => <mesh key={p.finish} name={name + '/' + p.finish} geometry={p.geometry} material={p.material}
-      userData={{ sources: p.sources, surfaceSpace: name }} castShadow receiveShadow/>)}
+      userData={{ worldCollisionSources: p.sources, surfaceSpace: name }} castShadow receiveShadow/>)}
     {[visual.floors, visual.walls].filter(pieces => pieces.length > 0).map(pieces => {
       const role = pieces[0].role;
       return <RigidBody key={role} type="fixed" colliders={false}

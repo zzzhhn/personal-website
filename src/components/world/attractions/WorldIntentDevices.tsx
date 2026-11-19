@@ -17,8 +17,8 @@ import type { IntentText } from './intent-tasks';
 import WorldIntentWorkshop from './WorldIntentWorkshop';
 import { COASTER_GATE_LEAVES, coasterGateAngle } from './coaster-access';
 
-export function IntentInteraction({ target }: { target: IntentTarget }) {
-  const state = useIntentStore();
+function intentInteractionLabel(target: IntentTarget) {
+  const state = useIntentStore.getState();
   const labels: Record<IntentTarget, IntentText> = {
     route: INTENT_TOOL_ACTIONS[state.tools.route], press: INTENT_TOOL_ACTIONS[state.tools.press],
     visitor: state.progress.clarified.includes('T7') ? INTENT_TOOL_ACTIONS[state.tools.visitor] : { zh: '摇铃问清目标', en: 'Ring to clarify' },
@@ -26,8 +26,12 @@ export function IntentInteraction({ target }: { target: IntentTarget }) {
     gate: state.progress.gateOpen ? { zh: '大门已打开', en: 'Gate is open' } : { zh: '用钥匙开门', en: 'Unlock the gate' },
     board: { zh: `坐进列车 · ${COASTER_DISPLAY_SECONDS} 秒`, en: `Board the train · ${COASTER_DISPLAY_SECONDS} seconds` },
   };
+  return labels[target];
+}
+export function IntentInteraction({ target }: { target: IntentTarget }) {
   useInteractable({ id: `intent-${target}`, kind: target === 'gate' ? 'door' : 'exhibit', position: INTENT_TARGETS[target],
-    radius: intentReachRadius(target), label: labels[target], enabled: () => intentAvailable(target), onInteract: () => activateIntentTarget(target) });
+    radius: intentReachRadius(target), get label() { return intentInteractionLabel(target); },
+    enabled: () => intentAvailable(target), onInteract: () => activateIntentTarget(target) });
   return null;
 }
 export default function WorldIntentDevices() {
