@@ -8,7 +8,7 @@
 
 Chrome `157.0.8103.79` 先验证普通 `/world/?start=club` 进入，再在同一隔离构建中为三段路线设置 QA 起点。使用真实键盘沿舞台前坡上到演员身体 Y `2.822` m，走回坡脚到 `2.011` m，两端落地。从第一张圆床的木坡走到坐姿提示，按 E 坐下并再次按 E 站回支撑面。沿西池浅坡走出，X 从 `54.503` 到 `50.886` m，Y 从 `1.668` 到 `2.185` m。页面和游戏错误均为 0，本地分析接口单独返回 404。定向 39 项通过。另在隔离目录补回 `ada5ced` 归档的缺失基线文件，北吧原有 11 项回归通过。
 
-剩余局部部件包括北吧主体和花槽、圆床石砌接缝和小附属件、DJ 台面上的控制面板与线材，以及屋檐小饰和舞者。石批已有完整登记，木、布、金属等合批依已确认结构面部分登记。
+剩余局部部件包括 DJ 台面的小按钮、线材、屋檐小饰和舞者。石批已有完整登记，木、布、金属等合批依已确认结构面部分登记。
 
 ```sh
 node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/{club-structure-contact,club-seating}.test.mjs
@@ -48,4 +48,32 @@ Chrome 157 在同一隔离入口验证普通进入和 QA 加载。挂起实际�
 ```sh
 node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/club-furniture-contact.test.mjs
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-fixed-contact-browser.mjs http://127.0.0.1:4358 furniture
+```
+
+## 圆床靠背、石身和灯
+
+原靠垫正前方命中比实物晚约 203 mm，另一条小靠垫探针漏掉实体。灯帽下探要晚约 326 mm 才碰到原托盘，石身的一处接缝提前约 25 mm。四张圆床现在直接从发布 GLB 的八个材质生成固定接触。主床垫保留发布版原三角形，床缘继续与 192 段木坡弧口齐平。请求未完成时，程序备用床垫使用同一弧口，整套备用由其可见三角形生成物理形状。
+
+床体共用 10,022 个离线处理后的碰撞三角形。四个放置的 44 条实物对照探针最大偏差 2.881 mm，另外 72 条床缘和木坡接缝探针的偏差小于 1 µm。真实动态胶囊通过正式和挂起备用两套模型各八条入座路线，以及四条泳池浅坡各两侧的离池路线。
+
+Chrome 157 从普通 Club 入口进入，单独挂起并放行真实圆床请求。挂起、正式及显式旧版依次注册 1／4／1 个形状，放行后角色胶囊命中新床体。复跑舞台上下坡、圆床 E 坐下和站起、西池浅坡离水。页面和游戏错误为 0，开发分析接口的 404 单列。
+
+```sh
+node tools/world/djc-quality-pilot/build-fixed-contact.mjs daybed
+node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/{club-daybed-contact,club-seating,club-structure-contact,djc-daybed-visual}.test.mjs
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-fixed-contact-browser.mjs http://127.0.0.1:4358 daybed
+```
+
+## 北吧走面、柱、柜体和花槽
+
+原接触在背吧后方提前 540 mm、在一根柱正面提前 58 mm、在花槽斜边提前 135 mm。原两个花槽方盒挡住可见外角空气，前沿木板的一处倒角也没有对应接触。近远两份发布模型现在共用由实物抽取的承重面和外壳。椅腿间继续留空。近景棚底的织边及酒瓶、植物等视觉细节按各自用途登记。载入备用模型时，原方盒、棚顶和高凳分别使用备用画面的结构和形状。
+
+42 条近远实物／Rapier 探针最大偏差 8.088 mm，涵盖前沿木板、台面倒角、柜体侧面、棚顶上下两面和花槽边。主结构为离线生成的 22,732 个三角形，在北吧开始请求模型时再载入碰撞数据。原材质、贴图、近远距离及高凳的四个独立碰撞沿用既有配置。
+
+Chrome 157 普通入口通过。QA 挂起实物请求、放行近景和独立载入远景均注册六个形状。放行前后，四个高凳的物理句柄相同，实物近远景的六个形状边界相同。真实角色胶囊命中东花槽。角色以键盘走出木地板、重新上到板面并走回斜坡，三站均保持落地，身体 Y 分别约 1.914、2.023 和 1.910 m。
+
+```sh
+node tools/world/djc-quality-pilot/build-bar-contact.mjs
+node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/club-north-bar-contact.test.mjs
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-north-bar-browser.mjs http://127.0.0.1:4358
 ```

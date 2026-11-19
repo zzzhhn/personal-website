@@ -18,7 +18,7 @@ import { RAPIER as R, quarryWalkCases, quarryWorld, walkQuarry } from '../../../
 const ship = name=>JSON.parse(readFileSync(new URL('../../../public/world/alpha-mine/'+name,import.meta.url),'utf8'));
 const old=ship('colliders.json'), layout=ship('layout.json');
 const asset=await readMineStaticVisual();
-const result=installMineContacts(asset.root.clone(true),old), veinAsset=await readMineContactVisual('veins.glb');
+const result=installMineContacts(asset.root.clone(true)), veinAsset=await readMineContactVisual('veins.glb');
 test.after(()=>{result.dispose();asset.dispose();veinAsset.dispose();});
 const part = id => result.colliders.find(part=>part.id==='alpha-mine-'+id);
 const cast = (collider,p,d,distance) => collider.castRay(new R.Ray(new Vector3(...p),new Vector3(...d)),distance,false);
@@ -35,7 +35,7 @@ function liveVein(vein,state) {
 }
 function candidateWorld(translation=[0,0,0], state='intact') {
   const world=new R.World({x:0,y:-12.5,z:0});world.timestep=1/60;
-  for(const [kind,buffers] of Object.entries(result.legacy)) mount(world,kind,buffers,translation);
+  for(const [kind,buffers] of Object.entries(result.base)) mount(world,kind,buffers,translation);
   for(const {kind,buffers} of result.colliders) mount(world,kind,buffers,translation);
   for (const vein of layout.veins) mount(world,'solid',liveVein(vein,state).buffers,vein.socket.map((n,i)=>n+translation[i]));
   world.step();
@@ -43,7 +43,7 @@ function candidateWorld(translation=[0,0,0], state='intact') {
 }
 
 test('the shipped scopes own each physical shape once',()=>{
-  const restored=installMineContacts(asset.root.clone(true),old);
+  const restored=installMineContacts(asset.root.clone(true));
   const scene=new Scene(), frame=[];
   try {
     const roots=[MINE_RACK_ROOT,...Object.values(MINE_ROUTE_ROOTS),...layout.veins.map(v=>mineVeinContactRoot(v.id))];
@@ -67,8 +67,7 @@ test('the shipped scopes own each physical shape once',()=>{
     assert.deepEqual(report.errors,[]);
     assert.deepEqual(report.registrations,counts);
     assert.ok(collisionInventory(scene,frame,handles.slice(1),roots).errors.length>0);
-    const removed=Object.fromEntries(Object.entries(restored.legacy).map(([kind,buffers])=>[kind,old[kind].indices.length-buffers.indices.length]));
-    assert.ok(removed.surface>=42 && removed.solid>=8650,'remove all former decks, trays and bound framing before adding the measured surfaces');
+    assert.ok(restored.base.surface.indices.length>10000&&restored.base.solid.indices.length>20000);
     assert.deepEqual([...restored.sections.get(MINE_RACK_ROOT).children,...restored.sections.get(MINE_WEST_RAMP_ROOT).children].map(m=>[m.name,m.geometry.index.count/3]).sort(),
       [['alpha-mine-rack-frame-visible',528],['alpha-mine-rack-hooks-visible',88],['alpha-mine-west-deck-visible',2024],
        ['alpha-mine-west-fasteners-visible',672],['alpha-mine-west-structure-visible',1496]]);
@@ -99,7 +98,7 @@ test('both visible rack hooks block their real front faces and the working tools
 });
 
 test('placed west ramp triangles track the actual plank tops, reveals and rails',async t=>{
-  const source=asset.root.clone(true), fitted=installMineContacts(source,old), world=new R.World({x:0,y:0,z:0});
+  const source=asset.root.clone(true), fitted=installMineContacts(source), world=new R.World({x:0,y:0,z:0});
   const ray = new Raycaster(), deck=mount(world,'surface',part('west-deck').buffers), rail=mount(world,'solid',part('west-structure').buffers);
   const former = mount(world,'surface',old.surface);
   let plankHits=0, reveals=0, structureHits=0, maxError=0;
@@ -320,4 +319,72 @@ test('fitted rim blocks level walking and the basin floor still supports a wadin
     assert.equal(waterSurfaceAt(x,z,layout.basin),ALPHA_MINE_ORIGIN[1]+layout.basin.waterY);
     t.diagnostic(JSON.stringify({walkingRimHit:baseline.time_of_impact,bottom:.43-support.timeOfImpact,waterDepth:layout.basin.waterY-.08}));
   }finally {world.free();}
+});
+
+test('all six installed residual batches disclose exact supports, solids and authored nonblocking ranges',()=>{
+  const source=asset.root.clone(true), cooked=installMineContacts(source), scene=new Scene(), root=new Group();
+  root.name='alpha-mine-attraction';scene.add(root);root.add(source);
+  const ids=['alpha-mine-surface','alpha-mine-solid'];
+  const handles=ids.map(id=>{const shape=new Object3D();shape.name=id;root.add(shape);return shape;});
+  const visible=[], authorVisualOnly={};
+  try {
+    source.traverse(node=>{
+      if(!node.isMesh)return;
+      visible.push(node);
+      const spans=node.userData.worldCollisionSources;
+      assert.equal(spans.reduce((n,s)=>n+s.indexCount,0),node.geometry.index.count);
+      for(const part of spans)if(part.collision==='none')authorVisualOnly[part.id]=part.indexCount/3;
+    });
+    assert.equal(visible.length,6);
+    assert.equal(authorVisualOnly.AM01_inlaid_seams,7004);
+    assert.deepEqual(Object.keys(authorVisualOnly).sort(),['AM01_inlaid_seams','AM03_hoist_cable','AM05_freight_rails',
+      'AM05_iron_nails','AM05_lamp_glass','AM05_rail_sleepers']);
+    const physicalCount=visible.reduce((n,m)=>n+m.userData.worldCollisionSources.filter(p=>p.collision==='solid').reduce((sum,p)=>sum+p.indexCount,0),0);
+    assert.equal(physicalCount,cooked.base.surface.indices.length+cooked.base.solid.indices.length);
+    const originalCount=76856;
+    assert.equal(visible.reduce((n,m)=>n+m.geometry.index.count/3,0)
+      +[...cooked.sections.values()].flatMap(group=>group.children).reduce((n,m)=>n+m.geometry.index.count/3,0),originalCount);
+    const inventory=collisionInventory(scene,visible,handles,[root.name]);
+    assert.deepEqual(inventory.errors,[]);
+    assert.equal(inventory.registrations[root.name],2);
+    assert.ok(collisionInventory(scene,visible,handles.slice(1),[root.name]).errors.length>0);
+  }finally{cooked.dispose();}
+});
+
+test('different visible levels and the cart wheel use the measured rock, ground and iron',t=>{
+  const w=new R.World({x:0,y:0,z:0}), before=quarryWorld(), directed=new Raycaster(), rr=result.base;
+  for(const [kind,buffers] of Object.entries(rr)) mount(w,kind,buffers);
+  w.step();
+  const source=asset.root.clone(true), fitted=installMineContacts(source);
+  source.updateMatrixWorld(true);
+  source.traverse(m=>{if(m.isMesh)m.material.side=DoubleSide;});
+  const nextSolid=()=>directed.intersectObject(source).find(hit=>hit.object.userData.worldCollisionSources.some(part=>
+    part.collision==='solid' && hit.faceIndex*3>=part.firstIndex && hit.faceIndex*3<part.firstIndex+part.indexCount));
+  const wheelAt=[14.11,6.31,-40.13], wheelDir=[-1,0,0], wheelRay=new R.Ray(new Vector3(...wheelAt),new Vector3(...wheelDir));
+  const moved=[];
+  try {
+    const oldHit=before.castRay(wheelRay,1.3,false), newHit=w.castRay(wheelRay,1.3,false);
+    directed.set(new Vector3(...wheelAt),new Vector3(...wheelDir));directed.far=1.3;
+    const wheelDraw=nextSolid();
+    assert.ok(wheelDraw && newHit && Math.abs(wheelDraw.distance-newHit.timeOfImpact)<.00002);
+    assert.ok(!oldHit || oldHit.timeOfImpact-newHit.timeOfImpact>.045,oldHit?.timeOfImpact);
+    for(const sample of [
+      {name:'lower forecourt',x:-1.347,y:1,z:-5.81,d:-1,expected:0},
+      {name:'middle stone',x:-9.193,y:4,z:-22.44,d:-1,expected:3},
+      {name:'tunnel floor',x:-13.251,y:7,z:-43.17,d:-1,expected:6},
+      {name:'tunnel roof',x:-13.251,y:7,z:-43.17,d:1,expected:10.074},
+    ]) {
+      const from=new Vector3(sample.x,sample.y,sample.z),dir=new Vector3(0,sample.d,0);
+      directed.set(from,dir); directed.far=5;
+      const seen=nextSolid();
+      const hit=w.castRay(new R.Ray(from,dir),5,false);
+      assert.ok(seen && hit);
+      assert.ok(Math.abs(seen.distance-hit.timeOfImpact)<.00002,JSON.stringify({sample,seen:seen.distance,hit:hit.timeOfImpact}));
+      const height=sample.y+sample.d*hit.timeOfImpact;
+      assert.ok(Math.abs(height-sample.expected)<.45,JSON.stringify({sample,height}));
+      moved.push({role:sample.name,height});
+    }
+    t.diagnostic(JSON.stringify({wheelOld:oldHit?.timeOfImpact??null,wheelNew:newHit.timeOfImpact,moved,triangles:{
+      support:rr.surface.indices.length/3,solid:rr.solid.indices.length/3}}));
+  }finally{w.free();before.free();fitted.dispose();}
 });

@@ -26,7 +26,7 @@ import { windUniforms } from './WorldWind';
 import type { WorldContent } from './types';
 import { PICKUP_DISCOVERY_RADIUS } from './pickup-approach';
 import { minePickupApproach } from './mine-pickup-approach';
-import { installMineContacts, MINE_RACK_ROOT, MINE_POOL_ROOT, mineRackToolPose, mineVeinContactRoot, mineVeinStateContact, type MineLegacyCollision } from './alpha-mine-contact';
+import { installMineContacts, MINE_RACK_ROOT, MINE_POOL_ROOT, mineRackToolPose, mineVeinContactRoot, mineVeinStateContact } from './alpha-mine-contact';
 import { minePoolShelfAnchor, minePoolShelfBox, minePoolBayOffset, minePoolBayAnchor, minePoolBayFixtures, minePoolFixtureHalf, MINE_POOL_MARKER_TILT, type MinePoolFixture } from './mine-pool-contact';
 
 const jsonLoader = (loader: FileLoader<unknown>) => { loader.setResponseType('json'); };
@@ -138,7 +138,7 @@ function MineRack({ rackSource, detector, pickaxe }: { rackSource: Object3D; det
 function poolShelf(manifest: MineManifest, index: number): MinePoint {
   return minePoolShelfAnchor(manifest.basin.center,index);
 }
-function MinePoolFixtureBox({fixture,color,roughness,metalness,receiveShadow,interactable}:{
+function MineFixtureBox({fixture,color,roughness,metalness,receiveShadow,interactable}:{
   fixture:MinePoolFixture;color:string;roughness:number;metalness?:number;receiveShadow?:boolean;interactable:string;
 }) {
   return <RigidBody type="fixed" colliders={false} position={fixture.center} rotation={fixture.rotation} userData={{solid:true,interactable}}>
@@ -157,7 +157,7 @@ function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: nu
     onInteract:()=>beginMineAction('pickup',mineLocalToWorld(anchor),factor.id,'recovery'),
   });
   return <group>
-    <MinePoolFixtureBox fixture={minePoolShelfBox(anchor,index)} color="#70634d" roughness={.9} receiveShadow interactable={'alpha-mine-recovery-'+index}/>
+    <MineFixtureBox fixture={minePoolShelfBox(anchor,index)} color="#70634d" roughness={.9} receiveShadow interactable={'alpha-mine-recovery-'+index}/>
     {recovered&&<group position={anchor} userData={{worldCollision:'none',collisionReason:'Recovered ore is a hand-pickup target on the solid shelf'}}><primitive object={rock}/></group>}
   </group>;
 }
@@ -181,8 +181,8 @@ function PoolBay({ manifest, bay }: { manifest: MineManifest; bay: 0|1 }) {
       else mineNotice('先采出矿石，或从池边回收台取一块。','Mine an ore, or retrieve one from a pool shelf.');},
   });
   return <group name={`alpha-mine-pool-marker-${bay}`} position={anchor}>
-    <MinePoolFixtureBox fixture={post} color="#75664d" roughness={.8} interactable={'alpha-mine-pool-'+bay}/>
-    <MinePoolFixtureBox fixture={plaque} color="#9c855c" metalness={.45} roughness={.48} interactable={'alpha-mine-pool-'+bay}/>
+    <MineFixtureBox fixture={post} color="#75664d" roughness={.8} interactable={'alpha-mine-pool-'+bay}/>
+    <MineFixtureBox fixture={plaque} color="#9c855c" metalness={.45} roughness={.48} interactable={'alpha-mine-pool-'+bay}/>
     <PoolLetter letter={bay?'B':'A'}/>
   </group>;
 }
@@ -218,16 +218,16 @@ function MineLooseOre({ source }: { source: Object3D }) {
       group.visible=true; group.position.set(now.dropped.position[0]-ALPHA_MINE_ORIGIN[0],now.dropped.position[1]-ALPHA_MINE_ORIGIN[1],now.dropped.position[2]-ALPHA_MINE_ORIGIN[2]); group.rotation.set(0,0,0);
     } else group.visible=false;
   });
-  return <group ref={holder} visible={false}><primitive object={rock}/></group>;
+  return <group ref={holder} visible={false} userData={{worldCollision:'none',collisionReason:'Scripted ore flight and temporary hand pickup use their action target'}}><primitive object={rock}/></group>;
 }
 
 function MineInformation({ experienceId }: { experienceId?: string }) {
   useInteractable(experienceId?{id:'alpha-mine-experience',position:mineLocalToWorld([5.8,1,-1.9]),radius:1.5,kind:'sign',label:{zh:'WorldQuant BRAIN · 实习经历',en:'WorldQuant BRAIN · experience'},onInteract:()=>useWorldStore.setState({card:{kind:'experience',id:experienceId}})}:null);
   const zh=useWorldStore(s=>s.lang)==='zh';
-  return <MineSign position={[5.8,0,-1.9]} title="WORLDQUANT BRAIN" detail={zh?'因子勘探 · 研究经历':'Factor quarry · research experience'} />;
+  return <MineSign site="experience" position={[5.8,0,-1.9]} title="WORLDQUANT BRAIN" detail={zh?'因子勘探 · 研究经历':'Factor quarry · research experience'} />;
 }
 
-function MineSign({ position, title, detail }: { position: MinePoint; title: string; detail: string }) {
+function MineSign({ site, position, title, detail }: { site:'entry'|'experience'; position: MinePoint; title: string; detail: string }) {
   const texture=useMemo(()=>{
     const c=document.createElement('canvas'); c.width=512;c.height=192;const ctx=c.getContext('2d')!;
     ctx.fillStyle='#e5dcc7';ctx.fillRect(0,0,512,192);ctx.fillStyle='#2b3d38';ctx.textAlign='center';
@@ -235,10 +235,18 @@ function MineSign({ position, title, detail }: { position: MinePoint; title: str
     const tex=new CanvasTexture(c);tex.colorSpace=SRGBColorSpace;return tex;
   },[title,detail]);
   useEffect(()=>()=>texture.dispose(),[texture]);
-  return <group position={position}><mesh position={[0,.45,0]} castShadow><boxGeometry args={[.12,.9,.12]}/><meshStandardMaterial color="#675a46" roughness={.85}/></mesh><group position={[0,.95,0]} rotation={[-.12,0,0]}>
-    <mesh castShadow><boxGeometry args={[1.8,.68,.12]}/><meshStandardMaterial color="#6f6148" roughness={.85}/></mesh>
-    <mesh position={[0,0,.065]}><planeGeometry args={[1.66,.58]}/><meshStandardMaterial map={texture} roughness={.9}/></mesh>
-  </group><RigidBody type="fixed" colliders={false} userData={{solid:true,interactable:'alpha-mine-sign'}}><CuboidCollider args={[.06,.45,.06]} position={[0,.45,0]}/><CuboidCollider args={[.9,.34,.06]} position={[0,.95,0]} rotation={[-.12,0,0]}/></RigidBody></group>;
+  const id='alpha-mine-sign-'+site;
+  const post: MinePoolFixture={id:id+'-post',center:[0,.45,0],size:[.12,.9,.12]};
+  const board: MinePoolFixture={id:id+'-board',center:[0,.95,0],size:[1.8,.68,.12],rotation:[-.12,0,0]};
+  return <group name={id} position={position}>
+    <MineFixtureBox fixture={post} color="#675a46" roughness={.85} interactable="alpha-mine-sign"/>
+    <MineFixtureBox fixture={board} color="#6f6148" roughness={.85} interactable="alpha-mine-sign"/>
+    <group position={board.center} rotation={board.rotation}>
+      <mesh position={[0,0,.065]} userData={{worldCollision:'none',collisionReason:'Printed text on the solid sign board'}}>
+        <planeGeometry args={[1.66,.58]}/><meshStandardMaterial map={texture} roughness={.9}/>
+      </mesh>
+    </group>
+  </group>;
 }
 
 function MineEffects() {
@@ -260,7 +268,8 @@ function MineEffects() {
       dummy.scale.setScalar((1-t/.7)*(e.kind==='splash'?.6:1));dummy.rotation.set(i+t*2,i*.3,t);dummy.updateMatrix();target.setMatrixAt(i,dummy.matrix);
     }target.instanceMatrix.needsUpdate=true;
   });
-  return <instancedMesh ref={mesh} args={[undefined,undefined,14]} visible={false} frustumCulled={false}><icosahedronGeometry args={[.045,0]}/><meshStandardMaterial color="#aeab8e" roughness={.82}/></instancedMesh>;
+  return <instancedMesh ref={mesh} args={[undefined,undefined,14]} visible={false} frustumCulled={false}
+    userData={{worldCollision:'none',collisionReason:'Brief powder and splash particles driven by mining actions'}}><icosahedronGeometry args={[.045,0]}/><meshStandardMaterial color="#aeab8e" roughness={.82}/></instancedMesh>;
 }
 
 function MineWater({basin}:{basin:MineManifest['basin']}) {
@@ -274,7 +283,6 @@ function MineWater({basin}:{basin:MineManifest['basin']}) {
 }
 function MineAssets({ content }: { content: WorldContent }) {
   const manifest=useLoader(FileLoader,'/world/alpha-mine/layout.json',jsonLoader) as unknown as MineManifest;
-  const proxy=useLoader(FileLoader,manifest.collisionAsset,jsonLoader) as unknown as MineLegacyCollision;
   const gltfs=useLoader(GLTFLoader,[manifest.staticAsset,manifest.dynamicAssets.veins.url,manifest.dynamicAssets.ore.url,manifest.dynamicAssets.detector.url,manifest.dynamicAssets.pickaxe.url],withWorldAssetDecoder) as GLTF[];
   const scene=useMemo(()=>{
     const root=cloneVisual(gltfs[0].scene),materials=new Map<MeshStandardMaterial,MeshStandardMaterial>();
@@ -282,11 +290,11 @@ function MineAssets({ content }: { content: WorldContent }) {
       if(!materials.has(o.material))materials.set(o.material,mineSurfaceMaterial(o.material));
       o.material=materials.get(o.material)!;
     }});
-    return {root,materials:[...materials.values()],contacts:installMineContacts(root,proxy)};
-  },[gltfs,proxy]);
+    return {root,materials:[...materials.values()],contacts:installMineContacts(root)};
+  },[gltfs]);
   useEffect(()=>()=>{scene.materials.forEach(m=>m.dispose());scene.contacts.dispose();},[scene]);
   useMountedMineFloorCoverage(scene.root);
-  const colliders=scene.contacts.legacy;
+  const colliders=scene.contacts.base;
   const ore=gltfs[2].scene.getObjectByName(manifest.dynamicAssets.ore.root)!;
   const detector=gltfs[3].scene.getObjectByName(manifest.dynamicAssets.detector.root)!;
   const pickaxe=gltfs[4].scene.getObjectByName(manifest.dynamicAssets.pickaxe.root)!;
@@ -308,7 +316,7 @@ function MineAssets({ content }: { content: WorldContent }) {
   });
   return <group name="alpha-mine-attraction" position={ALPHA_MINE_ORIGIN}>
     <primitive object={scene.root}/>
-    {(['surface','solid'] as const).map(kind=><RigidBody key={kind} name={`alpha-mine-${kind}`} type="fixed" colliders={false} userData={{[kind]:true,assetId:'alpha-mine'}}><TrimeshCollider args={[colliders[kind].vertices,colliders[kind].indices]} friction={.9} restitution={0}/></RigidBody>)}
+    {(['surface','solid'] as const).map(kind=><RigidBody key={kind} name={`alpha-mine-${kind}`} type="fixed" colliders={false} userData={{[kind]:true,assetId:'alpha-mine'}}><TrimeshCollider name={`alpha-mine-${kind}`} args={[colliders[kind].vertices,colliders[kind].indices]} friction={.9} restitution={0}/></RigidBody>)}
     {[...scene.contacts.sections].map(([section,visual])=>{
       const veinIndex=manifest.veins.findIndex(vein=>mineVeinContactRoot(vein.id)===section), vein=manifest.veins[veinIndex];
       return <group key={section} name={section}>
@@ -327,7 +335,7 @@ function MineAssets({ content }: { content: WorldContent }) {
         </group>;
     })}
     <MineLooseOre source={ore}/><MineEffects/><MineInformation experienceId={experience?.startDate}/>
-    <MineSign position={[3.8,0,-.6]} title="THE FACTOR QUARRY" detail="WORLDQUANT BRAIN"/>
+    <MineSign site="entry" position={[3.8,0,-.6]} title="THE FACTOR QUARRY" detail="WORLDQUANT BRAIN"/>
   </group>;
 }
 

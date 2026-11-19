@@ -117,7 +117,14 @@ def build_receipt():
             else:
                 compact.append([kind, start, length])
         group['old'] = compact
-    return {'parts':groups, 'legacyLengths':{key:len(p['indices']) for key,p in actual.items()}}
+    visual_only = {}
+    for name in ['AM05_freight_rails','AM05_rail_sleepers','AM05_iron_nails','AM03_hoist_cable']:
+        mesh = meshes[name]
+        visual_only[name] = {'batch':'AM_batch_'+mesh.material, 'volumes':list(part_envelopes(mesh))}
+    stone_anchors = [vertex for name, mesh in meshes.items()
+                     if mesh.material=='stone' and name not in stone_sections for vertex in mesh.vertices]
+    return {'parts':groups, 'visualOnly':visual_only, 'stoneAnchors':stone_anchors,
+            'legacyLengths':{key:len(p['indices']) for key,p in actual.items()}}
 
 
 if __name__ == '__main__':

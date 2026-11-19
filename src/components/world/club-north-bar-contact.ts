@@ -2,6 +2,11 @@ import { BufferGeometry, Float32BufferAttribute } from 'three';
 import { DJC_BAR_STOOLS } from './djc-bar-layout';
 import stool from './club-north-bar-stool-contact.generated.json';
 
+export const DJC_NORTH_BAR_CONTACT='djc-north-bar-contact';
+export const djcBarStructureSupply=(kind:'surface'|'solid',fallback=false)=>`${DJC_NORTH_BAR_CONTACT}-${fallback?'fallback':'structure'}-${kind}`;
+export const djcBarStoolSupply=(i:number)=>`djc-bar-stool-${i}`;
+
+export type ContactShape={vertices:Float32Array;indices:Uint32Array};
 /** Shared pose and silhouette for all four stools, independent of either art LOD. */
 export function buildClubBarStoolContact() {
   const vertices = Float32Array.from(stool.vertices, n => n*stool.scale);

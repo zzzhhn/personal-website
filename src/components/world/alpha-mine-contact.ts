@@ -5,8 +5,7 @@ import type { Vec3 } from './types';
 type Kind = 'surface' | 'solid';
 type Buffers = { vertices: Float32Array; indices: Uint32Array };
 type Range = readonly number[];
-type Recipe = { indexCount: number; parts: Record<string, Range[]> };
-export type MineLegacyCollision = Record<Kind,{vertices: number[]; indices: number[]}>;
+type Recipe = { indexCount: number; parts: Record<string, Range[]>; visualOnly: Record<string, Range[]> };
 export const MINE_RACK_ROOT = 'alpha-mine-entry-tool-rack';
 export const MINE_POOL_ROOT = 'alpha-mine-backtest-basin';
 export const MINE_WEST_RAMP_ROOT = 'alpha-mine-west-ramp';
@@ -82,22 +81,55 @@ function selectRangeIndices(source: BufferAttribute, ranges: Range[], used: Uint
   return result;
 }
 
-function remainingCollision(old: MineLegacyCollision): Record<Kind,Buffers> {
-  const slices = Object.values(receipt.old).flat();
-  const remainder = (kind: Kind) => {
-    const {vertices,indices}=old[kind];
-    if (indices.length!==receipt.legacyLengths[kind]) throw new Error('Stale legacy mine collider receipt');
-    const remove=new Uint8Array(indices.length);
-    for (const [group,start,length] of slices) if (group===kind) remove.fill(1,Number(start),Number(start)+Number(length));
-    return {vertices:new Float32Array(vertices),indices:Uint32Array.from(indices.filter((_,i)=>!remove[i]))};
-  };
-  return {surface:remainder('surface'),solid:remainder('solid')};
+type Collector = { vertices: number[]; indices: number[] };
+function appendShape(target: Collector, shape: Buffers) {
+  const offset=target.vertices.length/3;
+  for (const value of shape.vertices) target.vertices.push(value);
+  for (const index of shape.indices) target.indices.push(index+offset);
 }
 
-/** Split only the audited index ranges, so untouched scenery retains its original
- * draw attributes and the rest of the quarry keeps its existing physics. */
-export function installMineContacts(root: Object3D, old: MineLegacyCollision) {
-  const legacy=remainingCollision(old);
+function fitBackdrop(mesh: Mesh, transform: Matrix4, index: BufferAttribute, used: Uint8Array,
+  visualOnly: Recipe['visualOnly'], physics: Record<Kind,Collector>) {
+  const source = mesh.geometry, positions=source.getAttribute('position');
+  const a=new Vector3(), b=new Vector3(), c=new Vector3();
+  const slots: Record<Kind,number[]>={surface:[],solid:[]};
+  const nonblocking=Object.entries(visualOnly).map(([id,ranges])=>({
+    id, indices: selectRangeIndices(index,ranges,used),
+  }));
+  const walkable=Math.cos(25*Math.PI/180);
+  for(let i=0;i<index.count;i+=3){
+    if(used[i])continue;
+    const ia=index.getX(i), ib=index.getX(i+1), ic=index.getX(i+2);
+    a.fromBufferAttribute(positions,ia).applyMatrix4(transform);
+    b.fromBufferAttribute(positions,ib).applyMatrix4(transform).sub(a);
+    c.fromBufferAttribute(positions,ic).applyMatrix4(transform).sub(a);
+    const normal=b.cross(c);
+    const kind:Kind=normal.y>=walkable*normal.length()?'surface':'solid';
+    slots[kind].push(ia,ib,ic);
+  }
+  const indices=new Uint32Array(index.count-used.reduce((n,v)=>n+v,0)+nonblocking.reduce((n,p)=>n+p.indices.length,0));
+  const ranges: {id:string;firstIndex:number;indexCount:number;collision:'solid'|'none';surfaceId?:string}[]=[];
+  let start=0;
+  for(const kind of ['surface','solid'] as const) {
+    const input=Uint32Array.from(slots[kind]);
+    if(!input.length)continue;
+    const surfaceId='alpha-mine-'+kind;
+    ranges.push({id:mesh.name+'/'+kind,firstIndex:start,indexCount:input.length,collision:'solid',surfaceId});
+    appendShape(physics[kind],placedCollider(mesh,input,transform));
+    indices.set(input,start);start+=input.length;
+  }
+  for(const part of nonblocking) {
+    ranges.push({id:part.id,firstIndex:start,indexCount:part.indices.length,collision:'none'});
+    indices.set(part.indices,start);start+=part.indices.length;
+  }
+  if(start!==indices.length)throw new Error('Incomplete quarry material partition: '+mesh.name);
+  mesh.userData.worldCollisionSources=ranges;
+  return indexedView(source,indices);
+}
+
+/** Keep the original render attributes and use exactly their placed triangles for contact. */
+export function installMineContacts(root: Object3D) {
+  const physics: Record<Kind,Collector>={surface:{vertices:[],indices:[]},solid:{vertices:[],indices:[]}};
   const sections = new Map<string,Group>([MINE_RACK_ROOT,MINE_POOL_ROOT,...Object.values(MINE_ROUTE_ROOTS),...Object.values(veinRoots)].map(id=>{
     const visual = new Group(); visual.name=id+'-visual'; return [id,visual];
   }));
@@ -127,10 +159,13 @@ export function installMineContacts(root: Object3D, old: MineLegacyCollision) {
       sections.get(definition.root)!.add(piece);
       if (definition.kind) colliders.push({root:definition.root,id,kind:definition.kind,buffers:placedCollider(piece,indices,transform)});
     }
-    const untouched=Uint32Array.from(index.array.filter((_,i)=>!used[i]));
-    mesh.geometry=indexedView(source,untouched); geometry.push(mesh.geometry);
+    mesh.geometry=fitBackdrop(mesh,transform,index,used,recipe.visualOnly,physics); geometry.push(mesh.geometry);
   }
-  return {sections,legacy,colliders,dispose:()=>geometry.forEach(item=>item.dispose())};
+  const pack = ({vertices,indices}: Collector): Buffers => ({
+    vertices:new Float32Array(vertices),indices:new Uint32Array(indices),
+  });
+  const base={surface:pack(physics.surface),solid:pack(physics.solid)};
+  return {sections,base,colliders,dispose:()=>geometry.forEach(item=>item.dispose())};
 }
 
 /** The intact, chipped and open quarry faces are alternatives at one pivot.
@@ -149,9 +184,7 @@ export function mineVeinStateContact(root: Object3D, stateName: string, vein: st
     if (!(mesh instanceof Mesh)) return;
     const position=mesh.geometry.getAttribute('position'), source=mesh.geometry.index;
     const input=Uint32Array.from({length:source?.count ?? position.count},(_,i)=>source?.getX(i) ?? i);
-    const part=placedCollider(mesh,input,mesh.matrixWorld), offset=vertices.length/3;
-    for (const vertex of part.vertices) vertices.push(vertex);
-    for (const vertex of part.indices) indices.push(vertex+offset);
+    appendShape({vertices,indices},placedCollider(mesh,input,mesh.matrixWorld));
     Object.assign(mesh.userData,{worldCollision:'solid',surfaceId:id,worldCollisionSharedSurface:true});
   });
   if (!indices.length) throw new Error('Empty mine vein contact state: '+stateName);
