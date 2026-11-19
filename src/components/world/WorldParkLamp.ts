@@ -2,6 +2,7 @@ import { BufferAttribute } from 'three';
 import { FACILITY_SURFACE, FACILITY_WOOD_TILE, facilityCraftEnabled } from './WorldFacilitySurface';
 import { lampGeometry } from './WorldStreetAssets.ts';
 import { S, type Builder } from './WorldStreetGeometry.ts';
+import type { KnockableContact, KnockableContactRange } from './park-knockable-contact';
 
 /** G10 / G11 / P04 share this actual generator. Park only adapts its vertex attributes/material. */
 export const PARK_LAMP_OPTIONS = { height: 2.6, arm: 0, pole: S.woodMid, base: S.woodDark, cyanRing: false };
@@ -9,6 +10,22 @@ const high = lampGeometry({ ...PARK_LAMP_OPTIONS, lod: 0 });
 const low = lampGeometry({ ...PARK_LAMP_OPTIONS, lod: 1 });
 const lampCraft = facilityCraftEnabled() && (typeof window === 'undefined'
   || new URLSearchParams(window.location.search).get('parkLampCraft') !== 'baseline');
+
+function contactRanges(builder: Builder): KnockableContactRange[] {
+  const ranges: KnockableContactRange[] = [];
+  for (let i = 0; i < builder.idx.length; i += 3) {
+    const vertices = builder.idx.slice(i, i + 3);
+    const part = builder.parts.find(p => vertices[0] >= p.start && (p.end < 0 || vertices[0] < p.end));
+    if (!part || vertices.some(v => v < part.start || (part.end >= 0 && v >= part.end))) throw new Error('Lamp face crosses its authored part boundary');
+    // Low detail appends the cap rings to the shaft builder part.
+    const id = part.name === 'shaft' && vertices.every(v => builder.pos[v * 3 + 1] >= PARK_LAMP_OPTIONS.height - 1e-6) ? 'cap' : part.name;
+    const collision = part.collide ? 'pushable' : 'none';
+    const previous = ranges.at(-1);
+    if (previous?.id === id && 'vertexCount' in previous) previous.vertexCount += 3;
+    else ranges.push({ id, firstVertex: i, vertexCount: 3, collision });
+  }
+  return ranges;
+}
 
 function parkAttributes(builder: Builder) {
   const source = builder.build();
@@ -59,9 +76,16 @@ function parkAttributes(builder: Builder) {
   }
   return g;
 }
+const hulls = high.hulls();
+const contact: KnockableContact = {
+  near: contactRanges(high), far: contactRanges(low),
+  hulls: high.parts.filter(p => p.collide && (p.end < 0 ? high.pos.length / 3 : p.end) - p.start >= 4)
+    .map((part, i) => ({ id: part.name, points: hulls[i] })),
+};
+
 export const PARK_LAMP = {
   geometry: parkAttributes(high), far: parkAttributes(low),
   triangles: high.triangles, farTriangles: low.triangles,
-  hulls: high.hulls(), parts: high.parts.map(p => ({ ...p })),
+  hulls, parts: high.parts.map(p => ({ ...p })), contact,
   spec: { mass: 45 },
 };

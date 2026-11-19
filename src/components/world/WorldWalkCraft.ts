@@ -1,4 +1,4 @@
-/** P02/P03 visuals only. Original layout, support slabs and knockable spec stay in WorldParkWalk. */
+/** P02/P03 authored geometry. Rail members retain their source ranges for contact. */
 import { BufferAttribute, BufferGeometry, Euler, Matrix4, Quaternion, Vector3 } from 'three';
 import { ParkGeo } from './WorldParkKit';
 import { FACILITY_WOOD_TILE, facilityCraftEnabled } from './WorldFacilitySurface';
@@ -73,22 +73,33 @@ export function walkBearing(g: WalkCraftGeo, center: Vec3, yaw: number) {
 }
 export function craftParkRail(low = false) {
   const g = new WalkCraftGeo();
-  const member = (name: string, center: Vec3, size: Vec3, color: string, inset = 0) => g.named(name, () => g.box(center, size, color, { inset }));
+  const members: { id: string; firstVertex: number; vertexCount: number }[] = [];
+  const record = (id: string, draw: () => void) => {
+    const firstVertex = g.triangles * 3;
+    draw();
+    members.push({ id, firstVertex, vertexCount: g.triangles * 3 - firstVertex });
+  };
+  const member = (id: string, name: string, center: Vec3, size: Vec3, color: string, inset = 0) =>
+    record(id, () => g.named(name, () => g.box(center, size, color, { inset })));
   for (const z of [-.94, .94]) {
-    member('post.vertical-grain', [0, .45, z], [.09, .9, .09], '#8E6E55', low ? 0 : .006);
+    const end = z < 0 ? 'negative' : 'positive';
+    member(`post-${end}`, 'post.vertical-grain', [0, .45, z], [.09, .9, .09], '#8E6E55', low ? 0 : .006);
     if (!low) {
-      member('post.bearing-head', [0, .89, z], [.12, .02, .12], '#7A5F45', .006);
+      member(`cap-${end}`, 'post.bearing-head', [0, .89, z], [.12, .02, .12], '#7A5F45', .006);
       g.named('post.foot-shoe', () => {
-        g.metal([0, .011, z], [.15, .022, .14], '#7D837E', { inset: .006 });
-        for (const x of [-.051, .051]) g.metal([x, .077, z], [.012, .132, .105], '#7D837E', { inset: .004 });
+        record(`shoe-base-${end}`, () => g.metal([0, .011, z], [.15, .022, .14], '#7D837E', { inset: .006 }));
+        for (const x of [-.051, .051]) {
+          const side = x < 0 ? 'negative' : 'positive';
+          record(`shoe-side-${end}-${side}`, () => g.metal([x, .077, z], [.012, .132, .105], '#7D837E', { inset: .004 }));
+        }
       });
     }
   }
   // 2.02 m is the authored placement pitch. All sections remain independent 40 kg bodies.
-  member('handrail.continuous', [0, .935, 0], [.14, .07, 2.02], '#B99469', low ? 0 : .012);
+  member('handrail', 'handrail.continuous', [0, .935, 0], [.14, .07, 2.02], '#B99469', low ? 0 : .012);
   if (!low) {
-    member('rail.middle', [0, .5, 0], [.055, .085, 1.94], '#9C7A58', .005);
-    member('rail.lower', [0, .2, 0], [.055, .065, 1.94], '#9C7A58', .004);
+    member('middle', 'rail.middle', [0, .5, 0], [.055, .085, 1.94], '#9C7A58', .005);
+    member('lower', 'rail.lower', [0, .2, 0], [.055, .065, 1.94], '#9C7A58', .004);
   }
-  return { geometry: g.build(), triangles: g.triangles };
+  return { geometry: g.build(), triangles: g.triangles, members };
 }

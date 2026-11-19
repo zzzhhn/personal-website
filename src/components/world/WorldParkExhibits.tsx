@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type Ref } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
-import { BufferAttribute, BufferGeometry, CanvasTexture, Group, Matrix4, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
+import { RigidBody, TrimeshCollider, useAfterPhysicsStep, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
+import { BufferAttribute, BufferGeometry, CanvasTexture, Group, Matrix4, Mesh, MeshStandardMaterial, Object3D, Quaternion, SRGBColorSpace, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkMaterial, parkUrl, withDraco, hash, type GLTF } from './WorldParkKit';
+import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkMaterial, parkUrl, withDraco, hash, topName, type GLTF } from './WorldParkKit';
 import { EXHIBITS, EXHIBIT_ANCHOR, HUTS, exhibitMatrix, type HutPlacement } from './WorldParkLayout';
 import { Knockables } from './WorldParkWalk';
 import { useInteractable } from './WorldInteract';
@@ -13,6 +14,9 @@ import { trackPortfolioEvent } from '../../lib/analytics';
 import { parkAudio } from './WorldParkAudio';
 import { CLUB } from './djc-club-layout';
 import { ParkLOD } from './WorldParkLOD';
+import { boardFlipAngle, exhibitBoardRotation, exhibitBoardSweepClear, exhibitPartContact, exhibitPartShape, exhibitRecordPose, exhibitSweepClear,
+  exhibitSurfaceId, type ExhibitPartShape, type ExhibitSourceRange } from './park-exhibit-collision';
+import type { KnockableContact } from './park-knockable-contact';
 import type { Vec3, WorldProject, Lang } from './types';
 
 /**
@@ -24,44 +28,62 @@ import type { Vec3, WorldProject, Lang } from './types';
 const ids = ['P13', 'P14', 'P15', 'P16', 'P17', 'P18'];
 export function useExhibitGltfs() {
   const list = useLoader(GLTFLoader, ids.map(parkUrl), withDraco) as GLTF[];
-  return Object.fromEntries(ids.map((id, i) => [id, list[i]])) as Record<string, GLTF>;
+  return useMemo(() => Object.fromEntries(ids.map((id, i) => [id, list[i]])) as Record<string, GLTF>, [list]);
 }
 
 type Movers = Record<string, Object3D>;
-type Placed = { body: BufferGeometry; hut: HutPlacement; id: string; matrix: Matrix4; root: Object3D; movers: Movers; dynamic: { name: string; geometry: BufferGeometry; position: Vec3; yaw: number; hull: Float32Array }[] };
+type Placed = { body: BufferGeometry; hut: HutPlacement; id: string; matrix: Matrix4; root: Object3D; movers: Movers;
+  fixed: ReturnType<typeof gltfTrimesh>; contact: Record<string, ExhibitPartShape>;
+  dynamic: { name: string; geometry: BufferGeometry; position: Vec3; yaw: number; contact: KnockableContact }[] };
 const DYNAMIC = new Set(['stool', 'crate']);
 
 /** Static batch pieces + per-exhibit moving node clones + colliders. */
 export function placeExhibits(gltfs: Record<string, GLTF>) {
-  const placed: Placed[] = [], fixed: { vertices: Float32Array; indices: Uint32Array }[] = [];
+  const placed: Placed[] = [];
   for (const hut of HUTS) for (const ex of EXHIBITS[hut.id] ?? []) {
     const src = gltfs[ex.id].scene.getObjectByName(ex.id)!;
     const root = src.clone(true);
     const matrix = exhibitMatrix(hut, ex.at, ex.yaw);
     root.updateMatrixWorld(true);
-    const movers: Movers = {}, stop = new Set<Object3D>();
-    for (const c of root.children) if (c.name !== 'body') { stop.add(c); if (!DYNAMIC.has(c.name)) movers[c.name] = c; }
+    const movers: Movers = {}, contact: Placed['contact'] = {};
+    const fixed = new Set<string>();
+    for (const child of root.children) {
+      const policy = exhibitPartContact(ex.id, child.name);
+      if (policy.collision === 'solid' && policy.group === 'body') fixed.add(child.name);
+      if (child.name === 'body' || policy.collision === 'pushable') continue;
+      movers[child.name] = child;
+      if (policy.collision === 'solid' && policy.group !== 'body') contact[child.name] = exhibitPartShape(child, matrix);
+    }
     const body = root.getObjectByName('body')!;
     const bodyGeometry = mergeBatch(meshesUnder(body, new Set()).map(m => meshPiece(m, new Matrix4().multiplyMatrices(matrix, m.matrixWorld))));
-    fixed.push(gltfTrimesh(root, matrix, n => n === 'body'));
+    const fixedMesh = gltfTrimesh(root, matrix, n => fixed.has(n));
     const dynamic: Placed['dynamic'] = [];
     for (const name of DYNAMIC) {
       const node = root.getObjectByName(name);
       if (!node) continue;
       // Dynamic prop geometry in its own node frame (origin = floor contact centre).
-      const inv = new Matrix4().copy(node.matrixWorld).invert(), parts: BufferGeometry[] = [], pts: number[] = [], v = new Vector3();
-      for (const m of meshesUnder(node, new Set())) {
-        const local = new Matrix4().multiplyMatrices(inv, m.matrixWorld);
-        parts.push(meshPiece(m, local));
-        const p = m.geometry.getAttribute('position');
-        for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i).applyMatrix4(local); pts.push(v.x, v.y, v.z); }
-      }
+      const inv = node.matrixWorld.clone().invert();
+      const geometry = mergeBatch(meshesUnder(node, new Set()).map(m => meshPiece(m, inv.clone().multiply(m.matrixWorld))));
       const wp = new Vector3().setFromMatrixPosition(new Matrix4().multiplyMatrices(matrix, node.matrixWorld));
-      dynamic.push({ name, geometry: mergeBatch(parts), position: [wp.x, wp.y, wp.z], yaw: hut.yaw + ex.yaw, hull: new Float32Array(pts) });
+      const positions = geometry.getAttribute('position');
+      dynamic.push({ name, geometry, position: [wp.x, wp.y, wp.z], yaw: hut.yaw + ex.yaw,
+        contact: { near: [{ id: name, firstVertex: 0, vertexCount: positions.count, collision: 'pushable' }],
+          hulls: [{ id: name, points: new Float32Array(positions.array) }] } });
     }
-    placed.push({ body: bodyGeometry, hut, id: ex.id, matrix, root, movers, dynamic });
+    placed.push({ body: bodyGeometry, hut, id: ex.id, matrix, root, movers, dynamic, fixed: fixedMesh, contact });
   }
-  return { placed, fixed };
+  return placed;
+}
+
+const partId = (p: Placed, group: string) => exhibitSurfaceId(p.hut.id, p.id, group);
+const partAsset = (p: Placed, group: string) => group === 'body' ? p.id : `${p.id}-${group}`;
+
+function ExhibitMovingContact({ body, p, part }: { body: Ref<RapierRigidBody>; p: Placed; part: string }) {
+  const shape = p.contact[part];
+  return <RigidBody ref={body} type="kinematicPosition" colliders={false} position={shape.position} quaternion={shape.rotation}
+    userData={{ solid: true, assetId: partAsset(p, part) }}>
+    <TrimeshCollider name={partId(p, part)} args={[shape.vertices, shape.indices]} friction={.6} />
+  </RigidBody>;
 }
 
 /** Read-only QA evidence. The bot still triggers every action through real E key events. */
@@ -129,6 +151,7 @@ function ReviewBooth({ p }: { p: Placed }) {
   const lang = useLang();
   const L = useDisplay(p.movers.display_clip0, 0.54, 0.38, 192), R = useDisplay(p.movers.display_clip1, 0.54, 0.38, 192);
   const shot = useOneShot(4.2);
+  const buttonBody = useRef<RapierRigidBody>(null);
   const voted = useRef(0);
   const votes = useRef<[number, number]>([3, 3]), side = useRef(0), shown = useRef<[number, number]>([3, 3]);
   useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, time: shot.state.current.t, votes: votes.current.slice(), side: side.current }));
@@ -153,14 +176,25 @@ function ReviewBooth({ p }: { p: Placed }) {
     side.current = 1 - side.current;
   }, { enabled: shot.available });
   const sel = p.movers.selector, btn = p.movers.button;
+  const buttonHome = useRef(btn.position.y), buttonY = useRef(buttonHome.current);
+  useBeforePhysicsStep(world => {
+    if (!isWorldRunning() || !buttonBody.current) return;
+    const t = shot.advance(world.timestep);
+    const target = buttonHome.current - (0 <= t && t < .25 ? .02 : 0);
+    const shift = target - buttonY.current;
+    if (!shift) return;
+    buttonY.current += Math.abs(shift) < .0001 ? shift : shift * Math.min(1, world.timestep * 20);
+    const [x,y,z] = p.contact.button.position;
+    buttonBody.current.setNextKinematicTranslation({ x, y: y + buttonY.current - buttonHome.current, z });
+  });
+  useAfterPhysicsStep(() => { btn.position.y = buttonY.current; });
   useFrame((_, dt) => {
     if (!isWorldRunning()) return;
-    const t = shot.advance(dt);
+    const t = shot.state.current.t;
     if (t >= 0) {
       clip(L, 0, t, t > 3 && side.current === 0); clip(R, 1, t, t > 3 && side.current === 1);
       if (t > 3 && voted.current !== shot.state.current.n) { votes.current[side.current]++; voted.current = shot.state.current.n; }
     }
-    if (btn) btn.position.y += ((t >= 0 && t < 0.25 ? -0.02 : 0) + (btn.userData.y0 ??= btn.position.y) - btn.position.y) * Math.min(1, dt * 20);
     if (sel) sel.rotation.y += ((side.current ? -1 : 1) * Math.PI / 2 - sel.rotation.y) * Math.min(1, dt * 10);
     for (const i of [0, 1]) {
       shown.current[i] += (votes.current[i] - shown.current[i]) * Math.min(1, dt * 3);
@@ -168,7 +202,7 @@ function ReviewBooth({ p }: { p: Placed }) {
       if (bar) bar.scale.y = Math.min(1, 0.06 + shown.current[i] / 40);
     }
   });
-  return null;
+  return <ExhibitMovingContact body={buttonBody} p={p} part="button" />;
 }
 
 /* ------------------------------------------------------------------ P14 DJ table */
@@ -190,10 +224,17 @@ const continuity = (a: typeof FEATURES[number], b: typeof FEATURES[number]) => {
 };
 const SLOT_LINKS: [number, number][] = [[0, 1], [1, 2], [3, 4], [4, 5], [6, 7], [7, 8], [0, 3], [3, 6], [1, 4], [4, 7], [2, 5], [5, 8]];
 const CORD_NODES = ['cord_h00', 'cord_h01', 'cord_h10', 'cord_h11', 'cord_h20', 'cord_h21', 'cord_v00', 'cord_v01', 'cord_v10', 'cord_v11', 'cord_v20', 'cord_v21'];
+const recordAxis = new Vector3(0, 0, 1);
 function RecordWall({ p }: { p: Placed }) {
+  const { rapier } = useRapier();
   const order = useRef([0, 1, 2, 3, 4, 5, 6, 7, 8]);          // slot -> record
-  const homes = useMemo(() => Array.from({ length: 9 }, (_, i) => p.movers[`record_${i}`]?.position.clone() ?? new Vector3()), [p]);
+  const records = useMemo(() => Array.from({ length: 9 }, (_, i) => {
+    const part = `record_${i}`, node = p.movers[part];
+    return { part, node, home: node.position.clone(), shape: p.contact[part] };
+  }), [p]);
+  const bodies = useRef<(RapierRigidBody | null)[]>([]);
   const shot = useOneShot(2.6), move = useRef({ a: -1, b: -1 });
+  const blocked = useRef(false);
   const width = useRef(SLOT_LINKS.map(() => 1));
   const target = () => SLOT_LINKS.map(([s, t]) => 0.35 + 2.3 * continuity(FEATURES[order.current[s]], FEATURES[order.current[t]]) ** 2);
   const goal = useRef(target());
@@ -205,24 +246,44 @@ function RecordWall({ p }: { p: Placed }) {
     const o = order.current; [o[a], o[b]] = [o[b], o[a]];
     goal.current = target();
   }, { enabled: shot.available });
+  useBeforePhysicsStep(world => {
+    if (!isWorldRunning() || shot.available()) return;
+    const t = shot.state.current.t, { a, b } = move.current;
+    if (t < .9) {
+      const steps = [[b, a], [a, b]].map(([from, to]) => {
+        const index = order.current[to], { shape } = records[index];
+        const before = exhibitRecordPose(records[from].home, records[to].home, p.matrix, t, from === b);
+        const after = exhibitRecordPose(records[from].home, records[to].home, p.matrix, t + world.timestep, from === b);
+        const rotationAt = (angle: number) => shape.rotation.clone().multiply(new Quaternion().setFromAxisAngle(recordAxis, angle));
+        const rotation = rotationAt(after.angle);
+        const clear = exhibitSweepClear(world, rapier, shape, before.position, after.position,
+          rotationAt((before.angle + after.angle) / 2), Math.abs(after.angle - before.angle), Math.hypot(shape.edge.x, shape.edge.y));
+        return { index, after, rotation, clear };
+      });
+      if (steps.some(step => !step.clear)) {
+        if (!blocked.current) useWorldStore.setState({ toast: { zh: '请让开唱片墙前方。', en: 'Step back to let the records finish moving.', at: performance.now() } });
+        blocked.current = true;
+        return;
+      }
+      blocked.current = false;
+      for (const step of steps) {
+        bodies.current[step.index]?.setNextKinematicTranslation(step.after.position);
+        bodies.current[step.index]?.setNextKinematicRotation(step.rotation);
+        records[step.index].node.position.copy(step.after.local);
+        records[step.index].node.rotation.z = step.after.angle;
+      }
+    }
+    shot.advance(world.timestep);
+  });
   useFrame((_, dt) => {
     if (!isWorldRunning()) return;
-    const t = shot.advance(dt), { a, b } = move.current;
-    for (let slot = 0; slot < 9; slot++) {
-      const rec = order.current[slot], node = p.movers[`record_${rec}`]; if (!node) continue;
-      const home = homes[slot];
-      if (t >= 0 && t < 0.9 && (slot === a || slot === b)) {
-        const from = homes[slot === a ? b : a], k = t / 0.9, e = k * k * (3 - 2 * k);
-        node.position.lerpVectors(from, home, e); node.position.z += Math.sin(k * Math.PI) * 0.35 * (slot === a ? 1 : 0.6);
-        node.rotation.z = Math.sin(k * Math.PI) * 0.25 * (slot === a ? 1 : -1);
-      } else { node.position.lerp(home, Math.min(1, dt * 10)); node.rotation.z *= 0.8; }
-    }
+    const t = shot.state.current.t;
     // Cords re-thicken after the swap lands.
     if (t < 0 || t > 0.9) width.current = width.current.map((w, i) => w + (goal.current[i] - w) * Math.min(1, dt * 4));
     CORD_NODES.forEach((name, i) => { const c = p.movers[name]; if (c) { c.scale.x = c.scale.z = width.current[i]; } });
   });
   useEffect(() => { width.current = goal.current.slice(); }, []);
-  return null;
+  return <>{records.map(({ part }, i) => <ExhibitMovingContact key={part} p={p} part={part} body={body => { bodies.current[i] = body; }} />)}</>;
 }
 
 /* ------------------------------------------------------------------ P16 + P17 camp chairs and lantern */
@@ -281,11 +342,13 @@ function Bubbles({ lines, at, active }: { lines: string[]; at: Vec3; active: boo
 /* ------------------------------------------------------------------ P18 blackboard */
 function Blackboard({ p, project }: { p: Placed; project?: WorldProject }) {
   const lang = useLang();
+  const { rapier } = useRapier(), body = useRef<RapierRigidBody>(null);
   const front = useDisplay(p.movers.display_front ?? p.root.getObjectByName('display_front'), 2.0, 1.1, 384);
   const back = useDisplay(p.movers.display_back ?? p.root.getObjectByName('display_back'), 2.0, 1.1, 384);
   const courses = project?.courses?.[lang] ?? [];
   const page = useRef(0), shot = useOneShot(3.2);
-  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, page: page.current % Math.max(1, courses.length), courses: courses.map(c => c.code), angle: p.movers.board?.rotation.x }));
+  const base = useRef(0), angle = useRef(0), blocked = useRef(false);
+  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, page: page.current % Math.max(1, courses.length), courses: courses.map(c => c.code), angle: p.movers.board?.rotation.x, blocked: blocked.current }));
   const draw = (d: ReturnType<typeof useDisplay>, idx: number, k: number, mirror: boolean) => {
     const { ctx, canvas: c, tex } = d, W = c.width, H = c.height;
     ctx.setTransform(1, 0, 0, mirror ? -1 : 1, 0, mirror ? H : 0);
@@ -328,58 +391,87 @@ function Blackboard({ p, project }: { p: Placed; project?: WorldProject }) {
   };
   useEffect(() => { draw(front, page.current, 1, false); draw(back, page.current + 1, 0, true); }, [lang, courses.length]); // eslint-disable-line react-hooks/exhaustive-deps
   const board = p.movers.board;
+  const shape = p.contact.board;
   useExhibitE(p, 'exhibit', { en: 'Flip to the next course', zh: '翻到下一门课' }, () => {
-    if (!courses.length || !shot.start()) return;
+    if (!courses.length || !body.current || !shot.start()) return;
+    base.current = angle.current;
     const next = page.current + 1;
     // whichever face turns toward the room shows the next page
     const showing = Math.round((board?.rotation.x ?? 0) / Math.PI) % 2 === 0 ? back : front;
     draw(showing, next, 0, showing === back);
     page.current = next;
-  }, { enabled: () => courses.length > 0 && shot.available() });
-  const base = useRef(0);
-  useFrame((_, dt) => {
-    if (!isWorldRunning()) return;
-    const t = shot.advance(dt);
-    if (!board) return;
-    if (t >= 0 && t < 0.8) { const k = t / 0.8; board.rotation.x = base.current + Math.PI * k * k * (3 - 2 * k); }
-    else if (t >= 0.8) { board.rotation.x = base.current + Math.PI; const facing = (Math.round(board.rotation.x / Math.PI) % 2 === 0) ? front : back; draw(facing, page.current, Math.min(1, (t - 0.8) / 2), facing === back); }
-    else if (shot.state.current.n && Math.abs(board.rotation.x - base.current) > 1) base.current = board.rotation.x;
+  }, { enabled: () => courses.length > 0 && body.current !== null && shot.available() });
+  useBeforePhysicsStep(world => {
+    if (!isWorldRunning() || !body.current || !shape || shot.available()) return;
+    const next = boardFlipAngle(base.current, shot.state.current.t + world.timestep);
+    if (next !== angle.current && !exhibitBoardSweepClear(world, rapier, shape, angle.current, next)) {
+      if (!blocked.current) useWorldStore.setState({ toast: { zh: '请让开黑板的翻转范围。', en: 'Step clear of the blackboard to let it turn.', at: performance.now() } });
+      blocked.current = true;
+      return;
+    }
+    blocked.current = false;
+    shot.advance(world.timestep);
+    if (next !== angle.current) body.current.setNextKinematicRotation(exhibitBoardRotation(shape, next));
+    angle.current = next;
   });
-  return null;
+  useAfterPhysicsStep(() => { if (board) board.rotation.x = angle.current; });
+  useFrame(() => {
+    const t = shot.state.current.t;
+    if (isWorldRunning() && t >= .8) {
+      const facing = Math.round(angle.current / Math.PI) % 2 === 0 ? front : back;
+      draw(facing, page.current, Math.min(1, (t - .8) / 2), facing === back);
+    }
+  });
+  return <ExhibitMovingContact body={body} p={p} part="board" />;
 }
 
 /* ------------------------------------------------------------------ assembly */
 function ExhibitSet({ placed, projects }: { placed: Placed[]; projects: WorldProject[] }) {
   const project = (slug: string) => projects.find(x => x.slug === slug);
-  const parts = useMemo(() => {
-    const batch = new PartBatch(), I = new Matrix4();
+  const { parts, sources } = useMemo(() => {
+    const batch = new PartBatch(), I = new Matrix4(), sources: ExhibitSourceRange[] = [];
+    let firstVertex = 0;
     for (const p of placed) {
       moversOnly(p);
-      p.root.traverse(o => { const m = o as Mesh; if (m.isMesh && !m.name.startsWith('display') && !m.parent?.name.startsWith('display') && m.name !== 'screen' && m.parent?.name !== 'screen') { batch.add(m, [{ mesh: m, local: I }]); m.visible = false; m.castShadow = false; } });
+      for (const mesh of meshesUnder(p.root, new Set())) {
+        const policy = exhibitPartContact(p.id, topName(mesh, p.root));
+        const surfaceId = policy.group ? partId(p, policy.group) : undefined;
+        const reason = 'reason' in policy ? policy.reason : undefined;
+        Object.assign(mesh.userData, { worldCollision: policy.collision, surfaceId, worldCollisionSharedSurface: !!surfaceId,
+          worldCollisionReason: reason, ...(policy.collision === 'solid' ? { solid: true, assetId: partAsset(p, policy.group) } : {}) });
+        if (mesh.name.startsWith('display') || mesh.parent?.name.startsWith('display') || mesh.name === 'screen' || mesh.parent?.name === 'screen') continue;
+        batch.add(mesh, [{ mesh, local: I }]);
+        const vertexCount = mesh.geometry.index?.count ?? mesh.geometry.getAttribute('position').count;
+        sources.push({ id: `${partId(p, topName(mesh, p.root))}-${sources.length}`, firstVertex, vertexCount,
+          collision: policy.collision, surfaceId, reason });
+        firstVertex += vertexCount;
+        mesh.visible = false;
+        mesh.castShadow = false;
+      }
     }
-    return batch.build();
+    return { parts: batch.build(), sources };
   }, [placed]);
   useEffect(() => { exhibitParts.add(parts); return () => { exhibitParts.delete(parts); parts.geometry?.dispose(); parts.material?.dispose(); parts.texture?.dispose(); }; }, [parts]);
   useEffect(() => () => placed.forEach(p => p.body.dispose()), [placed]);
   const holder = useRef<Group>(null);
   useFrame(() => { holder.current?.updateMatrixWorld(true); parts.sync(); });
   const lampFor = (hut: string) => placed.find(x => x.hut.id === hut && x.id === 'P17');
-  const dynamic = useMemo(() => {
-    const by = new Map<string, { geometry: BufferGeometry; hull: Float32Array; items: { id: string; position: Vec3; yaw: number }[] }>();
-    for (const p of placed) for (const d of p.dynamic) {
-      const key = `${p.id}-${d.name}`;
-      by.set(key, { geometry: d.geometry, hull: d.hull, items: [{ id: `${p.hut.id}-${d.name}`, position: d.position, yaw: d.yaw }] });
-    }
-    return [...by.entries()];
-  }, [placed]);
+  const dynamic = useMemo(() => placed.flatMap(p => p.dynamic.map(d => ({ ...d, key: `${p.id}-${d.name}`,
+    items: [{ id: `${p.hut.id}-${d.name}`, position: d.position, yaw: d.yaw }] }))), [placed]);
   return <group name={`park-exhibit-set-${placed[0]?.hut.id}`}>
-    {placed.map(p => <mesh key={`body-${p.id}`} name={`park-exhibit-body-${p.id}`} geometry={p.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true, assetId: p.id }} />)}
+    {placed.map(p => <group key={`body-${p.id}`}>
+      <mesh name={`park-exhibit-body-${p.id}`} geometry={p.body} material={parkMaterial()} castShadow receiveShadow
+        userData={{ solid: true, occluder: true, assetId: p.id, worldCollision: 'solid', surfaceId: partId(p, 'body'), worldCollisionSharedSurface: true }} />
+      <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: p.id }}>
+        <TrimeshCollider name={partId(p, 'body')} args={[p.fixed.vertices, p.fixed.indices]} friction={.6} restitution={.05} />
+      </RigidBody>
+    </group>)}
     <group ref={holder} name="park-exhibit-nodes">
       {placed.map(p => <group key={`${p.hut.id}-${p.id}`} name={`park-exhibit-${p.id}`} matrixAutoUpdate={false} matrix={p.matrix}>
         <primitive object={p.root} />
       </group>)}
     </group>
-    <mesh name="park-exhibit-parts" geometry={parts.geometry!} material={parts.material!} frustumCulled={false} receiveShadow userData={{ noOcclusionFade: true }} />
+    <mesh name="park-exhibit-parts" geometry={parts.geometry!} material={parts.material!} frustumCulled={false} receiveShadow userData={{ noOcclusionFade: true, worldCollisionSources: sources }} />
     {placed.map(p => {
       const key = `${p.hut.id}-${p.id}`;
       switch (p.id) {
@@ -391,8 +483,8 @@ function ExhibitSet({ placed, projects }: { placed: Placed[]; projects: WorldPro
         default: return null;
       }
     })}
-    {dynamic.map(([key, d]) => <Knockables key={key} name={`exhibit-${key}`} items={d.items} source={d.geometry} hull={d.hull}
-      spec={{ half: [0.2, 0.3, 0.2], offset: [0, 0.3, 0], mass: key.endsWith('crate') ? 9 : 4 }} />)}
+    {dynamic.map(d => <Knockables key={d.key} name={`exhibit-${d.key}`} items={d.items} source={d.geometry} contact={d.contact}
+      spec={{ mass: d.name === 'crate' ? 9 : 4 }} />)}
   </group>;
 }
 /** Root clone keeping only moving nodes (body is in the static batch, dynamic props are rigid bodies). */

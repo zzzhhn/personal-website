@@ -4,9 +4,10 @@ import {MeshStandardMaterial,ShaderLib} from 'three';
 import {quarryFloraBanks,quarryFloraKind,quarryFloraStyle} from './alpha-mine-flora.ts';
 import {ALPHA_MINE_ORIGIN} from './alpha-mine-layout.ts';
 
-import { grassTuftGeometry, grassMaterial, GRASS_PROFILE } from './WorldGrass.tsx';
-import { mineSurfaceMaterial, MINE_NIGHT_BOUNCE } from './WorldMineMaterial.ts';
-import { night } from './WorldNight.ts';
+import '../../../tools/world/alpha-mine-tests/register.mjs';
+const { grassTuftGeometry, grassMaterial, GRASS_PROFILE } = await import('./WorldGrass.tsx');
+const { mineSurfaceMaterial, MINE_NIGHT_BOUNCE } = await import('./WorldMineMaterial.ts');
+const { night } = await import('./WorldNight.ts');
 
 const compile=material=>{
  const shader={uniforms:{},vertexShader:ShaderLib.standard.vertexShader,fragmentShader:ShaderLib.standard.fragmentShader};

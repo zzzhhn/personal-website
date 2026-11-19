@@ -11,6 +11,8 @@ import { isWorldRunning } from './WorldWind';
 import { PARK_LAMP } from './WorldParkLamp';
 import type { Vec3 } from './types';
 import { ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_APPROACH_WIDTH } from './alpha-exchange-layout';
+import { railMemberHulls, type KnockableContact, type KnockableContactRange } from './park-knockable-contact';
+import { collisionInstancePartId, type InstanceCollisionSources } from './world-collision-inventory';
 
 /**
  * P01 plaza, P02 boardwalk deck + piles, P03 low rails, P04 warm lamp posts: runtime-procedural from
@@ -219,14 +221,21 @@ type KnockSpec = { half?: Vec3; offset?: Vec3; mass: number };
 function railGeometry() {
   // 2.0 m section (scaled along z per instance): two posts, top handrail, mid rail, post caps.
   const g = new ParkGeo(), L = 2.0;
+  const members: { id: string; firstVertex: number; vertexCount: number }[] = [];
+  const member = (id: string, ...args: Parameters<ParkGeo['box']>) => {
+    const firstVertex = g.triangles * 3;
+    g.box(...args);
+    members.push({ id, firstVertex, vertexCount: g.triangles * 3 - firstVertex });
+  };
   for (const z of [-L / 2 + 0.06, L / 2 - 0.06]) {
-    g.box([0, 0.47, z], [0.09, 0.94, 0.09], '#8E6E55', { inset: 0.012 });
-    g.box([0, 0.955, z], [0.12, 0.03, 0.12], '#7A5F45', { inset: 0.02 });
+    const end = z < 0 ? 'negative' : 'positive';
+    member(`post-${end}`, [0, 0.47, z], [0.09, 0.94, 0.09], '#8E6E55', { inset: 0.012 });
+    member(`cap-${end}`, [0, 0.955, z], [0.12, 0.03, 0.12], '#7A5F45', { inset: 0.02 });
   }
-  g.box([0, 0.9, 0], [0.1, 0.06, L], '#B99469', { inset: 0.015 });
-  g.box([0, 0.5, 0], [0.04, 0.07, L - 0.1], '#9C7A58');
-  g.box([0, 0.2, 0], [0.04, 0.05, L - 0.1], '#9C7A58');
-  return { geometry: g.build(), triangles: g.triangles };
+  member('handrail', [0, 0.9, 0], [0.1, 0.06, L], '#B99469', { inset: 0.015 });
+  member('middle', [0, 0.5, 0], [0.04, 0.07, L - 0.1], '#9C7A58');
+  member('lower', [0, 0.2, 0], [0.04, 0.05, L - 0.1], '#9C7A58');
+  return { geometry: g.build(), triangles: g.triangles, members };
 }
 type KState = { pos: Vec3; yaw: number; knocked: number | null; fade: number; reset: boolean };
 /** QA listing of every park knockable (?qa=1 exposes it as window.__parkKnock()). */
@@ -235,11 +244,30 @@ export const parkKnockables = () => [...knockQa.values()].flatMap(f => f());
 const lodInstanceQa = new Map<string, () => unknown>();
 /** Sleeping dynamic props (spec 15 / PRD 4.3): woken only by contact; 30 s after being knocked they
  * dither out, reset to their home pose asleep, and dither back in. One instanced draw per kind. */
-export function Knockables({ name, items, source, farSource, spec, hull, hulls, userData }: { name: string; items: { id: string; position: Vec3; yaw: number }[]; source: BufferGeometry; farSource?: BufferGeometry; spec: KnockSpec; hull?: Float32Array; hulls?: Float32Array[]; userData?: Record<string, unknown> }) {
+export function Knockables({ name, items, source, farSource, spec, contact, hull, hulls, userData }: {
+  name: string; items: { id: string; position: Vec3; yaw: number }[]; source: BufferGeometry; farSource?: BufferGeometry;
+  spec: KnockSpec; contact?: KnockableContact; hull?: Float32Array; hulls?: Float32Array[]; userData?: Record<string, unknown>;
+}) {
   const bodies = useRef<(RapierRigidBody | null)[]>(null);
   const mesh = useRef<InstancedMesh>(null), nearMesh = useRef<InstancedMesh>(null), farMesh = useRef<InstancedMesh>(null);
   const states = useRef<KState[]>([]);
   const slept = useRef(false);
+  const meshData = useMemo(() => ({ noOcclusionFade: true, assetId: userData?.assetId ?? name }), [name, userData?.assetId]);
+  const contacts = useMemo(() => {
+    if (!contact) return null;
+    const placements = items.map(item => ({
+      id: item.id,
+      matrix: new Matrix4().makeRotationY(item.yaw).setPosition(...item.position),
+      surfaceIds: contact.hulls.map(part => collisionInstancePartId(item.id, part.id)),
+    }));
+    const sourceData = (worldCollisionSources: readonly KnockableContactRange[], slots: number[]) => {
+      const worldCollisionInstances: InstanceCollisionSources = { placements, slots };
+      return { ...meshData, worldCollision: 'pushable', worldCollisionSources, worldCollisionInstances };
+    };
+    return { placements,
+      proxy: sourceData(contact.near, items.map((_, i) => i)), near: sourceData(contact.near, []),
+      far: contact.far ? sourceData(contact.far, []) : null };
+  }, [contact, items, meshData]);
   const geometry = useMemo(() => {
     const g = source.clone();
     g.setAttribute('aInstFade', new InstancedBufferAttribute(new Float32Array(items.length).fill(1), 1));
@@ -261,12 +289,24 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
   }, []);
   useEffect(() => () => { material.dispose(); geometry.dispose(); farGeometry?.dispose(); }, [material, geometry, farGeometry]);
   const instances = useMemo<InstancedRigidBodyProps[]>(() => items.map(it => ({
-    key: it.id, position: it.position, rotation: [0, it.yaw, 0], userData: { obstacle: true, knockable: it.id, assetId: name, ...userData },
-  })), [items, name, userData]);
+    key: it.id, name: contact ? it.id : undefined, position: it.position, rotation: [0, it.yaw, 0],
+    userData: { obstacle: true, knockable: it.id, assetId: name, ...userData, ...(contact ? { worldCollisionInstance: it.id } : {}) },
+  })), [contact, items, name, userData]);
+  const colliderNodes = useMemo(() => {
+    if (contact) {
+      const weight = contact.hulls.reduce((sum, part) => sum + (part.weight ?? 1), 0);
+      return contact.hulls.map(part => <ConvexHullCollider key={part.id} name={part.id} args={[part.points]}
+        mass={spec.mass * (part.weight ?? 1) / weight} friction={0.8} restitution={0.08} />);
+    }
+    return hulls?.length ? hulls.map((points, i) => <ConvexHullCollider key={`h-${i}`} args={[points]} mass={spec.mass / hulls.length} friction={0.8} restitution={0.08} />)
+      : [hull ? <ConvexHullCollider key="h" args={[hull]} mass={spec.mass} friction={0.8} restitution={0.08} />
+        : <CuboidCollider key="c" args={spec.half!} position={spec.offset} mass={spec.mass} friction={0.8} restitution={0.08} />];
+  }, [contact, hull, hulls, spec]);
   useEffect(() => { states.current = items.map(it => ({ pos: it.position, yaw: it.yaw, knocked: null, fade: 1, reset: false })); }, [items]);
   useEffect(() => {
-    knockQa.set(name, () => items.map((it, i) => { const b = bodies.current?.[i], p = b?.translation(), s = states.current[i];
-      return { id: it.id, home: it.position, position: p ? [p.x, p.y, p.z] as Vec3 : null, knocked: s?.knocked !== null, fade: s?.fade ?? 1, sleeping: b?.isSleeping() ?? null, mass: b?.mass() ?? null, knockedElapsed: s?.knocked ?? null, resetPhaseDone: s?.reset ?? false }; }));
+    knockQa.set(name, () => items.map((it, i) => { const b = bodies.current?.[i], p = b?.translation(), q = b?.rotation(), s = states.current[i];
+      return { id: it.id, home: it.position, position: p ? [p.x, p.y, p.z] as Vec3 : null, rotation: q ? [q.x, q.y, q.z, q.w] : null,
+        knocked: s?.knocked !== null, fade: s?.fade ?? 1, sleeping: b?.isSleeping() ?? null, mass: b?.mass() ?? null, knockedElapsed: s?.knocked ?? null, resetPhaseDone: s?.reset ?? false }; }));
     return () => { knockQa.delete(name); };
   }, [items, name]);
   useEffect(() => {
@@ -285,8 +325,11 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
     if (!hi || !proxy) return;
     let hn = 0, ln = 0;
     const hf = geometry.getAttribute('aInstFade') as InstancedBufferAttribute, lf = farGeometry?.getAttribute('aInstFade') as InstancedBufferAttribute | undefined;
+    const nearSlots = contacts?.near.worldCollisionInstances.slots;
+    const farSlots = contacts?.far?.worldCollisionInstances.slots;
     items.forEach((_, i) => {
-      proxy.getMatrixAt(i, matrix); const e = matrix.elements;
+      const pose = contacts?.placements[i].matrix ?? matrix;
+      proxy.getMatrixAt(i, pose); const e = pose.elements;
       // Sleeping bodies can precede Rapier's first matrix publication. Each
       // instance seeds once per actual body identity, including valid origin poses.
       const body = bodies.current?.[i];
@@ -295,14 +338,21 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
         if ([p.x, p.y, p.z, q.x, q.y, q.z, q.w].every(Number.isFinite) && q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w > .5) {
           proxy.updateWorldMatrix(true, false); proxy.getWorldScale(initialPose.scale);
           initialPose.inverse.copy(proxy.matrixWorld).invert();
-          matrix.compose(initialPose.position.set(p.x, p.y, p.z), initialPose.rotation.set(q.x, q.y, q.z, q.w), initialPose.scale).premultiply(initialPose.inverse);
-          proxy.setMatrixAt(i, matrix); proxy.instanceMatrix.needsUpdate = true; seededBodies.current[i] = body;
+          pose.compose(initialPose.position.set(p.x, p.y, p.z), initialPose.rotation.set(q.x, q.y, q.z, q.w), initialPose.scale).premultiply(initialPose.inverse);
+          proxy.setMatrixAt(i, pose); proxy.instanceMatrix.needsUpdate = true; seededBodies.current[i] = body;
         }
       }
       const near = Math.hypot(camera.position.x - e[12], camera.position.y - e[13], camera.position.z - e[14]) < 60;
-      if (near) { hi.setMatrixAt(hn, matrix); hf.setX(hn++, states.current[i]?.fade ?? 1); }
-      else if (lo) { lo.setMatrixAt(ln, matrix); lf?.setX(ln++, states.current[i]?.fade ?? 1); }
+      if (near) {
+        if (nearSlots) nearSlots[hn] = i;
+        hi.setMatrixAt(hn, pose); hf.setX(hn++, states.current[i]?.fade ?? 1);
+      } else if (lo) {
+        if (farSlots) farSlots[ln] = i;
+        lo.setMatrixAt(ln, pose); lf?.setX(ln++, states.current[i]?.fade ?? 1);
+      }
     });
+    if (nearSlots) nearSlots.length = hn;
+    if (farSlots) farSlots.length = ln;
     hi.count = hn; hi.instanceMatrix.needsUpdate = true; hf.needsUpdate = true;
     if (lo) { lo.count = ln; lo.instanceMatrix.needsUpdate = true; if (lf) lf.needsUpdate = true; }
   };
@@ -334,34 +384,43 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
     syncVisuals(camera);
   });
   return <group name={`park-${name}-lod-instances`}><InstancedRigidBodies ref={bodies} instances={instances} colliders={false} canSleep linearDamping={0.08} angularDamping={0.25}
-    colliderNodes={hulls?.length ? hulls.map((points, i) => <ConvexHullCollider key={`h-${i}`} args={[points]} mass={spec.mass / hulls.length} friction={0.8} restitution={0.08} />)
-      : [hull ? <ConvexHullCollider key="h" args={[hull]} mass={spec.mass} friction={0.8} restitution={0.08} /> : <CuboidCollider key="c" args={spec.half!} position={spec.offset} mass={spec.mass} friction={0.8} restitution={0.08} />]}>
+    colliderNodes={colliderNodes}>
     <instancedMesh ref={mesh} name={`park-${name}-physics-proxy`} args={[geometry, material, items.length]} visible={false} frustumCulled={false}
-      userData={{ noOcclusionFade: true, assetId: name }} />
+      userData={contacts?.proxy ?? meshData} />
   </InstancedRigidBodies>
-    <instancedMesh ref={nearMesh} name={`park-${name}`} args={[geometry, material, items.length]} castShadow receiveShadow frustumCulled={false} userData={{ noOcclusionFade: true, assetId: name }} />
-    {farGeometry && <instancedMesh ref={farMesh} name={`park-${name}-far`} args={[farGeometry, material, items.length]} castShadow receiveShadow frustumCulled={false} userData={{ noOcclusionFade: true, assetId: name }} />}
+    <instancedMesh ref={nearMesh} name={`park-${name}`} args={[geometry, material, items.length]} castShadow receiveShadow frustumCulled={false} userData={contacts?.near ?? meshData} />
+    {farGeometry && <instancedMesh ref={farMesh} name={`park-${name}-far`} args={[farGeometry, material, items.length]} castShadow receiveShadow frustumCulled={false} userData={contacts?.far ?? meshData} />}
   </group>;
 }
 
-export const RAIL = { ...railGeometryCached(), far: walkCraftEnabled() ? craftParkRail(true).geometry : farRail(), spec: { half: [0.06, 0.48, 1.0] as Vec3, offset: [0, 0.48, 0] as Vec3, mass: 40 } };
+const railNear = walkCraftEnabled() ? craftParkRail() : railGeometry();
+const railFar = walkCraftEnabled() ? craftParkRail(true) : farRail();
+const railContact: KnockableContact = {
+  near: railNear.members.map(part => ({ ...part, collision: 'pushable' })),
+  far: railFar.members.map(part => ({ ...part, collision: 'pushable' })),
+  hulls: railMemberHulls(railNear.geometry, railNear.members),
+};
+export const RAIL = { geometry: railNear.geometry, triangles: railNear.triangles, far: railFar.geometry, spec: { mass: 40 }, contact: railContact };
 export const LAMP = PARK_LAMP;
 function farRail() {
   const g = new ParkGeo();
-  const member = (center: Vec3, size: Vec3, axis: number, color: string) => {
+  const members: { id: string; firstVertex: number; vertexCount: number }[] = [];
+  const member = (id: string, center: Vec3, size: Vec3, axis: number, color: string) => {
     const piece = new ParkGeo(); piece.box(center, size, color); const full = piece.build(), p = full.getAttribute('position'), pos: number[] = [];
     for (let t = 0; t < p.count; t += 3) {
       const values = [p.getComponent(t, axis), p.getComponent(t + 1, axis), p.getComponent(t + 2, axis)];
       if (Math.max(...values) - Math.min(...values) < 1e-6) continue; // omit subpixel end caps only in the far proxy
       for (let k = 0; k < 3; k++) pos.push(p.getX(t + k), p.getY(t + k), p.getZ(t + k));
     }
-    full.dispose(); g.raw(pos, color);
+    full.dispose();
+    const firstVertex = g.triangles * 3;
+    g.raw(pos, color);
+    members.push({ id, firstVertex, vertexCount: g.triangles * 3 - firstVertex });
   };
-  for (const z of [-.94, .94]) member([0, .48, z], [.1, .96, .1], 1, '#8E6E55');
-  member([0, .95, 0], [.12, .1, 2], 2, '#B99469');
-  return g.build();
+  for (const z of [-.94, .94]) member(`post-${z < 0 ? 'negative' : 'positive'}`, [0, .48, z], [.1, .96, .1], 1, '#8E6E55');
+  member('handrail', [0, .95, 0], [.12, .1, 2], 2, '#B99469');
+  return { geometry: g.build(), members };
 }
-function railGeometryCached() { return walkCraftEnabled() ? craftParkRail() : railGeometry(); }
 
 /** Warm ground pools under every lamp: one additive draw of flat quads, intensity follows night. */
 export function LampPools({ lamps, extra = [] }: { lamps: LampPost[]; extra?: { position: Vec3; radius: number }[] }) {

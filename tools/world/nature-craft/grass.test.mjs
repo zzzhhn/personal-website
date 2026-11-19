@@ -2,7 +2,8 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import test from 'node:test';
 import * as THREE from 'three';
-import { grassTuftGeometry } from '../../../src/components/world/WorldGrass.tsx';
+import '../alpha-mine-tests/register.mjs';
+const { grassTuftGeometry } = await import('../../../src/components/world/WorldGrass.tsx');
 
 const legacy = grassTuftGeometry(false), craft = grassTuftGeometry(true);
 test.after(() => { legacy.dispose(); craft.dispose(); });

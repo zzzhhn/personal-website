@@ -14,7 +14,9 @@ import {alphaWorld,ALPHA_ORIGIN} from '../../src/components/world/alpha-island/a
 import {decodeAlphaTerrain} from '../../src/components/world/alpha-island/alpha-terrain-artifact.ts';
 import {findSafePlayerLanding} from '../../src/components/world/safe-landing.ts';
 import {worldActorSites,worldActorArrival,arrivalColliderRequirements} from '../../src/components/world/world-actor-sites.ts';
-import {WATERWHEEL_FRAME_BODY,WATERWHEEL_FLOOR_BODY,WATERWHEEL_FLOOR_POSITION,WATERWHEEL_FLOOR_SCALE,WATERWHEEL_MOVING_GUARDS} from '../../src/components/world/alpha-island/batch2/waterwheel-layout.ts';
+import {SLUICE_X,WATERWHEEL_CENTER,WATERWHEEL_FRAME_BODY,WATERWHEEL_FLOOR_BODY,WATERWHEEL_FLOOR_POSITION,WATERWHEEL_FLOOR_SCALE,WATERWHEEL_SLUICE_Z,waterwheelSluiceHeight} from '../../src/components/world/alpha-island/batch2/waterwheel-layout.ts';
+import {waterwheelArticulatedSurface} from '../../src/components/world/alpha-island/batch2/waterwheel-contact.ts';
+import {PLAYER_HALF_HEIGHT,PLAYER_RADIUS} from '../../src/components/world/actor-physics.ts';
 
 const root=new URL('../../',import.meta.url);
 const manifest=JSON.parse(await readFile(new URL('src/components/world/terrain-artifacts.generated.json',root),'utf8'));
@@ -33,8 +35,9 @@ test('baked waterwheel retains all eight groups, exact attributes and independen
     for(const [key,a] of Object.entries(p.geometry.attributes))assert.deepEqual(a.array,source.geometry.attributes[key].array);
     assert.deepEqual(p.geometry.index?Array.from(p.geometry.index.array):null,source.geometry.index?Array.from(source.geometry.index.array):null);
     const collider=surfaceColliderBuffers(p);
-    if(group==='frame'||group==='floor')assert.equal(collider.vertices,p.geometry.attributes.position.array);
+    if(['frame','floor','wheel','panel'].includes(group))assert.equal(collider.vertices,p.geometry.attributes.position.array);
     else assert.equal(collider,null);
+    assert.deepEqual(p.sources,source.sources);
   }
   const originalFloor=new BoxGeometry(1,1,1);
   try {for(const [key,a] of Object.entries(originalFloor.attributes))assert.deepEqual(baked.floor[0].geometry.attributes[key].array,a.array);}
@@ -50,6 +53,9 @@ test('asset rejects missing classification, groups, changed spaces and truncatio
   assert.throws(()=>decodeWaterwheelArtifact(encodeStaticSurfaces(parts.slice(1),{region:'alpha-waterwheel'})));
   assert.throws(()=>decodeWaterwheelArtifact(encodeStaticSurfaces(parts.map((p,i)=>i?p:{...p,space:'other'}),{region:'alpha-waterwheel'})));
   assert.throws(()=>decodeWaterwheelArtifact(raw.slice(0,-4)));
+  const sources = Object.fromEntries(baked.frame.map(p=>[p.id,p.sources.map(range=>({...range}))]));
+  sources[baked.frame[0].id][0].vertexCount -= 3;
+  assert.throws(()=>decodeWaterwheelArtifact(encodeStaticSurfaces(parts,{region:'alpha-waterwheel',frameSources:sources})),/Invalid waterwheel/);
   installWaterwheelArtifact(baked);const first=requireWaterwheelArtifact(),second=requireWaterwheelArtifact();
   try {
     assert.notEqual(first.frame[0].geometry,second.frame[0].geometry);
@@ -72,8 +78,84 @@ test('separating thin floor trim changes collision policy without changing any a
   }).sort();
   try {assert.deepEqual(triangles([...baked.frame,...baked.drain]),triangles(original));}
   finally{original.forEach(p=>p.geometry.dispose());}
-  assert.equal(baked.drain[0].collision,'soft');assert.equal(surfaceColliderBuffers(baked.drain[0]),null);
+  assert.equal(baked.drain[0].collision,'none');assert.equal(surfaceColliderBuffers(baked.drain[0]),null);
   assert.equal(baked.floor[0].collision,'solid');
+});
+
+test('fixed material batches name their actual bearing, sluice pier, arch and bank ranges', () => {
+  const zones = new Map();
+  for (const part of baked.frame) {
+    assert.equal(part.sources.reduce((n, range) => n + range.vertexCount, 0), part.geometry.getAttribute('position').count);
+    for (const range of part.sources) {
+      assert.equal(range.surfaceId,part.id);
+      const zone = range.id.split('/').at(-1), bounds = zones.get(zone) ?? [];
+      const points = part.geometry.getAttribute('position');
+      for (let i=range.firstVertex; i<range.firstVertex+range.vertexCount; i++) bounds.push([points.getX(i),points.getY(i),points.getZ(i)]);
+      zones.set(zone,bounds);
+    }
+  }
+  assert.equal(zones.size,9);
+  assert.ok(zones.get('headrace-footings-and-braces').some(([,y])=>y<0),'foundations include the extended visible foot');
+  assert.ok(zones.get('open-headrace-trough').every(([,y])=>y>5.85),'upper trough stays away from the floor');
+  assert.ok(zones.get('passage-piers-and-lintel').every(([,,z])=>z< -2.19));
+  for (const [i,x] of SLUICE_X.entries()) assert.ok(zones.get(`sluice-${i}-posts-and-guides`).every(([px,,z])=>Math.abs(px-x)<.84&&Math.abs(z-2.3)<.68));
+  assert.ok(zones.get('discharge-race-stone-banks').every(([,y,z])=>y<=.301&&((z>.49&&z<.91)||(z>2.91&&z<3.33))));
+});
+
+const identity = {x:0,y:0,z:0,w:1};
+const angles = [0,.33,1.7];
+const sluicePosition = (index, opening) => [SLUICE_X[index],waterwheelSluiceHeight(opening),WATERWHEEL_SLUICE_Z];
+function mountArticulated(world, parts, point) {
+  const body = world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...point));
+  const collider = world.createCollider(R.ColliderDesc.trimesh(...waterwheelArticulatedSurface(parts)),body);
+  return {body,collider};
+}
+
+test('gate leaves move by their visible lift and keep outside hand-operated positions clear', async t => {
+  await R.init();
+  const world = new R.World({x:0,y:0,z:0});
+  const {body,collider} = mountArticulated(world,baked.panel,sluicePosition(1,2));
+  const [x,,z] = sluicePosition(1,2), ray=(height)=>new R.Ray({x:x+.15,y:height,z:z+1.25},{x:0,y:0,z:-1});
+  const capsule = new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
+  try {
+    for (const [opening,lower,higher] of [[2,false,true],[1,true,false],[0,true,false]]) {
+      body.setNextKinematicTranslation({x,y:waterwheelSluiceHeight(opening),z}); world.step();
+      assert.equal(collider.castRay(ray(.68),2.5,false)>=0,lower);
+      assert.equal(collider.castRay(ray(1.75),2.5,false)>=0,higher);
+      for (const lateral of [-.87,0,.87]) {
+        const handStance = {x:x+lateral,y:PLAYER_HALF_HEIGHT+PLAYER_RADIUS,z:z+1.12};
+        assert.equal(world.intersectionWithShape(handStance,identity,capsule),null);
+      }
+    }
+    const old = world.createCollider(R.ColliderDesc.cuboid(.82,1.15,.6).setTranslation(x,1.15,z));
+    assert.ok(old.castRay(ray(.68),2.5,false)>0 && old.castRay(ray(1.75),2.5,false)>0,'old guard occupied both heights at every gate setting');
+    t.diagnostic('Former gate cover blocked both heights; new gate keeps the open underside and closed upper gap.');
+  } finally {world.free();}
+});
+
+test('rotor and bucket openings agree with baked surfaces at three physical wheel angles', async t => {
+  await R.init();
+  const world = new R.World({x:0,y:0,z:0}), root = new Group(), pos = new Vector3(...WATERWHEEL_CENTER);
+  const material = new MeshBasicMaterial({side:DoubleSide}), ray = new Raycaster(), south = new Vector3(0,0,-1);
+  const {body,collider} = mountArticulated(world,baked.wheel,WATERWHEEL_CENTER);
+  root.position.copy(pos); root.add(...baked.wheel.map(p=>new Mesh(p.geometry,material)));
+  let hits=0, open=0, maxGap=0;
+  try {
+    for (const angle of angles) {
+      body.setNextKinematicRotation({x:0,y:0,z:Math.sin(angle/2),w:Math.cos(angle/2)}); world.step();
+      root.rotation.z = angle; root.updateMatrixWorld(true);
+      for (let x=-3.18; x<3.2; x+=.267) for (let y=-3.14; y<3.2; y+=.271) {
+        const from=new Vector3(pos.x+x,pos.y+y,pos.z+2.2);
+        ray.set(from,south); ray.far=4.4;
+        const expected=ray.intersectObject(root)[0], physical=collider.castRay(new R.Ray(from,south),4.4,false);
+        assert.equal(!!expected,physical>=0,JSON.stringify({angle,x,y}));
+        if (expected) {hits++; maxGap=Math.max(maxGap,Math.abs(expected.distance-physical));}
+        else if (Math.abs(x)<3.15&&Math.abs(y)<3.17) open++;
+      }
+    }
+    assert.ok(hits>300 && open>100 && maxGap<.0002,JSON.stringify({hits,open,maxGap}));
+    t.diagnostic(`${hits} real rotor contacts and ${open} clear rays inside the old guard footprint. Max discrepancy ${maxGap.toFixed(6)} m.`);
+  } finally {world.free();material.dispose();}
 });
 
 test('visible structure and real colliders agree through both world transforms and passage remains walkable',async()=>{
@@ -109,7 +191,9 @@ test('visible structure and real colliders agree through both world transforms a
     const terrain=decodeAlphaTerrain(await inflate(manifest.alpha));
     const terrainBody=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...ALPHA_ORIGIN));
     world.createCollider(R.ColliderDesc.trimesh(terrain.positions,terrain.indices),terrainBody);
-    for(const guard of WATERWHEEL_MOVING_GUARDS)world.createCollider(R.ColliderDesc.cuboid(...guard.half).setTranslation(...guard.position),body);
+    const mountAtStation = (parts, point) => mountArticulated(world,parts,point.map((n,i)=>n+position[i]));
+    mountAtStation(baked.wheel,WATERWHEEL_CENTER);
+    for (const [i] of SLUICE_X.entries()) mountAtStation(baked.panel,sluicePosition(i,2));
     const player=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(...at(3,2,-4).toArray()));
     world.createCollider(R.ColliderDesc.capsule(.48,.34),player);world.step();
     // The western end deliberately meets the wheel zone; sample the open central and eastern walking lane.

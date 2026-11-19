@@ -3,23 +3,26 @@ import type { CollisionClass } from './static-surface-asset';
 
 export const migratedCollisionRoots = [
   'alpha-dock-lodge', 'alpha-lantern-rack', 'alpha-path-fence', 'alpha-mainland-pier-r4-candidate',
-  'north-attractions-road', 'alpha-echo-cave-station-6', 'alpha-lodge-threshold', 'alpha-supported-boulder-field',
+  'north-attractions-road', 'alpha-echo-cave-station-6', 'alpha-station5-three-sluices-waterwheel', 'alpha-lodge-threshold', 'alpha-supported-boulder-field',
   'alpha-crafted-alpine-forest', 'alpha-agent-exchange', 'alpha-terrain-patch', 'island-terrain-v4', 'street-year-group',
   ...['cable', 'ferry', 'sled'].flatMap(kind => [
     `alpha-${kind}-vehicle-model`, `alpha-${kind}-gangway-0`, `alpha-${kind}-gangway-1`,
   ]),
   'cable-lower-canopy-structure', 'cable-upper-canopy-structure',
   ...['plaza','walk-0','walk-1','walk-2'].map(id=>'park-walk-structure-'+id),
+  'park-rail-lod-instances', 'park-lamp-lod-instances',
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id=>'park-hut-structure-'+id),
   ...['C12','C13-0','C13-1','C15'].map(id=>'camp-content-push-'+id),
   ...['C03-large-tent','C04-small-tents','C05-fire-pit','C06-instances','C07-pad1','C09-pad2','C10-pad3',
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
-  'world-camp-slice', 'world-town-assets',
+  ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id => 'park-exhibit-set-'+id),
+  'world-camp-slice', 'world-town-assets', 'factory-walk-support', 'factory-roof-support',
 ];
 const classes = new Set<CollisionClass>(['solid', 'pushable', 'soft', 'none']);
 const counts = () => ({ meshes: 0, declared: 0, unclassified: 0, invalid: 0 });
 type Claim = { id: string | undefined; shared: boolean };
-type Declaration = { blocks: Claim[]; partial?: boolean } | 'invalid' | 'unclassified';
+type Declared = { blocks: Claim[]; partial?: boolean };
+type Declaration = Declared | 'invalid' | 'unclassified';
 type Placement = { id: string; matrix: Matrix4; surfaceIds?: readonly string[] };
 export interface InstanceCollisionSources {
   placements: readonly Placement[];
@@ -27,10 +30,23 @@ export interface InstanceCollisionSources {
   slots: number[];
 }
 
+export function collisionInstancePartId(instance: string, part: string) { return `${instance}:${part}`; }
+
+/** Compound parts keep local names under each actual Rapier instance node. */
+export function collisionSupplyId(node: Object3D) {
+  const instance = node.parent?.userData.worldCollisionInstance;
+  return typeof instance === 'string' && instance === node.parent?.name && node.name
+    ? collisionInstancePartId(instance, node.name) : node.name;
+}
+
 function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSources): Declaration {
-  if (!mesh.isInstancedMesh || mesh.userData.worldCollision !== 'solid' || !Array.isArray(sources?.placements)
+  const kind = mesh.userData.worldCollision;
+  if (!mesh.isInstancedMesh || (kind !== 'solid' && kind !== 'pushable') || !Array.isArray(sources?.placements)
     || !Array.isArray(sources.slots) || sources.slots.length !== mesh.count) return 'invalid';
+  const ranges = sourceRanges(mesh);
+  if (ranges === 'invalid') return ranges;
   const placements: readonly Placement[] = sources.placements;
+  const blocks: Claim[] = [];
   const ids = new Set<string>();
   for (const p of placements) {
     const matrix = p?.matrix;
@@ -39,6 +55,9 @@ function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSour
     if (p.surfaceIds !== undefined && (!Array.isArray(p.surfaceIds) || !p.surfaceIds.length
       || new Set(p.surfaceIds).size !== p.surfaceIds.length
       || p.surfaceIds.some((id:unknown) => typeof id !== 'string' || !id))) return 'invalid';
+    const supplied = ranges ? ranges.blocks.map(part => collisionInstancePartId(p.id, part.id!)) : p.surfaceIds ?? [p.id];
+    if (ranges && supplied.some(id => !p.surfaceIds?.includes(id))) return 'invalid';
+    blocks.push(...supplied.map(id => ({ id, shared: true })));
     ids.add(p.id);
   }
   if (new Set(sources.slots).size !== mesh.count) return 'invalid';
@@ -48,16 +67,12 @@ function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSour
     const gpu = mesh.instanceMatrix.array;
     if (!placement.matrix.elements.every((v, i) => Math.fround(v) === gpu[16 * slot + i])) return 'invalid';
   }
-  // Both LODs refer back to the same permanent set of physics placements.
-  return { blocks: placements.flatMap(p => (p.surfaceIds ?? [p.id]).map(id => ({ id, shared: true }))) };
+  // Lod meshes claim the real parts they keep. Near and hidden proxy may share
+  // those registrations while their slots point to the same live matrices.
+  return { blocks, partial: ranges?.partial };
 }
 
-function declaration(mesh: Mesh): Declaration {
-  // GLTFLoader preserves arbitrary artist extras, including prose in "collision".
-  // Only the world's explicit runtime contract may classify meshes.
-  if (Object.hasOwn(mesh.userData, 'worldCollisionInstances')) {
-    return instanceDeclaration(mesh as InstancedMesh, mesh.userData.worldCollisionInstances);
-  }
+function sourceRanges(mesh: Mesh): Declared | 'invalid' | undefined {
   const sources = mesh.userData.worldCollisionSources;
   if (sources !== undefined) {
     if (!Array.isArray(sources) || !sources.length) return 'invalid';
@@ -81,6 +96,16 @@ function declaration(mesh: Mesh): Declaration {
     if (length === undefined || end > length || (!partial && end !== length)) return 'invalid';
     return {blocks, partial: gap || end < length};
   }
+}
+
+function declaration(mesh: Mesh): Declaration {
+  // GLTFLoader preserves arbitrary artist extras, including prose in "collision".
+  // Only the world's explicit runtime contract may classify meshes.
+  if (Object.hasOwn(mesh.userData, 'worldCollisionInstances')) {
+    return instanceDeclaration(mesh as InstancedMesh, mesh.userData.worldCollisionInstances);
+  }
+  const ranges = sourceRanges(mesh);
+  if (ranges) return ranges;
   for (let node: Object3D | null = mesh; node; node = node.parent) {
     if (!Object.hasOwn(node.userData, 'worldCollision')) continue;
     const kind = node.userData.worldCollision;
@@ -126,7 +151,8 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   }
   for (const node of activeColliderNodes) {
     const root = owner(node), scope = root && scoped.get(root);
-    if (scope) scope.names.set(node.name, (scope.names.get(node.name) ?? 0) + 1);
+    const id = collisionSupplyId(node);
+    if (scope) scope.names.set(id, (scope.names.get(id) ?? 0) + 1);
   }
   const heldColliderIds = new Set<string>();
   for (const node of heldObjects) {

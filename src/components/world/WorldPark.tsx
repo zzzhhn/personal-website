@@ -42,12 +42,6 @@ function Batch({ name, geometry, deck, collision }: { name: string; geometry: Bu
     userData={{ ...(deck ? { surface: true, assetId: 'park-deck' } : { solid: true, occluder: true, assetId: 'park' }), ...collision }} />;
 }
 
-function FixedMesh({ name, mesh }: { name: string; mesh: { vertices: Float32Array; indices: Uint32Array } }) {
-  return <RigidBody name={name} type="fixed" colliders={false} userData={{ solid: true, assetId: name }}>
-    <TrimeshCollider name={`${name}-trimesh`} args={[mesh.vertices, mesh.indices]} friction={0.6} restitution={0.05} />
-  </RigidBody>;
-}
-
 /** Five active project huts from hut.glb (variants A / B), their floors and spurs to the boardwalk. */
 function ParkHuts({ projects }: { projects: WorldProject[] }) {
   const visualGltf = useLoader(GLTFLoader, facilityCraftEnabled()
@@ -78,8 +72,7 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
         <TrimeshCollider name={v.deckPolicy.worldCollisionPartitions.floor} args={[v.deckVertices,v.floor]} friction={.95}/>
       </RigidBody>
     </group>)}
-    {built.exhibits.fixed.map((mesh,i) => <FixedMesh key={i} name={`park-exhibit-body-${i}`} mesh={mesh}/>)}
-    <ParkExhibits placed={built.exhibits.placed} projects={projects} />
+    <ParkExhibits placed={built.exhibits} projects={projects} />
   </group>;
 }
 
@@ -117,8 +110,8 @@ function ParkWalk() {
         </RigidBody>
       </group>;
     })}
-    <Knockables name="rail" items={walk.rails} source={RAIL.geometry} farSource={RAIL.far} spec={RAIL.spec} />
-    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} farSource={LAMP.far} spec={LAMP.spec} hulls={LAMP.hulls} />
+    <Knockables name="rail" items={walk.rails} source={RAIL.geometry} farSource={RAIL.far} spec={RAIL.spec} contact={RAIL.contact} />
+    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} farSource={LAMP.far} spec={LAMP.spec} contact={LAMP.contact} />
     <ParkLOD id="lamp-pools" center={[64, 1.14, -28]} near={<LampPools lamps={walk.lamps} />} />
   </group>;
 }

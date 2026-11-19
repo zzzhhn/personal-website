@@ -23,6 +23,8 @@ function worldFor(g,additionalSolids=[]){
   const floor=w.createRigidBody(R.RigidBodyDesc.fixed());floor.userData={surface:true};
   w.createCollider(R.ColliderDesc.trimesh(g.surface.getAttribute('position').array,g.surface.index.array).setFriction(.8),floor);
   const fixed=w.createRigidBody(R.RigidBodyDesc.fixed());fixed.userData={solid:true};
+  w.createCollider(R.ColliderDesc.trimesh(g.roofs.attributes.position.array,g.roofs.index.array),fixed);
+  for(const rail of g.rails)w.createCollider(R.ColliderDesc.trimesh(rail.vertices,rail.indices),fixed);
   const printer=buildFactoryPrinter(FACTORY_PALETTE);
   const solids=[...g.solids,...additionalSolids,...printer.solids];printer.dispose();
   for(const s of solids){
@@ -221,4 +223,52 @@ test('rechecking the moving raw-console approach sees its continuous floor at th
     w.step();
     assert.equal(pickupGroundRoute(w,R,player,from,stand,2.1),null,'a later physical obstacle still rejects the route');
   }finally{w.free();dispose(g);}
+});
+
+test('factory ramp, balcony and test-lane guard gaps stay open between the actual posts and beams', t => {
+  const g=buildFactoryGeometry(), w=new R.World({x:0,y:-9.81,z:0});
+  t.after(()=>{w.free();dispose(g);});
+  const body=w.createRigidBody(R.RigidBodyDesc.fixed());
+  let open=0, bars=0, oldBlocked=0;
+  assert.equal(g.rails.length,13);
+  for(const rail of g.rails){
+    const collider=w.createCollider(R.ColliderDesc.trimesh(rail.vertices,rail.indices),body);
+    const a=new Vector3(...rail.start), b=new Vector3(...rail.end), axis=b.clone().sub(a);
+    const bays=Math.ceil(axis.length()/2.6), n=new Vector3(axis.z,0,-axis.x).normalize();
+    const oldRotation=new Quaternion().setFromEuler(new Euler(-Math.atan2(axis.y,Math.hypot(axis.x,axis.z)),Math.atan2(axis.x,axis.z),0));
+    const mid=a.clone().lerp(b,.5);mid.y+=.58;
+    const former=w.createCollider(R.ColliderDesc.cuboid(.06,.58,axis.length()/2).setTranslation(mid.x,mid.y,mid.z).setRotation(oldRotation),body);
+    for(let bay=0;bay<bays;bay++){
+      const center=a.clone().lerp(b,(bay+.5)/bays);
+      for(const h of [.28,.55,.82,1.13]){
+        const from=center.clone().addScaledVector(n,-.25);from.y+=h;
+        const ray=new R.Ray(from,n), hit=collider.castRay(ray,.5,false);
+        if(h===.55||h===1.13){assert.ok(hit>.18&&hit<.25,rail.id+' beam'); bars++;}
+        else {assert.equal(hit,-1,rail.id+' empty bay');open++;if(former.castRay(ray,.5,true)>=0)oldBlocked++;}
+      }
+    }
+    // The render batch remains one draw. Check every referenced index maps to
+    // the same authored vertex as the corresponding compact Rapier triangle.
+    for(let i=0;i<rail.indexCount;i++){
+      const real=g.geometry.index.getX(rail.firstIndex+i), compact=rail.indices[i];
+      for(let axis=0;axis<3;axis++) assert.equal(g.geometry.attributes.position.getComponent(real,axis),rail.vertices[3*compact+axis]);
+    }
+  }
+  assert.ok(oldBlocked>120 && open>250);
+  t.diagnostic(JSON.stringify({spans:g.rails.length,open,oldBlocked,bars}));
+});
+test('the two factory roof forms support from above and leave the overhead working space clear', t=>{
+  const g=buildFactoryGeometry(), w=worldFor(g);t.after(()=>{w.free();dispose(g);});
+  const roof=new Mesh(g.roofs,new MeshBasicMaterial());t.after(()=>roof.material.dispose());
+  let n=0;
+  for(const x of [-42,-18,-3,6,17,30,42])for(const z of [-28,-12,1,17,29]){
+    const start=new Vector3(x,30,z),down=new Vector3(0,-1,0);
+    const view=new Raycaster(start,down).intersectObject(roof,false)[0];assert.ok(view);
+    w.step();
+    const hit=w.castRay(new R.Ray(start,down),35,true);
+    assert.ok(hit && Math.abs(hit.timeOfImpact-view.distance)<.001,`${x},${z}`);n++;
+  }
+  const up=w.castRay(new R.Ray({x:8,y:9.2,z:0},{x:0,y:1,z:0}),12,false);
+  assert.ok(up && up.timeOfImpact>4.5,'assembly crane overhead clearance');
+  t.diagnostic(n+' roof support/facing rays');
 });

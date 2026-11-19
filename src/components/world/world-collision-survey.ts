@@ -1,6 +1,7 @@
 import { Matrix4, type Scene, type Object3D, type Mesh, type BufferGeometry, type InstancedMesh, type BatchedMesh } from 'three';
 import type { Collider, World } from '@dimforge/rapier3d-compat';
 import { ShapeType } from '@dimforge/rapier3d-compat';
+import { collisionSupplyId } from './world-collision-inventory';
 
 /** On-demand QA inspection. Nothing here is evaluated on ordinary player frames.
  * Path + ordinal locates unnamed GLB parts even when siblings have the same name. */
@@ -58,7 +59,7 @@ export async function surveyCollisionSources(scene: Scene, world: World, nodeFor
     const data=owner?.userData;
     const row:Record<string,unknown>={path:path(mesh),geometry:id,matrixWorld:mesh.matrixWorld.toArray(),
       submitted:frame.has(mesh)&&(mesh as InstancedMesh).count!==0&&geom.drawRange.count!==0,
-      declaration:data?{owner:path(owner!),policy:data.worldCollision,reason:data.worldCollisionReason,ranges:data.worldCollisionSources,
+      declaration:data?{owner:path(owner!),policy:data.worldCollision,reason:data.worldCollisionReason ?? data.collisionReason,ranges:data.worldCollisionSources,
         partial:data.worldCollisionPartial===true,surface:data.surfaceId,partitions:data.worldCollisionPartitions}:null};
     const instanced=mesh as InstancedMesh,batched=mesh as unknown as BatchedMesh;
     if(instanced.isInstancedMesh){
@@ -66,7 +67,7 @@ export async function surveyCollisionSources(scene: Scene, world: World, nodeFor
       row.instances=Array.from({length:instanced.count},(_,slot)=>{
         instanced.getMatrixAt(slot,matrix);
         const source=sources?.placements?.[sources.slots[slot]];
-        return {slot,source:source?.id,localMatrix:matrix.toArray()};
+        return {slot,source:source?.id,surfaceIds:source?.surfaceIds,localMatrix:matrix.toArray()};
       });
     }else if(batched.isBatchedMesh){
       // Three permits deleted instance IDs to leave holes before active IDs.
@@ -98,7 +99,8 @@ export async function surveyCollisionSources(scene: Scene, world: World, nodeFor
       if(type!==ShapeType.Ball)shape.halfHeight=c.halfHeight();
     }else{shape.parameters=c.shape;}
     if([ShapeType.RoundCuboid,ShapeType.RoundConvexPolyhedron,ShapeType.RoundCylinder,ShapeType.RoundCone].includes(type))shape.roundRadius=c.roundRadius();
-    colliders.push({path:node?path(node):null,name:node?.name,bodyType:body?.bodyType(),enabled:c.isEnabled(),sensor:c.isSensor(),
+    colliders.push({path:node?path(node):null,name:node?collisionSupplyId(node):undefined,bodyType:body?.bodyType(),enabled:c.isEnabled(),sensor:c.isSensor(),
+      bodyTranslation:body?.translation(),bodyRotation:body?.rotation(),
       groups:c.collisionGroups(),translation:c.translation(),rotation:c.rotation(),shape});
   });
   await Promise.all(digests);

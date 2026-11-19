@@ -68,7 +68,9 @@ export const EXHIBITS: Record<string, { id: string; at: [number, number]; yaw: n
   'interactive-learning': [{ id: 'P18', at: [0, -2.55], yaw: 0 }],
 };
 export const EXHIBIT_ANCHOR: Record<string, [number, number]> = {
-  evalforge: [0, -1.3], djc: [0, -1.45], hepai: [0, -2.1], accompany: [0, -0.2], 'interactive-learning': [0, -1.65],
+  evalforge: [0, -1.3], djc: [0, -1.45], hepai: [0, -2.1], accompany: [0, -0.2],
+  // Leave room for the board's 60 cm swing and the standing capsule at the normal prompt.
+  'interactive-learning': [0, -1.5],
 };
 /** World matrix of an exhibit inside a hut. */
 export function exhibitMatrix(h: HutPlacement, at: [number, number], yaw: number) {

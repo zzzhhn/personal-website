@@ -1,9 +1,10 @@
 import { BoxGeometry, CylinderGeometry, Quaternion, SphereGeometry, Vector3 } from 'three';
-import { AlphaBuilder } from '../alpha-art';
+import { AlphaBuilder, type AlphaFinish } from '../alpha-art';
 import type { Vec3 } from '../../types';
 import { ALPHA_WATERWHEEL } from '../alpha-batch2-layout';
 import { alphaGroundHeight } from '../alpha-terrain';
-import { classifyWaterwheelParts, type WaterwheelArt } from './waterwheel-artifact';
+import { classifyWaterwheelParts, type WaterwheelArt, type WaterwheelFrameSource } from './waterwheel-artifact';
+import { SLUICE_X } from './waterwheel-layout';
 export { WATERWHEEL_CENTER, SLUICE_X } from './waterwheel-layout';
 
 const turnZ = (a: number) => new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), a);
@@ -66,8 +67,23 @@ export function buildWaterwheelRotor() {
   return b.finish();
 }
 
-export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(), drain?:AlphaBuilder) {
+export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(), drain?: AlphaBuilder,
+  sources?: Map<AlphaFinish, WaterwheelFrameSource[]>) {
   const b = new AlphaBuilder();
+  const counts = new Map<AlphaFinish, number>();
+  const tag = (zone: string) => {
+    if (!sources) return;
+    for (const [finish, pieces] of b.parts) {
+      const firstVertex = counts.get(finish) ?? 0;
+      const end = pieces.reduce((n, piece) => n + piece.getAttribute('position').count, 0);
+      if (end === firstVertex) continue;
+      const surfaceId = `alpha-waterwheel/frame/${finish}`;
+      const ranges = sources.get(finish) ?? [];
+      ranges.push({ id:`${surfaceId}/${zone}`, firstVertex, vertexCount:end-firstVertex, collision:'solid', surfaceId });
+      sources.set(finish, ranges);
+      counts.set(finish, end);
+    }
+  };
   // Four footings carry the upper headrace. Lower bearing piers flank the wheel.
   for (const z of [-2.85, -.15]) {
     for (let row = 0; row < 4; row++) b.box('stone', [-5.3, .33 + row * .62, z], [1.05, .59, .88], .075);
@@ -75,6 +91,7 @@ export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(
     b.add(new CylinderGeometry(.34, .34, .26, 12), 'metal', [-5.3, 3.17, z], axleQ);
     for (const x of [-5.7, -4.9]) b.cyl('metal', [x, 3.08, z], .045, .45);
   }
+  tag('wheel-bearing-piers');
   for (const x of [-8.15, -2.55]) for (const z of [-2.8, -.25]) {
     const f = foundations.find(f => f.x === x && f.z === z)!;
     b.box('stone', [x, (f.top + f.bottom) / 2, z], [f.width, f.top - f.bottom, f.depth], f.bevel);
@@ -82,11 +99,13 @@ export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(
     b.beam('wood', [x, 4.95, z], [x + (x < -5 ? .95 : -.95), 6.12, z], .19);
     b.box('metal', [x, .72, z], [.34, .2, .34], .02);
   }
+  tag('headrace-footings-and-braces');
   // Open U-section trough, real planks and raised sides, flowing over the buckets.
   for (let x = -7.5; x <= -3.2; x += .48) if (x < -4.5 || x > -3.4) b.box('wood', [x, 6.22, -1.5], [.46, .18, 1.56], .025);
   for (const z of [-2.28, -.72]) b.box('wood', [-5.3, 6.48, z], [5.3, .58, .15], .025);
   b.beam('darkwood', [-8.32, 6.02, -2.8], [-2.35, 6.02, -2.8], .28);
   b.beam('darkwood', [-8.32, 6.02, -.25], [-2.35, 6.02, -.25], .28);
+  tag('open-headrace-trough');
   // Massive layered rock ledge, with a 4.85m clear, open-backed passage beneath.
   for (const x of [-1.65, 8.05]) for (const z of [-6, -2.6]) for (let row = 0; row < 8; row++) {
     if (row === 0) {
@@ -95,13 +114,15 @@ export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(
     } else b.box('stone', [x + Math.sin(row * 2.7) * .06, .32 + row * .65, z], [1.65, .66, .6], .1);
   }
   for (let i = 0; i < 6; i++) b.box('stone', [-.55 + i * 1.44, 5.36, -4.3], [1.59, .92, 4.2], .16);
+  tag('passage-piers-and-lintel');
   // The bridge channel feeds the wheel headrace. Its support never reaches the passage.
   for (const z of [-2.9, -1.72]) b.beam('wood', [-2.8, 6.3, z], [6.6, 6.6, z], .16);
   b.box('darkwood', [1.9, 6.2, -2.31], [9.5, .16, 1.18], .03, turnZ(.032));
   for (const x of [-.9, 6.1]) b.beam('wood', [x, 5.8, -2.95], [x, 6.5, -2.95], .18);
+  tag('upper-bridge-channel');
   // A stepped stone drain crosses the passage floor without a raised trip edge.
   for (let i = 0; i < 11; i++) (drain??b).box('stone', [-2.22 + i * 1.09, -.04, -4.1], [1.07, .16, 2.58], .045);
-  for (const x of [-1.9, 1.1, 4.1]) {
+  for (const [i,x] of SLUICE_X.entries()) {
     // Three low sluice gates lie across the discharge race, each with a reachable crank.
     for (const side of [-.65, .65]) {
       b.box('stone', [x + side, .36, 2.3], [.35, .72, 1.35], .06);
@@ -113,10 +134,12 @@ export function buildWaterwheelFrame(foundations = waterwheelFoundationContacts(
     for (const side of [-.54, .54]) b.box('metal', [x + side, 1.27, 2.3], [.08, 1.2, .14], .012);
     // Notches express the three stops physically, no extra floating labels.
     for (let j = 0; j < 3; j++) b.box('metal', [x + .73, .99 + j * .27, 2.56], [.14, .045, .04], .008);
+    tag(`sluice-${i}-posts-and-guides`);
   }
   // Discharge race and bank: south bank is low and never intrudes on the bypass.
   for (const z of [.7, 3.12]) for (let i = 0; i < 7; i++)
     b.box('stone', [-5.3 + i * 1.6, .15, z], [1.58, .3, .4], .07);
+  tag('discharge-race-stone-banks');
   return b.finish();
 }
 
@@ -149,12 +172,13 @@ export function buildWaterwheelFlowers() {
 /** Build-time source only. Preserve every authored attribute and local pivot. */
 export function createWaterwheelArt():WaterwheelArt {
   const flower=buildWaterwheelFlowers(),drain=new AlphaBuilder();
-  const frame=buildWaterwheelFrame(waterwheelFoundationContacts(),drain);
+  const sources = new Map<AlphaFinish, WaterwheelFrameSource[]>();
+  const frame=buildWaterwheelFrame(waterwheelFoundationContacts(),drain,sources);
   const floor=new BoxGeometry(1,1,1);
   // Keep local shader coordinates; the scene applies one shared mesh/collider transform.
   floor.clearGroups();
   return {
-    frame:classifyWaterwheelParts('frame',frame),
+    frame:classifyWaterwheelParts('frame',frame,sources),
     drain:classifyWaterwheelParts('drain',drain.finish()),
     wheel:classifyWaterwheelParts('wheel',buildWaterwheelRotor()),
     panel:classifyWaterwheelParts('panel',buildSluicePanel()),

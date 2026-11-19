@@ -22,10 +22,15 @@ export const FACTORY_PALETTE = {
 const P=FACTORY_PALETTE;
 export interface FactorySolid { at:V3; size:V3; rotation?:V3 }
 export interface FactoryLamp { at:V3; reach:number; strength:number }
-export interface FactoryGeometry { geometry:BufferGeometry; roofs:BufferGeometry; surface:BufferGeometry; solids:FactorySolid[]; lamps:FactoryLamp[]; triangles:number }
+export interface FactoryRailContact {
+  id: string; firstIndex: number; indexCount: number; vertices: Float32Array; indices: Uint32Array;
+  start: V3; end: V3;
+}
+export interface FactoryGeometry { rails:FactoryRailContact[]; geometry:BufferGeometry; roofs:BufferGeometry; surface:BufferGeometry; solids:FactorySolid[]; lamps:FactoryLamp[]; triangles:number }
 /** Static structure is three merged draws. Collider dimensions share the source geometry. */
 export function buildFactoryGeometry():FactoryGeometry {
   const b=new Builder(),roof=new Builder(),walk=new Builder(),solids:FactorySolid[]=[],lamps:FactoryLamp[]=[];
+  const rails: FactoryRailContact[] = [];
   const cube=(at:V3,size:V3,s:Surf=P.steel,solid=false,bevel=.04)=>{
     cbox(b,at,size,s,bevel);if(solid)solids.push({at,size});
   };
@@ -40,13 +45,14 @@ export function buildFactoryGeometry():FactoryGeometry {
   };
   const rectangle=(x0:number,x1:number,z0:number,z1:number,y:number)=>slab([[x0,y,z0],[x1,y,z0],[x1,y,z1],[x0,y,z1]]);
   const railing=(a:V3,end:V3)=>{
+    const firstVertex=b.pos.length/3, firstIndex=b.idx.length;
     const length=Math.hypot(end[0]-a[0],end[1]-a[1],end[2]-a[2]),n=Math.max(1,Math.ceil(length/2.6));
     for(let i=0;i<=n;i++){const t=i/n,p:V3=[a[0]+(end[0]-a[0])*t,a[1]+(end[1]-a[1])*t,a[2]+(end[2]-a[2])*t];
-      cube([p[0],p[1]+.57,p[2]],[.13,1.14,.13],P.steel,true,.015);}
+      cube([p[0],p[1]+.57,p[2]],[.13,1.14,.13],P.steel,false,.015);}
     for(const h of [.55,1.13])beam([a[0],a[1]+h,a[2]],[end[0],end[1]+h,end[2]],.055,P.amber);
-    // A continuous thin guard shares the visible rails' sweep; no gaps that swallow the player.
-    const dx=end[0]-a[0],dz=end[2]-a[2],dy=end[1]-a[1];
-    solids.push({at:[(a[0]+end[0])/2,(a[1]+end[1])/2+.58,(a[2]+end[2])/2],size:[.12,1.16,length],rotation:[-Math.atan2(dy,Math.hypot(dx,dz)),Math.atan2(dx,dz),0]});
+    rails.push({id:`factory-guard-${rails.length}`, start:a, end, firstIndex, indexCount:b.idx.length-firstIndex,
+      vertices:Float32Array.from(b.pos.slice(3*firstVertex)),
+      indices:Uint32Array.from(b.idx.slice(firstIndex), index=>index-firstVertex)});
   };
   const lamp=(at:V3,reach=8,strength=1,mount?:V3)=>{
     cube(at,[.64,.16,.3],P.steel);cube([at[0],at[1]-.1,at[2]],[.5,.05,.2],P.lamp);
@@ -262,5 +268,5 @@ export function buildFactoryGeometry():FactoryGeometry {
   solids.push(...facade.solids,...fixture.solids,...routing.solids,...detail.solids,...forecourt.solids);
   lamps.push(...detail.lamps,...forecourt.lamps);
   const roofs=roof.build(),surface=walk.build();
-  return {geometry,roofs,surface,solids,lamps,triangles:b.triangles+facade.triangles+fixture.triangles+routing.triangles+detail.triangles+forecourt.triangles+roof.triangles+walk.triangles+casings.reduce((n,c)=>n+c.triangles,0)};
+  return {geometry,roofs,surface,rails,solids,lamps,triangles:b.triangles+facade.triangles+fixture.triangles+routing.triangles+detail.triangles+forecourt.triangles+roof.triangles+walk.triangles+casings.reduce((n,c)=>n+c.triangles,0)};
 }
