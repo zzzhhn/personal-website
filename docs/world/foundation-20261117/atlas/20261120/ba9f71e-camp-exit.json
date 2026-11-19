@@ -1,0 +1,258 @@
+{
+  "checkout": "ba9f71ecd54461bda13495ea0f9a1af3b5c3fd4d",
+  "htmlSha256": "d8ac154bda3ff372eb8d9eac7c7a0ff1b6712dbfca15137b652b37071551e0b7",
+  "routes": [
+    {
+      "variant": "normal",
+      "start": [
+        -41.99941635131836,
+        5.619417190551758,
+        35.006927490234375
+      ],
+      "legs": [
+        {
+          "target": [
+            -39,
+            37.8
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -41.99941635131836,
+            5.619417190551758,
+            35.006927490234375
+          ],
+          "end": [
+            -39.298919677734375,
+            5.621758460998535,
+            37.509544372558594
+          ],
+          "seconds": 1.49,
+          "minDist": 0.417
+        },
+        {
+          "target": [
+            -33.5,
+            37.8
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -39.26228332519531,
+            5.622303009033203,
+            37.532371520996094
+          ],
+          "end": [
+            -33.80398941040039,
+            5.619860649108887,
+            37.74773025512695
+          ],
+          "seconds": 1.7,
+          "minDist": 0.308
+        },
+        {
+          "target": [
+            -31.4,
+            35
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -33.80398941040039,
+            5.619860649108887,
+            37.74773025512695
+          ],
+          "end": [
+            -31.416828155517578,
+            5.619843482971191,
+            35.19024658203125
+          ],
+          "seconds": 1.09,
+          "minDist": 0.191
+        },
+        {
+          "target": [
+            -28.3,
+            34
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -31.416828155517578,
+            5.619843482971191,
+            35.19024658203125
+          ],
+          "end": [
+            -28.631860733032227,
+            5.658864974975586,
+            34.08150863647461
+          ],
+          "seconds": 0.99,
+          "minDist": 0.342
+        }
+      ],
+      "probes": [
+        {
+          "hit": true,
+          "toi": 0.34499189257621765,
+          "other": {
+            "colliderHandle": 7.129905858207e-312,
+            "name": "camp-collider-L01-exit-0-body-0",
+            "assetId": "L01",
+            "kind": "solid"
+          },
+          "normal": null
+        },
+        {
+          "hit": false,
+          "toi": 1,
+          "other": null,
+          "normal": null
+        },
+        {
+          "hit": true,
+          "toi": 0.344992995262146,
+          "other": {
+            "colliderHandle": 7.12990585821e-312,
+            "name": "camp-collider-L01-exit-1-body-0",
+            "assetId": "L01",
+            "kind": "solid"
+          },
+          "normal": null
+        }
+      ],
+      "errors": [],
+      "placements": []
+    },
+    {
+      "variant": "legacy",
+      "start": [
+        -41.99941635131836,
+        5.619417190551758,
+        35.006927490234375
+      ],
+      "legs": [
+        {
+          "target": [
+            -39,
+            37.8
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -41.99941635131836,
+            5.619417190551758,
+            35.006927490234375
+          ],
+          "end": [
+            -39.321441650390625,
+            5.622303009033203,
+            37.641632080078125
+          ],
+          "seconds": 1.5,
+          "minDist": 0.413
+        },
+        {
+          "target": [
+            -33.5,
+            37.8
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -39.321441650390625,
+            5.622303009033203,
+            37.641632080078125
+          ],
+          "end": [
+            -33.739471435546875,
+            5.621621131896973,
+            37.769142150878906
+          ],
+          "seconds": 1.69,
+          "minDist": 0.241
+        },
+        {
+          "target": [
+            -31.4,
+            35
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -33.69598388671875,
+            5.6222944259643555,
+            37.75928497314453
+          ],
+          "end": [
+            -31.614347457885742,
+            5.619912147521973,
+            35.17610549926758
+          ],
+          "seconds": 1.08,
+          "minDist": 0.277
+        },
+        {
+          "target": [
+            -28.3,
+            34
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -31.614347457885742,
+            5.619912147521973,
+            35.17610549926758
+          ],
+          "end": [
+            -28.73958396911621,
+            5.658911228179932,
+            34.08567428588867
+          ],
+          "seconds": 0.98,
+          "minDist": 0.448
+        }
+      ],
+      "probes": [
+        {
+          "hit": true,
+          "toi": 0.33700934052467346,
+          "other": {
+            "colliderHandle": 4.710830674045e-312,
+            "name": "camp-collider-L01-exit-0-body-0",
+            "assetId": "L01",
+            "kind": "solid"
+          },
+          "normal": null
+        },
+        {
+          "hit": false,
+          "toi": 1,
+          "other": null,
+          "normal": null
+        },
+        {
+          "hit": true,
+          "toi": 0.3370051383972168,
+          "other": {
+            "colliderHandle": 4.71083067405e-312,
+            "name": "camp-collider-L01-exit-1-body-0",
+            "assetId": "L01",
+            "kind": "solid"
+          },
+          "normal": null
+        }
+      ],
+      "errors": [],
+      "placements": []
+    }
+  ]
+}
