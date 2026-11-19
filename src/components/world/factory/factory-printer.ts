@@ -1,12 +1,13 @@
 import { Box3, CylinderGeometry, DoubleSide, Group, Mesh, MeshStandardMaterial, PlaneGeometry, Vector3 } from 'three';
 import { Builder, bar, cbox, type Surf, type V3 } from '../WorldStreetGeometry.ts';
+import { factoryGeometryContact } from './factory-contact.ts';
 
 type Palette = Record<'cream'|'teal'|'steel'|'dark'|'silver'|'amber', Surf>;
 /** Factory-local placement; model geometry uses a floor-relative origin. Output is +Z. */
 export const FACTORY_PRINTER = {
   at: [43, .12, 22] as const,
   card: { width: .94, length: .58, y: 1.069, startZ: -.12, endZ: .89 },
-  roller: { z: .49, radius: .067, lowerY: 1.002, upperY: 1.136 },
+  roller: { z: .49, radius: .067, length: 1.04, lowerY: 1.002, upperY: 1.136 },
   tray: { top: 1.067, startZ: .56, endZ: 1.26 },
 } as const;
 
@@ -18,26 +19,22 @@ export function buildFactoryPrinter(p: Palette) {
   const group = new Group(); group.name = 'factory-report-printer';
   group.position.set(...FACTORY_PRINTER.at);
   const b = new Builder();
-  const solids: Array<{ at: V3; size: V3 }> = [];
-  const cube = (at: V3, size: V3, surface: Surf, bevel = .025, solid = false) => {
-    cbox(b, at, size, surface, bevel);
-    if (solid) solids.push({ at: [at[0] + FACTORY_PRINTER.at[0], at[1] + FACTORY_PRINTER.at[1], at[2] + FACTORY_PRINTER.at[2]], size: [...size] });
-  };
+  const cube = (at: V3, size: V3, surface: Surf, bevel = .025) => cbox(b, at, size, surface, bevel);
   // Four rubber feet and a steel plinth carry the enclosure, rather than a floating box.
   for (const x of [-.67, .67]) for (const z of [-.39, .39]) {
-    cube([x, .075, z], [.23, .15, .25], p.dark, .025, true);
+    cube([x, .075, z], [.23, .15, .25], p.dark, .025);
     cube([x, .18, z], [.15, .12, .17], p.steel, .015);
   }
-  cube([0, .24, 0], [1.58, .12, 1.05], p.teal, .035, true);
-  cube([0, .61, 0], [1.7, .74, 1.15], p.cream, .065, true);
+  cube([0, .24, 0], [1.58, .12, 1.05], p.teal, .035);
+  cube([0, .61, 0], [1.7, .74, 1.15], p.cream, .065);
   // Separate hood, cheeks and back wall leave the full paper passage empty.
-  cube([0, 1.27, 0], [1.7, .18, 1.15], p.cream, .06, true);
-  for (const x of [-.75, .75]) cube([x, 1.08, 0], [.2, .2, 1.15], p.cream, .02, true);
-  cube([0, 1.08, -.53], [1.3, .2, .09], p.teal, .015, true);
+  cube([0, 1.27, 0], [1.7, .18, 1.15], p.cream, .06);
+  for (const x of [-.75, .75]) cube([x, 1.08, 0], [.2, .2, 1.15], p.cream, .02);
+  cube([0, 1.08, -.53], [1.3, .2, .09], p.teal, .015);
   // Internal paper bed ends before the nip; external tray begins beyond its sweep.
   cube([0, 1.047, -.01], [1.22, .04, .86], p.steel, 0);
   for (const x of [-.5, .5]) cube([x, 1.0035, -.01], [.07, .047, .72], p.steel, 0);
-  cube([0, 1.047, .91], [1.22, .04, .70], p.silver, 0, true);
+  cube([0, 1.047, .91], [1.22, .04, .70], p.silver, 0);
   for (const x of [-.585, .585]) {
     cube([x, 1.107, .91], [.05, .08, .7], p.teal, .012);
     bar(b, [x, .71, .40], [x, 1.027, 1.14], .045, p.teal, 6);
@@ -55,19 +52,29 @@ export function buildFactoryPrinter(p: Palette) {
   cube([0, .64, .578], [1.25, .4, .016], p.teal, .015);
   cube([0, .78, .601], [.3, .045, .035], p.steel, .01);
   const chassisGeometry = b.build();
+  const contact = factoryGeometryContact(chassisGeometry, 'factory-printer-chassis');
   const chassisMaterial = new MeshStandardMaterial({ vertexColors: true, roughness: .64, metalness: .2 });
   const chassis = new Mesh(chassisGeometry, chassisMaterial); chassis.name = 'printer-open-throat-chassis';
+  chassis.userData = { worldCollision: 'solid', surfaceId: contact.id };
   chassis.castShadow = true; chassis.receiveShadow = true; group.add(chassis);
-  const rollerGeometry = new CylinderGeometry(.067, .067, 1.04, 12, 1);
+  const { radius, length, lowerY, upperY, z } = FACTORY_PRINTER.roller;
+  const rollerGeometry = new CylinderGeometry(radius, radius, length, 12, 1);
   rollerGeometry.rotateZ(Math.PI / 2);
   const rollerMaterial = new MeshStandardMaterial({ color: p.dark.color, roughness: .9, metalness: .02 });
   const lower = new Mesh(rollerGeometry, rollerMaterial), upper = new Mesh(rollerGeometry, rollerMaterial);
   lower.name = 'printer-lower-feed-roller'; upper.name = 'printer-upper-feed-roller';
-  lower.position.set(0, 1.002, .49); upper.position.set(0, 1.136, .49);
+  lower.position.set(0, lowerY, z); upper.position.set(0, upperY, z);
+  // The round physical envelope is invariant when the 12-sided feed rollers turn.
+  const rollers = [lower, upper].map((mesh, i) => {
+    const id = i === 0 ? 'factory-printer-lower-contact' : 'factory-printer-upper-contact';
+    mesh.userData = { worldCollision: 'solid', surfaceId: id };
+    return { id, at: mesh.position.toArray(), radius, halfLength: length / 2 };
+  });
   lower.castShadow = true; upper.castShadow = true; group.add(lower, upper);
   const cardGeometry = new PlaneGeometry(.94, .58); cardGeometry.rotateX(-Math.PI / 2);
   const cardMaterial = new MeshStandardMaterial({ color: '#F2EAD8', roughness: .94, metalness: 0, side: DoubleSide });
   const card = new Mesh(cardGeometry, cardMaterial); card.name = 'printer-report-card';
+  card.userData = { worldCollision: 'none', worldCollisionReason: 'The animated report sheet rides on the physical tray and paper bed.' };
   card.receiveShadow = true; group.add(card);
   const bounds = new Box3(new Vector3(-.85, 0, -.575), new Vector3(.85, 1.41, 1.3));
   const triangles = b.triangles + rollerGeometry.index!.count / 3 * 2 + cardGeometry.index!.count / 3;
@@ -82,7 +89,7 @@ export function buildFactoryPrinter(p: Palette) {
     upper.rotation.x = -lower.rotation.x;
   }
   update(0);
-  return { group, card, update, bounds, solids, triangles, dispose() {
+  return { group, card, update, bounds, contact, rollers, triangles, dispose() {
     if (disposed) return; disposed = true;
     chassisGeometry.dispose(); rollerGeometry.dispose(); cardGeometry.dispose();
     chassisMaterial.dispose(); rollerMaterial.dispose(); cardMaterial.dispose();

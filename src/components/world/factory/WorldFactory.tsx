@@ -113,7 +113,12 @@ export default memo(function WorldFactory({active}:{active:boolean}){
         <TrimeshCollider name="factory-roof-contact" args={[data.roofVertices,data.roofIndices]} friction={.85}/>
       </RigidBody>
     </group>
-    <primitive object={data.conveyors.group}/>
+    <group name="factory-conveyor-contact">
+      <primitive object={data.conveyors.group}/>
+      <RigidBody type="fixed" colliders={false} name="factory-conveyor-collision" userData={{solid:true}}>
+        {data.conveyors.contacts.map(contact=><TrimeshCollider key={contact.id} name={contact.id} args={[contact.vertices,contact.indices]} friction={.85}/>)}
+      </RigidBody>
+    </group>
     <group name="factory-worklife-contact">
       <primitive object={data.worklife.root}/>
       <RigidBody type="fixed" colliders={false} name="factory-worklife-collision" userData={{solid:true,assetId:'factory-worklife'}}>

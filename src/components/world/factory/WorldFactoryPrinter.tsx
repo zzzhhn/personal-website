@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, RigidBody } from '@react-three/rapier';
+import { CylinderCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { CanvasTexture, SRGBColorSpace } from 'three';
 import { useWorldStore } from '../store';
 import { night } from '../WorldNight';
 import { useFactoryStore } from './factory-store';
-import { buildFactoryPrinter } from './factory-printer';
+import { FACTORY_PRINTER, buildFactoryPrinter } from './factory-printer';
 import { FACTORY_PALETTE } from './factory-geometry';
 import { factoryLaneReadings, factoryTrialRound } from './factory-readings';
 
@@ -56,10 +56,12 @@ export default function WorldFactoryPrinter(){
     model.card.visible=!!id;model.update(state.feed);
     model.card.material.emissiveIntensity=night.value*.18;
   });
-  return <>
+  return <group name="factory-report-printer-contact">
     <primitive object={model.group}/>
-    <RigidBody type="fixed" colliders={false} name="factory-printer-collision" userData={{solid:true}}>
-      {model.solids.map((s,i)=><CuboidCollider key={i} args={[s.size[0]/2,s.size[1]/2,s.size[2]/2]} position={s.at}/>)}
+    <RigidBody type="fixed" colliders={false} name="factory-printer-collision" position={FACTORY_PRINTER.at} userData={{solid:true}}>
+      <TrimeshCollider name={model.contact.id} args={[model.contact.vertices,model.contact.indices]} friction={.85}/>
+      {model.rollers.map(roller=><CylinderCollider key={roller.id} name={roller.id} args={[roller.halfLength,roller.radius]}
+        position={roller.at} rotation={[0,0,Math.PI/2]} friction={.85}/>)}
     </RigidBody>
-  </>;
+  </group>;
 }

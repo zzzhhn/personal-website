@@ -12,7 +12,7 @@ import { useWorldStore } from '../store.ts';
 import { pickupGroundRoute } from '../pickup-approach.ts';
 import { interactionVisible } from '../interaction-offer.ts';
 import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
-import { buildFactoryPrinter } from './factory-printer.ts';
+import { FACTORY_PRINTER, buildFactoryPrinter } from './factory-printer.ts';
 import { playerSupport,followPlayerGround,compensatePlayerSlopeGravity,clearPlayerSlopeGravity } from '../player-ground.ts';
 import { createPlayerClearance,sweptPlayerVelocity,playerVelocityChange } from '../player-motion.ts';
 import { FACTORY_WALK_NODES,FACTORY_WALK_EDGES,factoryWalkingRoute } from './factory-navigation.ts';
@@ -27,12 +27,14 @@ function worldFor(g){
   for(const contact of [...g.rails, ...g.structureContacts])w.createCollider(R.ColliderDesc.trimesh(contact.vertices,contact.indices).setFriction(.85),fixed);
   const worklife=buildFactoryWorklife(FACTORY_PALETTE), printer=buildFactoryPrinter(FACTORY_PALETTE);
   for(const contact of worklife.contacts)w.createCollider(R.ColliderDesc.trimesh(contact.vertices,contact.indices).setFriction(.85),fixed);
-  const solids=printer.solids; worklife.dispose(); printer.dispose();
-  for(const s of solids){
-    const c=R.ColliderDesc.cuboid(...s.size.map(v=>v/2)).setTranslation(...s.at);
-    if(s.rotation){const q=new Quaternion().setFromEuler(new Euler(...s.rotation,'YXZ'));c.setRotation(q);}
-    w.createCollider(c,fixed);
+  const [x,y,z]=FACTORY_PRINTER.at;
+  w.createCollider(R.ColliderDesc.trimesh(printer.contact.vertices,printer.contact.indices).setTranslation(x,y,z),fixed);
+  const axis=new Quaternion().setFromAxisAngle(new Vector3(0,0,1),Math.PI/2);
+  for(const roller of printer.rollers){
+    const [dx,dy,dz]=roller.at;
+    w.createCollider(R.ColliderDesc.cylinder(roller.halfLength,roller.radius).setTranslation(x+dx,y+dy,z+dz).setRotation(axis),fixed);
   }
+  worklife.dispose(); printer.dispose();
   return w;
 }
 const dispose=g=>{g.geometry.dispose();g.roofs.dispose();g.surface.dispose();};

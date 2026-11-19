@@ -1,5 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
+import R from '@dimforge/rapier3d-compat';
+import { decodeTerrainArtifact } from '../terrain-artifact.ts';
 import { FACTORY, FACTORY_APPROACH, FACTORY_CAPE, FACTORY_STATIONS, factoryWorld, factoryCapeDistance, factoryScatterBlocked } from './factory-layout.ts';
 import { CELL, GRID, buildTerrain, coastFrame, effectiveCoastFrame, meshHeight, terrainHeight } from '../WorldLandform.ts';
 import { DRIVABLE_V4, JUNCTIONS_V4, NETWORK_WALK_V4, ROAD_Y, ROADS_V4, TERRAIN_ROADS_V4, nearestRoadPointV4 } from '../layout-v4.ts';
@@ -85,6 +89,36 @@ test('terrain range covers the full west headland shelf and retains old grid ali
     assert.ok(x - GRID.minX >= 27 && GRID.minX + GRID.nx * CELL - x >= 27);
     assert.ok(z - GRID.minZ >= 27 && GRID.minZ + GRID.nz * CELL - z >= 27);
   }
+});
+
+test('the authored factory cape supports the installed road, both shoulders and wheel paths', async t => {
+  await R.init();
+  const raw = gunzipSync(readFileSync(new URL('../../../../public/assets/world/terrain/mainland-v4.bin.gz', import.meta.url)));
+  const {terrain} = decodeTerrainArtifact(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength), 'v4');
+  const world = new R.World({x:0,y:0,z:0});
+  t.after(()=>world.free());
+  const ground = world.createCollider(R.ColliderDesc.trimesh(terrain.positions,terrain.indices));
+  const roads = pavingMesh().chunks.filter(chunk=>chunk.top.length).map(chunk=>{
+    const vertices = new Float32Array(chunk.v.length / PAVE_STRIDE * 3);
+    for(let i=0;i<vertices.length/3;i++)for(let p=0;p<3;p++)vertices[3*i+p]=chunk.v[PAVE_STRIDE*i+p];
+    return world.createCollider(R.ColliderDesc.trimesh(vertices,new Uint32Array(chunk.top)));
+  });
+  const down={x:0,y:-1,z:0};
+  let minShoulder=Infinity, minWheel=Infinity, distances=0, wheelProbes=0;
+  routeSamples((x,z,nx,nz)=>{
+    for(const side of [-6, -5.5, 0, 5.5, 6]){
+      const hit=ground.castRay(new R.Ray({x:x+nx*side,y:3,z:z+nz*side},down),3,true);
+      assert.ok(hit>=0 && 3-hit>=.94,`ground support ${x},${z} side ${side}`);
+      minShoulder=Math.min(minShoulder,3-hit); distances++;
+    }
+    for(const side of [-2,-1,0,1,2]){
+      const ray=new R.Ray({x:x+nx*side,y:3,z:z+nz*side},down);
+      const hits=roads.map(c=>c.castRay(ray,3,true)).filter(d=>d>=0);
+      assert.ok(hits.length && 3-Math.min(...hits)>=1.12,`road support ${x},${z} wheel ${side}`);
+      minWheel=Math.min(minWheel,3-Math.min(...hits)); wheelProbes++;
+    }
+  });
+  t.diagnostic(JSON.stringify({distances,wheelProbes,minShoulder,minWheel}));
 });
 
 // Explicit opt-in: the caller serializes this full-island job against browser/build work.

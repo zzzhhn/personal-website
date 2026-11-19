@@ -4,6 +4,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as L from './layout-v4.ts';
+import { factoryCapeDistance } from './factory/factory-layout.ts';
 import { BUILDINGS, CAMP_CENTER, CAMP_SPAWN, VEHICLES, BOOTHS, BOARDWALK_POINTS, BRIDGE_START, BRIDGE_END, ISLAND_OUTLINE } from './layout.ts';
 
 const xz = L.xz;
@@ -69,7 +70,18 @@ test('roads clear the camp flank foot by >= 2 m (ring-west was 0.18 m in the pro
     for (let i = 1; i < r.pts.length; i++) m = Math.min(m, L.segmentDistance(L.CAMP_XZ, xz(r.pts[i - 1]), xz(r.pts[i])).distance);
     assert.ok(m - L.paveHalf(r.cls) - L.CAMP_FOOT_RADIUS >= 2, `${r.id} camp margin ${(m - L.paveHalf(r.cls) - L.CAMP_FOOT_RADIUS).toFixed(2)}`);
     if (['bridge', 'park-spur', 'bridge-link', 'turn-j3'].includes(r.id)) continue;
-    for (const p of r.pts) assert.ok(L.signedInside(xz(p), L.OUTLINE_V4) - L.paveHalf(r.cls) >= .5, `${r.id} near shore at ${p}`);
+    const width = L.paveHalf(r.cls);
+    if (r.id === 'factory-approach') {
+      // The western factory headland extends beyond the convex mainland outline.
+      const total = L.polylineLength(r.pts), steps = Math.ceil(total / .25);
+      for (let i = 0; i <= steps; i++) {
+        const { p } = L.pointAt(r.pts, total * i / steps);
+        const authoredLand = Math.max(L.signedInside(p, L.OUTLINE_V4), -factoryCapeDistance(...p));
+        assert.ok(authoredLand - width >= .5, `${r.id} near shore at ${p}`);
+      }
+    } else {
+      for (const p of r.pts) assert.ok(L.signedInside(xz(p), L.OUTLINE_V4) - width >= .5, `${r.id} near shore at ${p}`);
+    }
   }
 });
 

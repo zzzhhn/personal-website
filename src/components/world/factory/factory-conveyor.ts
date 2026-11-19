@@ -4,6 +4,7 @@ import { FACTORY_CONVEYOR_TOP, FACTORY_LINE_Z, type FactoryOperation } from './f
 import { FACTORY_MODULES, type FactoryModule } from './factory-game.ts';
 import { factoryIntakePath, factoryRoutingPath, sampleFactoryRoute } from './factory-routing.ts';
 import { createFactoryMaterial } from './factory-lighting.ts';
+import type { InstanceCollisionSources } from '../world-collision-inventory.ts';
 import type { FactoryCarrierPalette } from './factory-carrier.ts';
 
 export const FACTORY_ROLLER_RADIUS = .115;
@@ -57,6 +58,27 @@ export function factoryRollerPositions() {
     return result;
   });
 }
+/** Keep the gaps between drums without creating a collider per roller.
+ * The neutral 16-sided drum approximates every rotation within 2.3 mm. */
+function rollerContacts(
+  vertices: Float32Array,
+  indices: Uint32Array,
+  placements: ReturnType<typeof factoryRollerPositions>,
+) {
+  return FACTORY_CONVEYORS.map((line, lineIndex) => {
+    const rollers = placements.filter(p => p.line === lineIndex);
+    const points = new Float32Array(rollers.length * vertices.length);
+    const faces = new Uint32Array(rollers.length * indices.length);
+    for (const [i, { at }] of rollers.entries()) {
+      for (let v = 0; v < vertices.length; v += 3) {
+        for (let axis = 0; axis < 3; axis++) points[i * vertices.length + v + axis] = vertices[v + axis] + at[axis];
+      }
+      for (let j = 0; j < indices.length; j++) faces[i * indices.length + j] = indices[j] + i * vertices.length / 3;
+    }
+    return { id: 'factory-conveyor-rollers-' + (line.module ?? 'dispatch'), vertices: points, indices: faces };
+  });
+}
+
 /** Two instanced draws. The colour bands are actual roller faces, not coplanar
  * decals. Their tangential velocity follows the carrier's 47 m outfeed travel.
  * No timers, React ticks, textures, lights or scene-wide frame callbacks. */
@@ -75,6 +97,15 @@ export function createFactoryConveyors(P: FactoryCarrierPalette, night: { value:
   const placements = factoryRollerPositions(), material = createFactoryMaterial(false, night);
   const mesh = new InstancedMesh(geometry, material, placements.length), group = new Group();
   mesh.name = 'factory-driven-rollers'; mesh.receiveShadow = true;
+  const contacts = rollerContacts(p.array as Float32Array, geometry.index!.array as Uint32Array, placements);
+  const sources: InstanceCollisionSources = {
+    placements: placements.map(({ line }, i) => ({
+      id: 'factory-roller-' + i, matrix: new Matrix4(), surfaceIds: [contacts[line].id],
+    })),
+    slots: placements.map((_, i) => i),
+  };
+  mesh.userData.worldCollision = 'solid';
+  mesh.userData.worldCollisionInstances = sources;
   group.name = 'factory-conveyor-motion'; group.add(mesh);
   const chainBuilder = new Builder();
   cbox(chainBuilder, [0, 0, 0], [.18, .065, .045], P.amber, 0);
@@ -91,7 +122,10 @@ export function createFactoryConveyors(P: FactoryCarrierPalette, night: { value:
     return [-1, 1].flatMap(side => Array.from({ length: count }, (_, i) => ({ run: index, side, distance: i * loop / count })));
   });
   const belts = new InstancedMesh(chainGeometry, material, beltPlacements.length);
-  belts.name = 'factory-state-driven-belt-chains'; belts.receiveShadow = true; group.add(belts);
+  belts.name = 'factory-state-driven-belt-chains'; belts.receiveShadow = true;
+  belts.userData.worldCollision = 'none';
+  belts.userData.worldCollisionReason = 'Small chain indicators follow the physical routing decks and do not support the load.';
+  group.add(belts);
   const matrix = new Matrix4(), q = new Quaternion(), axis = new Vector3(0, 0, 1);
   const pos = new Vector3(), scale = new Vector3(1, 1, 1), angles = [0, 0, 0, 0];
   const chainPoint = { u: 0, y: 0, angle: 0 }, chainRotation = new Quaternion();
@@ -102,7 +136,8 @@ export function createFactoryConveyors(P: FactoryCarrierPalette, night: { value:
     for (let i = 0; i < placements.length; i++) {
       const { at, line } = placements[i];
       q.setFromAxisAngle(axis, angles[line]); pos.set(...at);
-      mesh.setMatrixAt(i, matrix.compose(pos, q, scale));
+      const placementMatrix = sources.placements[i].matrix.compose(pos, q, scale);
+      mesh.setMatrixAt(i, placementMatrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
   };
@@ -128,10 +163,10 @@ export function createFactoryConveyors(P: FactoryCarrierPalette, night: { value:
   // Conservative fixed sphere includes both sides and the complete lower
   // return loop; updates never trigger a per-frame bounds allocation.
   if (belts.boundingSphere) belts.boundingSphere.radius += .6;
-  const metrics = { colorDraws: 2, geometries: 2, materials: 1, colliders: 0,
+  const metrics = { colorDraws: 2, geometries: 2, materials: 1, colliders: contacts.length,
     rollerInstances: placements.length, chainInstances: beltPlacements.length,
     triangles: b.triangles * placements.length + chainBuilder.triangles * beltPlacements.length };
-  return { group, mesh, belts, placements, beltPlacements, metrics,
+  return { group, mesh, belts, placements, beltPlacements, contacts, metrics,
     /** routingLine is the material's recorded destination during a reverse
      * route (op.action.line is absent). Never guess the intended module line. */
     update(op: FactoryOperation | null, paused: boolean, routingLine?: FactoryModule) {

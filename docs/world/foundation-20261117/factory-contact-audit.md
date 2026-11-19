@@ -15,3 +15,15 @@
 工厂测试共 175 项，174 项通过，默认跳过需独占机器计算整岛地形的可选项。TypeScript 通过。复跑使用 `node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 src/components/world/factory/*.test.mjs`。证据位于工作区 `evidence/city-foundation/` 的 `factory-worklife-before-probes.jsonl`、`factory-forecourt-before-probes.jsonl`、`factory-production-detail-before-probes.jsonl`、`factory-fixture-facade-before-probes.jsonl`、`factory-contact-all-tests.log` 和 `factory-contact-model-signatures.json`。
 
 这批复核覆盖合批固定结构及两个工作站。独立挂载的动态滚筒、吊具、移动工序件和工作站骨骼动画保持各自原有玩法及接触策略。工厂新生产包的普通入口、机位画面和设备旁真实输入仍需浏览器复跑。
+
+## 输送线、打印机和西岬道路
+
+在生产沙盒 4363（入口 SHA-256 `a8e98090266c88db3a4d180a6c2e4cf141405aefc67f26d2c5a0860caae67b66`）从工厂入口对真实提交网格和 Rapier 注册盘点。254 根可见滚筒没有碰撞声明或本体碰撞，4 个报告打印机网格没有归属，打印机原有 11 个旧盒跳过了屏钮、前缘止挡和两根送料轴。原始盘点见工作区证据 `factory-final-4363-ownership-before.json`。
+
+| 部件 | 交付与验证 |
+| --- | --- |
+| `factory-conveyor-contact` | 复用实际索引滚筒、轴端和位置，为四条线各做一个固定接触。运动时仍使用同样的两个实例绘制，带边小链节按实际功用声明为不阻挡，连续进料、分流和转运走面沿用原来的 `factory-routing-decks`。五个出料转角状态的实物托面和轴端与画面最大误差 2.59 mm，四条线的纵向缝都能实际穿过。 |
+| `factory-report-printer-contact` | 实际索引机身加两根旋转包络不变的实体送料轴。托盘、止挡及控制钮的 Rapier 命中，与实物误差小于 0.05 mm。纸槽保持开放，纸张动画沿已有纸床和托盘行进。打印机仍然是四个颜色绘制，三组碰撞取代旧盒。 |
+| `factory-approach` | 旧岸距断言在 `[-135.9824,1.14,-24.3482]` 失败，原因是它只查主体岛轮廓。西岬生产海岸与主体岛并集覆盖全长 63.25 m，现有断言保留原 0.5 m 岸距门槛。路肩 405 点及路内轮迹 405 点打包网格 Rapier 复跑，最低支撑面 1.000 m 及 1.138 m。路、地形和岸线已符合现场契约。 |
+
+工厂及道路 191 项中 190 项通过，整岛重建的可选项维持默认跳过。独立吊具、冲压、载荷和相邻的试验模型继续逐状态复核。

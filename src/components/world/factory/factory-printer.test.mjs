@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Box3, BoxGeometry, Mesh, MeshBasicMaterial, Raycaster, Texture, Triangle, Vector3 } from 'three';
+import R from '@dimforge/rapier3d-compat';
+import { Box3, BoxGeometry, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Texture, Triangle, Vector3 } from 'three';
 import { buildFactoryPrinter, FACTORY_PRINTER } from './factory-printer.ts';
 
 const palette = {
@@ -114,4 +115,31 @@ test('disposal releases owned resources once even after replacement/detach and p
     assert.ok([...other, foreignGeometry, foreignMaterial, texture].every(r => counts.get(r) === 0));
     assert.ok(own.every(r => !other.includes(r))); assert.deepEqual(palette, before);
   } finally { a.dispose(); b.dispose(); foreignGeometry.dispose(); foreignMaterial.dispose(); texture.dispose(); }
+});
+
+test('actual printer contacts preserve the empty throat and catch the tray edge, controls and axles', async t => {
+  await R.init();
+  const model = buildFactoryPrinter(palette), world = new R.World({ x: 0, y: 0, z: 0 });
+  t.after(() => { model.dispose(); world.free(); });
+  const body = world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...FACTORY_PRINTER.at));
+  const chassis = world.createCollider(R.ColliderDesc.trimesh(model.contact.vertices, model.contact.indices), body);
+  const rotation = new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 2);
+  const rollers = model.rollers.map(r => world.createCollider(R.ColliderDesc.cylinder(r.halfLength, r.radius)
+    .setTranslation(...r.at).setRotation(rotation), body));
+  const origin = new Vector3(...FACTORY_PRINTER.at), down = new Vector3(0, -1, 0);
+  const ground = (x, z) => new R.Ray(new Vector3(x, 1.52, z).add(origin), down);
+  const targets = [
+    { at: [0, .91], top: 1.067 }, { at: [0, 1.28], top: 1.147 },
+    { at: [-.54, .22], top: 1.4095 },
+  ];
+  for (const { at, top } of targets) near(1.52 - chassis.castRay(ground(...at), 1, true), top, .00005);
+  const through = new R.Ray(new Vector3(0, 1.079, .65).add(origin), new Vector3(0, 0, -1));
+  assert.ok(chassis.castRay(through, .53, true) < 0, 'no chassis across empty paper path');
+  for (const [i, roller] of rollers.entries()) {
+    const y = model.rollers[i].at[1];
+    const ray = new R.Ray(new Vector3(.42, y, .77).add(origin), new Vector3(0, 0, -1));
+    near(roller.castRay(ray, .5, true), .77 - .49 - .067, .00005);
+  }
+  assert.equal(model.card.userData.worldCollision, 'none');
+  t.diagnostic(JSON.stringify({ chassisProbes: targets.length, openThroat: true, rollerContacts: rollers.length }));
 });

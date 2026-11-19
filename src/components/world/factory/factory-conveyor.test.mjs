@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Matrix4, Vector3 } from 'three';
+import R from '@dimforge/rapier3d-compat';
+import { Group, Matrix4, Mesh, Raycaster, Scene, Vector3 } from 'three';
+import { collisionInventory } from '../world-collision-inventory.ts';
 import { createFactoryConveyors, factoryRollerPositions, FACTORY_ROLLER_RADIUS, sampleFactoryChain, FACTORY_BELT_RUNS } from './factory-conveyor.ts';
 import { FACTORY_PALETTE } from './factory-geometry.ts';
 import { createFactoryOperation, FACTORY_CONVEYOR_TOP } from './factory-operation.ts';
@@ -22,7 +24,7 @@ test('two instanced draws follow actual outfeed, stay still at idle and pause, a
   let disposed = 0; data.mesh.geometry.addEventListener('dispose', () => disposed++);
   try {
     assert.equal(data.group.children.length, 2);
-    assert.equal(data.metrics.colorDraws, 2); assert.equal(data.metrics.colliders, 0);
+    assert.equal(data.metrics.colorDraws, 2); assert.equal(data.metrics.colliders, 4);
     assert.ok(data.metrics.triangles < 40000); assert.ok(data.metrics.chainInstances < 400);
     const baseline = read(0), other = data.placements.findIndex(p => p.line === 1), still = read(other);
     data.update(op, false); assert.deepEqual(read(0), baseline);
@@ -77,4 +79,41 @@ test('intake and forward or recorded wrong-line reverse routing drive only their
     console.log(JSON.stringify(data.metrics));
   } finally { data.dispose(); data.dispose(); }
   assert.equal(chainDisposals, 1);
+});
+
+test('each line supplies its actual roller and axle surfaces without closing the roller gaps', async t => {
+  await R.init();
+  const model = createFactoryConveyors(FACTORY_PALETTE, { value: 0 }), world = new R.World({ x: 0, y: 0, z: 0 });
+  t.after(() => { model.dispose(); world.free(); });
+  const scene = new Scene(); scene.add(model.group);
+  const nodes = model.contacts.map(({ id }) => {
+    const node = new Group(); node.name = id; model.group.add(node); return node;
+  });
+  const physical = model.contacts.map(({ vertices, indices }) => world.createCollider(R.ColliderDesc.trimesh(vertices, indices)));
+  const visual = new Mesh(model.mesh.geometry, model.mesh.material), matrix = new Matrix4(), down = new Vector3(0, -1, 0);
+  const op = createFactoryOperation({ type: 'process', module: 'frame' }); op.phase = 'outfeed';
+  let largestError = 0;
+  for (const progress of [0, .001, .18, .51, .99]) {
+    op.progress = progress; model.update(op, false);
+    const stock = collisionInventory(scene, [model.mesh, model.belts], nodes, ['factory-conveyor-motion']);
+    assert.deepEqual(stock.errors, []);
+    assert.equal(stock.registrations['factory-conveyor-motion'], 4);
+    assert.equal(stock.mounted.unclassified, 0);
+    for (let i = 0; i < physical.length; i++) {
+      const first = model.placements.findIndex(p => p.line === i), [x, y, z] = model.placements[first].at;
+      model.mesh.getMatrixAt(first, matrix); matrix.decompose(visual.position, visual.quaternion, visual.scale);
+      visual.updateMatrixWorld();
+      for (const dz of [0, .9, 1.01]) {
+        const origin = new Vector3(x, y + .5, z + dz);
+        const shown = new Raycaster(origin, down, 0, 1).intersectObject(visual, false)[0];
+        const hit = physical[i].castRay(new R.Ray(origin, down), 1, true);
+        assert.ok(shown && hit >= 0);
+        largestError = Math.max(largestError, Math.abs(hit - shown.distance));
+      }
+      const gap = new R.Ray({ x: x + .4, y: y + .5, z }, down);
+      assert.ok(physical[i].castRay(gap, 1, true) < 0, 'open longitudinal gap');
+    }
+  }
+  assert.ok(largestError < .003, `largest radial deviation ${largestError}`);
+  t.diagnostic(JSON.stringify({ contacts:physical.length, rollers:model.placements.length, largestError }));
 });
