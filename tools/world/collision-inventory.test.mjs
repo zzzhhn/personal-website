@@ -96,3 +96,20 @@ test('a partially migrated batch reports its gaps and remains ineligible for str
   model.userData.worldCollisionSources.push({...source,id:'overlap'});
   assert.equal(sample(false).submitted.invalid,1);
 });
+
+test('a venue can share an earlier approach collider only while its exact registered node exists',()=>{
+  const scene=new Scene(),venue=new Group(),road=new Group(),other=new Group();
+  venue.name='venue';road.name='approach';scene.add(venue,road,other);
+  const skin=new Mesh(),lane=new Mesh(),supply=new Group(),impostor=new Group();
+  skin.userData=lane.userData={worldCollision:'solid',surfaceId:'walk'};
+  venue.add(skin);road.add(lane,supply);other.add(impostor);supply.name=impostor.name='walk';
+  const roots=['venue','approach'],bindings=[{root:'venue',collider:supply}];
+  const read=(active,held=[],external=bindings)=>collisionInventory(scene,[skin,lane],active,roots,held,external);
+  assert.deepEqual(read([supply]).registrations,{venue:1,approach:1});
+  assert.deepEqual(read([supply]).errors,[]);
+  assert.deepEqual(read([],[supply]).registrations,{venue:0,approach:0});
+  assert.ok(read([]).errors.some(s=>s.startsWith('venue: expected one unique collider')));
+  assert.ok(read([impostor]).errors.some(s=>s.startsWith('venue: expected one unique collider')));
+  assert.ok(read([supply],[],[]).errors.some(s=>s.startsWith('venue: expected one unique collider')));
+  assert.ok(read([supply,impostor],[],[...bindings,{root:'venue',collider:impostor}]).errors.some(s=>s.startsWith('venue: expected one unique collider')));
+});

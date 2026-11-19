@@ -18,7 +18,7 @@ export const migratedCollisionRoots = [
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id => 'park-exhibit-set-'+id),
   'djc-mirror-contact', 'djc-north-bar-contact', 'djc-pool-lantern-contact', 'djc-umbrella-contact', 'djc-furniture-contact', 'djc-daybed-contact',
-  'park-signs', 'street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group', 'coaster-vegetation', 'brain-quarry-approach-contact', 'ibd-workstation-fixtures', 'ibd-parked-truck', 'ibd-static-yard-contact', 'ibd-dispatch-shutter', 'ibd-hoist-contact', 'world-ibd-yard', 'alpha-cable-fixed-infrastructure', 'alpha-sled-fixed-infrastructure', 'alpha-connected-grammar-tree', 'alpha-tumbling-wind-sign', 'alpha-wind-flag-stands', 'alpha-wind-gate', 'alpha-wind-control', 'alpha-bell-control', 'alpha-shelf-lanterns', 'alpha-physical-sand-route-model', 'alpha-mine-attraction', 'alpha-mine-backtest-basin', 'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp', 'alpha-mine-east-ramp', 'alpha-mine-middle-bridge',
+  'street-fixed-group', 'street-knock-group', 'street-rails-group', 'park-signs', 'street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group', 'coaster-vegetation', 'brain-quarry-approach-contact', 'ibd-workstation-fixtures', 'ibd-parked-truck', 'ibd-static-yard-contact', 'ibd-dispatch-shutter', 'ibd-hoist-contact', 'world-ibd-yard', 'alpha-cable-fixed-infrastructure', 'alpha-sled-fixed-infrastructure', 'alpha-connected-grammar-tree', 'alpha-tumbling-wind-sign', 'alpha-wind-flag-stands', 'alpha-wind-gate', 'alpha-wind-control', 'alpha-bell-control', 'alpha-shelf-lanterns', 'alpha-physical-sand-route-model', 'alpha-mine-attraction', 'alpha-mine-backtest-basin', 'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp', 'alpha-mine-east-ramp', 'alpha-mine-middle-bridge',
   ...['west-entry', 'west-rise', 'west-link'].map(name => 'alpha-mine-gallery-'+name),
   'alpha-mine-north-ravine-bridge', ...['lower','middle','upper'].map(level => 'alpha-mine-'+level+'-vein-contact'),
   'G28-entry', ...['mine','park','yard','coaster'].map(id => 'G28-entry-'+id),
@@ -221,7 +221,8 @@ function sortedCounts(values: Map<string, number>) {
 /** Count submitted meshes once across material groups. Named registrations are
  * checked separately from the physical shape and contact tests. */
 export function collisionInventory(scene: Scene, submittedObjects: Iterable<Object3D>,
-  activeColliderNodes: Iterable<Object3D>, requiredRoots = migratedCollisionRoots, heldObjects: Iterable<Object3D> = []) {
+  activeColliderNodes: Iterable<Object3D>, requiredRoots = migratedCollisionRoots, heldObjects: Iterable<Object3D> = [],
+  sharedSupplies: readonly {root:string;collider:Object3D}[] = []) {
   const mounted = counts(), submitted = counts(), errors: string[] = [];
   const roots = new Set(requiredRoots);
   const scoped = new Map<Object3D, { names: Map<string, number>; claims: Map<string, boolean>; held: Set<string> }>();
@@ -235,20 +236,29 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
     while (node && !scoped.has(node)) node = node.parent;
     return node;
   }
-  for (const node of activeColliderNodes) {
-    const root = owner(node), scope = root && scoped.get(root);
-    const id = collisionSupplyId(node);
-    if (scope) scope.names.set(id, (scope.names.get(id) ?? 0) + 1);
+  // An approach can load earlier than its venue. Only the actual registered node may
+  // supply a second strict root; matching text elsewhere never creates a registration.
+  const consumers = new Map<Object3D, Set<Object3D>>();
+  for (const {root,collider} of sharedSupplies) {
+    for (const scope of scoped.keys()) if (scope.name === root && scope !== owner(collider)) {
+      const extra=consumers.get(collider) ?? new Set<Object3D>();
+      extra.add(scope); consumers.set(collider,extra);
+    }
   }
   const heldColliderIds = new Set<string>();
-  for (const node of heldObjects) {
-    const root = owner(node), scope = root && scoped.get(root);
-    if (!scope) continue;
-    const id = collisionSupplyId(node);
-    scope.names.set(id,(scope.names.get(id) ?? 0)+1);
-    scope.held.add(id);
-    heldColliderIds.add(id);
+  function supply(node:Object3D, held:boolean) {
+    const id=collisionSupplyId(node);
+    const record=(root:Object3D)=>{
+      const scope=scoped.get(root)!;
+      scope.names.set(id,(scope.names.get(id)??0)+1);
+      if(held){scope.held.add(id);heldColliderIds.add(id);}
+    };
+    const root=owner(node);
+    if(root)record(root);
+    consumers.get(node)?.forEach(record);
   }
+  for (const node of activeColliderNodes) supply(node,false);
+  for (const node of heldObjects) supply(node,true);
   scene.traverse(node => {
     const mesh = node as Mesh;
     if (!mesh.isMesh) return;
