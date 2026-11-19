@@ -12,7 +12,7 @@ import { guideActionHand } from '../rides/guide-action-hand';
 import { alphaLocal,alphaWorld,alphaContainsWorld } from './alpha-layout';
 import { alphaMotion,useAlphaStore,advanceAlphaHand,cancelAlphaHand,canReleaseAlphaLantern,releaseAlphaLantern,visitAlphaStation,saveAlphaProgress,ALPHA_LANTERN_CAP,ALPHA_LANTERN_LIFETIME,type AlphaAction } from './alpha-state';
 import { ALPHA_TRAIL_STOPS } from './alpha-trail';
-import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
+import AlphaTumblingSign from './AlphaTumblingSign';
 import { alphaMaterial } from './alpha-materials';
 import { alphaLanternGeometry } from './alpha-art';
 import { primeAlphaAudio,ringAlphaBell,stopAlphaAudio } from './alpha-audio';
@@ -46,7 +46,13 @@ function WindFlagStand({index}: {index: number}) {
     <AlphaFlag color={index === 1 ? '#c69a58' : '#b86343'}/>
   </RigidBody>;
 }
-function WindFlags(){const paper=useRef<Group>(null);useFrame(()=>{const strength=useAlphaStore.getState().wind,t=alphaMotion.time;flagUniforms.time.value=t;flagUniforms.strength.value=strength;if(paper.current){const a=Math.min(9,Math.max(0,alphaMotion.time-alphaMotion.windAt)),x=22+Math.min(28,a*3.1)*(strength===2?1:0),theta=strength===2?a*3:0,z=-40+Math.sin(a*3)*.1,vertical=Math.max(Math.abs(Math.sin(theta))*.25+Math.abs(Math.cos(theta))*.25,Math.abs(Math.cos(theta))*.8+Math.abs(Math.sin(theta))*.04);paper.current.position.set(x,alphaHeight(x,z)+vertical,z);paper.current.rotation.set(0,0,theta);}});return <group><group name="alpha-wind-flag-stands">{[0,1,2].map(index=><WindFlagStand key={index} index={index}/>)}</group><group ref={paper} position={[22,38.8,-40]}><mesh><boxGeometry args={[.5,.5,.04]}/><meshStandardMaterial color="#dbc696" roughness={.95}/></mesh><mesh position={[0,-.4,0]}><cylinderGeometry args={[.035,.04,.8,8]}/><meshStandardMaterial color="#82633f"/></mesh></group></group>;}
+function WindFlags() {
+  useFrame(() => {
+    flagUniforms.time.value = alphaMotion.time;
+    flagUniforms.strength.value = useAlphaStore.getState().wind;
+  });
+  return <group><group name="alpha-wind-flag-stands">{[0,1,2].map(index=><WindFlagStand key={index} index={index}/>)}</group><AlphaTumblingSign/></group>;
+}
 export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.carried),hand=useRef<Group>(null),stoneRef=useRef<Mesh>(null),ball=useRef<Mesh>(null);
  const {world:physics,rapier}=useRapier();
  const marble=useMemo(()=>new rapier.Ball(SAND_BALL_RADIUS),[rapier]);
