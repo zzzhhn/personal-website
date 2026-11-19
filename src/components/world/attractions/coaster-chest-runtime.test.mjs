@@ -1,14 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import R from '@dimforge/rapier3d-compat';
 import { readFileSync } from 'node:fs';
 import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
 import * as track from './coaster-track.ts';
 import * as jsxRuntime from 'react/jsx-runtime';
 import { Matrix4, Mesh, Vector3 } from 'three';
-import { createCoasterChestRuntime, CHEST_OPEN_LID } from './coaster-chest-runtime.ts';
+import { createCoasterChestRuntime, CHEST_OPEN_LID, CHEST_BODY_CONTACT, CHEST_LID_CONTACT } from './coaster-chest-runtime.ts';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
 
+await R.init();
 const gltf = await readWorldCraftGltf(['docs/world/phase-2-playground/coaster-chest-transfer-20261104/coaster-chest.glb']);
 assert.ok(gltf, 'approved GLB must exist; never skip this audit');
 const source = gltf.scene;
@@ -184,6 +186,8 @@ function chestFixture(progress) {
       useRef: current => ({ current }), useLayoutEffect: f => f() },
     '@react-three/fiber': { useFrame: callback => { fixture.frame = callback; } },
     '@react-three/drei': { useGLTF: () => gltf },
+    '@react-three/rapier': { RigidBody: 'rigid-body', ConvexHullCollider: 'convex-hull', TrimeshCollider: 'trimesh',
+      useBeforePhysicsStep: callback => { fixture.beforeStep = callback; } },
     '../store': { useWorldStore: { getState: () => state } },
     '../WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment: () => null },
     '../WorldNight': { night: { value: 0 } },
@@ -191,7 +195,7 @@ function chestFixture(progress) {
     './coaster-track': track,
     './intent-state': { useIntentStore: selector => selector({ progress }), activateIntentTarget: target => events.push(target) },
     './WorldIntentSurface': { WorldIntentReflectiveSurface: 'reflective-surface' },
-    './coaster-chest-runtime': { CHEST_OPEN_LID, createCoasterChestRuntime: scene => (fixture.pack = createCoasterChestRuntime(scene)) },
+    './coaster-chest-runtime': { CHEST_OPEN_LID, CHEST_BODY_CONTACT, CHEST_LID_CONTACT, createCoasterChestRuntime: scene => (fixture.pack = createCoasterChestRuntime(scene)) },
   };
   fixture.render=loadChest(dependencies,doc).default;
   fixture.mountModel = () => {
@@ -206,8 +210,15 @@ function chestFixture(progress) {
 test('lid opens and closes smoothly, and holds its pose when paused, hidden or resuming after a long frame', () => {
   for (const open of [true, false]) {
     const fixture = chestFixture({ chestOpen: open, passed: [] });
-    fixture.mountModel();
+    const mounted = elementsIn(fixture.mountModel());
+    const lidBody = mounted.find(e => e.type === 'rigid-body' && e.props.type === 'kinematicPosition');
     const { lid } = fixture.pack;
+    const world = new R.World({x:0, y:0, z:0});
+    const body = world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setRotation(lid.quaternion));
+    lidBody.props.ref.current = body;
+    const hull = lidBody.props.children;
+    assert.equal(hull.props.name, CHEST_LID_CONTACT);
+    world.createCollider(R.ColliderDesc.convexHull(hull.props.args[0]), body);
     try {
       const target = open ? CHEST_OPEN_LID : 0, start = open ? 0 : CHEST_OPEN_LID;
       assert.equal(lid.rotation.x, target, 'mount restores saved progress');
@@ -225,8 +236,12 @@ test('lid opens and closes smoothly, and holds its pose when paused, hidden or r
       for (let i = 1; i <= 30; i++) {
         fixture.frame(null, 1 / 60);
         near([lid.rotation.x], [target + (start - target) * Math.exp(-7 * i / 60)]);
+        fixture.beforeStep();
+        world.step();
+        const q = body.rotation();
+        near([q.x, q.y, q.z, q.w], lid.quaternion.toArray());
       }
-    } finally { fixture.pack.dispose(); }
+    } finally { world.free(); fixture.pack.dispose(); }
   }
 });
 
