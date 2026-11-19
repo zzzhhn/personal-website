@@ -14,7 +14,7 @@ export const migratedCollisionRoots = [
   ...['C12','C13-0','C13-1','C15'].map(id=>'camp-content-push-'+id),
   ...['C03-large-tent','C04-small-tents','C05-fire-pit','C06-instances','C07-pad1','C09-pad2','C10-pad3',
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
-  'world-camp-slice',
+  'world-camp-slice', 'world-town-assets',
 ];
 const classes = new Set<CollisionClass>(['solid', 'pushable', 'soft', 'none']);
 const counts = () => ({ meshes: 0, declared: 0, unclassified: 0, invalid: 0 });

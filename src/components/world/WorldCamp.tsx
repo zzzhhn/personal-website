@@ -78,7 +78,7 @@ class AssetGuard extends Component<{ id: string; fallback: ReactNode; children: 
 }
 
 const IDENTITY_PLACEMENT = [new Matrix4()];
-export function campTileMatrices(items: readonly CampBlock[]) {
+function campTileMatrices(items: readonly CampBlock[]) {
   const dummy = new Object3D();
   return items.map(item => {
     dummy.position.set(...item.position);
@@ -702,7 +702,7 @@ function CampQACamera() {
   return null;
 }
 
-/** C02: grout slab plus six flagstones whose tops sit exactly on the unchanged pad collider top. */
+/** C02 fallback: grout slab and six coloured flagstones, shaped together at the rim. */
 function padTiles(pads: CampBlock[]): CampBlock[] {
   // Fable P2-02: a cooler grey than the sand so the pads separate from the plaza.
   const tones = ['#8A8580', '#97928B', '#807B75'];

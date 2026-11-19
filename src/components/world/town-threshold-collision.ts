@@ -1,4 +1,4 @@
-import type { BufferGeometry } from 'three';
+import { BufferGeometry } from 'three';
 
 const tolerance = .002;
 
@@ -31,4 +31,28 @@ export function townThresholdCollision(geometry: BufferGeometry, authoredHull: F
   if (points.length < 12 || !points.some((value, i) => i % 3 === 1 && Math.abs(value - limits.top) <= tolerance))
     throw new Error('Town threshold is missing its rendered stone slab');
   return { points, ranges };
+}
+
+/** Keep the stable convex slab for footsteps. Use the other stone triangles for
+ * the facade, and never register the same triangle in both collision shapes. */
+export function splitTownThreshold(geometry: BufferGeometry, hull: Float32Array, groundY: number) {
+  const slab = townThresholdCollision(geometry, hull, groundY);
+  const index = geometry.index;
+  const length = index?.count ?? geometry.attributes.position.count;
+  const facadeIndices: number[] = [];
+  const ranges: {first: number; count: number; slab: boolean}[] = [];
+  let cursor = 0;
+  function append(first: number, count: number, isSlab: boolean) {
+    if (!count) return;
+    ranges.push({first, count, slab: isSlab});
+    if (!isSlab) for (let i = first; i < first + count; i++) facadeIndices.push(index?.getX(i) ?? i);
+  }
+  for (const range of slab.ranges) {
+    append(cursor, range.first - cursor, false);
+    append(range.first, range.count, true);
+    cursor = range.first + range.count;
+  }
+  append(cursor, length - cursor, false);
+  const facade = new BufferGeometry().setAttribute('position', geometry.attributes.position).setIndex(facadeIndices);
+  return {points: slab.points, facade, ranges};
 }

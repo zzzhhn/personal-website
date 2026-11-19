@@ -38,7 +38,7 @@ import { intentRideClock, useIntentStore } from './attractions/intent-state';
 import { coasterPhase } from './attractions/coaster-track';
 import { INTENT_COASTER } from './attractions/attraction-layout';
 import { shadowScanCount } from './WorldShadows';
-import { StaticShotFrames, worldRenderMode } from './performance-render-policy';
+import { configureWorldShaderDiagnostics, StaticShotFrames, worldRenderMode } from './performance-render-policy';
 import { worldResumeProbe } from './world-resume-probe';
 import { createResumeTimeBoundary } from './world-resume-time';
 import WorldMaterialWarmup from './WorldMaterialWarmup';
@@ -305,7 +305,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
             && camera.getWorldDirection(new Vector3()).dot(aim) > .999999,
         };
       },
-      stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0, camera: camera.position.toArray() }),
+      stats: () => ({ shaderDiagnostics: gl.debug.checkShaderErrors, calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0, camera: camera.position.toArray() }),
       renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value,
         frameMs: (() => {
           if (!frameSample?.count) return null;
@@ -340,11 +340,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
     return unsubscribe;
   }, []);
   return <Canvas frameloop={renderMode} shadows="percentage" dpr={[1, quality === 'high' ? 2 : 1.5]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-    onCreated={({ gl }) => {
-      // Driver log queries synchronously wait for compilation, even on success.
-      // Keep full diagnostics in development and for an explicit production probe.
-      if (!import.meta.env.DEV && !new URLSearchParams(window.location.search).has('shaderDebug')) gl.debug.checkShaderErrors = false;
-    }}>
+    onCreated={({ gl }) => configureWorldShaderDiagnostics(gl.debug, import.meta.env.DEV, window.location.search)}>
     <ResumeTimeBoundary />
     <AlphaLocalLights /><WorldMaterialWarmup />
     <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={renderMode !== 'always'} colliders={false}>

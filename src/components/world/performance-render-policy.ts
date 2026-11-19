@@ -1,3 +1,9 @@
+/** Successful WebGL program log reads can stall the GPU. Preserve the renderer default
+ * in development or when someone explicitly opens the shader diagnostics view. */
+export function configureWorldShaderDiagnostics(debug: {checkShaderErrors: boolean}, development: boolean, search: string) {
+  if (!development && !new URLSearchParams(search).has('shaderDebug')) debug.checkShaderErrors = false;
+}
+
 /** Frozen evidence views need the same demand rendering as the pause menu.
  * A stationary player is still an active world (weather, rides and NPC motion). */
 export function worldRenderMode(visible: boolean, paused: boolean, shot: string | null): 'never' | 'demand' | 'always' {

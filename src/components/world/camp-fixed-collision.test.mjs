@@ -249,6 +249,8 @@ test('C02 installed flagstone and fallback disclose support and side collider ow
       assert.ok(collisionInventory(scene,[mesh],nodes.slice(1),[root.name]).errors.length>0,'missing support is detected');
       mesh.userData.worldCollisionInstances.placements[0].surfaceIds.push(nodes[0].name);
       assert.ok(collisionInventory(scene,[mesh],nodes,[root.name]).errors.some(error=>error.includes('invalid')),'duplicates within one rendered instance fail');
+      mesh.userData.worldCollisionInstances.placements[0].surfaceIds.length = 0;
+      assert.ok(collisionInventory(scene,[mesh],nodes,[root.name]).errors.some(error=>error.includes('invalid')),'a split instance must claim its surfaces');
       mesh.dispose();
     }
     geometry.dispose();
@@ -261,38 +263,44 @@ test('the standing capsule can walk onto, across and off a real flagstone pad wi
   const mesh=gltf.scene.getObjectByName('C02_stone_batch');
   mesh.updateWorldMatrix(true,false);
   const graded=campGradedFlagstones(mesh.geometry,mesh.matrixWorld),shapes=campStoneShapes(graded);
+  const oldFlat = new BoxGeometry(3.1,.1,2.5).translate(0,-.05,0);
+  const crossing = (surfaces,x,heading) => fixedProbe(surfaces,new Matrix4(),world=>{
+    world.timestep=dt;
+    world.createCollider(R.ColliderDesc.cuboid(6,.5,6).setTranslation(0,-.60,0));
+    const b=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(x,center-.09,-heading*2.3)
+      .lockRotations().setLinearDamping(.2).setCcdEnabled(true).setSoftCcdPrediction(.1));
+    world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72).setFriction(0)
+      .setFrictionCombineRule(R.CoefficientCombineRule.Min),b);
+    const guard=createPlayerClearance(world);
+    try {
+      const step=(target=0)=>{
+        const s=playerSupport(world,R,b),v=b.linvel(),change=playerVelocityChange(v,{x:0,y:0,z:target},dt,!!s?.grounded);
+        compensatePlayerSlopeGravity(world,b,s,dt,false);
+        b.applyImpulse({x:0,y:0,z:change.z*b.mass()},true);
+        b.setLinvel(sweptPlayerVelocity(guard,b,b.linvel(),dt,R.QueryFilterFlags.EXCLUDE_SENSORS),true);
+        followPlayerGround(world,R,b,b.linvel(),dt,false);world.step();clearPlayerSlopeGravity(b);
+      };
+      for(let i=0;i<30;i++)step();
+      let furthest=0, onStones=false;
+      for(let i=0;i<320;i++) {
+        step(heading*3.6);
+        const p=b.translation();furthest=Math.max(furthest,p.z*heading);
+        if(Math.abs(p.z)<.8&&p.y>center-.006)onStones=true;
+        if(furthest>2)break;
+      }
+      return {furthest,onStones,end:b.translation()};
+    }finally{world.removeCharacterController(guard);}
+  });
   try {
+    const prior = crossing(campStoneShapes(oldFlat),0,-1);
+    assert.ok(!prior.onStones && prior.end.z>1.25,JSON.stringify(prior));
+    t.diagnostic(`Old flat pad blocks the normal capsule at z=${prior.end.z.toFixed(3)} m.`);
     for(const x of [-.82,0,.82])for(const heading of [-1,1]) {
-      fixedProbe(shapes,new Matrix4(),world=>{
-        world.timestep=dt;
-        world.createCollider(R.ColliderDesc.cuboid(6,.5,6).setTranslation(0,-.60,0));
-        const b=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(x,center-.09,-heading*2.3)
-          .lockRotations().setLinearDamping(.2).setCcdEnabled(true).setSoftCcdPrediction(.1));
-        world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72).setFriction(0)
-          .setFrictionCombineRule(R.CoefficientCombineRule.Min),b);
-        const guard=createPlayerClearance(world);
-        try {
-          const step=(target=0)=>{
-            const s=playerSupport(world,R,b),v=b.linvel(),change=playerVelocityChange(v,{x:0,y:0,z:target},dt,!!s?.grounded);
-            compensatePlayerSlopeGravity(world,b,s,dt,false);
-            b.applyImpulse({x:0,y:0,z:change.z*b.mass()},true);
-            b.setLinvel(sweptPlayerVelocity(guard,b,b.linvel(),dt,R.QueryFilterFlags.EXCLUDE_SENSORS),true);
-            followPlayerGround(world,R,b,b.linvel(),dt,false);world.step();clearPlayerSlopeGravity(b);
-          };
-          for(let i=0;i<30;i++)step();
-          let furthest=0, onStones=false;
-          for(let i=0;i<320;i++) {
-            step(heading*3.6);
-            const p=b.translation();furthest=Math.max(furthest,p.z*heading);
-            if(Math.abs(p.z)<.8&&p.y>center-.006)onStones=true;
-            if(furthest>2)break;
-          }
-          assert.ok(furthest>2&&onStones, `pad lane ${x} ${heading} stopped at ${JSON.stringify(b.translation())}`);
-        }finally{world.removeCharacterController(guard);}
-      });
+      const {furthest,onStones,end} = crossing(shapes,x,heading);
+      assert.ok(furthest>2&&onStones, `pad lane ${x} ${heading} stopped at ${JSON.stringify(end)}`);
     }
     t.diagnostic('Six bidirectional centre/margin crossings retain the stone-height support.');
-  }finally{graded.dispose();disposeWorldCraftGltf(gltf.scene);}
+  }finally{graded.dispose();oldFlat.dispose();disposeWorldCraftGltf(gltf.scene);}
 });
 
 test('the visible C08 covers, ledger and edges own the book stack collision at the real desk angle', async t => {

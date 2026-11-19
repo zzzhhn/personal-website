@@ -1,49 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {registerHooks} from 'node:module';
-import ts from 'typescript';
 import {MeshStandardMaterial,ShaderLib} from 'three';
 import {quarryFloraBanks,quarryFloraKind,quarryFloraStyle} from './alpha-mine-flora.ts';
 import {ALPHA_MINE_ORIGIN} from './alpha-mine-layout.ts';
 
-// Load only the real geometry/shader factories. React/Rapier scene services are inert here;
-// this is an in-memory TSX unit-test transform, not a renderer or a project build.
-const grassUrl=new URL('./WorldGrass.tsx',import.meta.url).href;
-const materialUrl=new URL('./WorldMineMaterial.ts',import.meta.url).href;
-const moduleUrl=source=>'data:text/javascript,'+encodeURIComponent(source);
-const clockUrl=moduleUrl('export const night={value:0};');
-const stubs={
- '@react-three/fiber':moduleUrl('export const useFrame=()=>{},useThree=()=>{};'),
- '@react-three/rapier':moduleUrl('export const useRapier=()=>{};'),
- './layout':moduleUrl('export const VEHICLES=[];'),
- './store':moduleUrl('export const useWorldStore=()=>{};'),
- './WorldWind':moduleUrl('export const windUniforms={uWindTime:{value:0},uWindStrength:{value:1}};'),
- './WorldLandform':moduleUrl('export const GRID={nx:16,nz:16,minX:-4,minZ:-4};'),
-};
-const hook=registerHooks({
- resolve(specifier,context,next){
-  if(context.parentURL===grassUrl){
-   if(stubs[specifier])return {url:stubs[specifier],shortCircuit:true};
-   if(specifier==='./alpha-mine-flora')return next(new URL('./alpha-mine-flora.ts',import.meta.url).href,context);
-  }
-  if(context.parentURL===materialUrl){
-   if(specifier==='./WorldNight')return {url:clockUrl,shortCircuit:true};
-   if(specifier==='./WorldCraftMaterials')return next(new URL('./WorldCraftMaterials.ts',import.meta.url).href,context);
-  }
-  return next(specifier,context);
- },
- load(url,context,next){
-  if(url===grassUrl)return {format:'module',shortCircuit:true,source:ts.transpileModule(readFileSync(new URL(url),'utf8'),{
-   compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ESNext,jsx:ts.JsxEmit.ReactJSX},
-  }).outputText};
-  return next(url,context);
- },
-});
-const {grassTuftGeometry,grassMaterial,GRASS_PROFILE}=await import('./WorldGrass.tsx');
-const {mineSurfaceMaterial,MINE_NIGHT_BOUNCE}=await import('./WorldMineMaterial.ts');
-const {night}=await import(clockUrl);
-hook.deregister();
+import { grassTuftGeometry, grassMaterial, GRASS_PROFILE } from './WorldGrass.tsx';
+import { mineSurfaceMaterial, MINE_NIGHT_BOUNCE } from './WorldMineMaterial.ts';
+import { night } from './WorldNight.ts';
+
 const compile=material=>{
  const shader={uniforms:{},vertexShader:ShaderLib.standard.vertexShader,fragmentShader:ShaderLib.standard.fragmentShader};
  material.onBeforeCompile(shader,null);return shader;

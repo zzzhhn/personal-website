@@ -1,8 +1,7 @@
 import type { BufferGeometry } from 'three';
 
-/** The plaque's five material primitives have already received the same world
- * placement as the visual batch. Copy positions and indices for its one collider. */
-export function townPlaqueCollision(parts: readonly BufferGeometry[]) {
+/** Material primitives already carry the world placement used to merge the visual batches. */
+export function townSurfaceCollision(parts: readonly BufferGeometry[]) {
   const vertexCount = parts.reduce((n, part) => n + part.attributes.position.count, 0);
   const indexCount = parts.reduce((n, part) => n + (part.index?.count ?? part.attributes.position.count), 0);
   const vertices = new Float32Array(vertexCount * 3), indices = new Uint32Array(indexCount);
@@ -16,4 +15,10 @@ export function townPlaqueCollision(parts: readonly BufferGeometry[]) {
     firstIndex += count;
   }
   return { vertices, indices };
+}
+
+/** Flexible palm fronds and kiosk cloth keep their visible motion and do not stop actors. */
+export function townMaterialContact(material: string) {
+  if (material === 'palm_leaf' || material === 'palm_leaf_dark' || material.startsWith('town_canvas')) return 'soft';
+  return 'solid';
 }

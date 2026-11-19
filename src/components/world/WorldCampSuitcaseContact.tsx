@@ -39,8 +39,8 @@ export default function WorldCampSuitcaseContact({ slot }: { slot: SuitcaseConta
         model?.dispose(); model = null; current = slot.root; revision = slot.revision;
         if (replacedPaving) {support = null; pavingRoot = null;}
         if (current) try {
-          // The synchronous flagstone slice is present by the first normal scene frame. Missing
-          // support fails closed; no polling or exploration-blocking dependency is introduced.
+          // The flagstone fallback is already usable while the candidate streams. Rebuild
+          // the contact heights when the visible paving branch is replaced.
           const paving = support ? null : scene.getObjectByName('camp-C02-flagstones');
           if (paving) { pavingRoot = paving; support = suitcaseContactSupport(paving); }
           const wheels = suitcaseContactWheels(current);

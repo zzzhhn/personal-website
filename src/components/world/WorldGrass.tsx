@@ -83,7 +83,7 @@ const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window
 /** Five blades, each a two-segment taper (quad + tip = 3 triangles): 15 triangles per tuft.
  * aBlade.x = packed quarry detail, aBlade.y = island blade phase, aBlade.z = island cross-width.
  * Bend weight is derived from the selected geometry's height, not the original grass bank. */
-export function grassTuftGeometry() {
+export function grassTuftGeometry(craft = NATURE_CRAFT) {
   const pos: number[] = [], col: number[] = [], blade: number[] = [];
   for (let k = 0; k < 5; k++) {
     const a = k / 5 * Math.PI * 2 + .7 * (k % 2), r = .03 + .05 * ((k * 7) % 3) / 2, lean = .16 + .1 * ((k * 3) % 2);
@@ -92,12 +92,12 @@ export function grassTuftGeometry() {
     const tx = -Math.sin(a) * w, tz = Math.cos(a) * w;
     // A narrow attached base opens into a cupped, twisted shoulder then sweeps to a tip.
     // Keep exactly 45 vertices: quarry flora banks share these attribute slots.
-    const rootWidth = NATURE_CRAFT ? .55 : 1, shoulder = NATURE_CRAFT ? .92 : .7;
+    const rootWidth = craft ? .55 : 1, shoulder = craft ? .92 : .7;
     const p0 = [bx - tx * rootWidth, 0, bz - tz * rootWidth], p1 = [bx + tx * rootWidth, 0, bz + tz * rootWidth];
     const m0 = [bx - tx * shoulder + dx * .28, h * .55, bz - tz * shoulder + dz * .28];
-    const m1 = [bx + tx * shoulder + dx * (NATURE_CRAFT ? .44 : .35), h * (NATURE_CRAFT ? .59 : .55), bz + tz * shoulder + dz * (NATURE_CRAFT ? .44 : .35)];
-    if (!NATURE_CRAFT) { m0[0] = bx - tx * .7 + dx * .35; m0[2] = bz - tz * .7 + dz * .35; }
-    const tip = [bx + dx + (NATURE_CRAFT ? tx * .8 : 0), h, bz + dz + (NATURE_CRAFT ? tz * .8 : 0)];
+    const m1 = [bx + tx * shoulder + dx * (craft ? .44 : .35), h * (craft ? .59 : .55), bz + tz * shoulder + dz * (craft ? .44 : .35)];
+    if (!craft) { m0[0] = bx - tx * .7 + dx * .35; m0[2] = bz - tz * .7 + dz * .35; }
+    const tip = [bx + dx + (craft ? tx * .8 : 0), h, bz + dz + (craft ? tz * .8 : 0)];
     const tris = [p0, p1, m1, p0, m1, m0, m0, m1, tip];
     tris.forEach((v, i) => {
       pos.push(...v);

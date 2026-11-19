@@ -22,7 +22,7 @@ VIEWPORT = {"width": 960, "height": 540}
 DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-craft",
              "camp-craft-C05", "camp-craft-C06", "camp-craft-C07", "camp-tree-craft-G17-L0_wood",
              "C02_stone_batch", "camp-workshop-C08",
-             "world-town", "world-street", "world-districts-v4",
+             "world-town-assets", "world-street", "world-districts-v4",
              "djc-beach-club", "alpha-island-batch2", "alpha-echo-cave-station-6",
              "alpha-station5-three-sluices-waterwheel", "world-ibd-yard", "factory-structure",
              "alpha-mainland-pier-r4-candidate", "alpha-cable-vehicle-model", "alpha-ferry-vehicle-model",
