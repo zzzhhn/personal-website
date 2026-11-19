@@ -29,9 +29,17 @@
 | 缆车 · 上站到下站 | 公开 `start=alpha-wind` 出生，键盘步行到下站。E 上行后，在上站接地并步行约 5.3 米至下行提示。全程无 QA 定位。 | 上站落脚体心 `[260,73.819,218]`，下行落脚 `[266,38.820,150]`，W 走离 0.457 米。 |
 | 雪橇 · 空车回位后再乘坐 | 公开 `start=alpha-summit` 出生，键盘步行到上站并完成第一次下滑。确认空车从下站驶离后，用一次 QA 定位初始化上站候乘位置。坐标以外未改动雪橇、行程或时钟。 | 回位时同一雪橇碰撞体抵达 `[259,76.160,236]`，上站重新出现登乘提示。再次 E 登乘后于下站 `[171,4.620,163]` 接地，W 走离 0.657 米。空车回位实际沿滑道运行。 |
 
-三条页面错误均为零。营地到大陆渡口的步行尝试在 L01 椅与铺装边处中断，本次完成的是从木栈桥开始的渡船往返。生产 HTML 的 SHA-256 为 `52b68ff8df49c5009ba026f4d79e4a7d80841652a6b2d8fd9accd45286dcbccb`。原始记录在 `evidence/city-foundation/transport-supplement-browser.jsonl` 与 `evidence/city-foundation/transport-supplement-ferry.jsonl`。
+三条页面错误均为零。首次渡船往返从木栈桥开始。走向南侧 L01 固定灯柱和铺装交界的路线在第一轮中断，后续用普通营地出生补齐了这段。生产 HTML 的 SHA-256 为 `52b68ff8df49c5009ba026f4d79e4a7d80841652a6b2d8fd9accd45286dcbccb`。原始记录在 `evidence/city-foundation/transport-supplement-browser.jsonl` 与 `evidence/city-foundation/transport-supplement-ferry.jsonl`。
+
+### 普通营地出生到渡船双向往返
+
+两根 L01 固定灯柱之间是正式营地出口。旧版即使避开柱子，也会卡在铺装起点 x = −30 的竖面。Chrome 在 z = 34.42 和 z = 35.68 两处读到约 4 cm 的高度差，接触项为 `paving-v4-3-top` 与 `paving-v4-3-walls`。步行者脚底仍在 y ≈ 4.80 的草地上。修复 `501acce` 在原铺装内用 0.75 米接坡连接草地与 y = 4.84 的原路面，渲染与碰撞共享顶面三角，铺装外侧立面及灯柱、越野车位置保留。同样的发布地形和角色胶囊沿 z = 32.20、34.42、35.68 实测。旧版从草地进坡的三条线卡在 x ≈ −30.16。修后六个双向样本全过且始终接地。
+
+修复后的独立生产 Chrome 从默认营地出生体心 `[−41.999,5.619,35.007]` 起，用 WASD 穿过两灯中间，绕过停放的越野车，走下坡后沿沿海公路绕开抬高的 Contact 地坪，再走上大陆木栈桥。21 个步行点均接地，无跳跃、传送或物件调整。大陆登船前体心为 `[−10.090,1.960,108.812]`。在两端分别按真实 E 并点击 HUD 的 `Skip travel to arrival`，山岛接地 `[156,2.348,148]`，返程在大陆接地 `[−10,1.960,109]`。返程后按 W 走离 1.241 米，页面错误为零。
+
+生产 HTML 的 SHA-256 为 `75f121102f9c8cf8d868bbee7129aa52cebc100677d6e05a6234f9fe8ef31c5c`。原始逐步输入及两端登乘记录为 `evidence/city-foundation/transport-ferry-public-roundtrip.jsonl`。复跑命令为 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/alpha-island/transports/ferry-public-roundtrip.mjs http://127.0.0.1:<生产端口>`。
 
 ## 仍待验收
 
-- 从营地至三个交通站的全程浏览器徒步和原时长旅行。当前浏览器跑了上车、跳过、下车和走离，物理套件覆盖双向与轨迹采样，目标机 Safari 仍待复测。
+- 从默认营地徒步接缆车和雪橇、三套载具的不跳过旅行、目标机 Safari。两种山岛出生到站的实际键盘操作见上表。
 - 滑槽底壳、张紧索、一般沿线支架、轮信号等剩余外景未纳入这 11 个根。导游的专用动画脚底采样仍用既有站台和踏板层描述，实际胶囊使用本次同源物理；远离站台的动画触地层与 Safari 帧时间待复测。
