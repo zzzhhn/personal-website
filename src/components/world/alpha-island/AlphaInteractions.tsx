@@ -1,5 +1,5 @@
 import {placeSandRouteBall,SAND_BALL_RADIUS} from './alpha-sand-route';
-import { RigidBody, TrimeshCollider, useRapier } from '@react-three/rapier';
+import { ConvexHullCollider, RigidBody, TrimeshCollider, useRapier } from '@react-three/rapier';
 import { useOwnedWorldVisual } from '../useOwnedWorldVisual';
 import { createWindFlagStand } from './alpha-wind-flag-stand';
 import { useEffect,useMemo,useRef } from 'react';
@@ -21,10 +21,12 @@ import { lanternHandleHeight } from './alpha-lantern-layout';
 import { alphaActionNotice,alphaStonePlacementTarget,alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction } from './alpha-action-reach';
 import { alphaActorCanAct, alphaStationInteraction } from './alpha-station-interaction';
 import { heldPropPoint } from '../accepted-action';
+import { alphaPersonalStone, alphaPersonalStones, createPersonalCairnGeometry } from './alpha-personal-cairn';
 const announce=(zh:string,en:string)=>useWorldStore.setState({toast:{zh,en,at:performance.now()}});
 function Action({kind}:{kind:AlphaAction}) {
   const wind = useAlphaStore(s => kind === 'wind' ? s.wind : 0);
-  const station = useMemo(() => alphaStationInteraction(kind, wind, primeAlphaAudio), [kind, wind]);
+  const stones = useAlphaStore(s => kind === 'stone' ? s.stones : 0);
+  const station = useMemo(() => alphaStationInteraction(kind, wind, primeAlphaAudio, stones), [kind, wind, stones]);
   useInteractable(station);
   return null;
 }
@@ -72,14 +74,32 @@ export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.car
  const completed=advanceAlphaHand(dt,interactionActor.position,alphaActorCanAct()&&interactionActor.grounded);
  if(completed){if(completed.kind==='bell')ringAlphaBell();const notice=alphaActionNotice(completed.kind,completed.wind);announce(notice.zh,notice.en);}
  }
- if(stoneRef.current){stoneRef.current.visible=useAlphaStore.getState().action==='stone'&&placing;if(alphaMotion.handTarget){const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaMotion.handTarget));stoneRef.current.position.set(p[0],p[1]-.08,p[2]);}}
+ if(stoneRef.current){stoneRef.current.visible=useAlphaStore.getState().action==='stone'&&placing;if(stoneRef.current.visible&&alphaMotion.handTarget){
+   const stone=alphaPersonalStone(s.stones),p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaMotion.handTarget));
+   stoneRef.current.position.set(p[0],p[1]-stone.gripLift,p[2]);stoneRef.current.rotation.y=stone.yaw;stoneRef.current.scale.set(...stone.scale);
+ }}
  if(hand.current){hand.current.visible=useAlphaStore.getState().carried;const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaLanternCarryTarget(interactionActor.position,interactionActor.yaw)));hand.current.position.set(p[0],p[1]-lanternHandleHeight,p[2]);}
  if(ball.current){const t=((alphaMotion.time-alphaMotion.sandAt)/6);ball.current.visible=t>=0&&t<1&&placeSandRouteBall(physics,marble,t,ball.current.position);}
  const pos=alphaLocal(world.position);for(const {n,point:p} of ALPHA_TRAIL_STOPS){if(Math.hypot(pos[0]-p[0],pos[2]-p[2])<8&&Math.abs(pos[1]-p[1])<4)visitAlphaStation(n);}
  });
  return <group name="alpha-playable-stations">{(['bell','sand','tree','wind','stone','lantern'] as AlphaAction[]).map(kind=><Action key={kind} kind={kind}/>)}<group name="alpha-shelf-lanterns">{!carried&&<AlphaLantern shelf={0}/>}<AlphaLantern shelf={1}/></group><AlphaLantern hand={hand}/><FlyingLanterns/><WindFlags/><mesh ref={ball} name="alpha-sand-route-ball" userData={{worldCollision:'none',collisionReason:'Animated marble demonstrates the route after pressing the sand-table button'}} visible={false}><sphereGeometry args={[SAND_BALL_RADIUS,12,8]}/><meshStandardMaterial color="#dba650" metalness={.6} roughness={.3}/></mesh><mesh ref={stoneRef} name="alpha-carried-summit-stone" userData={{worldCollision:'none',collisionReason:'Stone held in the placing hand until the action commits'}} visible={false} scale={[.32,.1,.25]}><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color="#adb3a6" roughness={.94}/></mesh><PlayerCairn/></group>;
 }
-function PlayerCairn(){const n=useAlphaStore(s=>s.stones);return <group name="alpha-personal-cairn" position={[1,83,39.2]}>{Array.from({length:n},(_,i)=><mesh key={i} position={[Math.sin(i*2.3)*(.15+(i%5)*.075),.12+Math.floor(i/8)*.19,Math.cos(i*2.3)*(.15+(i%5)*.075)]} scale={[.32-i*.003,.1,.25-i*.002]} castShadow><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color={i%2?'#a6aba3':'#8c9693'} roughness={.96}/></mesh>)}</group>;}
+export function PlayerCairn(){
+ const count=useAlphaStore(s=>s.stones);
+ const visual=useMemo(createPersonalCairnGeometry,[]);
+ useOwnedWorldVisual(visual);
+ if(!count)return null;
+ return <group name="alpha-personal-cairn">
+   <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:'alpha-personal-cairn'}}>
+    {alphaPersonalStones.slice(0,count).map(({id,position,yaw,scale,color},i)=><group key={id} position={position} rotation={[0,yaw,0]}>
+      <mesh name={id+'-mesh'} geometry={visual.geometry} scale={scale} userData={{worldCollision:'solid',surfaceId:id}} castShadow>
+        <meshStandardMaterial color={color} roughness={.96}/>
+      </mesh>
+      <ConvexHullCollider name={id} args={[visual.hulls[i]]} friction={.8} restitution={0}/>
+    </group>)}
+   </RigidBody>
+ </group>;
+}
 
 const flagUniforms={time:{value:0},strength:{value:0}};
 function AlphaFlag({color}:{color:string}){const m=useMemo(()=>{const material=new MeshStandardMaterial({color,side:DoubleSide,roughness:.95});material.onBeforeCompile=s=>{s.uniforms.uAlphaFlagTime=flagUniforms.time;s.uniforms.uAlphaFlagStrength=flagUniforms.strength;s.vertexShader='uniform float uAlphaFlagTime;uniform float uAlphaFlagStrength;\n'+s.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nfloat freeEdge=pow(clamp((position.x+.65)/1.3,0.,1.),1.5); transformed.z+=sin(position.x*8.-uAlphaFlagTime*(2.5+uAlphaFlagStrength*1.8)+position.y*4.)*freeEdge*(.04+.065*uAlphaFlagStrength);');};material.customProgramCacheKey=()=> 'alpha-woven-flag-v1';return material;},[color]);useEffect(()=>()=>m.dispose(),[m]);return <mesh position={[.7,3,0]} material={m} userData={{worldCollision:'none',collisionReason:'The flexible single-sided cloth is traversable beside its solid mast'}}><planeGeometry args={[1.3,.65,12,4]}/></mesh>;}

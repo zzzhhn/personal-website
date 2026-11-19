@@ -2,19 +2,30 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { Bone,Group,Matrix4,Vector3 } from 'three';
+import { createRequire } from 'node:module';
+import { act, createElement as h, Suspense } from 'react';
+import R from '@dimforge/rapier3d-compat';
+import { Bone,Group,Matrix4,Mesh,MeshStandardMaterial,Object3D,PerspectiveCamera,Vector3 } from 'three';
 import { GuideCampLayer } from '../WorldGuideCamp.ts';
 import { PLAYER_RADIUS,PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
-import { alphaWorld,ALPHA_WIND_GATE_Y } from './alpha-layout.ts';
+import { findPickupStand, pickupGroundRoute } from '../pickup-approach.ts';
+import { alphaWorld,ALPHA_ORIGIN,ALPHA_WIND_GATE_Y } from './alpha-layout.ts';
 import { shippingAlphaTerrain } from '../../../../tools/world/alpha-mine-tests/shipping-alpha-terrain.mjs';
+import { compileWorldComponent } from '../../../../tools/world/alpha-mine-tests/component-host.mjs';
 import { alphaActionTarget,alphaActionCanReach,alphaActionLabel,alphaActionNotice,alphaStonePlacementTarget,
-  alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction } from './alpha-action-reach.ts';
+  alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction,alphaPickupApproach } from './alpha-action-reach.ts';
 
 import { actorActivities, interactionActor } from '../actor-activities.ts';
 import { registerCampActivity } from '../camp-actor-activity.ts';
 import { campPropActor, startCampPropInteraction } from '../camp-prop-interactions.ts';
 import { alphaStationInteraction } from './alpha-station-interaction.ts';
 import { advanceAlphaHand, alphaMotion, cancelAlphaHand, useAlphaStore } from './alpha-state.ts';
+import { alphaPersonalStones, ALPHA_CAIRN_STANCE_RADIUS, createPersonalCairnGeometry } from './alpha-personal-cairn.ts';
+import * as personalCairn from './alpha-personal-cairn.ts';
+import * as alphaState from './alpha-state.ts';
+import { collisionInventory } from '../world-collision-inventory.ts';
+import { handleWorldEscape, useWorldStore } from '../store.ts';
+import { useOwnedWorldVisual } from '../useOwnedWorldVisual.ts';
 
 const centreHeight=PLAYER_RADIUS+PLAYER_HALF_HEIGHT;
 let guideSource;
@@ -27,12 +38,13 @@ function rig(){
   gltf.nodes.forEach((n,i)=>n.children?.forEach(c=>nodes[i].add(nodes[c])));const scene=new Group();
   gltf.scenes[gltf.scene??0].nodes.forEach(i=>scene.add(nodes[i]));return scene;
 }
-function palmAt(stand,target){
+function palmPosition(stand,target){
   const scene=rig();scene.position.fromArray(stand);scene.rotation.y=Math.atan2(stand[2]-target[2],target[0]-stand[0]);scene.updateMatrixWorld(true);
   const layer=new GuideCampLayer(scene);let palm;
   for(let i=0;i<15;i++)palm=layer.apply(target,'grip',.05);
-  return new Vector3(...palm).distanceTo(new Vector3(...target));
+  return new Vector3(...palm);
 }
+const palmAt=(stand,target)=>palmPosition(stand,target).distanceTo(new Vector3(...target));
 const ground=shippingAlphaTerrain();
 test.after(()=>ground.dispose());
 function physicalSupport(x,z) {
@@ -129,19 +141,217 @@ test('each wind grip has a natural supported stance; labels and feedback describ
   console.log(JSON.stringify({wind:evidence}));
 });
 
-test('first cairn addition retains its original arc and has a supported planted stance',()=>{
-  const stand=[1.45,83,39.675];assertFlatStance(stand[0],stand[2],83);
+test('first cairn addition keeps its existing curve and ends at the actual terrain-set grip',()=>{
+  const stand=alphaPersonalStones[0].stand;assertFlatStance(stand[0],stand[2],83);
   // Within the existing summit's 3m decorative-cairn exclusion and far from the rack.
   assert.ok(Math.hypot(stand[0]-2,stand[2]-39)<3);
   assert.ok(Math.hypot(stand[0]+8,stand[2]-42)>4);
   let maxError=0;
   for(let i=0;i<=16;i++){
     const f=i/16,target=alphaStonePlacementTarget(0,f);
-    assert.deepEqual(target,[1,83.35+(.12+.08-.35)*f+Math.sin(Math.PI*f)*.55,40+(-.8+.15)*f]);
+    assert.ok(Math.abs(target[1]-(83.35+(.099301+.08-.35)*f+Math.sin(Math.PI*f)*.55))<1e-8);
+    assert.ok(Math.abs(target[2]-(40+(-.8+.15)*f))<1e-8);
     maxError=Math.max(maxError,palmAt(stand,target));
   }
   assert.ok(maxError<.06,`first stone arc unreachable: ${maxError}`);
   console.log(JSON.stringify({firstStoneStand:stand,maxPalmError:maxError,contactThreshold:.06}));
+});
+
+test('all 32 stone prefixes sit on shipping summit geometry, clear their G24 stance, and offer a reachable next grip',async t=>{
+  await R.init();
+  const world=new R.World({x:0,y:-9.81,z:0}),visual=createPersonalCairnGeometry();
+  t.after(()=>{world.free();visual.dispose();});
+  const vector=([x,y,z])=>({x,y,z});
+  const q={x:0,y:0,z:0,w:1},down={x:0,y:-1,z:0};
+  const base=[ground.data.surface,ground.data.solid].map(indices=>world.createCollider(R.ColliderDesc.trimesh(ground.data.positions,indices).setTranslation(...ALPHA_ORIGIN)));
+  const avatar=world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased());
+  const playerShape=new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),installed=[];
+  world.step();
+  let minStanceClearance=Infinity,maxPenetration=0,maxHandError=0,maxHeldOverlap=0,maxTop=0,previous=null,direct=0;
+  const route=(from,to)=>pickupGroundRoute(world,R,avatar,from,to)?.every(Number.isFinite)===true;
+  function outer(stand){
+    const aim=[236,83+centreHeight+.002,229.13],dx=stand[0]-aim[0],dz=stand[2]-aim[2],d=Math.hypot(dx,dz);
+    return [aim[0]+dx/d*1.55,aim[1],aim[2]+dz/d*1.55];
+  }
+  const centre=[236,229.13];
+  const around=(from,to)=>{
+    const origin=outer(from),destination=outer(to);
+    if(!route(from,origin)||!route(destination,to))return false;
+    const start=Math.atan2(origin[2]-centre[1],origin[0]-centre[0]),end=Math.atan2(destination[2]-centre[1],destination[0]-centre[0]);
+    const delta=Math.atan2(Math.sin(end-start),Math.cos(end-start));
+    const count=Math.max(1,Math.ceil(Math.abs(delta)/.27));
+    let last=origin;
+    for(let i=1;i<=count;i++){
+      const a=start+delta*i/count,next=[centre[0]+1.55*Math.cos(a),to[1],centre[1]+1.55*Math.sin(a)];
+      if(!route(last,next))return false;
+      last=next;
+    }
+    return true;
+  };
+  const evidence=[];
+  for(const [i,stone] of alphaPersonalStones.entries()){
+    const position=alphaWorld(stone.position),stand=actor(stone.stand);
+    stand[1]+=.002;
+    assertFlatStance(stone.stand[0],stone.stand[2],stone.stand[1]);
+    assert.ok(findPickupStand(world,R,avatar,outer(stand),alphaPickupApproach('stone',0,i)),`stone ${i+1} has a floor-checked ordinary approach`);
+    if(previous){
+      if(route(previous,stand))direct++;
+      else assert.ok(around(previous,stand),`stone ${i+1} can be reached without climbing the existing pile`);
+    }
+    const rotation={...q,y:Math.sin(stone.yaw/2),w:Math.cos(stone.yaw/2)};
+    const desc=R.ColliderDesc.convexHull(visual.hulls[i]);
+    const start={...vector(position),y:86};
+    const rest=world.castShape(start,rotation,down,desc.shape,0,4,false);
+    assert.ok(rest,`stone ${i+1} has an actual horizontal support`);
+    const penetration=86-rest.time_of_impact-position[1];
+    assert.ok(penetration>=-.0001&&penetration<.0011,`stone ${i+1} has ${penetration}m of support contact`);
+    maxPenetration=Math.max(maxPenetration,penetration);
+    maxTop=Math.max(maxTop,stone.position[1]+stone.scale[1]-83);
+    const footprint=[...installed].map(c=>c.contactShape(playerShape,vector(stand),q,.2)).filter(Boolean);
+    const current=desc.shape.contactShape(vector(position),rotation,playerShape,vector(stand),q,.2);
+    const clearance=Math.min(...footprint.map(hit=>hit.distance),current?.distance??.2);
+    assert.ok(clearance>ALPHA_CAIRN_STANCE_RADIUS,`stone ${i+1} intersects the accepted stance: ${clearance}`);
+    minStanceClearance=Math.min(minStanceClearance,clearance);
+    let handError=0;
+    for(const [ox,oz] of [[0,0],[.039,0],[-.039,0],[0,.039],[0,-.039]]){
+      const placedStand=[stone.stand[0]+ox,stone.stand[1],stone.stand[2]+oz];
+      for(let sample=0;sample<=16;sample++){
+        const target=alphaStonePlacementTarget(i,sample/16),palm=palmPosition(placedStand,target);
+        handError=Math.max(handError,palm.distanceTo(new Vector3(...target)));
+        if(ox||oz||sample===16)continue;
+        const prop=alphaWorld([palm.x,palm.y-stone.gripLift,palm.z]);
+        for(const hull of installed){
+          const touch=hull.contactShape(desc.shape,vector(prop),rotation,0);
+          if(touch)maxHeldOverlap=Math.max(maxHeldOverlap,-touch.distance);
+        }
+      }
+    }
+    assert.ok(handError<.06,`stone ${i+1} palm error ${handError}`);
+    maxHandError=Math.max(maxHandError,handError);
+    const collider=world.createCollider(desc.setRotation(rotation).setTranslation(...position));
+    for(const prior of installed){
+      const contact=prior.contactShape(desc.shape,vector(position),rotation,0);
+      assert.ok(!contact||contact.distance>-.0011,`stone ${i+1} buries part of an earlier stone`);
+    }
+    installed.push(collider);world.step();previous=stand;
+    evidence.push({i:i+1,position,stand,penetration,clearance,handError,support:base.includes(rest.collider)?'summit':1+installed.indexOf(rest.collider)});
+  }
+  assert.equal(installed.length,32);
+  assert.ok(maxHeldOverlap<.01,`a carried stone enters a prior stone by ${maxHeldOverlap} m before the release`);
+  assert.ok(maxTop<.65);
+  function walk(from,velocity){
+    const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setCcdEnabled(true).lockRotations().setTranslation(...from));
+    const collider=world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72),body);
+    const touches=new Set();
+    for(let frame=0;frame<140;frame++){
+      body.setLinvel({x:frame<10?0:velocity[0],y:body.linvel().y,z:frame<10?0:velocity[1]},true);
+      world.step();world.contactPairsWith(collider,c=>touches.add(c.handle));
+    }
+    const end={...body.translation()};world.removeRigidBody(body);
+    return {end,ground:base.some(c=>touches.has(c.handle)),pile:installed.some(c=>touches.has(c.handle))};
+  }
+  const bypass=walk([237.2,83+centreHeight+.002,231.4],[0,-2]);
+  const approach=walk([238,83+centreHeight+.002,229.21],[-2,0]);
+  assert.ok(bypass.ground&&!bypass.pile&&bypass.end.z<227.2,JSON.stringify(bypass));
+  assert.ok(approach.ground&&approach.pile&&approach.end.x>236.9,JSON.stringify(approach));
+  t.diagnostic(JSON.stringify({direct,walkAround:31-direct,minStanceClearance,maxPenetration,maxHandError,maxHeldOverlap,maxTop,bypass,approach,evidence}));
+});
+
+test('the stone station commits each E acceptance once, preserves all saved counts and cancels an abandoned stone',t=>{
+  const saved=useAlphaStore.getState();
+  const nativeStorage=globalThis.localStorage,writes=[];
+  Object.defineProperty(globalThis,'localStorage',{configurable:true,value:{setItem:(key,value)=>writes.push({key,value})}});
+  t.after(()=>{
+    Object.defineProperty(globalThis,'localStorage',{configurable:true,value:nativeStorage});
+    cancelAlphaHand();useAlphaStore.setState(saved);actorActivities.sync({available:false,grounded:false});
+  });
+  useAlphaStore.setState({stones:0,action:null,carried:false,visits:[]});
+  let primes=0;
+  for(const [i,stone] of alphaPersonalStones.entries()){
+    const position=actor(stone.stand),stand=[position[0]+.35,position[1],position[2]];
+    const station=alphaStationInteraction('stone',0,()=>{primes++;},i);
+    actorActivities.sync({position:stand,yaw:0,grounded:true,available:true});
+    station.onInteract();assert.equal(useAlphaStore.getState().action,null);
+    actorActivities.sync({position,yaw:0,grounded:true,available:true});
+    station.onInteract();assert.equal(useAlphaStore.getState().action,'stone');
+    if(i===16){
+      for(let frame=0;frame<10;frame++)advanceAlphaHand(.06,position,true);
+      advanceAlphaHand(.06,stand,true);
+      assert.equal(useAlphaStore.getState().action,null);
+      assert.equal(useAlphaStore.getState().stones,i);
+      assert.equal(JSON.parse(writes.at(-1).value).stones,i);
+      station.onInteract();assert.equal(useAlphaStore.getState().action,'stone');
+      for(let frame=0;frame<12;frame++)advanceAlphaHand(.06,position,true);
+      const paused=useWorldStore.getState().paused;
+      handleWorldEscape();
+      assert.equal(useWorldStore.getState().paused,paused);
+      assert.equal(useAlphaStore.getState().action,null);
+      assert.equal(useAlphaStore.getState().stones,i);
+      assert.equal(JSON.parse(writes.at(-1).value).stones,i);
+      station.onInteract();assert.equal(useAlphaStore.getState().action,'stone');
+    }
+    station.onInteract();
+    for(let frame=0;frame<28;frame++)advanceAlphaHand(.06,position,true);
+    assert.equal(useAlphaStore.getState().stones,i+1);
+    assert.equal(useAlphaStore.getState().action,null);
+    assert.equal(station.enabled(),false,'a stale offer cannot place the next stone');
+    assert.equal(JSON.parse(writes.at(-1).value).stones,i+1);
+  }
+  assert.ok(writes.every(({key})=>key==='alpha-island-progress-v1'));
+  assert.equal(alphaStationInteraction('stone',0,()=>{},32).enabled(),false);
+  assert.equal(primes,34);
+});
+
+test('the rendered cairn loads any saved prefix with stable named Rapier hulls and unmounts cleanly',async()=>{
+  const require=createRequire(import.meta.url),fiber=require('@react-three/fiber'),physics=require('@react-three/rapier');
+  const wasm=createRequire(require.resolve('@react-three/rapier'))('@dimforge/rapier3d-compat');
+  await wasm.init();
+  fiber.extend({Group,Mesh,MeshStandardMaterial,Object3D});
+  globalThis.IS_REACT_ACT_ENVIRONMENT=true;
+  const canvas=fiber.createRoot({}),previous=useAlphaStore.getState().stones,rootName='alpha-personal-cairn';
+  const renderHost={render(){},setSize(){},setPixelRatio(){},capabilities:{getMaxAnisotropy:()=>4}};
+  await canvas.configure({gl:renderHost,camera:new PerspectiveCamera(),frameloop:'never',dpr:1,size:{width:320,height:200,top:0,left:0}});
+  const {PlayerCairn}=compileWorldComponent(new URL('AlphaInteractions.tsx',import.meta.url))({
+    '@react-three/fiber':fiber,'@react-three/rapier':physics,'./alpha-state':alphaState,'./alpha-personal-cairn':personalCairn,
+    '../useOwnedWorldVisual':{useOwnedWorldVisual},'./alpha-sand-route':{},'./alpha-wind-flag-stand':{},'../WorldInteract':{},
+    '../store':{},'../actor-activities':{},'../rides/guide-action-hand':{},'./alpha-layout':{},'./alpha-trail':{},'./alpha-materials':{},
+    './alpha-art':{},'./alpha-audio':{},'./alpha-lantern-layout':{},'./alpha-action-reach':{},'./alpha-station-interaction':{},'../accepted-action':{},
+    './AlphaTumblingSign':{default:()=>null},'./AlphaLantern':{default:()=>null},
+  });
+  let context,state;
+  function WorldReader(){context=physics.useRapier();return null;}
+  try{
+    useAlphaStore.setState({stones:0});
+    await act(async()=>{
+      state=canvas.render(h(Suspense,{fallback:null},h(physics.Physics,{paused:true,colliders:false},h(WorldReader),
+        h('group',{position:ALPHA_ORIGIN},h(PlayerCairn)))));
+    });
+    const handles=new Map(),scene=state.getState().scene;
+    for(const count of [0,1,2,16,32,0,26]){
+      await act(async()=>{useAlphaStore.setState({stones:count});});
+      context.step(1/60);
+      const nodes=[...context.colliderStates.values()].map(entry=>entry.object);
+      assert.equal(nodes.length,count);
+      const report=collisionInventory(scene,[],nodes,count?[rootName]:[]);
+      assert.deepEqual(report.errors,[]);
+      assert.equal(report.mounted.meshes,count);
+      assert.equal(report.registrations[rootName],count||undefined);
+      if(!count){assert.equal(scene.getObjectByName(rootName),undefined);handles.clear();continue;}
+      for(const [handle,{object}] of context.colliderStates){
+        const stone=alphaPersonalStones.find(entry=>entry.id===object.name),shape=context.world.getCollider(handle);
+        assert.equal(shape.shapeType(),wasm.ShapeType.ConvexPolyhedron);
+        assert.equal(shape.parent().isFixed(),true);
+        const translation=shape.translation();
+        const expected=alphaWorld(stone.position);
+        const draw=scene.getObjectByName(stone.id+'-mesh').getWorldPosition(new Vector3());
+        assert.ok(draw.distanceTo(new Vector3(...expected))<.00002);
+        assert.ok(new Vector3(translation.x,translation.y,translation.z).distanceTo(new Vector3(...expected))<.00002,
+          JSON.stringify({name:stone.id,translation,expected,parent:shape.parent().translation()}));
+        if(handles.has(stone.id))assert.equal(handle,handles.get(stone.id),'earlier stones preserve their mounted handles');
+        handles.set(stone.id,handle);
+      }
+    }
+  }finally{await act(async()=>canvas.unmount());useAlphaStore.setState({stones:previous});}
 });
 
 test('carry release uses the live player anchor and preserves ownership and single use without a palm gate',()=>{
