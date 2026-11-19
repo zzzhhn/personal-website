@@ -30,15 +30,17 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
   // A four-centimetre lip separates this paving from the retained .08 m forecourt.
   // Coplanar surfaces flickered visibly under the night lighting.
   steel.add(new ExtrudeGeometry(apron,{depth:.12,bevelEnabled:false}), craftApron ? '#b6b3a7' : '#aca48e', new Matrix4().makeTranslation(...coasterWorld([0,0,0])).multiply(new Matrix4().makeRotationX(-Math.PI/2)));
-  if (craftApron) markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
+  const apronSource = steel.bindContact('coaster-workshop-apron');
+  if (craftApron) markIntentCraft(apronSource, INTENT_CRAFT.courtyardPaving);
   if (craftApron) addCoasterPavingEdges(steel);
   // Match the full convex apron, including the west pedestrian threshold.
   // The former central box left visible corners and the new entry unsupported.
-  colliders.push({position:coasterWorld([-16,.06,67.5]),half:[18,.06,12.5],surface:true,
+  colliders.push({position:coasterWorld([-16,.06,67.5]),half:[18,.06,12.5],surface:true,sourceId:'coaster-workshop-apron',
     hull:new Float32Array(footprint.flatMap(([x,z])=>[x+16,-.06,z-67.5,x+16,.06,z-67.5]))});
-  const addBox=(p:Vector3,size:Vec3,q:Quaternion,color:string,surface=false)=>{
+  const addBox=(sourceId:string,p:Vector3,size:Vec3,q:Quaternion,color:string,surface=false)=>{
     steel.box(p.toArray() as Vec3,size,color,q);
-    colliders.push({position:p.toArray() as Vec3,half:size.map(v=>v/2) as Vec3,rotation:new Euler().setFromQuaternion(q).toArray().slice(0,3) as Vec3,surface});
+    steel.bindContact(sourceId);
+    colliders.push({position:p.toArray() as Vec3,half:size.map(v=>v/2) as Vec3,rotation:new Euler().setFromQuaternion(q).toArray().slice(0,3) as Vec3,surface,sourceId});
   };
   const up=new Vector3(0,1,0);
   for(let i=1;i<COASTER_CLIFF_WALK.length;i++){
@@ -46,7 +48,7 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
     const forward=b.clone().sub(a).normalize(),side=new Vector3(-forward.z,0,forward.x).normalize(),normal=side.clone().cross(forward).normalize();
     const q=new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(forward,normal,side)),length=a.distanceTo(b),mid=a.clone().add(b).multiplyScalar(.5);
     const deckApproach = i === COASTER_CLIFF_WALK.length - 1;
-    addBox(mid.clone().addScaledVector(normal,-.18),[length+.2,.36,5.2],q,deckApproach ? '#a9a18c' : '#aaa08b',true);
+    addBox(`coaster-cliff-walk-${i}`,mid.clone().addScaledVector(normal,-.18),[length+.2,.36,5.2],q,deckApproach ? '#a9a18c' : '#aaa08b',true);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.lookoutPaving);
     for(const sign of [-1,1]){
       glow.beam(a.clone().addScaledVector(side,sign*2.48).addScaledVector(up,.16).toArray() as Vec3,b.clone().addScaledVector(side,sign*2.48).addScaledVector(up,.16).toArray() as Vec3,.045,'#ffd087',4);
@@ -54,7 +56,7 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
       // guide while removing the duplicate opaque corridor walls inside the lookout.
       if(i<COASTER_CLIFF_WALK.length-1){
         const edge=mid.clone().addScaledVector(side,sign*2.55);
-        addBox(edge.clone().addScaledVector(up,.55),[length,1.1,.12],q,'#50666d');
+        addBox(`coaster-cliff-walk-${i}-guard-${sign}`,edge.clone().addScaledVector(up,.55),[length,1.1,.12],q,'#50666d');
         for(let at=1;at<length;at+=4){
           const point=a.clone().lerp(b,at/length).addScaledVector(side,sign*2.5);
           steel.beam(point.toArray() as Vec3,point.clone().addScaledVector(up,1.15).toArray() as Vec3,.075,'#a8895d');
@@ -62,20 +64,21 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
       }
     }
     // Piers anchor the slope slabs instead of presenting a floating path.
-    if(i>1)for(const t of [.2,.75]){
+    if(i>1)for(const [j,t] of [.2,.75].entries()){
       const p=a.clone().lerp(b,t),top=p.y-.6;steel.housing([p.x,(top+1)/2,p.z],[1.2,top-1,1.2],'#89918d');
-      colliders.push({position:[p.x,(top+1)/2,p.z],half:[.6,(top-1)/2,.6]});
+      colliders.push(steel.bindMeshContact({position:[p.x,(top+1)/2,p.z],half:[.6,(top-1)/2,.6],sourceId:`coaster-cliff-pier-${i}-${j}`}));
     }
   }
-  addBox(new Vector3(...coasterWorld(COASTER_LOOKOUT.center)),COASTER_LOOKOUT.size,new Quaternion(),'#a9a18c',true);
+  addBox('coaster-lookout-deck',new Vector3(...coasterWorld(COASTER_LOOKOUT.center)),COASTER_LOOKOUT.size,new Quaternion(),'#a9a18c',true);
   markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.lookoutPaving);
   addCoasterLookoutSample(steel,glow,colliders);
-  for(const [x,y,z] of COASTER_CLIFF_LAMPS){
+  for(const [i,[x,y,z]] of COASTER_CLIFF_LAMPS.entries()){
     steel.beam(coasterWorld([x,8.08,z]),coasterWorld([x,y+.35,z]),.1,'#62737a');
+    colliders.push(steel.bindMeshContact({position:coasterWorld([x,(8.08+y+.35)/2,z]),half:[.1,(y+.35-8.08)/2,.1],
+      sourceId:`coaster-lookout-lamp-${i}-post`}));
     steel.housing(coasterWorld([x,y,z]),[.5,.8,.5],'#3d5660');
+    colliders.push(steel.bindMeshContact({position:coasterWorld([x,y,z]),half:[.25,.4,.25],sourceId:`coaster-lookout-lamp-${i}-housing`}));
     glow.box(coasterWorld([x,y,z]),[.3,.55,.53],'#ffd087');
     glow.box(coasterWorld([x,y,z]),[.53,.55,.3],'#ffd087');
-    colliders.push({position:coasterWorld([x,(8.08+y+.35)/2,z]),half:[.1,(y+.35-8.08)/2,.1]},
-      {position:coasterWorld([x,y,z]),half:[.25,.4,.25]});
   }
 }

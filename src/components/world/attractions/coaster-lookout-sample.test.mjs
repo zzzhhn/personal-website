@@ -112,8 +112,9 @@ test('bedding colours subdivide the same convex surface without changing its are
 });
 
 test('local rendering emits the same hulls and retains all architecture and the arrival opening',()=>{
-  const emitted=[],colliders=[],glowBoxes=[];
-  addCoasterLookoutSample({parts:emitted,add(g){emitted.push(g);}},{box(...args){glowBoxes.push(args);}},colliders);
+  const steel=new CoasterBatch(),emitted=steel.parts,colliders=[],glowBoxes=[];
+  steel.add=g=>emitted.push(g);
+  addCoasterLookoutSample(steel,{box(...args){glowBoxes.push(args);}},colliders);
   try {
     assert.equal(colliders.length,solids.length);assert.equal(glowBoxes.length,3);
     assert.deepEqual(colliders,solids.map(lookoutSolidCollider));
@@ -129,7 +130,7 @@ test('local rendering emits the same hulls and retains all architecture and the 
 
 test('integrated local counts fit the unchanged whole-scene geometry and collider ceilings',()=>{
   const counter=()=>{
-    const c=Object.create(CoasterBatch.prototype);c.triangles=0;c.parts=[];
+    const c=new CoasterBatch();c.triangles=0;
     c.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts[0]=g;g.dispose();};return c;
   };
   const steel=counter(),glow=counter(),colliders=[];addCoasterCliffs(steel,glow,colliders);
@@ -138,7 +139,9 @@ test('integrated local counts fit the unchanged whole-scene geometry and collide
   // independently counted 64-triangle walk-end correction = 106,236, including three cars.
   const near=106236+total-2226,far=58912+total-2226,sceneColliders=559+colliders.length-24;
   assert.ok(near<=114352);assert.ok(far<=67296);assert.ok(sceneColliders<650);
-  assert.equal(colliders.filter(c=>c.surface).length,6);assert.equal(colliders.filter(c=>c.hull).length,12);
+  assert.equal(colliders.filter(c=>c.surface).length,6);
+  assert.equal(colliders.filter(c=>c.hull && c.sourceId.startsWith('coaster-lookout-')).length,rocks.length);
+  assert.ok(colliders.find(c=>c.sourceId==='coaster-workshop-apron').hull);
   const budget=lookoutSampleBudget();assert.ok(budget.vertexAttributeBytes<600000);
   console.log(JSON.stringify({...budget,localTriangles:total,localColliders:colliders.length,derivedNear:near,derivedFar:far,derivedSceneColliders:sceneColliders,
     hullBytes:rocks.reduce((n,s)=>n+s.hull.byteLength,0)}));

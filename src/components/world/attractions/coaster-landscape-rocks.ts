@@ -82,8 +82,8 @@ export function landscapeRocks() {
   return {rocks,islands};
 }
 
-export function landscapeRockCollider(rock:LandscapeRock):CoasterCollider {
-  return {position:coasterWorld(rock.position),half:rock.half,hull:rock.hull};
+export function landscapeRockCollider(rock:LandscapeRock):CoasterCollider & { sourceId: string } {
+  return {position:coasterWorld(rock.position),half:rock.half,hull:rock.hull,sourceId:`coaster-${rock.id}`};
 }
 
 // Common tilted strata follow geology across each island's three overlapping solids.
@@ -125,13 +125,15 @@ export function landscapeRockSurfaceParts(rock:LandscapeRock) {
 export function addLandscapeRocks(steel:CoasterBatch,colliders:CoasterCollider[]) {
   const {rocks,islands}=landscapeRocks();
   for(const rock of rocks) {
-    for(const {geometry,colour} of landscapeRockSurfaceParts(rock)) {
+    const contact = landscapeRockCollider(rock), sourceId = contact.sourceId;
+    for(const [i,{geometry,colour}] of landscapeRockSurfaceParts(rock).entries()) {
       if (geometry.attributes.position.count) {
         steel.add(geometry, colour);
+        steel.bindContact(sourceId,`${sourceId}-layer-${i}`);
         if (colour !== LANDSCAPE_ROCK_COLOURS[6]) markIntentCraft(geometry, INTENT_CRAFT.bedrock);
       } else geometry.dispose();
     }
-    colliders.push(landscapeRockCollider(rock));
+    colliders.push(contact);
   }
   return islands.length;
 }

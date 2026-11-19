@@ -1,12 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3, Quaternion, Euler } from 'three';
+import R from '@dimforge/rapier3d-compat';
+import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3, Quaternion } from 'three';
 import { advanceCoaster, coasterCurve, coasterDistanceAt, coasterFrame, coasterRidePose, coasterSupports, COASTER_CANOPY_BOUNDS, COASTER_INVERSION, COASTER_TUNNEL, COASTER_GATE_Z, coasterControlU, coasterWorld, COASTER_DURATION, COASTER_EXIT, COASTER_LENGTH } from './coaster-track.ts';
 import { attractionRide, beginAttractionRide, endAttractionRide, updateAttractionRide } from './attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
+import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { THRILL_CREST, THRILL_DROP_END, THRILL_ELEMENTS } from './coaster-thrill-layout.ts';
 import { INTENT_COASTER } from './attraction-layout.ts';
 import { INTENT_STATIONS, INTENT_TARGETS, intentInReach } from './intent-stations.ts';
+
+await R.init();
 
 test('the continuous closed track fits its surveyed site and stays above ground', () => {
   assert.ok(COASTER_LENGTH > 1800 && COASTER_LENGTH < 2000);
@@ -216,17 +220,20 @@ test('third-person cameras keep rider and forward sight clear through the entire
 });
 
 test('architecture collision volumes clear a one-metre rider envelope throughout the loop', () => {
-  const g = createCoasterStructure(true);
+  const g = createCoasterStructure(true), world = new R.World({ x:0, y:0, z:0 });
+  const sphere = new R.Ball(1), orientation = new Quaternion(), name = new Map();
   try {
+    for (const c of g.colliders) if (!c.surface) name.set(world.createCollider(coasterColliderDescriptor(R,c)).handle,c.sourceId ?? c.position);
+    world.step();
     for (let i = 0; i < 1200; i++) {
       const f = coasterFrame(i / 1200), head = f.point.clone().addScaledVector(f.up, 1.4);
-      for (const c of g.colliders) {
-        if (c.surface) continue;
-        const delta = head.clone().sub(new Vector3(...c.position)).applyQuaternion(new Quaternion().setFromEuler(new Euler(...(c.rotation ?? [0,0,0]))).invert());
-        assert.ok(Math.abs(delta.x) >= c.half[0] + 1 || Math.abs(delta.y) >= c.half[1] + 1 || Math.abs(delta.z) >= c.half[2] + 1, `collider ${c.position} at ${i / 1200}`);
-      }
+      const hit = world.intersectionWithShape(head,orientation,sphere);
+      assert.equal(hit,null,`collider ${name.get(hit?.handle)} at ${i / 1200}`);
     }
-  } finally { g.steel.dispose(); g.glow.dispose(); }
+  } finally {
+    world.free();
+    [g.steel,g.glow,g.railShadow,...Object.values(g.railCraft)].forEach(geometry => geometry?.dispose());
+  }
 });
 
 test('camera movement remains continuous across inversion and tunnel transitions', () => {

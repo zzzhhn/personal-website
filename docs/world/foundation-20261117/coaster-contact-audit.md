@@ -54,6 +54,10 @@
 
 混合网格保留原绘制。前场、入口和站台三处铺面直接登记同尺寸承托体，近远档离线都能在可见台面 2 mm 内落脚。32 段海岸栏杆横管用实际六边形圆管的原三角，继续保留原规划的崖边缺口。离线同一路段旧方盒最早提前约 34.2 mm，实物三角与可见面相差小于 2 mm。已有地貌碰撞的 24,546 个三角形逐顶点对应其可见区间，这些来源和名称经过 Worker 仍一致。
 
-原远场 44 项还剩这一张混合网格为部分迁移。仍需核对塔楼、服务楼、步道附属结构以及独立地景来源的接触，台账继续显示该网格有缺口。
+实际观景台支撑与围护、四段崖坡步道、工坊铺面、两处设备房与前场灯柱也已进入原批次的接触合同。两档共 118 个崖坡、观景台或独立岩石接触来源，沿步道采样的 84 个断面都有实际承托，半径 0.34 m 的角色胶囊沿中线保持通行。44 块岩石保留其原有凸体，岩层颜色分割逐段回指同一岩石。旧盒在观景坡脚、入口灯脚、设备楼退进墙、内场灯杆和升降塔脚分别提前 150、60、60、97.5 和 378.6 mm，实际接触与可见来源相差 2 mm 内。
+
+此前归程隧道的左右墙与顶盖只有渲染几何。现在两档各一个固定接触，远档 1,368、近档 3,432 个三角形来自原绘制区间，近档保留一处渲染接缝实测开口。整圈 1 m 乘员包络改用实际 Rapier 形状复核。
+
+原远场 44 项还剩这一张混合网格为部分迁移。它已覆盖远档 40,972 / 55,312 和近档 43,036 / 62,032 个可见三角形，356 个接触名。仍需核对围栏竖柱、设备房饰面、附属步道和铺地边饰，台账继续显示该网格有缺口。
 
 复跑命令使用现有 Playwright。`WORLD_BROWSER_MODULES=<Playwright 所在目录> node tools/world/playtest/coaster-gate-contact.mjs http://127.0.0.1:<独立端口> rails`。未迁移轨道的候选用 `after`，旧版用 `before`。Node 定向测试为 `node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/attractions/{coaster-gate-contact,actor-ride-adapter,coaster-station-contact,coaster-rail-contact,coaster-collision-review,coaster-site-contact,attraction-camera-cabin}.test.mjs`。

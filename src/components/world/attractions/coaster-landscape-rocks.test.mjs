@@ -116,8 +116,8 @@ test('frozen guest routes and denser independent rail/head samples clear every r
 
 test('local emitter preserves near/far contacts and fits unchanged global ceilings',()=>{
   const counter=()=>{
-    const batch=Object.create(CoasterBatch.prototype);batch.triangles=0;
-    batch.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;g.dispose();};return batch;
+    const batch=new CoasterBatch();batch.triangles=0;
+    batch.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts[0]=g;g.dispose();};return batch;
   };
   const results=[];
   for(const detailed of [true,false]) {

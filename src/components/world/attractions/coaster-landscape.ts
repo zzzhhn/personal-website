@@ -7,15 +7,21 @@ import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
 
 export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean) {
+  let block = 0, housingIndex = 0;
   const box = (p: Vec3, size: Vec3, color: string, solid = false) => {
     steel.box(coasterWorld(p), size, color);
-    if (solid) colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3 });
+    if (solid) {
+      const sourceId = `coaster-landscape-service-block-${block++}`;
+      steel.bindContact(sourceId);
+      colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3, sourceId });
+    }
   };
   const light = (p: Vec3, size: Vec3, color = '#ffbd65') => glow.box(coasterWorld(p), size, color);
   const beam = (a: Vec3, b: Vec3, radius: number, color = '#60747d') => steel.beam(coasterWorld(a), coasterWorld(b), radius, color);
   const housing = (p: Vec3, size: Vec3, color: string) => {
     steel.housing(coasterWorld(p), size, color);
-    colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3 });
+    colliders.push(steel.bindMeshContact({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3,
+      sourceId: `coaster-landscape-housing-${housingIndex++}` }));
   };
   const islandCount = addLandscapeRocks(steel, colliders);
   // Trees, their matching trunk colliders and planter foliage are owned by WorldCoasterVegetation.
@@ -41,13 +47,15 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     housing([x,.5,55],[5,1,1.8],'#777c6b');
   }
   // The new loop is part of the same terrain/collision mesh. Four small lanterns mark its turns.
-  for (const [x,z] of COASTER_INFIELD_LAMPS) {
+  for (const [i,[x,z]] of COASTER_INFIELD_LAMPS.entries()) {
     const y=coasterInfieldHeight(x,z)??0;
     beam([x,y,z],[x,y+3.1,z],.1,'#526768');
+    const post = steel.bindMeshContact({position:coasterWorld([x,y+1.5,z]),half:[.16,1.5,.16],
+      sourceId:`coaster-infield-lamp-${i}-post`});
     housing([x,y+.16,z],[.8,.32,.8],'#8e9180');
     housing([x,y+2.8,z],[.6,.65,.6],'#354b50');
     light([x,y+2.8,z],[.37,.43,.63]);light([x,y+2.8,z],[.63,.43,.37]);
-    colliders.push({position:coasterWorld([x,y+1.5,z]),half:[.16,1.5,.16]});
+    colliders.push(post);
   }
   addEquipment(steel, glow, box, light, beam, housing, detailed);
   return { islands: islandCount, trees: 0, shrubs: 0 };

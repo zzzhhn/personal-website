@@ -113,8 +113,9 @@ export function coasterLookoutSolids(): LookoutSolid[] {
 export function lookoutSolidMatrix(s: LookoutSolid) {
   return new Matrix4().compose(new Vector3(...coasterWorld(s.position)),new Quaternion().setFromEuler(new Euler(...s.rotation)),new Vector3(1,1,1));
 }
-export function lookoutSolidCollider(s: LookoutSolid): CoasterCollider & { hull?: Float32Array } {
-  return { position:coasterWorld(s.position),half:s.size.map(v=>v/2) as Vec3,rotation:[...s.rotation],...(s.hull?{hull:s.hull}:{}) };
+export function lookoutSolidCollider(s: LookoutSolid): CoasterCollider & { sourceId: string } {
+  return { position:coasterWorld(s.position),half:s.size.map(v=>v/2) as Vec3,rotation:[...s.rotation],
+    sourceId:`coaster-lookout-${s.id}`,...(s.hull?{hull:s.hull}:{}) };
 }
 /** Copy the canonical surface, never reconstruct an approximate box or a separate visual hull. */
 export function createLookoutRockGeometry(s: LookoutSolid) {
@@ -170,23 +171,26 @@ export function lookoutSampleBudget(solids = coasterLookoutSolids()) {
 export function addCoasterLookoutSample(steel: CoasterBatch,glow: CoasterBatch,colliders: CoasterCollider[]) {
   const solids=coasterLookoutSolids();
   for(const s of solids) {
+    const contact = lookoutSolidCollider(s), sourceId = contact.sourceId;
     if(s.role==='rock') {
-      for(const {geometry,colour} of lookoutRockSurfaceParts(s)) {
+      for(const [i,{geometry,colour}] of lookoutRockSurfaceParts(s).entries()) {
         if (geometry.attributes.position.count) {
           steel.add(geometry, colour);
+          steel.bindContact(sourceId,`${sourceId}-layer-${i}`);
           if (colour !== LOOKOUT_BED_COLOURS[8]) markIntentCraft(geometry, INTENT_CRAFT.bedrock);
         } else geometry.dispose();
       }
     } else {
       const source=new BoxGeometry(...s.size,...s.segments),geometry=source.toNonIndexed();source.dispose();
       steel.add(geometry, s.colour, lookoutSolidMatrix(s));
+      steel.bindContact(sourceId);
       const rail = s.role === 'rail' || s.role === 'post';
       const finish = rail
         ? (s.id.startsWith('shoe-') || (s.role === 'rail' && s.id.endsWith('-2')) ? INTENT_CRAFT.galvanized : INTENT_CRAFT.structuralCoat)
         : INTENT_CRAFT.mineralCladding;
       markIntentCraft(steel.parts[steel.parts.length - 1], finish);
     }
-    colliders.push(lookoutSolidCollider(s));
+    colliders.push(contact);
   }
   // Three short soffit inserts read as fixtures; existing baked spill lights the stone below.
   for(const [x,z,w,d] of [[55,7.56,10.8,.045],[48.56,13.7,.045,10.4],[61.44,13.7,.045,10.4]])

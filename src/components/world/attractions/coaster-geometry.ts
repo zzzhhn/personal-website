@@ -1,7 +1,7 @@
 import { COASTER_ARCHITECTURE_CRAFT } from './coaster-craft-promotion.ts';
 import { COASTER_RAIL_CRAFT } from './coaster-rail-craft-enabled.ts';
 import { createCoasterRailVisualCraft } from './coaster-rail-visual-craft.ts';
-import { Euler, BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
+import { Euler, Box3, BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
 import { coasterFrame, coasterSupports, coasterWorld, COASTER_LENGTH, COASTER_TUNNEL, COASTER_INVERSION, COASTER_GATE_Z } from './coaster-track.ts';
@@ -64,11 +64,25 @@ export class CoasterBatch {
     }
     this.add(geometry, color, new Matrix4().makeTranslation(position[0], position[1], position[2] - d / 2));
   }
-  bindContact(sourceId: string) {
-    const part = this.parts[this.parts.length - 1];
-    if (!part || this.contact.has(part)) throw Error(`Missing or duplicate coaster source ${sourceId}`);
-    this.contact.set(part, { id: sourceId, collision: 'solid', surfaceId: sourceId });
+  bindContact(surfaceId: string, id = surfaceId, part = this.parts[this.parts.length - 1]) {
+    if (!part || this.contact.has(part)) throw Error(`Missing or duplicate coaster source ${id}`);
+    this.contact.set(part, { id, collision: 'solid', surfaceId });
     return part;
+  }
+  bindMeshContact(contact: CoasterCollider & { sourceId: string }, first = this.parts.length - 1): CoasterCollider {
+    const parts = this.parts.slice(first);
+    const sources = parts.map((part,i) =>
+      this.bindContact(contact.sourceId, parts.length === 1 ? contact.sourceId : `${contact.sourceId}-${i}`,part).getAttribute('position'));
+    const centre = new Vector3(...contact.position), point = new Vector3();
+    const inverse = new Quaternion().setFromEuler(new Euler(...(contact.rotation ?? [0,0,0]))).invert();
+    const vertexCount = sources.reduce((count,source) => count + source.count,0);
+    const vertices = new Float32Array(vertexCount * 3), indices = new Uint32Array(vertexCount);
+    let vertex = 0;
+    for (const source of sources) for (let i = 0; i < source.count; i++, vertex++) {
+      point.fromBufferAttribute(source,i).sub(centre).applyQuaternion(inverse).toArray(vertices,vertex * 3);
+      indices[vertex] = vertex;
+    }
+    return { ...contact, mesh: { vertices, indices } };
   }
   finish() {
     attachIntentCraftBatch(this.parts);
@@ -168,7 +182,7 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
     }
   }
   addArchitecture(steel, glow, colliders, detailed, craftedArchitecture);
-  addTunnel(steel, glow, detailed);
+  addTunnel(steel, glow, detailed, colliders);
   const art = addCoasterLandscape(steel, glow, colliders, detailed);
   addCoasterCliffs(steel, glow, colliders, true);
   const relief = addCoasterTerrainRelief(steel);
@@ -177,8 +191,9 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
   });
 }
 
-export function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boolean) {
+export function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boolean, colliders?: CoasterCollider[]) {
   const { start, end } = COASTER_TUNNEL, count = detailed ? 18 : 9;
+  const first = steel.parts.length;
   const bayLength = (end - start) * COASTER_LENGTH / count;
   const { structuralCoat: frame, galvanized: joint, mineralCladding: wall, tunnelRoof: roof } = INTENT_CRAFT;
   const finish = (role: number) => markIntentCraft(steel.parts[steel.parts.length - 1], role);
@@ -213,6 +228,15 @@ export function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boo
         finish(frame);
       }
     }
+  }
+  if (colliders) {
+    const bounds = new Box3();
+    for (const part of steel.parts.slice(first)) {
+      part.computeBoundingBox();
+      bounds.union(part.boundingBox!);
+    }
+    colliders.push(steel.bindMeshContact({ position: tuple(bounds.getCenter(new Vector3())),
+      half: tuple(bounds.getSize(new Vector3()).multiplyScalar(.5)), sourceId: 'coaster-return-tunnel' },first));
   }
 }
 
@@ -371,6 +395,11 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     steel.housing(coasterWorld(p), size.map(v=>v-inset*2) as Vec3, color);
     if (solid) colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3 });
   };
+  const fittedHousing = (sourceId: string, p: Vec3, size: Vec3, color: string, inset = 0) => {
+    housing(p,size,color,true,inset);
+    const i = colliders.length - 1;
+    colliders[i] = steel.bindMeshContact({ ...colliders[i], sourceId });
+  };
   const light = (p: Vec3, size: Vec3, color = P.gold) => glow.box(coasterWorld(p), size, color);
   const beam = (a: Vec3, b: Vec3, radius: number, color = P.steel) => steel.beam(coasterWorld(a), coasterWorld(b), radius, color);
   // Warm, deep station frontage. The central aisle and actual boarding apron stay level.
@@ -414,11 +443,11 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   if (craftedArchitecture) discardCoasterVisuals(steel, stationVisualStart);
   addCoasterTower(steel, glow, colliders, detailed);
   // A tangible equipment house inside the descending helix, plus a separate rear power block.
-  housing([-36, 5.4, 13], [9, 10.8, 9], P.steel, true, .06);
-  housing([-36, 11.3, 13], [10.2, 1, 10.2], P.dark);
+  fittedHousing('coaster-helix-house',[-36, 5.4, 13], [9, 10.8, 9], P.steel, .06);
+  fittedHousing('coaster-helix-house-roof',[-36, 11.3, 13], [10.2, 1, 10.2], P.dark);
   housing([-35, 12.6, 13], [3.5, 1.6, 3.5], P.steel, false);
-  housing([24, 8.8, -92], [10, 7.6, 8], P.steel, true, .06);
-  housing([24, 13.1, -92], [10.8, 1, 8.8], P.dark);
+  fittedHousing('coaster-power-house',[24, 8.8, -92], [10, 7.6, 8], P.steel, .06);
+  fittedHousing('coaster-power-house-roof',[24, 13.1, -92], [10.8, 1, 8.8], P.dark);
   for (const x of [-39.5, -32.5]) light([x, 8.7, 17.58], [.3, 2.8, .1], P.cyan);
   for (let i = 0; i < 5; i++) {
     box([-36, 4.2 + i * .48, 17.58], [4.5, .18, .14], P.dark);
@@ -461,16 +490,8 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
       for(const y of [1,2.7]) {
         beam([from[0],y,from[1]],[to[0],y,to[1]],.08);
         const sourceId = `coaster-perimeter-${i}-${j}-${y === 1 ? 'lower' : 'upper'}`;
-        const source = steel.bindContact(sourceId).getAttribute('position');
         const position = coasterWorld([(from[0]+to[0])/2,y,(from[1]+to[1])/2]);
-        const centre = new Vector3(...position), point = new Vector3();
-        const inverse = new Quaternion().setFromAxisAngle(new Vector3(0,1,0), -yaw);
-        const vertices = new Float32Array(source.count * 3), indices = new Uint32Array(source.count);
-        for (let k = 0; k < source.count; k++) {
-          point.fromBufferAttribute(source,k).sub(centre).applyQuaternion(inverse).toArray(vertices,k * 3);
-          indices[k] = k;
-        }
-        colliders.push({position,half:[length/2,.08,.08],rotation:[0,yaw,0],mesh:{vertices,indices},sourceId});
+        colliders.push(steel.bindMeshContact({position,half:[length/2,.08,.08],rotation:[0,yaw,0],sourceId}));
       }
       for(let d=0;d<length;d+=5) housing([from[0]+dx*d/length,1.6,from[1]+dz*d/length],[.32,3.2,.32],P.concrete);
     }
@@ -519,9 +540,10 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     housing([-51.5, 1.8, -22.6], [1.5, 3.6, .2], P.dark);
   }
   for (const p of INTENT_LAMP_POINTS.filter(([x]) => x < -27 || x > -5)) {
-    const [x, y, z] = p; housing([x, y / 2, z], [.4, y, .4], P.dark);
+    const [x, y, z] = p, sourceId = `coaster-forecourt-lamp-${x}`;
+    fittedHousing(`${sourceId}-post`,[x, y / 2, z], [.4, y, .4], P.dark);
     light([x, y - .45, z], [.22, .7, .22]);
-    housing([x, .2, z], [1.1, .4, 1.1], P.concrete);
+    fittedHousing(`${sourceId}-base`,[x, .2, z], [1.1, .4, 1.1], P.concrete);
   }
 }
 

@@ -8,6 +8,7 @@ const world=([x,y,z]:Vec3):Vec3=>[x+50,y+1,z-195];
  * platforms are deliberately closed to guests; the existing station stays unchanged. */
 export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:CoasterCollider[],detailed:boolean) {
   const color={steel:'#496777',dark:'#253c4c',edge:'#aebdc1',concrete:'#b3b4a8',copper:'#bd925e'};
+  let member = 0, block = 0;
   const mark = (tint: string) => {
     const role = tint === color.edge ? INTENT_CRAFT.galvanized
       : tint === color.concrete ? INTENT_CRAFT.mineralCladding : INTENT_CRAFT.structuralCoat;
@@ -17,13 +18,20 @@ export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:Co
     const from=new Vector3(...world(a)),to=new Vector3(...world(b)),d=to.clone().sub(from);
     steel.beam(from.toArray() as Vec3,to.toArray() as Vec3,radius,tint,8);
     mark(tint);
-    if(solid){const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize());
-      const e=new Euler().setFromQuaternion(q);colliders.push({position:from.add(to).multiplyScalar(.5).toArray() as Vec3,half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z]});}
+    if(solid){
+      const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()), e=new Euler().setFromQuaternion(q);
+      colliders.push(steel.bindMeshContact({position:from.add(to).multiplyScalar(.5).toArray() as Vec3,
+        half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z],sourceId:`coaster-lift-tower-member-${member++}`}));
+    }
   };
   const box=(p:Vec3,size:Vec3,tint:string,solid=true)=>{
     steel.box(world(p),size,tint);
     mark(tint);
-    if(solid)colliders.push({position:world(p),half:size.map(v=>v/2) as Vec3});
+    if(solid){
+      const sourceId = `coaster-lift-tower-block-${block++}`;
+      steel.bindContact(sourceId);
+      colliders.push({position:world(p),half:size.map(v=>v/2) as Vec3,sourceId});
+    }
   };
   const leg=(side:number,end:number,y:number):Vec3=>[-44+side*(8-5*y/84),y,-150+end*(6-2*y/84)];
   for(const side of [-1,1])for(const end of [-1,1]){
@@ -73,7 +81,7 @@ export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:Co
   for(const x of [-48,-43]){
     steel.housing(world([x,2.1,-141]),[3.7,4.2,2.3],color.concrete);
     mark(color.concrete);
-    colliders.push({position:world([x,2.1,-141]),half:[1.85,2.1,1.15]});
+    colliders.push(steel.bindMeshContact({position:world([x,2.1,-141]),half:[1.85,2.1,1.15],sourceId:`coaster-lift-tower-cabinet-${x}`}));
     box([x,2,-139.8],[2.8,2.9,.16],color.dark,false);
     for(let i=0;i<6;i++)box([x,1+i*.35,-139.69],[2.4,.12,.12],color.steel,false);
   }
