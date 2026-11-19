@@ -1,10 +1,11 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
 import test from 'node:test';import assert from 'node:assert/strict';import R from '@dimforge/rapier3d-compat';import{DoubleSide,Mesh,MeshBasicMaterial,Raycaster,Quaternion,Vector3}from'three';
-import{ALPHA_TRANSPORT_ROUTES}from'./alpha-routes.ts';import{transportInfrastructure,transportBeamBatch,cableWireSegments,transportBeamGeometry,SLED_RAIL_RADIUS}from'./transport-infrastructure.ts';import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';import{rideFootRouteClear}from'../../rides/ride-clearance.ts';import{TransportDriver}from'../../rides/transport-driver.ts';import{transportWorld}from'../../rides/transport-route.ts';
+import{ALPHA_TRANSPORT_ROUTES}from'./alpha-routes.ts';import{transportInfrastructure,transportBeamBatch,cableWireSegments,transportBeamGeometry,SLED_RAIL_RADIUS}from'./transport-infrastructure.ts';import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';import{rideFootRouteClear}from'../../rides/ride-clearance.ts';import{TransportDriver}from'../../rides/transport-driver.ts';import{sampleTransport,transportWorld}from'../../rides/transport-route.ts';
 import{findSafePlayerLanding}from'../../safe-landing.ts';
 import{verifyPhysicalBoardingJoins}from'../../rides/transport-joining-fixture.mjs';
 import{alphaTerrainData,alphaGroundHeight}from'../alpha-terrain.ts';
 import{readWorldCraftGltf,disposeWorldCraftGltf}from'../../world-craft-gltf-test.mjs';
+import { cableCanopyPostGeometry, cableCanopyPostHeight, transportGripPose, transportVehicleCollider, transportVehicleParts } from './transport-vehicle-geometry.ts';
 await R.init();
 test('sled shell supports the top, two sides and the actual underside along the full route',t=>{
  const d=transportInfrastructure(ALPHA_TRANSPORT_ROUTES[1]),world=new R.World({x:0,y:0,z:0});
@@ -61,14 +62,63 @@ test('cable and sled trestles meet the installed terrain on their full rims; wir
   t.diagnostic(JSON.stringify({route:route.id,feet,maxOldGap,maxNewGap,maxFit,hits,gaps}));
  }
 });
-test('cable entry and short independent exit clear their canopy posts and closed panels',()=>{
- const route=ALPHA_TRANSPORT_ROUTES[0];for(const index of[0,1]){const t=route.terminals[index],q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),t.yaw),world=new R.World({x:0,y:0,z:0}),root=transportWorld(t.vehicle,route.transform),point=p=>new Vector3(...p).applyQuaternion(q).add(new Vector3(...root));
- const addBox=(p,s)=>world.createCollider(R.ColliderDesc.cuboid(...s).setTranslation(...point(p).toArray()).setRotation(q));addBox([0,-.1,0],[1.6,.1,1.2]);addBox([1.5,1.1,0],[.06,1.1,1.1]);addBox([-1.5,1.1,0],[.06,1.1,1.1]);addBox([0,1.1,-1.12],[1.5,1.1,.05]);addBox([0,2.25,0],[1.725,.1,1.325]);addBox([0,dimensions.cable.canopyHeight,0],[2.5,.125,2.5]);
- for(const x of[-2.1,2.1])for(const z of[-2.1,2.1])world.createCollider(R.ColliderDesc.cylinder((dimensions.cable.canopyHeight-.125)/2,.17).setTranslation(...point([x,(dimensions.cable.canopyHeight-.125)/2,z]).toArray()));
- const d=transportBoardingGeometry(route,index);world.createCollider(R.ColliderDesc.trimesh(d.positions,d.indices));const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(...transportWorld(t.boarding[0],route.transform)));world.createCollider(R.ColliderDesc.capsule(.48,.34),body);world.step();const path=t.boarding.map(p=>transportWorld(p,route.transform)),exit=t.egress.map(p=>transportWorld(p,route.transform));assert.ok(rideFootRouteClear(world,R,body,path),'whole boarding capsule');assert.ok(rideFootRouteClear(world,R,body,exit),'whole egress capsule');
- assert.equal(verifyPhysicalBoardingJoins(world,R,body,route,index),6);
- const obstruction=world.createCollider(R.ColliderDesc.cuboid(.5,1,.5).setTranslation(...point([1,1,2.6]).toArray()));world.step();assert.equal(rideFootRouteClear(world,R,body,exit),false);world.removeCollider(obstruction,true);world.free();}
+test('cable station joins clear the installed cabin and canopy on both levels',async t=>{
+ const route=ALPHA_TRANSPORT_ROUTES[0],asset=await readWorldCraftGltf(['public/assets/world/alpha-island/transports/cable.glb']);
+ assert.ok(asset);
+ const parts=transportVehicleParts(asset.scene,'cable'),post=cableCanopyPostGeometry();
+ t.after(()=>{for(const part of parts)part.geometry.dispose();post.dispose();disposeWorldCraftGltf(asset.scene);});
+ const cabin=transportVehicleCollider(parts.filter(part=>part.group==='body'));
+ const grip=transportVehicleCollider(parts.filter(part=>part.group==='grip'));
+ assert.ok(cabin&&grip);
+ for(const [index,terminal] of route.terminals.entries()){
+  const world=new R.World({x:0,y:0,z:0});
+  try {
+   const sample=sampleTransport(route,index),gripPose=transportGripPose(sample);
+   const cabinCollider=world.createCollider(R.ColliderDesc.trimesh(cabin.vertices,cabin.indices)
+    .setTranslation(...sample.vehicle).setRotation(new Quaternion(...sample.orientation)));
+   world.createCollider(R.ColliderDesc.trimesh(grip.vertices,grip.indices)
+    .setTranslation(...gripPose.position).setRotation(gripPose.orientation));
+   const origin=new Vector3(...transportWorld(terminal.vehicle,route.transform));
+   const q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),terminal.yaw+route.transform.yaw);
+   const point=(x,y,z)=>new Vector3(x,y,z).applyQuaternion(q).add(origin);
+   const roof=world.createCollider(R.ColliderDesc.cuboid(2.5,.125,2.5)
+    .setTranslation(...point(0,dimensions.cable.canopyHeight,0)).setRotation(q));
+   for(const x of [-2.1,2.1])for(const z of [-2.1,2.1]){
+    world.createCollider(R.ColliderDesc.convexHull(post.attributes.position.array)
+     .setTranslation(...point(x,cableCanopyPostHeight/2,z)).setRotation(q));
+   }
+   const deck=transportBoardingGeometry(route,index,alphaGroundHeight);
+   world.createCollider(R.ColliderDesc.trimesh(deck.positions,deck.indices));
+   const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0,-100,0));
+   world.createCollider(R.ColliderDesc.capsule(.48,.34),body);
+   world.step();
+   const path=name=>terminal[name].map(p=>transportWorld(p,route.transform));
+   assert.ok(rideFootRouteClear(world,R,body,path('boarding')),terminal.id+' approach');
+   assert.ok(rideFootRouteClear(world,R,body,path('egress')),terminal.id+' egress');
+   assert.equal(verifyPhysicalBoardingJoins(world,R,body,route,index),6);
+   const castDown=(y,maxDistance)=>{
+    const start=point(.95,y,.2);
+    const hit=world.castRay(new R.Ray(start,{x:0,y:-1,z:0}),maxDistance,true);
+    assert.ok(hit);
+    return {handle:hit.collider.handle,height:start.y-hit.timeOfImpact};
+   };
+   const lower=castDown(.4,1),upper=castDown(7,1.5);
+   assert.equal(lower.handle,cabinCollider.handle);
+   assert.equal(upper.handle,roof.handle);
+   assert.ok(upper.height-lower.height>6);
+   const halfway=new Vector3(...path('egress')[1]).lerp(new Vector3(...path('egress')[2]),.5);
+   const obstacle=world.createCollider(R.ColliderDesc.cuboid(.4,.75,.35)
+    .setTranslation(halfway.x,halfway.y+.8,halfway.z));
+   world.step();
+   assert.equal(rideFootRouteClear(world,R,body,path('egress')),false);
+   world.removeCollider(obstacle,true);
+   world.step();
+   assert.ok(rideFootRouteClear(world,R,body,path('egress')));
+   t.diagnostic(JSON.stringify({terminal:terminal.id,cabin:lower.height,roof:upper.height}));
+  }finally{world.free();}
+ }
 });
+
 test('blocked station egress holds a standing rider until route is clear',()=>{const route=ALPHA_TRANSPORT_ROUTES[1],d=new TransportDriver(route,0);d.capture(transportWorld(route.terminals[0].boarding[0],route.transform),0);for(let i=0;i<2000&&d.phase!=='sit';i++)d.step(1/60,false);d.requestExit();d.setExitBlocked(true);for(let i=0;i<5000;i++)d.step(1/60,false);assert.equal(d.phase,'stand');assert.equal(d.frame.seatWeight,0);d.setExitBlocked(false);for(let i=0;i<5000&&d.phase!=='complete';i++)d.step(1/60,false);assert.equal(d.phase,'complete');});
 
 test('an obstacle entering after walk-out starts stops the current segment and removal resumes',()=>{

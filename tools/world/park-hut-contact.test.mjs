@@ -2,10 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { Vector3, DoubleSide, Mesh, MeshBasicMaterial, Raycaster } from 'three';
+import { BOARDWALK_POINTS } from '../../src/components/world/layout.ts';
+import { buildWalk } from '../../src/components/world/WorldParkWalk.tsx';
+import { parkWalkCollision } from '../../src/components/world/park-deck-collision.ts';
 import { HUTS, HUT_FRONT_Z, DECK_Y } from '../../src/components/world/WorldParkLayout.ts';
 import { buildParkHut } from '../../src/components/world/park-hut-structure.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, PLAYER_CENTER_HEIGHT } from '../../src/components/world/actor-physics.ts';
-import { playerVelocityChange } from '../../src/components/world/player-motion.ts';
+import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../../src/components/world/player-motion.ts';
 import { followPlayerGround, playerSupport, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from '../../src/components/world/player-ground.ts';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../../src/components/world/world-craft-gltf-test.mjs';
 
@@ -71,4 +74,71 @@ test('walk both ways between the visible park hut planks and the doorway, with a
       } finally {world.free();for(const g of [model.deck,model.solid,model.low.deck,model.low.solid])g.dispose();}
     });
   } finally {disposeWorldCraftGltf(gltf.scene);material.dispose();}
+});
+
+
+test('the classroom spur is reachable from the finite boardwalk end and can return to it',async t=>{
+  await R.init();
+  const index=HUTS.findIndex(h=>h.id==='interactive-learning'), hut=HUTS[index];
+  const asset=await readWorldCraftGltf(['public/assets/world/craft-batch6-facilities/hut-runtime.glb']);
+  const room=buildParkHut(asset.scene.getObjectByName('hut_'+hut.variant),hut,index);
+  const walk=buildWalk(), terminal=walk.groups.at(-1);
+  const deck=parkWalkCollision(terminal.deck,terminal.solid,'boardwalk-terminal');
+  const world=new R.World({x:0,y:-12.5,z:0});
+  t.after(()=>{
+    world.free();
+    for(const part of [walk,...walk.groups,room,room.low]){part.deck.dispose();part.solid.dispose();}
+    disposeWorldCraftGltf(asset.scene);
+  });
+  function mount(vertices,indices,role) {
+    const fixed=world.createRigidBody(R.RigidBodyDesc.fixed());
+    fixed.userData={[role]:true};
+    world.createCollider(R.ColliderDesc.trimesh(vertices,indices),fixed);
+  }
+  for(const structure of [deck,room]){
+    mount(structure.deckVertices,structure.floor,'surface');
+    mount(structure.deckVertices,structure.wall,'solid');
+    mount(structure.shellVertices,structure.shellIndices,'solid');
+  }
+  const end=BOARDWALK_POINTS.at(-1), previous=BOARDWALK_POINTS.at(-2);
+  const tangent=new Vector3(...previous).sub(new Vector3(...end)).normalize();
+  const diagnostic=[];
+  for(const inset of [.35,.65,.9]){
+    const inboard=point=>new Vector3(...point).addScaledVector(tangent,inset);
+    const start=inboard(end);
+    const spur=inboard(hut.spur.to),inside=new Vector3(...hut.local(0,0,HUT_FRONT_Z-.9));
+    const actor=world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations()
+      .setTranslation(start.x,DECK_Y+PLAYER_CENTER_HEIGHT,start.z).setLinearDamping(.2)
+      .setCcdEnabled(true).setSoftCcdPrediction(.1));
+    world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setFriction(0).setMass(72),actor);
+    const guard=createPlayerClearance(world);
+    const step=(vx=0,vz=0)=>{
+      const support=playerSupport(world,R,actor);
+      const change=playerVelocityChange(actor.linvel(),{x:vx,y:0,z:vz},1/60,!!support?.grounded);
+      compensatePlayerSlopeGravity(world,actor,support,1/60,false);
+      actor.applyImpulse({x:change.x*actor.mass(),y:0,z:change.z*actor.mass()},true);
+      const velocity=sweptPlayerVelocity(guard,actor,actor.linvel(),1/60,R.QueryFilterFlags.EXCLUDE_SENSORS);
+      actor.setLinvel(velocity,true);
+      followPlayerGround(world,R,actor,velocity,1/60,false);
+      world.step();
+      clearPlayerSlopeGravity(actor);
+    };
+    for(let i=0;i<30;i++)step();
+    let lowest=Infinity;
+    for(const target of [spur,inside,spur,start]){
+      let reached=false;
+      for(let i=0;i<300;i++){
+        const p=actor.translation(),dx=target.x-p.x,dz=target.z-p.z,distance=Math.hypot(dx,dz);
+        assert.ok(playerSupport(world,R,actor)?.grounded,JSON.stringify({inset,p,target}));
+        lowest=Math.min(lowest,p.y);
+        if(distance<.16){reached=true;break;}
+        step(dx*2/distance,dz*2/distance);
+      }
+      assert.ok(reached,JSON.stringify({inset,target,body:actor.translation()}));
+    }
+    diagnostic.push({inset,lowest,returnPosition:actor.translation()});
+    world.removeCharacterController(guard);
+    world.removeRigidBody(actor);
+  }
+  t.diagnostic(JSON.stringify(diagnostic));
 });

@@ -26,6 +26,7 @@ export function surveyStationStructures(scene, ground, t) {
   const world = new R.World({x:0,y:-9.81,z:0});
   const capsule = new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
   const identity = new Quaternion();
+  const owners = new Map();
   let solid = 0, decoration = 0, largestError = 0;
   try {
     const lodge = scene.getObjectByName('alpha-dock-lodge'), rack = scene.getObjectByName('alpha-lantern-rack');
@@ -35,7 +36,8 @@ export function surveyStationStructures(scene, ground, t) {
         if (!node.userData.roundBox) return;
         const position = node.getWorldPosition(new Vector3()), rotation = node.getWorldQuaternion(new Quaternion());
         const descriptor = R.ColliderDesc.roundCuboid(...node.userData.roundBox).setTranslation(...position.toArray()).setRotation(rotation);
-        world.createCollider(descriptor);
+        const collider = world.createCollider(descriptor);
+        owners.set(collider.handle,node.name);
         assert.ok(!shapes.has(node.name));
         shapes.set(node.name,node);
       });
@@ -93,6 +95,15 @@ export function surveyStationStructures(scene, ground, t) {
     compareRay(lodge,[0,1.6,3.4],[0,0,-1],1.5,false);
     compareRay(lodge,[-1,1.0,1.9],[0,0,-1],2,true);
     compareRay(lodge,[0,.8,1.9],[0,-1,0],.6,true);
+    const levels = [1.2, 6.3].map(y=>{
+      const origin=lodge.localToWorld(new Vector3(0,y,1.9));
+      const hit=world.castRay(new R.Ray(origin,new Vector3(0,-1,0)),1.8,true);
+      assert.ok(hit);
+      return {owner:owners.get(hit.collider.handle),height:origin.y-hit.timeOfImpact};
+    });
+    assert.match(levels[0].owner,/\/floorboards\//);
+    assert.match(levels[1].owner,/\/roof\//);
+    assert.ok(levels[1].height-levels[0].height>4.4,'a ray selected from inside never substitutes the roof');
 
     const foundation = lodge.children.find(n=>n.isMesh && n.name.endsWith('/stone'));
     const base = foundation.userData.worldCollisionSources.find(p=>p.id.includes('/foundation/'));
@@ -109,7 +120,7 @@ export function surveyStationStructures(scene, ground, t) {
     const terrain=ground.data;
     for(const indices of [terrain.surface,terrain.solid])
       world.createCollider(R.ColliderDesc.trimesh(terrain.positions,indices).setTranslation(...ALPHA_ORIGIN));
-    const doorwaySteps=[];
+    const doorwaySteps=[],exitSteps=[];
     for(const offset of [-.65,0,.65]){
       const start = lodge.localToWorld(new Vector3(offset,0,5.2));
       start.y=ground.height(start.x,start.z)+PLAYER_CENTER_HEIGHT;
@@ -128,6 +139,17 @@ export function surveyStationStructures(scene, ground, t) {
       assert.ok(interactionVisible(world,R,actor,actor.translation(),table),'table button visible from aisle');
       const {x,y,z}=actor.translation();
       operate('sand',[x,y,z]); doorwaySteps.push(steps);
+      let outgoing=0;
+      const outside=lodge.localToWorld(new Vector3(offset,0,4.95)).z;
+      while(actor.translation().z<outside && outgoing++<150){
+        actor.setLinvel({x:0,y:actor.linvel().y,z:1.6},true);
+        followPlayerGround(world,R,actor,actor.linvel(),world.timestep,false);
+        world.step();
+        assert.ok(playerSupport(world,R,actor)?.grounded,'lost support on lodge egress: '+JSON.stringify({
+          step:outgoing,pose:actor.translation(),velocity:actor.linvel(),support:playerSupport(world,R,actor)}));
+      }
+      assert.ok(actor.translation().z>=outside,'the correct floor continues down to the public trail');
+      exitSteps.push(outgoing);
       world.removeRigidBody(actor);
     }
 
@@ -147,6 +169,6 @@ export function surveyStationStructures(scene, ground, t) {
       operate('lantern',candidate);
     }
     t.diagnostic(JSON.stringify({solid,decoration,maximumFacetErrorMm:1000*largestError,
-      foundationSeamMm:1000*highestSeam,doorwaySteps,clearLanternStances:candidates.length}));
+      foundationSeamMm:1000*highestSeam,doorwaySteps,exitSteps,levels,clearLanternStances:candidates.length}));
   } finally { world.free(); }
 }
