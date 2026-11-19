@@ -39,7 +39,7 @@ async function mount(){
   TrimeshCollider:({args,name})=>h('group',{name,userData:{colliderArgs:args}}),ConvexHullCollider:({args,name})=>h('group',{name,userData:{convexArgs:args}}),
   RoundCuboidCollider:({args,name,position,quaternion})=>h('group',{name,position,quaternion,userData:{roundBox:args}})};
  const Station=compileWorldComponent(new URL('./AlphaStationStructure.tsx',import.meta.url))({
-  '@react-three/rapier':rapier,'./alpha-station-structures':structures,'./alpha-layout':layout,'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
+  './alpha-lantern-layout':await import('./alpha-lantern-layout.ts'),'@react-three/rapier':rapier,'./alpha-station-structures':structures,'./alpha-layout':layout,'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
  }).default;
  const Nature=compileWorldComponent(new URL('./AlphaNature.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-nature':nature,'./alpha-terrain':terrain,'./alpha-layout':layout,

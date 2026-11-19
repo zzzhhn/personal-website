@@ -2,7 +2,7 @@ import { useEffect,useMemo,useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody,TrimeshCollider,ConvexHullCollider } from '@react-three/rapier';
 import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,Vector3 } from 'three';
-import { AlphaBuilder,alphaLanternGeometry,type AlphaFinish } from './alpha-art';
+import { AlphaBuilder,type AlphaFinish } from './alpha-art';
 import {createSandRouteModel,SAND_MODEL_ID} from './alpha-sand-route';
 import AlphaStationControl from './AlphaStationControl';
 import AlphaStationStructure from './AlphaStationStructure';
@@ -23,7 +23,6 @@ import type { Vec3 } from '../types';
 function Craft({build,name,position=[0,0,0]}:{build:()=>{finish:AlphaFinish;geometry:BufferGeometry}[];name:string;position?:Vec3}){
  const b=useMemo(build,[build]),m=useMemo(()=>new Map(b.map(p=>[p.finish,alphaMaterial(p.finish)])),[b]);useEffect(()=>()=>{b.forEach(p=>p.geometry.dispose());m.forEach(x=>x.dispose());},[b,m]);return <group name={name} position={position}>{b.map(p=><mesh key={p.finish} geometry={p.geometry} material={m.get(p.finish)} castShadow receiveShadow />)}</group>;
 }
-export function AlphaLantern({position=[0,0,0],scale=1,rootRef}:{position?:Vec3;scale?:number;rootRef?:React.RefObject<Group|null>}){return <group ref={rootRef} position={position} scale={scale}><Craft build={alphaLanternGeometry} name="alpha-paper-lantern"/></group>;}
 function treeRope(){const b=new AlphaBuilder();b.beam('rope',[-.7,3.2,1.3],[-.7,1.2,1.3],.028);b.cyl('darkwood',[-.7,1.2,1.3],.075,.25);return b.finish();}
 function plateauRocks(){const b=new AlphaBuilder();for(let i=0;i<120;i++){const a=i*2.399,r=27+(i%17)*3.3,x=Math.cos(a)*r,z=Math.sin(a)*r*1.2,y=alphaHeight(x,z);if(y<-.8||alphaPathDistance(x,z)<4.5)continue;const g=new SphereGeometry(1,10,7);const at=g.getAttribute('position');for(let k=0;k<at.count;k++){const v=new Vector3().fromBufferAttribute(at,k);v.multiplyScalar(1+.12*Math.sin(v.y*9+v.x*7+i));at.setXYZ(k,v.x,v.y,v.z);}g.computeVertexNormals();b.add(g,'stone',[x,y-.28,z],new Quaternion().setFromAxisAngle(new Vector3(0,1,0),i*1.7),[1.3+(i%4)*.4,.9+(i%3)*.35,1.3]);}return b.finish();}
 export function AlphaSign({position,text,width=3.3,height=1.35,nightLegible=true}:{position:Vec3;text:string;width?:number;height?:number;nightLegible?:boolean}){

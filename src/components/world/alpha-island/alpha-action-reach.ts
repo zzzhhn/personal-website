@@ -1,3 +1,4 @@
+import {shelfLanternGrip} from './alpha-lantern-layout';
 import type { AlphaAction } from './alpha-state';
 import type { Interactable } from '../WorldInteract';
 import type { Vec3 } from '../types';
@@ -8,7 +9,7 @@ import type { PickupApproach } from '../pickup-approach';
 type Notice = { zh: string; en: string };
 const TARGETS: Record<AlphaAction, Vec3> = {
   bell: [-61.3,4.95,-36.35], sand: [-64,5.5,-38.9], tree: [-42.7,19.2,-27.7],
-  wind: [17.4,ALPHA_WIND_GATE_Y+1.05,-43.6], stone: [1,83.35,40], lantern: [-8.65,84.19,41.7],
+  wind: [17.4,ALPHA_WIND_GATE_Y+1.05,-43.6], stone: [1,83.35,40], lantern: shelfLanternGrip(),
 };
 const LABELS: Record<AlphaAction, Notice> = {
   bell: { zh:'摇铜铃',en:'Ring the bronze bell' }, sand: { zh:'让小球走一遍山路',en:'Trace the mountain path' },

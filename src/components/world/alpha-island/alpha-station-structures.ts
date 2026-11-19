@@ -1,3 +1,4 @@
+import {rackShelf} from './alpha-lantern-layout';
 import { BufferGeometry, Float32BufferAttribute, Quaternion, Uint32BufferAttribute, Vector3 } from 'three';
 import type { Vec3 } from '../types';
 import { AlphaStructureBuilder } from './alpha-structure-builder';
@@ -85,7 +86,7 @@ export function createAlphaRack() {
     b.beam('wood',[x,2,0],[x*.7,2.5,0],.12);
   }
   b.beam('wood',[-1.5,2.55,0],[1.5,2.55,0],.2);
-  b.box('wood',[0,.24,0],[2.9,.16,.85]);
+  b.box('wood',[0,rackShelf.centerY,0],[2.9,rackShelf.thickness,.85]);
   return b.finish();
 }
 

@@ -1,3 +1,4 @@
+import {lanternBase, lanternHandleHeight} from './alpha-lantern-layout';
 import { BufferGeometry,Color,CylinderGeometry,Float32BufferAttribute,LatheGeometry,Matrix4,Quaternion,SphereGeometry,Vector2,Vector3 } from 'three';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -28,4 +29,4 @@ export class AlphaBuilder{
  cyl(m:AlphaFinish,p:Vec3,r:number,h:number,r2=r){this.add(new CylinderGeometry(r2,r,h,12,1),m,p);}
  finish(){const out=[...this.parts].map(([finish,parts])=>{const geometry=mergeGeometries(parts,false)!;parts.forEach(g=>g.dispose());geometry.computeBoundingSphere();return {finish,geometry};});this.parts.clear();return out;}
 }
-export function alphaLanternGeometry(){const b=new AlphaBuilder();const profile=[[.2,0],[.25,.05],[.3,.18],[.31,.4],[.27,.61],[.21,.7]].map(p=>new Vector2(...p as [number,number]));b.add(new LatheGeometry(profile,16), 'paper',[0,0,0]);for(const y of [.03,.13,.25,.38,.5,.61,.69])b.cyl('rope',[0,y,0],.215+Math.sin(y/.7*Math.PI)*.09,.012);b.cyl('darkwood',[0,.005,0],.2,.035);b.beam('rope',[-.17,.69,0],[0,.89,0],.014);b.beam('rope',[.17,.69,0],[0,.89,0],.014);return b.finish();}
+export function alphaLanternGeometry(){const b=new AlphaBuilder();const profile=[[.2,0],[.25,.05],[.3,.18],[.31,.4],[.27,.61],[.21,.7]].map(p=>new Vector2(...p as [number,number]));b.add(new LatheGeometry(profile,16), 'paper',[0,0,0]);for(const y of [.03,.13,.25,.38,.5,.61,.69])b.cyl('rope',[0,y,0],.215+Math.sin(y/.7*Math.PI)*.09,.012);b.cyl('darkwood',[0,lanternBase.centerY,0],lanternBase.radius,lanternBase.thickness);b.beam('rope',[-.17,.69,0],[0,lanternHandleHeight,0],.014);b.beam('rope',[.17,.69,0],[0,lanternHandleHeight,0],.014);return b.finish();}

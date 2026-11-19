@@ -1,3 +1,4 @@
+import {rackPosition} from './alpha-lantern-layout';
 import { useMemo } from 'react';
 import { RigidBody, RoundCuboidCollider } from '@react-three/rapier';
 import { useOwnedWorldVisual } from '../useOwnedWorldVisual';
@@ -9,7 +10,7 @@ import type { Vec3 } from '../types';
 const stations = {
   lodge: { name: 'alpha-dock-lodge', position: ALPHA_STATIONS.lodge, build: createAlphaLodge },
   wind: { name: 'alpha-wind-gate', position: [16,ALPHA_WIND_GATE_Y,-44] as Vec3, build: createAlphaWindGate },
-  rack: { name: 'alpha-lantern-rack', position: [-8,83,42] as Vec3, build: createAlphaRack },
+  rack: { name: 'alpha-lantern-rack', position: rackPosition, build: createAlphaRack },
 };
 
 export default function AlphaStationStructure({ station }: { station: keyof typeof stations }) {

@@ -16,7 +16,8 @@ import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
 import { alphaMaterial } from './alpha-materials';
 import { alphaLanternGeometry } from './alpha-art';
 import { primeAlphaAudio,ringAlphaBell,stopAlphaAudio } from './alpha-audio';
-import { AlphaLantern } from './AlphaScenery';
+import AlphaLantern from './AlphaLantern';
+import { lanternHandleHeight } from './alpha-lantern-layout';
 import { alphaActionNotice,alphaStonePlacementTarget,alphaMeasuredHandError,alphaLanternCarryTarget,alphaLanternReleaseInteraction } from './alpha-action-reach';
 import { alphaActorCanAct, alphaStationInteraction } from './alpha-station-interaction';
 import { heldPropPoint } from '../accepted-action';
@@ -29,7 +30,7 @@ function Action({kind}:{kind:AlphaAction}) {
 }
 function FlyingLanterns(){const b=useMemo(()=>alphaLanternGeometry(),[]),m=useMemo(()=>b.map(x=>alphaMaterial(x.finish)),[b]),refs=useRef<(InstancedMesh|null)[]>([]),dummy=useMemo(()=>new Object3D(),[]);
  useFrame(()=>{const lanterns=alphaMotion.lanterns;refs.current.forEach(mesh=>{if(!mesh)return;mesh.count=lanterns.length;lanterns.forEach((l,i)=>{const t=l.age;dummy.position.set(l.position[0]+t*(.26+l.drift),l.position[1]+t*.62,l.position[2]+Math.sin(t*.25+l.id)*.7+t*.12);dummy.rotation.set(Math.sin(t*.7)*.04,t*.04+l.id,Math.sin(t*.55)*.06);dummy.scale.setScalar(Math.min(1,(ALPHA_LANTERN_LIFETIME-t)/3));dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix);});mesh.instanceMatrix.needsUpdate=true;mesh.computeBoundingSphere();});});
- useEffect(()=>()=>{b.forEach(x=>x.geometry.dispose());m.forEach(x=>x.dispose());},[b,m]);return <group name="alpha-released-paper-lantern-pool">{b.map((x,i)=><instancedMesh key={x.finish} ref={v=>{refs.current[i]=v;}} args={[x.geometry,m[i],ALPHA_LANTERN_CAP]} count={0} />)}</group>;}
+ useEffect(()=>()=>{b.forEach(x=>x.geometry.dispose());m.forEach(x=>x.dispose());},[b,m]);return <group name="alpha-released-paper-lantern-pool" userData={{worldCollision:'none',collisionReason:'Released paper lights drift upwards, shrink, and expire without blocking the player'}}>{b.map((x,i)=><instancedMesh key={x.finish} ref={v=>{refs.current[i]=v;}} args={[x.geometry,m[i],ALPHA_LANTERN_CAP]} count={0} />)}</group>;}
 function WindFlagStand({index}: {index: number}) {
   const stand = useMemo(() => createWindFlagStand(index), [index]);
   useOwnedWorldVisual(stand);
@@ -54,7 +55,7 @@ export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.car
  useInteractable(carried?alphaLanternReleaseInteraction(()=>interactionActor.position,canRelease,()=>{
   if(!canRelease())return;
   const palm=heldPropPoint(guideActionHand.palm,alphaLanternCarryTarget(interactionActor.position,interactionActor.yaw));
-  const p=alphaLocal(palm);p[1]-=.89;if(releaseAlphaLantern(p))announce('纸灯乘风而上。','The paper lantern rises into the clouds.');
+  const p=alphaLocal(palm);p[1]-=lanternHandleHeight;if(releaseAlphaLantern(p))announce('纸灯乘风而上。','The paper lantern rises into the clouds.');
  }):null);
  useEffect(()=>{const off=useWorldStore.subscribe((s,p)=>{if(s.paused||s.card||s.activeVehicle||s.seat||s.poolInspect||s.campReturnRequest!==p.campReturnRequest||!alphaContainsWorld(s.position,12))cancelAlphaHand();if(s.paused)stopAlphaAudio();});const hide=()=>{if(document.hidden){cancelAlphaHand();stopAlphaAudio();}};document.addEventListener('visibilitychange',hide);window.addEventListener('blur',cancelAlphaHand);return()=>{off();document.removeEventListener('visibilitychange',hide);window.removeEventListener('blur',cancelAlphaHand);cancelAlphaHand();stopAlphaAudio();};},[]);
  useFrame((_,delta)=>{const world=useWorldStore.getState();if(world.paused||world.shot||document.hidden)return;const dt=Math.min(delta,.08);alphaMotion.time+=dt;alphaMotion.lanterns=alphaMotion.lanterns.filter(l=>(l.age+=dt)<ALPHA_LANTERN_LIFETIME);
@@ -66,11 +67,11 @@ export default function AlphaInteractions(){const carried=useAlphaStore(s=>s.car
  if(completed){if(completed.kind==='bell')ringAlphaBell();const notice=alphaActionNotice(completed.kind,completed.wind);announce(notice.zh,notice.en);}
  }
  if(stoneRef.current){stoneRef.current.visible=useAlphaStore.getState().action==='stone'&&placing;if(alphaMotion.handTarget){const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaMotion.handTarget));stoneRef.current.position.set(p[0],p[1]-.08,p[2]);}}
- if(hand.current){hand.current.visible=useAlphaStore.getState().carried;const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaLanternCarryTarget(interactionActor.position,interactionActor.yaw)));hand.current.position.set(p[0],p[1]-.89,p[2]);}
+ if(hand.current){hand.current.visible=useAlphaStore.getState().carried;const p=alphaLocal(heldPropPoint(guideActionHand.palm,alphaLanternCarryTarget(interactionActor.position,interactionActor.yaw)));hand.current.position.set(p[0],p[1]-lanternHandleHeight,p[2]);}
  if(ball.current){const t=((alphaMotion.time-alphaMotion.sandAt)/6);ball.current.visible=t>=0&&t<1&&placeSandRouteBall(physics,marble,t,ball.current.position);}
  const pos=alphaLocal(world.position);for(const {n,point:p} of ALPHA_TRAIL_STOPS){if(Math.hypot(pos[0]-p[0],pos[2]-p[2])<8&&Math.abs(pos[1]-p[1])<4)visitAlphaStation(n);}
  });
- return <group name="alpha-playable-stations">{(['bell','sand','tree','wind','stone','lantern'] as AlphaAction[]).map(kind=><Action key={kind} kind={kind}/>)}<group visible={!carried}><AlphaLantern position={[-8.65,83.3,41.7]}/></group><AlphaLantern position={[-7.35,83.3,41.7]}/><AlphaLantern rootRef={hand}/><FlyingLanterns/><WindFlags/><mesh ref={ball} name="alpha-sand-route-ball" userData={{worldCollision:'none',collisionReason:'Animated marble demonstrates the route after pressing the sand-table button'}} visible={false}><sphereGeometry args={[SAND_BALL_RADIUS,12,8]}/><meshStandardMaterial color="#dba650" metalness={.6} roughness={.3}/></mesh><mesh ref={stoneRef} visible={false} scale={[.32,.1,.25]}><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color="#adb3a6" roughness={.94}/></mesh><PlayerCairn/></group>;
+ return <group name="alpha-playable-stations">{(['bell','sand','tree','wind','stone','lantern'] as AlphaAction[]).map(kind=><Action key={kind} kind={kind}/>)}<group name="alpha-shelf-lanterns">{!carried&&<AlphaLantern shelf={0}/>}<AlphaLantern shelf={1}/></group><AlphaLantern hand={hand}/><FlyingLanterns/><WindFlags/><mesh ref={ball} name="alpha-sand-route-ball" userData={{worldCollision:'none',collisionReason:'Animated marble demonstrates the route after pressing the sand-table button'}} visible={false}><sphereGeometry args={[SAND_BALL_RADIUS,12,8]}/><meshStandardMaterial color="#dba650" metalness={.6} roughness={.3}/></mesh><mesh ref={stoneRef} name="alpha-carried-summit-stone" userData={{worldCollision:'none',collisionReason:'Stone held in the placing hand until the action commits'}} visible={false} scale={[.32,.1,.25]}><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color="#adb3a6" roughness={.94}/></mesh><PlayerCairn/></group>;
 }
 function PlayerCairn(){const n=useAlphaStore(s=>s.stones);return <group name="alpha-personal-cairn" position={[1,83,39.2]}>{Array.from({length:n},(_,i)=><mesh key={i} position={[Math.sin(i*2.3)*(.15+(i%5)*.075),.12+Math.floor(i/8)*.19,Math.cos(i*2.3)*(.15+(i%5)*.075)]} scale={[.32-i*.003,.1,.25-i*.002]} castShadow><sphereGeometry args={[1,10,6]}/><meshStandardMaterial color={i%2?'#a6aba3':'#8c9693'} roughness={.96}/></mesh>)}</group>;}
 
