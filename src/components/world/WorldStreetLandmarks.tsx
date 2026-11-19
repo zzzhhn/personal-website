@@ -3,6 +3,8 @@ import { useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Matrix4, Quaternion, Vector3 } from 'three';
 import { FOUNDATIONS_V4, RIDGE_V4 } from './layout-v4';
+import { buildTerrain, GRID, CELL } from './WorldLandform';
+import { foundationBurial, exposedFoundation, foundationRanges } from './street-foundation-surface';
 import { windUniforms } from './WorldWind';
 import StreetStatic, { StreetClaim, type StaticKind, type StaticPlacement } from './WorldStreetStatic';
 import { StreetBatch } from './WorldStreetBatch';
@@ -12,7 +14,13 @@ import StreetConstructionSigns from './WorldStreetConstructionSigns';
 const matrix = (x: number, y: number, z: number) => new Matrix4().makeTranslation(x, y, z);
 export function StreetFoundations() {
   const built = useMemo(() => {
-    const kinds: StaticKind[] = FOUNDATIONS_V4.map(f => ({ id: f.id, L0: A.foundationSlab(0, f.size[0], f.size[2]), L1: A.foundationSlab(1, f.size[0], f.size[2]), lodNear: 45, far: 140, collide: 'trimesh' }));
+    const terrain = buildTerrain();
+    const kinds: StaticKind[] = FOUNDATIONS_V4.map(({ id, position, size }) => {
+      const buried = foundationBurial(terrain, GRID, CELL, position, size);
+      const geometry = (level: 0 | 1) => exposedFoundation(A.foundationSlab(level, size[0], size[2]), buried);
+      return { id, L0: geometry(0), L1: geometry(1), lodNear: 45, far: 140,
+        collide: 'trimesh', surfaceRanges: foundationRanges };
+    });
     const placements: StaticPlacement[] = FOUNDATIONS_V4.map(f => ({ kind: f.id, matrix: matrix(f.position[0], f.position[1] - f.size[1] / 2, f.position[2]), surface: true }));
     return { kinds, placements };
   }, []);

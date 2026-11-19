@@ -19,8 +19,14 @@ import { facilityCraftEnabled } from './WorldFacilitySurface';
 import { createShelterGlazingMaterial, splitShelterGlazing } from './WorldFacilityGlazing';
 import type { CanvasTexture } from 'three';
 import type { Vec3 } from './types';
+import type { BatchedCollisionSources } from './world-collision-inventory';
 
-export interface StaticKind { id: string; L0: Builder; L1: Builder; lodNear: number; far: number; collide?: 'hull' | 'trimesh' | 'none' }
+type GeometrySource = BatchedCollisionSources['geometries'][number];
+type PlacedSource = BatchedCollisionSources['placements'][number];
+
+export interface StaticKind { id: string; L0: Builder; L1: Builder; lodNear: number; far: number; collide?: 'hull' | 'trimesh' | 'none';
+  surfaceRanges?: (builder: Builder) => GeometrySource['ranges'];
+}
 export interface StaticPlacement { kind: string; matrix: Matrix4; surface?: boolean }
 export interface Seat { id: string; position: Vec3; yaw: number; anchor: Vec3; label: { en: string; zh: string } }
 
@@ -61,23 +67,47 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     const batch = new StreetBatch(name, bk, counts, material);
     const glassMaterial = glassKinds.length ? createShelterGlazingMaterial() : null;
     const glassBatch = glassMaterial ? new StreetBatch(`${name}-glazing`, glassKinds, glassCounts, glassMaterial) : null;
-    const hulls: { key: string; points: Float32Array }[] = [], tris: { key: string; pos: Float32Array; idx: Uint32Array; surface: boolean }[] = [];
+    const hulls: { key: string; points: Float32Array }[] = [], tris: { key: string; pos: Float32Array; idx: Uint32Array; surface: boolean; name?: string }[] = [];
+    const geometries: GeometrySource[] = [], sources: PlacedSource[] = [];
     const local = kinds.map((k, i) => {
+      if (k.surfaceRanges) {
+        for (const level of [0, 1] as const) geometries.push({
+          id: batch.geometryId(i, level), ranges: k.surfaceRanges(level === 0 ? k.L0 : k.L1),
+        });
+      }
       const proxy = streetFacilityCollision(k.L0);
-      return { hulls: k.collide === 'none' ? [] : proxy.hulls(),
+      return { hulls: (k.collide ?? 'hull') === 'hull' ? proxy.hulls() : [],
         geo: k.collide === 'trimesh' && proxy !== k.L0 ? proxy.build() : bk[i].L0 };
     });
     placements.forEach((p, n) => {
-      const i = index.get(p.kind)!; batch.add(i, p.matrix);
+      const i = index.get(p.kind)!;
+      const slot = batch.add(i, p.matrix);
       const gi = glassIndex.get(p.kind); if (gi !== undefined) glassBatch!.add(gi, p.matrix);
       const mode = kinds[i].collide ?? 'hull';
       if (mode === 'hull') local[i].hulls.forEach((h, j) => hulls.push({ key: `${n}-${j}`, points: transform(h, p.matrix) }));
       else if (mode === 'trimesh') {
         const g = local[i].geo;
+        const surfaceRanges = kinds[i].surfaceRanges;
+        if (surfaceRanges) {
+          const id = `${name}-${p.kind}-${n}`, prefix = id + '/';
+          sources.push({id, slot, matrix: batch.sourceMatrix(slot), geometryIds: [batch.geometryId(i, 0), batch.geometryId(i, 1)], colliderPrefix: prefix});
+          const positions = transform(bk[i].L0.getAttribute('position').array as Float32Array, p.matrix);
+          const indices = bk[i].L0.index!.array;
+          for (const range of surfaceRanges(kinds[i].L0)) {
+            if (range.collision !== 'solid') continue;
+            const members = range.surfaceIds;
+            if (members?.length !== 1) throw new Error(`Expected a named fixed surface for ${id}/${range.id}`);
+            const label = prefix + members[0];
+            tris.push({key: label, name: label, pos: positions,
+              idx: new Uint32Array(indices.slice(range.firstIndex, range.firstIndex + range.indexCount)), surface: !!p.surface});
+          }
+          return;
+        }
         tris.push({ key: `${n}`, pos: transform(g.getAttribute('position').array as Float32Array, p.matrix), idx: new Uint32Array(g.index!.array), surface: !!p.surface });
       }
     });
     local.forEach((p, i) => { if (p.geo !== bk[i].L0) p.geo.dispose(); });
+    if (sources.length) batch.mesh.userData.worldCollisionBatchedInstances = {geometries, placements: sources};
     batch.finish(1);
     if (glassBatch) {
       glassBatch.finish(1); glassBatch.mesh.castShadow = false; glassBatch.mesh.receiveShadow = true;
@@ -101,10 +131,10 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
       {built.hulls.map(h => <ConvexHullCollider key={h.key} args={[h.points]} friction={.65} restitution={.1} />)}
     </RigidBody>}
     {built.tris.filter(t => !t.surface).length > 0 && <RigidBody type="fixed" colliders={false} userData={ud} name={`${name}-solid`}>
-      {built.tris.filter(t => !t.surface).map(t => <TrimeshCollider key={t.key} args={[t.pos, t.idx]} friction={.65} restitution={.05} />)}
+      {built.tris.filter(t => !t.surface).map(t => <TrimeshCollider key={t.key} name={t.name} args={[t.pos, t.idx]} friction={.65} restitution={.05} />)}
     </RigidBody>}
     {built.tris.filter(t => t.surface).length > 0 && <RigidBody type="fixed" colliders={false} userData={{ surface: true, solid: true, assetId }} name={`${name}-surface`}>
-      {built.tris.filter(t => t.surface).map(t => <TrimeshCollider key={t.key} args={[t.pos, t.idx]} friction={.7} restitution={.02} />)}
+      {built.tris.filter(t => t.surface).map(t => <TrimeshCollider key={t.key} name={t.name} args={[t.pos, t.idx]} friction={.7} restitution={.02} />)}
     </RigidBody>}
     {seats.map(s => <SeatPoint key={s.id} seat={s} />)}
     {claims.length > 0 && <StreetClaim keys={claims} />}
