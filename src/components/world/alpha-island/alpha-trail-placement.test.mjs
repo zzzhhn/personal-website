@@ -23,6 +23,7 @@ import * as boarding from './alpha-boarding-mask.ts';
 import * as batch2 from './alpha-batch2-layout.ts';
 import * as staticSurfaces from '../static-surface-asset.ts';
 import { surveyStationStructures } from '../../../../tools/world/alpha-mine-tests/station-structure-survey.mjs';
+import { collisionInventory } from '../world-collision-inventory.ts';
 
 const fiber=createRequire(import.meta.url)('@react-three/fiber');
 fiber.extend(THREE);
@@ -35,7 +36,7 @@ async function mount(){
  const motion={time:0,bellAt:-100},empty=()=>null;
  const canvas=()=>({getContext:()=>new Proxy({},{get:()=>()=>{}})});
  const rapier={RigidBody:({children,position,name,userData})=>h('group',{position,name,userData},children),CuboidCollider:()=>null,
-  TrimeshCollider:({args})=>h('group',{userData:{colliderArgs:args}}),ConvexHullCollider:()=>null,
+  TrimeshCollider:({args,name})=>h('group',{name,userData:{colliderArgs:args}}),ConvexHullCollider:()=>null,
   RoundCuboidCollider:({args,name,position,quaternion})=>h('group',{name,position,quaternion,userData:{roundBox:args}})};
  const Station=compileWorldComponent(new URL('./AlphaStationStructure.tsx',import.meta.url))({
   '@react-three/rapier':rapier,'./alpha-station-structures':structures,'./alpha-layout':layout,'./alpha-materials':materials,'../useOwnedWorldVisual':ownedVisual,
@@ -69,6 +70,14 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
  await R.init();
  const ground=shippingAlphaTerrain(),mounted=await mount(),{scene,motion}=mounted;
  try{
+  await t.test('mounted trail structures account for the collider of every blocking range',()=>{
+   const colliders=[];
+   scene.traverse(node=>{if(node.userData.colliderArgs||node.userData.roundBox)colliders.push(node);});
+   const report=collisionInventory(scene,[],colliders,['alpha-dock-lodge','alpha-lantern-rack','alpha-path-fence']);
+   assert.deepEqual(report.errors,[]);
+   assert.equal(report.registrations['alpha-dock-lodge']+report.registrations['alpha-lantern-rack'],247);
+   assert.ok(report.registrations['alpha-path-fence']>0);
+  });
   await t.test('lodge and lantern rack use the visible structure and leave their controls reachable', child => surveyStationStructures(scene,ground,child));
   await t.test('nearby alpine plants leave the lodge floor and entry ramp clear',async child=>{
    await mounted.advance(.01);
@@ -84,6 +93,7 @@ test('shipping Alpha trail fixtures meet their terrain, collision and clearance 
    const bad=[],counts={};
    for(const name of ['alpha-alpine-shrubs','alpha-path-grass']){
     const plants=scene.getObjectByName(name),verts=plants.geometry.attributes.position;
+    assert.equal(plants.userData.collision,'none');
     counts[name]=plants.count;assert.ok(plants.count>0,'nearby outdoor plants must be present');
     for(let i=0;i<plants.count;i++){
      plants.getMatrixAt(i,matrix);matrix.premultiply(plants.matrixWorld);

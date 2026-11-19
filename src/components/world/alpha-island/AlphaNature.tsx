@@ -23,6 +23,10 @@ export default function AlphaNature(){const built=useMemo(()=>{const d=new Objec
  const clearBushes=outsideLodge(bushes,[shrub]),clearGrass=outsideLodge(grass,[tuft]);
  const shrubMesh=new InstancedMesh(shrub,leaf,clearBushes.length);shrubMesh.name='alpha-alpine-shrubs';shrubMesh.count=0;shrubMesh.receiveShadow=true;
  const grassMesh=new InstancedMesh(tuft,grassMat,clearGrass.length);grassMesh.name='alpha-path-grass';grassMesh.count=0;grassMesh.receiveShadow=true;
+ for(const mesh of [shrubMesh,grassMesh,...groups.flatMap(g=>[g.meshes[1],g.meshes[3]])]){
+  mesh.userData.collision='none';
+  mesh.userData.collisionReason='Walk-through alpine foliage';
+ }
  return{groups,trees:groups.flatMap(g=>g.points),bushes:clearBushes,grass:clearGrass,shrubMesh,grassMesh,bark,leaf,grassMat,frustum:new Frustum(),view:new Matrix4(),sphere:new Sphere(),point:new Vector3(),last:new Vector3(1e8,0,0),lastLook:new Vector3(0,0,0),dir:new Vector3()};},[]);
  useFrame(({camera})=>{camera.getWorldDirection(built.dir);if(camera.position.distanceToSquared(built.last)<3&&built.dir.distanceToSquared(built.lastLook)<.003)return;built.last.copy(camera.position);built.lastLook.copy(built.dir);built.frustum.setFromProjectionMatrix(built.view.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse));
  const visible=(p:Plant,r:number,near:number)=>{built.point.set(p.x+ALPHA_ORIGIN[0],p.y+r*.7,p.z+ALPHA_ORIGIN[2]);const d=camera.position.distanceTo(built.point);built.sphere.set(built.point,r);return {d,on:d<near||built.frustum.intersectsSphere(built.sphere)};};

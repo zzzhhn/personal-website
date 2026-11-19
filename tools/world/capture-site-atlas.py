@@ -53,7 +53,8 @@ def shoot(page, select, shot):
         return !document.hidden && s.shot === shot && !s.paused && s.quality === 'balanced'
           && s.weather === 'clear' && s.light === (dark ? 'night' : 'noon')
           && Math.abs(loop.night - Number(dark)) < .001 && loop.frame > frame + 2
-          && camera?.settled && camera.onMark && d.stats().triangles > 0 && {camera, png: d.captureReviewFrame()};
+          && camera?.settled && camera.onMark && d.stats().triangles > 0
+          && {camera, png: d.captureReviewFrame(), coverage: d.reviewCollisionInventory()};
     }"""
     for attempt in range(6):
         try:
@@ -77,7 +78,10 @@ def shoot(page, select, shot):
     image = Image.open(io.BytesIO(data)).convert("RGB")
     if image.size != tuple(VIEWPORT.values()) or max(ImageStat.Stat(image).stddev) < 2:
         raise RuntimeError(f"Invalid render at {shot}: {image.size}, channel deviation {ImageStat.Stat(image).stddev}")
-    return capture["camera"], image
+    coverage = capture["coverage"]
+    if coverage["errors"] or not coverage["submitted"]["meshes"]:
+        raise RuntimeError(f"Collision inventory failed at {shot}: {coverage['errors'][:10]}, submitted={coverage['submitted']}")
+    return capture["camera"], image, coverage
 
 
 def capture(browser, base, shard, shards):
@@ -136,14 +140,15 @@ def capture(browser, base, shard, shards):
         records = {}
         for index, site in enumerate(selected):
             group = sites[site]
-            day_camera, day = shoot(page, select, group["day"])
-            night_camera, night = shoot(page, select, group["night"])
+            day_camera, day, day_coverage = shoot(page, select, group["day"])
+            night_camera, night, night_coverage = shoot(page, select, group["night"])
             if day_camera != night_camera:
                 raise RuntimeError(f"Camera/projection/exposure mismatch at {site}: {day_camera} vs {night_camera}")
             change = ImageStat.Stat(ImageChops.difference(day, night)).mean
             if max(change) < 2:
                 raise RuntimeError(f"Day and night pixels nearly identical at {site}")
-            records[site] = {"camera": day_camera, "meanAbsoluteRgbDifference": change}
+            records[site] = {"camera": day_camera, "meanAbsoluteRgbDifference": change,
+                             "collisionCoverage": {"day": day_coverage, "night": night_coverage}}
             # Keep the surveyed camera ID comparable to older manifests; its
             # current playable destination is the coastal path.
             caption = "alpha-coastal-path" if site == "site-alpha-shallows" else site[5:]

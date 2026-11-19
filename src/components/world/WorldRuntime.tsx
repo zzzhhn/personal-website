@@ -16,6 +16,8 @@ import { useWindClock, windUniforms } from './WorldWind';
 import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
+import { collisionInventory } from './world-collision-inventory';
+import type { Object3D } from 'three';
 import { night, NightClock } from './WorldNight';
 import { claimedKeys } from './WorldVisualClaims';
 // District mount points are imported statically so their greybox claims (WorldVisualClaims) are
@@ -257,6 +259,15 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
         // drawing buffer after presentation. Browser UI and HUD live outside it.
         gl.render(scene, camera);
         return gl.domElement.toDataURL('image/png');
+      },
+      reviewCollisionInventory: () => {
+        const list = gl.renderLists.get(scene, 0);
+        const active: Object3D[] = [];
+        world.forEachCollider(c => {
+          const node = colliderStates.get(c.handle)?.object;
+          if (node && c.isEnabled() && !c.isSensor()) active.push(node);
+        });
+        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active);
       },
       reviewCamera: () => {
         const view = WORLD_SHOTS.find(v => v.id === useWorldStore.getState().shot);
