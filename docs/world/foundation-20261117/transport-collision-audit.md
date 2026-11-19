@@ -19,6 +19,18 @@
 - 独立生产构建输出 8 页，全仓 TypeScript 和 `git diff --check` 通过。默认 V4 与 V3 的生产 Chrome 都读回 11 个交通严格根和 20 个有效 collider，交通组错误为零。V3 可在浏览器复跑命令后加 `--registrations-only --layout=v3`。
 - 隔离生产 Chrome 1440 × 900、默认 Balanced。QA 仅把胶囊放到真实登乘口，随后用真实 E、HUD 跳过行程和 W。渡船、缆车、雪橇均成功穿过到站出口，胶囊接地，按 W 实际走离 1.42 m、1.61 m、1.61 m。复跑命令为 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/alpha-island/transports/vehicle-collision-browser.mjs http://127.0.0.1:<生产端口>`。
 
+### 返程及雪橇空车回位补验
+
+在同一隔离生产构建用 Chrome 1440 × 900、默认 Balanced 串行验证。三条均用真实 E 登乘、点击 HUD 的 `Skip travel to arrival` 跳过载客路段，等待出舱并接地，再用 W 走离。
+
+| 路线 | 出生与定位 | 实际到达与走离 |
+| --- | --- | --- |
+| 渡船 · 山岛回大陆 | 从普通营地出生，使用一次 QA 定位到大陆真实木栈桥。E 去程到山岛后，在落脚处直接按 E 返程。 | 山岛落脚体心 `[156,2.348,148]`，返程接地 `[−10,1.960,109]`，W 走离 0.695 米。 |
+| 缆车 · 上站到下站 | 公开 `start=alpha-wind` 出生，键盘步行到下站。E 上行后，在上站接地并步行约 5.3 米至下行提示。全程无 QA 定位。 | 上站落脚体心 `[260,73.819,218]`，下行落脚 `[266,38.820,150]`，W 走离 0.457 米。 |
+| 雪橇 · 空车回位后再乘坐 | 公开 `start=alpha-summit` 出生，键盘步行到上站并完成第一次下滑。确认空车从下站驶离后，用一次 QA 定位初始化上站候乘位置。坐标以外未改动雪橇、行程或时钟。 | 回位时同一雪橇碰撞体抵达 `[259,76.160,236]`，上站重新出现登乘提示。再次 E 登乘后于下站 `[171,4.620,163]` 接地，W 走离 0.657 米。空车回位实际沿滑道运行。 |
+
+三条页面错误均为零。营地到大陆渡口的步行尝试在 L01 椅与铺装边处中断，本次完成的是从木栈桥开始的渡船往返。生产 HTML 的 SHA-256 为 `52b68ff8df49c5009ba026f4d79e4a7d80841652a6b2d8fd9accd45286dcbccb`。原始记录在 `evidence/city-foundation/transport-supplement-browser.jsonl` 与 `evidence/city-foundation/transport-supplement-ferry.jsonl`。
+
 ## 仍待验收
 
 - 从营地至三个交通站的全程浏览器徒步和原时长旅行。当前浏览器跑了上车、跳过、下车和走离，物理套件覆盖双向与轨迹采样，目标机 Safari 仍待复测。
