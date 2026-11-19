@@ -3,15 +3,26 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import vm from 'node:vm';
+import { gunzipSync } from 'node:zlib';
+import { act, createElement as h, Suspense, useMemo, useState } from 'react';
 import R from '@dimforge/rapier3d-compat';
-import { BufferAttribute, BufferGeometry, DoubleSide, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
+import { BoxGeometry, BufferAttribute, BufferGeometry, CylinderGeometry, DoubleSide, Group, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D, PerspectiveCamera, Quaternion, Raycaster, Texture, Vector3 } from 'three';
 import { VEHICLES } from './layout.ts';
-import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, wheelGeometry } from './actor-physics.ts';
-import { adaptVehicleSeats, vehicleHulls } from './WorldVehicleAssets.ts';
-import { refineCoupeWheel, refineVehicleBody } from './WorldVehicleDetail.ts';
-import { isHeldPlayerContact, isPlayerContact, registerPlayerContact } from './world-player-contact.ts';
-import { retainedVehicleRoofSource, vanBeaconId, vehicleBodySources, vehicleContactHull, vehicleDoorContactMesh, vehicleHullId, vehicleLeafPose, vehicleRoofContactBlocks, vehicleRoofContactMesh, vehicleTyreContactHull, vehicleTyrePose } from './world-vehicle-contact.ts';
+import { configureRaycastVehicle, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, wheelGeometry } from './actor-physics.ts';
+import * as vehicleAssets from './WorldVehicleAssets.ts';
+import * as vehicleDetails from './WorldVehicleDetail.ts';
+import { useWorldStore } from './store.ts';
+import { night } from './WorldNight.ts';
+import { readDrivingTelemetry } from './vehicle-telemetry.ts';
+import { PLAYER_CONTACT_GROUPS, isHeldPlayerContact, isPlayerContact, registerPlayerContact } from './world-player-contact.ts';
+import * as vehicleParts from './world-vehicle-contact.ts';
 import { glb } from '../../../tools/world/guide/boot-analysis.mjs';
+import { compileWorldComponent } from '../../../tools/world/alpha-mine-tests/component-host.mjs';
+import { decodeTerrainArtifact } from './terrain-artifact.ts';
+
+const {adaptVehicleSeats,vehicleHulls}=vehicleAssets;
+const {refineCoupeWheel,refineVehicleBody}=vehicleDetails;
+const {retainedVehicleRoofSource,vanBeaconId,VEHICLE_BODY_GROUPS,VEHICLE_WALK_GROUPS,vehicleBodySources,vehicleContactHull,vehicleDoorContactMesh,vehicleHullId,vehicleLeafPose,vehicleRoofContactBlocks,vehicleRoofContactMesh,vehicleTyreContactHull,vehicleTyrePose}=vehicleParts;
 
 const assets={offroad:'G25',coupe:'G26',van:'G27'};
 async function decoderModule() {
@@ -199,7 +210,7 @@ test('actual panels and tyres block a walking probe that the previous static cha
 
 test('G24 contact keeps the tuned capsule and only accepts suspension from its actual owner',()=>{
   const world=new R.World({x:0,y:0,z:0}),body=world.createRigidBody(R.RigidBodyDesc.dynamic());
-  const collider=world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body);
+  const collider=world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setCollisionGroups(PLAYER_CONTACT_GROUPS),body);
   const another=world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS));
   let owned=false;
   registerPlayerContact(collider,()=>owned);
@@ -257,4 +268,161 @@ test('the added tyre contact stops G24 without adding a suspension or body mass'
   assert.equal(after.hitWheel,true);
   assert.equal(after.hitBody,false);
   assert.ok(after.z-before.z>.35,'the walking capsule now stops at the visible sidewall');
+});
+
+test('shipping asset LODs keep convex roof parts on CCD and walking contacts on a disjoint body',async t=>{
+  const require=createRequire(import.meta.url),fiber=require('@react-three/fiber'),physics=require('@react-three/rapier');
+  const wasm=createRequire(require.resolve('@react-three/rapier'))('@dimforge/rapier3d-compat');
+  await wasm.init();
+  fiber.extend({BoxGeometry,CylinderGeometry,Group,Mesh,MeshStandardMaterial,Object3D});
+  globalThis.IS_REACT_ACT_ENVIRONMENT=true;
+  const camera=new PerspectiveCamera(),root=fiber.createRoot({}),texture=new Texture();
+  const renderer={render(){},setSize(){},setPixelRatio(){},capabilities:{getMaxAnisotropy:()=>4}};
+  await root.configure({gl:renderer,camera,frameloop:'never',dpr:1,size:{width:320,height:200,top:0,left:0}});
+  const localAssets=new Map(),loadedAssets=new Map(),owned=[],compile=compileWorldComponent(new URL('WorldVehicleVisual.tsx',import.meta.url));
+  for(const asset of Object.values(assets))for(const lod of ['', '-lod1']){
+    const data=glb(new URL(`../../../public/assets/world/vehicles/${asset}${lod}.glb`,import.meta.url)),scene=new Group();
+    for(const name of [`${asset}_body`,'door-left','door-right','wheel-front-left']){
+      const item=geometryFromNode(sourceData,data,name),material=new MeshStandardMaterial(),mesh=new Mesh(item.geometry,material);
+      mesh.name=name;if(item.node.translation)mesh.position.fromArray(item.node.translation);
+      scene.add(mesh);owned.push(item.geometry,material);
+    }
+    localAssets.set(`/assets/world/vehicles/${asset}${lod}.glb`,{scene});
+  }
+  const {default:Visual,VehicleWalkingColliders}=compile({
+    '@react-three/fiber':{...fiber,useLoader:(_loader,urls)=>{
+      const key=urls[0];
+      if(!loadedAssets.has(key))loadedAssets.set(key,urls.map(url=>localAssets.get(url)));
+      return loadedAssets.get(key);
+    }},
+    '@react-three/rapier':physics,
+    './store':{useWorldStore}, './WorldNight':{night}, './vehicle-telemetry':{readDrivingTelemetry},
+    './WorldVehicleAssets':{...vehicleAssets,headlightTexture:()=>texture},
+    './WorldVehicleDetail':vehicleDetails,'./world-vehicle-contact':vehicleParts,
+  });
+  let context,store;
+  function ReadWorld(){context=physics.useRapier();return null;}
+  function Fixture({spec}){
+    const [recipe,publishWalkContacts]=useState(null),dim=useMemo(()=>wheelGeometry(spec.size),[spec]);
+    const props={id:spec.id,size:spec.size,color:spec.color,wheelRadius:dim.radius,wheelPoints:dim.points,wheelRest:dim.rest,
+      wheels:{current:[]},lights:{current:{brake:false,reverse:false}},doors:{current:{side:1,openness:0}},authoredHull:true,publishWalkContacts};
+    return h('group',null,
+      h(physics.RigidBody,{ccd:true,colliders:false,position:spec.position},h(Visual,props)),
+      recipe&&h(physics.RigidBody,{type:'kinematicPosition',colliders:false,position:spec.position},h(VehicleWalkingColliders,
+        {id:spec.id,points:dim.points,rest:dim.rest,recipe,contacts:{tyres:[],leaves:[],beacon:null}})));
+  }
+  try{
+    await act(async()=>{
+      store=root.render(h(Suspense,{fallback:null},h(physics.Physics,{paused:true,colliders:false},h(ReadWorld),
+        ...VEHICLES.map(spec=>h(Fixture,{spec,key:spec.id})))));
+    });
+    const capture=()=>[...context.colliderStates].map(([handle,{object}])=>{
+      const collider=context.world.getCollider(handle);
+      return {name:object.name,shape:collider.shapeType(),groups:collider.collisionGroups(),ccd:collider.parent().isCcdEnabled()};
+    });
+    const before=capture(),walking=before.filter(row=>row.groups===VEHICLE_WALK_GROUPS),roof=before.filter(row=>row.groups===VEHICLE_BODY_GROUPS);
+    assert.ok(roof.some(row=>row.name.startsWith('vehicle-offroad-hull-rack-rung-')));
+    assert.ok(roof.every(row=>row.ccd));
+    assert.ok(walking.some(row=>row.name===vanBeaconId));
+    assert.equal(walking.filter(row=>row.name.endsWith('-door-leaf')).length,6);
+    assert.equal(walking.filter(row=>row.name.includes('-tyre-')).length,12);
+    assert.ok(walking.every(row=>!row.ccd));
+    assert.ok(before.every(row=>row.shape===wasm.ShapeType.ConvexPolyhedron),JSON.stringify(before));
+    await act(async()=>{camera.position.set(200,7,200);store.getState().advance(1,false);});
+    assert.deepEqual(capture(),before);
+    t.diagnostic(JSON.stringify({roof:roof.length,walking:walking.length}));
+  }finally{await act(async()=>root.unmount());texture.dispose();owned.forEach(source=>source.dispose());}
+});
+
+test('the real mainland step reproduces the removed CCD trimesh cost and preserves every driven-body support pose',t=>{
+  const terrainBytes=gunzipSync(readFileSync(new URL('../../../public/assets/world/terrain/mainland-v4.bin.gz',import.meta.url)));
+  const {terrain}=decodeTerrainArtifact(terrainBytes.buffer.slice(terrainBytes.byteOffset,terrainBytes.byteOffset+terrainBytes.byteLength),'v4');
+  const prepared=VEHICLES.map(spec=>{
+    const key=assets[spec.id],entry=vehicleHulls(spec.id),wheel=wheelGeometry(spec.size);
+    const data=glb(new URL(`../../../public/assets/world/vehicles/${key}.glb`,import.meta.url));
+    const {geometry:body}=geometryFromNode(sourceData,data,`${key}_body`),ranges=vehicleBodySources(spec.id,body,entry);
+    const {geometry:tyre}=geometryFromNode(sourceData,data,'wheel-front-left');
+    const tyrePoints=vehicleContactHull(tyre),doors=['door-left','door-right'].map(name=>{
+      const {node,geometry}=geometryFromNode(sourceData,data,name);
+      const shape=vehicleDoorContactMesh(geometry),points=vehicleContactHull(geometry);
+      geometry.dispose();return {shape,points,at:[node.translation[0],node.translation[1]+entry.bodyY,node.translation[2]]};
+    });
+    const rack=vehicleRoofContactMesh(body,ranges,vehicleHullId(spec.id,'rack'));
+    const blocks=vehicleRoofContactBlocks(body,ranges,vehicleHullId(spec.id,'rack'));
+    body.dispose();tyre.dispose();return {spec,entry,wheel,rack,blocks,doors,tyrePoints};
+  });
+  function measured(kind){
+    const world=new R.World({x:0,y:-9.81,z:0}),events=new R.EventQueue(true);
+    for(const indices of [terrain.surface,terrain.solid])world.createCollider(R.ColliderDesc.trimesh(terrain.positions,indices));
+    const avatar=world.createRigidBody(R.RigidBodyDesc.dynamic().setCcdEnabled(true).setTranslation(45,2,-145).lockRotations());
+    const player=world.createCollider(R.ColliderDesc.capsule(.48,.34).setMass(72).setCollisionGroups(PLAYER_CONTACT_GROUPS),avatar);
+    const walking=new Set(),hooks={filterContactPair(a,b){
+      return walking.has(a)&&b===player.handle||walking.has(b)&&a===player.handle?R.SolverFlags.COMPUTE_IMPULSE:R.SolverFlags.EMPTY;
+    },filterIntersectionPair(){return true;}};
+    const cars=prepared.map(({spec,entry,wheel,rack,blocks,doors,tyrePoints})=>{
+      const at=[spec.position[0],spec.position[1]+wheel.height,spec.position[2]],rotation={x:0,y:Math.sin(spec.yaw/2),z:0,w:Math.cos(spec.yaw/2)};
+      const car=world.createRigidBody(R.RigidBodyDesc.dynamic().setCcdEnabled(true).setCanSleep(false).setAngularDamping(.65).setLinearDamping(.12)
+        .setTranslation(...at).setRotation(rotation));
+      const proxy=kind==='convex'?world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...at).setRotation(rotation)):car;
+      const [length,height,width]=spec.size;
+      world.createCollider(R.ColliderDesc.cuboid(length/2,height*.29,width/2).setMass(spec.mass*.78).setSensor(true).setCollisionGroups(0),car);
+      world.createCollider(R.ColliderDesc.cuboid(length*.25,height*.2,width*.43).setMass(spec.mass*.22).setSensor(true).setCollisionGroups(0),car);
+      const bodyPart=(desc,y)=>world.createCollider(desc.setMass(0).setTranslation(0,y,0).setCollisionGroups(VEHICLE_BODY_GROUPS),car);
+      for(const hull of entry.hulls){
+        if(hull.part==='rack'&&kind!=='old')continue;
+        bodyPart(R.ColliderDesc.convexHull(Float32Array.from(hull.points)),entry.bodyY);
+      }
+      if(rack&&kind==='triangle')bodyPart(R.ColliderDesc.trimesh(rack.vertices,rack.indices),entry.bodyY);
+      if(kind==='convex')for(const block of blocks)bodyPart(R.ColliderDesc.convexHull(block.points),entry.bodyY);
+      const add=(desc,at)=>{
+        const c=world.createCollider(desc.setMass(0).setTranslation(...at).setActiveHooks(R.ActiveHooks.FILTER_CONTACT_PAIRS)
+          .setCollisionGroups(kind==='convex'?VEHICLE_WALK_GROUPS:0xffffffff),proxy);
+        walking.add(c.handle);
+      };
+      if(kind!=='old'){
+        for(const {shape,points,at} of doors)add(kind==='convex'?R.ColliderDesc.convexHull(points):R.ColliderDesc.trimesh(shape.vertices,shape.indices),at);
+        for(const [x,y,z] of wheel.points)add(R.ColliderDesc.convexHull(tyrePoints),[x,y-wheel.rest,z]);
+      }
+      const controller=world.createVehicleController(car);
+      configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension/spec.mass);
+      return {car,proxy,controller};
+    });
+    const samples=[];
+    for(let i=0;i<32;i++){
+      for(const {car,proxy,controller} of cars){
+        if(proxy!==car){proxy.setTranslation(car.translation(),false);proxy.setNextKinematicTranslation(car.translation());}
+        controller.updateVehicle(world.timestep,R.QueryFilterFlags.EXCLUDE_SENSORS|R.QueryFilterFlags.EXCLUDE_DYNAMIC|R.QueryFilterFlags.EXCLUDE_KINEMATIC);
+      }
+      const from=performance.now();world.step(events,hooks);
+      if(i>=8)samples.push(performance.now()-from);
+    }
+    const frames=cars.map(({car,controller})=>({body:{...car.translation()},mass:car.mass(),com:{...car.localCom()},inertia:{...car.principalInertia()},
+      support:[0,1,2,3].map(i=>[controller.wheelIsInContact(i),controller.wheelSuspensionLength(i)])}));
+    events.free();world.free();return {ms:samples.sort((a,b)=>a-b)[samples.length/2],frames};
+  }
+  const old=measured('old'),slow=measured('triangle'),convex=measured('convex');
+  const timings={terrainTriangles:(terrain.surface.length+terrain.solid.length)/3,oldMedianMs:old.ms,triangleMedianMs:slow.ms,convexMedianMs:convex.ms};
+  assert.ok(slow.ms>old.ms*4&&convex.ms<slow.ms*.25,JSON.stringify(timings));
+  assert.deepEqual(convex.frames,old.frames,'vehicle heights, support, mass and inertia match the pre-contact fixture');
+  t.diagnostic(JSON.stringify({...timings,vehicles:convex.frames}));
+});
+
+test('a highway-speed CCD sweep passes through the walking-only shape and still stops at the real post',()=>{
+  function run(supplement){
+    const world=new R.World({x:0,y:0,z:0}), entry=vehicleHulls('coupe');
+    const car=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(-6,1,0).setCcdEnabled(true).setLinvel(95,0,0));
+    world.createCollider(R.ColliderDesc.cuboid(1,.4,1).setMass(1100).setSensor(true).setCollisionGroups(0),car);
+    for(const hull of entry.hulls)world.createCollider(R.ColliderDesc.convexHull(Float32Array.from(hull.points))
+      .setTranslation(0,entry.bodyY,0).setMass(0).setCollisionGroups(VEHICLE_BODY_GROUPS),car);
+    world.createCollider(R.ColliderDesc.cuboid(.035,1,1).setTranslation(0,1,0));
+    if(supplement){
+      const body=world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(-2,1,0));
+      world.createCollider(R.ColliderDesc.cuboid(.2,1,1).setCollisionGroups(VEHICLE_WALK_GROUPS),body);
+    }
+    const samples=[];for(let i=0;i<7;i++){world.step();samples.push(car.translation().x);}
+    world.free();return samples;
+  }
+  const original=run(false);
+  assert.deepEqual(run(true),original);
+  assert.ok(original.at(-1)<-1.95&&original.at(-1)>-3,'sweep reaches the thin real post without crossing it');
 });

@@ -24,7 +24,7 @@ import { createInteractionApproach, createInteractionOfferResolver, interactionV
 import type { Vec3, VehicleId, VehiclePlacement } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import type { GuidePresentationFactory } from './guide-presentation';
-import WorldVehicleVisual, { type VehicleWalkContacts } from './WorldVehicleVisual';
+import WorldVehicleVisual, { VehicleWalkingColliders, type VehicleWalkContacts, type VehicleWalkRecipe } from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, resetPlayerBody } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
@@ -33,8 +33,8 @@ import { portalRearmed } from './world-travel';
 import { portalCrossing } from './portal-crossing';
 import { advancePortalAttempt, beginPortalAttempt, retreatingFromPortal, type PortalAttempt } from './portal-transfer';
 import { vehicleHulls } from './WorldVehicleAssets';
-import { VEHICLE_HULL_FRICTION, VEHICLE_HULL_RESTITUTION, vehicleContactRoot, vehicleHullId, vehicleLeafPose, vehicleTyrePose } from './world-vehicle-contact';
-import { isPlayerContact, playerContactId, playerContactRoot, playerContactSource, registerPlayerContact } from './world-player-contact';
+import { VEHICLE_BODY_GROUPS, VEHICLE_HULL_FRICTION, VEHICLE_HULL_RESTITUTION, vehicleContactRoot, vehicleHullId, vehicleLeafPose, vehicleTyrePose } from './world-vehicle-contact';
+import { isPlayerContact, PLAYER_CONTACT_GROUPS, playerContactId, playerContactRoot, playerContactSource, registerPlayerContact } from './world-player-contact';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
@@ -53,6 +53,7 @@ type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicl
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
   walkContacts: VehicleWalkContacts;
+  walkBody:RefObject<RapierRigidBody|null>;
   /** L1 hull colliders active: suspension rays only rest on fixed bodies (DESIGN 6). */
   hulls: boolean; passageRadius:number;
   lights: { brake: boolean; reverse: boolean };
@@ -198,8 +199,22 @@ function stepVehicleWalkContacts(car:Car,geometry:ReturnType<typeof wheelGeometr
     previousLeafOpen.set(collider,openness);
   });
 }
+function isOwnVehicleBody(car:Car,body:RapierRigidBody|null) {
+  return !!body&&(body.handle===car.body.handle||body.handle===car.walkBody.current?.handle);
+}
+function alignVehicleWalkBody(car:Car) {
+  const walk=car.walkBody.current;
+  if(!walk?.isValid())return;
+  const at=car.body.translation(),rotation=car.body.rotation(),previous=walk.translation(),orientation=walk.rotation();
+  if(at.x!==previous.x||at.y!==previous.y||at.z!==previous.z){walk.setTranslation(at,false);walk.setNextKinematicTranslation(at);}
+  if(rotation.x!==orientation.x||rotation.y!==orientation.y||rotation.z!==orientation.z||rotation.w!==orientation.w){
+    walk.setRotation(rotation,false);walk.setNextKinematicRotation(rotation);
+  }
+}
 function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Map<VehicleId,Car>>; impact: RefObject<number> }) {
   const body = useRef<RapierRigidBody>(null);
+  const walkBody=useRef<RapierRigidBody>(null);
+  const [walkRecipe,setWalkRecipe]=useState<VehicleWalkRecipe|null>(null);
   const wheels = useRef<(Group | null)[]>([]);
   /** Brake / reverse state for tail-lamp visuals (WorldVehicleVisual). */
   const lights = useRef({ brake: false, reverse: false });
@@ -250,7 +265,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     const controller = world.createVehicleController(body.current);
     configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension / spec.mass);
     if(spec.id==='coupe')configureCoupeSuspension(controller);
-    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,walkContacts:walkContacts.current,lowCom,hulls:!!hullShapes,passageRadius:vehiclePassageRadius(spec.size,hullEntry),steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
+    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,walkBody,walkContacts:walkContacts.current,lowCom,hulls:!!hullShapes,passageRadius:vehiclePassageRadius(spec.size,hullEntry),steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
     cars.current.set(spec.id,car);
     return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); if(spec.id==='coupe')publishDrivingTelemetry(null); };
   },[world,spec,cars,lowCom,hullShapes]);
@@ -269,10 +284,11 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const [length,height,width] = spec.size;
   const comDrop=lowCom?(spec.id==='coupe'?.3:.5):hullShapes?hullComDrop:0;
   const massProps=(mass:number,x:number,y:number,z:number)=>comDrop>0?{massProperties:{mass,centerOfMass:{x:0,y:-comDrop,z:0},principalAngularInertia:{x:mass*(y*y+z*z)/12,y:mass*(x*x+z*z)/12,z:mass*(x*x+y*y)/12},angularInertiaLocalFrame:{x:0,y:0,z:0,w:1}}}:{mass};
-  return <RigidBody ref={body} name={vehicleContactRoot(spec.id)} position={[spec.position[0],spec.position[1]+geometry.height,spec.position[2]]}
+  const placement:Vec3=[spec.position[0],spec.position[1]+geometry.height,spec.position[2]];
+  return <group name={vehicleContactRoot(spec.id)}>
+  <RigidBody ref={body} name={`vehicle-${spec.id}-body-frame`} position={placement}
     rotation={[0,spec.yaw,0]} colliders={false} linearDamping={spec.id==='coupe'?.025:.12} angularDamping={0.65}
-    canSleep={false} ccd softCcdPrediction={wheelGuards?.25:0} additionalSolverIterations={wheelGuards?4:0} userData={bodyData} onCollisionEnter={({ target,other }) => {
-      if(isWalkContact(target.collider))return;
+    canSleep={false} ccd softCcdPrediction={wheelGuards?.25:0} additionalSolverIterations={wheelGuards?4:0} userData={bodyData} onCollisionEnter={({ other }) => {
       if (useWorldStore.getState().activeVehicle === spec.id && other.rigidBodyObject?.userData.solid && body.current) {
         const v = body.current.linvel(); impact.current = Math.min(.35, Math.hypot(v.x, v.z) * .025);
       }
@@ -281,7 +297,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
         so total mass, centre of mass and inertia are exactly the tuned values; the zero-mass hulls collide. */}
     <CuboidCollider name={`vehicle-${spec.id}-chassis`} args={[length/2,height*.29,width/2]} {...massProps(spec.mass*.78,length,height*.58,width)} friction={0.65} restitution={0.18} {...(hullShapes?{sensor:true,collisionGroups:0}:{})} />
     <CuboidCollider name={`vehicle-${spec.id}-cabin`} args={[length*.25,height*.2,width*.43]} position={[-length*.08,height*.42,0]} {...massProps(spec.mass*.22,length*.5,height*.4,width*.86)} friction={0.6} restitution={0.12} {...(hullShapes?{sensor:true,collisionGroups:0}:{})}/>
-    {hullShapes?.map(h=><ConvexHullCollider key={h.part} name={vehicleHullId(spec.id,h.part)} args={[h.points]} position={[0,hullEntry!.bodyY,0]} mass={0} friction={VEHICLE_HULL_FRICTION} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={VEHICLE_HULL_RESTITUTION} restitutionCombineRule={rapier.CoefficientCombineRule.Min}/>)}
+    {hullShapes?.map(h=><ConvexHullCollider key={h.part} name={vehicleHullId(spec.id,h.part)} args={[h.points]} position={[0,hullEntry!.bodyY,0]} mass={0} friction={VEHICLE_HULL_FRICTION} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={VEHICLE_HULL_RESTITUTION} restitutionCombineRule={rapier.CoefficientCombineRule.Min} collisionGroups={VEHICLE_BODY_GROUPS}/>)}
     {wheelGuards && geometry.points.map((p,i)=>guardMode==='box'?<CuboidCollider key={i} name={`vehicle-${spec.id}-tyre-guard-${i}`}
       ref={c=>{guards.current[i]=c;if(c)c.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}
       args={[geometry.radius,.15,geometry.radius]} position={[p[0],p[1]-geometry.rest,p[2]]} rotation={[Math.PI/2,0,0]}
@@ -289,8 +305,13 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
       ref={c=>{guards.current[i]=c;if(c)c.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}
       args={[.15,geometry.radius]} position={[p[0],p[1]-geometry.rest,p[2]]} rotation={[Math.PI/2,0,0]}
       mass={0} friction={0} restitution={0} contactSkin={.015} />)}
-    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} doors={doors} authoredHull={!!hullShapes} walkContacts={hullShapes?walkContacts:null}/>
-  </RigidBody>;
+    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} doors={doors} authoredHull={!!hullShapes} publishWalkContacts={hullShapes?setWalkRecipe:undefined}/>
+  </RigidBody>
+  {walkRecipe&&<RigidBody ref={walkBody} name={`vehicle-${spec.id}-walking-frame`} userData={bodyData}
+    position={placement} rotation={[0,spec.yaw,0]} type="kinematicPosition" colliders={false}>
+    <VehicleWalkingColliders id={spec.id} points={geometry.points} rest={geometry.rest} recipe={walkRecipe} contacts={walkContacts.current}/>
+  </RigidBody>}
+  </group>;
 }
 
 /** Read the current body state at mixer time; React batching must not delay gait
@@ -585,7 +606,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       doorQ.premultiply(bodyQ);
       let blocked=false;
       world.intersectionsWithShape(centre,doorQ,shape,()=>{blocked=true;return false;},undefined,undefined,undefined,player.current??undefined,
-        collider=>!collider.isSensor()&&collider.parent()?.handle!==car.body.handle);
+        collider=>!collider.isSensor()&&!isOwnVehicleBody(car,collider.parent()));
       if(blocked)return false;
     }
     return true;
@@ -685,7 +706,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const local=rotateVector(offset,rotation);
       const origin={x:center.x+local[0],y:center.y+3,z:center.z+local[2]};
       const hit=world.castRayAndGetNormal(new rapier.Ray(origin,{x:0,y:-1,z:0}),10,true,undefined,undefined,undefined,player.current,
-        collider=>!collider.isSensor() && collider.parent()?.handle!==car.body.handle);
+        collider=>!collider.isSensor() && !isOwnVehicleBody(car,collider.parent()));
       if (!hit || hit.normal.y<.65) continue;
       const ground=origin.y-hit.timeOfImpact;
       if (ground<waterY+.15) continue;
@@ -754,6 +775,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   function stepWorldVehicles(dt:number,active?:Car,throttle=0,steer=0,transitioning=false,debugging=false,brake=false,handbrake=false,boost=false) {
     cars.current.forEach(car=>{
       const driven=active===car;
+      alignVehicleWalkBody(car);
+      if(car.walkBody.current?.isValid())regionBodies.admit(car.walkBody.current,car.passageRadius);
       if (!regionBodies.admit(car.body, car.passageRadius)) {
         if (driven) noticeRegionWaiting(asTuple(car.body.translation()), car.passageRadius);
         return;
@@ -826,7 +849,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       car.wet=advanceTimer(car.wet,p.y<waterY||floor<waterY-.05,dt);
       if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
         rescueRetry.current.set(car.spec.id,1);
-        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)).filter(v=>passage.at(v.position,car.passageRadius)),waterY);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,sites.roadCandidates(asTuple(p)).filter(v=>passage.at(v.position,car.passageRadius)),waterY,VEHICLE_BODY_GROUPS);
         if(landing){
           if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
           resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
@@ -1033,7 +1056,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
               const contact=other.contactShape(shape,p,q,.25),meta=identifyCollider(other);
               if(contact){nearby.push({other:meta,distance:contact.distance});if(contact.distance<0)overlaps.push({other:meta,depth:-contact.distance});}
               return true;
-            },undefined,undefined,undefined,car.body,c=>!c.isSensor()&&c.parent()?.handle!==player.current?.handle&&identifyCollider(c).kind!=='surface');
+            },undefined,undefined,undefined,car.body,c=>!c.isSensor()&&!isOwnVehicleBody(car,c.parent())&&c.parent()?.handle!==player.current?.handle&&identifyCollider(c).kind!=='surface');
             return {index:i,position:asTuple(p),radius:geometry.radius,width:halfWidth*2,overlaps,nearby};
           });
           return {id:car.spec.id,position:asTuple(center),rotation:[rotation.x,rotation.y,rotation.z,rotation.w],yaw:heading(rotation),wheels};
@@ -1053,9 +1076,9 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
           forwardGround:(()=>{const m=Math.hypot(dir.x,dir.z)||1;return [dir.x/m,dir.z/m] as [number,number];})(),groundBelowCamera:ground,
           clearanceAboveGround:ground===null?null:camera.position.y-ground,gamepad:pad.current.connected,
           nearPlaneRadius:radius,guideHidden:guideView.current?.visible===false,shoulderOffset:cameraShoulder.current.offset,
-          nearPlaneOverlaps:(()=>{const out:string[]=[];const act=useWorldStore.getState().activeVehicle,carBody=act?cars.current.get(act)?.body:undefined;
+          nearPlaneOverlaps:(()=>{const out:string[]=[];const act=useWorldStore.getState().activeVehicle,car=act?cars.current.get(act):undefined;
             world.intersectionsWithShape({x:camera.position.x,y:camera.position.y,z:camera.position.z},{x:0,y:0,z:0,w:1},new rapier.Ball(radius),col=>{const m=identifyCollider(col);out.push(m.assetId??m.name??String(m.colliderHandle));return true;},
-              undefined,undefined,undefined,carBody??player.current??undefined,col=>!col.isSensor()&&col.parent()?.handle!==player.current?.handle&&!(col.parent()?.userData as {obstacle?:boolean}|undefined)?.obstacle);
+              undefined,undefined,undefined,car?.body??player.current??undefined,col=>!col.isSensor()&&(!car||!isOwnVehicleBody(car,col.parent()))&&col.parent()?.handle!==player.current?.handle&&!(col.parent()?.userData as {obstacle?:boolean}|undefined)?.obstacle);
             return out;})()};
       },
       snapshot:()=>({player:player.current?asTuple(player.current.translation()):null,activeVehicle:useWorldStore.getState().activeVehicle,
@@ -1137,6 +1160,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     const active = useWorldStore.getState().activeVehicle;
     cars.current.forEach(car => {
       const blocked = regionBodies.finish(car.body, car.passageRadius);
+      alignVehicleWalkBody(car);
       if (blocked && active === car.spec.id) noticeRegionWaiting(blocked, car.passageRadius);
     });
   });
@@ -1709,7 +1733,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(col.isSensor())return false;const b=col.parent();if(!b)return true;
       if(b.handle===player.current?.handle)return false;
       const ud=b.userData as {vehicle?:string;obstacle?:boolean}|undefined;
-      return !ud?.obstacle&&!(ud?.vehicle&&b.handle===car?.body.handle);
+      return !ud?.obstacle&&!(car&&isOwnVehicleBody(car,b));
     };
     const bodyOrigin={x:p.x,y:Math.max(p.y,waterY),z:p.z};
     const origin=cameraSeat?seatedCameraOrigin(world,rapier,bodyOrigin,cameraSeat.yaw,radius,exclude,solid):bodyOrigin;
@@ -1811,7 +1835,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     <RigidBody ref={bindPlayer} name={playerContactRoot} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
       {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
-      <CapsuleCollider name={playerContactId} args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}
+      <CapsuleCollider name={playerContactId} args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0} collisionGroups={PLAYER_CONTACT_GROUPS}
         ref={collider=>{if(collider)registerPlayerContact(collider,()=>{
           const state=useWorldStore.getState();
           return arrivalPending.current||rideHeld.current||!!guideTransition.current||!!state.activeVehicle||!!seatedActor.current;

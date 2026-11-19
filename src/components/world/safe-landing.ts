@@ -23,9 +23,9 @@ function ground(world: World, rapier: QueryApi, body: RigidBody, p: Vec3, waterY
   return y >= waterY + dryMargin ? y : null;
 }
 
-function blocked(world: World, rapier: QueryApi, body: RigidBody, p: Point, shape: Rapier.Shape, yaw = 0) {
+function blocked(world: World, rapier: QueryApi, body: RigidBody, p: Point, shape: Rapier.Shape, yaw = 0, groups?:number) {
   return !!world.intersectionWithShape(p, yaw ? yawRotation(yaw) : IDENTITY, shape,
-    rapier.QueryFilterFlags.EXCLUDE_SENSORS, undefined, undefined, body);
+    rapier.QueryFilterFlags.EXCLUDE_SENSORS, groups, undefined, body);
 }
 
 /** A point ray can fall through a joint that a sole bridges. Require dry, nearly level
@@ -124,7 +124,7 @@ export function findSafeSeatExit(world: World, rapier: QueryApi, body: RigidBody
   return { landing: null, waiting };
 }
 
-function vehicleSpot(world: World, rapier: QueryApi, body: RigidBody, size: Vec3, p: Vec3, yaw: number, waterY: number) {
+function vehicleSpot(world: World, rapier: QueryApi, body: RigidBody, size: Vec3, p: Vec3, yaw: number, waterY: number, groups?:number) {
   const c = Math.cos(yaw), s = Math.sin(yaw), heights: number[] = [];
   const halfLength = size[0] / 2 + .65, halfWidth = size[2] / 2 + .65;
   for (const x of [-halfLength, 0, halfLength]) for (const z of [-halfWidth, 0, halfWidth]) {
@@ -139,19 +139,19 @@ function vehicleSpot(world: World, rapier: QueryApi, body: RigidBody, size: Vec3
   const bottom = high + .08, top = center.y + size[1] * .64 + .1;
   const shape = new rapier.Cuboid(size[0] / 2 + .15, (top - bottom) / 2, size[2] / 2 + .15);
   const queryCenter = { x: p[0], y: (top + bottom) / 2, z: p[2] };
-  return blocked(world, rapier, body, queryCenter, shape, yaw) ? null : { center, queryCenter, shape };
+  return blocked(world, rapier, body, queryCenter, shape, yaw, groups) ? null : { center, queryCenter, shape };
 }
 
 /** Road-centre ground candidates and their road yaw must come from the caller. Both driving
  * directions need a full-width dry runway; a nearest shoreline point is deliberately insufficient.
  * The caller must handle null without forcing an unchecked teleport. No world state is mutated. */
 export function findSafeVehicleLanding(world: World, rapier: QueryApi, body: RigidBody, size: Vec3,
-  candidates: readonly VehicleLanding[], waterY: number): VehicleLanding | null {
+  candidates: readonly VehicleLanding[], waterY: number, groups?:number): VehicleLanding | null {
   if (!finite(size) || size.some(v => v <= 0) || !Number.isFinite(waterY)) return null;
   for (const candidate of candidates) {
     if (!finite(candidate.position) || !Number.isFinite(candidate.yaw)) continue;
     const { position: p, yaw } = candidate;
-    const start = vehicleSpot(world, rapier, body, size, p, yaw, waterY);
+    const start = vehicleSpot(world, rapier, body, size, p, yaw, waterY, groups);
     if (!start) continue;
     const distance = Math.max(2.5, size[0] * .65), c = Math.cos(yaw), s = Math.sin(yaw);
     let clear = true;
@@ -159,11 +159,11 @@ export function findSafeVehicleLanding(world: World, rapier: QueryApi, body: Rig
       let previous = start;
       for (let step = 1; step <= 4; step++) {
         const d = direction * distance * step / 4;
-        const next = vehicleSpot(world, rapier, body, size, [p[0] + c * d, p[1], p[2] - s * d], yaw, waterY);
+        const next = vehicleSpot(world, rapier, body, size, [p[0] + c * d, p[1], p[2] - s * d], yaw, waterY, groups);
         if (!next || Math.abs(next.center.y - previous.center.y) > .12 ||
           world.castShape(previous.queryCenter, yawRotation(yaw), {
             x: next.queryCenter.x - previous.queryCenter.x, y: next.queryCenter.y - previous.queryCenter.y, z: next.queryCenter.z - previous.queryCenter.z,
-          }, previous.shape, 0, 1, true, rapier.QueryFilterFlags.EXCLUDE_SENSORS, undefined, undefined, body)) {
+          }, previous.shape, 0, 1, true, rapier.QueryFilterFlags.EXCLUDE_SENSORS, groups, undefined, body)) {
           clear = false; break;
         }
         previous = next;

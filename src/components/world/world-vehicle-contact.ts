@@ -3,6 +3,7 @@ import { ConvexHull } from 'three/examples/jsm/math/ConvexHull.js';
 import { vehicleDoorQuaternion, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import type { VehicleHullEntry } from './WorldVehicleAssets';
 import type { Vec3, VehicleId } from './types';
+import { PLAYER_CONTACT_MEMBERSHIP } from './world-player-contact';
 
 export const vehicleContactRoot = (id: VehicleId) => `world-vehicle-${id}-contact`;
 export const vehicleHullId = (id: VehicleId, part: string) => `vehicle-${id}-hull-${part}`;
@@ -10,6 +11,10 @@ export const vehicleTyreId = (id: VehicleId, wheel: number) => `vehicle-${id}-ty
 export const vehicleDoorId = (id: VehicleId, side: DoorSide) => `vehicle-${id}-${side < 0 ? 'left' : 'right'}-door-leaf`;
 export const vanBeaconId = 'vehicle-van-roof-beacon';
 export const VEHICLE_HULL_FRICTION=.1, VEHICLE_HULL_RESTITUTION=.1;
+const VEHICLE_WALK_MEMBERSHIP=1<<14;
+// Main CCD bodies and the foot-contact body disallow each other before shape casting.
+export const VEHICLE_BODY_GROUPS=(1<<16)|(0xffff&~VEHICLE_WALK_MEMBERSHIP);
+export const VEHICLE_WALK_GROUPS=((VEHICLE_WALK_MEMBERSHIP<<16)|PLAYER_CONTACT_MEMBERSHIP)>>>0;
 
 type VehicleBodySource = { id: string; firstVertex: number; vertexCount: number;
   collision: 'solid' | 'none'; surfaceId?: string; reason?: string };
