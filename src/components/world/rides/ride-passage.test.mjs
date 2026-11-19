@@ -1,16 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
+import { Object3D } from 'three';
+import { createColliderReadinessProbe, FIXED_TRIMESH } from '../collider-readiness.ts';
 import { createRegionPassage } from '../region-passage.ts';
 import { worldPassageRegions } from '../world-actor-sites.ts';
 import { rideSegmentReady, rideDestinationReady } from './ride-passage.ts';
 import { TransportDriver } from './transport-driver.ts';
 import { transportWorld } from './transport-route.ts';
+import { boardingPassageContains, transportBoardingGeometry } from './transport-boarding.ts';
 import { ALPHA_TRANSPORT_ROUTES, alphaFerryRoute } from '../alpha-island/transports/alpha-routes.ts';
 import { advanceReadyCoaster, coasterTravelReady, coasterStationReady } from '../attractions/coaster-passage.ts';
 import { COASTER_DURATION, COASTER_LENGTH, coasterFrame, coasterRidePose } from '../attractions/coaster-track.ts';
 import { COASTER_BOARDING, createCoasterTransition, captureCoasterStart, requestCoasterSkip } from '../attractions/coaster-transition.ts';
 import { attractionRide, beginDrivenAttractionRide, captureAttractionStart, endAttractionRide } from '../attractions/attraction-ride.ts';
 const open={at:()=>true,allows:()=>true},closed={at:()=>false,allows:()=>false},dt=1/60;
+await R.init();
 function until(d,phase){for(let i=0;i<14000&&d.phase!==phase;i++)d.step(dt,false);assert.equal(d.phase,phase,d.id);}
 function board(route,source=0){const d=new TransportDriver(route,source);d.setPassage(open);d.capture(transportWorld(route.terminals[source].boarding[0],route.transform),0);until(d,'riding');return d;}
 const route={id:'boundary',kind:'ferry',transform:{origin:[0,0,0],yaw:0},path:[[0,0,0],[60,0,0]],duration:3,
@@ -53,6 +58,41 @@ test('real ferry/cable/sled routes retain queued skips and unchanged poses until
     assert.equal(d.skipRequested,true);assert.equal(d.blockedMotion,true);
     d.setPassage(open);d.step(dt,false);assert.equal(d.phase,'stand');assert.equal(d.skipRequested,false);
     until(d,'complete');assert.deepEqual(d.frame.root,d.safeExit);d.dispose('complete');
+  }
+});
+
+test('published gangway support gates the actual departure and arrival layer, even when regional ground is ready',()=>{
+  for(const transport of [...ALPHA_TRANSPORT_ROUTES,alphaFerryRoute()]){
+    const d=board(transport), geometry=transportBoardingGeometry(transport,1);
+    const source=transport.id+'-gangway-1', shape=source+'-contact';
+    const world = new R.World({x:0,y:0,z:0}), states = new Map();
+    try {
+      let failed = false, scopes = [];
+      const passage=createRegionPassage(()=>scopes,createColliderReadinessProbe(world,states),[],id=>failed&&id===source);
+      const point=geometry.segments[0].a;
+      d.setPassage(passage);
+      assert.equal(passage.at(point,.34),true);
+      scopes=[{id:'arrival-'+transport.id,loadSource:source,contains:boardingPassageContains(geometry.segments),
+        requirements:[{name:shape,shape:FIXED_TRIMESH}]}];
+      assert.deepEqual(passage.loadingSourcesAt(point,.34),[source]);
+      assert.equal(passage.at([point[0],point[1]-4,point[2]],.34),true,'the independent floor below the deck remains ready');
+      assert.equal(passage.at([point[0],point[1]+5,point[2]],.34),true,'traversal high above uses no deck support');
+      failed=true;
+      assert.equal(passage.failureAt(point,.34),true);
+      assert.equal(d.requestSkip(),true);
+      d.step(dt,false);
+      assert.equal(d.phase,'riding');
+      assert.equal(d.skipRequested,true);
+      assert.equal(d.blockedMotion,true);
+      const support=world.createRigidBody(R.RigidBodyDesc.fixed());
+      const collider=world.createCollider(R.ColliderDesc.trimesh(geometry.positions,geometry.indices),support);
+      const object=new Object3D();object.name=shape;states.set(collider.handle,{object});
+      assert.equal(passage.failureAt(point,.34),false);
+      d.step(dt,false);
+      assert.equal(d.phase,'stand');
+      until(d,'complete');
+      assert.deepEqual(d.frame.root,d.safeExit);
+    } finally {d.dispose('complete');world.free();}
   }
 });
 

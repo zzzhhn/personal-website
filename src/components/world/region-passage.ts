@@ -40,24 +40,25 @@ export function passageRoute(passage:RegionPassage,points:readonly Vec3[],radius
 
 /** This is a loading boundary, not a collision substitute. Real Rapier sweeps
  * still decide walls, support and slopes after the region is available. */
-export function createRegionPassage(regions:readonly PassageRegion[],
+export function createRegionPassage(regions:readonly PassageRegion[]|(()=>readonly PassageRegion[]),
   ready:(requirements:readonly ColliderRequirement[])=>boolean,
   base:readonly ColliderRequirement[]=[], failed: (region:string)=>boolean = ()=>false):RegionPassage {
+  const currentRegions=typeof regions==='function'?regions:()=>regions;
   const valid=(p:Vec3)=>p.length===3&&p.every(Number.isFinite);
   const at=(p:Vec3,radius=0)=>valid(p)&&Number.isFinite(radius)&&radius>=0&&ready(base)
-    &&regions.every(region=>!region.contains(p,radius)||ready(region.requirements));
+    &&currentRegions().every(region=>!region.contains(p,radius)||ready(region.requirements));
   return {at,
-    failureAt:(p,radius=0)=>regions.some(region=>region.contains(p,radius)
+    failureAt:(p,radius=0)=>currentRegions().some(region=>region.contains(p,radius)
       &&failed(region.loadSource??region.id)&&!ready(region.requirements)),
-    loadingSourcesAt:(p,radius=0)=>valid(p)&&Number.isFinite(radius)&&radius>=0 ? [...new Set(regions.filter(region=>region.contains(p,radius)&&!ready(region.requirements))
+    loadingSourcesAt:(p,radius=0)=>valid(p)&&Number.isFinite(radius)&&radius>=0 ? [...new Set(currentRegions().filter(region=>region.contains(p,radius)&&!ready(region.requirements))
       .map(region=>region.loadSource??region.id))] : [],
     allows(from,to,radius=0) {
     if(!valid(from)||!valid(to)||!Number.isFinite(radius)||radius<0||!ready(base))return false;
-    const distance=Math.hypot(to[0]-from[0],to[2]-from[2]);
+    const distance=Math.hypot(to[0]-from[0],to[1]-from[1],to[2]-from[2]);
     // Locomotion paths only. Teleports validate the destination with at(), not an imaginary corridor.
     if(distance>32)return false;
     const steps=Math.max(1,Math.ceil(distance/.25)),padding=radius+distance/steps/2;
-    for(const region of regions) {
+    for(const region of currentRegions()) {
       for(let i=0;i<=steps;i++) {
         const t=i/steps,p:Vec3=[from[0]+(to[0]-from[0])*t,from[1]+(to[1]-from[1])*t,from[2]+(to[2]-from[2])*t];
         if(region.contains(p,padding)) {if(!ready(region.requirements))return false;break;}
@@ -72,5 +73,8 @@ export function passageVelocity(passage:RegionPassage,position:Vec3,velocity:{x:
     return {blocked:true,velocity:{x:0,y:0,z:0}};
   const next:Vec3=[position[0]+velocity.x*dt,position[1]+velocity.y*dt,position[2]+velocity.z*dt];
   const blocked=!passage.allows(position,next,radius);
-  return {blocked,velocity:blocked?{x:0,y:velocity.y,z:0}:velocity};
+  if(!blocked)return {blocked,velocity};
+  const vertical:Vec3=[position[0],next[1],position[2]];
+  const y=passage.allows(position,vertical,radius)?velocity.y:0;
+  return {blocked,velocity:{x:0,y,z:0}};
 }

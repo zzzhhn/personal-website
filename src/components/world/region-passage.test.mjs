@@ -5,7 +5,7 @@ import { Object3D } from 'three';
 import { createRegionPassage, passageVelocity } from './region-passage.ts';
 import { createColliderReadinessProbe, FIXED_TRIMESH } from './collider-readiness.ts';
 import { WORLD_PORTALS } from './world-portals.ts';
-import { worldPassageRegions } from './world-actor-sites.ts';
+import { registerWorldActorPassage, worldActorSites, worldPassageRegions } from './world-actor-sites.ts';
 await R.init();
 
 const requirement=[{name:'district',shape:FIXED_TRIMESH}];
@@ -73,6 +73,27 @@ test('missing groups throttle rescans but newly mounted handles release the same
     assert.equal(f.reads(),before);
     f.mount();assert.equal(gate.allows([-1,1,0],[1,1,0],.3),true);
   } finally {f.world.free();}
+});
+
+test('an already running passage sees district sources and ignores cleanup of a superseded lease',()=>{
+  const f=fixture(); const point=[0,82,0], gate=worldActorSites.passage(f.world,f.states);
+  const local={id:'measured-boardwalk',contains:([x,y,z])=>Math.hypot(x,z)<1&&Math.abs(y-82)<1};
+  let cleanupOld=()=>{},cleanupCurrent=()=>{};
+  try {
+    for(const name of ['island-terrain-surface-top','island-terrain-solid-faces'])f.mount(name);
+    assert.equal(gate.at(point),true);
+    cleanupOld=registerWorldActorPassage({...local,loadSource:'earlier-contact',requirements:[{name:'earlier'}]});
+    assert.deepEqual(gate.loadingSourcesAt(point),['earlier-contact']);
+    cleanupCurrent=registerWorldActorPassage({...local,loadSource:'current-contact',requirements:[{name:'current'}]});
+    cleanupOld();
+    assert.equal(gate.at(point),false);
+    assert.deepEqual(gate.loadingSourcesAt(point),['current-contact']);
+    f.mount('current');
+    assert.equal(gate.at(point),true);
+    cleanupCurrent();
+    assert.equal(gate.at(point),true);
+    assert.deepEqual(gate.loadingSourcesAt(point),[]);
+  }finally{cleanupOld();cleanupCurrent();f.world.free();}
 });
 
 test('a same-size replacement is found after the bounded negative retry',()=>{

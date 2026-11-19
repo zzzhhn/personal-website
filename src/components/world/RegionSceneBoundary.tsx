@@ -56,7 +56,7 @@ function RegionWithFaultFixture({ id, children }: Props) {
   const readBodies = useCallback(() => {
     const records: BodyRecord[] = [];
     world.forEachRigidBody(body => {
-      if (!body.isDynamic()) return;
+      if (body.isFixed()) return;
       const regionHeld = isRegionBodyHeld(body);
       const name = rigidBodyStates.get(body.handle)?.object.name;
       if (!regionHeld && !name) return;

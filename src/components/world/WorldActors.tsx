@@ -825,13 +825,13 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         return !!(c.parent()?.userData as {surface?:boolean}|undefined)?.surface;
       });
       // updateVehicle has applied engine/suspension impulses. Gate that resulting
-      // motion before physics integration, retaining vertical suspension/gravity.
+      // motion before physics integration. Retain independent suspension or gravity.
       const { x, y, z }=car.body.translation(), currentVelocity=car.body.linvel();
       const motion=passageVelocity(passage,[x,y,z],currentVelocity,dt,car.passageRadius);
       if(motion.blocked){
         car.body.setLinvel(motion.velocity,true);
         for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,car.spec.mass*.035);}
-        if(driven){car.lights.brake=true;if(Math.abs(throttle)>.01||Math.abs(speed)>.01)noticeRegionWaiting([x+currentVelocity.x*dt,y+currentVelocity.y*dt,z+currentVelocity.z*dt],car.passageRadius+.125);}
+        if(driven){car.lights.brake=true;if(Math.abs(throttle)>.01||Math.abs(speed)>.01||motion.velocity.y!==currentVelocity.y)noticeRegionWaiting([x+currentVelocity.x*dt,y+currentVelocity.y*dt,z+currentVelocity.z*dt],car.passageRadius+.125);}
       }
       const wheelShape=wheelGeometry(car.spec.size);
       stepVehicleWalkContacts(car,wheelShape);
@@ -1556,7 +1556,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         player.current.setLinvel(passageMotion.velocity,true);
         railVault.current=null;vault.current=null;pickupApproach.cancel();
         guideTargetSpeed.current=0;moveIntent.current='idle';
-        if(Math.hypot(nextVelocity.x,nextVelocity.z)>.01)noticeRegionWaiting([p.x+nextVelocity.x*dt,p.y+nextVelocity.y*dt,p.z+nextVelocity.z*dt],PLAYER_RADIUS+.125);
+        if(Math.hypot(nextVelocity.x,nextVelocity.y,nextVelocity.z)>.01)noticeRegionWaiting([p.x+nextVelocity.x*dt,p.y+nextVelocity.y*dt,p.z+nextVelocity.z*dt],PLAYER_RADIUS+.125);
       }
       const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,waterY);
       wetPlayer.current=wet.submergedSeconds;

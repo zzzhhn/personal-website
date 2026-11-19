@@ -16,7 +16,8 @@ const rides = {
   coaster: { start: [55.361930289,1.95,-151.945030559], exit: [55.361930289,-151.945030559] },
 };
 const available = [...Object.keys(rides), 'lamp', 'factory', 'yard', 'park'];
-assert.ok(routes.every(route => available.includes(route) || route === 'coaster-obstacle'), 'unknown route');
+const gangwayLoss = ['ferry-gangway-loss','cable-gangway-loss','sled-gangway-loss'];
+assert.ok(routes.every(route => available.includes(route) || gangwayLoss.includes(route) || route === 'coaster-obstacle'), 'unknown route');
 const selected = routes.length ? routes : available;
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
 const viewport = { width: 1056, height: 700 };
@@ -101,7 +102,7 @@ async function place(position, id) {
   await collectRegistry();
 }
 
-async function ride(kind) {
+async function ride(kind, removeGangway=false) {
   const coaster = kind === 'coaster';
   const { start, exit } = rides[kind];
   await place(start, coaster ? 'intent-board' : `alpha-${kind}-board-0`);
@@ -118,7 +119,30 @@ async function ride(kind) {
     await bot.press('KeyE');
     await page.getByRole('button', { name: 'Exit requested. Leaving at the station', exact: true }).waitFor({ timeout: 12_000 });
   }
-  await skip.click();
+  let held = null;
+  if (removeGangway) {
+    const region=`alpha-${kind}-gangway-1`, collider=region+'-contact';
+    const handle = () => page.evaluate(name=>window.__worldDebug.physicsInventory().find(c=>c.name===name)?.handle,collider);
+    await wait(name=>window.__worldRegionFault?.registered().includes(name),region);
+    const original = await handle();
+    assert.equal(typeof original,'number');
+    assert.equal(await page.evaluate(id=>window.__worldRegionFault.remove(id,true),region),true);
+    await wait(name=>!window.__worldDebug.physicsInventory().some(c=>c.name===name),collider);
+    await skip.click();
+    await page.getByText('The route is not ready or is blocked. Wait or return to camp.',{exact:true}).waitFor();
+    const currentRide = () => page.evaluate(()=> {
+      const { phase,u,frame } = window.__alphaIsland.ride();
+      const player = window.__worldDebug.snapshot().player;
+      return { phase,u,root:frame?.root,player };
+    });
+    held=await currentRide();
+    assert.equal(held.phase,'riding');
+    assert.ok(held.u<.98);
+    await advance(50);
+    assert.deepEqual(await currentRide(),held,'the rider and vehicle hold before the unavailable station');
+    assert.equal(await page.evaluate(id=>window.__worldRegionFault.remove(id,false),region),true);
+    await wait(({name,old})=>window.__worldDebug.physicsInventory().some(c=>c.name===name&&c.handle!==old),{name:collider,old:original});
+  } else await skip.click();
   await wait(([x,z]) => {
     const { player, grounded } = window.__worldDebug.snapshot();
     return grounded && player && Math.hypot(x-player[0], z-player[2]) < .3;
@@ -130,7 +154,7 @@ async function ride(kind) {
   const { player } = await actor();
   const walked = Math.hypot(landing.player[0]-player[0], landing.player[2]-player[2]);
   assert.ok(walked > .15, 'player can walk after disembarking');
-  return { before, landing, walked, boarding: coaster ? 'panel' : kind === 'cable' ? 'simulated Y' : 'keyboard E' };
+  return { before, held, landing, walked, boarding: coaster ? 'panel' : kind === 'cable' ? 'simulated Y' : 'keyboard E' };
 }
 
 async function coasterObstacle() {
@@ -286,14 +310,16 @@ try {
   await menu.waitFor(); // Leave the ordinary scene paused while QA owns the browser.
   report('ordinary entry', { url: url.href, browser: await browser.version(), entrySha256 });
 
-  const qa = await page.goto(new URL('?qa=1', url).href, { waitUntil: 'domcontentloaded' });
+  const fixtures=selected.some(name=>gangwayLoss.includes(name))?'?qa=1&qaRegionFault=1':'?qa=1';
+  const qa = await page.goto(new URL(fixtures, url).href, { waitUntil: 'domcontentloaded' });
   assert.equal(hash(await qa.body()), entrySha256, 'ordinary and QA routes use the same build');
   await wait(() => window.__worldDebug?.state().ready && window.__worldDebug.snapshot().player, undefined, 75_000);
   assert.equal(await page.evaluate(() => window.__worldDebug.state().quality), 'balanced');
   await page.evaluate(() => window.__worldDebug.set({ lang: 'en', timeRunning: false, light: 'noon', worldMinutes: 720 }));
   const cases = { lamp, factory, yard, park, 'coaster-obstacle':coasterObstacle };
   for (const route of selected) {
-    try { report(route, { ok: true, ...(Object.hasOwn(rides, route) ? await ride(route) : await cases[route]()) }); }
+    try { report(route, { ok: true, ...(gangwayLoss.includes(route) ? await ride(route.split('-')[0],true)
+      : Object.hasOwn(rides, route) ? await ride(route) : await cases[route]()) }); }
     catch (error) {
       failures.push(route);
       report(route, { ok: false, error: error.message, actor: await actor().catch(() => null) });

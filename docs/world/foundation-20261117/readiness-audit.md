@@ -104,6 +104,24 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 
 原始记录位于工作区根目录的 `evidence/city-foundation/`，包括 `arrival-public-faults-factory-mine-alpha.jsonl`、`arrival-alpha-shallows-wind-public-routes.jsonl`、`region-factory-coast-water-rescue.jsonl`、`region-remount-browser-first-pass.jsonl`、`region-remount-factory-approach-retry.jsonl`、`region-remount-factory-rapier-ownership.jsonl`、`region-remount-factory-rescue-and-initial-coaster.jsonl`、`region-remount-alpha-rapier-ownership.jsonl`、`region-remount-suv-rapier-ownership.jsonl`、`region-remount-suv-contact-ownership.jsonl`、`region-remount-contact-ownership-final.jsonl` 及 `region-remount-coaster-rapier-ownership.jsonl`。
 
+## 垂直跨区与三种到站支撑
+
+旧区域守卫在 X/Z 坐标无变化时跳过 Rapier 步后检查。在实际 Alpha 洞区坐标 `[220,36.08,155]` 上方注入一次向下 8 m/s 的物理速度，可复现胶囊进入尚未加载的高度带且无法回退。区域查询现按三维路段采样，刚体只在进入缺失的高度带时取消垂直速度。横向边界仍保留同处有效的重力或悬架运动。重新挂上打包洞顶和洞底的实际 Rapier 网格后，同一胶囊继续向下。
+
+渡船、缆车和雪橇的固定登乘板各按自己的可见平面、坡度和高度登记区域。登记属于站板的实际加载来源，独立于山岛地形和车厢模型。身体在同一张地图坐标的其他高度时无需等待这块站板。乘具到达、脚下通路和静止身体继续使用现有区域门禁。
+
+生产基线 `b5f5a8b` 的三条正常路线以实际键盘 E 或浏览器模拟手柄 Y 登乘，有支撑地落脚并继续步行。4429 候选 SHA-256 `03fb8d293984b92d4f020b13124d9a39ea4e3c21357299ebd4679194ae2e60fd` 从普通营地入口启动，再以 QA 夹具只摆好乘客的起始站位并移除目的端的真实站板。每条路线各按一次跳过。站板缺失时均显示等候提示，连续至少 50 个物理步保持角色和车厢姿态，重挂新碰撞句柄后自动执行已排队的跳过。
+
+| 目的站 | 到站胶囊中心 y | 已落地并解除乘具后的继续步行 |
+| --- | ---: | ---: |
+| 渡船山岛站 | 2.348 m | 1.07 m |
+| 缆车高站 | 73.820 m | 1.27 m |
+| 雪橇低站 | 4.620 m | 1.27 m |
+
+同一候选从普通工厂入口用 A 走进区域，移除实际工厂走面后同一胶囊保持 75 个物理步，重挂后继续走 0.64 m。货场从普通营地起步，QA 只把车辆和角色放在实际车门旁，实际 E 上车与 W 驶入。基线已驶入且四轮接地，旧脚本因车身与步行接触拆成两个新刚体而提前结束。更新后的验证确认 SUV 车身 35 个形状中的 33 个、步行接触刚体的全部 6 个进入区域持有，随车角色仍由车辆交互持有。66 个物理步后同一车身和接触句柄释放，保持 W 继续驶出 2.68 m，四轮重新接地。两条重挂路线和三条乘具路线均无页面错误。
+
+原始运行记录为 `/tmp/city-readiness-b5-traffic.log`、`/tmp/city-readiness-gangway-browser.log` 和 `/tmp/city-readiness-4429-remount.log`。在 `foundation-interactions.mjs` 的预览地址后加 `ferry-gangway-loss cable-gangway-loss sled-gangway-loss` 可复跑三站，`region-remount.mjs` 地址后加 `factory ibd-suv` 可复跑行走和驾驶重挂。60 项相关 Node 用例、独立加载来源替换与打包洞口形状复测、TypeScript 和 8 页生产构建通过。
+
 ## 验证
 
 - `npm run check:grounding` 42 项通过，包含打包回音洞新旧出生点、真胶囊、渡口结构下架/重挂及资产数据验证。
@@ -117,7 +135,7 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 
 ## 尚待验收
 
-- 城镇、项目广场、街道以及 Alpha 的独立旅站内仍需细分室内/甲板 collider 的就绪要求。大陆主要地形和各独立设施的规则已在场景装配路由登记。直接资产错误已反馈，已成功下载但一直不注册的场景仍持续等待。
+- 城镇、项目广场、街道以及 Alpha 旅站的部分室内与甲板仍需细分 collider 的就绪要求。大陆主要地形、各独立设施和三类交通的固定登乘板已登记。直接资产错误已反馈，已成功下载但一直不注册的场景仍持续等待。
 - 响应按站点处理失败，重试重新加载页面。可恢复的 collider 卸载/重挂不需要刷新。同一视图中独立失败场景的热重试尚未实现。
 - 核心 actor bundle 的依赖边界继续通过。世界装配持有地区表，仍有场馆字段留在共享 store 和各自 HUD。空载乘具的调位动画尚未纳入本轮行为验证。
 - 逐区长路线的真实键盘行走、驾驶、四类乘具 E→跳过→出站、昼夜固定机位与 M3 Air/Safari 目标机体验仍需验收。

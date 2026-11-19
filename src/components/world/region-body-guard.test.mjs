@@ -1,10 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
 import R from '@dimforge/rapier3d-compat';
 import { Object3D } from 'three';
 import { createRegionBodyGuard, isRegionBodyHeld, isRegionColliderHeld } from './region-body-guard.ts';
 import { createColliderReadinessProbe } from './collider-readiness.ts';
 import { createRegionPassage, passageVelocity } from './region-passage.ts';
+import { worldPassageRegions } from './world-actor-sites.ts';
+import { decodeCaveArtifact, CAVE_PART_GROUPS } from './alpha-island/batch2/cave-artifact.ts';
+import { ALPHA_ORIGIN } from './alpha-island/alpha-layout.ts';
+import { surfaceColliderBuffers } from './static-surface-asset.ts';
 
 await R.init();
 
@@ -98,6 +104,46 @@ test('a body disabled by its ride is not enabled by the region guard', () => {
     floor();
     assert.equal(guard.admit(body, .25), true);
     assert.equal(body.isEnabled(), false);
+  } finally { world.free(); }
+});
+
+test('a vertical fall stops on the loaded side of the actual Alpha cave band before resuming', () => {
+  const world = new R.World({ x:0,y:-9.81,z:0 });
+  const cave = worldPassageRegions(true).find(region=>region.id==='alpha-cave');
+  const states = new Map();
+  const passage = createRegionPassage([cave],createColliderReadinessProbe(world,states));
+  const guard = createRegionBodyGuard(passage);
+  try {
+    const body = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(220,36.08,155).lockRotations());
+    world.createCollider(R.ColliderDesc.capsule(.55,.34),body);
+    const original = {...body.translation()}, start = [original.x,original.y,original.z];
+    const fall = {x:0,y:-8,z:0};
+    assert.equal(passage.at(start,.34),true,'the trail level above the cave remains available');
+    body.setLinvel(fall,true);
+    guard.capture(body);
+    world.step();
+    assert.ok(body.translation().y<36,'Rapier moved vertically into the missing band');
+    assert.ok(guard.finish(body,.34),'the solver crossing is rolled back in the same physics step');
+    assert.deepEqual({...body.translation()},original);
+    assert.equal(body.linvel().y,0);
+    assert.deepEqual(passageVelocity(passage,start,fall,1/60,.34),{blocked:true,velocity:{x:0,y:0,z:0}});
+    assert.equal(passage.allows([220,37,155],[220,19,155],.34),false,'a whole vertical segment must sample the cave layer');
+    const raw=gunzipSync(readFileSync(new URL('../../../public/assets/world/terrain/cave.bin.gz',import.meta.url)));
+    const art=decodeCaveArtifact(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength));
+    const caveBody=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...ALPHA_ORIGIN));
+    for (const [name,parts] of [['alpha-cave-floor-support',art.floor],['alpha-cave-solid-rock',art.solid]]) {
+      for (const part of parts) {
+        const data=surfaceColliderBuffers(part);
+        const c=world.createCollider(R.ColliderDesc.trimesh(data.vertices,data.indices),caveBody);
+        const object=new Object3D();object.name=name;states.set(c.handle,{object});
+      }
+    }
+    for (const group of CAVE_PART_GROUPS) for (const part of art[group]) part.geometry.dispose();
+    assert.equal(passage.at([220,35.95,155],.34),true);
+    body.setLinvel(fall,true);
+    guard.capture(body);world.step();
+    assert.equal(guard.finish(body,.34),null);
+    assert.ok(body.translation().y<36);
   } finally { world.free(); }
 });
 

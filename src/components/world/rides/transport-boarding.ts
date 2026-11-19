@@ -2,6 +2,7 @@ import dimensions from '../alpha-island/transports/transport-dimensions.json' wi
 import { Quaternion, Vector3 } from 'three';
 import type { Vec3 } from '../types';
 import type { TransportRoute } from './ride-contract';
+import { PLAYER_CENTER_HEIGHT } from '../actor-physics';
 import { sampleTransport, transportWorld,tuple } from './transport-route.ts';
 const BOARDING_HALF_WIDTH = .65;
 
@@ -23,6 +24,19 @@ function boardingLayout(route:TransportRoute,index:0|1){
 
 export function transportBoardingFootprints(route:TransportRoute,index:0|1) {
  return boardingLayout(route,index).worldSegments.map(segment => ({ ...segment, halfWidth: BOARDING_HALF_WIDTH }));
+}
+
+/** Track the same strips that supply fixed boarding support, including its
+ * height. A flight or another floor at the same map coordinates stays open. */
+export function boardingPassageContains(segments:readonly {a:Vec3;b:Vec3}[]) {
+ return ([x,y,z]:Vec3,padding:number)=>segments.some(({a,b})=>{
+  const dx=b[0]-a[0],dz=b[2]-a[2],length=dx*dx+dz*dz;
+  if(length<1e-8)return false;
+  const t=Math.max(0,Math.min(1,((x-a[0])*dx+(z-a[2])*dz)/length));
+  const floor=a[1]+(b[1]-a[1])*t;
+  return y>=floor-.18&&y<=floor+PLAYER_CENTER_HEIGHT+.18
+   &&Math.hypot(x-a[0]-t*dx,z-a[2]-t*dz)<=BOARDING_HALF_WIDTH+padding;
+ });
 }
 
 export function transportBoardingGeometry(route:TransportRoute,index:0|1,groundHeight?:(x:number,z:number)=>number|null){

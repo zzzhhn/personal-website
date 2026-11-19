@@ -58,12 +58,13 @@ export function createRegionBodyGuard(passage: RegionPassage) {
       snapshots.delete(body);
       if (!previous || !body.isEnabled()) return null;
       const next = position(body);
-      if (next[0] === previous.position[0] && next[2] === previous.position[2]) return null;
+      if (next.every((value,axis) => value === previous.position[axis])) return null;
       if (passage.allows(previous.position, next, radius)) return null;
       const [x, y, z] = previous.position;
       body.setTranslation({ x, y, z }, true);
       body.setRotation(previous.rotation, true);
-      body.setLinvel({ x: 0, y: body.linvel().y, z: 0 }, true);
+      const vertical = passage.allows(previous.position,[x,next[1],z],radius);
+      body.setLinvel({ x: 0, y: vertical ? body.linvel().y : 0, z: 0 }, true);
       body.setAngvel(stopped, true);
       return next;
     },

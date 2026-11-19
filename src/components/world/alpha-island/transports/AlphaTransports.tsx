@@ -1,6 +1,6 @@
 import {TransportWoodFinish,useTransportWood,WoodBoarding,WoodTrough} from './TransportWoodCraft';
 import dimensions from './transport-dimensions.json' with {type:'json'};
-import { useEffect, useMemo, useRef, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, type RefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider, type RapierRigidBody } from '@react-three/rapier';
@@ -13,7 +13,9 @@ import { useWorldStore } from '../../store';
 import { attractionRide, beginDrivenAttractionRide, endAttractionRide, requestAttractionExit, updateAttractionRide } from '../../attractions/attraction-ride';
 import { alphaFerryRoute,alphaFerryGroundHeight } from './alpha-routes';
 import { SLED_RAIL_RADIUS,cableWireSegments,transportBeamBatch,transportInfrastructure,type GuideRoller } from './transport-infrastructure';
-import { transportBoardingGeometry } from '../../rides/transport-boarding';
+import { boardingPassageContains, transportBoardingGeometry } from '../../rides/transport-boarding';
+import { registerWorldActorPassage } from '../../world-actor-sites';
+import { FIXED_TRIMESH } from '../../collider-readiness';
 import { resetAttractionLook } from '../../attractions/attraction-camera';
 import { TransportDriver } from '../../rides/transport-driver';
 import { rideEnvironment, type WeatherLease } from '../../rides/ride-environment';
@@ -202,13 +204,24 @@ function CableCanopy({id}:{id:string}) {
  </group>;
 }
 function BoardingWalkway({route,index,groundHeight}:{route:TransportRoute;index:0|1;groundHeight?:AlphaTransportsProps['groundHeight']}){
- const wood=useTransportWood();
  const pack=useMemo(()=>{
   const data=transportBoardingGeometry(route,index,groundHeight),g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(data.positions,3));g.setIndex(Array.from(data.indices));g.computeVertexNormals();
   return {geometry:g,vertices:data.positions,indices:data.indices,support:data.support,segments:data.segments};
  },[route,index,groundHeight]);
- useEffect(()=>{const unregister=registerRideGround(route.id+'-boarding-'+index,pack.support);return()=>{unregister();pack.geometry.dispose();};},[route.id,index,pack]);
  const name=`${route.id}-gangway-${index}`,surfaceId=`${name}-contact`;
+ useLayoutEffect(()=>registerWorldActorPassage({
+  id:name,loadSource:name,contains:boardingPassageContains(pack.segments),requirements:[{name:surfaceId,shape:FIXED_TRIMESH}],
+ }),[name,surfaceId,pack]);
+ useEffect(()=>()=>pack.geometry.dispose(),[pack]);
+ return <RegionSceneBoundary id={name}>
+  <BoardingWalkwayContact name={name} surfaceId={surfaceId} groundId={route.id+'-boarding-'+index} pack={pack}/>
+ </RegionSceneBoundary>;
+}
+
+function BoardingWalkwayContact({name,surfaceId,groundId,pack}:{name:string;surfaceId:string;groundId:string;
+ pack:{geometry:BufferGeometry;vertices:Float32Array;indices:Uint32Array;support:ReturnType<typeof transportBoardingGeometry>['support'];segments:{a:Vec3;b:Vec3}[]}}){
+ const wood=useTransportWood();
+ useLayoutEffect(()=>registerRideGround(groundId,pack.support),[groundId,pack]);
  return <group name={name}>
   {wood?<WoodBoarding source={pack.geometry} segments={pack.segments} material={wood} surfaceId={surfaceId}/>:<mesh name={`${name}-floor`} geometry={pack.geometry} receiveShadow userData={{worldCollision:'solid',surfaceId}}><meshStandardMaterial color="#a77f53" roughness={.8} side={2}/></mesh>}
   <RigidBody type="fixed" colliders={false} userData={{surface:true,solid:true,assetId:name}}>

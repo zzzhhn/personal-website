@@ -77,6 +77,20 @@ export function worldPassageRegions(layoutV4=LAYOUT_V4): PassageRegion[] {
 const v3PassageRegions = worldPassageRegions(false);
 const v4PassageRegions = worldPassageRegions(true);
 const passageRegions = LAYOUT_V4 ? v4PassageRegions : v3PassageRegions;
+const installedPassages = new Map<string,PassageRegion>();
+let activePassageRegions = passageRegions;
+
+/** A district can publish a precise footprint once its survey has loaded.
+ * Its lease can outlive an independently loading contact surface. */
+export function registerWorldActorPassage(region:PassageRegion) {
+  installedPassages.set(region.id,region);
+  activePassageRegions=[...passageRegions,...installedPassages.values()];
+  return ()=>{
+    if(installedPassages.get(region.id)!==region)return;
+    installedPassages.delete(region.id);
+    activePassageRegions=[...passageRegions,...installedPassages.values()];
+  };
+}
 
 function arrivalRegions(start: string | null, layoutV4: boolean) {
   const regions = layoutV4 ? v4PassageRegions : v3PassageRegions;
@@ -162,7 +176,7 @@ export const worldActorSites: ActorSites = {
   portals:WORLD_PORTALS.map(portal=>({...portal,fallbackZone:portal.id==='camp'?'camp':'park',
     notice:{zh:`已抵达${portalNames[portal.id].zh}。离开门口后可再次穿行。`,
       en:`Arrived at ${portalNames[portal.id].en}. Walk away to rearm the gate.`}})),
-  passage:(world,states)=>createRegionPassage(passageRegions,createColliderReadinessProbe(world,states),mainlandRequirements,regionLoadFailed),
+  passage:(world,states)=>createRegionPassage(()=>activePassageRegions,createColliderReadinessProbe(world,states),mainlandRequirements,regionLoadFailed),
   arrival:worldActorArrival,
   zone:worldActorZone,
   roadCandidates:worldRoadLandingCandidates,

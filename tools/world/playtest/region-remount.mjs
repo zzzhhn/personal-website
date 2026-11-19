@@ -29,12 +29,14 @@ const waiting='The area ahead is preparing. Please wait.';
 const distance=(a,b)=>Math.hypot(a[0]-b[0],a[2]-b[2]);
 const failures=[];
 const guideBody='world-player-contact';
+const vehicleBody=id=>`vehicle-${id}-body-frame`;
+const vehicleWalkingBody=id=>`vehicle-${id}-walking-frame`;
 
 function bodies(page,site){
-  return page.evaluate(({region,vehicle,guideBody})=>{
-    const names=[guideBody,...(vehicle?[`world-vehicle-${vehicle}-contact`]:[])];
+  const names=[guideBody,...(site.vehicle?[vehicleBody(site.vehicle),vehicleWalkingBody(site.vehicle)]:[])];
+  return page.evaluate(({region,names})=>{
     return window.__worldRegionFault.bodies(region).filter(body=>names.includes(body.name));
-  },{region:site.region,vehicle:site.vehicle,guideBody});
+  },{region:site.region,names});
 }
 
 function actualBody(records,name=guideBody){
@@ -140,20 +142,25 @@ try{
       const initial=await actor(page,site.vehicle);
       const approach=site.vehicle?await driveIntoYard(page,bot):{entered:await stepAway(page,keys,site.meters),placements:[]};
       const {entered,placements}=approach;
-      const bodyName=site.vehicle?`world-vehicle-${site.vehicle}-contact`:guideBody;
+      const bodyName=site.vehicle?vehicleBody(site.vehicle):guideBody;
+      const walkingName=site.vehicle?vehicleWalkingBody(site.vehicle):null;
       await advance(page,12);
       const mounted=await colliders(page,site.colliders),activeBodies=await bodies(page,site);
       const activeBody=actualBody(activeBodies,bodyName);
       ownership(activeBody,true,false);
-      if(site.vehicle)ownership(actualBody(activeBodies),false,false);
+      if(walkingName){
+        ownership(actualBody(activeBodies),false,false);
+        ownership(actualBody(activeBodies,walkingName),true,false);
+      }
       assert.ok(mounted.handles.length>0,JSON.stringify(mounted));
       stage='unmount';
       await setRemoved(page,site.region,true);
       await bot.hold(keys);
-      await waitFor(page,({region,bodyName,names,waiting})=>{
-        const d=window.__worldDebug,record=window.__worldRegionFault.bodies(region).find(body=>body.name===bodyName);
-        return record?.regionHeld&&d.state().toast?.en===waiting&&names.every(name=>!d.sceneObjects().includes(name));
-      },{region:site.region,bodyName,names:site.colliders,waiting},20000);
+      await waitFor(page,({region,bodyNames,names,waiting})=>{
+        const d=window.__worldDebug,records=window.__worldRegionFault.bodies(region);
+        return bodyNames.every(name=>records.some(body=>body.name===name&&body.regionHeld))
+          &&d.state().toast?.en===waiting&&names.every(name=>!d.sceneObjects().includes(name));
+      },{region:site.region,bodyNames:walkingName?[bodyName,walkingName]:[bodyName],names:site.colliders,waiting},20000);
       const held=await actor(page,site.vehicle),removed=await colliders(page,site.colliders),heldBodies=await bodies(page,site);
       lastHeld=held;
       const heldBody=actualBody(heldBodies,bodyName);
@@ -161,14 +168,19 @@ try{
       assert.equal(heldBody.handle,activeBody.handle);
       assert.deepEqual(heldBody.colliders,activeBody.colliders);
       assert.deepEqual(heldBody.position,held.position);
-      if(site.vehicle){
+      if(walkingName){
         ownership(actualBody(heldBodies),false,false);
         assert.ok(heldBody.heldColliders.length<heldBody.colliders.length,'mass and other contact-free shapes remain excluded');
+        const walking=actualBody(heldBodies,walkingName);
+        ownership(walking,false,true);
+        assert.deepEqual(walking.position,heldBody.position);
+        assert.equal(walking.handle,actualBody(activeBodies,walkingName).handle);
       }else assert.deepEqual(heldBody.heldColliders,heldBody.colliders);
       assert.deepEqual(removed,{scene:[],handles:[]});
       await advance(page,60);
-      const still=await actor(page,site.vehicle),stillBody=actualBody(await bodies(page,site),bodyName);
+      const still=await actor(page,site.vehicle),stillBodies=await bodies(page,site),stillBody=actualBody(stillBodies,bodyName);
       assert.deepEqual(stillBody,heldBody);
+      if(walkingName)assert.deepEqual(actualBody(stillBodies,walkingName),actualBody(heldBodies,walkingName));
       assert.ok(keys.every(key=>still.keys.includes(key)));
       assert.deepEqual(still.position,held.position,'the actual capsule did not move or drop');
       assert.deepEqual(still.velocity,[0,0,0]);
@@ -215,9 +227,14 @@ try{
         ownership(resumedBody,true,false);
         assert.equal(resumedBody.handle,activeBody.handle);
         assert.deepEqual(resumedBody.colliders,activeBody.colliders);
-        if(site.vehicle){
+        if(walkingName){
           assert.equal(resumed.activeVehicle,site.vehicle);
           ownership(actualBody(resumedBodies),false,false);
+          const walking=actualBody(resumedBodies,walkingName);
+          ownership(walking,true,false);
+          assert.deepEqual(walking.position,resumedBody.position);
+          assert.equal(walking.handle,actualBody(heldBodies,walkingName).handle);
+          assert.deepEqual(walking.colliders,actualBody(heldBodies,walkingName).colliders);
         }
         assert.deepEqual(remounted.scene,mounted.scene);
         assert.equal(remounted.handles.length,mounted.handles.length);
