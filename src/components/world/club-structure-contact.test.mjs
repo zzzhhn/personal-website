@@ -5,6 +5,8 @@ import { DoubleSide, Group, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from '
 import { buildDjcClubGeometry } from './WorldDjcClubGeometry.ts';
 import { buildDjcBarProxy, DJC_BAR_ASSETS } from './djc-bar-layout.ts';
 import { CLUB_DAYBEDS } from './djc-club-layout.ts';
+import { DJC_DAYBED_ORIGIN_Y } from './djc-daybed-visual.ts';
+import { clubDaybedContact } from './club-daybed-contact.ts';
 import { buildClubBarStoolContact } from './club-north-bar-contact.ts';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
 
@@ -54,6 +56,9 @@ test('visible and physical mattress rims agree at all four beds while the timber
   const drawing=new Mesh(mattress.geometry,material), world=worldWith(Object.values(scene.colliders));
   t.after(()=>{world.free();material.dispose();disposeWorldCraftGltf(asset);});
   const wood=new Mesh(scene.batches.wood,material);
+  const shape=clubDaybedContact();
+  for(const [x,z] of CLUB_DAYBEDS)world.createCollider(R.ColliderDesc.trimesh(shape.vertices,shape.indices).setTranslation(x,DJC_DAYBED_ORIGIN_Y,z));
+  world.step();
   let max=0;
   for(const [x,z] of CLUB_DAYBEDS){
     drawing.position.set(x,1.5,z);drawing.updateMatrixWorld(true);

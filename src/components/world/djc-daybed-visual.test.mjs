@@ -8,15 +8,14 @@ import { createDjcDaybedVisual, djcDaybedLegacy } from './djc-daybed-visual.ts';
 test('streamed furniture preserves approach and seat anchors with its own arc-cut contact',()=>{
   const original=buildDjcClubGeometry(),streamed=buildDjcClubGeometry({separateDaybeds:true});
   try{
-    assert.ok(streamed.colliders.surface.indices.length>original.colliders.surface.indices.length);
+    assert.notDeepEqual(streamed.colliders.surface,original.colliders.surface,'the furniture surface belongs to its new assembly');
     assert.deepEqual(streamed.seats,original.seats);
     assert.deepEqual(streamed.daybedApproaches,original.daybedApproaches);
     let removed=0;
     for(const key of Object.keys(original.batches)){
       const count=original.batches[key].attributes.position.count;
-      // The wood approach now has an arc-cut landing; furniture extraction still
-      // conserves every vertex in the other material batches.
-      if(key!=='wood')assert.equal(streamed.batches[key].attributes.position.count+streamed.daybeds[key].attributes.position.count,count);
+      // The landing and fallback mattress share the published 192-sided edge.
+      if(key!=='wood'&&key!=='fabric')assert.equal(streamed.batches[key].attributes.position.count+streamed.daybeds[key].attributes.position.count,count);
       removed+=streamed.daybeds[key].attributes.position.count;
     }
     assert.ok(removed>0,'the original daybeds must not remain underneath the new GLB');

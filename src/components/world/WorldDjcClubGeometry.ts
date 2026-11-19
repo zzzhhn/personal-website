@@ -4,7 +4,7 @@ import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeom
 import { requireMeshHeight } from './WorldLandform';
 import { DJC_BAR_DANCE_JOIN } from './djc-bar-layout';
 import { djcWalkwayOutline, djcWalkwaySupports, djcPoolRimAccess, djcPoolInnerReturn } from './facility-site-contact';
-import { CLUB_DAYBED_FLAT_RADIUS, CLUB_DAYBED_MATTRESS_SIDES, clubDaybedMattressTriangles } from './club-daybed-contact';
+import { CLUB_DAYBED_FLAT_RADIUS, CLUB_DAYBED_MATTRESS_SIDES } from './club-daybed-contact';
 import { clubStructureSource, type ClubSourceKind, type ClubSourceSpan } from './club-structure-contact';
 
 type V3 = [number, number, number];
@@ -97,6 +97,7 @@ type ClubAssemblyRange = Partial<Record<ClubBatch, [start: number, end: number]>
 type ClubGeometryOptions = {
   includeNorthBar?: boolean;
   separateDaybeds?: boolean;
+  daybedApproachArc?: boolean;
   separatePoolLanterns?: boolean;
   separateUmbrellas?: boolean;
   separateFurniture?: boolean;
@@ -104,7 +105,7 @@ type ClubGeometryOptions = {
 };
 export function buildDjcClubGeometry({
   includeNorthBar = false, separateDaybeds = false, separatePoolLanterns = false,
-  separateUmbrellas = false, separateFurniture = false, recordAssembly,
+  separateUmbrellas = false, separateFurniture = false, daybedApproachArc = separateDaybeds, recordAssembly,
 }: ClubGeometryOptions = {}) {
   const query = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search);
   const mode = query?.get('djcPavilion');
@@ -134,17 +135,19 @@ export function buildDjcClubGeometry({
   const surface = new Collision(), solid = new Collision();
   const solidTriangles=(positions:number[])=>{for(let i=0;i<positions.length;i+=9)solid.triangle(positions.slice(i,i+3) as V3,positions.slice(i+3,i+6) as V3,positions.slice(i+6,i+9) as V3);};
   let yOffset = 0, collectingDaybed = false, collectingPoolLantern = false, collectingUmbrella = false, collectingFurniture = false;
-  // Only the visible furniture moves into a replaceable group. All support,
-  // guard and approach triangles continue through the original collision path.
+  const separateFixtureContact = () => (separateFurniture && collectingFurniture) || (separateDaybeds && collectingDaybed);
+  // Each replaceable fixture owns its contact. Supports, guards and
+  // approaches remain in the facility assembly.
   const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0, contact?:ClubSourceKind) => (separateFurniture && collectingFurniture ? furnitureBatches : separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : separateUmbrellas && collectingUmbrella ? umbrellaBatches : batches)[kind].add(g, color, wind, finishRole, contact);
   const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide = false) => {
     const g = kind==='fabric' ? new RoundedBoxGeometry(...size,1,Math.min(.055,...size.map(n=>n*.2))) : new BoxGeometry(...size); g.rotateY(rotate); g.translate(p[0],p[1]+yOffset,p[2]);
-    if (collide) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
-    add(kind, g, color, 0, collide?'solid':undefined);
+    const source=collide&&!separateFixtureContact();
+    if (source) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
+    add(kind, g, color, 0, source?'solid':undefined);
   };
   const cylinder = (kind: ClubBatch, p: V3, top: number, bottom: number, height: number, color: string, segments = 12, rotateZ = 0,collide=false) => {
     const g = new CylinderGeometry(top,bottom,height,segments); g.rotateZ(rotateZ); g.translate(p[0],p[1]+yOffset,p[2]);
-    if(collide){const raw=g.toNonIndexed(),v=raw.getAttribute('position'),n=raw.getAttribute('normal');for(let i=0;i<v.count;i+=3){const a:V3=[v.getX(i),v.getY(i),v.getZ(i)],b:V3=[v.getX(i+1),v.getY(i+1),v.getZ(i+1)],c:V3=[v.getX(i+2),v.getY(i+2),v.getZ(i+2)];(n.getY(i)>.7?surface:solid).triangle(a,b,c);}raw.dispose();}
+    if(collide&&!separateFixtureContact()){const raw=g.toNonIndexed(),v=raw.getAttribute('position'),n=raw.getAttribute('normal');for(let i=0;i<v.count;i+=3){const a:V3=[v.getX(i),v.getY(i),v.getZ(i)],b:V3=[v.getX(i+1),v.getY(i+1),v.getZ(i+1)],c:V3=[v.getX(i+2),v.getY(i+2),v.getZ(i+2)];(n.getY(i)>.7?surface:solid).triangle(a,b,c);}raw.dispose();}
     add(kind,g,color);
   };
   const sphere = (kind: ClubBatch, p: V3, radius: number, color: string, scale: V3 = [1,1,1]) => {
@@ -158,8 +161,9 @@ export function buildDjcClubGeometry({
       g.setAttribute('aDjcGrain', new Float32BufferAttribute(grain, 2));
     }
     g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),direction.normalize())); const mid=av.add(bv).multiplyScalar(.5); g.translate(mid.x,mid.y+yOffset,mid.z);
-    if (collide) { const m = g.toNonIndexed(); const p = m.getAttribute('position'); for(let i=0;i<p.count;i+=3) solid.triangle([p.getX(i),p.getY(i),p.getZ(i)],[p.getX(i+1),p.getY(i+1),p.getZ(i+1)],[p.getX(i+2),p.getY(i+2),p.getZ(i+2)]); m.dispose(); }
-    add(kind,g,color,0,collide?'solid':undefined);
+    const source=collide&&!separateFixtureContact();
+    if (source) { const m = g.toNonIndexed(); const p = m.getAttribute('position'); for(let i=0;i<p.count;i+=3) solid.triangle([p.getX(i),p.getY(i),p.getZ(i)],[p.getX(i+1),p.getY(i+1),p.getZ(i+1)],[p.getX(i+2),p.getY(i+2),p.getZ(i+2)]); m.dispose(); }
+    add(kind,g,color,0,source?'solid':undefined);
   };
   const walkwayFaces:V3[][]=[];
   // Cut the existing sloped faces into a world-scale running bond. Grout is an
@@ -232,16 +236,18 @@ export function buildDjcClubGeometry({
   /** Convex polygon slab, including sloped top. Its visible triangles ARE the collider triangles. */
   const slab = (kind: ClubBatch, outline: V3[], depth: number, color: string, walkable = true, pavers = false, sideColor = color) => {
     outline=outline.map(p=>[p[0],p[1]+yOffset,p[2]]);
-    const top: number[] = [], sides: number[] = [];
+    const top: number[] = [], sides: number[] = [], source=!separateFixtureContact();
     for(let i=1;i<outline.length-1;i++) {
       const a=outline[0],b=outline[i+1],c=outline[i];
-      if(pavers)stonePavers([a,b,c]);else{top.push(...a,...b,...c);if(walkable)surface.triangle(a,b,c);else solid.triangle(a,b,c);}
+      if(pavers)stonePavers([a,b,c]);else{top.push(...a,...b,...c);if(source)(walkable?surface:solid).triangle(a,b,c);}
     }
     for(let i=0;i<outline.length;i++) {
       const a=outline[i],b=outline[(i+1)%outline.length],c:V3=[b[0],b[1]-depth,b[2]],d:V3=[a[0],a[1]-depth,a[2]];
-      sides.push(...a,...b,...c,...a,...c,...d); solid.triangle(a,b,c); solid.triangle(a,c,d);
+      sides.push(...a,...b,...c,...a,...c,...d);
+      if(source){solid.triangle(a,b,c);solid.triangle(a,c,d);}
     }
-    if(top.length)add(kind,fromTriangles(top),color,0,walkable?'surface':'solid');add(kind,fromTriangles(sides),sideColor,0,'solid');
+    if(top.length)add(kind,fromTriangles(top),color,0,source?(walkable?'surface':'solid'):undefined);
+    add(kind,fromTriangles(sides),sideColor,0,source?'solid':undefined);
   };
   const pavedOutline=(outline:V3[])=>{
     const top:number[]=[],sides:number[]=[];
@@ -376,7 +382,7 @@ export function buildDjcClubGeometry({
     const outline=[rows[0][0],...rows.map(r=>r[1]),...rows.slice(1).reverse().map(r=>r[0])];
     for(let i=0;i<outline.length;i++){const a=outline[i],b=outline[(i+1)%outline.length],c:V3=[b[0],b[1]-.12,b[2]],d:V3=[a[0],a[1]-.12,a[2]];sides.push(...a,...b,...c,...a,...c,...d);}
     let visibleTop=top,visibleSides=sides;
-    if(separateDaybeds){
+    if(daybedApproachArc){
       // Match the GLB's flat mattress rim, including its 192-sided tessellation.
       // Both visible timber and physical support meet this actual mattress arc.
       const arc:V3[]=[],radius=CLUB_DAYBED_FLAT_RADIUS,segments=CLUB_DAYBED_MATTRESS_SIDES;
@@ -405,12 +411,9 @@ export function buildDjcClubGeometry({
     // The timber rim occupies the old stone envelope, leaving access and leg lanes unchanged.
     slab('stone',ellipse(x,z,1.65,1.65,1.38,32),.88,'#c4bda6');
     slab('wood',ellipse(x,z,1.65,1.65,1.5,32),.12,'#956a43');
-    cylinder('fabric',[x,DJC_DAYBED_PAD.centerY,z],DJC_DAYBED_PAD.radius,DJC_DAYBED_PAD.radius,DJC_DAYBED_PAD.height,'#3e8582',32,0,!separateDaybeds);
-    if(separateDaybeds){
-      const mattress=clubDaybedMattressTriangles(x,z,DJC_DAYBED_TOP-.255);
-      for(let i=0;i<mattress.top.length;i+=9)surface.triangle(mattress.top.slice(i,i+3) as V3,mattress.top.slice(i+3,i+6) as V3,mattress.top.slice(i+6,i+9) as V3);
-      solidTriangles(mattress.sides);
-    }
+    const fallbackRadius=daybedApproachArc?CLUB_DAYBED_FLAT_RADIUS:DJC_DAYBED_PAD.radius;
+    const fallbackSides=daybedApproachArc?CLUB_DAYBED_MATTRESS_SIDES:32;
+    cylinder('fabric',[x,DJC_DAYBED_PAD.centerY,z],fallbackRadius,fallbackRadius,DJC_DAYBED_PAD.height,'#3e8582',fallbackSides,0,true);
     for(const dx of [-.69,0,.69])box('fabric',[x+dx,1.94,z+.92],[.66,.55,.36],'#31666a',0,true);
     const piping=new TorusGeometry(1.445,.012,4,48);piping.rotateX(Math.PI/2);piping.translate(x,1.71,z);add('fabric',piping,'#57908a');
     // Small inset end-grain blocks articulate the rim without projecting into the approach.
@@ -758,8 +761,10 @@ export function buildDjcClubGeometry({
   }
   for(const z of [47,63]) {
     collectingUmbrella=true;
-    cylinder('wood',[74,2.7,z],.05,.065,2.6,C.edge,8,0,true);
-    const umbrella=new CylinderGeometry(.05,1.65,.65,8,1,true); umbrella.translate(74,3.9,z);const raw=umbrella.toNonIndexed();solidTriangles(Array.from(raw.getAttribute('position').array));raw.dispose();add('fabric',umbrella,'#c6b17d');
+    cylinder('wood',[74,2.7,z],.05,.065,2.6,C.edge,8,0,!separateUmbrellas);
+    const umbrella=new CylinderGeometry(.05,1.65,.65,8,1,true); umbrella.translate(74,3.9,z);
+    if(!separateUmbrellas){const raw=umbrella.toNonIndexed();solidTriangles(Array.from(raw.getAttribute('position').array));raw.dispose();}
+    add('fabric',umbrella,'#c6b17d');
     collectingUmbrella=false;
     collectingFurniture = true;
     box('wood',[74,1.42,z],[1.2,.16,2.4],C.edge,0,true); box('fabric',[74,1.6,z],[1.12,.19,2.3],'#43827e',0,true);

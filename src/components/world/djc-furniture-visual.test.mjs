@@ -6,10 +6,12 @@ import { createDjcFurnitureVisual, DJC_FURNITURE_PLACEMENTS, djcFurnitureLegacy 
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
 
 function disposeClub(g){for(const name of ['batches','daybeds','poolLanterns','umbrellas','furniture'])Object.values(g[name]).forEach(v=>v.dispose());g.pool.dispose();}
-test('three-family visual extraction keeps exact collisions, seats, approaches, controls and other accepted packs',()=>{
+test('three-family extraction changes furniture contact only and keeps seats, approaches and controls',()=>{
   const original=buildDjcClubGeometry({separateDaybeds:true,separatePoolLanterns:true,separateUmbrellas:true}),separated=buildDjcClubGeometry({separateDaybeds:true,separatePoolLanterns:true,separateUmbrellas:true,separateFurniture:true});
   try{
-    assert.deepEqual(original.colliders,separated.colliders);assert.deepEqual(original.seats,separated.seats);assert.deepEqual(original.daybedApproaches,separated.daybedApproaches);
+    assert.deepEqual(original.colliders.surface,separated.colliders.surface);
+    assert.ok(original.colliders.solid.indices.length>separated.colliders.solid.indices.length);
+    assert.deepEqual(original.seats,separated.seats);assert.deepEqual(original.daybedApproaches,separated.daybedApproaches);
     for(const group of ['daybeds','poolLanterns','umbrellas'])for(const key of Object.keys(original[group]))assert.deepEqual(original[group][key].attributes.position.array,separated[group][key].attributes.position.array);
     let extracted=0;
     for(const key of Object.keys(original.batches)){

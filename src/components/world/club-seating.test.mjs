@@ -9,14 +9,28 @@ import { PLAYER_CENTER_HEIGHT,PLAYER_HALF_HEIGHT,PLAYER_RADIUS } from './actor-p
 import { sweepCamera } from './camera-collision.ts';
 import { playerSupport,followPlayerGround } from './player-ground.ts';
 import { createPlayerClearance,sweptPlayerVelocity,playerVelocityChange } from './player-motion.ts';
-import { CLUB_POOL } from './djc-club-layout.ts';
+import { CLUB_DAYBEDS, CLUB_POOL } from './djc-club-layout.ts';
+import { DJC_DAYBED_ORIGIN_Y } from './djc-daybed-visual.ts';
+import { clubDaybedContact } from './club-daybed-contact.ts';
+import { clubFallbackContact } from './club-fixed-contact.ts';
 // The focused interaction fixture loads the real runtime registration code, not the unrelated
 // dancer/visual asset tree. Rendering and React mounting remain part of browser acceptance.
 const hook=registerHooks({resolve(specifier,context,next){if(context.parentURL?.endsWith('/WorldDjcClub.tsx')&&['./WorldClubDancer','./WorldDjcClubVisual'].includes(specifier))return{url:'data:text/javascript,export default function RenderOnlyFixture(){return null}',shortCircuit:true};return next(specifier,context);}});
 const {djcSeatInteraction,djcSeatApproach,djcSeatReachable}=await import('./WorldDjcClub.tsx');hook.deregister();
 await R.init();
 const geometry=buildDjcClubGeometry({separateDaybeds:true,separateFurniture:true,separateUmbrellas:true}),world=new R.World({x:0,y:-12.5,z:0});
-for(const [kind,m]of Object.entries(geometry.colliders)){const b=world.createRigidBody(R.RigidBodyDesc.fixed());b.userData={[kind]:true};world.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices),b);}
+const daybedShape=clubDaybedContact();
+const fallbackShape=clubFallbackContact(Object.values(geometry.daybeds).filter(g=>g.attributes.position.count>0));
+function addStaticClub(w,variant='asset'){
+  for(const [kind,m]of Object.entries(geometry.colliders)){
+    const b=w.createRigidBody(R.RigidBodyDesc.fixed());b.userData={[kind]:true};
+    w.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices).setFriction(kind==='surface'?.9:.65),b);
+  }
+  const beds=w.createRigidBody(R.RigidBodyDesc.fixed());beds.userData={solid:true,assetId:'djc-daybeds'};
+  if(variant==='fallback')w.createCollider(R.ColliderDesc.trimesh(fallbackShape.vertices,fallbackShape.indices).setFriction(.9),beds);
+  else for(const [x,z] of CLUB_DAYBEDS)w.createCollider(R.ColliderDesc.trimesh(daybedShape.vertices,daybedShape.indices).setFriction(.9).setTranslation(x,DJC_DAYBED_ORIGIN_Y,z),beds);
+}
+addStaticClub(world);
 const player=world.createRigidBody(R.RigidBodyDesc.dynamic().lockRotations()),bodyShape=new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
 world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),player);
 const place=p=>{player.setTranslation({x:p[0],y:p[1],z:p[2]},true);player.setLinvel({x:0,y:0,z:0},true);for(let i=0;i<30;i++)world.step();const actual=player.translation();useWorldStore.setState({position:[actual.x,actual.y,actual.z],seat:null,clubMode:null,activeVehicle:null,card:null});};
@@ -53,10 +67,10 @@ test('mirror fixed sphere has physical contact and stops the production camera s
   let touched=false;world.intersectionsWithShape({x,y,z},{x:0,y:0,z:0,w:1},new R.Ball(.1),c=>{if(c.parent()?.handle===b.handle)touched=true;return true;});assert.ok(touched);
   const cast=sweepCamera(world,R,{x:x-2,y,z},{x:x+2,y,z},.22,player,c=>!c.isSensor());assert.ok(cast.hit!==null);assert.ok(cast.distance<1.2);assert.equal(b.userData.cameraBlocker,true);
 });
-test('production dynamic capsule walks from pool to every daybed, stops on the landing and activates a reachable seat',()=>{
- for(const bed of [0,1,2,3])for(const offset of [-.41,.41]) {
+test('production dynamic capsule can reach all seats in both the loaded and pending daybed layouts',()=>{
+ for(const variant of ['asset','fallback'])for(const bed of [0,1,2,3])for(const offset of [-.41,.41]) {
   const w=new R.World({x:0,y:-12.5,z:0});w.timestep=1/60;
-  for(const [kind,m]of Object.entries(geometry.colliders)){const b=w.createRigidBody(R.RigidBodyDesc.fixed());b.userData={[kind]:true};w.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices).setFriction(kind==='surface'?.9:.65),b);}
+  addStaticClub(w,variant);
   w.step();
   const seat=DJC_CLUB_SEATS[bed*2],x=seat.center[0]+offset,startZ=seat.center[1]+DJC_DAYBED_ACCESS.fromZ-.5;
   const floor=w.castRay(new R.Ray({x,y:10,z:startZ},{x:0,y:-1,z:0}),12,true),y=10-floor.timeOfImpact;
@@ -67,7 +81,7 @@ test('production dynamic capsule walks from pool to every daybed, stops on the l
   for(let i=0;i<240;i++){tick(3.6);if(body.translation().z>=seat.center[1]-1.55){reached=true;break;}}
   const arrived={...body.translation()};for(let i=0;i<60;i++)tick(0);const settled={...body.translation()};for(let i=0;i<180;i++)tick(0);const stopped={...body.translation()},support=playerSupport(w,R,body);
   const holdDrift=Math.hypot(stopped.x-settled.x,stopped.y-settled.y,stopped.z-settled.z);
-  const record={bed,offset,reached,arrived,stopped,grounded:support?.grounded??false,gap:support?.gap,holdDrift};console.log('dynamic daybed:',JSON.stringify(record));
+  const record={variant,bed,offset,reached,arrived,stopped,grounded:support?.grounded??false,gap:support?.gap,holdDrift};console.log('dynamic daybed:',JSON.stringify(record));
   assert.ok(reached,JSON.stringify(record));assert.ok(Math.hypot(stopped.x-arrived.x,stopped.z-arrived.z)<.3,JSON.stringify(record));assert.ok(Math.hypot(stopped.x-settled.x,stopped.y-settled.y,stopped.z-settled.z)<.015,JSON.stringify(record));assert.ok(support?.grounded,JSON.stringify(record));
   const p=[stopped.x,stopped.y,stopped.z];useWorldStore.setState({position:p,seat:null,clubMode:null,activeVehicle:null,card:null});
   const cleanup=DJC_CLUB_SEATS.filter(s=>s.bed===bed).map(s=>registerInteractable(djcSeatInteraction(s,()=>djcSeatReachable(w,R,useWorldStore.getState().position,s))));
@@ -79,7 +93,7 @@ test('production dynamic capsule walks from pool to every daybed, stops on the l
 test('production dynamic capsule leaves the pool through all four broad shallow bays',()=>{
  for(const angle of [0,Math.PI/2,Math.PI,Math.PI*1.5])for(const side of [-1.2,1.2]) {
   const w=new R.World({x:0,y:-12.5,z:0});w.timestep=1/60;
-  for(const [kind,m]of Object.entries(geometry.colliders)){const b=w.createRigidBody(R.RigidBodyDesc.fixed());b.userData={[kind]:true};w.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices).setFriction(kind==='surface'?.9:.65),b);}
+  addStaticClub(w);
   const direction={x:Math.cos(angle),z:Math.sin(angle)},offset={x:-direction.z*side,z:direction.x*side};
   const from=CLUB_POOL.boundary(angle,-3),to=CLUB_POOL.boundary(angle,2.1),x=from[0]+offset.x,z=from[1]+offset.z,target={x:to[0]+offset.x,z:to[1]+offset.z};
   w.step();const floor=w.castRay(new R.Ray({x,y:10,z},{x:0,y:-1,z:0}),12,true);

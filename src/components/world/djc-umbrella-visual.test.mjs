@@ -7,10 +7,11 @@ import { retainDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment.ts
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
 
 const disposeClub=g=>{for(const key of ['batches','daybeds','poolLanterns','umbrellas'])Object.values(g[key]).forEach(item=>item.dispose());g.pool.dispose();};
-test('extracting only the parasols preserves exact collider arrays, seats, approaches and adjacent loungers',()=>{
+test('the extracted parasols own their contact without changing seats, approaches or adjacent loungers',()=>{
   const original=buildDjcClubGeometry(),separated=buildDjcClubGeometry({separateUmbrellas:true});
   try{
-    assert.deepEqual(separated.colliders,original.colliders);
+    assert.equal(original.colliders.surface.indices.length-separated.colliders.surface.indices.length,16*3);
+    assert.equal(original.colliders.solid.indices.length-separated.colliders.solid.indices.length,80*3);
     assert.deepEqual(separated.seats,original.seats);assert.deepEqual(separated.daybedApproaches,original.daybedApproaches);
     for(const key of Object.keys(original.batches)){
       const before=original.batches[key].attributes.position.count,remaining=separated.batches[key].attributes.position.count,extracted=separated.umbrellas[key].attributes.position.count;

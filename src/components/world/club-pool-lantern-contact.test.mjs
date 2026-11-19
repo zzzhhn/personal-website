@@ -12,7 +12,7 @@ import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-te
 import source from './club-pool-lantern-contact.generated.json' with {type:'json'};
 
 const ROOT='djc-pool-lantern-contact';
-const RAP=await R.init();
+await R.init();
 const zero={x:0,y:0,z:0};
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const ray=(world,o,d)=>world.castRay(new R.Ray(new Vector3(...o),new Vector3(...d)),1,true)?.timeOfImpact;

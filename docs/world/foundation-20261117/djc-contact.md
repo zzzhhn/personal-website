@@ -8,9 +8,44 @@
 
 Chrome `157.0.8103.79` 先验证普通 `/world/?start=club` 进入，再在同一隔离构建中为三段路线设置 QA 起点。使用真实键盘沿舞台前坡上到演员身体 Y `2.822` m，走回坡脚到 `2.011` m，两端落地。从第一张圆床的木坡走到坐姿提示，按 E 坐下并再次按 E 站回支撑面。沿西池浅坡走出，X 从 `54.503` 到 `50.886` m，Y 从 `1.668` 到 `2.185` m。页面和游戏错误均为 0，本地分析接口单独返回 404。定向 39 项通过。另在隔离目录补回 `ada5ced` 归档的缺失基线文件，北吧原有 11 项回归通过。
 
-剩余局部细件包括高吧台主体和花槽的进一步拟合、圆床石砌接缝和小附属件、家具 GLB 分材质源、遮阳伞、池灯、屋檐小饰及舞者。有人可走到的石地和仍含数类物件的主材质合批分别以完整和部分登记现状呈现。
+剩余局部部件包括北吧主体和花槽、圆床石砌接缝和小附属件、DJ 台面上的控制面板与线材，以及屋檐小饰和舞者。石批已有完整登记，木、布、金属等合批依已确认结构面部分登记。
 
 ```sh
 node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/{club-structure-contact,club-seating}.test.mjs
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-contact-browser.mjs http://127.0.0.1:4358
+```
+
+## 池灯和遮阳伞的完整注册
+
+| 装置 | 旧接触 | 实物同源接触 |
+| --- | --- | --- |
+| 十盏池灯 | y=0.55 m 的立杆漏掉。头顶下探时只在 0.600 m 后命中原基座，实际灯帽在 0.230 m。 | 四个材质的真实发布网格离线降至共享 900 个碰撞三角形。十处 50 条射线最大误差 0.748 mm，灯旁空隙保持通行。 |
+| 两把遮阳伞 | 可见斜边和八面旧代理的同向下探差 59.36 mm。 | 四个材质的发布伞杆、接头、布面和包边经离线处理共享 3,230 个碰撞三角形。两处对照伞杆、伞顶、伞下与边外留空，最大误差 1.94 mm。 |
+
+主材质和实例绘制沿用已有的 GLB、实例矩阵、材质和纹理。计算简化在离线完成。实际灯和伞从加载备用形状切换到发布形状时，各可见部件使用同一分支的物理数据。每个实例的图形矩阵与放置声明由严格清单核对。两个范围内的原合批代理由新注册接管。
+
+Chrome 157 从普通 Club 入口进入。脚本单独挂起各自的真实 GLB 请求。池灯注册数在挂起、放行和显式旧版三个阶段为 1／10／1，遮阳伞为 1／2／1。六阶段均无范围内漏项或重复。放行后，用运行时实际角色胶囊扫形命中各自第一个新实体。页面和游戏错误为 0，开发分析接口的 404 单列。
+
+```sh
+node tools/world/djc-quality-pilot/build-fixed-contact.mjs pool-lantern
+node tools/world/djc-quality-pilot/build-fixed-contact.mjs umbrella
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-fixed-contact-browser.mjs http://127.0.0.1:4358 pool-lantern
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-fixed-contact-browser.mjs http://127.0.0.1:4358 umbrella
+```
+
+## 躺椅、DJ 台和音箱
+
+| 部件 | 原接触差异 | 修复后 |
+| --- | --- | --- |
+| 两张躺椅 | 布面代理挡住可见的木框边。沿木框边下探提前 255 mm，布面中心提前 60 mm。 | 木框、面料围边、床面与铰链保持各自的外形，椅边空位仍能穿过。 |
+| DJ 台柜体 | 东侧可见木面距探针 1.090 m，原接触漏过。 | 东侧棒条和台边具有接触，西侧操作位的开口保留。 |
+| 两台音箱 | 正面两个扬声器面比可见模型落后 44.5 mm。 | 面网、柜体及隔离垫与可见模型对齐，箱侧空位保留。 |
+
+三类发布几何从 33,280 个共享渲染三角形离线生成 5,764 个共享碰撞三角形。五个放置的 19 条 GLB／Rapier 射线对照最大偏差 1.26 mm。相同材料和绘制矩阵仍用于原实例，五个碰撞放置组成一个严格检查范围。原有三个家具代理从结构合批移出。未收到正式模型时，1,350 个三角形的程序备用绘制拥有一个同源碰撞，显式旧版使用同一备用。
+
+Chrome 157 在同一隔离入口验证普通进入和 QA 加载。挂起实际家具请求、放行和显式旧版的注册数为 1／5／1。放行后，真实角色胶囊从东侧扫到 DJ 台柜体。页面和游戏错误为 0，开发分析接口的 404 单列。
+
+```sh
+node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/club-furniture-contact.test.mjs
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-fixed-contact-browser.mjs http://127.0.0.1:4358 furniture
 ```

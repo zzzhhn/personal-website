@@ -74,15 +74,19 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
   const legacyFurniture=useMemo(()=>djcFurnitureLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const group=useRef<Group>(null),mirror=useRef<Mesh>(null),spots=useRef<Mesh>(null);
   const lights=useRef<(PointLight|null)[]>([]),beams=useRef<(Mesh|null)[]>([]);
-  const resources=useMemo(()=>{const geometry=buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:true,separateUmbrellas:!legacyUmbrellas,separateFurniture:!legacyFurniture});
+  const resources=useMemo(()=>{const geometry=buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:true,
+    daybedApproachArc:!legacyDaybeds,separatePoolLanterns:true,separateUmbrellas:true,separateFurniture:true});
     const base = materials();
     const finishes = Object.fromEntries((['wood','fabric','stone'] as const).flatMap(key =>
       geometry.batches[key].hasAttribute('aDjcFinish') ? [[key, markClubWaterSurfaceOnly(applyDjcFacilityFinish(base[key].clone()))]] : []
     )) as Partial<Record<ClubBatch, MeshStandardMaterial>>;
     return {geometry, finishes, lanternFallback:Object.values(geometry.poolLanterns).filter(g=>g.attributes.position.count>0),
+    umbrellaFallback:Object.values(geometry.umbrellas).filter(g=>g.attributes.position.count>0),
+    furnitureFallback:Object.values(geometry.furniture).filter(g=>g.attributes.position.count>0),
+    daybedFallback:Object.values(geometry.daybeds).filter(g=>g.attributes.position.count>0),
     mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:base,
     mirrorMaterial:createClubMirrorMaterial(),spot:spotMaterial(),spill:createClubLightSpill(),
-    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()};},[legacyNorthBar,legacyDaybeds,candidatePoolLanterns,legacyUmbrellas,legacyFurniture]);
+    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()};},[legacyNorthBar,legacyDaybeds]);
   useEffect(()=>()=>{
     Object.values(resources.geometry.batches).forEach(g=>g.dispose());resources.geometry.pool.dispose();resources.mirror.dispose();resources.spots.dispose();
     Object.values(resources.geometry.daybeds).forEach(g=>g.dispose());
@@ -129,15 +133,15 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
   });
   return <>
     {!legacyNorthBar&&<WorldDjcClubBar />}
-    {!legacyFurniture&&<WorldDjcClubFurniture fallback={<group name="djc-original-furniture">
+    <WorldDjcClubFurniture legacy={legacyFurniture} geometry={resources.furnitureFallback} fallback={<group name="djc-original-furniture">
       {keys.filter(key=>resources.geometry.furniture[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.furniture[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
-    </group>}/>}
-    {!legacyUmbrellas&&<WorldDjcClubUmbrellas fallback={<group name="djc-original-umbrellas">
+    </group>}/>
+    <WorldDjcClubUmbrellas legacy={legacyUmbrellas} geometry={resources.umbrellaFallback} fallback={<group name="djc-original-umbrellas">
       {keys.filter(key=>resources.geometry.umbrellas[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.umbrellas[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
-    </group>}/>}
-    {!legacyDaybeds&&<WorldDjcClubDaybeds fallback={<group name="djc-original-daybeds">
+    </group>}/>
+    <WorldDjcClubDaybeds legacy={legacyDaybeds} geometry={resources.daybedFallback} fallback={<group name="djc-original-daybeds">
       {keys.filter(key=>resources.geometry.daybeds[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.daybeds[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
-    </group>}/>}
+    </group>}/>
     <WorldDjcClubLanterns legacy={!candidatePoolLanterns} geometry={resources.lanternFallback} fallback={<group name="djc-original-pool-lanterns">
       {keys.filter(key=>resources.geometry.poolLanterns[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.poolLanterns[key]} material={resources.materials[key]} castShadow={key==='wood'} receiveShadow dispose={null}/>)}
     </group>}/>
