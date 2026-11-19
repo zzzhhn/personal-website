@@ -134,6 +134,41 @@ try {
     return { route: 'quarry', result: 'delayed scene held startup, then ready; paused return succeeded' };
   });
 
+  for (const action of ['wait', 'camp']) {
+    const name = 'slow-arrival-' + action;
+    await withPage(name, async ({ page, open, button, ready }) => {
+      const assets = '**/world/alpha-mine/layout.json';
+      const held = Promise.withResolvers();
+      const requested = page.waitForRequest(assets, { timeout });
+      await page.route(assets, async route => {
+        await held.promise;
+        if (!page.isClosed()) await route.continue().catch(() => {});
+      });
+      try {
+        await open('brain');
+        await requested;
+        const loader = page.locator('.world-loading');
+        const retry = loader.getByRole('button', { name: 'Try again' });
+        assert.ok(await button.isDisabled());
+        assert.equal(await retry.count(), 0, 'usual startup keeps its compact loading view');
+        await retry.waitFor({ timeout: 40_000 });
+        assert.ok(await button.isDisabled(), 'late recovery controls cannot enable an unsupported spawn');
+        assert.equal(await page.getByRole('alert').count(), 0, 'a slow response stays recoverable');
+        if (action === 'camp') {
+          await loader.getByRole('link', { name: 'Return to camp' }).click();
+          assert.equal(new URL(page.url()).searchParams.get('start'), null);
+        }
+        held.resolve();
+        await ready();
+        const start = await position(page);
+        assert.ok(isAt(start, action === 'camp' ? mainlandCamp : [-84, -54.5]), JSON.stringify(start));
+        const end = await walk(page, start);
+        assert.equal(await loader.count(), 0);
+        return {route:name, start, end, debug:await page.evaluate(() => Boolean(window.__worldDebug))};
+      } finally { held.resolve(); }
+    });
+  }
+
   await withPage('waterwheel', async ({ page, open, button, ready }) => {
     let faults = 0;
     const assets = '**/assets/world/terrain/waterwheel.bin.gz*';

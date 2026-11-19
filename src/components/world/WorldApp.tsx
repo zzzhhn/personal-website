@@ -52,6 +52,11 @@ function Loading() {
   const t = worldText[useWorldStore(s => s.lang)];
   const loading = useWorldStore(s => s.loading);
   const regionFailed = useWorldStore(s => s.arrivalLoadFailed);
+  const [longWait, setLongWait] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setLongWait(true), 25_000);
+    return () => window.clearTimeout(timer);
+  }, []);
   const viewBox = WORLD_MAP_GEOMETRY.viewBox;
   const observed = loading.phase === 'ready' ? 1 : loading.phase === 'scene' ? .94 : loading.total ? .08 + .8 * loading.loaded / loading.total : .04;
   // Keep earned colour when another dependency is discovered. This is a visual frontier, not a byte percentage.
@@ -60,17 +65,21 @@ function Loading() {
   const cx = (CAMP_CENTER[0] - viewBox[0]) / viewBox[2], cy = (CAMP_CENTER[2] - viewBox[1]) / viewBox[3];
   const radius = Math.hypot(Math.max(cx, 1 - cx) * viewBox[2], Math.max(cy, 1 - cy) * viewBox[3]) / (Math.hypot(viewBox[2], viewBox[3]) / Math.SQRT2) * 100;
   const stage = loading.phase === 'runtime' ? t.loadingArrival : loading.phase === 'assets' ? t.loadingPlaces : t.loadingStart;
-  if (regionFailed) {
+  let recovery;
+  if (regionFailed || longWait) {
     const camp = new URL(window.location.href);
+    const alternateEntry = camp.searchParams.has('start') || camp.searchParams.has('shot');
     camp.searchParams.delete('start');
     camp.searchParams.delete('shot');
-    return <div className="world-cover" role="alert">
-      <p>{t.arrivalRegionFailed}</p>
+    recovery = <>
       <button onClick={() => window.location.reload()}>{t.retry}</button>
-      <a href={camp.pathname + camp.search}>{t.returnCamp}</a>
-    </div>;
+      {(alternateEntry || regionFailed) && <a href={camp.pathname + camp.search}>{t.returnCamp}</a>}
+    </>;
   }
-  return <div className="world-cover world-loading" role="status" aria-live="polite" aria-busy="true">
+  if (regionFailed) return <div className="world-cover" role="alert">
+    <p>{t.arrivalRegionFailed}</p>{recovery}
+  </div>;
+  return <div className="world-cover world-loading" role="status" aria-live="polite" aria-busy={!longWait}>
     <span className="world-eyebrow">{t.title}</span>
     <div className="world-loading-map" aria-hidden="true">
       <div className="world-loading-muted"><WorldMap mode="full" showPlayer={false} /></div>
@@ -78,7 +87,8 @@ function Loading() {
     </div>
     <h1>{t.loading}</h1><p className="world-loading-stage">{stage}</p>
     <span className="world-progress" aria-hidden="true"><span style={{ transform: `scaleX(${fraction})` }} /></span>
-    <p className="world-loading-hint">{t.loadingHint}</p>
+    <p className="world-loading-hint">{longWait ? t.loadingWait : t.loadingHint}</p>
+    {recovery && <div className="world-loading-actions">{recovery}</div>}
   </div>;
 }
 
