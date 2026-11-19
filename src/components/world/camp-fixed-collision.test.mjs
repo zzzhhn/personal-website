@@ -4,9 +4,10 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
 import R from '@dimforge/rapier3d-compat';
-import { Box3, BoxGeometry, BufferGeometry, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, Raycaster, Scene, Vector3 } from 'three';
+import { Box3, BoxGeometry, BufferGeometry, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, Quaternion, Raycaster, Scene, Vector3 } from 'three';
 import { campFixedBody, campColliderKey, campGradedFlagstones, campPlacementMatrix, campShapes, campStoneInstances, campStoneShapes } from './WorldCampPhysics.tsx';
-import { EXIT_POSTS } from './WorldCampContentLayout.ts';
+import { CONTENT_PAD, EXIT_POSTS, onPad } from './WorldCampContentLayout.ts';
+import { campCookwareWokPose, prepareCampCookware } from './camp-cookware-contact.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { collisionInventory } from './world-collision-inventory.ts';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground.ts';
@@ -79,6 +80,96 @@ function fixedProbe(shapes, transform, run) {
     return run(world);
   } finally { world.free(); }
 }
+
+test('installed C14 cookware matches the selected stove and moving bowl, including the gap left by the toss', async t => {
+  const craft = await readWorldCraftGltf(['public/assets/world/facility-craft/camp/camp-facilities-v1.glb']);
+  const original = oldCampAsset('C14');
+  const { position, yaw } = onPad(CONTENT_PAD.C14);
+  const installation = campPlacementMatrix({ position, yaw, scale: 1.3 });
+  const material = new MeshBasicMaterial({ side: DoubleSide });
+  const legacyShape = campFixedBody(original.scene);
+  const oldWorld = new R.World({ x: 0, y: 0, z: 0 });
+  const oldCooker = legacyShape[0];
+  const vertex = new Vector3();
+  const oldVertices = oldCooker.vertices.slice();
+  for (let index = 0; index < oldVertices.length; index += 3) {
+    vertex.fromArray(oldVertices, index).applyMatrix4(installation).toArray(oldVertices, index);
+  }
+  oldWorld.createCollider(R.ColliderDesc.trimesh(oldVertices, oldCooker.indices, R.TriMeshFlags.FIX_INTERNAL_EDGES));
+  oldWorld.step();
+
+  const rays = [];
+  for (let direction = 0; direction < 8; direction++) {
+    const angle = direction * Math.PI / 4;
+    const vector = new Vector3(Math.cos(angle), 0, Math.sin(angle));
+    const tangent = new Vector3(-vector.z, 0, vector.x);
+    for (let height = .025; height < .85; height += .035) for (let across = -.64; across <= .64; across += .04) {
+      const origin = new Vector3(position[0], position[1] + height, position[2]).addScaledVector(vector, 1.2).addScaledVector(tangent, across);
+      rays.push(new Raycaster(origin, vector.clone().negate(), 0, 2.4));
+    }
+  }
+  for (let x = -.65; x <= .65; x += .045) for (let z = -.65; z <= .65; z += .045) {
+    rays.push(new Raycaster(new Vector3(position[0] + x, position[1] + 1.4, position[2] + z), new Vector3(0, -1, 0), 0, 1.6));
+  }
+  const delta = (a, b) => a === null || b === null ? a === b ? 0 : Infinity : Math.abs(a - b);
+  try {
+    for (const [name, root] of [['preferred', craft.scene], ['legacy', original.scene]]) {
+      const world = new R.World({ x: 0, y: 0, z: 0 });
+      try {
+        const prepared = ['stove', 'wok'].map(part => prepareCampCookware(root, installation, part, name === 'preferred'));
+        const visuals = prepared.map(({ visual, scale, position: at, orientation }, i) => {
+          let triangles = 0;
+          root.getObjectByName(i === 0 ? 'C14_stove' : 'C14_wok').traverse(mesh => {
+            if (mesh.isMesh) triangles += (mesh.geometry.index?.count ?? mesh.geometry.attributes.position.count) / 3;
+          });
+          assert.equal(prepared[i].indices.length / 3, triangles);
+          assert.equal(scale, 1.3);
+          visual.traverse(mesh => { if (mesh.isMesh) mesh.material = material; });
+          visual.scale.setScalar(scale); visual.position.copy(at); visual.quaternion.copy(orientation); visual.updateMatrixWorld(true);
+          return visual;
+        });
+        const [stoveBody, wokBody] = prepared.map((part, index) => {
+          const desc = index === 0 ? R.RigidBodyDesc.fixed() : R.RigidBodyDesc.kinematicPositionBased();
+          const body = world.createRigidBody(desc.setTranslation(part.position.x, part.position.y, part.position.z).setRotation(part.orientation));
+          world.createCollider(R.ColliderDesc.trimesh(part.vertices, part.indices, R.TriMeshFlags.FIX_INTERNAL_EDGES), body);
+          return body;
+        });
+        const wokHandle = wokBody.collider(0).handle;
+        const next = new Vector3(), rotation = new Quaternion();
+        const result = [];
+        for (const time of [-1, .12, .30, .48, 1.12, 1.81]) {
+          campCookwareWokPose(time, prepared[1], next, rotation);
+          wokBody.setNextKinematicTranslation(next); wokBody.setNextKinematicRotation(rotation);
+          world.step();
+          assert.equal(wokBody.collider(0).handle, wokHandle);
+          assert.ok(Math.abs(wokBody.translation().y - next.y) < 1e-6);
+          assert.ok(Math.abs(stoveBody.translation().y - position[1]) < 1e-6);
+          visuals[1].position.copy(next); visuals[1].quaternion.copy(rotation); visuals[1].updateMatrixWorld(true);
+          let corrected = 0, hits = 0, worst = 0, oldGhost = 0, oldMiss = 0, oldDistance = 0;
+          for (const ray of rays) {
+            const liveRay = new R.Ray(ray.ray.origin, ray.ray.direction);
+            const visible = ray.intersectObjects(visuals, true)[0]?.distance ?? null;
+            const current = world.castRay(liveRay, ray.far, true)?.timeOfImpact ?? null;
+            const previous = oldWorld.castRay(liveRay, ray.far, true)?.timeOfImpact ?? null;
+            if (visible !== null) hits++;
+            worst = Math.max(worst, delta(visible, current));
+            if (delta(visible, previous) > .005) corrected++;
+            if (visible === null && previous !== null) oldGhost++;
+            if (visible !== null && previous === null) oldMiss++;
+            if (visible !== null && previous !== null) oldDistance = Math.max(oldDistance, Math.abs(visible - previous));
+          }
+          assert.ok(hits > 1000 && worst < .0001, JSON.stringify({ name, time, hits, worst }));
+          result.push({ time, corrected, hits, worst, oldGhost, oldMiss, oldDistance });
+        }
+        if (name === 'preferred') assert.ok(result[0].corrected > 0, 'selected geometry differs at rest');
+        else assert.equal(result[0].corrected, 0, 'original cookware at rest already matches the old fixed trimesh');
+        assert.ok(result[2].oldGhost > 0 && result[2].oldMiss > 0, 'the old static bowl both filled the moving gap and missed the lifted vessel');
+        assert.ok(Math.abs(wokBody.translation().y - prepared[1].position.y) < 1e-6);
+        t.diagnostic(`${name}: ${JSON.stringify(result)}`);
+      } finally { world.free(); }
+    }
+  } finally { oldWorld.free(); material.dispose(); original.dispose(); disposeWorldCraftGltf(craft.scene); }
+});
 
 test('fixed camp furniture follows the visible first hit instead of the original GLB boundary', async t => {
   const pack = await readWorldCraftGltf(['public/assets/world/camp/craft/camp-props-v1.glb']);

@@ -67,7 +67,10 @@ interface CampCraftPhysics {
   mount: (points: Float32Array) => () => void;
 }
 
-function CraftVisual({ family, node, physics }: { family: CampFacilityFamily; node?: string; physics?: CampCraftPhysics }) {
+type CampCraftVisualProps = { family: CampFacilityFamily; node?: string; physics?: CampCraftPhysics;
+  renderVisual?: (root: Object3D) => ReactNode };
+
+function CraftVisual({ family, node, physics, renderVisual }: CampCraftVisualProps) {
   const gltf = useLoader(GLTFLoader, CAMP_FACILITY_URL);
   const environment = useDjcFurnitureEnvironment();
   const visual = useMemo(() => createCampFacilityVisual(gltf.scene, family, node, environment), [gltf, family, node, environment]);
@@ -83,7 +86,7 @@ function CraftVisual({ family, node, physics }: { family: CampFacilityFamily; no
     return () => { visual.users--; queueMicrotask(() => { if (!visual.users) visual.materials.forEach(material => material.dispose()); }); };
   }, [visual]);
   useFrame(() => updateCampFacilityNight(visual, night.value));
-  return <primitive object={visual.root} dispose={null} />;
+  return renderVisual ? renderVisual(visual.root) : <primitive object={visual.root} dispose={null} />;
 }
 class CraftBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -94,7 +97,9 @@ class CraftBoundary extends Component<{ children: ReactNode; fallback: ReactNode
 
 /** Missing candidate art and its shape fall back together. Static props keep their
  * original articulation frame. facilityCraft=legacy skips loading this pack. */
-export default function WorldCampFacilityCraft({ family, node, fallback, physics }: { family: CampFacilityFamily; node?: string; fallback: ReactNode; physics?: CampCraftPhysics }) {
+export default function WorldCampFacilityCraft({ family, node, fallback, physics, renderVisual }: CampCraftVisualProps & { fallback: ReactNode }) {
   const legacy = useMemo(() => typeof window !== 'undefined' && campFacilityLegacy(window.location.search), []);
-  return legacy ? fallback : <CraftBoundary fallback={fallback}><Suspense fallback={fallback}><CraftVisual family={family} node={node} physics={physics} /></Suspense></CraftBoundary>;
+  return legacy ? fallback : <CraftBoundary fallback={fallback}><Suspense fallback={fallback}>
+    <CraftVisual family={family} node={node} physics={physics} renderVisual={renderVisual} />
+  </Suspense></CraftBoundary>;
 }

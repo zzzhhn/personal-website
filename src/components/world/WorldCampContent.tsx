@@ -14,6 +14,8 @@ import type { Vec3 } from './types';
 import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, placementMatrix, poolTexture, useContentGltfs, vertexColourMaterial, type NodePart } from './WorldCampContentAssets';
 import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
 import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityCraft';
+import WorldCampCookware, { campCookwareHardRecord } from './WorldCampCookware';
+import { CAMP_WOK_FEEDBACK_SECONDS } from './camp-cookware-contact';
 import { bindCampPushableVisual } from './WorldCampPushableVisual';
 import { campCraftPushableHull, campLegacyPushableHull, createCampPushableHullBinding, type CampPushableFamily } from './camp-pushable-hull';
 import WorldCampSuitcaseContact, { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
@@ -31,14 +33,15 @@ const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.l
  * suitcase on the ring pads, C16 lantern on the C07 desk, the two exit lamp posts (L01), About
  * exhibits, playable tools/books/weights/suitcase, and eight bench seats.
  *
- * facilityCraft=legacy retains the batch-4 static/glow merge paths, including the stove and lantern.
+ * facilityCraft=legacy retains the batch-4 shapes and materials for the stove and lantern.
  * Candidate art separates PBR material responses and articulated parts; its actual render and
  * shadow-pass cost must be measured in the running scene rather than inferred from the old batch.
  * Pushables are plain Meshes (never InstancedMesh), so WorldShadows re-renders their shadows where
  * they are instead of baking them into its static chunks. No light source is added; claiming
  * 'camp-lamps' also removes the greybox lamp-pool point light (one point light fewer than before).
  *
- * Hard fixed trimeshes for C11, C14 and both L01. The selected visual supplies the
+ * Hard fixed trimeshes for C11, the C14 stove and both L01. The C14 wok has its own
+ * kinematic contact. The selected visual supplies the
  * pushable sleeping dynamic convex hulls for C12 (4 kg), C13 (16 kg each) and C15
  * (12 kg) that fade out and return home 30 s after being displaced; C16 none (on the desk, inside the
  * C07 collider footprint).
@@ -49,11 +52,12 @@ const CAMP_BATCH = typeof window === 'undefined' || new URLSearchParams(window.l
 
 type ExhibitId = 'identity' | 'education' | 'awards' | 'languages' | 'skills' | 'interests';
 type FeedbackKey = 'tent' | 'trophy' | 'flags' | 'guitar' | 'wok';
-const FEEDBACK_SECONDS = 1.8;
+const FEEDBACK_SECONDS = CAMP_WOK_FEEDBACK_SECONDS;
 /** Start (performance.now ms) of each object's feedback; frame loops read it. */
 const feedback = new Map<FeedbackKey, number>();
 const fbT = (k: FeedbackKey) => { const t0 = feedback.get(k); if (t0 === undefined) return -1; const t = (performance.now() - t0) / 1000; if (t > FEEDBACK_SECONDS) { feedback.delete(k); return -1; } return t; };
 const decay = (t: number) => t < 0 ? 0 : Math.max(0, 1 - t / FEEDBACK_SECONDS);
+const wokFeedbackTime = () => fbT('wok');
 
 const vc = vertexColourMaterial('camp-content-vc');
 const RESET_SECONDS = 30;
@@ -95,7 +99,7 @@ function CampContent() {
     const lanternM = placementMatrix([lanternPos.x, lanternPos.y, lanternPos.z], desk.yaw + 0.5);
     const postM = EXIT_POSTS.map(p => placementMatrix(p, 0));
     const m11 = placementMatrix(place.C11.position, place.C11.yaw), m14 = placementMatrix(place.C14.position, place.C14.yaw, SCALE.C14);
-    // Static merge: everything that never moves (tool-wall body, stove, lantern frame, both posts).
+    // Legacy merges for the tool wall and the stationary tabletop lantern.
     const merge = (parts: BufferGeometry[]) => {
       if (!parts.length) return null;
       const geometry = mergeGeometries(parts);
@@ -104,7 +108,7 @@ function CampContent() {
     };
     const staticGeometry = merge([
       ...(!CAMP_BATCH ? byName('C11', 'C11_body').map(p => bake(p, m11)) : []),
-      ...(legacy ? [...byName('C14', 'C14_stove').map(p => bake(p, m14)), ...byName('C16', 'C16_frame').map(p => bake(p, lanternM))] : []),
+      ...(legacy ? byName('C16', 'C16_frame').map(p => bake(p, lanternM)) : []),
     ]);
     const glowGeometry = merge([
       ...(legacy ? byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)) : []),
@@ -114,11 +118,18 @@ function CampContent() {
     const postBody = merge(byName('L01', 'L01_post').map(p => bake(p, new Matrix4())))!;
     const postGlow = merge(byName('L01', 'L01_lens').map(p => glowBake(p, new Matrix4(), false)))!;
     const postShapes: LocalShape[] = [{kind:'trimesh',part:'body',...localTrimesh(parts.L01)}];
-    const stoveGeometry = mergeGeometries(byName('C14', 'C14_stove').map(p => bake(p, new Matrix4())))!;
+    const legacyCookware = g.C14.scene.clone(true);
+    legacyCookware.traverse(object => {
+      const mesh = object as Mesh;
+      if (!mesh.isMesh) return;
+      mesh.material = vc;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    });
     const lanternFrame = mergeGeometries(byName('C16', 'C16_frame').map(p => bake(p, new Matrix4())))!;
     const lanternGlass = mergeGeometries(byName('C16', 'C16_glass').map(p => glowBake(p, new Matrix4(), true)))!;
     const hard = [
-      { id: 'C11', mesh: localTrimesh(parts.C11), matrix: m11 }, { id: 'C14', mesh: localTrimesh(parts.C14), matrix: m14 },
+      { id: 'C11', mesh: localTrimesh(parts.C11), matrix: m11 },
     ].map(h => ({ id: h.id, indices: h.mesh.indices, vertices: transform(h.mesh.vertices, h.matrix) }));
     // Animated sub-parts: geometry in node-local frame, placed by asset matrix x node matrix.
     const sub = (id: keyof typeof g, name: string, assetM: Matrix4) => { const p = byName(id, name)[0]; return { geometry: bake({ ...p, matrix: new Matrix4() }, new Matrix4()), frame: new Matrix4().multiplyMatrices(assetM, p.matrix) }; };
@@ -126,15 +137,15 @@ function CampContent() {
     const local = (list: NodePart[]) => mergeGeometries(list.map(p => bake(p, new Matrix4())))!;
     const plates = JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[];
     return {
-      place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postShapes, postM, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
-      tools: sub('C11', 'C11_tools', m11), wok: sub('C14', 'C14_wok', m14),
+      place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postShapes, postM, legacyCookware, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
+      tools: sub('C11', 'C11_tools', m11),
       guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: campLegacyPushableHull(parts.C12, 'C12') },
       dumbbell: { geometry: local(parts.C13), hull: campLegacyPushableHull(parts.C13, 'C13', SCALE.C13) },
       suitcase: { body: local(byName('C15', 'C15_case')), handle: local(byName('C15', 'C15_handle')), hull: campLegacyPushableHull(parts.C15, 'C15') },
       plates, toolCentres: plates.map(plate => plate.centre[2]), m11,
     };
   }, [g, legacy]);
-  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.body, data.suitcase.handle]) geo?.dispose(); }, [data]);
+  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.toolWall, data.postBody, data.postGlow, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.body, data.suitcase.handle]) geo?.dispose(); }, [data]);
 
   // Formal replacements for the five pad stand-ins and both exit lamps are mounted (visual + collider).
   useGreyboxClaim('camp-placeholder', 'camp-lamps');
@@ -160,9 +171,9 @@ function CampContent() {
     {data.glowGeometry && <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material} userData={{ noOcclusionFade: true }} />}
     {CAMP_BATCH && <group matrix={data.m11} matrixAutoUpdate={false}><ToolWallVisual node="C11_body" fallback={<mesh geometry={data.toolWall!} material={vc} castShadow receiveShadow />} /></group>}
     <group name="camp-L01-contact">{CAMP_BATCH ? <ExitPostVisual matrices={data.postM} fallback={oldPosts}/> : oldPosts}</group>
-    {!legacy && <group matrix={data.m14} matrixAutoUpdate={false}>
-      <WorldCampFacilityCraft family="C14" node="C14_stove" fallback={<mesh geometry={data.stoveGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'C14', solid: true }} />} />
-    </group>}
+    <WorldCampFacilityCraft family="C14"
+      fallback={<WorldCampCookware root={data.legacyCookware} placement={data.m14} elapsed={wokFeedbackTime} />}
+      renderVisual={root => <WorldCampCookware root={root} placement={data.m14} elapsed={wokFeedbackTime} crafted />} />
     {!legacy && <group matrix={data.lanternM} matrixAutoUpdate={false} userData={{ worldCollision: 'none', collisionReason: 'Tabletop lantern inside the solid desk footprint' }}>
       <WorldCampFacilityCraft family="C16" fallback={<><mesh geometry={data.lanternFrame} material={vc} castShadow receiveShadow /><mesh geometry={data.lanternGlass} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
     </group>}
@@ -172,7 +183,6 @@ function CampContent() {
       {CAMP_BATCH ? <ToolWallVisual node="C11_tools" fallback={<mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />} />
         : <mesh geometry={data.tools.geometry} material={vc} castShadow receiveShadow />}
     </CampToolWall>
-    <AnimatedWok frame={data.wok.frame}><WorldCampFacilityCraft family="C14" node="C14_wok" fallback={<mesh geometry={data.wok.geometry} material={vc} castShadow receiveShadow />} /></AnimatedWok>
     <LabelPlates plates={data.plates} frame={data.m11} lang={lang} />
     <Pushable family="C12" id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">
       <mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow />
@@ -223,19 +233,6 @@ function HardColliders({ hard }: { hard: { id: string; vertices: Float32Array; i
     <AnyCollider name={`camp-content-collider-${h.id}`} shape="trimesh" friction={0.6} restitution={0.05}
       args={[h.vertices, h.indices, rapier.TriMeshFlags.FIX_INTERNAL_EDGES] as unknown as [Float32Array, Uint32Array]} />
   </RigidBody>)}</>;
-}
-
-/** The wok's feedback uses its GLB node origin as the pivot. */
-function AnimatedWok({ frame, children }: { frame: Matrix4; children: ReactNode }) {
-  const inner = useRef<Group>(null);
-  useFrame(() => {
-    const wok = inner.current;
-    if (!wok) return;
-    const t = fbT('wok');
-    wok.position.y = t < 0 || t > 0.6 ? 0 : 0.09 * Math.sin(Math.PI * t / 0.6);
-    wok.rotation.z = t < 0 ? 0 : 0.12 * Math.sin(t * 9) * decay(t);
-  });
-  return <group matrix={frame} matrixAutoUpdate={false} name="camp-content-C14-wok"><group ref={inner}>{children}</group></group>;
 }
 
 /** Five bilingual category labels on the tool wall from UI.about.techCategories (same order as the
@@ -479,7 +476,11 @@ function useQa(data: { place: Record<string, Place>; dumbbells: Place[]; lantern
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
     const api = {
       placements: () => ({ ...data.place, C13: data.dumbbells, C16: data.lanternPos.toArray(), L01: EXIT_POSTS, benchTop: data.benchTop }),
-      hard: () => [...hardRecords, ...campColliderRecords().filter(r => r.id === 'L01').map(r => ({id:`L01-${r.instance}`,aabb:r.aabb}))],
+      hard: () => {
+        const cookware = campCookwareHardRecord();
+        return [...hardRecords, ...(cookware ? [cookware] : []),
+          ...campColliderRecords().filter(r => r.id === 'L01').map(r => ({id:`L01-${r.instance}`,aabb:r.aabb}))];
+      },
       pushables: () => [...pushables].map(([id, p]) => {
         const body = p.body.current, position = body?.translation();
         const colliderCount = body?.numColliders() ?? 0, collider = colliderCount ? body?.collider(0) : undefined;

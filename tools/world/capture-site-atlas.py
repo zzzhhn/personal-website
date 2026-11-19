@@ -21,7 +21,7 @@ VIEWPORT = {"width": 960, "height": 540}
 # reach "ready" at camp while some of these objects are still downloading.
 DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-craft",
              "camp-craft-C05", "camp-craft-C06", "camp-craft-C07", "camp-tree-craft-G17-L0_wood",
-             "C02_stone_batch", "camp-workshop-C08", "camp-L01-contact",
+             "C02_stone_batch", "camp-workshop-C08", "camp-C14-contact", "camp-L01-contact",
              "world-town-assets", "world-street", "street-trees-group", "world-districts-v4", "world-paving-v4",
              "G28-entry", "alpha-mine-attraction", "alpha-mine-backtest-basin", "alpha-mine-entry-tool-rack", "alpha-mine-west-ramp",
              "alpha-mine-east-ramp", "alpha-mine-middle-bridge", "alpha-mine-north-ravine-bridge",
