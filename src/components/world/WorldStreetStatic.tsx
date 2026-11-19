@@ -1,8 +1,8 @@
 /**
  * Street props: static groups (street session). One BatchedMesh visual per group plus one fixed RigidBody
- * whose colliders use the original Builder proxy under the same placement matrices. Crafted visual
- * detail does not alter physical hulls or trimeshes. Used by street-fixed (benches, bollards, shelter), rails and
- * foundations. A group claims its greybox key(s) only once its visual and colliders are mounted.
+ * whose colliders share the placement matrices. Installed-source groups use the
+ * physical faces of the colour and glazing batches. Other static consumers keep their existing proxies.
+ * Each group claims its greybox keys after the visual and colliders are mounted.
  */
 import { useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
@@ -20,11 +20,12 @@ import { createShelterGlazingMaterial, splitShelterGlazing } from './WorldFacili
 import type { CanvasTexture } from 'three';
 import type { Vec3 } from './types';
 import type { BatchedCollisionSources } from './world-collision-inventory';
+import { installedStreetContact } from './street-installed-contact';
 
 type GeometrySource = BatchedCollisionSources['geometries'][number];
 type PlacedSource = BatchedCollisionSources['placements'][number];
 
-export interface StaticKind { id: string; L0: Builder; L1: Builder; lodNear: number; far: number; collide?: 'hull' | 'trimesh' | 'none';
+export interface StaticKind { id: string; L0: Builder; L1: Builder; lodNear: number; far: number; collide?: 'hull' | 'trimesh' | 'installed' | 'none';
   surfaceRanges?: (builder: Builder) => GeometrySource['ranges'];
 }
 export interface StaticPlacement { kind: string; matrix: Matrix4; surface?: boolean }
@@ -45,8 +46,8 @@ function SeatPoint({ seat }: { seat: Seat }) {
   return null;
 }
 
-export default function StreetStatic({ name, claims, kinds, placements, atlas, seats = [], shadow = true, occluder = false, assetId }: {
-  name: string; claims: GreyboxKey[]; kinds: StaticKind[]; placements: StaticPlacement[]; atlas?: CanvasTexture | null; seats?: Seat[];
+export default function StreetStatic({ name, groupName, claims, kinds, placements, atlas, seats = [], shadow = true, occluder = false, assetId }: {
+  name: string; groupName?: string; claims: GreyboxKey[]; kinds: StaticKind[]; placements: StaticPlacement[]; atlas?: CanvasTexture | null; seats?: Seat[];
   shadow?: boolean; occluder?: boolean; assetId: string;
 }) {
   const built = useMemo(() => {
@@ -69,6 +70,7 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     const glassBatch = glassMaterial ? new StreetBatch(`${name}-glazing`, glassKinds, glassCounts, glassMaterial) : null;
     const hulls: { key: string; points: Float32Array }[] = [], tris: { key: string; pos: Float32Array; idx: Uint32Array; surface: boolean; name?: string }[] = [];
     const geometries: GeometrySource[] = [], sources: PlacedSource[] = [];
+    const glassGeometries: GeometrySource[] = [], glassSources: PlacedSource[] = [];
     const local = kinds.map((k, i) => {
       if (k.surfaceRanges) {
         for (const level of [0, 1] as const) geometries.push({
@@ -76,15 +78,38 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
         });
       }
       const proxy = streetFacilityCollision(k.L0);
-      return { hulls: (k.collide ?? 'hull') === 'hull' ? proxy.hulls() : [],
+      const gi = glassIndex.get(k.id);
+      const fixed = k.collide === 'installed' ? ([0, 1] as const).map(level => {
+        const lod = level === 0 ? 'L0' : 'L1';
+        const opaque = installedStreetContact(k[lod], bk[i][lod], 'structure');
+        geometries.push({ id: batch.geometryId(i, level), ranges: opaque.ranges });
+        const glass = gi === undefined ? null : installedStreetContact(k[lod], glassKinds[gi][lod], 'glazing');
+        if (glass) glassGeometries.push({ id: glassBatch!.geometryId(gi!, level), ranges: glass.ranges });
+        return { opaque, glass };
+      })[0] : null;
+      return { fixed, hulls: (k.collide ?? 'hull') === 'hull' ? proxy.hulls() : [],
         geo: k.collide === 'trimesh' && proxy !== k.L0 ? proxy.build() : bk[i].L0 };
     });
     placements.forEach((p, n) => {
       const i = index.get(p.kind)!;
       const slot = batch.add(i, p.matrix);
-      const gi = glassIndex.get(p.kind); if (gi !== undefined) glassBatch!.add(gi, p.matrix);
+      const gi = glassIndex.get(p.kind), glassSlot = gi === undefined ? null : glassBatch!.add(gi, p.matrix);
       const mode = kinds[i].collide ?? 'hull';
-      if (mode === 'hull') local[i].hulls.forEach((h, j) => hulls.push({ key: `${n}-${j}`, points: transform(h, p.matrix) }));
+      if (mode === 'installed') {
+        const id = `${name}-${p.kind}-${n}`, prefix = id + '/', fixed = local[i].fixed!;
+        sources.push({ id, slot, matrix: batch.sourceMatrix(slot), geometryIds: [batch.geometryId(i, 0), batch.geometryId(i, 1)], colliderPrefix: prefix });
+        const pos = transform(bk[i].L0.getAttribute('position').array as Float32Array, p.matrix);
+        const add = ({ member, indices }: typeof fixed.opaque) => {
+          const label = prefix + member;
+          tris.push({ key: label, name: label, pos, idx: indices, surface: !!p.surface });
+        };
+        add(fixed.opaque);
+        if (fixed.glass && gi !== undefined && glassSlot !== null) {
+          glassSources.push({ id, slot: glassSlot, matrix: glassBatch!.sourceMatrix(glassSlot),
+            geometryIds: [glassBatch!.geometryId(gi, 0), glassBatch!.geometryId(gi, 1)], colliderPrefix: prefix });
+          add(fixed.glass);
+        }
+      } else if (mode === 'hull') local[i].hulls.forEach((h, j) => hulls.push({ key: `${n}-${j}`, points: transform(h, p.matrix) }));
       else if (mode === 'trimesh') {
         const g = local[i].geo;
         const surfaceRanges = kinds[i].surfaceRanges;
@@ -110,6 +135,7 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     if (sources.length) batch.mesh.userData.worldCollisionBatchedInstances = {geometries, placements: sources};
     batch.finish(1);
     if (glassBatch) {
+      if (glassSources.length) glassBatch.mesh.userData.worldCollisionBatchedInstances = { geometries: glassGeometries, placements: glassSources };
       glassBatch.finish(1); glassBatch.mesh.castShadow = false; glassBatch.mesh.receiveShadow = true;
       glassBatch.mesh.userData.noOcclusionFade = true; glassBatch.mesh.userData.assetId = assetId;
     }
@@ -124,7 +150,7 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
   useEffect(() => () => { built.batch.dispose(); built.material.dispose(); built.glassBatch?.dispose(); built.glassMaterial?.dispose(); }, [built]);
   useFrame(({ camera }) => { Object.assign(built.last, built.batch.update(camera)); built.glassBatch?.update(camera); });
   const ud = useMemo(() => ({ solid: true, assetId }), [assetId]);
-  return <group name={`${name}-group`}>
+  return <group name={groupName ?? `${name}-group`}>
     <primitive object={built.batch.mesh} />
     {built.glassBatch && <primitive object={built.glassBatch.mesh} />}
     {built.hulls.length > 0 && <RigidBody type="fixed" colliders={false} userData={ud} name={`${name}-body`}>

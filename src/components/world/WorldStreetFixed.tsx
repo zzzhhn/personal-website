@@ -100,9 +100,9 @@ export default function StreetFixed() {
     const shelter = solids.find(s => s.kind === 'shelter')!;
     const atlas = paintAtlas([{ rect: POSTER, paint: (g, w, h) => paintPoster(g, w, h, [shelter.position[0], shelter.position[2]]) }], ATLAS);
     const kinds: StaticKind[] = [
-      { id: 'bench', ...A.bench(), lodNear: 24, far: 110 },
-      { id: 'bollard', ...A.bollard(), lodNear: 20, far: 90 },
-      { id: 'shelter', L0: A.shelterGeometry(0, cellOf(POSTER, ATLAS)), L1: A.shelterGeometry(1, cellOf(POSTER, ATLAS)), lodNear: 40, far: 160 },
+      { id: 'bench', collide: 'installed', ...A.bench(), lodNear: 24, far: 110 },
+      { id: 'bollard', collide: 'installed', ...A.bollard(), lodNear: 20, far: 90 },
+      { id: 'shelter', collide: 'installed', L0: A.shelterGeometry(0, cellOf(POSTER, ATLAS)), L1: A.shelterGeometry(1, cellOf(POSTER, ATLAS)), lodNear: 40, far: 160 },
     ];
     const placements: StaticPlacement[] = [], seats: Seat[] = [];
     const zh = '坐下', en = 'Sit';

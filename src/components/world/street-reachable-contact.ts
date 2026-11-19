@@ -26,7 +26,7 @@ function hasVolume(points: readonly number[]) {
 
 /** Reconnect triangle seams by their real positions. Sharing an isolated point
  * does not join a sleeve, cap, or visor to the next component. */
-function connectedMembers(builder: Builder, name: string, start: number, end: number): Member[] {
+export function connectedStreetMembers(builder: Builder, name: string, start: number, end: number): Member[] {
   const points: number[][] = [], welded = new Map<string, number>(), edges = new Map<string, number>();
   const parents: number[] = [], triangles: number[][] = [];
   function root(index: number): number {
@@ -69,7 +69,7 @@ function connectedMembers(builder: Builder, name: string, start: number, end: nu
 export function streetReachableContacts(builder: Builder, kind: StreetReachableKind): Member[] {
   const { replace, visible } = parts[kind];
   const local = builder.parts.filter(part => visible.includes(part.name)).flatMap(part =>
-    connectedMembers(builder, part.name, part.start, part.end < 0 ? builder.pos.length / 3 : part.end));
+    connectedStreetMembers(builder, part.name, part.start, part.end < 0 ? builder.pos.length / 3 : part.end));
   const proxy = streetFacilityCollision(builder);
   const unchanged = proxy.parts.filter(part => part.collide && !replace.includes(part.name)).flatMap(part => {
     const points = proxy.pos.slice(part.start * 3, part.end < 0 ? undefined : part.end * 3);

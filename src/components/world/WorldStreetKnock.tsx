@@ -33,7 +33,7 @@ import { chevronCell, directionCellFor, stopCell, streetAtlas } from './WorldStr
 import type { Builder } from './WorldStreetGeometry';
 import { yearPillarSources } from './street-year-collision';
 import { roadblockContacts, roadblockSources } from './street-roadblock-contact';
-import { streetReachableContacts } from './street-reachable-contact';
+import { streetKnockContacts, streetKnockSources, type StreetKnockContactKind } from './street-knock-contact';
 import { streetBuilderRanges } from './street-builder-ranges';
 import type { BatchedCollisionSources } from './world-collision-inventory';
 import type { Vec3 } from './types';
@@ -81,16 +81,6 @@ function buildersFor(kind: KnockKind, directionIndex: number): { L0: Builder; L1
 const homeQuat = (it: Item) => new Quaternion().setFromEuler(new Euler(0, it.yaw, it.pitch ?? 0, 'YXZ'));
 const homeMatrix = (it: Item) => new Matrix4().compose(new Vector3(...it.position), homeQuat(it), new Vector3(1, 1, 1));
 
-/** Base hull with vertical walls (same footprint radius, same height): a flared footing hull is a cone,
- * and a walking capsule pushed into a cone rides up it. 16-gon at the widest radius of the base part. */
-function verticalPrism(h: Float32Array) {
-  let r = 0, y0 = Infinity, y1 = -Infinity;
-  for (let i = 0; i < h.length; i += 3) { r = Math.max(r, Math.hypot(h[i], h[i + 2])); y0 = Math.min(y0, h[i + 1]); y1 = Math.max(y1, h[i + 1]); }
-  const out: number[] = [];
-  for (let k = 0; k < 16; k++) { const a = k * Math.PI / 8; for (const y of [y0, y1]) out.push(Math.cos(a) * r, y, Math.sin(a) * r); }
-  return new Float32Array(out);
-}
-
 /** Hull colliders of one kind: the base hull carries the whole mass with a low centre of mass. */
 function KnockBody({ state, hulls, kind, sourceNames }: { state: KState; hulls: Float32Array[]; kind: KnockKind; sourceNames?: string[] }) {
   const q = useMemo(() => homeQuat(state.item), [state]);
@@ -136,6 +126,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     const yearBuilders = new Map<string, [Builder, Builder]>();
     const boards = new Map<string, [Builder, Builder]>();
     const roadblocks = new Map<string, [Builder, Builder]>(), contactMembers = new Map<string, string[]>();
+    const installed = new Map<string, { kind: StreetKnockContactKind; lods: [Builder, Builder] }>();
     let dirIndex = 0;
     const states: KState[] = [];
     const keyFor = (it: Item) => (it.kind === 'year' || it.kind === 'billboard' ? it.id : it.kind === 'direction' ? `direction-${dirIndex++}` : it.kind === 'beam' || it.kind === 'guard' ? `${it.kind}-${it.len!.toFixed(2)}` : it.kind);
@@ -157,12 +148,14 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
           roadblocks.set(key, [b.L0, b.L1]);
           contactMembers.set(key, members.map(member => member.id));
           hulls.set(key, members.map(member => member.points));
-        } else if (it.kind === 'lamp' || it.kind === 'signal' || it.kind === 'bin') {
-          const members = streetReachableContacts(b.L0, it.kind);
+        } else if (it.kind === 'billboard' || it.kind === 'year') {
+          hulls.set(key, b.L0.hulls());
+        } else {
+          const members = streetKnockContacts(b.L0, it.kind);
+          if (!members.length) throw new Error(`Missing street contact for ${key}`);
+          installed.set(key, { kind: it.kind, lods: [b.L0, b.L1] });
           contactMembers.set(key, members.map(member => member.id));
           hulls.set(key, members.map(member => member.points));
-        } else {
-          hulls.set(key, b.L0.hulls().map((h, i) => (i === 0 && it.kind !== 'beam' && it.kind !== 'guard' && it.kind !== 'billboard' && it.kind !== 'year' ? verticalPrism(h) : h)));
         }
       }
       counts[kindOf.get(key)!]++;
@@ -202,6 +195,18 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
           geometryIds:[batch.geometryId(kind,0),batch.geometryId(kind,1)],colliderPrefix:'street-collider-'+item.id+'/'};
       })};
       batch.mesh.userData.worldCollisionBatchedInstances=sources;
+    }
+    if (installed.size && installed.size === kinds.length) {
+      const geometries = [...installed].flatMap(([key, {kind, lods}]) => ([0, 1] as const).map(level => ({
+        id: batch.geometryId(kindOf.get(key)!, level),
+        ranges: streetKnockSources(lods[level], kind, contactMembers.get(key)!),
+      })));
+      const sources: BatchedCollisionSources = { geometries, placements: states.map(({item, batchId}, index) => {
+        const kind = kindOf.get(keys[index])!;
+        return { id: item.id, slot: batchId, matrix: batch.sourceMatrix(batchId),
+          geometryIds: [batch.geometryId(kind, 0), batch.geometryId(kind, 1)], colliderPrefix: `street-collider-${item.id}/` };
+      }) };
+      batch.mesh.userData.worldCollisionBatchedInstances = sources;
     }
     if (yearBuilders.size) {
       const sources = [];
@@ -349,7 +354,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
   return <group name={`street-${set}-group`}>
     <primitive object={built.batch.mesh} />
     {built.states.map((s, i) => <KnockBody key={s.item.id} state={s} hulls={built.hulls[i]} kind={s.item.kind} sourceNames={built.colliderNames.get(s.item.id)} />)}
-    {lamps.length > 0 && <instancedMesh ref={pools} name="street-lamp-pools" args={[poolGeo, poolMat, lamps.length]} frustumCulled renderOrder={2} userData={{ noOcclusionFade: true, surface: true }} />}
+    {lamps.length > 0 && <instancedMesh ref={pools} name="street-lamp-pools" args={[poolGeo, poolMat, lamps.length]} frustumCulled renderOrder={2} userData={{ noOcclusionFade: true, surface: true, worldCollision: 'none', worldCollisionReason: 'Projected light on the road surface' }} />}
     {lamps.length > 0 && <pointLight ref={nearbyLamp} name="street-nearest-lamp-key" color="#ffd5a1" intensity={0} distance={14} decay={2} castShadow={false}/>}
     {claim && <StreetClaim keys={[claim]} />}
   </group>;

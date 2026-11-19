@@ -83,17 +83,17 @@ export default function StreetRails() {
     const sea = placements.filter(p => p.kind === 'seawallBay');
     const span = sea.length > 1 ? new Vector3().setFromMatrixPosition(sea[1].matrix).distanceTo(new Vector3().setFromMatrixPosition(sea[0].matrix)) : 2;
     const kinds: StaticKind[] = [
-      { id: 'seawallBay', L0: craftSeawallBay(A.seawallBay(0, 2), span, 0), L1: craftSeawallBay(A.seawallBay(1, 2), span, 1), lodNear: 24, far: 120 },
-      { id: 'seawallEnd', L0: craftSeawallEnd(A.railEndPost(0, 'seawall'), 0), L1: craftSeawallEnd(A.railEndPost(1, 'seawall'), 1), lodNear: 24, far: 120 },
-      { id: 'guardPost', L0: A.guardPost(0), L1: A.guardPost(1), lodNear: 24, far: 120 },
-      { id: 'timberPost', L0: craftTimberPost(A.timberPost(0), 0), L1: craftTimberPost(A.timberPost(1), 1), lodNear: 24, far: 120 },
-      { id: 'pier', L0: A.bridgePier(0, 2.95), L1: A.bridgePier(1, 2.95), lodNear: 40, far: 180 },
-      ...parapets.map(p => ({ id: `parapet-${p.id}`, L0: A.parapet(0, p.len), L1: A.parapet(1, p.len), lodNear: 45, far: 200 })),
+      { id: 'seawallBay', collide: 'installed', L0: craftSeawallBay(A.seawallBay(0, 2), span, 0), L1: craftSeawallBay(A.seawallBay(1, 2), span, 1), lodNear: 24, far: 120 },
+      { id: 'seawallEnd', collide: 'installed', L0: craftSeawallEnd(A.railEndPost(0, 'seawall'), 0), L1: craftSeawallEnd(A.railEndPost(1, 'seawall'), 1), lodNear: 24, far: 120 },
+      { id: 'guardPost', collide: 'installed', L0: A.guardPost(0), L1: A.guardPost(1), lodNear: 24, far: 120 },
+      { id: 'timberPost', collide: 'installed', L0: craftTimberPost(A.timberPost(0), 0), L1: craftTimberPost(A.timberPost(1), 1), lodNear: 24, far: 120 },
+      { id: 'pier', collide: 'installed', L0: A.bridgePier(0, 2.95), L1: A.bridgePier(1, 2.95), lodNear: 40, far: 180 },
+      ...parapets.map(p => ({ id: `parapet-${p.id}`, collide: 'installed' as const, L0: A.parapet(0, p.len), L1: A.parapet(1, p.len), lodNear: 45, far: 200 })),
     ];
     return { kinds, placements, beams };
   }, []);
   return <group name="street-rails-group">
-    <StreetStatic name="street-rails" claims={[]} kinds={kinds} placements={placements} assetId="street-rail" />
+    <StreetStatic name="street-rails" groupName="street-rails-structure" claims={[]} kinds={kinds} placements={placements} assetId="street-rail" />
     <StreetKnockables set="rail" beams={beams} />
     <StreetClaim keys={['rail', 'roadside']} />
   </group>;
