@@ -232,6 +232,7 @@ try {
       const drawn = await window.__worldDebug.reviewCollisionSources('intent-coaster');
       return { mounted: drawn.meshes.length, withoutPolicy: drawn.meshes.filter(m => !m.declaration || m.declaration.partial).map(m => m.path) };
     });
+    if (mode === 'site') assert.deepEqual(coverage.withoutPolicy,[]);
     console.log(JSON.stringify({ phase: 'camp-return', actor: await actor(), portalSources: cold.meshes.length, stationSources: station.meshes.length,
       portalColliders: cold.colliders.length, stationColliders: station.colliders.length, coverage }));
   }

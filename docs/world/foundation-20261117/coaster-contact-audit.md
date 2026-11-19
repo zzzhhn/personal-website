@@ -62,4 +62,6 @@
 
 混合网格两档保留同一个颜色绘制。远档的 55,312 个三角形和近档的 62,032 个三角形已全部迁移，分别提供 413、420 个唯一接触名。严格根 `coaster-site-contact` 只在场馆活跃、乘坐占用或近景预热就绪时要求本地接触。西侧短步道继续共用北侧道路先加载的 `coaster-arrival-walk`；两档逐顶点对应同一来源。两档 Rapier 实测的注册在缺少该实际节点时都失败，场景中的同名普通物件不能补位。
 
+集成生产版 `b5f5a8b` 在 4420 复跑通过。近景实际登记 419 个场地接触和一个共享步道接触。正常 E 开门及登车，沿踏步回到 `[55.362,1.900,-151.945]` 后继续步行约 0.98 m。回营后本地场地、门框、站台和轨道接触卸载，共享步道支撑仍有一个。远场 44 个挂载网格全部具有接触合同。复跑无定位调用或页面错误，独立生产构建生成 8 页。
+
 复跑命令使用现有 Playwright。`WORLD_BROWSER_MODULES=<Playwright 所在目录> node tools/world/playtest/coaster-gate-contact.mjs http://127.0.0.1:<独立端口> site`。只核对已迁移轨道的候选用 `rails`，未迁移轨道的候选用 `after`，旧版用 `before`。Node 定向测试为 `node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/attractions/{coaster-gate-contact,actor-ride-adapter,coaster-station-contact,coaster-rail-contact,coaster-collision-review,coaster-site-contact,attraction-camera-cabin}.test.mjs`。
