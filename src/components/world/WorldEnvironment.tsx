@@ -58,6 +58,7 @@ function Blocks({ items, material, shadow = false, openTop = false, name, solid 
     if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true;
     ref.current.computeBoundingSphere();
   }, [items]);
+  if (!items.length) return null;
   return <instancedMesh name={name} userData={{ solid }} ref={ref} args={[undefined, undefined, items.length]} castShadow={shadow} receiveShadow material={material} geometry={geometry}>
     {!material && <meshStandardMaterial roughness={1} />}
   </instancedMesh>;
@@ -147,6 +148,7 @@ function SurfaceTops({ items }: { items: Block[] }) {
 
 /** visual=false keeps the identical colliders while WorldCamp owns the camp visuals. */
 function StaticBlocks({ items, surface = false, visual = true, name }: { items: Block[]; surface?: boolean; visual?: boolean; name: string }) {
+  if (!items.length) return null;
   return <>
     {surface?<WorldSurfaceColliders items={items} name={name}/>:<RigidBody name={name} type="fixed" colliders={false} userData={{solid:true}}>
     {items.map((item, i) => <CuboidCollider key={`${item.position}|${item.size}|${item.rotation ?? [0,0,0]}`} name={`${name}-${i}`} position={item.position} rotation={item.rotation ?? [0,0,0]}
@@ -194,7 +196,7 @@ function Island() {
     {/* Park plaza block: support-only top (surface) and solid sides; same box visual and coordinates. */}
     {!plazaClaimed && <>
       <WorldSurfaceColliders name="park-plaza-surface" items={PARK_PLAZA} />
-      <mesh name="park-plaza-block" position={PARK_PLAZA[0].position} receiveShadow>
+      <mesh name="park-plaza-block" userData={{worldCollision:'solid',worldCollisionPartitions:{floor:'park-plaza-surface-0-top',wall:'park-plaza-surface-0-sides'}}} position={PARK_PLAZA[0].position} receiveShadow>
         <boxGeometry args={PARK_PLAZA[0].size} /><meshStandardMaterial color={PALETTE.sand} roughness={1} />
       </mesh>
     </>}
@@ -498,11 +500,11 @@ export default memo(function WorldEnvironment({ experiences }: { experiences: Wo
     <Blocks items={items.cyan} material={cyan} />
     {!buildingClaimed && BUILDINGS.map(({ id, position: [x, y, z], size: [w, h, d], color }) => <RigidBody key={id} type="fixed" colliders={false} userData={{ solid: true }}>
       <CuboidCollider name={`building-${id}`} args={[w / 2, h / 2, d / 2]} position={[x, y + h / 2, z]} restitution={0.15} />
-      <mesh name={`greybox-building-${id}`} position={[x, y + h / 2, z]} castShadow receiveShadow userData={{ occluder: true, solid: true }}>
+      <mesh name={`greybox-building-${id}`} position={[x, y + h / 2, z]} castShadow receiveShadow userData={{ occluder: true, solid: true, worldCollision:'solid', surfaceId:`building-${id}` }}>
         <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} />
       </mesh>
     </RigidBody>)}
-    {!buildingClaimed && <mesh position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
+    {!buildingClaimed && <mesh name="greybox-hunyuan-ring" userData={{worldCollision:'none',collisionReason:'Emissive pavement marking at the tower'}} position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[2.5, 2.54, 32]} /><primitive object={cyan} attach="material" />
     </mesh>}
   </group>;
