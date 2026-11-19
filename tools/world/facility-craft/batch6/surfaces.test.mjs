@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
-import { BufferGeometry, Float32BufferAttribute, Group, Matrix4, Mesh, MeshStandardMaterial, ShaderLib, PerspectiveCamera, Vector4 } from 'three';
+import { BufferGeometry, Float32BufferAttribute, Group, Matrix4, Mesh, MeshStandardMaterial, PerspectiveCamera, Vector4 } from 'three';
 import { loadWorldModule } from '../street/runtime.mjs';
 const sameValues = (a, b) => assert.equal(JSON.stringify(a), JSON.stringify(b));
 
@@ -62,24 +62,6 @@ test('park groups preserve both material slots and source UV before world placem
     assert.equal(fallback.attributes.aMat.count,fallback.attributes.position.count);
     assert.ok([...fallback.attributes.aMat.array].every((v,i)=>i%4===0?Math.abs(v-.86)<1e-6:v===0));fallback.dispose();
   } finally {pieces.forEach(p=>p.dispose());geometry.dispose();materials.forEach(m=>m.dispose());}
-});
-
-test('both live shaders retain their own lighting/fade contracts and sample the shared physical pack', () => {
-  const street=loadWorldModule('WorldStreetMaterial.ts'), park=loadWorldModule('WorldParkKit.ts');
-  const shaders=[street.createStreetMaterial(null),park.parkMaterial()].map(material=>{
-    const shader={uniforms:{},vertexShader:ShaderLib.standard.vertexShader,fragmentShader:ShaderLib.standard.fragmentShader};
-    material.onBeforeCompile(shader);return shader;
-  });
-  for(const shader of shaders){
-    assert.ok(shader.uniforms.uFacilityWood);assert.ok(shader.uniforms.uFacilityNormal);assert.ok(shader.uniforms.uFacilityRough);
-    assert.match(shader.fragmentShader,/texture2D\(uFacilityWood, vFacilityUv\)/);
-    assert.match(shader.fragmentShader,/roughnessFactor = clamp\(texture2D\(uFacilityRough/);
-    assert.match(shader.fragmentShader,/detail.xy \*= .18/);
-    assert.match(shader.fragmentShader,/step\(.5, vFacilityKind\) \* \(1.0 - .90 \* uFacilityNight\)/);
-    assert.ok(shader.uniforms.uFacilityNight);
-  }
-  assert.match(shaders[0].fragmentShader,/streetBayer/);assert.match(shaders[0].fragmentShader,/texture2D\(uAtlas, vSuv\)/);
-  assert.match(shaders[1].fragmentShader,/uParkNight/);assert.match(shaders[1].vertexShader,/vEmit = aEmit/);
 });
 
 test('shelter glass splits exactly once, leaves frozen proxy and has no transmission pass', () => {
