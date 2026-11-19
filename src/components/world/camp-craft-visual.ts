@@ -1,4 +1,5 @@
 import { FrontSide, Group, InstancedMesh, Matrix4, type Mesh, type MeshStandardMaterial, type Object3D, type Texture } from 'three';
+import { campMeshContact, campSolidInstances } from './WorldCampPhysics';
 
 export const CAMP_CRAFT_ASSET = '/assets/world/camp/craft/camp-props-v1.glb';
 export type CampCraftFamily = 'C05' | 'C06' | 'C07';
@@ -13,15 +14,14 @@ export function campCraftLegacy(search: string) {
 }
 
 /** Borrow loader geometry/images and the renderer's existing shared environment.
- * Own one material clone per source material for this family's fixed instances.
- * Colliders and seating never use this art. */
-export function createCampCraftVisual(source: Object3D, family: CampCraftFamily, placements: Matrix4[], environment: Texture | null = null) {
+ * Own one material clone per source material for this family's fixed instances. */
+export function createCampCraftVisual(source: Object3D, family: CampCraftFamily, placements: Matrix4[], environment: Texture | null = null, label?: string) {
   const asset = source.getObjectByName(family);
   if (!asset) throw new Error(`Camp craft pack missing ${family}`);
   source.updateMatrixWorld(true);
   const root = new Group();
   root.name = `camp-craft-${family}`;
-  const instances: InstancedMesh[] = [], matrix = new Matrix4();
+  const instances: InstancedMesh[] = [];
   const materials = new Map<MeshStandardMaterial, MeshStandardMaterial>();
   asset.traverse(object => {
     const mesh = object as Mesh;
@@ -40,9 +40,12 @@ export function createCampCraftVisual(source: Object3D, family: CampCraftFamily,
     });
     const instance = new InstancedMesh(mesh.geometry, Array.isArray(mesh.material) ? copied : copied[0], placements.length);
     instance.name = `camp-craft-${family}-${mesh.name}`;
-    instance.userData = { assetId: family, solid: true, craftVisual: true };
+    const displayed = placements.map(placement => new Matrix4().multiplyMatrices(placement, mesh.matrixWorld));
+    const contact = campMeshContact(family, [], []);
+    instance.userData = { assetId: family, solid: true, craftVisual: true,
+      ...(label && contact ? campSolidInstances(family, label, contact, displayed) : {}) };
     instance.castShadow = true; instance.receiveShadow = true;
-    placements.forEach((placement, i) => instance.setMatrixAt(i, matrix.multiplyMatrices(placement, mesh.matrixWorld)));
+    displayed.forEach((instanceMatrix, i) => instance.setMatrixAt(i, instanceMatrix));
     instance.instanceMatrix.needsUpdate = true;
     instance.computeBoundingBox(); instance.computeBoundingSphere();
     root.add(instance); instances.push(instance);

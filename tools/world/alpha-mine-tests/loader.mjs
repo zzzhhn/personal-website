@@ -6,6 +6,11 @@ import ts from 'typescript';
 
 /** Resolve the app's extensionless relative imports without changing production sources. */
 export async function resolve(specifier, context, nextResolve) {
+  // Vite permits ordinary JSON imports in TS. Give Node the equivalent native
+  // import attribute so scene tests consume the shipped snapshots unchanged.
+  if (specifier.endsWith('.json') && context.parentURL && /\.tsx?$/.test(context.parentURL)) {
+    return { ...await nextResolve(specifier, context), importAttributes: {type:'json'} };
+  }
   try {
     return await nextResolve(specifier, context);
   } catch (error) {

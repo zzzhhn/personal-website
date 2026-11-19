@@ -492,7 +492,6 @@ export default memo(function WorldEnvironment({ experiences }: { experiences: Wo
     {!forecourtClaimed && <WorldYears experiences={experiences.en} />}
     <StaticBlocks name="world-surface" items={items.surfaces} surface />
     <StaticBlocks name="world-solid" items={items.solids} />
-    <StaticBlocks name="camp-pad-surface" items={items.camp.pads} surface visual={false} />
     <WorldCamp layout={items.camp} />
     <Blocks items={items.decor} shadow />
     <Blocks items={items.warm} material={warm} />

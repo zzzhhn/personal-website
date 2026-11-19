@@ -231,6 +231,14 @@ proxyGroup.name = 'world-shadow-proxies';
 proxyGroup.visible = false;
 proxyGroup.userData.shadowProxy = true;
 proxyGroup.matrixAutoUpdate = false; proxyGroup.matrixWorldAutoUpdate = false; // proxy matrices are set per pass
+/** A depth-only copy is submitted temporarily during a shadow pass. Its colour-pass
+ * source keeps its own collision policy and remains in the gameplay inventory. */
+function addShadowCopy(copy: Mesh) {
+  copy.userData.shadowProxy = true;
+  copy.userData.worldCollision = 'none';
+  copy.userData.worldCollisionReason = 'shadow-depth-copy';
+  proxyGroup.add(copy);
+}
 let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
 let frozenScanSeconds = 0, completedScans = 0;
 export const shadowScanCount = () => completedScans;
@@ -369,8 +377,8 @@ function rescan(scene: Object3D) {
           const p = new InstancedMesh(k === 2 ? farHull(g) ?? g : g, mesh.material as Material, cap);
           p.name = `${mesh.name || mesh.parent?.name || 'caster'}#sun${k}`;
           p.frustumCulled = false; p.matrixAutoUpdate = false; p.matrixWorldAutoUpdate = false;
-          p.castShadow = false; p.receiveShadow = false; p.userData.shadowProxy = true; p.userData.budgetSource = mesh; p.count = 0;
-          proxyGroup.add(p); c.proxies.push(p);
+          p.castShadow = false; p.receiveShadow = false; p.userData.budgetSource = mesh; p.count = 0;
+          addShadowCopy(p); c.proxies.push(p);
         }
       }
     }
@@ -401,8 +409,8 @@ function rescan(scene: Object3D) {
 const fireStatic = new Mesh();
 fireStatic.name = 'world-fire-static-casters';
 fireStatic.matrixAutoUpdate = false; fireStatic.matrixWorldAutoUpdate = false; fireStatic.frustumCulled = false;
-fireStatic.castShadow = false; fireStatic.receiveShadow = false; fireStatic.userData.shadowProxy = true; fireStatic.userData.budgetZone = 'camp';
-proxyGroup.add(fireStatic);
+fireStatic.castShadow = false; fireStatic.receiveShadow = false; fireStatic.userData.budgetZone = 'camp';
+addShadowCopy(fireStatic);
 let fireStaticKey = '';
 function rebuildFireStatic() {
   const parts = [...casters.values()].filter(c => c.fire === 'static');
@@ -605,8 +613,8 @@ function rebuildGroups() {
       p.frustumCulled = false; p.matrixAutoUpdate = false; p.matrixWorldAutoUpdate = false;
       p.castShadow = false; p.receiveShadow = false; p.count = 0;
       p.customDepthMaterial = lead.customDepthMaterial;
-      p.userData.shadowProxy = true; p.userData.budgetSource = lead;
-      proxyGroup.add(p); gr.proxies.push(p);
+      p.userData.budgetSource = lead;
+      addShadowCopy(p); gr.proxies.push(p);
     }
     return gr;
   });
@@ -690,8 +698,8 @@ const sideMaterial = (side: number) => { let m = sideMaterials.get(side); if (!m
 function makeChunkMesh(g: BufferGeometry, side: number, name: string) {
   const m = new Mesh(g, sideMaterial(side));
   m.name = name; m.matrixAutoUpdate = false; m.matrixWorldAutoUpdate = false; m.matrixWorld.identity(); m.frustumCulled = false;
-  m.castShadow = false; m.receiveShadow = false; m.userData.shadowProxy = true;
-  proxyGroup.add(m);
+  m.castShadow = false; m.receiveShadow = false;
+  addShadowCopy(m);
   return m;
 }
 function eligibleChunkCaster(c: Caster) {

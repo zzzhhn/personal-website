@@ -1,10 +1,11 @@
 import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import type { Material, Mesh, MeshStandardMaterial, Object3D, Texture } from 'three';
+import type { Material, Matrix4, Mesh, MeshStandardMaterial, Object3D, Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
 import { applyCampSurfaceBalance } from './camp-surface-balance';
+import { campBookShapes, CampColliders, campColliderKey } from './WorldCampPhysics';
 
 type ToolWallNode = 'C11_body' | 'C11_tools';
 const URL = '/assets/world/camp-workshop-craft/camp-workshop.glb';
@@ -34,12 +35,13 @@ function cloneVisual(source: Object3D, node: 'C08' | ToolWallNode, environment: 
     mesh.material = Array.isArray(mesh.material) ? mesh.material.map(cloneMaterial) : cloneMaterial(mesh.material);
     mesh.castShadow = !mesh.userData.noShadow;
     mesh.receiveShadow = true;
-    mesh.userData = { ...mesh.userData, assetId: node === 'C08' ? 'C08' : 'C11', solid: true };
+    mesh.userData = { ...mesh.userData, assetId: node === 'C08' ? 'C08' : 'C11', solid: true,
+      ...(node === 'C08' ? {worldCollision:'solid',surfaceId:campColliderKey('C08','pad1',0,'body'),worldCollisionSharedSurface:true} : {}) };
   });
   return { root, materials: [...copies.values()], users: 0, previousNight: NaN };
 }
 
-function WorkshopVisual({ node }: { node: 'C08' | ToolWallNode }) {
+function WorkshopVisual({ node, placement }: { node: 'C08' | ToolWallNode; placement?: Matrix4 }) {
   const gltf = useLoader(GLTFLoader, URL);
   const environment = useDjcFurnitureEnvironment();
   const visual = useMemo(() => {
@@ -47,6 +49,8 @@ function WorkshopVisual({ node }: { node: 'C08' | ToolWallNode }) {
     if (!source) throw new Error(`Camp workshop pack missing ${node}`);
     return cloneVisual(source, node, environment);
   }, [gltf, node, environment]);
+  const shapes = useMemo(() => node === 'C08' ? campBookShapes(visual.root) : null,[node,visual]);
+  const matrices = useMemo(() => placement ? [placement] : [],[placement]);
   useEffect(() => {
     visual.users++;
     return () => {
@@ -60,7 +64,10 @@ function WorkshopVisual({ node }: { node: 'C08' | ToolWallNode }) {
     visual.previousNight = amount;
     for (const material of visual.materials) material.envMapIntensity = 1.25 - 0.8 * amount;
   });
-  return <primitive object={visual.root} dispose={null} />;
+  if (node !== 'C08') return <primitive object={visual.root} dispose={null} />;
+  if (!shapes || !placement) throw new Error('Camp workbench is missing its book-stack placement');
+  return <><group matrix={placement} matrixAutoUpdate={false}><primitive object={visual.root} dispose={null} /></group>
+    <CampColliders id="C08" label="pad1" shapes={shapes} matrices={matrices}/></>;
 }
 
 class WorkshopBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
@@ -70,14 +77,14 @@ class WorkshopBoundary extends Component<{ children: ReactNode; fallback: ReactN
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-function WorkshopAsset({ node, fallback }: { node: 'C08' | ToolWallNode; fallback: ReactNode }) {
+function WorkshopAsset({ node, fallback, placement }: { node: 'C08' | ToolWallNode; fallback: ReactNode; placement?: Matrix4 }) {
   return <WorkshopBoundary fallback={fallback}>
-    <Suspense fallback={fallback}><WorkshopVisual node={node} /></Suspense>
+    <Suspense fallback={fallback}><WorkshopVisual node={node} placement={placement} /></Suspense>
   </WorkshopBoundary>;
 }
 
-export function BookStackVisual({ fallback }: { fallback: ReactNode }) {
-  return <WorkshopAsset node="C08" fallback={fallback} />;
+export function BookStackVisual({ fallback, placement }: { fallback: ReactNode; placement: Matrix4 }) {
+  return <WorkshopAsset node="C08" fallback={fallback} placement={placement} />;
 }
 
 export function ToolWallVisual({ node, fallback }: { node: ToolWallNode; fallback: ReactNode }) {

@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import WorldMap from './WorldMap.tsx';
+import { useWorldStore } from './store.ts';
+import { createMapPathCache } from './map-path-cache.ts';
 import { WORLD_DESTINATIONS, FIRST_VISIT_DESTINATIONS, FERRY_MAP_MARK, destination, destinationAt, factoryGuideRoute } from './world-destinations.ts';
 import { FACTORY, factoryWorld, factoryLocal, factoryStation, inFactory, FACTORY_STATIONS } from './factory/factory-layout.ts';
 import { FACTORY_WALK_NODES, FACTORY_WALK_EDGES } from './factory/factory-navigation.ts';
@@ -105,10 +109,31 @@ test('street boards name the new districts and fit their 660x290 cells', () => {
   assert.equal(all.length, 12, 'two rows per board, same UV layout');
 });
 
-test('map keeps its cache and bot-anchor contracts and adds the ferry label', () => {
-  const map = readFileSync(new URL('./WorldMap.tsx', import.meta.url), 'utf8');
-  assert.match(map, /createMapPathCache\(\)/);
-  assert.match(map, /className='world-map-anchor' cx=\{px\} cy=\{pz\} r='2\.6'/);
-  assert.match(map, /data-ferry-mark='mainland'/);
-  assert.match(map, /\{t\.ferryMark\}/);
+test('full map and radar actually render the player anchor and the labelled ferry at its berth', () => {
+  const { position, lang } = useWorldStore.getInitialState();
+  for (const mode of ['full', 'mini']) {
+    const svg = renderToStaticMarkup(createElement(WorldMap, { mode }));
+    const player = svg.match(/<circle\b[^>]*class="world-map-anchor"[^>]*>/)?.[0];
+    assert.ok(player?.includes(`cx="${position[0]}"`) && player.includes(`cy="${position[2]}"`) && player.includes('r="2.6"'));
+    const berth = svg.match(/<g\b[^>]*data-ferry-mark="mainland"[^>]*>[\s\S]*?<\/g>/)?.[0];
+    assert.ok(berth?.includes(`translate(${FERRY_MAP_MARK.join(' ')})`));
+    assert.ok(berth.includes('>' + worldText[lang].ferryMark + '<'));
+  }
+});
+
+test('static map positions are serialized once; live points can move on the next render', () => {
+  let reads = 0;
+  const fixed = [[1, 2], [3, 4]];
+  Object.defineProperty(fixed[0], '0', { get() { reads++; return 1; } });
+  const cache = createMapPathCache();
+  cache.register(fixed);
+  assert.equal(cache.path(fixed), '1,2 3,4');
+  const firstReads = reads;
+  assert.ok(firstReads > 0);
+  for (let render=0;render<20;render++) assert.equal(cache.path(fixed), '1,2 3,4');
+  assert.equal(reads, firstReads);
+  const live = [[1, 3]];
+  assert.equal(cache.path(live), '1,3');
+  live[0][0] = 5;
+  assert.equal(cache.path(live), '5,3');
 });

@@ -214,8 +214,9 @@ test('rechecking the moving raw-console approach sees its continuous floor at th
   w.step();
   try {
     const from=[-234.5,1.9388248920440674,-13.49];
-    assert.ok(pickupGroundRoute(w,R,player,from,stand,2.1),'the capsule must reproduce the clear south aisle');
-    assert.ok(pickupGroundRoute(w,R,player,[-234.501953125,1.93882417678833,-13.437],stand,2.1),'the same route remains grounded after moving');
+    const samples=[from,[-234.501953125,1.93882417678833,-13.437],[-234.4982,1.9388248920440674,-13.44]];
+    for(const position of samples)
+      assert.ok(pickupGroundRoute(w,R,player,position,stand,2.1),'the actual south aisle stays open at '+position.join(', '));
     w.createCollider(R.ColliderDesc.cuboid(.2,.4,.12).setTranslation(-234.5,1.52,-12.95));
     w.step();
     assert.equal(pickupGroundRoute(w,R,player,from,stand,2.1),null,'a later physical obstacle still rejects the route');

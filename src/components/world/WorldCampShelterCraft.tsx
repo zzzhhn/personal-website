@@ -11,6 +11,7 @@ import { applyCampSurfaceBalance } from './camp-surface-balance';
 import { createCampFlagWind } from './camp-flag-wind';
 import { applyTentWind, markTentCloth, windUniforms, type TentWindParams } from './WorldWind';
 import type { Vec3 } from './types';
+import { CampColliders, campColliderKey, campMeshContact, campPartNames, campShapes, campSolidInstances } from './WorldCampPhysics';
 
 const BASE = '/assets/world/camp-shelter-craft';
 type Asset = 'C04' | 'C10';
@@ -101,7 +102,7 @@ function useShelterEnvironment() {
   return { environment, ready };
 }
 
-/** Material batches are instanced over both placements. Physics stays in WorldCamp. */
+/** Both cloth instances and both closed shells share the placement matrices. */
 export function SmallTents({ placements }: { placements: readonly Placement[] }) {
   const gltf = useShelterGLTF('C04');
   const { environment, ready } = useShelterEnvironment();
@@ -112,6 +113,7 @@ function SmallTentInstances({ gltf, environment, placements }: {
   gltf: GLTF; environment: Texture | null; placements: readonly Placement[];
 }) {
   const anisotropy = useThree(s => Math.max(1, Math.min(4, s.gl.capabilities.getMaxAnisotropy())));
+  const shapes = useMemo(() => campShapes('C04', gltf), [gltf]);
   const visual = useMemo(() => {
     const source = gltf.scene.getObjectByName('C04');
     if (!source) throw new Error('C04 craft is missing its root');
@@ -151,14 +153,16 @@ function SmallTentInstances({ gltf, environment, placements }: {
   const root = useMemo(() => {
     const group = new Group();
     group.name = 'camp-C04-shelter-craft';
-    const matrix = new Matrix4();
     for (const part of visual.parts) {
       const mesh = new InstancedMesh(part.geometry, part.material, matrices.length);
       mesh.name = part.name;
-      mesh.userData = { assetId: 'C04', solid: true, craft: 'camp-shelter-v1' };
+      const displayed = matrices.map(m => new Matrix4().multiplyMatrices(m,part.matrix));
+      const solid = part.name === 'C04_craft_canvas' || part.name === 'C04_craft_binding';
+      mesh.userData = { assetId: 'C04', solid: true, craft: 'camp-shelter-v1',
+        ...(solid ? campSolidInstances('C04','small-tents','shell',displayed) : { worldCollision: 'none' }) };
       mesh.castShadow = true; mesh.receiveShadow = true;
       mesh.customDepthMaterial = part.depth;
-      matrices.forEach((m, i) => mesh.setMatrixAt(i, matrix.multiplyMatrices(m, part.matrix)));
+      displayed.forEach((m,i) => mesh.setMatrixAt(i,m));
       mesh.instanceMatrix.needsUpdate = true;
       mesh.computeBoundingSphere();
       group.add(mesh);
@@ -172,7 +176,8 @@ function SmallTentInstances({ gltf, environment, placements }: {
       queueMicrotask(() => { if (!root.users) root.group.children.forEach(m => (m as InstancedMesh).dispose()); });
     };
   }, [root]);
-  return <primitive object={root.group} dispose={null} />;
+  if (!shapes) throw new Error('C04 craft is missing its fitted canvas shell');
+  return <><primitive object={root.group} dispose={null} /><CampColliders id="C04" label="small-tents" shapes={shapes} matrices={matrices} /></>;
 }
 
 export function FlagVisual({ placement }: { placement: Placement }) {
@@ -185,6 +190,8 @@ function FlagScene({ gltf, environment, placement }: {
   gltf: GLTF; environment: Texture | null; placement: Placement;
 }) {
   const anisotropy = useThree(s => Math.max(1, Math.min(4, s.gl.capabilities.getMaxAnisotropy())));
+  const shapes = useMemo(() => campShapes('C10', gltf), [gltf]);
+  const matrices = useMemo(() => [new Matrix4().compose(new Vector3(...placement.position), new Quaternion().setFromEuler(new Euler(0, placement.yaw, 0)), new Vector3().setScalar(placement.scale ?? 1))], [placement]);
   const visual = useMemo(() => {
     const root = gltf.scene.clone(true);
     const resources = createResources('C10', environment, anisotropy);
@@ -193,7 +200,10 @@ function FlagScene({ gltf, environment, placement }: {
       if (!mesh.isMesh) return;
       mesh.material = resources.material(mesh.material);
       mesh.castShadow = true; mesh.receiveShadow = true;
-      mesh.userData = { ...mesh.userData, assetId: 'C10', solid: true, craft: 'camp-shelter-v1' };
+      const part = campMeshContact('C10',campPartNames(mesh,root),[]);
+      const collision = part ? { worldCollision: 'solid', surfaceId: campColliderKey('C10','pad3',0,part), worldCollisionSharedSurface: true }
+        : { worldCollision: 'none' };
+      mesh.userData = { ...mesh.userData, assetId: 'C10', solid: true, craft: 'camp-shelter-v1', ...collision };
     });
     const wind = createCampFlagWind(windUniforms);
     resources.depths.push(wind.depth);
@@ -207,7 +217,8 @@ function FlagScene({ gltf, environment, placement }: {
     return { root, resources };
   }, [gltf, environment, anisotropy]);
   useShelterMaterials(visual.resources, 'C10');
-  return <group position={placement.position} rotation={[0, placement.yaw, 0]} scale={placement.scale ?? 1} dispose={null}>
-    <primitive object={visual.root} dispose={null} />
-  </group>;
+  if (!shapes) throw new Error('C10 craft is missing the visible mast and base');
+  return <><group matrix={matrices[0]} matrixAutoUpdate={false} dispose={null}><primitive object={visual.root} dispose={null} /></group>
+    <CampColliders id="C10" label="pad3" shapes={shapes} matrices={matrices} />
+  </>;
 }

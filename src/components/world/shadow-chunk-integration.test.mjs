@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { BoxGeometry, DirectionalLight, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Scene, SphereGeometry } from 'three';
 import { fitSunShadow, shadowChunkWork } from './WorldShadows.ts';
+import { collisionInventory } from './world-collision-inventory.ts';
 import { computeShadowHull } from './shadow-chunk-hull.ts';
 
 test('sun instance proxies retain their upload version at rest and refresh when the compacted matrices change', t => {
@@ -20,6 +21,11 @@ test('sun instance proxies retain their upload version at rest and refresh when 
   fitSunShadow(light, target, camera, { mapSize: 2048, wide: false, focus: [0, 0, 0] });
   const sun = scene.getObjectByName('world-sun-cascaded');
   const proxy = scene.getObjectByName('moving-shadow-sample#sun0');
+  const inventory = collisionInventory(scene,[source],[],[]);
+  assert.ok(inventory.depthOnlyCopies >= 3);
+  assert.equal(inventory.errors.length,0);
+  assert.equal(inventory.submitted.unclassified,1,'original caster still requires its own gameplay decision');
+  assert.equal(proxy.userData.worldCollisionReason,'shadow-depth-copy');
   let submitted;
   const renderer = { shadowMap: { render() {
     sun.shadow.updateMatrices(sun, camera); sun.shadow.getFrustum(0);

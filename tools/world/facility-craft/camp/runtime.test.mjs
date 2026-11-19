@@ -6,15 +6,13 @@ import { execFileSync } from 'node:child_process';
 import ts from 'typescript';
 import { BoxGeometry, DoubleSide, FrontSide, Group, Mesh, MeshStandardMaterial, Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import '../../alpha-mine-tests/register.mjs';
 
 const root = new URL('../../../../', import.meta.url);
 const adapter = fs.readFileSync(new URL('src/components/world/WorldCampFacilityCraft.tsx', root), 'utf8');
-// Evaluate the actual pure visual factory without importing WebGL hooks or creating a renderer.
-const factoryCode = adapter.slice(adapter.indexOf('export function createCampFacilityVisual'), adapter.indexOf('\nfunction CraftVisual')).replaceAll('export function', 'function');
-const bindingSource = fs.readFileSync(new URL('src/components/world/WorldCampPushableVisual.ts', root), 'utf8');
-const bindingCode = bindingSource.slice(bindingSource.indexOf('export function')).replace('export function', 'function');
-const context = vm.createContext({ FrontSide });
-vm.runInContext(ts.transpileModule(`${factoryCode}\n${bindingCode}\nglobalThis.create = createCampFacilityVisual; globalThis.bind = bindCampPushableVisual; globalThis.updateNight = updateCampFacilityNight;`, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText, context);
+const { createCampFacilityVisual, updateCampFacilityNight, campFacilityLegacy } = await import('../../../../src/components/world/WorldCampFacilityCraft.tsx');
+const { bindCampPushableVisual } = await import('../../../../src/components/world/WorldCampPushableVisual.ts');
+const context = { create: createCampFacilityVisual, bind: bindCampPushableVisual, updateNight: updateCampFacilityNight };
 
 let packPromise;
 function loadPack() {
@@ -209,51 +207,38 @@ test('articulated subtree keeps geometry local and removes the already applied w
   assert.throws(() => context.create(scene,'C15',undefined,null),/missing C15/);
 });
 
-test('runtime adapter parses and legacy query bypasses candidate independent of qa flag', () => {
-  for (const file of ['WorldCampFacilityCraft.tsx','WorldCampContent.tsx','WorldCampPushableVisual.ts']) {
-    const source=fs.readFileSync(new URL(`src/components/world/${file}`,root),'utf8');
-    const result=ts.transpileModule(source,{fileName:file,reportDiagnostics:true,compilerOptions:{jsx:ts.JsxEmit.ReactJSX,target:ts.ScriptTarget.ES2022}});
-    assert.equal(result.diagnostics.filter(d=>d.category===ts.DiagnosticCategory.Error).length,0);
-  }
-  const expression=adapter.match(/export const campFacilityLegacy = (.*);/)[1];
-  const isLegacy=vm.runInNewContext(`(${expression.replace(': string','')})`,{URLSearchParams});
-  assert.equal(isLegacy('?facilityCraft=legacy'),true);
-  assert.equal(isLegacy('?qa=1&facilityCraft=legacy'),true);
-  assert.equal(isLegacy('?qa=1'),false);
+test('legacy query bypasses candidate independent of qa flag', () => {
+  assert.equal(campFacilityLegacy('?facilityCraft=legacy'),true);
+  assert.equal(campFacilityLegacy('?qa=1&facilityCraft=legacy'),true);
+  assert.equal(campFacilityLegacy('?qa=1'),false);
 });
 
-test('legacy static/glow batches reproduce frozen batch-4 inputs with no extra stove/lantern draw', () => {
-  const current=fs.readFileSync(new URL('src/components/world/WorldCampContent.tsx',root),'utf8');
-  const baseline=execFileSync('git',['show','2f22560fff2174195d8ce70b855ae4b871a388a7:src/components/world/WorldCampContent.tsx'],{cwd:root,encoding:'utf8'});
-  const parse=source=>ts.createSourceFile('Camp.tsx',source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
-  const initializer=(source,name)=>{
-    const file=parse(source); let expression;
-    const visit=node=>{if(ts.isVariableDeclaration(node)&&node.name.getText(file)===name)expression=node.initializer.getText(file);ts.forEachChild(node,visit);};
-    visit(file); assert.ok(expression,`${name} exists`); return expression;
+test('real craft pack exposes independent stove, wok and lantern material ownership', async () => {
+  const { scene } = await loadPack();
+  const stove = createCampFacilityVisual(scene,'C14','C14_stove',null);
+  const wok = createCampFacilityVisual(scene,'C14','C14_wok',null);
+  const lantern = createCampFacilityVisual(scene,'C16',undefined,null);
+  const names = visual => {
+    const result = [];
+    visual.root.traverse(object => { if (object.isMesh) result.push(object.name); });
+    return result;
   };
-  const evaluate=(expression,legacy)=>{
-    const code=ts.transpileModule(`globalThis.result=(${expression});`,{compilerOptions:{target:ts.ScriptTarget.ES2022}}).outputText;
-    const context={legacy,m11:'m11',m14:'m14',lanternM:'lanternM',postM:['post0','post1'],
-      byName:(id,node)=>[`${id}/${node}`],bake:(node,matrix)=>({node,matrix}),
-      glowBake:(node,matrix,warm)=>({node,matrix,warm}),mergeGeometries:parts=>({draws:1,parts})};
-    vm.runInNewContext(code,context); return JSON.parse(JSON.stringify(context.result));
-  };
-  for(const name of ['staticGeometry','glowGeometry']) {
-    assert.deepEqual(evaluate(initializer(current,name),true),evaluate(initializer(baseline,name),true));
-    const candidate=evaluate(initializer(current,name),false);
-    assert.ok(candidate.parts.every(part=>!part.node.startsWith('C14/')&&!part.node.startsWith('C16/')));
+  try {
+    assert.equal(names(stove).length,4);
+    assert.ok(names(stove).every(name=>name.startsWith('C14_stove')));
+    assert.equal(names(wok).length,3);
+    assert.ok(names(wok).every(name=>name.startsWith('C14_wok')));
+    assert.ok(names(lantern).some(name=>name.startsWith('C16_frame')));
+    assert.ok(names(lantern).some(name=>name.startsWith('C16_glass')));
+    assert.ok(names(lantern).some(name=>name.startsWith('C16_wick')));
+    const wick = lantern.materials.find(material=>material.name==='camp_craft_wick');
+    const glass = lantern.materials.find(material=>material.name==='camp_craft_glass');
+    assert.ok(wick && glass?.transparent);
+    updateCampFacilityNight(lantern,1);
+    assert.ok(wick.emissiveIntensity>2);
+    assert.ok(stove.materials.every(material=>material.name!=='camp_craft_wick'));
+    assert.ok(wok.materials.every(material=>material.name!=='camp_craft_wick'));
+  } finally {
+    for (const visual of [stove,wok,lantern]) visual.materials.forEach(material=>material.dispose());
   }
-  const file=parse(current); let guarded=0;
-  const visit=node=>{
-    if(ts.isJsxElement(node)&&node.openingElement.tagName.getText(file)==='group') {
-      const matrix=node.openingElement.attributes.properties.find(attribute=>attribute.name?.getText(file)==='matrix');
-      if(matrix?.initializer&&['{data.m14}','{data.lanternM}'].includes(matrix.initializer.getText(file))) {
-        assert.ok(ts.isBinaryExpression(node.parent));
-        assert.equal(node.parent.left.getText(file),'!legacy');
-        assert.equal(node.parent.operatorToken.kind,ts.SyntaxKind.AmpersandAmpersandToken); guarded++;
-      }
-    }
-    ts.forEachChild(node,visit);
-  };
-  visit(file); assert.equal(guarded,2);
 });

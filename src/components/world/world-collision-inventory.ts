@@ -3,17 +3,24 @@ import type { CollisionClass } from './static-surface-asset';
 
 export const migratedCollisionRoots = [
   'alpha-dock-lodge', 'alpha-lantern-rack', 'alpha-path-fence', 'alpha-mainland-pier-r4-candidate',
-  'alpha-echo-cave-station-6', 'alpha-lodge-threshold', 'alpha-supported-boulder-field',
+  'north-attractions-road', 'alpha-echo-cave-station-6', 'alpha-lodge-threshold', 'alpha-supported-boulder-field',
   'alpha-crafted-alpine-forest', 'alpha-agent-exchange', 'alpha-terrain-patch', 'island-terrain-v4', 'street-year-group',
+  ...['cable', 'ferry', 'sled'].flatMap(kind => [
+    `alpha-${kind}-vehicle-model`, `alpha-${kind}-gangway-0`, `alpha-${kind}-gangway-1`,
+  ]),
+  'cable-lower-canopy-structure', 'cable-upper-canopy-structure',
   ...['plaza','walk-0','walk-1','walk-2'].map(id=>'park-walk-structure-'+id),
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id=>'park-hut-structure-'+id),
   ...['C12','C13-0','C13-1','C15'].map(id=>'camp-content-push-'+id),
+  ...['C03-large-tent','C04-small-tents','C05-fire-pit','C06-instances','C07-pad1','C09-pad2','C10-pad3',
+    'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
+  'world-camp-slice',
 ];
 const classes = new Set<CollisionClass>(['solid', 'pushable', 'soft', 'none']);
 const counts = () => ({ meshes: 0, declared: 0, unclassified: 0, invalid: 0 });
 type Claim = { id: string | undefined; shared: boolean };
 type Declaration = { blocks: Claim[]; partial?: boolean } | 'invalid' | 'unclassified';
-type Placement = { id: string; matrix: Matrix4 };
+type Placement = { id: string; matrix: Matrix4; surfaceIds?: readonly string[] };
 export interface InstanceCollisionSources {
   placements: readonly Placement[];
   /** Source index for each currently drawn GPU slot. Culling compacts those slots. */
@@ -23,20 +30,26 @@ export interface InstanceCollisionSources {
 function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSources): Declaration {
   if (!mesh.isInstancedMesh || mesh.userData.worldCollision !== 'solid' || !Array.isArray(sources?.placements)
     || !Array.isArray(sources.slots) || sources.slots.length !== mesh.count) return 'invalid';
+  const placements: readonly Placement[] = sources.placements;
   const ids = new Set<string>();
-  for (const p of sources.placements) {
-    if (!p?.id || ids.has(p.id) || !p.matrix?.isMatrix4) return 'invalid';
+  for (const p of placements) {
+    const matrix = p?.matrix;
+    if (!p?.id || ids.has(p.id) || !matrix || typeof matrix !== 'object' || !('isMatrix4' in matrix)
+      || matrix.isMatrix4 !== true || !Array.isArray(matrix.elements) || matrix.elements.length !== 16) return 'invalid';
+    if (p.surfaceIds !== undefined && (!Array.isArray(p.surfaceIds) || !p.surfaceIds.length
+      || new Set(p.surfaceIds).size !== p.surfaceIds.length
+      || p.surfaceIds.some((id:unknown) => typeof id !== 'string' || !id))) return 'invalid';
     ids.add(p.id);
   }
   if (new Set(sources.slots).size !== mesh.count) return 'invalid';
   for (const [slot, index] of sources.slots.entries()) {
-    const placement: Placement | undefined = sources.placements[index];
+    const placement: Placement | undefined = placements[index];
     if (!Number.isInteger(index) || !placement) return 'invalid';
     const gpu = mesh.instanceMatrix.array;
     if (!placement.matrix.elements.every((v, i) => Math.fround(v) === gpu[16 * slot + i])) return 'invalid';
   }
   // Both LODs refer back to the same permanent set of physics placements.
-  return { blocks: [...ids].map(id => ({ id, shared: true })) };
+  return { blocks: placements.flatMap(p => (p.surfaceIds ?? [p.id]).map(id => ({ id, shared: true }))) };
 }
 
 function declaration(mesh: Mesh): Declaration {
@@ -100,11 +113,12 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   activeColliderNodes: Iterable<Object3D>, requiredRoots = migratedCollisionRoots, heldObjects: Iterable<Object3D> = []) {
   const mounted = counts(), submitted = counts(), errors: string[] = [];
   const roots = new Set(requiredRoots);
-  const scoped = new Map<Object3D, { names: Map<string, number>; claims: Map<string, boolean> }>();
+  const scoped = new Map<Object3D, { names: Map<string, number>; claims: Map<string, boolean>; held: Set<string> }>();
   const mountedGaps = new Map<string, number>(), submittedGaps = new Map<string, number>();
   const frame = new Set(submittedObjects);
+  let depthOnlyCopies = 0;
   scene.traverse(node => {
-    if (roots.has(node.name)) scoped.set(node, { names: new Map(), claims: new Map() });
+    if (roots.has(node.name)) scoped.set(node, { names: new Map(), claims: new Map(), held:new Set() });
   });
   function owner(node: Object3D | null) {
     while (node && !scoped.has(node)) node = node.parent;
@@ -119,6 +133,7 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
     const root = owner(node), scope = root && scoped.get(root);
     if (!scope) continue;
     scope.names.set(node.name,(scope.names.get(node.name) ?? 0)+1);
+    scope.held.add(node.name);
     heldColliderIds.add(node.name);
   }
   scene.traverse(node => {
@@ -130,6 +145,12 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
     mounted.meshes++; mounted[state]++;
     const inFrame = frame.has(mesh) && (mesh as InstancedMesh).count !== 0 && mesh.geometry.drawRange.count !== 0;
     if (inFrame) { submitted.meshes++; submitted[state]++; }
+    if (mesh.userData.worldCollisionReason === 'shadow-depth-copy') {
+      depthOnlyCopies++;
+      if (!mesh.userData.shadowProxy || mesh.parent?.name !== 'world-shadow-proxies' || inFrame) {
+        errors.push(mesh.name + ': a depth-only shadow copy escaped into the colour scene');
+      }
+    }
     if (state !== 'declared') {
       const region = regionOf(mesh, scene);
       mountedGaps.set(region, (mountedGaps.get(region) ?? 0) + 1);
@@ -149,11 +170,11 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   for (const name of requiredRoots) {
     const matches = [...scoped].filter(([root]) => root.name === name);
     if (matches.length !== 1 || !matches[0][1].claims.size) errors.push('Missing or ambiguous collision structure: ' + name);
-    else registrations[name] = [...matches[0][1].claims.keys()].filter(id=>!heldColliderIds.has(id)).length;
+    else registrations[name] = [...matches[0][1].claims.keys()].filter(id=>!matches[0][1].held.has(id)).length;
   }
   for (const [root, scope] of scoped) for (const name of scope.names.keys()) {
     if (!scope.claims.has(name)) errors.push(root.name + ': collider without a visible source: ' + name);
   }
-  return { mounted, submitted, mountedGapsByRegion: sortedCounts(mountedGaps),
+  return { mounted, submitted, depthOnlyCopies, mountedGapsByRegion: sortedCounts(mountedGaps),
     submittedGapsByRegion: sortedCounts(submittedGaps), registrations, heldColliderIds: [...heldColliderIds].sort(), errors };
 }

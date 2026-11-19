@@ -29,6 +29,7 @@ const BOARDING_TEXT: Record<CoasterBoardingPhase, IntentText> = {
   'turn-out': { zh: '转向车厢出口', en: 'Turning toward the exit' },
   'step-out': { zh: '沿踏步下车', en: 'Walking down the steps' },
   'walk-out': { zh: '走回安全站台', en: 'Walking onto the platform' },
+  retreat: { zh: '沿原路返回站台', en: 'Returning along the boarding path' },
   complete: { zh: '正在确认站台出口畅通', en: 'Checking the platform exit is clear' },
 };
 const VIEWS: { id: CoasterView; label: IntentText }[] = [
@@ -60,8 +61,13 @@ function WorldIntentHud() {
     <progress value={s.rideSecond} max={COASTER_DURATION} aria-label={t('乘坐进度', 'Ride progress')} />
     {viewControls}<button type="button" onClick={resetAttractionLook}>{t('视角归位', 'Reset view')}</button>
     <p><small>{t('拖拽自由观察 · 滚轮缩放 · 手柄右摇杆转头', 'Drag to look · scroll to zoom · right stick to look')}</small></p>
+    {s.rideBlocked && <p role="status">{s.ridePhase === 'approach' || s.ridePhase === 'step-in'
+      ? t('登车路线被挡住了。请等通道恢复，或按 E／手柄 B 返回站台。', 'The boarding path is blocked. Wait for it to clear or press E / B to return to the platform.')
+      : t('回站路线被挡住了。请等通道恢复，或使用返回营地。', 'The path to the platform is blocked. Wait for it to clear or return to camp.')}</p>}
     {s.ridePhase === 'riding' && <button type="button" className="intent-primary" onClick={skipIntentRide}>{t('跳过行程并回站', 'Skip travel and return to station')}</button>}
-    <button type="button" className="intent-primary" disabled={s.exitRequested || ['stand', 'turn-out', 'step-out', 'walk-out', 'complete'].includes(s.ridePhase ?? '')} onClick={stopIntentRide}>{s.exitRequested ? t('已登记，回站后下车', 'Exit requested. Leaving at the station') : s.ridePhase === 'riding' ? t('回站后下车', 'Leave at the station') : t('取消本次发车并下车', 'Cancel departure and step out')}</button>
+    <button type="button" className="intent-primary" disabled={s.exitRequested || ['stand', 'turn-out', 'step-out', 'walk-out', 'complete'].includes(s.ridePhase ?? '')} onClick={stopIntentRide}>{s.exitRequested
+      ? s.ridePhase === 'retreat' ? t('正在返回站台', 'Returning to the platform') : t('已登记，回站后下车', 'Exit requested. Leaving at the station')
+      : s.ridePhase === 'riding' ? t('回站后下车', 'Leave at the station') : t('取消登车并返回站台', 'Cancel boarding and return to the platform')}</button>
     <small>{t('Esc／手柄 Start 暂停。E／手柄 B 申请下车。可跳过行程，停稳后沿踏步下车。', 'Esc / Start pauses. E / B requests an exit. Skip travel to stop at the station, then leave via the steps.')}</small>
   </aside>;
   const interaction = w.interaction;

@@ -16,12 +16,12 @@ interface IntentState {
   progress: IntentProgress; loaded: boolean; saveIssue: IntentText | null;
   tasks: Record<IntentStationId, number>; tools: Record<IntentStationId, IntentClass>;
   notice: IntentText | null; effect: { station: IntentStationId; tool: IntentClass | 'bell'; correct: boolean; sequence: number } | null;
-  ridePhase: CoasterBoardingPhase | null; exitRequested: boolean; riding: boolean; view: CoasterView; rideSecond: number; active: boolean;
+  ridePhase: CoasterBoardingPhase | null; exitRequested: boolean; rideBlocked: boolean; riding: boolean; view: CoasterView; rideSecond: number; active: boolean;
 }
 export const useIntentStore = create<IntentState>(() => ({
   progress: createIntentProgress(), loaded: false, saveIssue: null,
   tasks: { route: 0, press: 0, visitor: 0 }, tools: { route: 'lookup', press: 'rewrite', visitor: 'rewrite' },
-  notice: null, effect: null, ridePhase: null, exitRequested: false, riding: false, view: COASTER_DEFAULT_VIEW, rideSecond: 0, active: false,
+  notice: null, effect: null, ridePhase: null, exitRequested: false, rideBlocked: false, riding: false, view: COASTER_DEFAULT_VIEW, rideSecond: 0, active: false,
 }));
 export const intentRideClock: CoasterClock = { elapsed: 0, riding: false, revision: -1 };
 /** Explicit development UI only; never persisted or used by a production frame. */
@@ -103,7 +103,7 @@ export function activateIntentTarget(target: IntentTarget) {
     if (import.meta.env?.DEV) intentRideQaHold.second = null;
     parkAudio.cue('scan', .3);
     Object.assign(intentRideClock, { elapsed: 0, riding: false, revision: attractionRide.revision });
-    useIntentStore.setState({ riding: true, ridePhase: 'approach', exitRequested: false, rideSecond: 0, notice: null });
+    useIntentStore.setState({ riding: true, ridePhase: 'approach', exitRequested: false, rideBlocked: false, rideSecond: 0, notice: null });
   }
 }
 export function stopIntentRide() {
@@ -123,7 +123,7 @@ export function clearIntentRide(abort = false) {
   // Never end another attraction's ride after external recovery has changed bridge ownership.
   if (abort && intentRideClock.revision === attractionRide.revision) endAttractionRide();
   Object.assign(intentRideClock, { riding: false, elapsed: 0 });
-  useIntentStore.setState({ riding: false, ridePhase: null, exitRequested: false, rideSecond: 0 });
+  useIntentStore.setState({ riding: false, ridePhase: null, exitRequested: false, rideBlocked: false, rideSecond: 0 });
 }
 export function resetIntentVisit() {
   if (useIntentStore.getState().riding) return;

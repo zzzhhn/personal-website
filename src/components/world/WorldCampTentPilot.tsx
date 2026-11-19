@@ -1,18 +1,20 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
-import { Group, LinearFilter, LinearMipmapLinearFilter, Mesh, MeshStandardMaterial, Vector2, type BufferGeometry, type Material, type MeshDepthMaterial, type Texture } from 'three';
+import { Euler, Group, LinearFilter, LinearMipmapLinearFilter, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector2, Vector3, type BufferGeometry, type Material, type MeshDepthMaterial, type Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { applyTentWind, markTentCloth, type TentWindParams } from './WorldWind';
 import { night } from './WorldNight';
 import type { Vec3 } from './types';
+import { CampColliders, campShapes, campTentSurface } from './WorldCampPhysics';
 
 export const CAMP_TENT_PILOT_URL = '/assets/world/scenario-craft-pilot/C03-tent-v1.glb';
 export type TentPilotPlacement = { position: Vec3; yaw: number; scale?: number };
 
-/** Visual only. The original camp C03 owns collision and interaction anchors. */
 function TentVisual({ placement }: { placement: TentPilotPlacement }) {
   const gltf = useLoader(GLTFLoader, CAMP_TENT_PILOT_URL);
+  const shapes = useMemo(() => campShapes('C03', gltf), [gltf]);
+  const matrices = useMemo(() => [new Matrix4().compose(new Vector3(...placement.position), new Quaternion().setFromEuler(new Euler(0, placement.yaw, 0)), new Vector3().setScalar(placement.scale ?? 1))], [placement]);
   const environment = useDjcFurnitureEnvironment();
   const anisotropy = useThree(s => Math.min(4, Math.max(1, s.gl.capabilities.getMaxAnisotropy())));
   const lastNight = useRef(-1);
@@ -66,7 +68,8 @@ function TentVisual({ placement }: { placement: TentPilotPlacement }) {
       const material = Array.isArray(original.material) ? original.material.map(one) : one(original.material);
       const mesh = new Mesh(geometry, material);
       mesh.name = `camp-C03-pilot-${original.name}`;
-      mesh.userData = { assetId: 'C03', solid: true, pilot: 'scenario-v1', semantic: original.name };
+      const shell = original.name === 'C03_pilot_canvas' || original.name === 'C03_pilot_binding';
+      mesh.userData = { assetId: 'C03', solid: true, pilot: 'scenario-v1', semantic: original.name, ...campTentSurface('C03','large-tent',shell) };
       mesh.castShadow = true; mesh.receiveShadow = true;
       const cloth = [material].flat().find(m => m.name === 'camp_canvas_orange') as MeshStandardMaterial | undefined;
       if (cloth) {
@@ -102,9 +105,11 @@ function TentVisual({ placement }: { placement: TentPilotPlacement }) {
     for (const m of visual.physical) m.envMapIntensity = 1.1 * (1 - .8 * night.value);
     for (const m of visual.canvas) m.emissiveIntensity = night.value * .15;
   });
-  return <group position={placement.position} rotation={[0, placement.yaw, 0]} scale={placement.scale ?? 1} dispose={null}>
-    <primitive object={visual.root} dispose={null} />
-  </group>;
+  if (!shapes) throw new Error('C03 craft is missing its fitted canvas shell');
+  return <>
+    <group matrix={matrices[0]} matrixAutoUpdate={false} dispose={null}><primitive object={visual.root} dispose={null} /></group>
+    <CampColliders id="C03" label="large-tent" shapes={shapes} matrices={matrices} />
+  </>;
 }
 
 export default function WorldCampTentPilot({ placement }: { placement: TentPilotPlacement }) {

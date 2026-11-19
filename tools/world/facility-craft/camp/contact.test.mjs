@@ -174,6 +174,10 @@ test('mounted component owns just one eight-triangle mesh and cleans up without 
   assert.deepEqual([position.version, strength.version], versions, 'steady actual component does not mark buffers for upload');
   visual.position.y += .05; slot.update(); assert.equal(mesh.visible, false, 'actual visual feedback transform is used');
   visual.position.y -= .05; slot.update(); assert.equal(mesh.visible, true);
+  const replacement = paving(); replacement.position.y = -.08;
+  scene.remove(pad); scene.add(replacement); slot.update();
+  assert.equal(mesh.visible, false, 'late flagstones replace the cached legacy support while the same suitcase stays mounted');
+  scene.remove(replacement); scene.add(pad); slot.update(); assert.equal(mesh.visible,true);
   release(); slot.update(); assert.equal(mesh.visible, false, 'unmount/fallback hides old candidate contact');
   let geometryDisposals = 0, materialDisposals = 0, borrowedDisposals = 0;
   mesh.geometry.addEventListener('dispose', () => geometryDisposals++); mesh.material.addEventListener('dispose', () => materialDisposals++);

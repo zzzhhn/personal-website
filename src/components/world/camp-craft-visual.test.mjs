@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
-import { Box3, BoxGeometry, DoubleSide, FrontSide, Group, Matrix4, Mesh, MeshStandardMaterial, Raycaster, Texture, Vector3 } from 'three';
+import { Box3, BoxGeometry, DoubleSide, FrontSide, Group, Matrix4, Mesh, MeshStandardMaterial, Object3D, Raycaster, Scene, Texture, Vector3 } from 'three';
 import { CAMP_CRAFT_CONTACT, campCraftLegacy, createCampCraftVisual } from './camp-craft-visual.ts';
 import { benches } from './WorldCampContentLayout.ts';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
+import { campColliderKey } from './WorldCampPhysics.tsx';
+import { collisionInventory } from './world-collision-inventory.ts';
 
 test('craft QA opt-out needs explicit qa=1', () => {
   assert.equal(campCraftLegacy('?campCraft=legacy'), false);
@@ -38,14 +38,21 @@ test('instances own shared material clones while borrowing geometry, maps and th
   visual.dispose(); visual.dispose(); assert.equal(ownedDisposals, 2); other.dispose(); assert.equal(sourceDisposals, 0);
   geometry.dispose(); material.dispose(); map.dispose(); environment.dispose();
 });
-test('fixed original GLBs used for physical registration and seat anchors are byte-identical', () => {
-  const expected = { C05:'54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692',C06:'401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556',C07:'ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873' };
-  for (const [id,hash] of Object.entries(expected)) assert.equal(createHash('sha256').update(readFileSync(new URL(`../../../public/assets/world/camp/${id}.glb`,import.meta.url))).digest('hex'),hash);
-  const camp = readFileSync(new URL('./WorldCamp.tsx', import.meta.url),'utf8');
-  // Batch4 can load a separate visual GLB. Physics must still read the fixed original URL.
-  assert.ok(camp.includes('const physics = useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco)'));
-  assert.match(camp, /campShapes\(id, physics\)/); assert.match(camp, /<CampColliders id=\{id\} label=\{label\} shapes=\{shapes\} matrices=\{matrices\}/);
-  assert.match(camp, /<CampFire position=\{\[firePosition\[0\], CAMP_TOP \+ 0\.06, firePosition\[2\]\]\}/);
+test('all material batches of each visible bench instance trace to its single collider', async () => {
+  const gltf = await readWorldCraftGltf(['public/assets/world/camp/craft/camp-props-v1.glb']);
+  assert.ok(gltf);
+  const matrices = benches().map(b => new Matrix4().makeRotationY(b.yaw).setPosition(...b.centre));
+  const visual = createCampCraftVisual(gltf.scene, 'C06', matrices, null, 'instances');
+  try {
+    const scene = new Scene(), nodes = matrices.map((_,i) => {
+      const node = new Object3D(); node.name = campColliderKey('C06','instances',i,'body'); return node;
+    });
+    scene.add(visual.root); visual.root.add(...nodes);
+    const audit = collisionInventory(scene, visual.instances, nodes, [visual.root.name]);
+    assert.deepEqual(audit.errors, []);
+    assert.equal(audit.registrations[visual.root.name], matrices.length);
+    assert.ok(collisionInventory(scene, visual.instances, nodes.slice(1), [visual.root.name]).errors.length);
+  } finally { visual.dispose(); disposeWorldCraftGltf(gltf.scene); }
 });
 test('actual pack has three fixed roots, valid geometry and eight true 600mm bench contacts', async t => {
   const gltf = await readWorldCraftGltf(['public/assets/world/camp/craft/camp-props-v1.glb']);

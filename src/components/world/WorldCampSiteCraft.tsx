@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { Group, InstancedMesh, Matrix4, type Mesh, type MeshStandardMaterial } from 'three';
+import { Group, InstancedMesh, Matrix4, type BufferGeometry, type Mesh, type MeshStandardMaterial } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { placementMatrix } from './WorldCampContentAssets';
 import { PAD_TOP } from './WorldCampContentLayout';
@@ -8,6 +8,7 @@ import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
 import { applyCampSurfaceBalance } from './camp-surface-balance';
 import type { Vec3 } from './types';
+import { CampStoneColliders, campGradedFlagstones, campStoneShapes, campStoneInstances } from './WorldCampPhysics';
 
 export const CAMP_SITE_CRAFT_URL = '/assets/world/camp-site-craft/camp-site-v1.glb';
 export const campSiteLegacy = (search: string) => new URLSearchParams(search).get('campSiteCraft') === 'legacy';
@@ -16,16 +17,17 @@ type Family = 'C02' | 'L01';
 type VisualProps = { family: Family; matrices: readonly Matrix4[] };
 
 function SiteVisual({ family, matrices }: VisualProps) {
-  const { scene } = useLoader(GLTFLoader, CAMP_SITE_CRAFT_URL);
+  const gltf = useLoader(GLTFLoader, CAMP_SITE_CRAFT_URL);
+  const { scene } = gltf;
   const environment = useDjcFurnitureEnvironment();
   const visual = useMemo(() => {
     const source = scene.getObjectByName(family);
     if (!source) throw new Error(`Camp site pack missing ${family}`);
     scene.updateMatrixWorld(true);
     const root = new Group(), meshes: InstancedMesh[] = [], materials: MeshStandardMaterial[] = [];
-    const frame = new Matrix4();
     root.name = family === 'C02' ? 'camp-C02-flagstones' : 'camp-L01-exit-posts';
     let lens: MeshStandardMaterial | undefined;
+    const ownedGeometry: BufferGeometry[] = [];
     source.traverse(object => {
       const part = object as Mesh;
       if (!part.isMesh) return;
@@ -35,12 +37,16 @@ function SiteVisual({ family, matrices }: VisualProps) {
       applyCampSurfaceBalance(material, night);
       const isLens = material.name === 'camp_exit_diffuser';
       if (isLens) lens = material;
-      const mesh = new InstancedMesh(part.geometry, material, matrices.length);
+      const paving = family === 'C02' ? campGradedFlagstones(part.geometry,part.matrixWorld) : null;
+      if (paving) ownedGeometry.push(paving);
+      const mesh = new InstancedMesh(paving ?? part.geometry, material, matrices.length);
       mesh.name = part.name;
       mesh.receiveShadow = !isLens;
       mesh.castShadow = family === 'L01' && !isLens;
-      mesh.userData = { assetId: family, noOcclusionFade: isLens || family === 'C02', solid: mesh.castShadow };
-      matrices.forEach((matrix, index) => mesh.setMatrixAt(index, frame.multiplyMatrices(matrix, part.matrixWorld)));
+      const displayed = paving ? matrices : matrices.map(matrix => new Matrix4().multiplyMatrices(matrix,part.matrixWorld));
+      mesh.userData = { assetId: family, noOcclusionFade: isLens || family === 'C02', solid: mesh.castShadow,
+        ...(family === 'C02' ? campStoneInstances('laid',displayed) : {}) };
+      displayed.forEach((matrix,index) => mesh.setMatrixAt(index,matrix));
       mesh.instanceMatrix.needsUpdate = true;
       mesh.computeBoundingSphere();
       root.add(mesh);
@@ -48,7 +54,9 @@ function SiteVisual({ family, matrices }: VisualProps) {
       materials.push(material);
     });
     if (!meshes.length || (family === 'L01' && !lens)) throw new Error(`Incomplete camp site family: ${family}`);
-    return { root, meshes, materials, lens, users: 0, nightAmount: NaN };
+    if (family === 'C02' && ownedGeometry.length !== 1) throw new Error('Expected one laid flagstone batch');
+    const shapes = ownedGeometry.length ? campStoneShapes(ownedGeometry[0]) : null;
+    return { root, meshes, materials, lens, ownedGeometry, shapes, users: 0, nightAmount: NaN };
   }, [environment, family, matrices, scene]);
 
   useEffect(() => {
@@ -59,6 +67,7 @@ function SiteVisual({ family, matrices }: VisualProps) {
       queueMicrotask(() => {
         if (visual.users) return;
         visual.meshes.forEach(mesh => mesh.dispose());
+        visual.ownedGeometry.forEach(geometry => geometry.dispose());
         visual.materials.forEach(material => material.dispose());
       });
     };
@@ -72,7 +81,9 @@ function SiteVisual({ family, matrices }: VisualProps) {
     if (visual.lens) visual.lens.emissiveIntensity = 0.18 + amount * 1.25;
   });
 
-  return <primitive object={visual.root} dispose={null} />;
+  if (family === 'C02' && !visual.shapes) throw new Error('Camp site pack is missing flagstone support');
+  return <><primitive object={visual.root} dispose={null} />
+    {visual.shapes && <CampStoneColliders label="laid" shapes={visual.shapes} matrices={matrices}/>}</>;
 }
 
 class SiteBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {

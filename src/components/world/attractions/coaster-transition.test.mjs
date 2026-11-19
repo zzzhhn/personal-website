@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import R from '@dimforge/rapier3d-compat';
 import { existsSync } from 'node:fs';
-import { AnimationMixer, DoubleSide, Group, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
+import { AnimationMixer, DoubleSide, Euler, Group, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
 import { COASTER_BOARDING as B, COASTER_STAIR_SPEED, advanceCoasterTransition, captureCoasterStart, coasterAtBoardingEntrance,
   coasterBoardingGround, coasterTransitionDuration, createCoasterTransition, returnCoasterToStation } from './coaster-transition.ts';
 import { coasterRidePose, coasterFrame } from './coaster-track.ts';
@@ -13,6 +14,7 @@ import { GuideSlopeFit, skinnedWorldPoint } from '../WorldGuideStop.ts';
 import { GuidePhaseModel } from '../WorldGuidePhase.ts';
 import { glb, loadGuide, motionDigest } from '../../../../tools/world/guide/boot-analysis.mjs';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from '../world-craft-gltf-test.mjs';
+import { rideFootRouteClear } from '../rides/ride-clearance.ts';
 const pose = coasterRidePose(0, 'chase');
 function start() {
   const from = [B.approach[0] - .4, B.platformY, B.approach[2] + .2];
@@ -56,6 +58,82 @@ test('the stair jog traverses every tread in about two seconds and eases into th
     assert.equal(maximum, COASTER_STAIR_SPEED); assert.equal(heights.size, 6);
   }
 });
+test('with the production coaster shapes, ascent, retreat and descent wait for real obstacles and allow retry', async () => {
+  await R.init();
+  const world = new R.World({x:0,y:0,z:0});
+  const structure = createCoasterStructure(true);
+  const supports = new Set();
+  const putBox = (point, foot) => {
+    const [x,,z]=point;
+    const collider=world.createCollider(R.ColliderDesc.cuboid(.18,.68,.18).setTranslation(x,foot+.68,z));
+    world.step();
+    return collider;
+  };
+  const remove = collider => { world.removeCollider(collider,false); world.step(); };
+  for(const c of structure.colliders) {
+    const desc=c.hull?R.ColliderDesc.convexHull(c.hull):R.ColliderDesc.cuboid(...c.half);
+    if(c.rotation)desc.setRotation(new Quaternion().setFromEuler(new Euler(...c.rotation)));
+    const collider=world.createCollider(desc.setTranslation(...c.position));
+    if(c.boardingSupport)supports.add(collider.handle);
+  }
+  for(const mesh of [structure.track, structure.relief])world.createCollider(R.ColliderDesc.trimesh(mesh.vertices,mesh.indices));
+  world.step();
+  const clear = (a,b,stairs) => rideFootRouteClear(world,R,undefined,[a,b],c=>!stairs||!supports.has(c.handle));
+  const advance = (transition) => advanceCoasterTransition(transition,1/60,false,pose,clear);
+  const wait = (transition, condition) => {
+    for(let i=0;i<600&&!condition();i++)advance(transition);
+    assert.ok(condition(), `phase ${transition.phase} elapsed ${transition.elapsed} at ${transition.frame.root}`);
+  };
+  const newBoarding = () => {
+    const transition=createCoasterTransition(B.exit,0,pose);
+    captureCoasterStart(transition,B.exit,0);
+    wait(transition,()=>transition.phase==='step-in');
+    return transition;
+  };
+  try {
+    assert.equal(supports.size,7,'only the six treads and threshold are standing-path supports');
+    const transition = newBoarding();
+    for(let i=0;i<24;i++)advance(transition);
+    const front = putBox(B.stairs[3].position, B.stairs[3].top);
+    wait(transition,()=>transition.blockedMotion);
+    assert.equal(transition.phase,'step-in');
+    assert.ok(transition.frame.root[0]>B.stairs[3].position[0]);
+    const held = [...transition.frame.root], heldTime = transition.elapsed;
+    for(let i=0;i<30;i++)advance(transition);
+    assert.deepEqual(transition.frame.root,held);
+    assert.equal(transition.elapsed,heldTime);
+    const back = putBox(B.stairs[0].position, B.stairs[0].top);
+    transition.exitRequested=true;
+    wait(transition,()=>transition.phase==='retreat'&&transition.blockedMotion);
+    assert.ok(transition.frame.root[0]>=held[0],'cancellation never progresses toward the carriage');
+    assert.ok(transition.frame.root[0]<B.stairs[0].position[0],'reverse path stops before the new obstruction');
+    const kept = [...transition.frame.root];
+    for(let i=0;i<30;i++)advance(transition);
+    assert.deepEqual(transition.frame.root,kept);
+    remove(back);
+    wait(transition,()=>transition.phase==='complete');
+    assert.deepEqual(transition.frame.root,B.exit);
+    remove(front);
+
+    const retried = newBoarding();
+    wait(retried,()=>retried.phase==='riding');
+    returnCoasterToStation(retried);
+    wait(retried,()=>retried.phase==='step-out');
+    const door = putBox(B.threshold.position, B.floorY);
+    wait(retried,()=>retried.blockedMotion);
+    assert.equal(retried.phase,'step-out');
+    const beforeDoor = [...retried.frame.root];
+    retried.exitRequested=true;
+    for(let i=0;i<30;i++)advance(retried);
+    assert.deepEqual(retried.frame.root,beforeDoor,'exit input cannot reverse through the obstructed doorway');
+    remove(door);
+    wait(retried,()=>retried.phase==='complete');
+    assert.deepEqual(retried.frame.root,B.exit);
+  } finally {
+    world.free();
+    for(const geometry of [structure.steel,structure.glow,...Object.values(structure.railCraft??{}),structure.railShadow])geometry?.dispose();
+  }
+});
 test('pause, tab hiding and stale-frame gaps freeze every boarding and exit phase', () => {
   for (const phase of ['approach', 'step-in', 'turn-in', 'sit', 'settle', 'riding', 'stand', 'turn-out', 'step-out', 'walk-out']) {
     const t = start(); t.phase = phase; t.elapsed = .2; tick(t);
@@ -66,9 +144,10 @@ test('pause, tab hiding and stale-frame gaps freeze every boarding and exit phas
 });
 test('boarding cancellation never dispatches; moving exits do not jump to the station', () => {
   for (const phase of ['approach', 'step-in', 'turn-in', 'sit', 'settle']) {
-    const t = start(); t.phase = phase; t.exitRequested = true;
+    const t = start(); until(t, phase); t.exitRequested = true;
     for (let i = 0; i < 6000 && t.phase !== 'complete'; i++) { tick(t); assert.notEqual(t.phase, 'riding'); }
-    assert.equal(t.phase, 'complete'); assert.deepEqual(t.frame.root, B.exit);
+    assert.equal(t.phase, 'complete');
+    assert.deepEqual(t.frame.root, phase === 'approach' || phase === 'step-in' ? t.from : B.exit);
   }
   const t = start(); until(t, 'riding'); t.exitRequested = true;
   for (let i = 0; i < 600; i++) tick(t);

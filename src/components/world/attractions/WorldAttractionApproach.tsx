@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { BufferGeometry, CanvasTexture, Float32BufferAttribute, MeshStandardMaterial, SRGBColorSpace, Vector3 } from 'three';
+import { BoxGeometry, BufferGeometry, CanvasTexture, PlaneGeometry, Float32BufferAttribute, MeshStandardMaterial, SRGBColorSpace, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL } from './attraction-layout';
@@ -10,6 +10,16 @@ import { approachEdgeSkirts } from './attraction-approach-edges';
 
 /** Follow the physical triangles, including the ridge's snapped crease vertices. */
 const approachHeight = requireMeshHeight;
+const roadId = 'north-attractions-road';
+const signPlaces = [[.8,-59],[-19,-117]];
+
+export function buildNorthSign() {
+  return [
+    { id: 'post', y: 1.2, geometry: new BoxGeometry(.14,2.4,.14) },
+    { id: 'board', y: 2.4, geometry: new PlaneGeometry(4.2,1.75) },
+  ].map(part => ({ ...part, vertices: part.geometry.attributes.position.array as Float32Array,
+    indices: Uint32Array.from(part.geometry.index!.array) }));
+}
 function siteGeometry(data:SiteMesh) {
   const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(data.positions,3));g.setIndex(data.indices);g.computeVertexNormals();return g;
 }
@@ -49,19 +59,34 @@ export default function WorldAttractionApproach() {
   },[lang]);
   useEffect(()=>()=>sign.dispose(),[sign]);
   const built=useMemo(buildAttractionApproachGeometry,[]);
+  const signParts=useMemo(buildNorthSign,[]);
+  useEffect(()=>()=>signParts.forEach(p=>p.geometry.dispose()),[signParts]);
   useEffect(()=>()=>{built.meshes.forEach(m=>{m.geometry.dispose();m.material.dispose();});built.walk.dispose();},[built]);
   return <group name="north-attractions-approach" userData={{noOcclusionFade:true}}>
-    {built.meshes.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
-    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
-      <TrimeshCollider args={[built.meshes[0].positions,built.meshes[0].indices]} friction={.9}/>
-    </RigidBody>
+    <group name={roadId}>
+      {built.meshes.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}
+        userData={m.collision}/>)}
+      <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
+        {built.meshes.slice(0,2).map((m,i)=><TrimeshCollider key={i} name={roadId+'/'+i+'/top'}
+          args={[m.positions,m.indices]} friction={.9}/>)}
+      </RigidBody>
+      <RigidBody type='fixed' colliders={false} userData={{solid:true,assetId:'north-road-edge'}}>
+        {built.meshes.map((m,i)=>m.sideIndices && <TrimeshCollider key={i} name={roadId+'/'+i+'/skirt'}
+          args={[m.geometry.attributes.position.array as Float32Array,m.sideIndices]} friction={.65}/>)}
+      </RigidBody>
+      {signPlaces.map(([x,z],i)=><group key={i} position={[x,approachHeight(x,z),z]}>
+        {signParts.map(p=><mesh key={p.id} position={[0,p.y,0]} geometry={p.geometry} castShadow={p.id==='post'}
+          userData={{worldCollision:'solid',surfaceId:roadId+'/'+i+'/'+p.id}}>
+          {p.id==='post'? <meshStandardMaterial color='#63543e' roughness={.9}/> : <meshBasicMaterial map={sign} toneMapped={false}/>}
+        </mesh>)}
+        <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:'north-road-sign'}}>
+          {signParts.map(p=><TrimeshCollider key={p.id} name={roadId+'/'+i+'/'+p.id} position={[0,p.y,0]} args={[p.vertices,p.indices]}/>)}
+        </RigidBody>
+      </group>)}
+    </group>
     <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'coaster-arrival-walk'}}>
-      <TrimeshCollider args={[built.walk.getAttribute('position').array as Float32Array,built.walkIndices]} friction={.9}/>
+      <TrimeshCollider name="coaster-arrival-walk" args={[built.walk.getAttribute('position').array as Float32Array,built.walkIndices]} friction={.9}/>
     </RigidBody>
-    {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,approachHeight(x,z),z]}>
-      <mesh position={[0,1.2,0]} castShadow><boxGeometry args={[.14,2.4,.14]}/><meshStandardMaterial color='#63543e' roughness={.9}/></mesh>
-      <mesh position={[0,2.4,0]}><planeGeometry args={[4.2,1.75]}/><meshBasicMaterial map={sign} toneMapped={false}/></mesh>
-    </group>)}
   </group>;
 }
 
@@ -87,10 +112,11 @@ export function buildAttractionApproachGeometry() {
     const groups=[asphalt,edge,paint],colors=['#65665e','#b9ae8c','#e1d4ad'];
     const meshes=groups.map((parts,i)=>{
       const geometry=mergeGeometries(parts)!;parts.forEach(p=>p.dispose());
-      return {geometry,positions:geometry.getAttribute('position').array as Float32Array,indices:new Uint32Array(geometry.index!.array),material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
+      const collision: Record<string, unknown> = i === 2 ? {worldCollision:'none'} : {worldCollision:'solid',surfaceId:roadId+'/'+i+'/top'};
+      return {geometry,collision,sideIndices:null as Uint32Array|null,positions:geometry.getAttribute('position').array as Float32Array,indices:new Uint32Array(geometry.index!.array),material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
     });
     const walk=siteGeometry(COASTER_ARRIVAL.walk);
-    // Keep the frozen top/physics arrays separate from these purely visual sides.
+    // Keep support and vertical edge triangles separate for wheels, shoes and recovery.
     // Include the walking connector as a neighbour so its shared arrival edge stays open.
     const tops=[...meshes.slice(0,2).map(m=>({positions:m.positions,indices:m.indices})),
       {...COASTER_ARRIVAL.walk,close:false}];
@@ -98,6 +124,13 @@ export function buildAttractionApproachGeometry() {
       if(!data.indices.length)return;
       const sides=siteGeometry(data),top=meshes[i].geometry;
       meshes[i].geometry=mergeGeometries([top,sides])!;
+      const combined = meshes[i].geometry.index!;
+      const first = meshes[i].indices.length, end = combined.count, id = roadId+'/'+i;
+      meshes[i].sideIndices=Uint32Array.from(combined.array.slice(first));
+      meshes[i].collision={worldCollisionSources:[
+        {id:id+'/top',collision:'solid',firstIndex:0,indexCount:first},
+        {id:id+'/skirt',collision:'solid',firstIndex:first,indexCount:end-first},
+      ]};
       top.dispose();sides.dispose();
     });
     return {meshes,walk,walkIndices:new Uint32Array(walk.index!.array)};

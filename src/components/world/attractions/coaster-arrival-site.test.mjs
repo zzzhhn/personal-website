@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { buildAttractionApproachGeometry,buildNorthSign } from './WorldAttractionApproach.tsx';
 import { BoxGeometry, BufferGeometry, CatmullRomCurve3, DoubleSide, Float32BufferAttribute, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
 import { ATTRACTION_ROADS, ATTRACTION_ROAD_SAMPLES, COASTER_ARRIVAL, INTENT_COASTER, attractionRoadDistance, attractionScatterBlocked } from './attraction-layout.ts';
 import { COASTER_APRON_TOP, COASTER_ARRIVAL_CENTER, COASTER_ARRIVAL_RADIUS, COASTER_ROAD_TOP, COASTER_WALK_Z, COASTER_WORKSHOP_APRON, arrivalCrossCoordinate, clipArrivalJunction, coasterApronWestX, coasterWalkHeight, roadRail } from './coaster-arrival-site.ts';
@@ -133,10 +133,66 @@ test('apron edge blocks leave the walk open; paving reuses its material role wit
     const arrivalTriangles=COASTER_ARRIVAL.road.indices.length/3+COASTER_ARRIVAL.walk.indices.length/3+COASTER_ARRIVAL.shoulderPolygons.reduce((n,p)=>n+p.length-2,0);
     assert.ok(triangles<6500);assert.ok(arrivalTriangles<180);
     assert.equal(new Set(parts.flatMap(p=>[...p.getAttribute(INTENT_CRAFT_ATTRIBUTE).array])).size,5);
-    const approach=readFileSync(new URL('./WorldAttractionApproach.tsx',import.meta.url),'utf8');
-    assert.match(approach,/siteGeometry\(COASTER_ARRIVAL.walk\)/);
-    assert.match(approach,/built.walk.getAttribute\('position'\).array/);
-    assert.match(approach,/groups=\[asphalt,edge,paint\]/,'three existing approach materials only');
+    const approach=buildAttractionApproachGeometry();
+    try {
+      assert.equal(approach.meshes.length,3);
+      assert.equal(new Set(approach.meshes.map(part=>part.material)).size,3);
+      assert.deepEqual(approach.walk.getAttribute('position').array,Float32Array.from(COASTER_ARRIVAL.walk.positions));
+      assert.deepEqual(approach.walkIndices,Uint32Array.from(COASTER_ARRIVAL.walk.indices));
+    } finally {
+      approach.walk.dispose();
+      for(const m of approach.meshes){m.geometry.dispose();m.material.dispose();}
+    }
     console.log(JSON.stringify({arrivalTriangles,pavingEdgeAndWalkTriangles:triangles,approachMaterials:3,newWalkMaterials:0,walkTop:[COASTER_ROAD_TOP,COASTER_APRON_TOP]}));
   }finally{parts.forEach(g=>g.dispose());}
+});
+
+test('drawn north road shoulders bear weight; paint, sign openings and the pedestrian junction remain clear',async t=>{
+  await R.init();
+  const built=buildAttractionApproachGeometry(),sign=buildNorthSign();
+  const world=new R.World({x:0,y:-9.81,z:0}), legacy=new R.World({x:0,y:-9.81,z:0});
+  const fix=(w,vertices,indices,pos=[0,0,0])=>{
+    const body=w.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...pos));
+    return w.createCollider(R.ColliderDesc.trimesh(vertices,indices,R.TriMeshFlags.FIX_INTERNAL_EDGES),body);
+  };
+  try {
+    const [asphalt,edge,paint]=built.meshes;
+    fix(legacy,asphalt.positions,asphalt.indices);
+    for(const part of [asphalt,edge]){
+      fix(world,part.positions,part.indices);
+      if(part.sideIndices)fix(world,part.geometry.attributes.position.array,part.sideIndices);
+    }
+    world.step();legacy.step();
+    assert.equal(paint.collision.worldCollision,'none');
+    let formerlyUnsupported=0,matched=0,maxError=0;
+    for(let j=0;j<edge.indices.length;j+=3){
+      const vertices=Array.from(edge.indices.slice(j,j+3),i=>new Vector3().fromArray(edge.positions,i*3));
+      const center=vertices[0].clone().add(vertices[1]).add(vertices[2]).divideScalar(3);
+      if(new Vector3().crossVectors(vertices[1].sub(vertices[0]),vertices[2].sub(vertices[0])).lengthSq()<1e-8)continue;
+      const ray=new R.Ray({x:center.x,y:center.y+.08,z:center.z},{x:0,y:-1,z:0});
+      const hit=world.castRay(ray,.14,false);
+      assert.ok(hit,'uncovered visible shoulder '+center.toArray());
+      if(!legacy.castRay(ray,.14,false)){
+        formerlyUnsupported++;
+        maxError=Math.max(maxError,Math.abs(hit.timeOfImpact-.08));
+      }
+      matched++;
+    }
+    assert.ok(formerlyUnsupported>50);
+    assert.ok(maxError<.002,'shoulder differs from rendering by '+maxError);
+    const pole=[12,1,-8];
+    for(const s of sign)fix(world,s.vertices,s.indices,[pole[0],pole[1]+s.y,pole[2]]);
+    world.step();
+    const through=(x,y,side)=>world.castRay(new R.Ray({x:pole[0]+x,y:pole[1]+y,z:pole[2]-side*.5},{x:0,y:0,z:side}),1,false);
+    for(const side of [1,-1]){
+      assert.ok(through(0,1,side),'sign post');
+      assert.ok(through(1,2,side),'sign board');
+      assert.equal(through(1,1,side),null,'empty air below the sign');
+    }
+    t.diagnostic(JSON.stringify({matched,formerlyUnsupported,maxError}));
+  }finally{
+    world.free();legacy.free();built.walk.dispose();
+    for(const m of built.meshes){m.geometry.dispose();m.material.dispose();}
+    sign.forEach(p=>p.geometry.dispose());
+  }
 });

@@ -76,6 +76,7 @@ export interface CoasterCollider {
   hull?: Float32Array;
   rotation?: Vec3;
   surface?: boolean;
+  boardingSupport?: true;
 }
 export type CoasterStructureScope = 'legacy' | 'short' | 'full';
 export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT, craftedRail = COASTER_RAIL_CRAFT) {
@@ -360,7 +361,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     const lip = new Vector3(0, step.size[1] / 2 - .021, .01 + step.size[2] / 2).applyQuaternion(yaw).add(new Vector3(...step.position));
     steel.box(tuple(lip), [step.size[0], .042, .02], P.rail, yaw);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
-    colliders.push({ position: step.position, half: step.size.map(v => v / 2) as Vec3, rotation: [0, step.yaw, 0], surface: true });
+    colliders.push({ position: step.position, half: step.size.map(v => v / 2) as Vec3, rotation: [0, step.yaw, 0], surface: true, boardingSupport: true });
   }
   addCoasterStationRoof(steel);
   addStationStructureDetail(steel,glow,colliders);

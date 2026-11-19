@@ -4,7 +4,7 @@ import WorldCoasterGateCraft from './WorldCoasterGateCraft';
 import WorldCoasterRailCraft from './WorldCoasterRailCraft';
 import { memo, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
+import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider, useRapier } from '@react-three/rapier';
 import { Group, PointLight } from 'three';
 import { useWorldStore } from '../store';
 import { parkAudio } from '../WorldParkAudio';
@@ -12,7 +12,8 @@ import { attractionRide, updateAttractionRide } from './attraction-ride';
 import { coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH, COASTER_GATE_Z } from './coaster-track';
 import { createCoasterStructure, type CoasterCollider } from './coaster-geometry';
 import { activateIntentTarget, intentRideClock, intentRideQaHold, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
-import { advanceCoasterTransition, COASTER_BOARDING } from './coaster-transition';
+import { advanceCoasterTransition, COASTER_TREAD_COLLIDER } from './coaster-transition';
+import { rideFootRouteClear } from '../rides/ride-clearance';
 import { advanceReadyCoaster, coasterStationReady } from './coaster-passage';
 import { passageRoute } from '../region-passage';
 import { PLAYER_RADIUS } from '../actor-physics';
@@ -88,6 +89,7 @@ export default memo(WorldIntentCoaster);
 
 function CoasterTrain({ active }: { active: boolean }) {
   const occupied = useIntentStore(s => s.riding);
+  const { world, rapier, colliderStates } = useRapier();
   const cars = useRef<(Group | null)[]>([]);
   const audio = useRef<CoasterMotionAudio | null>(null);
   useEffect(() => {
@@ -123,18 +125,23 @@ function CoasterTrain({ active }: { active: boolean }) {
     if (owned) {
       const wasRiding = transition.phase === 'riding';
       const pose = coasterRidePose(u, wasRiding ? s.view : 'chase');
-      const ready=wasRiding||coasterStationReady(attractionRide.passage)
-        &&(transition.phase!=='approach'||!!attractionRide.passage&&passageRoute(attractionRide.passage,[transition.from,COASTER_BOARDING.approach],PLAYER_RADIUS));
+      const passage = attractionRide.passage;
+      const ready=wasRiding||coasterStationReady(passage);
       blocked=blocked||!ready;
-      advanceCoasterTransition(transition, dt, frozen||!ready, pose);
+      advanceCoasterTransition(transition, dt, frozen||!ready, pose, (from,to,onStairs) =>
+        !!passage && passageRoute(passage,[from,to],PLAYER_RADIUS)
+        // The animated feet already fit the six measured treads and threshold. Only
+        // these supports may intersect the nominal standing capsule along the stepped path.
+        && rideFootRouteClear(world,rapier,undefined,[from,to], collider =>
+          !onStairs || colliderStates.get(collider.handle)?.object.name !== COASTER_TREAD_COLLIDER));
       if (!wasRiding && transition.phase === 'riding') Object.assign(intentRideClock, { elapsed: 0, riding: true });
       if (transition.phase !== 'riding') {
         // Boarding remains visible even when the selected on-track view is first person.
         pose.cameraTarget = [transition.frame.root[0], transition.frame.root[1] + .9, transition.frame.root[2]];
       }
       updateAttractionRide(pose);
-      if (s.ridePhase !== transition.phase || s.exitRequested !== transition.exitRequested)
-        useIntentStore.setState({ ridePhase: transition.phase, exitRequested: transition.exitRequested });
+      if (s.ridePhase !== transition.phase || s.exitRequested !== transition.exitRequested || s.rideBlocked !== transition.blockedMotion)
+        useIntentStore.setState({ ridePhase: transition.phase, exitRequested: transition.exitRequested, rideBlocked: transition.blockedMotion });
     }
     if(blocked&&!frozen&&performance.now()-readinessNotice.current>2500){
       readinessNotice.current=performance.now();
@@ -170,7 +177,7 @@ function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
     {[true, false].map(surface => <RigidBody key={String(surface)} name={surface?'coaster-station-surfaces':'coaster-station-solids'} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
       {colliders.filter(c => !!c.surface === surface).map((c, i) => c.hull
         ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
-        : <CuboidCollider key={i} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
+        : <CuboidCollider key={i} name={c.boardingSupport ? COASTER_TREAD_COLLIDER : undefined} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, interactable: 'intent-chest' }}>
       <CuboidCollider position={coasterWorld([-8, .65, 59.5])} args={[1.9, .65, 1.05]} />

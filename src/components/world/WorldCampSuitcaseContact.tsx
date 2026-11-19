@@ -32,14 +32,17 @@ export default function WorldCampSuitcaseContact({ slot }: { slot: SuitcaseConta
     resource.users++;
     let revision = -1, current: Object3D | null = null, model: ReturnType<typeof createSuitcaseContactModel> | null = null;
     let support: ReturnType<typeof suitcaseContactSupport> | null = null;
+    let pavingRoot: Object3D | null = null;
     const update = () => {
-      if (revision !== slot.revision) {
+      const replacedPaving = pavingRoot !== null && pavingRoot.parent === null;
+      if (revision !== slot.revision || replacedPaving) {
         model?.dispose(); model = null; current = slot.root; revision = slot.revision;
+        if (replacedPaving) {support = null; pavingRoot = null;}
         if (current) try {
           // The synchronous flagstone slice is present by the first normal scene frame. Missing
           // support fails closed; no polling or exploration-blocking dependency is introduced.
           const paving = support ? null : scene.getObjectByName('camp-C02-flagstones');
-          if (paving) support = suitcaseContactSupport(paving);
+          if (paving) { pavingRoot = paving; support = suitcaseContactSupport(paving); }
           const wheels = suitcaseContactWheels(current);
           if (support && wheels.length === 4) model = createSuitcaseContactModel(wheels, support, (change, positions, strengths, visible) => {
             resource.mesh.visible = visible;

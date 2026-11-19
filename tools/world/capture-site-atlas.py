@@ -1,6 +1,7 @@
 """Capture every paired site camera from one production world. Requires Playwright and Pillow."""
 import argparse
 import base64
+import gzip
 import hashlib
 import io
 import json
@@ -18,9 +19,15 @@ ROOT = Path(__file__).resolve().parents[2]
 VIEWPORT = {"width": 960, "height": 540}
 # Wait for independently suspended districts before framing a site. The player can
 # reach "ready" at camp while some of these objects are still downloading.
-DISTRICTS = ["world-camp-content", "world-town", "world-street", "world-districts-v4",
+DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-craft",
+             "camp-craft-C05", "camp-craft-C06", "camp-craft-C07", "camp-tree-craft-G17-L0_wood",
+             "C02_stone_batch", "camp-workshop-C08",
+             "world-town", "world-street", "world-districts-v4",
              "djc-beach-club", "alpha-island-batch2", "alpha-echo-cave-station-6",
-             "alpha-station5-three-sluices-waterwheel", "world-ibd-yard", "factory-structure", "alpha-mainland-pier-r4-candidate"]
+             "alpha-station5-three-sluices-waterwheel", "world-ibd-yard", "factory-structure",
+             "alpha-mainland-pier-r4-candidate", "alpha-cable-vehicle-model", "alpha-ferry-vehicle-model",
+             "alpha-sled-vehicle-model", "cable-lower-canopy-structure", "cable-upper-canopy-structure",
+             *[f"alpha-{kind}-gangway-{end}" for kind in ("cable", "ferry", "sled") for end in (0, 1)]]
 TILE_WIDTH, TILE_HEIGHT, LABEL_HEIGHT = 600, 338, 32
 ROW_HEIGHT = TILE_HEIGHT + LABEL_HEIGHT
 # A missing day/night pair cannot be discovered by enumerating the UI alone.
@@ -133,7 +140,7 @@ def wait_for_districts(page, errors, diagnostics):
             raise RuntimeError(f"Scene missing {snapshot['missing']}. Browser errors: {errors[:4]}")
 
 
-def capture(browser, base, shard, shards, diagnostics):
+def capture(browser, base, shard, shards, diagnostics, survey_sites=(), build_dir=ROOT / "dist"):
     errors = []
     context = browser.new_context(viewport=VIEWPORT, device_scale_factor=1)
     try:
@@ -171,8 +178,8 @@ def capture(browser, base, shard, shards, diagnostics):
             raise RuntimeError("World entry did not return success")
         # Tie capture to the actual HTML and hashed assets of this checkout's build.
         html = entry.body()
-        if html != (ROOT / "dist/world/index.html").read_bytes():
-            raise RuntimeError("The preview is serving a different build from dist/world/index.html")
+        if html != (build_dir / "world/index.html").read_bytes():
+            raise RuntimeError("The preview is serving a different build from the specified build directory")
         page.wait_for_function("window.__worldDebug?.state().ready", polling=350, timeout=150000)
         select = page.wait_for_function(
             """document.querySelector('select[aria-label="现场接缝复核机位"]:enabled')""",
@@ -202,6 +209,16 @@ def capture(browser, base, shard, shards, diagnostics):
         for index, site in enumerate(selected):
             group = sites[site]
             day_camera, day, day_coverage = shoot(page, select, group["day"], diagnostics)
+            if site in survey_sites:
+                # Snapshot before moving the camera so LOD slots and the render list
+                # describe the same noon frame as the manifest. This is opt-in.
+                survey = page.evaluate("window.__worldDebug.reviewCollisionSources()")
+                survey.update({"shot": group["day"], "camera": day_camera,
+                               "entrySha256": hashlib.sha256(html).hexdigest()})
+                dest = diagnostics.parent / "sources"
+                dest.mkdir(parents=True, exist_ok=True)
+                with gzip.open(dest / (site + ".json.gz"), "wt", encoding="utf-8") as stream:
+                    json.dump(survey, stream, separators=(",", ":"))
             night_camera, night, night_coverage = shoot(page, select, group["night"], diagnostics)
             if day_camera != night_camera:
                 raise RuntimeError(f"Camera/projection/exposure mismatch at {site}: {day_camera} vs {night_camera}")
@@ -267,12 +284,16 @@ def assemble(root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--build-dir", type=Path, default=ROOT / "dist",
+                        help="Verify the served HTML against this specific build")
     parser.add_argument("--base", default="http://127.0.0.1:4343")
     parser.add_argument("--out", type=Path, default=ROOT / "local/world-atlas")
     parser.add_argument("--cdp", help="Attach to an existing automation-enabled Chromium browser")
     parser.add_argument("--channel", help="Installed Chrome channel if launching a task-owned browser")
     parser.add_argument("--shard", type=int, default=0, help="Zero-based index of the row group to render")
     parser.add_argument("--shards", type=int, default=1)
+    parser.add_argument("--survey-site", choices=sorted(REQUIRED_SITES), action="append", default=[],
+                        help="Also export all resident meshes, GPU instance poses and physical shapes at this noon camera")
     parser.add_argument("--assemble", type=Path, help="Assemble downloaded row groups without a browser")
     args = parser.parse_args()
     if args.assemble:
@@ -282,7 +303,7 @@ def main():
             browser = (p.chromium.connect_over_cdp(args.cdp) if args.cdp
                        else p.chromium.launch(channel=args.channel, headless=True))
             try:
-                atlas, manifest = capture(browser, args.base, args.shard, args.shards, args.out / "diagnostics")
+                atlas, manifest = capture(browser, args.base, args.shard, args.shards, args.out / "diagnostics", args.survey_site, args.build_dir)
             finally:
                 if not args.cdp:
                     browser.close()

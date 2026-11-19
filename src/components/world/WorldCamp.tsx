@@ -1,13 +1,14 @@
 import { memo, Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import {
-  AdditiveBlending, Box3, BoxGeometry, BufferGeometry, Color, DoubleSide, Euler, Float32BufferAttribute, InstancedMesh, Matrix4, Mesh,
-  MeshStandardMaterial, Object3D, Quaternion, ShaderMaterial, Sphere, UniformsLib, UniformsUtils, Vector3, type Material, type PointLight,
+  AdditiveBlending, BoxGeometry, BufferGeometry, Color, DoubleSide, Float32BufferAttribute, InstancedMesh, Matrix4, Mesh,
+  MeshStandardMaterial, Object3D, ShaderMaterial, Sphere, UniformsLib, UniformsUtils, Vector3, type Material, type PointLight,
 } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
-import { CampColliders, BlockColliders, SoftBushDrag, campShapes } from './WorldCampPhysics';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { CampColliders, CampStoneColliders, BlockColliders, SoftBushDrag, campShapes, campColliderKey, campGradedFlagstones, campMeshContact, campPartNames, campPlacementMatrix, campSolidInstances, campStoneShapes, type CampPlacement } from './WorldCampPhysics';
 import { rockPlacements } from './WorldLandform';
 import { attachNatureWind } from './WorldNatureMotion';
 import { applyTentWind, markTentCloth, windUniforms, isWorldRunning } from './WorldWind';
@@ -29,8 +30,7 @@ import type { Vec3 } from './types';
 /** Camp uses fixed source GLBs for fitted physics; craft visuals reuse placement matrices. */
 export type CampBlock = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 export interface CampLayout { pads: CampBlock[]; padObjects: CampBlock[]; tents: CampBlock[]; benches: CampBlock[]; trees: CampBlock[]; lampHeads: CampBlock[] }
-/** tilt rotates about the asset's local X before yaw (re-grounded by bounds); sink buries it. */
-type Placement = { position: Vec3; yaw: number; scale?: number; tilt?: number; sink?: number };
+type Placement = CampPlacement;
 
 const CAMP_TOP = CAMP_CENTER[1];
 const PAD_TOP = 4.9;
@@ -77,32 +77,76 @@ class AssetGuard extends Component<{ id: string; fallback: ReactNode; children: 
   }
 }
 
-function Boxes({ items, geometry = BOX, shadow = true, name, collisionId }: { items: CampBlock[]; geometry?: BufferGeometry; shadow?: boolean; name?: string; collisionId?: string }) {
+const IDENTITY_PLACEMENT = [new Matrix4()];
+export function campTileMatrices(items: readonly CampBlock[]) {
+  const dummy = new Object3D();
+  return items.map(item => {
+    dummy.position.set(...item.position);
+    dummy.rotation.set(...(item.rotation ?? [0,0,0]));
+    dummy.scale.set(...item.size);
+    dummy.updateMatrix();
+    return dummy.matrix.clone();
+  });
+}
+
+function Boxes({ items, geometry = BOX, shadow = true, name, collisionId, trim = false }: {
+  items: CampBlock[]; geometry?: BufferGeometry; shadow?: boolean; name?: string; collisionId?: string; trim?: boolean;
+}) {
   const ref = useRef<InstancedMesh>(null);
+  const matrices = useMemo(() => campTileMatrices(items),[items]);
+  const metadata = useMemo(() => {
+    if (collisionId) return {worldCollision:'solid',worldCollisionInstances:{placements:matrices.map((matrix,i)=>({id:`camp-greybox-collider-${collisionId}-${i}`,matrix})),slots:matrices.map((_,i)=>i)}};
+    return trim ? {worldCollision:'none'} : undefined;
+  },[collisionId,matrices,trim]);
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
-    const dummy = new Object3D(), color = new Color();
+    const color = new Color();
     items.forEach((item, i) => {
-      dummy.position.set(...item.position);
-      const r = item.rotation ?? [0, 0, 0];
-      dummy.rotation.set(r[0], r[1], r[2]);
-      dummy.scale.set(...item.size);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
+      mesh.setMatrixAt(i, matrices[i]);
       mesh.setColorAt(i, color.set(item.color));
     });
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
     mesh.computeBoundingSphere();
-  }, [items]);
+  }, [items,matrices]);
   if (!items.length) return null;
-  return <>{collisionId && <BlockColliders id={collisionId} blocks={items} />}<instancedMesh name={name} ref={ref} args={[geometry, undefined, items.length]} castShadow={shadow} receiveShadow>
+  return <>{collisionId && <BlockColliders id={collisionId} blocks={items} />}<instancedMesh name={name} ref={ref} args={[geometry, undefined, items.length]} userData={metadata} castShadow={shadow} receiveShadow>
     <meshStandardMaterial roughness={1} />
   </instancedMesh></>;
 }
 
-type Part = { geometry: BufferGeometry; material: Material | Material[]; matrix: Matrix4; name: string; depth?: Material; ownedGeometry?: boolean; treeLod?: number };
+function CampPadFallback({tiles,pads}:{tiles:CampBlock[];pads:CampBlock[]}) {
+  const {geometry,shapes} = useMemo(() => {
+    const p = BOX.getAttribute('position'), index = BOX.index!, point = new Vector3(), tint = new Color();
+    const tilesPerPad = tiles.length/pads.length, matrices = campTileMatrices(tiles);
+    const pieces = pads.map(({position,rotation},padIndex) => {
+      const world = campPlacementMatrix({position:[position[0],PAD_TOP,position[2]],yaw:rotation?.[1]??0});
+      const basis = world.clone().invert(), positions: number[] = [], colours: number[] = [];
+      for(let i=padIndex*tilesPerPad;i<(padIndex+1)*tilesPerPad;i++) {
+        const local = basis.clone().multiply(matrices[i]); tint.set(tiles[i].color);
+        for (let j=0; j<index.count; j++) {
+          point.fromBufferAttribute(p,index.getX(j)).applyMatrix4(local);
+          positions.push(point.x,point.y,point.z); colours.push(tint.r,tint.g,tint.b);
+        }
+      }
+      const input = new BufferGeometry().setAttribute('position',new Float32BufferAttribute(positions,3))
+        .setAttribute('color',new Float32BufferAttribute(colours,3));
+      const piece = campGradedFlagstones(input,IDENTITY_PLACEMENT[0]).applyMatrix4(world);
+      input.dispose(); return piece;
+    });
+    const geometry = mergeGeometries(pieces)!;
+    pieces.forEach(piece=>piece.dispose()); geometry.computeBoundingSphere();
+    return {geometry,shapes:campStoneShapes(geometry)};
+  },[tiles,pads]);
+  useEffect(() => () => geometry.dispose(),[geometry]);
+  return <><mesh name="camp-C02-flagstones" geometry={geometry} receiveShadow userData={{worldCollision:'solid',worldCollisionPartitions:{
+    floor:campColliderKey('C02','legacy-tiles',0,'top'),wall:campColliderKey('C02','legacy-tiles',0,'sides'),
+  }}}><meshStandardMaterial vertexColors roughness={1}/></mesh>
+    <CampStoneColliders label="legacy-tiles" shapes={shapes} matrices={IDENTITY_PLACEMENT}/></>;
+}
+
+type Part = { geometry: BufferGeometry; material: Material | Material[]; matrix: Matrix4; name: string; contact: string | null; depth?: Material; ownedGeometry?: boolean; treeLod?: number };
 type MaterialMap = (material: Material) => Material;
 /** Maps each distinct source material once; returns only newly created runtime copies. */
 function mapper(map?: MaterialMap) {
@@ -140,40 +184,25 @@ function collectParts(gltf: GLTF, id: string, map?: MaterialMap) {
     }
     const treeLod = id === 'G17' && gltf.scene.getObjectByName('G17')?.userData.facilityCraft === 'batch5-branch-canopy'
       ? Number(/^L([01])_/.exec(mesh.name)?.[1] ?? -1) : undefined;
-    parts.push({ geometry, material, matrix: mesh.matrixWorld.clone(), name: mesh.name, depth, ownedGeometry, treeLod });
+    const contact = campMeshContact(id, campPartNames(mesh, gltf.scene), [mesh.material].flat().map(m => m.name));
+    parts.push({ geometry, material, matrix: mesh.matrixWorld.clone(), name: mesh.name, contact, depth, ownedGeometry, treeLod });
   });
   return { parts, copies: materials.copies };
 }
-function toMatrix(p: Placement, bounds: Box3) {
-  const scale = p.scale ?? 1;
-  const rotation = new Quaternion().setFromEuler(new Euler(p.tilt ?? 0, p.yaw, 0, 'YXZ'));
-  let lift = 0;
-  if (p.tilt) {
-    // Lowest rotated bounds corner rests on the ground (conservative; sink covers the gap).
-    const tilt = new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), p.tilt), c = new Vector3();
-    let minY = Infinity;
-    for (let i = 0; i < 8; i++) {
-      c.set(i & 1 ? bounds.max.x : bounds.min.x, i & 2 ? bounds.max.y : bounds.min.y, i & 4 ? bounds.max.z : bounds.min.z).applyQuaternion(tilt);
-      minY = Math.min(minY, c.y);
-    }
-    lift = -minY * scale;
-  }
-  const position = new Vector3(p.position[0], p.position[1] + lift - (p.sink ?? 0), p.position[2]);
-  return new Matrix4().compose(position, rotation, new Vector3().setScalar(scale));
-}
-
-function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]; id: string }) {
+function InstancedPart({ part, matrices, id, label }: { part: Part; matrices: Matrix4[]; id: string; label: string }) {
   const ref = useRef<InstancedMesh>(null);
+  const displayed = useMemo(() => matrices.map(placement => new Matrix4().multiplyMatrices(placement, part.matrix)), [matrices, part]);
+  const collision = useMemo(() => part.contact === 'soft-crown' ? { worldCollision: 'soft' }
+    : part.contact ? campSolidInstances(id, label, part.contact, displayed) : { worldCollision: 'none' }, [id, label, part, displayed]);
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
     const detach = attachNatureWind(mesh, id === 'G19' || id === 'G20');
-    const m = new Matrix4();
-    matrices.forEach((placement, i) => mesh.setMatrixAt(i, m.multiplyMatrices(placement, part.matrix)));
+    displayed.forEach((matrix, i) => mesh.setMatrixAt(i, matrix));
     mesh.instanceMatrix.needsUpdate = true;
     mesh.computeBoundingSphere();
     return detach;
-  }, [part, matrices]);
+  }, [id, displayed]);
   useEffect(() => {
     if (id !== 'G21' || new URLSearchParams(window.location.search).get('qa') !== '1') return;
     const host = window as typeof window & { __worldG21Craft?: Record<string, () => unknown> };
@@ -207,24 +236,30 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
     return () => { if (registry[part.name] === read) delete registry[part.name]; if (!Object.keys(registry).length && host.__worldG21Craft === registry) delete host.__worldG21Craft; };
   }, [id, part]);
   const soft = id === 'G19' || id === 'G20';
-  return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={soft ? { assetId: id, softBush: true, semantic: part.name } : { assetId: id, solid: true, semantic: part.name }} ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
+  return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={{ assetId: id, softBush: soft, solid: !soft, semantic: part.name, ...collision }}
+    ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
 }
 
-/** The single G17 review tree owns two complete batches. The original camp GLB still
- * supplies every placement and collider; this only selects its visual crown density. */
-function TreeCraftPart({ part, matrices }: { part: Part; matrices: Matrix4[] }) {
+/** Both wood LODs link the same installed near-model trunk collider; slot
+ * compaction changes only the displayed instances. */
+function TreeCraftPart({ part, matrices, label }: { part: Part; matrices: Matrix4[]; label: string }) {
   const ref = useRef<InstancedMesh>(null);
   const previousLods = useRef<Int8Array | null>(null);
-  const tmp = useMemo(() => ({ matrix: new Matrix4(), point: new Vector3(), lods: new Int8Array(matrices.length) }), [matrices]);
+  const displayed = useMemo(() => matrices.map(placement => new Matrix4().multiplyMatrices(placement, part.matrix)), [matrices, part]);
+  const collision = useMemo(() => part.contact ? campSolidInstances('G17', label, part.contact, displayed) : null, [displayed, label, part]);
+  const tmp = useMemo(() => ({ point: new Vector3(), lods: new Int8Array(matrices.length) }), [matrices]);
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
-    matrices.forEach((placement, i) => mesh.setMatrixAt(i, tmp.matrix.multiplyMatrices(placement, part.matrix)));
+    displayed.forEach((matrix, i) => mesh.setMatrixAt(i, matrix));
+    mesh.count = displayed.length;
+    mesh.visible = displayed.length > 0;
+    if (collision) collision.worldCollisionInstances.slots.splice(0, matrices.length, ...matrices.map((_, i) => i));
     mesh.instanceMatrix.needsUpdate = true;
     mesh.computeBoundingSphere();
     previousLods.current = new Int8Array(matrices.length).fill(-1);
     return attachNatureWind(mesh);
-  }, [part, matrices, tmp]);
+  }, [displayed, matrices, collision]);
   useFrame(({ camera }) => {
     const mesh = ref.current;
     const previous = previousLods.current;
@@ -238,10 +273,12 @@ function TreeCraftPart({ part, matrices }: { part: Part; matrices: Matrix4[] }) 
     if (!changed) return;
     previous.set(tmp.lods);
     let count = 0;
+    const slots = collision?.worldCollisionInstances.slots;
+    if (slots) slots.length = 0;
     for (let i = 0; i < matrices.length; i++) {
       if (tmp.lods[i] !== part.treeLod) continue;
-      const placement = matrices[i];
-      mesh.setMatrixAt(count++, tmp.matrix.multiplyMatrices(placement, part.matrix));
+      mesh.setMatrixAt(count++, displayed[i]);
+      slots?.push(i);
     }
     mesh.count = count;
     mesh.visible = count > 0;
@@ -277,30 +314,26 @@ function TreeCraftPart({ part, matrices }: { part: Part; matrices: Matrix4[] }) 
       if (Object.keys(registry).length === 0 && host.__worldFacilityTree === registry) delete host.__worldFacilityTree;
     };
   }, [part, matrices]);
-  return <instancedMesh ref={ref} name={`camp-tree-craft-G17-${part.name}`} args={[part.geometry, part.material, matrices.length]} userData={{ assetId: 'G17', solid: true, semantic: part.name, natureSample: true }} castShadow receiveShadow />;
+  return <instancedMesh ref={ref} name={`camp-tree-craft-G17-${part.name}`} args={[part.geometry, part.material, matrices.length]}
+    userData={{ assetId: 'G17', solid: true, semantic: part.name, natureSample: true, ...(collision ?? { worldCollision: 'none' }) }} castShadow receiveShadow />;
 }
 
 /** Repeated static assets: one instanced draw per GLB primitive, shared materials. */
 function InstancedAsset({ id, placements, materialMap, label = "instances" }: { id: string; placements: Placement[]; materialMap?: MaterialMap; label?: string }) {
   const gltf = useCampGltf(id);
-  // Batch4 is visual refinement. Keep the exact old geometry as the placement/collider source.
-  const physics = useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco) as GLTF;
   const { parts, copies } = useMemo(() => collectParts(gltf, id, materialMap), [gltf, id, materialMap]);
   useRegisteredCopies(copies);
-  const matrices = useMemo(() => {
-    const bounds = new Box3().setFromObject(physics.scene);
-    return placements.map(p => toMatrix(p, bounds));
-  }, [physics, placements]);
-  const shapes = useMemo(() => campShapes(id, physics), [id, physics]);
+  const shapes = useMemo(() => campShapes(id, gltf), [id, gltf]);
+  const matrices = useMemo(() => shapes ? placements.map(p => campPlacementMatrix(p, shapes)) : [], [shapes, placements]);
   useEffect(() => () => parts.forEach(p => { if (p.ownedGeometry) p.geometry.dispose(); p.depth?.dispose(); }), [parts]);
   if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
   const visuals = parts.map((part, i) => part.treeLod !== undefined
-    ? <TreeCraftPart key={i} part={part} matrices={matrices} />
-    : <InstancedPart key={i} part={part} matrices={matrices} id={id} />);
+    ? <TreeCraftPart key={i} part={part} matrices={matrices} label={label} />
+    : <InstancedPart key={i} part={part} matrices={matrices} id={id} label={label} />);
   const crafted = id === 'C05' || id === 'C06' || id === 'C07';
+  const fallback = <>{visuals}<CampColliders id={id} label={label} shapes={shapes} matrices={matrices} /></>;
   return <group name={`camp-asset-${id}-${label}`}>
-    {crafted ? <WorldCampCraftProps family={id as CampCraftFamily} matrices={matrices} fallback={visuals} /> : visuals}
-    <CampColliders id={id} label={label} shapes={shapes} matrices={matrices} />
+    {crafted ? <WorldCampCraftProps family={id as CampCraftFamily} label={label} matrices={matrices} fallback={fallback} /> : fallback}
   </group>;
 }
 
@@ -325,34 +358,15 @@ function SingleAsset({ id, label, placement, materialMap }: { id: string; label:
   return <InstancedAsset id={id} label={label} placements={placements} materialMap={materialMap} />;
 }
 
-/** Keep the established hollow shell and door opening; load only the new visual. */
 function CampTentPilotAsset({ placement }: { placement: Placement }) {
-  const physics = useLoader(GLTFLoader, '/assets/world/camp/C03.glb', withDraco) as GLTF;
-  const shapes = useMemo(() => campShapes('C03', physics), [physics]);
-  const matrices = useMemo(() => [toMatrix(placement, new Box3().setFromObject(physics.scene))], [physics, placement]);
-  if (!shapes) throw new Error('Missing fitted collision recipe for C03');
   return <group name="camp-asset-C03-large-tent">
     <WorldCampTentPilot placement={placement} />
-    <CampColliders id="C03" label="large-tent" shapes={shapes} matrices={matrices} />
   </group>;
 }
 
-/** Art changes never replace the fitted source collision contracts. */
-function CampBatchSolid({ id, label, placements, children }: { id: string; label: string; placements: Placement[]; children: ReactNode }) {
-  const physics = useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco) as GLTF;
-  const shapes = useMemo(() => campShapes(id, physics), [id, physics]);
-  const matrices = useMemo(() => { const bounds = new Box3().setFromObject(physics.scene); return placements.map(p => toMatrix(p, bounds)); }, [physics, placements]);
-  if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
-  return <group name={`camp-asset-${id}-${label}`}>{children}<CampColliders id={id} label={label} shapes={shapes} matrices={matrices} /></group>;
-}
 function CampBooks({ placement }: { placement: Placement }) {
-  const fallback = useCampScene('C08');
-  const placements = useMemo(() => [placement], [placement]);
-  return <CampBatchSolid id="C08" label="pad1" placements={placements}>
-    <group position={placement.position} rotation={[0, placement.yaw, 0]}>
-      <BookStackVisual fallback={<primitive object={fallback} dispose={null} />} />
-    </group>
-  </CampBatchSolid>;
+  const matrix = useMemo(() => campPlacementMatrix(placement),[placement]);
+  return <BookStackVisual placement={matrix} fallback={<SingleAsset id="C08" label="pad1" placement={placement}/>}/>;
 }
 /** G21 owns three material copies and borrows existing maps/renderer PMREM.
  * InstancedAsset keeps original camp geometry for placement and collision. */
@@ -403,7 +417,15 @@ function FlagPole({ label, placement }: { label: string; placement: Placement })
   const scene = useCampScene('C10');
   const gltf = useCampGltf('C10');
   const shapes = useMemo(() => campShapes('C10', gltf), [gltf]);
-  const matrices = useMemo(() => [toMatrix(placement, new Box3().setFromObject(scene))], [placement, scene]);
+  const matrices = useMemo(() => [campPlacementMatrix(placement)], [placement]);
+  useLayoutEffect(() => {
+    scene.traverse(object => {
+      if (!(object as Mesh).isMesh) return;
+      const part = campMeshContact('C10',campPartNames(object,scene),[]);
+      Object.assign(object.userData, part ? { worldCollision:'solid', surfaceId:campColliderKey('C10',label,0,part), worldCollisionSharedSurface:true }
+        : { worldCollision:'none' });
+    });
+  }, [label, scene]);
   useEffect(() => {
     const flag = scene.getObjectByName('flag_03') as Mesh | undefined;
     if (!flag?.isMesh || Array.isArray(flag.material)) return;
@@ -551,7 +573,7 @@ function CampFire({ position }: { position: Vec3 }) {
     emberMat.uniforms.uPixel.value = gl.getPixelRatio() * gl.domElement.height / 1080;
   });
   return <group name="camp-runtime-flame" position={position} userData={{ fireStats: FIRE_STATS }}>
-    <mesh name="camp-fire-tongues" geometry={flame} material={flameMat} />
+    <mesh name="camp-fire-tongues" geometry={flame} material={flameMat} userData={{ worldCollision: 'none' }} />
     <points name="camp-fire-embers" geometry={embers} material={emberMat} frustumCulled={false} renderOrder={2} />
   </group>;
 }
@@ -630,7 +652,7 @@ function CampLamps({ heads }: { heads: CampBlock[] }) {
   });
   const mid = heads.length ? heads.reduce((a, h) => [a[0] + h.position[0] / heads.length, a[1], a[2] + h.position[2] / heads.length] as Vec3, [0, CAMP_TOP + 1.5, 0] as Vec3) : null;
   return <group name="camp-exit-lamps">
-    {heads.map((h, i) => <mesh key={i} geometry={BOX} material={material} position={h.position} scale={h.size} />)}
+    {heads.map((h, i) => <mesh key={i} geometry={BOX} material={material} position={h.position} scale={h.size} userData={{worldCollision:'none'}} />)}
     {mid && <pointLight ref={pool} position={mid} color="#FFD08A" intensity={0} distance={6.5} decay={1} castShadow={false} />}
   </group>;
 }
@@ -741,18 +763,17 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
     <CampFireSpill />
     <CampNightMaterials />
     {!lampsClaimed && <CampLamps heads={layout.lampHeads} />}
-    {CAMP_BATCH ? <CampPadVisual pads={layout.pads} fallback={<Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />} /> : <Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />}
+    {CAMP_BATCH ? <CampPadVisual pads={layout.pads} fallback={<CampPadFallback tiles={data.tiles} pads={layout.pads}/>} /> : <CampPadFallback tiles={data.tiles} pads={layout.pads}/>}
     {/* Pads 4-8 keep their old collider: low canvas bundles mark C11-C15 as not yet made. */}
     {!placeholderClaimed && <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
-      <BlockColliders id="C11-C15" blocks={data.placeholders} />
-      <Boxes items={data.placeholders.map(b => ({ ...b, color: '#CDB894', rotation: [0, b.rotation?.[1] ?? 0, 0] }))} geometry={BUNDLE} />
-      <Boxes items={data.placeholders.flatMap(b => [-0.25, 0.25].map(o => ({ position: [b.position[0] + o, b.position[1], b.position[2]] as Vec3, size: [0.09, b.size[1] + 0.02, b.size[2] + 0.02] as Vec3, color: '#6E5A44' })))} />
+      <Boxes collisionId="C11-C15" items={data.placeholders.map(b => ({ ...b, color: '#CDB894', rotation: [0, b.rotation?.[1] ?? 0, 0] }))} geometry={BUNDLE} />
+      <Boxes trim items={data.placeholders.flatMap(b => [-0.25, 0.25].map(o => ({ position: [b.position[0] + o, b.position[1], b.position[2]] as Vec3, size: [0.09, b.size[1] + 0.02, b.size[2] + 0.02] as Vec3, color: '#6E5A44' })))} />
     </group>}
     <AssetGuard id="C03" fallback={<Boxes collisionId="C03" items={[layout.tents[1]]} />}>
       {TENT_PILOT ? <CampTentPilotAsset placement={data.tents[1]} /> : <SingleAsset id="C03" label="large-tent" placement={data.tents[1]} materialMap={canvasGlowCopy} />}
     </AssetGuard>
     <AssetGuard id="C04" fallback={<Boxes collisionId="C04" items={[layout.tents[0], layout.tents[2]]} />}>
-      {CAMP_BATCH ? <CampBatchSolid id="C04" label="small-tents" placements={[data.tents[0], data.tents[2]]}><SmallTents placements={[data.tents[0], data.tents[2]]} /></CampBatchSolid> : <InstancedAsset id="C04" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />}
+      {CAMP_BATCH ? <group name="camp-asset-C04-small-tents"><SmallTents placements={[data.tents[0], data.tents[2]]} /></group> : <InstancedAsset id="C04" label="small-tents" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />}
     </AssetGuard>
     <AssetGuard id="C05" fallback={<Boxes collisionId="C05" items={[{ position: [firePosition[0], 4.95, firePosition[2]], size: [3.2, 0.3, 3.2], color: '#8C8276' }]} />}>
       <SingleAsset id="C05" label="fire-pit" placement={{ position: firePosition, yaw: 0 }} materialMap={campCraftMaterial} />
@@ -772,7 +793,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
     </AssetGuard>
     <AssetGuard id="C10" fallback={<Boxes collisionId="C10" items={padObject(2)} />}>
       {/* West pad, centred: yaw 2.6 turns the cloth plane (local X normal) to the default follow camera. */}
-      {CAMP_BATCH ? <CampBatchSolid id="C10" label="pad3" placements={[{ ...data.onPad(2), yaw: 2.6 }]}><FlagVisual placement={{ ...data.onPad(2), yaw: 2.6 }} /></CampBatchSolid> : <FlagPole label="pad3" placement={{ ...data.onPad(2), yaw: 2.6 }} />}
+      {CAMP_BATCH ? <group name="camp-asset-C10-pad3"><FlagVisual placement={{ ...data.onPad(2), yaw: 2.6 }} /></group> : <FlagPole label="pad3" placement={{ ...data.onPad(2), yaw: 2.6 }} />}
     </AssetGuard>
     {treeGroups.map(({ id, placements }) => <AssetGuard key={id} id={id} fallback={<Boxes collisionId={id} items={fallbackTree(id)} />}>
       <InstancedAsset id={id} placements={placements} />

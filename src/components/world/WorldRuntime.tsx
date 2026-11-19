@@ -275,6 +275,12 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
         gl.render(scene, camera);
         return gl.domElement.toDataURL('image/png');
       },
+      reviewCollisionSources: async (rootName?: string) => {
+        const {surveyCollisionSources}=await import('./world-collision-survey');
+        const list=gl.renderLists.get(scene,0);
+        return surveyCollisionSources(scene,world,c=>colliderStates.get(c.handle)?.object,
+          [...list.opaque,...list.transmissive,...list.transparent].map(item=>item.object),rootName);
+      },
       reviewCollisionInventory: () => {
         const list = gl.renderLists.get(scene, 0);
         const active: Object3D[] = [], held: Object3D[] = [];
@@ -284,7 +290,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           if (c.isEnabled() && !c.isSensor()) active.push(node);
           else if (isHeldCampDumbbellCollider(c,c.parent())) held.push(node);
         });
-        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => name !== 'street-year-group');
+        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['street-year-group','north-attractions-road'].includes(name));
         return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, roots, held);
       },
       reviewCamera: () => {

@@ -33,7 +33,9 @@ export function pickupGroundRoute(world: World, rapier: Physics, body: RigidBody
   // A support cast can miss a continuous triangle near a numerical edge case. Recast at the
   // same XZ from slightly higher, preserving the floor range below the original point.
   const findSupport = (point: ReturnType<typeof vector>, search?: number) =>
-    playerSupport(world, rapier, body, point, true, search) ?? playerSupport(world, rapier, body, point, true, search, .01);
+    playerSupport(world, rapier, body, point, true, search)
+    ?? playerSupport(world, rapier, body, point, true, search, .01)
+    ?? playerSupport(world, rapier, body, point, true, search, .03);
   const support = findSupport(vector(from));
   if (!support?.grounded) return null;
   const count = Math.max(1, Math.ceil(distance / .14));

@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import WorldMap from '../WorldMap.tsx';
 import { Builder } from '../WorldStreetGeometry.ts';
 import { IBD_YARD, IBD_FOOTPRINT, IBD_BOUNDARY_SEGMENTS, ibdFootprintDistance, attractionCapeDistance, attractionRoadDistance } from './attraction-layout.ts';
 import { IBD_STATIONS, IBD_SHEDS } from './ibd-yard-layout.ts';
@@ -62,6 +64,11 @@ test('all new boundaries stay inland and physical fences leave existing roads an
   }
   const south = IBD_BOUNDARY_SEGMENTS.filter(e=>e.a[1]>=IBD_YARD.center[2]+30&&e.b[1]>=IBD_YARD.center[2]+30);
   assert.ok(south.some(e=>e.kind==='open'&&e.a[0]>=IBD_YARD.center[0]&&e.b[0]<=IBD_YARD.center[0]));
-  const map=readFileSync(new URL('../WorldMap.tsx',import.meta.url),'utf8');
-  assert.match(map,/data-ibd-footprint='physical' points=\{path\(IBD_FOOTPRINT\)\}/);
+  for (const mode of ['mini','full']) {
+    const svg = renderToStaticMarkup(createElement(WorldMap,{ mode }));
+    const polygon = svg.match(/<polygon\b[^>]*data-ibd-footprint="physical"[^>]*>/)?.[0];
+    assert.ok(polygon);
+    const points = polygon.match(/\bpoints="([^"]+)"/)[1].split(' ').map(pair=>pair.split(',').map(Number));
+    assert.deepEqual(points, IBD_FOOTPRINT);
+  }
 });

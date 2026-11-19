@@ -366,6 +366,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       ? pickupGroundRoute(world,rapier,body,from,destination,limit) : null;
   }),[passage,world,rapier]);
   const regionNoticeAt=useRef(-Infinity);
+  const regionNotice=useRef<{ position: Vec3; radius: number; toast: NonNullable<ReturnType<typeof useWorldStore.getState>['toast']> } | null>(null);
   const { camera, scene, gl } = useThree();
   const clearance = useRef<ReturnType<typeof createPlayerClearance> | null>(null);
   useEffect(() => {
@@ -607,11 +608,12 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     const now=performance.now();
     if(now-regionNoticeAt.current<=2500)return;
     regionNoticeAt.current=now;
-    if (position && passage.failureAt?.(position, radius)) {
-      actorNotice('此区域加载失败。可回到营地，或刷新页面重试。','This area failed to load. Return to camp or reload to try again.');
-      return;
-    }
-    actorNotice('前方区域正在准备，请稍候。','The area ahead is preparing. Please wait.');
+    const message = position && passage.failureAt?.(position, radius)
+      ? { zh: '此区域加载失败。可回到营地，或刷新页面重试。', en: 'This area failed to load. Return to camp or reload to try again.' }
+      : { zh: '前方区域正在准备，请稍候。', en: 'The area ahead is preparing. Please wait.' };
+    const toast = { ...message, at: now };
+    regionNotice.current = position && !passage.at(position, radius) ? { position, radius, toast } : null;
+    useWorldStore.setState({ toast });
   }
   /** Suspension and recovery belong to the world, even when the player is on a ride. */
   function stepWorldVehicles(dt:number,active?:Car,throttle=0,steer=0,transitioning=false,debugging=false,brake=false,handbrake=false,boost=false) {
@@ -999,6 +1001,15 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   });
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
+    const notice = regionNotice.current;
+    if (notice) {
+      if (state.toast !== notice.toast) regionNotice.current = null;
+      else if (passage.at(notice.position, notice.radius)) {
+        regionNotice.current = null;
+        regionNoticeAt.current = -Infinity;
+        useWorldStore.setState({ toast: null });
+      }
+    }
     if (arrivalPending.current) {
       const landing=activateReadyArrival(entry,world,colliderStates,rapier,player.current,waterY);
       if (!landing) return;

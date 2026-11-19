@@ -6,8 +6,10 @@ import type { Vec3 } from '../types';
 import type { AttractionRidePose } from './attraction-ride.ts';
 import { coasterFrame, coasterWorld } from './coaster-track.ts';
 
-export type CoasterBoardingPhase = 'approach' | 'step-in' | 'turn-in' | 'sit' | 'settle' | 'riding' | 'stand' | 'turn-out' | 'step-out' | 'walk-out' | 'complete';
+export type CoasterBoardingPhase = 'approach' | 'step-in' | 'turn-in' | 'sit' | 'settle' | 'riding' | 'stand' | 'turn-out' | 'step-out' | 'walk-out' | 'retreat' | 'complete';
 export type CoasterActorFrame = import('../rides/ride-contract').RideActorFrame;
+export type CoasterMotionGuard = (from: Vec3, to: Vec3, onStairs: boolean) => boolean;
+export const COASTER_TREAD_COLLIDER = 'coaster-boarding-support';
 
 const smooth = (t: number) => { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t); };
 const mix = (a: Vec3, b: Vec3, t: number): Vec3 => a.map((v, i) => v + (b[i] - v) * t) as Vec3;
@@ -43,6 +45,7 @@ const stairPath: Vec3[] = [COASTER_BOARDING.approach,
 // the short jog before the standing turn and seat contact phases take over.
 export const COASTER_STAIR_SPEED = 2.6;
 const STAIR_RAMP = .15;
+const RETREAT_TURN_SECONDS = .35;
 const pathLength = (p: Vec3[]) => p.slice(1).reduce((n, v, i) => n + distance(p[i], v), 0);
 function stairJog(q: number) {
   const t = Math.max(0, Math.min(1, q)), r = STAIR_RAMP, total = 1 - r;
@@ -79,11 +82,13 @@ export function coasterAtBoardingEntrance(foot: Vec3): boolean {
 }
 export interface CoasterTransition {
   phase: CoasterBoardingPhase; elapsed: number; exitRequested: boolean;
-  skipRequested: boolean;
+  skipRequested: boolean; blockedMotion: boolean;
+  retreat: { path: Vec3[]; startYaw: number; onStairs: boolean } | null;
   captured: boolean; from: Vec3; fromYaw: number; frame: CoasterActorFrame;
 }
 export function createCoasterTransition(from: Vec3, yaw: number, pose: AttractionRidePose): CoasterTransition {
-  return { phase: 'approach', elapsed: 0, exitRequested: false, skipRequested: false, captured: false, from: [...from], fromYaw: yaw,
+  return { phase: 'approach', elapsed: 0, exitRequested: false, skipRequested: false, blockedMotion: false,
+    retreat: null, captured: false, from: [...from], fromYaw: yaw,
     frame: { root: [...from], yaw, speed: 0, clip: 'Idle', seatWeight: 0, seat: pose.seat } };
 }
 export function captureCoasterStart(t: CoasterTransition, root: Vec3, yaw: number) {
@@ -99,10 +104,32 @@ export function coasterTransitionDuration(t: CoasterTransition): number {
     case 'sit': case 'stand': return 1.35;
     case 'settle': return .7;
     case 'walk-out': return Math.max(.5, distance(COASTER_BOARDING.approach, COASTER_BOARDING.exit) / 1.1);
+    case 'retreat': return RETREAT_TURN_SECONDS + pathLength(t.retreat!.path) / 1.1;
     default: return Infinity;
   }
 }
 const order: CoasterBoardingPhase[] = ['approach', 'step-in', 'turn-in', 'sit', 'settle', 'riding', 'stand', 'turn-out', 'step-out', 'walk-out', 'complete'];
+const walks = (phase: CoasterBoardingPhase) => phase === 'approach' || phase === 'step-in'
+  || phase === 'step-out' || phase === 'walk-out' || phase === 'retreat';
+function beginRetreat(t: CoasterTransition) {
+  const onStairs = t.phase === 'step-in';
+  const visited: Vec3[] = [];
+  if (onStairs) {
+    let travelled = pathLength(stairPath) * stairJog(t.elapsed / coasterTransitionDuration(t)).distance;
+    visited.push(stairPath[0]);
+    for (let i = 1; i < stairPath.length; i++) {
+      travelled -= distance(stairPath[i - 1], stairPath[i]);
+      if (travelled < 0) break;
+      visited.push(stairPath[i]);
+    }
+    visited.reverse();
+  }
+  const route = [t.frame.root, ...visited, t.from];
+  t.retreat = { path: route.filter((point, i) => i === 0 || distance(point, route[i - 1]) > 1e-6),
+    startYaw: t.frame.yaw, onStairs };
+  t.phase = 'retreat';
+  t.elapsed = 0;
+}
 export function returnCoasterToStation(t: CoasterTransition) { if (t.phase === 'riding') { t.phase = 'stand'; t.elapsed = 0; } }
 /** An occupied moving train may skip its loop, but must keep the normal station exit. */
 export function requestCoasterSkip(t: CoasterTransition) {
@@ -113,13 +140,16 @@ export function finishSkippedCoasterTravel(t: CoasterTransition, dt: number, fro
   if (!t.captured || t.phase !== 'riding' || !t.skipRequested || frozen || !Number.isFinite(dt) || dt <= 0 || dt > .25) return false;
   t.skipRequested = false; returnCoasterToStation(t); return true;
 }
-export function advanceCoasterTransition(t: CoasterTransition, dt: number, frozen: boolean, pose: AttractionRidePose) {
+export function advanceCoasterTransition(t: CoasterTransition, dt: number, frozen: boolean, pose: AttractionRidePose, clear?: CoasterMotionGuard) {
   if (!t.captured || frozen || !Number.isFinite(dt) || dt <= 0 || dt > .25) return t.frame;
+  if (t.exitRequested && (t.phase === 'approach' || t.phase === 'step-in')) beginRetreat(t);
+  const previous = { phase: t.phase, elapsed: t.elapsed, frame: t.frame };
   if (t.phase !== 'riding' && t.phase !== 'complete') {
     t.elapsed += dt;
     while (t.elapsed >= coasterTransitionDuration(t)) {
       t.elapsed -= coasterTransitionDuration(t);
-      t.phase = t.phase === 'settle' && t.exitRequested ? 'stand' : order[order.indexOf(t.phase) + 1];
+      t.phase = t.phase === 'retreat' ? 'complete'
+        : t.phase === 'settle' && t.exitRequested ? 'stand' : order[order.indexOf(t.phase) + 1];
       if (t.phase === 'riding' || t.phase === 'complete') { t.elapsed = 0; break; }
     }
   }
@@ -148,10 +178,39 @@ export function advanceCoasterTransition(t: CoasterTransition, dt: number, froze
       yaw = angle(outYaw, heading(COASTER_BOARDING.approach, COASTER_BOARDING.exit), smooth(q * 4));
       speed = distance(COASTER_BOARDING.approach, COASTER_BOARDING.exit) * 6 * q * (1 - q) / coasterTransitionDuration(t); clip = 'Walk'; break;
     }
-    case 'complete': root = [...COASTER_BOARDING.exit]; yaw = heading(COASTER_BOARDING.approach, COASTER_BOARDING.exit); break;
+    case 'retreat': {
+      const { path, startYaw } = t.retreat!;
+      const turnTo = path.length > 1 ? heading(path[0], path[1]) : startYaw;
+      if (t.elapsed <= RETREAT_TURN_SECONDS) {
+        root = path[0]; yaw = angle(startYaw, turnTo, smooth(t.elapsed / RETREAT_TURN_SECONDS));
+        clip = 'TurnR'; clipPhase = Math.min(1, t.elapsed / RETREAT_TURN_SECONDS);
+      } else {
+        const travelSeconds = coasterTransitionDuration(t) - RETREAT_TURN_SECONDS;
+        const progress = (t.elapsed - RETREAT_TURN_SECONDS) / travelSeconds;
+        root = along(path, smooth(progress));
+        yaw = angle(previous.frame.yaw, heading(previous.frame.root, root), Math.min(1, dt * 10));
+        speed = pathLength(path) * 6 * progress * (1 - progress) / travelSeconds;
+        clip = 'Walk';
+      }
+      break;
+    }
+    case 'complete':
+      root = [...(t.retreat?.path.at(-1) ?? COASTER_BOARDING.exit)];
+      yaw = t.retreat ? previous.frame.yaw : heading(COASTER_BOARDING.approach, COASTER_BOARDING.exit);
+      break;
   }
+  const onStairs = t.phase === 'step-in' || t.phase === 'step-out' || (t.phase === 'retreat' && !!t.retreat?.onStairs);
+  if (clear && (walks(previous.phase) || walks(t.phase)) && distance(previous.frame.root, root) > 1e-6
+    && !clear(previous.frame.root, root, onStairs || !!previous.frame.stairs)) {
+    t.phase = previous.phase;
+    t.elapsed = previous.elapsed;
+    t.blockedMotion = true;
+    t.frame = { ...previous.frame, speed: 0, footContactHold: previous.frame.stairs };
+    return t.frame;
+  }
+  t.blockedMotion = false;
   // Use the full station orientation throughout seat contact, including the tiny track pitch.
   if (seatWeight > 0 && !orientation) orientation = pose.orientation;
-  t.frame = { groundId: 'coaster-boarding', stairs: t.phase === 'step-in' || t.phase === 'step-out', root, yaw, speed, clip, clipPhase, seatWeight, seat: [...pose.seat], orientation };
+  t.frame = { groundId: 'coaster-boarding', stairs: onStairs, root, yaw, speed, clip, clipPhase, seatWeight, seat: [...pose.seat], orientation };
   return t.frame;
 }

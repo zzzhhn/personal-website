@@ -1,5 +1,6 @@
 /** Usage: WORLD_BROWSER_MODULES=/path/to/existing/playwright/package node tools/world/playtest/foundation-interactions.mjs [origin] [route ...]
  * Routes: ferry, cable, sled, coaster, lamp, factory, yard, park. Omit route names to run them all.
+ * The optional coaster-obstacle route requires a development server for its Rapier box fixture.
  * The ordinary entry is checked first. QA then stages positions and the coaster save. Interactions
  * use the shipping keyboard, controller mapping and panel buttons, and finish with the real actor. */
 import assert from 'node:assert/strict';
@@ -15,23 +16,27 @@ const rides = {
   coaster: { start: [55.361930289,1.95,-151.945030559], exit: [55.361930289,-151.945030559] },
 };
 const available = [...Object.keys(rides), 'lamp', 'factory', 'yard', 'park'];
-assert.ok(routes.every(route => available.includes(route)), 'unknown route');
+assert.ok(routes.every(route => available.includes(route) || route === 'coaster-obstacle'), 'unknown route');
 const selected = routes.length ? routes : available;
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
-const page = await browser.newPage({ viewport: { width: 1056, height: 700 } });
+const viewport = { width: 1056, height: 700 };
+const page = await browser.newPage({ viewport });
 const bot = new Bot(page);
 const errors = [], previewAnalytics = [], failures = [], registry = new Set();
 const report = (route, fields) => console.log(JSON.stringify({ route, ...fields }));
 const wait = (predicate, arg, timeout=30_000) => page.waitForFunction(predicate, arg, { timeout, polling: 200 });
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 
-page.on('pageerror', error => errors.push(error.stack || error.message));
-page.on('console', message => {
-  if (message.type() !== 'error') return;
-  const error = { text: message.text(), url: message.location().url };
-  if (error.url === new URL('/api/events', url).href && /\b(404|501)\b/.test(error.text)) previewAnalytics.push(error);
-  else errors.push(error);
-});
+function watchErrors(surface, entryMode) {
+  surface.on('pageerror', error => errors.push({ entryMode, pageError: error.stack || error.message }));
+  surface.on('console', message => {
+    if (message.type() !== 'error') return;
+    const error = { entryMode, text: message.text(), url: message.location().url };
+    if (error.url === new URL('/api/events', url).href && /\b(404|501)\b/.test(error.text)) previewAnalytics.push(error);
+    else errors.push(error);
+  });
+}
+watchErrors(page, 'qa');
 await page.addInitScript(() => {
   if (new URLSearchParams(location.search).get('qa') !== '1') return;
   localStorage.setItem('bobby-world.intent-coaster.progress.v1', JSON.stringify({
@@ -79,9 +84,15 @@ async function choose(id, gamepad=false) {
   assert.equal((await actor()).near, id);
 }
 async function place(position, id) {
-  // Ask lazy regions to prepare before setting the diagnostic capsule position near the action.
-  await page.evaluate(position => window.__worldDebug.set({ position }), position);
-  assert.ok(await bot.fixtureTeleport(position, id));
+  // Publish the fixture to the region loader in the same browser task as the capsule move.
+  // A physics frame between those calls could publish the previous region again.
+  bot.fixtureCalls.push({ t: bot.now(), to: position, reason: id });
+  assert.ok(await page.evaluate(position => {
+    const world = window.__worldDebug;
+    if (!world.teleportPlayer(position)) return false;
+    world.set({ position });
+    return true;
+  }, position));
   await wait(([x,,z]) => {
     const { player, grounded } = window.__worldDebug.snapshot();
     return grounded && player && Math.hypot(x-player[0], z-player[2]) < .3;
@@ -120,6 +131,56 @@ async function ride(kind) {
   const walked = Math.hypot(landing.player[0]-player[0], landing.player[2]-player[2]);
   assert.ok(walked > .15, 'player can walk after disembarking');
   return { before, landing, walked, boarding: coaster ? 'panel' : kind === 'cable' ? 'simulated Y' : 'keyboard E' };
+}
+
+async function coasterObstacle() {
+  const start = rides.coaster.start;
+  const panel = page.locator('.intent-workshop-summary .intent-primary');
+  const status = page.locator('.intent-riding [role="status"]');
+  const setBox = async position => assert.ok(await page.evaluate(position =>
+    window.__worldDebug.rideObstacle(position, [.36,1.36,.36]), position), 'the obstruction fixture requires a development server');
+  const hold = async expected => {
+    await status.getByText(expected).waitFor({ timeout: 15_000 });
+    const first = (await actor()).player;
+    await advance(30);
+    const second = (await actor()).player;
+    assert.ok(Math.hypot(...second.map((n,i)=>n-first[i])) < .02, 'blocked actor must hold its last clear position');
+    return first;
+  };
+  const finishOnPlatform = async () => {
+    await page.locator('.intent-riding').waitFor({ state: 'hidden', timeout: 20_000 });
+    const exit = await actor();
+    assert.ok(exit.grounded && Math.hypot(exit.player[0]-start[0],exit.player[2]-start[2]) < .2);
+    await choose('intent-board');
+    return exit;
+  };
+  await place(start,'intent-board');
+  try {
+    await panel.click();
+    await wait(() => window.__worldDebug.snapshot().player[0] < 53.71, undefined, 15_000);
+    await setBox([52.31275,2.54339,-152.44564]); // fourth tread, beyond the actor
+    const ascent = await hold(/boarding path is blocked/);
+    assert.ok(ascent[0] > 52.58);
+    await bot.press('KeyE');
+    await setBox([53.73373,1.95585,-152.21235]); // reopen ahead, obstruct the return route
+    const retreat = await hold(/path to the platform is blocked/);
+    assert.ok(retreat[0] >= ascent[0]-.02 && retreat[0] < 53.73373);
+    await setBox(null);
+    const cancelledAt = await finishOnPlatform();
+
+    await panel.click();
+    await page.getByRole('button',{name:'Skip travel and return to station',exact:true}).click({timeout:25_000});
+    await page.getByText('Walking down the steps',{exact:true}).waitFor({timeout:15_000});
+    await setBox([51.09407,2.93509,-152.64572]); // door threshold while the actor is leaving
+    const descent = await hold(/path to the platform is blocked/);
+    await bot.press('KeyE');
+    assert.deepEqual(await hold(/path to the platform is blocked/),descent);
+    await setBox(null);
+    const finishedAt = await finishOnPlatform();
+    return { ascent, retreat, cancelledAt, descent, finishedAt };
+  } finally {
+    await page.evaluate(()=>window.__worldDebug.rideObstacle(null));
+  }
 }
 
 async function lamp() {
@@ -203,13 +264,19 @@ async function park() {
 }
 
 try {
-  const entry = await page.goto(url.href, { waitUntil: 'domcontentloaded' });
+  // Keep the two sessions separate so QA startup cannot abort the ordinary entry's lazy assets.
+  const ordinary = await browser.newPage({ viewport });
+  watchErrors(ordinary, 'ordinary');
+  const entry = await ordinary.goto(url.href, { waitUntil: 'domcontentloaded' });
   const entrySha256 = hash(await entry.body());
-  await page.locator('.world-camp-return:enabled').waitFor({ timeout: 75_000 });
-  await bot.press('Escape');
-  await page.locator('dialog[open]').waitFor();
-  await bot.press('Escape');
-  await page.locator('dialog[open]').waitFor({ state: 'hidden' });
+  const menu = ordinary.locator('dialog[open]');
+  await ordinary.locator('.world-camp-return:enabled').waitFor({ timeout: 75_000 });
+  await ordinary.keyboard.press('Escape');
+  await menu.waitFor();
+  await ordinary.keyboard.press('Escape');
+  await menu.waitFor({ state: 'hidden' });
+  await ordinary.keyboard.press('Escape');
+  await menu.waitFor(); // Leave the ordinary scene paused while QA owns the browser.
   report('ordinary entry', { url: url.href, browser: await browser.version(), entrySha256 });
 
   const qa = await page.goto(new URL('?qa=1', url).href, { waitUntil: 'domcontentloaded' });
@@ -217,7 +284,7 @@ try {
   await wait(() => window.__worldDebug?.state().ready && window.__worldDebug.snapshot().player, undefined, 75_000);
   assert.equal(await page.evaluate(() => window.__worldDebug.state().quality), 'balanced');
   await page.evaluate(() => window.__worldDebug.set({ lang: 'en', timeRunning: false, light: 'noon', worldMinutes: 720 }));
-  const cases = { lamp, factory, yard, park };
+  const cases = { lamp, factory, yard, park, 'coaster-obstacle':coasterObstacle };
   for (const route of selected) {
     try { report(route, { ok: true, ...(Object.hasOwn(rides, route) ? await ride(route) : await cases[route]()) }); }
     catch (error) {
@@ -225,7 +292,7 @@ try {
       report(route, { ok: false, error: error.message, actor: await actor().catch(() => null) });
     }
   }
-  report('census', { ids: [...registry].sort(), fixtures: bot.fixtureCalls, previewAnalytics, errors, failures });
+  report('census', { ids: [...registry].sort(), fixtures: bot.fixtureCalls, keys: bot.events, previewAnalytics, errors, failures });
   assert.deepEqual(errors, []);
   assert.deepEqual(failures, []);
 } finally { await browser.close(); }
