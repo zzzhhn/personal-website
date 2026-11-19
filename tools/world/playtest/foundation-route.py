@@ -37,6 +37,9 @@ def measure(browser, base, name, suffix):
     with browser.new_context(viewport=SIZE, device_scale_factor=1) as context:
         page = context.new_page()
         errors = []
+        failed_requests = []
+        page.on("requestfailed", lambda request: failed_requests.append(
+            {"url": request.url, "reason": request.failure, "resource": request.resource_type}))
         page.on("pageerror", lambda error: errors.append(str(error)))
         telemetry = []
         def record_response(response):
@@ -104,6 +107,13 @@ def measure(browser, base, name, suffix):
             row["rawFrameMs"] = [round(dt, 3) for dt in intervals]
         except Exception as error:
             errors.append(str(error))
+        # Freeze the sample before closing the browser context. Aborting a still
+        # downloading background GLB while tearing down the test is a different event.
+        row["errors"] = list(errors)
+        row["requestFailuresDuringRoute"] = list(failed_requests)
+        context.close()
+        row["errorsDuringTeardown"] = errors[len(row["errors"]):]
+        row["requestFailuresDuringTeardown"] = failed_requests[len(row["requestFailuresDuringRoute"]):]
         return row
 
 
