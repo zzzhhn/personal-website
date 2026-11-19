@@ -94,3 +94,31 @@ WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foun
 node tools/world/playtest/foundation-interaction-coverage.mjs
 node tools/world/playtest/foundation-interaction-coverage.mjs --json /path/to/new-successful-run.jsonl
 ```
+
+## 按动作族复跑
+
+在隔离 Chrome 中先走普通入口，再以 QA 定位寻找各注册点附近能实际落地、也能看到正式提示的站位。启动、翻页、关闭、起身和乘具都用真实键盘、模拟标准手柄或现有面板。每条机器记录保留目标 ID、定位和输入前后状态。座位具体验证起身后仍落在同一层并留在座位旁。
+
+| 场馆或动作族 | 直接核对的结果 |
+| --- | --- |
+| 城镇经历牌 | 6 块均打开匹配机构和角色的卡片。关闭后原提示恢复。 |
+| 园区项目牌 | 5 块打开与各自提示同名的项目卡，关闭后恢复提示。 |
+| 营地展项与日志 | 9 个展项的卡片内容及兴趣页均与目标匹配。实体日志 E／Y 翻完三页，合上后重新显示阅读提示。 |
+| 营地与街区座位 | 营地 8 个、街区 14 个分别验证准确座位 ID 和起身落地。 |
+| 山岛沿线 | 登山卡、铃、沙盘、树绳、风闸、叠石和取灯逐项核对状态。持灯后出现独立的放灯注册，Y 放飞后结束持灯。 |
+| 回音洞与水车 | 三支铜管、侧洞壁画和三道闸的输入均产生对应回声、壁画反馈或开度变化。 |
+| 山岛反向交通 | 山岛渡口用 E 登船，缆车上站用模拟 Y 登乘。点击跳过后分别在大陆渡口和缆车下站落地，两个出口均可继续按 W 走。缆车上站使用单独记载的登乘站位夹具。两站也实测了呼叫空程、途中重复输入和停靠后恢复登乘提示。 |
+
+低音铜管曾在上一支刚响时继续显示操作提示，按 E 没有反馈。Chrome 实测将问题定位到三支铜管共用的 0.65 秒防重间隔。提示和起响现在共用同一项可用条件。复跑验证间隔内提示退出，间隔后提示恢复，三支铜管各自可启动一次。
+
+[机器证据](interaction-action-evidence.json)还纳入原始矿区工具、低层矿脉、暂存拾回、A 池位、经历牌、货场收货和两处检验台、两枚哑铃及行李箱记录。C11 五件工具的取放记录来自从营地连续步行的浏览器路线，每件验证拿取时停用原墙位碰撞，归还时恢复同一注册。矿区 A 池的回测请求由真实 E 发起，返回数据使用测试夹具。重复的浏览器捕获按原始记录摘要合并，覆盖统计按注册 ID 计数。
+
+原 138 个 ID 中，已有至少一项浏览器行为凭证的从 17 增至 89。条件动作中的放飞纸灯和拾回矿石也已实际挂载并操作，合计观察到 140 个，91 个有行为凭证。键盘覆盖 73 个 ID，模拟标准手柄 46 个，面板 30 个。重复输入同一份原始日志时，生成报告逐字节一致。
+
+目前尚无逐 ID 行为凭证的 49 项分布在货场 12、工厂 11、Club 10、交易厅 8、矿场 6、过山车 2。另有 12 个已知条件 ID 和随目录数据注册的档案票需进入对应玩法阶段。浏览器批次没有页面错误。实物手柄与目标机 Safari 仍待实测。
+
+```sh
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4394 town park camp journal seats alpha-stations alpha-exhibits alpha-return
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4394 alpha-calls
+node tools/world/playtest/foundation-interaction-coverage.mjs --json
+```

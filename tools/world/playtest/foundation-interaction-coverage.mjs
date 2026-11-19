@@ -1,7 +1,9 @@
 /** Recalculate per-ID coverage from the archived 138 registrations and any newer clean route reports. */
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import baseline from '../../../docs/world/foundation-20261117/interaction-census.json' with {type:'json'};
+import captures from '../../../docs/world/foundation-20261117/interaction-action-evidence.json' with {type:'json'};
 
 const venues=[
   [/^camp-about-/,'营地展品'],[/^camp-prop-/,'营地取用'],[/^camp-bench-/,'营地座位'],
@@ -52,25 +54,50 @@ const original={
 
 const [first,...rest]=process.argv.slice(2), json=first==='--json';
 const paths=json?rest:process.argv.slice(2);
-const current=new Set(baseline.ids), evidence=new Map(), sources=[];
+const current=new Set(baseline.ids), evidence=new Map(), sources=[], seenCaptures=new Set();
+const modes=['keyboard','gamepad','panel'];
+function addAction(id,input,operation,source){
+  const key=`${id}/${input}`, operations=evidence.get(key)??new Map();
+  const proof=operations.get(operation)??new Set();
+  proof.add(source);operations.set(operation,proof);evidence.set(key,operations);
+}
 const record=(route,source)=>{
-  for(const [id,input,operation] of original[route]??[]){
-    const key=`${id}/${input}`, operations=evidence.get(key)??new Map();
-    const proof=operations.get(operation)??new Set();
-    proof.add(source);operations.set(operation,proof);evidence.set(key,operations);
-  }
+  for(const [id,input,operation] of original[route]??[])addAction(id,input,operation,source);
 };
+function recordCapture({ids,cases,sha256,...source}){
+  assert.match(sha256,/^[a-f0-9]{64}$/);
+  if(seenCaptures.has(sha256))return;
+  seenCaptures.add(sha256);
+  sources.push({...source,sha256});
+  for(const id of ids??[])if(!id.startsWith('qa-'))current.add(id);
+  for(const {id,events} of cases){
+    if(id.startsWith('qa-'))continue;
+    current.add(id);
+    assert.ok(events.length>0,`${source.name}: missing result for ${id}`);
+    for(const event of events){
+      assert.ok(modes.includes(event.input)&&event.control&&event.operation&&Object.hasOwn(event,'after'),`${source.name}: incomplete ${id} event`);
+      addAction(id,event.input,event.operation,sources.length);
+    }
+  }
+}
 sources.push({name:'archived census',entrySha256:baseline.entrySha256,browser:baseline.browser});
 for(const route of baseline.passedRoutes)record(route,1);
 for(const {passedRoutes,...source} of baseline.additionalRuns){
   sources.push(source);
   for(const route of passedRoutes)record(route,sources.length);
 }
+for(const capture of captures.runs)recordCapture(capture);
 for(const path of paths){
-  const rows=(await readFile(path,'utf8')).trim().split('\n').map(line=>JSON.parse(line));
-  const entry=rows.find(row=>row.route==='ordinary entry'), end=rows.find(row=>['census','recovery-summary'].includes(row.route));
+  const raw=await readFile(path,'utf8'), rows=raw.trim().split('\n').map(line=>JSON.parse(line));
+  const entry=rows.find(row=>row.route==='ordinary entry'), end=rows.find(row=>['census','recovery-summary','family-summary'].includes(row.route));
   assert.ok(entry?.entrySha256&&end,`${path}: missing entry or completed report`);
   assert.deepEqual(end.errors??[],[],`${path}: a run with browser errors is not evidence`);
+  if(end.route==='family-summary'){
+    assert.equal(entry.entrySha256,end.entrySha256);
+    recordCapture({name:path,entrySha256:entry.entrySha256,browser:entry.browser,sha256:createHash('sha256').update(raw).digest('hex'),
+      ids:end.ids,omittedFailures:end.failures,cases:rows.filter(row=>row.route==='interaction-case'&&row.ok)});
+    continue;
+  }
   assert.deepEqual(end.failures??[],[],`${path}: a run with failed routes is not evidence`);
   assert.ok(!rows.some(row=>row.ok===false),`${path}: failed route`);
   for(const id of end.ids??[])if(!id.startsWith('qa-'))current.add(id);
@@ -84,16 +111,17 @@ const rows=[...new Set([...current,...conditional])].map(id=>{
   const venue=venues.find(([pattern])=>pattern.test(id))?.[1]??'待分区';
   return {id,venue,observed:current.has(id),keyboard:coverage(id,'keyboard'),gamepad:coverage(id,'gamepad'),panel:coverage(id,'panel')};
 }).sort((a,b)=>a.venue.localeCompare(b.venue,'zh')||a.id.localeCompare(b.id));
-const ordinary=rows.filter(row=>row.observed), modes=['keyboard','gamepad','panel'];
+const ordinary=rows.filter(row=>row.observed), frozen=new Set(baseline.ids);
 const summary={observed:ordinary.length,conditionalOnly:rows.length-ordinary.length,
   withBrowserAction:ordinary.filter(row=>modes.some(mode=>row[mode].length)).length,
   noBrowserAction:ordinary.filter(row=>modes.every(mode=>!row[mode].length)).length,
+  archivedIds:baseline.ids.length, archivedWithBrowserAction:ordinary.filter(row=>frozen.has(row.id)&&modes.some(mode=>row[mode].length)).length,
   perMode:Object.fromEntries(modes.map(mode=>[mode,ordinary.filter(row=>row[mode].length).length])),
 };
 if(json)console.log(JSON.stringify({summary,sources,rows,noteUnknown},null,2));
 else{
   console.log(`已观察注册 ${summary.observed}，有至少一项实测操作 ${summary.withBrowserAction}，没有实测操作 ${summary.noBrowserAction}，仅从条件注册调用得知 ${summary.conditionalOnly}。\n`);
-  console.log(sources.map((source,i)=>`[${i+1}] ${source.name} · ${source.browser} · ${source.entrySha256}`).join('\n'));
+  console.log(sources.map((source,i)=>`[${i+1}] ${source.name} · ${source.browser??'浏览器归档'} · ${source.entrySha256??source.sha256}`).join('\n'));
   console.log('\n短横线表示该输入方式没有本清单引用的证据。是否设计了独立面板入口需要看各场馆条件。');
   console.log('\n| 场馆 | ID | 注册 | Chrome 键盘 | 模拟标准手柄 | 面板点击 | 未验证的输入 |');
   console.log('| --- | --- | --- | --- | --- | --- | --- |');

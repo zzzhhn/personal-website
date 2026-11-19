@@ -1,0 +1,4525 @@
+{
+  "runs": [
+    {
+      "name": "mine-final-contact-play.json",
+      "sha256": "54069b4623532c4ac2d3dd594ba69a6a2c5d85b1a33330770b9d9bb338478cb5",
+      "fixture": "Published mine entry and real keyboard routes. Backtest response stubbed.",
+      "cases": [
+        {
+          "id": "alpha-mine-tools",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "装备探测器和镐，继续走向矿脉",
+              "before": {
+                "actor": [
+                  -92.97775268554688,
+                  1.9635684490203857,
+                  -57.16756057739258
+                ],
+                "grounded": true,
+                "prompt": "alpha-mine-tools",
+                "label": {
+                  "zh": "取探测器和镐",
+                  "en": "Collect detector & pickaxe"
+                },
+                "readout": null
+              },
+              "after": {
+                "actor": [
+                  -93.18746948242188,
+                  1.9588042497634888,
+                  -57.75567626953125
+                ],
+                "grounded": true,
+                "prompt": "alpha-mine-tools",
+                "label": {
+                  "zh": "开始新一轮勘探",
+                  "en": "Begin a fresh exploration"
+                },
+                "readout": null
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-mine-vein-lower",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "扫描、三敲并拾起矿石",
+              "before": {
+                "actor": [
+                  -90.3133773803711,
+                  1.959394097328186,
+                  -74.63790893554688
+                ],
+                "grounded": true,
+                "prompt": "alpha-mine-vein-lower",
+                "label": {
+                  "zh": "辨认这条矿线",
+                  "en": "Read this seam"
+                },
+                "readout": null
+              },
+              "after": {
+                "scanned": {
+                  "actor": [
+                    -90.30626678466797,
+                    1.9588042497634888,
+                    -74.688232421875
+                  ],
+                  "grounded": true,
+                  "prompt": "alpha-mine-vein-lower",
+                  "label": {
+                    "zh": "挥镐 · 0/3",
+                    "en": "Chip the seam · 0/3"
+                  },
+                  "readout": null
+                },
+                "hit1": {
+                  "actor": [
+                    -90.30626678466797,
+                    1.9588042497634888,
+                    -74.688232421875
+                  ],
+                  "grounded": true,
+                  "prompt": "alpha-mine-vein-lower",
+                  "label": {
+                    "zh": "挥镐 · 1/3",
+                    "en": "Chip the seam · 1/3"
+                  },
+                  "readout": null
+                },
+                "hit2": {
+                  "actor": [
+                    -90.30626678466797,
+                    1.9588042497634888,
+                    -74.688232421875
+                  ],
+                  "grounded": true,
+                  "prompt": "alpha-mine-vein-lower",
+                  "label": {
+                    "zh": "挥镐 · 2/3",
+                    "en": "Chip the seam · 2/3"
+                  },
+                  "readout": null
+                },
+                "hit3": {
+                  "actor": [
+                    -90.30626678466797,
+                    1.9588042497634888,
+                    -74.688232421875
+                  ],
+                  "grounded": true,
+                  "prompt": "alpha-mine-vein-lower",
+                  "label": {
+                    "zh": "拾起回声矿",
+                    "en": "Pick up Echo ore"
+                  },
+                  "readout": null
+                },
+                "picked": {
+                  "actor": [
+                    -90.3337631225586,
+                    1.9588042497634888,
+                    -74.9153823852539
+                  ],
+                  "grounded": true,
+                  "prompt": null,
+                  "label": null,
+                  "readout": null
+                },
+                "hud": "FOLLOW THE NEEDLE TO THE POOL"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-mine-dropped",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "F, E",
+              "operation": "F 暂存后 E 捡回同一矿石并走向池边",
+              "before": "The ore is on the shelf. You can pick it up again.",
+              "after": {
+                "recovered": {
+                  "actor": [
+                    -82.92047882080078,
+                    1.9588042497634888,
+                    -56.277442932128906
+                  ],
+                  "grounded": true,
+                  "prompt": null,
+                  "label": null,
+                  "readout": null
+                },
+                "next": {
+                  "actor": [
+                    -84.11631774902344,
+                    1.959958791732788,
+                    -56.23323440551758
+                  ],
+                  "grounded": true,
+                  "prompt": null,
+                  "label": null,
+                  "readout": null
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-mine-pool-0",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "投入 A 池位，请求回测并展示结果",
+              "before": {
+                "actor": [
+                  -83.2425537109375,
+                  1.9594038724899292,
+                  -57.65570068359375
+                ],
+                "grounded": true,
+                "prompt": "alpha-mine-pool-0",
+                "label": {
+                  "zh": "投入 A 位 · 替换此处结果",
+                  "en": "Cast into A · replace this result"
+                },
+                "readout": null
+              },
+              "after": {
+                "request": [
+                  {
+                    "method": "POST",
+                    "factor": "REVERSAL_5"
+                  }
+                ],
+                "resultMarker": "brain-online-result-0-REVERSAL_5",
+                "fixtureResponse": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mine-final-contact-signage.json",
+      "sha256": "32347615bdcc2b9434513a9510e6a6510e08992ad1357fee0f4aec954c7a5e09",
+      "fixture": "Published mine entry and real keys.",
+      "cases": [
+        {
+          "id": "alpha-mine-experience",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "读取矿区经历卡",
+              "before": {
+                "actor": [
+                  -79.24878692626953,
+                  1.959771990776062,
+                  -56.3328971862793
+                ],
+                "grounded": true,
+                "prompt": "alpha-mine-experience",
+                "label": {
+                  "zh": "WorldQuant BRAIN · 实习经历",
+                  "en": "WorldQuant BRAIN · experience"
+                },
+                "readout": null
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2025-08-01"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ibd-workstation-fixtures-play.json",
+      "sha256": "72fc48404011973d5dc424661c4c0a220ae9483c2ef3fd9e8e09a161232cbc6d",
+      "fixture": "Published yard entry and ordinary keyboard routing.",
+      "cases": [
+        {
+          "id": "ibd-manifest",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开收货单并走向工具台",
+              "before": {
+                "actor": [
+                  -91.20989990234375,
+                  1.9036599397659302,
+                  -149.77227783203125
+                ],
+                "grounded": true,
+                "prompt": "ibd-manifest",
+                "label": {
+                  "zh": "拿起货单",
+                  "en": "Pick up the manifest"
+                },
+                "readout": null
+              },
+              "after": {
+                "arrival": {
+                  "actor": [
+                    -94.11880493164062,
+                    1.9038249254226685,
+                    -156.77928161621094
+                  ],
+                  "grounded": true,
+                  "prompt": "ibd-kit",
+                  "label": {
+                    "zh": "拿走检验工具",
+                    "en": "Collect the tools"
+                  },
+                  "readout": null
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-kit",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "启动领取检验工具",
+              "before": {
+                "actor": [
+                  -94.11880493164062,
+                  1.9038249254226685,
+                  -156.77928161621094
+                ],
+                "grounded": true,
+                "prompt": "ibd-kit",
+                "label": {
+                  "zh": "拿走检验工具",
+                  "en": "Collect the tools"
+                },
+                "readout": null
+              },
+              "after": {
+                "hud": "SDIC · INVENTORY YARD01Fictional cargoHide guidanceReceiveToolsCoilsPacksLoadDispatchInspection kit · 1 mCollect the toolsTake the torch and gauge from the table.Take the inspection kitCancel this operationManifest, observed evidence and exchanges +"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "camp-pushable-browser.json",
+      "sha256": "5b449cbace192a27a4dc048a84f07569e5786611729012c89b84c6c479ed0c04",
+      "fixture": "QA stance near the real objects. Original loader held then released.",
+      "cases": [
+        {
+          "id": "camp-prop-dumbbell-0",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "举起哑铃，手中刚体暂离碰撞",
+              "before": {
+                "id": "C13-0",
+                "home": [
+                  -41.05,
+                  4.904,
+                  15.05
+                ],
+                "position": [
+                  -41.04999923706055,
+                  4.9039998054504395,
+                  15.050000190734863
+                ],
+                "sleeping": true,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.68961071167e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": true
+              },
+              "after": {
+                "id": "C13-0",
+                "home": [
+                  -41.05,
+                  4.904,
+                  15.05
+                ],
+                "position": [
+                  -41.04999923706055,
+                  4.898855209350586,
+                  15.050003051757812
+                ],
+                "sleeping": false,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.68961071167e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": false
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-dumbbell-0-lower",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "放下哑铃，恢复实体碰撞",
+              "before": {
+                "id": "C13-0",
+                "home": [
+                  -41.05,
+                  4.904,
+                  15.05
+                ],
+                "position": [
+                  -41.04999923706055,
+                  4.898855209350586,
+                  15.050003051757812
+                ],
+                "sleeping": false,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.68961071167e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": false
+              },
+              "after": {
+                "id": "C13-0",
+                "home": [
+                  -41.05,
+                  4.904,
+                  15.05
+                ],
+                "position": [
+                  -41.354984283447266,
+                  4.9144744873046875,
+                  15.04345989227295
+                ],
+                "sleeping": false,
+                "displacedFor": 0,
+                "colliderCount": 1,
+                "colliderHandle": 4.68961071167e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-dumbbell-1",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "举起哑铃，手中刚体暂离碰撞",
+              "before": {
+                "id": "C13-1",
+                "home": [
+                  -41.1,
+                  4.904,
+                  15.62
+                ],
+                "position": [
+                  -41.099998474121094,
+                  4.9039998054504395,
+                  15.619999885559082
+                ],
+                "sleeping": true,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.689610711674e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": true
+              },
+              "after": {
+                "id": "C13-1",
+                "home": [
+                  -41.1,
+                  4.904,
+                  15.62
+                ],
+                "position": [
+                  -41.099998474121094,
+                  4.898801803588867,
+                  15.61999797821045
+                ],
+                "sleeping": false,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.689610711674e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": false
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-dumbbell-1-lower",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "放下哑铃，恢复实体碰撞",
+              "before": {
+                "id": "C13-1",
+                "home": [
+                  -41.1,
+                  4.904,
+                  15.62
+                ],
+                "position": [
+                  -41.099998474121094,
+                  4.898801803588867,
+                  15.61999797821045
+                ],
+                "sleeping": false,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.689610711674e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": false
+              },
+              "after": {
+                "id": "C13-1",
+                "home": [
+                  -41.1,
+                  4.904,
+                  15.62
+                ],
+                "position": [
+                  -40.7436408996582,
+                  4.916177749633789,
+                  15.49300479888916
+                ],
+                "sleeping": false,
+                "displacedFor": 0,
+                "colliderCount": 1,
+                "colliderHandle": 4.689610711674e-312,
+                "hullTop": 0.2002250850200653,
+                "colliderEnabled": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "camp-pushable-browser-tow.json",
+      "sha256": "0a120c30f8030fba22bc02dae347a29eb3aa94a9950ee964ce84b0480f5d0c03",
+      "fixture": "QA stance near the real suitcase.",
+      "cases": [
+        {
+          "id": "camp-prop-suitcase",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E, D, E",
+              "operation": "握柄拖行，再放开实物行李箱",
+              "before": {
+                "id": "C15",
+                "home": [
+                  -27,
+                  4.9,
+                  30
+                ],
+                "position": [
+                  -26.99994468688965,
+                  4.899378776550293,
+                  29.999990463256836
+                ],
+                "sleeping": false,
+                "displacedFor": null,
+                "colliderCount": 1,
+                "colliderHandle": 4.604730880016e-312,
+                "hullTop": 0.7051098942756653,
+                "colliderEnabled": true
+              },
+              "after": {
+                "drag": {
+                  "id": "C15",
+                  "home": [
+                    -27,
+                    4.9,
+                    30
+                  ],
+                  "position": [
+                    -25.2944393157959,
+                    4.899391174316406,
+                    29.854755401611328
+                  ],
+                  "sleeping": false,
+                  "displacedFor": null,
+                  "colliderCount": 1,
+                  "colliderHandle": 4.604730880016e-312,
+                  "hullTop": 0.7051098942756653,
+                  "colliderEnabled": true
+                },
+                "released": {
+                  "id": "C15",
+                  "home": [
+                    -27,
+                    4.9,
+                    30
+                  ],
+                  "position": [
+                    -24.91456413269043,
+                    4.839369773864746,
+                    29.619916915893555
+                  ],
+                  "sleeping": false,
+                  "displacedFor": 0.02,
+                  "colliderCount": 1,
+                  "colliderHandle": 4.604730880016e-312,
+                  "hullTop": 0.7051098942756653,
+                  "colliderEnabled": true
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ibd-workstation-fixtures-benches.log",
+      "entrySha256": "1412ae2b66f40fe88d6c87352f3876915bd5ad9badcf9c4d1c021a8d048b2539",
+      "browser": "157.0.8103.79",
+      "sha256": "cfa596813687a819ca2b91617ba27f90cc2df5ee11d62ef0901212c9ee18fdd5",
+      "fixture": "Published entry checked. QA stance at each real inspection bench.",
+      "cases": [
+        {
+          "id": "ibd-parts-a",
+          "events": [
+            {
+              "input": "panel",
+              "control": "呈样、合拢按钮",
+              "operation": "打开检验，从指定口呈样，合拢读取 M8",
+              "before": {
+                "player": [
+                  -75.93000030517578,
+                  1.9038249254226685,
+                  -186.5
+                ],
+                "grounded": true,
+                "near": "ibd-parts-a"
+              },
+              "after": {
+                "after": {
+                  "player": [
+                    -78.00069427490234,
+                    1.9038819074630737,
+                    -186.5198974609375
+                  ],
+                  "grounded": true
+                },
+                "reading": "M8"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-parts-b",
+          "events": [
+            {
+              "input": "panel",
+              "control": "打开、合拢按钮",
+              "operation": "打开检验，从指定口呈样，合拢读取 M8",
+              "before": {
+                "player": [
+                  -67.93000030517578,
+                  1.9038249254226685,
+                  -186.5
+                ],
+                "grounded": true,
+                "near": "ibd-parts-b"
+              },
+              "after": {
+                "after": {
+                  "player": [
+                    -70.00053405761719,
+                    1.9038819074630737,
+                    -186.5198974609375
+                  ],
+                  "grounded": true
+                },
+                "reading": "M8"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C11 五件工具逐件实测",
+      "sha256": "7bde299afd7fd14c1ba776e92a9fb2ef954b27f77cb4b1f9b77a251a8fc8c640",
+      "fixture": "QA readback only. Walked from camp with no position fixtures.",
+      "cases": [
+        {
+          "id": "camp-prop-tool-0",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E, E",
+              "operation": "从工具墙取用，持有后归还并恢复原碰撞",
+              "before": {
+                "position": [
+                  -32.454551696777344,
+                  5.718692779541016,
+                  19.50178337097168
+                ],
+                "tool": {
+                  "id": "camp-content-collider-C11-tool-0",
+                  "enabled": true,
+                  "triangles": 324,
+                  "buffer": "91af7d596300b1cbbb7ba0132a634cdc4444ed3a9bac37d3fdf6c8f529d59609"
+                }
+              },
+              "after": {
+                "held": {
+                  "phase": "held",
+                  "age": 0.4666999998092651
+                },
+                "palm": [
+                  -31.998800507441704,
+                  5.787025925452275,
+                  19.353328027375593
+                ],
+                "parkedDuringHold": {
+                  "id": "camp-content-collider-C11-tool-0",
+                  "enabled": false,
+                  "triangles": 324,
+                  "buffer": "91af7d596300b1cbbb7ba0132a634cdc4444ed3a9bac37d3fdf6c8f529d59609"
+                },
+                "returned": {
+                  "id": "camp-content-collider-C11-tool-0",
+                  "enabled": true,
+                  "triangles": 324,
+                  "buffer": "91af7d596300b1cbbb7ba0132a634cdc4444ed3a9bac37d3fdf6c8f529d59609"
+                },
+                "grounded": true,
+                "position": [
+                  -32.45063018798828,
+                  5.71865177154541,
+                  19.49847984313965
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-tool-1",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E, E",
+              "operation": "从工具墙取用，持有后归还并恢复原碰撞",
+              "before": {
+                "position": [
+                  -32.2757453918457,
+                  5.71865177154541,
+                  19.5803279876709
+                ],
+                "tool": {
+                  "id": "camp-content-collider-C11-tool-1",
+                  "enabled": true,
+                  "triangles": 408,
+                  "buffer": "0c63d4459c63aa0ceb60674e3823372770652508b3e6de6ae570cea493fda844"
+                }
+              },
+              "after": {
+                "held": {
+                  "phase": "held",
+                  "age": 0.46669999980926513
+                },
+                "palm": [
+                  -31.803586700529365,
+                  5.798103440008717,
+                  19.595403389291487
+                ],
+                "parkedDuringHold": {
+                  "id": "camp-content-collider-C11-tool-1",
+                  "enabled": false,
+                  "triangles": 408,
+                  "buffer": "0c63d4459c63aa0ceb60674e3823372770652508b3e6de6ae570cea493fda844"
+                },
+                "returned": {
+                  "id": "camp-content-collider-C11-tool-1",
+                  "enabled": true,
+                  "triangles": 408,
+                  "buffer": "0c63d4459c63aa0ceb60674e3823372770652508b3e6de6ae570cea493fda844"
+                },
+                "grounded": true,
+                "position": [
+                  -32.27461624145508,
+                  5.71865177154541,
+                  19.58049964904785
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-tool-2",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E, E",
+              "operation": "从工具墙取用，持有后归还并恢复原碰撞",
+              "before": {
+                "position": [
+                  -31.993818283081055,
+                  5.71865177154541,
+                  19.878385543823242
+                ],
+                "tool": {
+                  "id": "camp-content-collider-C11-tool-2",
+                  "enabled": true,
+                  "triangles": 456,
+                  "buffer": "980ea19b72cee242f6ddd291e6e8943293d752486d41bb315660d6d3aaab809f"
+                }
+              },
+              "after": {
+                "held": {
+                  "phase": "held",
+                  "age": 0.45180000019073485
+                },
+                "palm": [
+                  -31.53004825499097,
+                  5.811989703433514,
+                  19.8435955737795
+                ],
+                "parkedDuringHold": {
+                  "id": "camp-content-collider-C11-tool-2",
+                  "enabled": false,
+                  "triangles": 456,
+                  "buffer": "980ea19b72cee242f6ddd291e6e8943293d752486d41bb315660d6d3aaab809f"
+                },
+                "returned": {
+                  "id": "camp-content-collider-C11-tool-2",
+                  "enabled": true,
+                  "triangles": 456,
+                  "buffer": "980ea19b72cee242f6ddd291e6e8943293d752486d41bb315660d6d3aaab809f"
+                },
+                "grounded": true,
+                "position": [
+                  -31.99294090270996,
+                  5.71865177154541,
+                  19.878625869750977
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-tool-3",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E, E",
+              "operation": "从工具墙取用，持有后归还并恢复原碰撞",
+              "before": {
+                "position": [
+                  -31.762292861938477,
+                  5.71865177154541,
+                  20.113481521606445
+                ],
+                "tool": {
+                  "id": "camp-content-collider-C11-tool-3",
+                  "enabled": true,
+                  "triangles": 372,
+                  "buffer": "4348015332290dbb766d21aff2c7997acff679d391f777d6b57b44dd285d330a"
+                }
+              },
+              "after": {
+                "held": {
+                  "phase": "held",
+                  "age": 0.4502000002861023
+                },
+                "palm": [
+                  -31.293886579382956,
+                  5.818778368976581,
+                  20.11185939569588
+                ],
+                "parkedDuringHold": {
+                  "id": "camp-content-collider-C11-tool-3",
+                  "enabled": false,
+                  "triangles": 372,
+                  "buffer": "4348015332290dbb766d21aff2c7997acff679d391f777d6b57b44dd285d330a"
+                },
+                "returned": {
+                  "id": "camp-content-collider-C11-tool-3",
+                  "enabled": true,
+                  "triangles": 372,
+                  "buffer": "4348015332290dbb766d21aff2c7997acff679d391f777d6b57b44dd285d330a"
+                },
+                "grounded": true,
+                "position": [
+                  -31.76140022277832,
+                  5.71865177154541,
+                  20.11368751525879
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-tool-4",
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E, E",
+              "operation": "从工具墙取用，持有后归还并恢复原碰撞",
+              "before": {
+                "position": [
+                  -31.527244567871094,
+                  5.71865177154541,
+                  20.359621047973633
+                ],
+                "tool": {
+                  "id": "camp-content-collider-C11-tool-4",
+                  "enabled": true,
+                  "triangles": 420,
+                  "buffer": "9c23760a8cc06aec1dd5d119c95042de4243b796fe7c1fcc514af410b9e95bb2"
+                }
+              },
+              "after": {
+                "held": {
+                  "phase": "held",
+                  "age": 0.4650000000000001
+                },
+                "palm": [
+                  -31.046780854221375,
+                  5.788041718508656,
+                  20.391917199401078
+                ],
+                "parkedDuringHold": {
+                  "id": "camp-content-collider-C11-tool-4",
+                  "enabled": false,
+                  "triangles": 420,
+                  "buffer": "9c23760a8cc06aec1dd5d119c95042de4243b796fe7c1fcc514af410b9e95bb2"
+                },
+                "returned": {
+                  "id": "camp-content-collider-C11-tool-4",
+                  "enabled": true,
+                  "triangles": 420,
+                  "buffer": "9c23760a8cc06aec1dd5d119c95042de4243b796fe7c1fcc514af410b9e95bb2"
+                },
+                "grounded": true,
+                "position": [
+                  -31.520294189453125,
+                  5.71865177154541,
+                  20.36130714416504
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "操作族浏览器采集 · 2",
+      "entrySha256": "84537d1ca20b6449b13ac543f2e701fe64c835461b6e53af6c15b0bbbffec1e7",
+      "browser": "157.0.8103.79",
+      "sha256": "7636ac77b7fef96c7efe7564d822ceedbcb594a0a763b60c123e5c419b21841f",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls.",
+      "cases": [
+        {
+          "id": "town-board-0",
+          "fixture": [
+            15.180073266327382,
+            3.0405925798416136,
+            21.2
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "town-board-0",
+                "label": "SDIC Securities · Investment Banking Analyst"
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2025-05-01",
+                "title": "SDIC Securities"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "experience",
+                "id": "2025-05-01"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "town-board-0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "town-board-1",
+          "fixture": [
+            15.180073266327382,
+            3.0405925798416136,
+            10.2
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "town-board-1",
+                "label": "WorldQuant · Research Consultant"
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2025-08-01",
+                "title": "WorldQuant"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "experience",
+                "id": "2025-08-01"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "town-board-1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "town-board-2",
+          "fixture": [
+            15.180073266327382,
+            3.0405925798416136,
+            0.20000000000000018
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "town-board-2",
+                "label": "MoE Capital · Venture Capital Assistant"
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2025-11-01",
+                "title": "MoE Capital"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "experience",
+                "id": "2025-11-01"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "town-board-2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "town-board-3",
+          "fixture": [
+            15.180073266327382,
+            3.0405925798416136,
+            -18.8
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "town-board-3",
+                "label": "ByteDance · Product Manager — Agent Evaluation (AIME)"
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2025-12-01",
+                "title": "ByteDance"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "experience",
+                "id": "2025-12-01"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "town-board-3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "town-board-4",
+          "fixture": [
+            15.180073266327382,
+            3.0405925798416136,
+            -29.8
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "town-board-4",
+                "label": "Video Rebirth · Data Engineer — VLM Evaluation"
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2026-02-01",
+                "title": "Video Rebirth"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "experience",
+                "id": "2026-02-01"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "town-board-4"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "town-board-5",
+          "fixture": [
+            15.180073266327382,
+            3.0405925798416136,
+            -40.3
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "town-board-5",
+                "label": "Tencent · Hunyuan Foundation Models · Product Evaluation Intern"
+              },
+              "after": {
+                "kind": "experience",
+                "id": "2026-09-24",
+                "title": "Tencent · Hunyuan Foundation Models"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "experience",
+                "id": "2026-09-24"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "town-board-5"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "park-project-accompany",
+          "fixture": [
+            63.421479717619505,
+            2.7899999999999996,
+            -20.389179877636753
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "park-project-accompany",
+                "label": "Read Accompany"
+              },
+              "after": {
+                "kind": "project",
+                "id": "kindred",
+                "title": "Accompany"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "project",
+                "id": "kindred"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "park-project-accompany"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "park-project-djc",
+          "fixture": [
+            76.09268730176512,
+            2.7899999999999996,
+            -25.381640080580635
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "park-project-djc",
+                "label": "Read DJC Web Controller"
+              },
+              "after": {
+                "kind": "project",
+                "id": "djc",
+                "title": "DJC Web Controller"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "project",
+                "id": "djc"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "park-project-djc"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "park-project-evalforge",
+          "fixture": [
+            70.98562975625069,
+            2.7899999999999996,
+            -37.76704724443261
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "park-project-evalforge",
+                "label": "Read EvalForge"
+              },
+              "after": {
+                "kind": "project",
+                "id": "evalforge",
+                "title": "EvalForge"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "project",
+                "id": "evalforge"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "park-project-evalforge"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "park-project-hepai",
+          "fixture": [
+            70.31654806701334,
+            2.7899999999999996,
+            -15.308544489247318
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "park-project-hepai",
+                "label": "Read 合拍 Hepai"
+              },
+              "after": {
+                "kind": "project",
+                "id": "hepai",
+                "title": "合拍 Hepai"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "project",
+                "id": "hepai"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "park-project-hepai"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "park-project-interactive-learning",
+          "fixture": [
+            52.66956894660088,
+            2.7899999999999996,
+            -12.743254088010463
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "park-project-interactive-learning",
+                "label": "Read Interactive Learning Platforms"
+              },
+              "after": {
+                "kind": "project",
+                "id": "interactive-learning-platforms",
+                "title": "Interactive Learning Platforms"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "project",
+                "id": "interactive-learning-platforms"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "park-project-interactive-learning"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-desk",
+          "fixture": [
+            -51.86413959755234,
+            6.25,
+            39.86413959755234
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-desk",
+                "label": "Education"
+              },
+              "after": {
+                "kind": "about",
+                "id": "education",
+                "title": "The Chinese University of Hong Kong, Shenzhen (CUHKSZ)"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "education"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-desk",
+                  "camp-prop-journal"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-dumbbell",
+          "fixture": [
+            -41.04999923706055,
+            5.95,
+            16.550000190734863
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-dumbbell",
+                "label": "About fitness"
+              },
+              "after": {
+                "kind": "about",
+                "id": "interests",
+                "page": 1,
+                "title": "In my free time"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "interests",
+                "page": 1
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-dumbbell",
+                  "camp-prop-dumbbell-1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-flags",
+          "fixture": [
+            -56.05,
+            6.25,
+            30.000000000000004
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-flags",
+                "label": "Languages"
+              },
+              "after": {
+                "kind": "about",
+                "id": "languages",
+                "title": "Languages"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "languages"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-flags"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-guitar",
+          "fixture": [
+            -42,
+            6.050000000000001,
+            44.099999999999994
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-guitar",
+                "label": "Singing"
+              },
+              "after": {
+                "kind": "about",
+                "id": "interests",
+                "page": 0,
+                "title": "In my free time"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "interests",
+                "page": 0
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-guitar"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-suitcase",
+          "fixture": [
+            -27.850017166137697,
+            5.95,
+            29.99999237060547
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-suitcase",
+                "label": "About travel"
+              },
+              "after": {
+                "kind": "about",
+                "id": "interests",
+                "page": 3,
+                "title": "In my free time"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "interests",
+                "page": 3
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-suitcase"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-tent",
+          "fixture": [
+            -42.4,
+            6.25,
+            14.75
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-tent",
+                "label": "About Bobby"
+              },
+              "after": {
+                "kind": "about",
+                "id": "identity",
+                "title": "Quantitative Finance × AI"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "identity"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-tent",
+                  "camp-prop-dumbbell-0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-tools",
+          "fixture": [
+            -32.06514972432901,
+            6.3500000000000005,
+            20.065149724329007
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-tools",
+                "label": "Skills overview"
+              },
+              "after": {
+                "kind": "about",
+                "id": "skills",
+                "title": "Quantitative Finance × AI"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "skills"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-tools",
+                  "camp-prop-tool-2",
+                  "camp-prop-tool-1",
+                  "camp-prop-tool-3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-trophy",
+          "fixture": [
+            -52.076271631908305,
+            6.25,
+            19.923728368091698
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-trophy",
+                "label": "Awards"
+              },
+              "after": {
+                "kind": "about",
+                "id": "awards",
+                "title": "Education & Awards"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "awards"
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-trophy"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-about-wok",
+          "fixture": [
+            -32.02979438526968,
+            6.050000000000001,
+            39.97020561473032
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开对应内容卡",
+              "before": {
+                "id": "camp-about-wok",
+                "label": "Cooking"
+              },
+              "after": {
+                "kind": "about",
+                "id": "interests",
+                "page": 2,
+                "title": "In my free time"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "close",
+              "operation": "关闭内容卡并恢复提示",
+              "before": {
+                "kind": "about",
+                "id": "interests",
+                "page": 2
+              },
+              "after": {
+                "card": null,
+                "grounded": true,
+                "choices": [
+                  "camp-about-wok"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-prop-journal",
+          "fixture": [
+            -51.79342891943369,
+            6.05,
+            39.79342891943369
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "打开日志",
+              "before": null,
+              "after": {
+                "page": 0,
+                "turn": -1
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "翻到日志第 2 页",
+              "before": {
+                "page": 0,
+                "turn": -1
+              },
+              "after": {
+                "page": 1,
+                "turn": -1
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "翻到日志第 3 页",
+              "before": {
+                "page": 1,
+                "turn": -1
+              },
+              "after": {
+                "page": 2,
+                "turn": -1
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "合上日志，恢复取用提示",
+              "before": {
+                "page": 2
+              },
+              "after": {
+                "id": null,
+                "reason": "journal-finished",
+                "grounded": true,
+                "choices": [
+                  "camp-prop-journal",
+                  "camp-about-desk"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-0-a",
+          "fixture": [
+            -38.78414710061276,
+            6.300000619888306,
+            34.50219405914213
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-0-a",
+                "position": [
+                  -38.91358947753906,
+                  5.619312286376953,
+                  34.37401580810547
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-0-a",
+                "position": [
+                  -38.4644660949707,
+                  6.280000686645508,
+                  34.94974899291992
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-0-a"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -38.871334075927734,
+                  5.619362831115723,
+                  34.38013458251953
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-0-b",
+          "fixture": [
+            -37.49780594085787,
+            6.300000619888306,
+            33.21585289938724
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-0-b",
+                "position": [
+                  -37.637454986572266,
+                  5.61931037902832,
+                  33.07538604736328
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-0-b",
+                "position": [
+                  -37.05025100708008,
+                  6.280000686645508,
+                  33.5355339050293
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-0-b"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -37.57917785644531,
+                  5.619698524475098,
+                  33.15773010253906
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-1-a",
+          "fixture": [
+            -46.50219405914213,
+            6.300000619888306,
+            33.21585289938724
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-1-a",
+                "position": [
+                  -46.37420654296875,
+                  5.627679824829102,
+                  33.088279724121094
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-1-a",
+                "position": [
+                  -46.94974899291992,
+                  6.280000686645508,
+                  33.5355339050293
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-1-a"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -46.38002014160156,
+                  5.6279706954956055,
+                  33.12872314453125
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-1-b",
+          "fixture": [
+            -45.21585289938724,
+            6.300000619888306,
+            34.50219405914213
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-1-b",
+                "position": [
+                  -45.075599670410156,
+                  5.6259894371032715,
+                  34.36384201049805
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-1-b",
+                "position": [
+                  -45.5355339050293,
+                  6.280000686645508,
+                  34.94974899291992
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-1-b"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -45.157588958740234,
+                  5.626774787902832,
+                  34.42082214355469
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-2-a",
+          "fixture": [
+            -45.21585289938724,
+            6.300000619888306,
+            25.497805940857873
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-2-a",
+                "position": [
+                  -45.08644104003906,
+                  5.632106304168701,
+                  25.635353088378906
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-2-a",
+                "position": [
+                  -45.5355339050293,
+                  6.280000686645508,
+                  25.05025291442871
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-2-a"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -45.12856674194336,
+                  5.632114887237549,
+                  25.619848251342773
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-2-b",
+          "fixture": [
+            -46.50219405914213,
+            6.300000619888306,
+            26.784147100612767
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-2-b",
+                "position": [
+                  -46.365318298339844,
+                  5.631166458129883,
+                  26.9250431060791
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-2-b",
+                "position": [
+                  -46.94974899291992,
+                  6.280000686645508,
+                  26.464466094970703
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-2-b"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -46.42090606689453,
+                  5.632212162017822,
+                  26.84258270263672
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-3-a",
+          "fixture": [
+            -37.49780594085787,
+            6.300000619888306,
+            26.784147100612767
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-3-a",
+                "position": [
+                  -37.625999450683594,
+                  5.6193132400512695,
+                  26.913631439208984
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-3-a",
+                "position": [
+                  -37.05025100708008,
+                  6.280000686645508,
+                  26.464466094970703
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-3-a"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -37.61986541748047,
+                  5.619457244873047,
+                  26.871347427368164
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "camp-bench-3-b",
+          "fixture": [
+            -38.78414710061276,
+            6.300000619888306,
+            25.497805940857873
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "camp-bench-3-b",
+                "position": [
+                  -38.91560363769531,
+                  5.630005836486816,
+                  25.640438079833984
+                ]
+              },
+              "after": {
+                "seat": "camp-bench-3-b",
+                "position": [
+                  -38.4644660949707,
+                  6.280000686645508,
+                  25.05025291442871
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "camp-bench-3-b"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -38.84174346923828,
+                  5.629874229431152,
+                  25.578981399536133
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-24",
+          "fixture": [
+            12.85,
+            2.27,
+            20.9
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-24",
+                "position": [
+                  13.0853271484375,
+                  1.969191312789917,
+                  20.899999618530273
+                ]
+              },
+              "after": {
+                "seat": "street-bench-24",
+                "position": [
+                  12.460000038146973,
+                  2.5,
+                  20.899999618530273
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-24"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  13.109991073608398,
+                  1.9694005250930786,
+                  20.899999618530273
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-25",
+          "fixture": [
+            12.85,
+            2.27,
+            9.9
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-25",
+                "position": [
+                  13.085867881774902,
+                  1.9691545963287354,
+                  9.899999618530273
+                ]
+              },
+              "after": {
+                "seat": "street-bench-25",
+                "position": [
+                  12.460000038146973,
+                  2.5,
+                  9.899999618530273
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-25"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  13.10999584197998,
+                  1.969687819480896,
+                  9.899999618530273
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-26",
+          "fixture": [
+            12.85,
+            2.27,
+            -0.1
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-26",
+                "position": [
+                  13.08594799041748,
+                  1.9691452980041504,
+                  -0.10000524669885635
+                ]
+              },
+              "after": {
+                "seat": "street-bench-26",
+                "position": [
+                  12.460000038146973,
+                  2.5,
+                  -0.10000000149011612
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-26"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  13.10999584197998,
+                  1.9693952798843384,
+                  -0.1000094786286354
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-27",
+          "fixture": [
+            12.85,
+            2.27,
+            -19.1
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-27",
+                "position": [
+                  13.085859298706055,
+                  1.9691460132598877,
+                  -19.100000381469727
+                ]
+              },
+              "after": {
+                "seat": "street-bench-27",
+                "position": [
+                  12.460000038146973,
+                  2.5,
+                  -19.100000381469727
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-27"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  13.10999584197998,
+                  1.9696894884109497,
+                  -19.100000381469727
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-28",
+          "fixture": [
+            12.85,
+            2.27,
+            -30.1
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-28",
+                "position": [
+                  13.085752487182617,
+                  1.96914541721344,
+                  -30.100000381469727
+                ]
+              },
+              "after": {
+                "seat": "street-bench-28",
+                "position": [
+                  12.460000038146973,
+                  2.5,
+                  -30.100000381469727
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-28"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  13.10999584197998,
+                  1.969445824623108,
+                  -30.100000381469727
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-29",
+          "fixture": [
+            12.85,
+            2.27,
+            -40.6
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-29",
+                "position": [
+                  13.086433410644531,
+                  1.969095230102539,
+                  -40.599998474121094
+                ]
+              },
+              "after": {
+                "seat": "street-bench-29",
+                "position": [
+                  12.460000038146973,
+                  2.5,
+                  -40.599998474121094
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-29"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  13.10999584197998,
+                  1.9696993827819824,
+                  -40.599998474121094
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-30",
+          "fixture": [
+            -23.5,
+            2.12,
+            -44.05
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-30",
+                "position": [
+                  -23.5,
+                  1.8191438913345337,
+                  -43.81406784057617
+                ]
+              },
+              "after": {
+                "seat": "street-bench-30",
+                "position": [
+                  -23.5,
+                  2.3499999046325684,
+                  -44.439998626708984
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-30"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -23.5,
+                  1.8193583488464355,
+                  -43.790000915527344
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-31",
+          "fixture": [
+            -19.5,
+            2.12,
+            -44.05
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-31",
+                "position": [
+                  -19.5,
+                  1.8192498683929443,
+                  -43.81569290161133
+                ]
+              },
+              "after": {
+                "seat": "street-bench-31",
+                "position": [
+                  -19.5,
+                  2.3499999046325684,
+                  -44.439998626708984
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-31"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -19.5,
+                  1.819747805595398,
+                  -43.790000915527344
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-32",
+          "fixture": [
+            -23.5,
+            2.12,
+            -39.95
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-32",
+                "position": [
+                  -23.5,
+                  1.8191393613815308,
+                  -40.1860237121582
+                ]
+              },
+              "after": {
+                "seat": "street-bench-32",
+                "position": [
+                  -23.5,
+                  2.3499999046325684,
+                  -39.560001373291016
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-32"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -23.5,
+                  1.8194072246551514,
+                  -40.209999084472656
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-33",
+          "fixture": [
+            -19.5,
+            2.12,
+            -39.95
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-33",
+                "position": [
+                  -19.5,
+                  1.8192400932312012,
+                  -40.18453598022461
+                ]
+              },
+              "after": {
+                "seat": "street-bench-33",
+                "position": [
+                  -19.5,
+                  2.3499999046325684,
+                  -39.560001373291016
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-33"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  -19.5,
+                  1.8197485208511353,
+                  -40.209999084472656
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-34",
+          "fixture": [
+            29.65,
+            2.27,
+            -28
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-34",
+                "position": [
+                  29.415508270263672,
+                  1.9692418575286865,
+                  -28
+                ]
+              },
+              "after": {
+                "seat": "street-bench-34",
+                "position": [
+                  30.040000915527344,
+                  2.5,
+                  -28
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-34"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  29.389999389648438,
+                  1.9695030450820923,
+                  -28
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-35",
+          "fixture": [
+            29.65,
+            2.27,
+            16
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-35",
+                "position": [
+                  29.41180419921875,
+                  1.959679365158081,
+                  15.999919891357422
+                ]
+              },
+              "after": {
+                "seat": "street-bench-35",
+                "position": [
+                  30.040000915527344,
+                  2.5,
+                  16
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-35"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  29.389999389648438,
+                  1.9601328372955322,
+                  16.000041961669922
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-bench-36",
+          "fixture": [
+            29.65,
+            2.27,
+            4
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-bench-36",
+                "position": [
+                  29.41472625732422,
+                  1.9691741466522217,
+                  3.9999961853027344
+                ]
+              },
+              "after": {
+                "seat": "street-bench-36",
+                "position": [
+                  30.040000915527344,
+                  2.5,
+                  4
+                ]
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-bench-36"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  29.389999389648438,
+                  1.9694849252700806,
+                  3.9999942779541016
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "street-shelter-seat",
+          "fixture": [
+            29.5,
+            2.3,
+            -20.4
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "坐到指定座位",
+              "before": {
+                "near": "street-shelter-seat",
+                "position": [
+                  29.415599822998047,
+                  2.00907826423645,
+                  -20.399999618530273
+                ]
+              },
+              "after": {
+                "seat": "street-shelter-seat",
+                "position": [
+                  30,
+                  2.5299999713897705,
+                  -20.399999618530273
+                ]
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "起身并在座位旁落地",
+              "before": {
+                "seat": "street-shelter-seat"
+              },
+              "after": {
+                "seat": null,
+                "position": [
+                  29.350000381469727,
+                  2.008491039276123,
+                  -20.399999618530273
+                ],
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-card",
+          "fixture": [
+            169.09597979746445,
+            6.050000000000001,
+            153.49597979746446
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-card",
+                "state": {
+                  "visits": [
+                    1
+                  ],
+                  "card": false,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 0
+                },
+                "motion": {
+                  "time": 52.03950000047666,
+                  "bellAt": -100,
+                  "treeAt": -100,
+                  "sandAt": -100,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 0
+                },
+                "motion": {
+                  "time": 52.16430000066739,
+                  "bellAt": -100,
+                  "treeAt": -100,
+                  "sandAt": -100,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    169.03135681152344,
+                    4.507773399353027,
+                    153.49761962890625
+                  ],
+                  "grounded": true,
+                  "step": 4569,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "登山卡已收好，只记录来过的地方。",
+                    "en": "Trail card kept. It records places, without a score.",
+                    "at": 82473.40000009537
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        169.03160095214844,
+                        4.507810592651367,
+                        153.49761962890625
+                      ],
+                      "yaw": -3.141592653589793,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-bell",
+          "fixture": [
+            173.7,
+            5.6000000000000005,
+            153.65
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-bell",
+                "state": {
+                  "visits": [
+                    1
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 0
+                },
+                "motion": {
+                  "time": 52.481700000762764,
+                  "bellAt": -100,
+                  "treeAt": -100,
+                  "sandAt": -100,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 1
+                },
+                "motion": {
+                  "time": 52.98460000085811,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": -100,
+                  "sandAt": -100,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    173.6999969482422,
+                    4.6188273429870605,
+                    153.64999389648438
+                  ],
+                  "grounded": true,
+                  "step": 4639,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "铜铃响了，山路的灯逐盏亮起。",
+                    "en": "The bell rings. Lamps light up along the trail.",
+                    "at": 83728.69999980927
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        173.6999969482422,
+                        4.6188273429870605,
+                        153.64999389648438
+                      ],
+                      "yaw": -1.1071487196567356,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-sand",
+          "fixture": [
+            171.39597979746446,
+            6.15,
+            151.49597979746446
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-sand",
+                "state": {
+                  "visits": [
+                    1
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 1
+                },
+                "motion": {
+                  "time": 57.02970000076272,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": -100,
+                  "sandAt": -100,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 2
+                },
+                "motion": {
+                  "time": 57.50530000066736,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": -100,
+                  "sandAt": 57.428300000667356,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    171.39598083496094,
+                    5.138827323913574,
+                    151.49598693847656
+                  ],
+                  "grounded": true,
+                  "step": 4980,
+                  "near": "alpha-sand",
+                  "choices": [
+                    "alpha-sand"
+                  ],
+                  "label": "Trace the mountain path",
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "小球出发了，沿沙盘上的山路走一遍。",
+                    "en": "The little ball is following the mountain path on the table.",
+                    "at": 89348.90000009537
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        171.39598083496094,
+                        5.138827323913574,
+                        151.49598693847656
+                      ],
+                      "yaw": -3.9269985237599605,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-tree",
+          "fixture": [
+            192.3,
+            19.849999999999998,
+            162.3
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-tree",
+                "state": {
+                  "visits": [
+                    1,
+                    3
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 2
+                },
+                "motion": {
+                  "time": 57.82350000095346,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": -100,
+                  "sandAt": 57.428300000667356,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1,
+                    3
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 3
+                },
+                "motion": {
+                  "time": 58.340300001144186,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    192.27621459960938,
+                    19.031658172607422,
+                    162.23141479492188
+                  ],
+                  "grounded": true,
+                  "step": 5051,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "树根的光沿枝干向上流，抬头看看树冠。",
+                    "en": "Light travels from the roots up the branches. Look toward the crown.",
+                    "at": 90563.09999990463
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        192.27621459960938,
+                        19.031658172607422,
+                        162.23141479492188
+                      ],
+                      "yaw": -1.2369744591667575,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-wind",
+          "fixture": [
+            252.4,
+            39.49999999999999,
+            146.4
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-wind",
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 0,
+                  "carried": false,
+                  "action": null,
+                  "revision": 3
+                },
+                "motion": {
+                  "time": 58.61580000114419,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": -100,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 1,
+                  "carried": false,
+                  "action": null,
+                  "revision": 4
+                },
+                "motion": {
+                  "time": 59.0828000011442,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    252.44033813476562,
+                    38.64747619628906,
+                    146.3216094970703
+                  ],
+                  "grounded": true,
+                  "step": 5117,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "微风吹起来了，看看旁边的旗面。",
+                    "en": "A breeze is blowing. Watch the flags beside the gate.",
+                    "at": 91693.5
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        252.44033813476562,
+                        38.64747619628906,
+                        146.3216094970703
+                      ],
+                      "yaw": -2.0460392793601185,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-stone",
+          "fixture": [
+            236,
+            84,
+            230
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-stone",
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7,
+                    11
+                  ],
+                  "card": true,
+                  "stones": 0,
+                  "wind": 1,
+                  "carried": false,
+                  "action": null,
+                  "revision": 4
+                },
+                "motion": {
+                  "time": 59.25440000104883,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7,
+                    11
+                  ],
+                  "card": true,
+                  "stones": 1,
+                  "wind": 1,
+                  "carried": false,
+                  "action": null,
+                  "revision": 5
+                },
+                "motion": {
+                  "time": 61.1693000011442,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    236.40293884277344,
+                    83.8188705444336,
+                    229.70904541015625
+                  ],
+                  "grounded": true,
+                  "step": 5264,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "这一块放稳了。",
+                    "en": "The stone is settled in place.",
+                    "at": 94137.69999980927
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        236.40293884277344,
+                        83.8188705444336,
+                        229.70904541015625
+                      ],
+                      "yaw": -3.8599289650258237,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-lantern-release",
+          "fixture": null,
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "放飞纸灯并交还输入",
+              "before": {
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7,
+                    11
+                  ],
+                  "card": true,
+                  "stones": 1,
+                  "wind": 1,
+                  "carried": true,
+                  "action": "lantern",
+                  "revision": 5
+                },
+                "motion": {
+                  "time": 62.05870000123956,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    226.35000610351562,
+                    84.13887023925781,
+                    231.6686248779297
+                  ],
+                  "grounded": true,
+                  "step": 5339,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "纸灯拿稳了。可以带着走，按 E 放飞。",
+                    "en": "The lantern is secure. Carry it with you, then press E to release it.",
+                    "at": 95340.30000019073
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        226.35000610351562,
+                        84.13887023925781,
+                        231.6686248779297
+                      ],
+                      "yaw": -1.5709908603983043,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7,
+                    11
+                  ],
+                  "card": true,
+                  "stones": 1,
+                  "wind": 1,
+                  "carried": false,
+                  "action": null,
+                  "revision": 6
+                },
+                "motion": {
+                  "time": 62.39140000104884,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 1,
+                  "lanterns": [
+                    {
+                      "id": 0,
+                      "age": 0.16640000009536746,
+                      "position": [
+                        -8.890077536478941,
+                        83.588870222362,
+                        42.09857817824087
+                      ]
+                    }
+                  ]
+                },
+                "actor": {
+                  "position": [
+                    226.35000610351562,
+                    84.13887023925781,
+                    231.6686248779297
+                  ],
+                  "grounded": true,
+                  "step": 5358,
+                  "near": "alpha-lantern",
+                  "choices": [
+                    "alpha-lantern"
+                  ],
+                  "label": "Take a paper lantern",
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "纸灯乘风而上。",
+                    "en": "The paper lantern rises into the clouds.",
+                    "at": 95585.69999980927
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        226.35000610351562,
+                        84.13887023925781,
+                        231.6686248779297
+                      ],
+                      "yaw": -1.5709908603983043,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-lantern",
+          "fixture": [
+            226.35,
+            84.84,
+            231.7
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "操作站点并确认结果",
+              "before": {
+                "id": "alpha-lantern",
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7,
+                    11
+                  ],
+                  "card": true,
+                  "stones": 1,
+                  "wind": 1,
+                  "carried": false,
+                  "action": null,
+                  "revision": 5
+                },
+                "motion": {
+                  "time": 61.392600000858096,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 0,
+                  "lanterns": []
+                }
+              },
+              "after": {
+                "state": {
+                  "visits": [
+                    1,
+                    3,
+                    7,
+                    11
+                  ],
+                  "card": true,
+                  "stones": 1,
+                  "wind": 1,
+                  "carried": true,
+                  "action": "lantern",
+                  "revision": 5
+                },
+                "motion": {
+                  "time": 62.05870000123956,
+                  "bellAt": 52.96560000085811,
+                  "treeAt": 58.274500000953445,
+                  "sandAt": 57.428300000667356,
+                  "windAt": 59.050300001144194,
+                  "lanternCount": 0,
+                  "lanterns": []
+                },
+                "actor": {
+                  "position": [
+                    226.35000610351562,
+                    84.13887023925781,
+                    231.6686248779297
+                  ],
+                  "grounded": true,
+                  "step": 5339,
+                  "choices": [],
+                  "card": null,
+                  "seat": null,
+                  "toast": {
+                    "zh": "纸灯拿稳了。可以带着走，按 E 放飞。",
+                    "en": "The lantern is secure. Carry it with you, then press E to release it.",
+                    "at": 95340.30000019073
+                  },
+                  "camp": {
+                    "id": null,
+                    "state": null,
+                    "actor": {
+                      "position": [
+                        226.35000610351562,
+                        84.13887023925781,
+                        231.6686248779297
+                      ],
+                      "yaw": -1.5709908603983043,
+                      "grounded": true,
+                      "available": true
+                    },
+                    "hand": {
+                      "mode": "reach",
+                      "target": null,
+                      "palm": null
+                    },
+                    "lastCancel": {
+                      "id": "camp-prop-journal",
+                      "state": {
+                        "page": 2,
+                        "turn": -1
+                      },
+                      "actor": {
+                        "position": [
+                          -51.79343032836914,
+                          5.71865177154541,
+                          39.79343032836914
+                        ],
+                        "yaw": 0.6666667014360428,
+                        "grounded": true,
+                        "available": true
+                      },
+                      "hand": {
+                        "mode": "reach",
+                        "target": null,
+                        "palm": null
+                      },
+                      "reason": "journal-finished",
+                      "afterState": {
+                        "page": -1,
+                        "turn": -1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-cave-chime-0",
+          "fixture": [
+            227.3175658766084,
+            28.15,
+            150.4614337304724
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "击管并启动对应回声",
+              "before": {
+                "id": "alpha-cave-chime-0",
+                "label": "Strike the bronze chime",
+                "toast": {
+                  "zh": "纸灯乘风而上。",
+                  "en": "The paper lantern rises into the clouds.",
+                  "at": 95585.69999980927
+                }
+              },
+              "after": {
+                "toast": {
+                  "zh": "清亮回声逐段穿过岩洞，下一道矿环会留在前方。",
+                  "en": "The clear echo travels through the cave. Its next warm ring stays ahead.",
+                  "at": 96426.19999980927
+                },
+                "grounded": true,
+                "choices": [],
+                "promptCycle": {
+                  "duringCooldown": [],
+                  "restored": [
+                    "alpha-cave-chime-0",
+                    "alpha-cave-chime-1",
+                    "alpha-cave-chime-2"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-cave-chime-1",
+          "fixture": [
+            227.9,
+            28.15,
+            150.75
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "击管并启动对应回声",
+              "before": {
+                "id": "alpha-cave-chime-1",
+                "label": "Strike the high chime",
+                "toast": {
+                  "zh": "清亮回声逐段穿过岩洞，下一道矿环会留在前方。",
+                  "en": "The clear echo travels through the cave. Its next warm ring stays ahead.",
+                  "at": 96426.19999980927
+                }
+              },
+              "after": {
+                "toast": {
+                  "zh": "清亮回声逐段穿过岩洞，下一道矿环会留在前方。",
+                  "en": "The clear echo travels through the cave. Its next warm ring stays ahead.",
+                  "at": 98056.5
+                },
+                "grounded": true,
+                "choices": [],
+                "promptCycle": {
+                  "duringCooldown": [],
+                  "restored": [
+                    "alpha-cave-chime-1",
+                    "alpha-cave-chime-0",
+                    "alpha-cave-chime-2"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-cave-chime-2",
+          "fixture": [
+            228.48243412339158,
+            28.15,
+            151.0385662695276
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "击管并启动对应回声",
+              "before": {
+                "id": "alpha-cave-chime-2",
+                "label": "Strike the low chime",
+                "toast": {
+                  "zh": "清亮回声逐段穿过岩洞，下一道矿环会留在前方。",
+                  "en": "The clear echo travels through the cave. Its next warm ring stays ahead.",
+                  "at": 98056.5
+                }
+              },
+              "after": {
+                "toast": {
+                  "zh": "沉声向左折去。沿暖色矿环看看，岔口始终能走回来。",
+                  "en": "The low echo bends left. Follow the warm rings; the fork remains open behind you.",
+                  "at": 99597.59999990463
+                },
+                "grounded": true,
+                "choices": [],
+                "promptCycle": {
+                  "duringCooldown": [],
+                  "restored": [
+                    "alpha-cave-chime-2",
+                    "alpha-cave-chime-1",
+                    "alpha-cave-chime-0"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-cave-mural",
+          "fixture": [
+            216.19718514999437,
+            29.549999999999997,
+            140.92743702999888
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "在侧洞末端阅读壁画",
+              "before": {
+                "id": "alpha-cave-mural",
+                "label": "Read the mountain, water and sun relief; retrace the side passage",
+                "toast": {
+                  "zh": "沉声向左折去。沿暖色矿环看看，岔口始终能走回来。",
+                  "en": "The low echo bends left. Follow the warm rings; the fork remains open behind you.",
+                  "at": 99597.59999990463
+                }
+              },
+              "after": {
+                "label": "Read the mountain, water and sun relief; retrace the side passage",
+                "toast": {
+                  "zh": "岩面刻着山、水和日轮。沿来时的侧道就能回到岔口。",
+                  "en": "Mountains, water and a sun are carved into the rock. The side passage leads back to the fork.",
+                  "at": 103545.19999980927
+                },
+                "grounded": true,
+                "choices": [
+                  "alpha-cave-mural"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-waterwheel-sluice-0",
+          "fixture": [
+            204.66,
+            26.25,
+            201.72
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "改变闸门开度和水流提示",
+              "before": {
+                "id": "alpha-waterwheel-sluice-0",
+                "label": "Left sluice: open · turn handle",
+                "toast": {
+                  "zh": "岩面刻着山、水和日轮。沿来时的侧道就能回到岔口。",
+                  "en": "Mountains, water and a sun are carved into the rock. The side passage leads back to the fork.",
+                  "at": 103545.19999980927
+                }
+              },
+              "after": {
+                "label": "Left sluice: closed · turn handle",
+                "toast": {
+                  "zh": "水流稳下来了，等轮斗把水提上去。",
+                  "en": "The flow settles. Watch the buckets lift the water.",
+                  "at": 106781
+                },
+                "grounded": true,
+                "choices": [
+                  "alpha-waterwheel-sluice-0"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-waterwheel-sluice-1",
+          "fixture": [
+            207.66,
+            26.25,
+            201.72
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "改变闸门开度和水流提示",
+              "before": {
+                "id": "alpha-waterwheel-sluice-1",
+                "label": "Middle sluice: open · turn handle",
+                "toast": {
+                  "zh": "水流稳下来了，等轮斗把水提上去。",
+                  "en": "The flow settles. Watch the buckets lift the water.",
+                  "at": 106781
+                }
+              },
+              "after": {
+                "label": "Middle sluice: closed · turn handle",
+                "toast": {
+                  "zh": "水流稳下来了，等轮斗把水提上去。",
+                  "en": "The flow settles. Watch the buckets lift the water.",
+                  "at": 110150.40000009537
+                },
+                "grounded": true,
+                "choices": [
+                  "alpha-waterwheel-sluice-1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-waterwheel-sluice-2",
+          "fixture": [
+            210.66,
+            26.25,
+            201.72
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "改变闸门开度和水流提示",
+              "before": {
+                "id": "alpha-waterwheel-sluice-2",
+                "label": "Right sluice: open · turn handle",
+                "toast": {
+                  "zh": "提上来的水浇开了崖花，瀑布后的小路露出来了。",
+                  "en": "The lifted water opens the cliff flowers and reveals the waterfall path.",
+                  "at": 111380.5
+                }
+              },
+              "after": {
+                "label": "Right sluice: closed · turn handle",
+                "toast": {
+                  "zh": "水流停下了。再开一点，让轮斗接住水。",
+                  "en": "The flow stops. Open a sluice a little to fill the buckets.",
+                  "at": 113487.09999990463
+                },
+                "grounded": true,
+                "choices": [
+                  "alpha-waterwheel-sluice-2"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-ferry-board-1",
+          "fixture": {
+            "initial": [
+              -10,
+              2.02,
+              109
+            ],
+            "returnStation": null
+          },
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "从对岸站台登乘",
+              "before": {
+                "id": "alpha-ferry-board-1",
+                "label": "Board the Island ferry",
+                "position": [
+                  156,
+                  2.34775710105896,
+                  148
+                ]
+              },
+              "after": {
+                "active": true,
+                "phase": "riding"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "Skip travel to arrival",
+              "operation": "跳过并回到大陆渡口",
+              "before": {
+                "active": true,
+                "phase": "riding"
+              },
+              "after": {
+                "position": [
+                  -10,
+                  1.9599288702011108,
+                  109
+                ],
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "W",
+              "operation": "下车后继续移动",
+              "before": {
+                "position": [
+                  -10,
+                  1.9599288702011108,
+                  109
+                ]
+              },
+              "after": {
+                "position": [
+                  -10.480500221252441,
+                  1.9605889320373535,
+                  108.37313079833984
+                ],
+                "grounded": true,
+                "travelled": 0.7898388814268938
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "town-board-0",
+        "town-board-1",
+        "town-board-2",
+        "town-board-3",
+        "town-board-4",
+        "town-board-5",
+        "park-project-accompany",
+        "park-project-djc",
+        "park-project-evalforge",
+        "park-project-hepai",
+        "park-project-interactive-learning",
+        "camp-about-desk",
+        "camp-about-dumbbell",
+        "camp-about-flags",
+        "camp-about-guitar",
+        "camp-about-suitcase",
+        "camp-about-tent",
+        "camp-about-tools",
+        "camp-about-trophy",
+        "camp-about-wok",
+        "camp-prop-journal",
+        "camp-bench-0-a",
+        "camp-bench-0-b",
+        "camp-bench-1-a",
+        "camp-bench-1-b",
+        "camp-bench-2-a",
+        "camp-bench-2-b",
+        "camp-bench-3-a",
+        "camp-bench-3-b",
+        "street-bench-24",
+        "street-bench-25",
+        "street-bench-26",
+        "street-bench-27",
+        "street-bench-28",
+        "street-bench-29",
+        "street-bench-30",
+        "street-bench-31",
+        "street-bench-32",
+        "street-bench-33",
+        "street-bench-34",
+        "street-bench-35",
+        "street-bench-36",
+        "street-shelter-seat",
+        "alpha-card",
+        "alpha-bell",
+        "alpha-sand",
+        "alpha-tree",
+        "alpha-wind",
+        "alpha-stone",
+        "alpha-lantern",
+        "alpha-lantern-release",
+        "alpha-cave-chime-0",
+        "alpha-cave-chime-1",
+        "alpha-cave-chime-2",
+        "alpha-cave-mural",
+        "alpha-waterwheel-sluice-0",
+        "alpha-waterwheel-sluice-1",
+        "alpha-waterwheel-sluice-2",
+        "alpha-ferry-board-0",
+        "alpha-ferry-board-1",
+        "alpha-cable-board-0",
+        "alpha-cable-board-1"
+      ],
+      "omittedFailures": [
+        "alpha-cable-board-1"
+      ]
+    },
+    {
+      "name": "操作族浏览器采集 · 3",
+      "entrySha256": "84537d1ca20b6449b13ac543f2e701fe64c835461b6e53af6c15b0bbbffec1e7",
+      "browser": "157.0.8103.79",
+      "sha256": "9d61c5558eb48a3bbe4522c1e9a30d2ddd926c7fbb827404fbd5e1897403fe21",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls.",
+      "cases": [
+        {
+          "id": "alpha-cable-board-1",
+          "fixture": {
+            "initial": [
+              260,
+              38.88,
+              148
+            ],
+            "returnStation": [
+              255,
+              73.65,
+              216
+            ]
+          },
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "从对岸站台登乘",
+              "before": {
+                "id": "alpha-cable-board-1",
+                "label": "Board the Seasons cable car",
+                "position": [
+                  255,
+                  73.81886291503906,
+                  216
+                ]
+              },
+              "after": {
+                "active": true,
+                "phase": "riding"
+              }
+            },
+            {
+              "input": "panel",
+              "control": "Skip travel to arrival",
+              "operation": "跳过并回到缆车下站",
+              "before": {
+                "active": true,
+                "phase": "riding"
+              },
+              "after": {
+                "position": [
+                  266,
+                  38.819976806640625,
+                  150
+                ],
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "W",
+              "operation": "下车后继续移动",
+              "before": {
+                "position": [
+                  266,
+                  38.819976806640625,
+                  150
+                ]
+              },
+              "after": {
+                "position": [
+                  265.725830078125,
+                  38.818878173828125,
+                  149.6343994140625
+                ],
+                "grounded": true,
+                "travelled": 0.45698242252715465
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-ferry-board-1",
+          "fixture": [
+            156,
+            2.177951013748074,
+            148
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "呼叫空车或空船，重复输入不重启，等候停靠",
+              "before": {
+                "id": "alpha-ferry-board-1",
+                "label": "Call the Island ferry",
+                "position": [
+                  156.00030517578125,
+                  2.3467655181884766,
+                  147.99737548828125
+                ]
+              },
+              "after": {
+                "enRoute": {
+                  "zh": "交通正在沿线路驶来，请在站台等候。",
+                  "en": "The transport is approaching along its route. Please wait on the platform.",
+                  "at": 56202.800000190735
+                },
+                "label": "Board the Island ferry",
+                "grounded": true,
+                "position": [
+                  156.00030517578125,
+                  2.3468117713928223,
+                  147.99737548828125
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-cable-board-1",
+          "fixture": [
+            255,
+            73.65,
+            216
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "呼叫空车或空船，重复输入不重启，等候停靠",
+              "before": {
+                "id": "alpha-cable-board-1",
+                "label": "Call the Seasons cable car",
+                "position": [
+                  255.0112762451172,
+                  73.81886291503906,
+                  216.01126098632812
+                ]
+              },
+              "after": {
+                "enRoute": {
+                  "zh": "交通正在沿线路驶来，请在站台等候。",
+                  "en": "The transport is approaching along its route. Please wait on the platform.",
+                  "at": 120915.5
+                },
+                "label": "Board the Seasons cable car",
+                "grounded": true,
+                "position": [
+                  255.0112762451172,
+                  73.81886291503906,
+                  216.01126098632812
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "alpha-cable-board-0",
+        "alpha-cable-board-1",
+        "alpha-ferry-board-1"
+      ],
+      "omittedFailures": []
+    }
+  ]
+}
