@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ibdGuideStep, ibdGuideRoute, ibdGuideResult, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
+import { ibdGuideStandingPoint } from './ibd-guide-route.ts';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions, yardCase } from './ibd-yard-game.ts';
 import { ibdStation, IBD_STOCK_KEYS } from './ibd-yard-layout.ts';
 import { ibdStockItem } from './ibd-stock.ts';
@@ -137,8 +138,8 @@ test('every guided transition starts at the last completed workstation rather th
     for (let i = 0; i < 60 && !game.released; i++) {
       const step = ibdGuideStep(game), route = ibdGuideRoute(game, step);
       const origin = game.completedAction?.station;
-      assert.deepEqual(xz(route[0]), origin ? xz(ibdStation(origin, game.core.moved).at) : [0, 31]);
-      assert.deepEqual(xz(route.at(-1)), xz(ibdStation(step.action.station, game.core.moved).at));
+      assert.deepEqual(xz(route[0]), origin ? xz(ibdGuideStandingPoint(origin, game.core.moved)) : [0, 31]);
+      assert.deepEqual(xz(route.at(-1)), xz(ibdGuideStandingPoint(step.action.station, game.core.moved)));
       if (origin === step.action.station) assert.equal(route.length, 1, 'same-point actions draw no misleading detour');
       if (origin && !['manifest', 'kit', 'dispatch'].includes(origin))
         assert.ok(route.every(p => p[2] <= 20), `${origin} must not detour through the receiving entrance`);
