@@ -121,3 +121,29 @@ test('the coaster panel renders the controller selection after cycling even when
   world.nearbyInteract=null;
   assert.doesNotMatch(render(),/intent-primary/);
 });
+
+test('public choice cycling respects a newly opened modal or venue before the next HUD frame', async t=>{
+  const {actorActivities}=await import('./actor-activities.ts');
+  const {worldInputLayer}=await import('./store.ts');
+  const before=useWorldStore.getState(), clear=()=>{};
+  t.after(()=>useWorldStore.setState(before,true));
+  const left=item('cycle-first'),right=item('cycle-second');
+  const a=registerInteractable(left),b=registerInteractable(right);
+  t.after(()=>{a();b()});
+  const pair=publishInteractionPrompt(nearestInteractable(0,0,0).item,null);
+  useWorldStore.setState({nearbyInteract:pair,paused:false,poolInspect:true});
+  assert.equal(worldInputLayer(useWorldStore.getState()),'inspection');
+  cycleInteractPick();assert.equal(useWorldStore.getState().nearbyInteract.id,left.id);
+  useWorldStore.setState({poolInspect:false});
+  let owner={inputOwner:'control'};
+  const leave=actorActivities.register({id:'extra-venue',read:()=>({busy:true,carrying:false,...owner}),
+    sync:clear,advance:clear,input:clear,command:()=>false,interrupt:clear,dispose:clear});
+  t.after(leave);
+  cycleInteractPick();assert.equal(useWorldStore.getState().nearbyInteract.id,left.id);
+  owner={blocksOffers:true};
+  cycleInteractPick();assert.equal(useWorldStore.getState().nearbyInteract.id,left.id);
+  leave();
+  useWorldStore.setState({paused:true});assert.equal(worldInputLayer(useWorldStore.getState()),'menu');
+  useWorldStore.setState({paused:false});cycleInteractPick();
+  assert.equal(useWorldStore.getState().nearbyInteract.id,right.id);
+});

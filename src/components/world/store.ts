@@ -68,6 +68,12 @@ export function requestCampReturn() {
 }
 export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
   worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
+/** The simulation and the actor share input suspension. The map menu can
+ * keep a ride camera alive; a focused inspection releases that camera. */
+export function worldInputLayer(state: Pick<WorldState, 'paused' | 'poolInspect'>) {
+  if (state.poolInspect) return 'inspection';
+  return state.paused ? 'menu' : null;
+}
 export function handleWorldEscape() {
   if (guideActionHand.owner) { releaseGuideActionHand(); return; }
   if (actorActivities.dismiss()) return;

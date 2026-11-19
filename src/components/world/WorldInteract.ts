@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import type { Vec3 } from './types';
-import { useWorldStore, type InteractionChoice, type NearbyInteract } from './store';
+import { useWorldStore, worldInputLayer, type InteractionChoice, type NearbyInteract } from './store';
+import { actorActivities } from './actor-activities';
 import type { PickupApproach } from './pickup-approach';
 
 /**
@@ -104,7 +105,8 @@ export function requestPanelInteraction(row: InteractionChoice) {
 
 export function cycleInteractPick(step = 1) {
   const s = useWorldStore.getState(), prompt = s.nearbyInteract;
-  if (s.paused || s.card || s.seat || s.activeVehicle || s.clubMode || s.factoryStation || !prompt) return;
+  if (!prompt || worldInputLayer(s) || s.shot || s.card || s.seat || s.activeVehicle
+    || actorActivities.inputOwner() || actorActivities.blocksOffers()) return;
   const {choices} = prompt;
   if (choices.length < 2) return;
   const at = choices.findIndex(row => row.id === prompt.id);

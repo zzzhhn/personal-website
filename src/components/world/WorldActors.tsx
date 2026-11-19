@@ -12,7 +12,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { actorActivities, activityApproachMotion } from './actor-activities';
-import { useWorldStore, type InteractionChoice } from './store';
+import { useWorldStore, worldInputLayer, type InteractionChoice } from './store';
 import type { ActorRide } from './rides/actor-ride';
 import { RideCameraOrientation, rideCameraPose, rideCameraSweepOrigin, rideLook, turnRideLook, zoomRideLook } from './rides/ride-camera';
 import { RideCameraObstruction } from './rides/ride-camera-obstruction';
@@ -372,7 +372,7 @@ function GuideVisual({ presentation, ride, cars, body, grounded, yaw, targetSpee
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
     const ridePose=ride.active?ride.pose:null;
     return {attraction:ridePose?ride.actor:null,seat:ridePose&&ride.seatOnly?{position:ridePose.seat,yaw:ridePose.yaw,orientation:ridePose.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
-      frozen:st.paused||st.poolInspect||!!st.shot,...actorActivities.animation()};
+      frozen:worldInputLayer(st) !== null||!!st.shot,...actorActivities.animation()};
   };
   const fallback=<GuideContactFallback body={body} visible={visible}/>;
   return <WorldGuide key={resetId} presentation={presentation} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} fallback={fallback}/>;
@@ -454,7 +454,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const state = useWorldStore.getState();
       // A fixed camera or pause can render before the first physics queries. For a
       // live player, release the loading screen only after actual body activation.
-      return !entry.collidersReady(world, colliderStates) || !(state.paused || state.poolInspect || state.shot);
+      return !entry.collidersReady(world, colliderStates) || !(worldInputLayer(state) !== null || state.shot);
     };
     const release = holdWorldArrival(blocked, entry.loadFailed);
     // WorldActors may resolve after SceneLifecycle's first three frames.
@@ -872,17 +872,17 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   }
   useEffect(() => {
     const releaseAction=()=>{pickupApproach.cancel();releaseGuideActionHand();};
-    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||actorActivities.inputOwner()||s.poolInspect||s.shot||actorActivities.blocksOffers())releaseAction();});
+    const unsubscribeAction=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.recoverRequest!==p.recoverRequest)||s.campReturnRequest!==p.campReturnRequest||s.activeVehicle||s.seat||s.card||actorActivities.inputOwner()||worldInputLayer(s)==='inspection'||s.shot||actorActivities.blocksOffers())releaseAction();});
     const unbindPanelInput=bindInteractionPanelInput(row=>{
       const state=useWorldStore.getState();
-      if(ride.active||state.paused||state.poolInspect||state.shot)return;
+      if(ride.active||worldInputLayer(state) !== null||state.shot)return;
       actions.current.interact={nearbyInteract:row,nearbyVehicle:null,panel:true,movement:walkAxes(keys.current,pad.current)};
     });
     const hiddenAction=()=>{if(document.hidden)releaseAction();};
     document.addEventListener('visibilitychange',hiddenAction);window.addEventListener('blur',releaseAction);
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
-      if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
+      if (event.metaKey || event.ctrlKey || event.altKey || worldInputLayer(state) !== null || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
       if(ride.active){
         if(event.code==='KeyE'&&!event.repeat&&!document.hidden){
           event.preventDefault();ride.requestExit();
@@ -911,7 +911,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     // Continuous scroll zoom (exponential, ~12 % per notch). Scrolling out of first person returns to the
     // nearest third-person distance; scrolling never enters first person (V does).
     const wheel=(event:WheelEvent)=>{
-      const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || actorActivities.inputOwner()) return;
+      const state=useWorldStore.getState(); if(worldInputLayer(state) !== null || state.shot || actorActivities.inputOwner()) return;
       event.preventDefault();
       if(ride.active){
         if(!ride.pose.firstPerson){const step=event.deltaMode===1?event.deltaY*33:event.deltaMode===2?event.deltaY*400:event.deltaY;zoomRideLook(step*WHEEL_ZOOM);}
@@ -930,7 +930,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
-    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||!!actorActivities.inputOwner();};
+    const blocked=()=>{const st=useWorldStore.getState();return worldInputLayer(st) !== null||!!st.shot||!!actorActivities.inputOwner();};
     const pointerDown=(e:PointerEvent)=>{
       if(blocked()||document.pointerLockElement===gl.domElement)return;
       drag={id:e.pointerId,x:e.clientX,y:e.clientY};
@@ -958,15 +958,15 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(state.campReturnRequest!==previous.campReturnRequest){returnToCamp();return;}
       if (portalTravel.current.attempt) {
         if (state.paused && !previous.paused) cancelPortalAttempt();
-        else if (state.poolInspect || state.shot || state.card || state.seat || state.activeVehicle) finishPortalAttempt();
+        else if (worldInputLayer(state)==='inspection' || state.shot || state.card || state.seat || state.activeVehicle) finishPortalAttempt();
       }
       const nextOwner=actorActivities.inputOwner();
       const nextContext=actorActivities.inputContext();
       const ownerChanged=nextOwner!==inputOwner,contextChanged=nextContext!==inputContext;
       // Publish both snapshots before cleanup: releasing a carried prop may synchronously update the store.
       inputOwner=nextOwner;inputContext=nextContext;
-      if(ownerChanged || contextChanged || state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot){
-        clearInput();drag=null;if((state.paused||state.poolInspect||actorActivities.inputOwner())&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
+      if(ownerChanged || contextChanged || state.paused!==previous.paused || worldInputLayer(state)!==worldInputLayer(previous) || state.shot!==previous.shot){
+        clearInput();drag=null;if((worldInputLayer(state) !== null||actorActivities.inputOwner())&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
         if((ownerChanged&&nextOwner)||(contextChanged&&actorActivities.blocksOffers()))actorActivities.clearInput('owner-change');
       }
       if(state.zoom!==previous.zoom)applyPreset(state.zoom);
@@ -1165,7 +1165,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     });
   });
   useBeforePhysicsStep(()=>{
-    const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
+    const state=useWorldStore.getState(); if(worldInputLayer(state) !== null || state.shot || !player.current) return;
     const notice = regionNotice.current;
     if (notice) {
       if (state.toast !== notice.toast) regionNotice.current = null;
@@ -1300,7 +1300,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       position: [playerPosition.x, playerPosition.y, playerPosition.z], now: performance.now() / 1000,
       available: item => {
         const current = useWorldStore.getState();
-        return !current.paused && !current.poolInspect && !current.activeVehicle && !current.seat
+        return !worldInputLayer(current) && !current.activeVehicle && !current.seat
           && !current.card && !actorActivities.blocksOffers() && !actorActivities.inputOwner() && !guideTransition.current
           && !actorActivities.busy() && !railVault.current
           && actorActivities.allowsInteraction(item.id)
@@ -1347,7 +1347,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     const queuedInteraction=actions.current.interact;
     actions.current.interact=null;
     if(queuedInteraction)interactNow(queuedInteraction,queuedInteraction.movement);
-    if(useWorldStore.getState().paused||useWorldStore.getState().poolInspect)return;
+    if(worldInputLayer(useWorldStore.getState()))return;
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
     const { gp, edge } = pollPadInput();
@@ -1629,7 +1629,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
 
   useFrame((_,delta)=>{
     const state=useWorldStore.getState();
-    if(!ride.active||state.shot||state.poolInspect){
+    if(!ride.active||state.shot||worldInputLayer(state)==='inspection'){
       attractionObstruction.current.clear();attractionOrientation.current.clear();attractionCabin.current.clear();
     }
     if (state.shot) {
@@ -1640,7 +1640,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       }
       return;
     }
-    if (state.paused || state.poolInspect) return;
+    if (worldInputLayer(state) !== null) return;
     const activityView=actorActivities.camera();
     if(activityView&&!state.activeVehicle){
       // Scenes supply framing; collision, smoothing and visibility remain core behavior.
