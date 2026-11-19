@@ -1,9 +1,10 @@
 /** Batch 5 street construction. Runtime remains a single attributed/batched mesh per group.
- * Keep editable named parts here; collision always comes from the unchanged pre-craft Builder. */
+ * Most props retain their pre-craft proxy; the roadblock registers its drawn parts separately. */
 import { Builder, S, bar, bezier, box, cyl, lathe, plate, rectPoly, tube, type Surf, type V3 } from './WorldStreetGeometry.ts';
 import { FACILITY_SURFACE, facilityCraftEnabled, tagShelterSurfaces } from './WorldFacilitySurface';
 import { tagBenchBinSurfaces } from './WorldBenchBinSurface';
 import { binR2Enabled, buildBinR2Details } from './WorldBinConstruction';
+import { retainRoadblockPanels, roadblockLegSegment, roadblockMember, roadblockSurface } from './street-roadblock-contact';
 
 export type StreetFacility = 'bench' | 'shelter' | 'lamp' | 'signal' | 'bin' | 'roadblock' | 'seawallBay' | 'timberPost' | 'timberBeam';
 export interface FacilityOptions { height?: number; arm?: number; pole?: Surf; base?: Surf; cyanRing?: boolean; len?: number }
@@ -207,24 +208,25 @@ function bin(B: Builder) {
 
 function roadblock(B: Builder, old: Builder) {
   retain(B, old, ['boards']);
+  retainRoadblockPanels(B, old);
   for (const x of [-.56, .56]) part(B, `frame.trestle-${x}`, () => {
     for (const z of [-1, 1]) {
       // Rectangular folded-steel legs have a broad face, rather than thin rods.
       // Bottoms splay outward into the fixed rubber shoes; tops converge into the hinge.
-      B.tr([x, .50, z * .175], [-z * .25, 0, 0], () => box(B, [-.023, -.49, -.016], [.023, .49, .016], S.slateDark, .005));
-      box(B, [x - .065, 0, z * .3 - .07], [x + .065, .04, z * .3 + .07], S.rubber, .01);
+      roadblockMember(B, `leg-${x}/${z}`, () => B.tr([x, .50, z * .175], [-z * .25, 0, 0], () => box(B, [-.023, -.49, -.016], [.023, .49, .016], S.slateDark, .005)));
+      roadblockMember(B, `shoe-${x}/${z}`, () => box(B, [x - .065, 0, z * .3 - .07], [x + .065, .04, z * .3 + .07], S.rubber, .01));
     }
-    bar(B, [x - .06, .95, 0], [x + .06, .95, 0], .035, S.galv, 10);
-    box(B, [x - .04, .91, -.065], [x + .04, .99, .065], S.slate, .008);
+    roadblockMember(B, `hinge-pin-${x}`, () => bar(B, [x - .06, .95, 0], [x + .06, .95, 0], .035, S.galv, 10));
+    roadblockMember(B, `hinge-${x}`, () => box(B, [x - .04, .91, -.065], [x + .04, .99, .065], S.slate, .008));
     // Two folding arms meet at the centre knuckle, and limit the trestle spread.
-    bar(B, [x, .36, -.21], [x, .31, 0], .014, S.iron, 6);
-    bar(B, [x, .31, 0], [x, .36, .21], .014, S.iron, 6);
-    bar(B, [x - .026, .31, 0], [x + .026, .31, 0], .022, S.galv, 8);
+    roadblockMember(B, `brace-${x}/-1`, () => bar(B, [x, .36, -.21], [x, .31, 0], .014, S.iron, 6));
+    roadblockMember(B, `brace-${x}/1`, () => bar(B, [x, .31, 0], [x, .36, .21], .014, S.iron, 6));
+    roadblockMember(B, `brace-pin-${x}`, () => bar(B, [x - .026, .31, 0], [x + .026, .31, 0], .022, S.galv, 8));
   });
   part(B, 'boards.edge-channels', () => {
     for (const side of [-1, 1]) for (const y of [.49, .58, .66, .88]) {
       const z = side * (.3 * (1 - y) + .045);
-      box(B, [-.65, y - .008, z - .025], [.65, y + .008, z + .025], S.creamPaint, .004);
+      roadblockMember(B, `edge-${y}/${side}`, () => box(B, [-.65, y - .008, z - .025], [.65, y + .008, z + .025], S.creamPaint, .004));
     }
   });
 }
@@ -317,6 +319,7 @@ function tagReworkSurfaces(builder: Builder) {
 
 function roadblockRework(B: Builder, old: Builder) {
   retain(B, old, ['boards']);
+  retainRoadblockPanels(B, old);
   // Offset the upper leg behind the two raked sign faces while retaining the foot spread.
   const legProfile = [[.02, .30], [.30, .155], [.62, .042], [.96, .042]];
   const legDepth = (y: number) => {
@@ -329,34 +332,40 @@ function roadblockRework(B: Builder, old: Builder) {
       const section: [number, number][] = [[-.035,-.017],[.035,-.017],[.035,.017],[-.035,.017]];
       const outward: V3[] = [[0,0,-1],[1,0,0],[0,0,1],[-1,0,0]];
       for (const side of [-1, 1]) {
+        const id = `leg-${x}/${side}`;
         const rings = legProfile.map(([y,z]) => section.map(([dx,dz]): V3 => [x+dx,y,side*z+dz]));
-        B.face(rings[0], S.galv, [0,-1,0]);
-        B.face(rings[rings.length-1], S.galv, [0,1,0]);
-        for (let i = 1; i < rings.length; i++) for (let edge = 0; edge < 4; edge++) {
-          const next = (edge + 1) % 4;
-          B.face([rings[i-1][edge],rings[i-1][next],rings[i][next],rings[i][edge]], S.galv, outward[edge]);
+        roadblockSurface(B, `${id}/lower-cap`, () => B.face(rings[0], S.galv, [0,-1,0]), `${id}/1`);
+        const last = rings.length - 1;
+        roadblockSurface(B, `${id}/upper-cap`, () => B.face(rings[last], S.galv, [0,1,0]), `${id}/${last}`);
+        for (let i = 1; i < rings.length; i++) {
+          roadblockLegSegment(B, `${id}/${i}`, rings[i - 1], rings[i], () => {
+            for (let edge = 0; edge < 4; edge++) {
+              const next = (edge + 1) % 4;
+              B.face([rings[i-1][edge],rings[i-1][next],rings[i][next],rings[i][edge]], S.galv, outward[edge]);
+            }
+          });
         }
       }
     });
     part(B, `frame.shoes-${x}`, () => {
       for (const side of [-1, 1]) {
         const z = side * .3;
-        box(B, [x - .072, 0, z - .074], [x + .072, .048, z + .074], S.rubber, .01);
+        roadblockMember(B, `shoe-${x}/${side}`, () => box(B, [x - .072, 0, z - .074], [x + .072, .048, z + .074], S.rubber, .01));
       }
     });
     part(B, `frame.hinge-${x}`, () => {
-      box(B, [x - .049, .905, -.088], [x + .049, .984, .088], S.slateDark, .008);
-      bar(B, [x - .065, .943, 0], [x + .065, .943, 0], .029, S.galv, 10);
+      roadblockMember(B, `hinge-${x}`, () => box(B, [x - .049, .905, -.088], [x + .049, .984, .088], S.slateDark, .008));
+      roadblockMember(B, `hinge-pin-${x}`, () => bar(B, [x - .065, .943, 0], [x + .065, .943, 0], .029, S.galv, 10));
     });
     part(B, `frame.lock-brace-${x}`, () => {
-      box(B, [x - .017, .327, -.151], [x + .017, .365, .151], S.slateDark, .005);
+      roadblockMember(B, `brace-${x}`, () => box(B, [x - .017, .327, -.151], [x + .017, .365, .151], S.slateDark, .005));
     });
     for (const y of [.48, .77]) part(B, `boards.saddles-${x}-${y}`, () => {
       const inner = legDepth(y);
       const outer = .3 * (1 - y) + .045 - .009;
       for (const side of [-1, 1]) {
         const z0 = side * (inner - .012), z1 = side * outer;
-        box(B, [x - .04, y - .025, Math.min(z0, z1)], [x + .04, y + .025, Math.max(z0, z1)], S.slateDark, .006);
+        roadblockMember(B, `saddle-${x}/${y}/${side}`, () => box(B, [x - .04, y - .025, Math.min(z0, z1)], [x + .04, y + .025, Math.max(z0, z1)], S.slateDark, .006));
       }
     });
   }
@@ -366,7 +375,7 @@ function roadblockRework(B: Builder, old: Builder) {
       B.tr([0, y, z], [Math.atan2(.3, 1) * side, 0, 0], () => {
         for (const edge of [-1, 1]) {
           const top = edge * height / 2;
-          box(B, [-.65, top - .008, -.015], [.65, top + .008, .015], S.creamPaint, .004);
+          roadblockMember(B, `edge-${y}/${side}/${edge}`, () => box(B, [-.65, top - .008, -.015], [.65, top + .008, .015], S.creamPaint, .004));
         }
       });
     }

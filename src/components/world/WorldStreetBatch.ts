@@ -39,8 +39,10 @@ export class StreetBatch {
     }
   }
   geometryRange(kind: number, level: 0 | 1) {
-    return this.mesh.getGeometryRangeAt(this.geo[kind][level]);
+    return this.mesh.getGeometryRangeAt(this.geometryId(kind, level));
   }
+  geometryId(kind: number, level: 0 | 1) { return this.geo[kind][level]; }
+  sourceMatrix(id: number) { return this.matrices[id]; }
   add(kind: number, matrix: Matrix4) {
     const id = this.mesh.addInstance(this.geo[kind][0]);
     this.mesh.setMatrixAt(id, matrix);

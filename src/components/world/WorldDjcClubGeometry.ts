@@ -432,7 +432,7 @@ export function buildDjcClubGeometry({
     const a=i*TAU/12+.15;if(Math.abs(Math.cos(a))<.2)continue;
     const [x,z]=CLUB_POOL.boundary(a,2.25);
     collectingPoolLantern = true;
-    box('wood',[x,1.6,z],[.3,.4,.3],C.edge,0,true);
+    box('wood',[x,1.6,z],[.3,.4,.3],C.edge,0,!separatePoolLanterns);
     box('amber',[x,1.93,z],[.19,.27,.19],C.amber);
     for(const dx of [-.115,.115])for(const dz of [-.115,.115])rod('wood',[x+dx,1.77,z+dz],[x+dx,2.12,z+dz],.02,C.edge);
     box('wood',[x,2.14,z],[.31,.06,.31],C.edge);

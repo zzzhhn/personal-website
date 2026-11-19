@@ -4,19 +4,19 @@ import { readFileSync } from 'node:fs';
 import { DoubleSide, Group, Object3D, Raycaster, Scene, Vector3 } from 'three';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { mineLocalToWorld, ALPHA_MINE_ORIGIN } from './alpha-mine-layout.ts';
-import { installMineContacts, mineRackToolPose, MINE_RACK_ROOT, MINE_WEST_RAMP_ROOT } from './alpha-mine-contact.ts';
+import { installMineContacts, mineRackToolPose, mineVeinStateContact, mineVeinContactRoot, MINE_RACK_ROOT, MINE_WEST_RAMP_ROOT, MINE_ROUTE_ROOTS } from './alpha-mine-contact.ts';
 import { collisionInventory } from './world-collision-inventory.ts';
 import { minePickupApproach } from './mine-pickup-approach.ts';
 import { findPickupStand } from './pickup-approach.ts';
 import { disposeWorldCraftGltf, readWorldCraftGltf } from './world-craft-gltf-test.mjs';
-import { readMineStaticVisual } from '../../../tools/world/alpha-mine-tests/static-visual.mjs';
+import { readMineStaticVisual, readMineContactVisual } from '../../../tools/world/alpha-mine-tests/static-visual.mjs';
 import { RAPIER as R, quarryWalkCases, quarryWorld, walkQuarry } from '../../../tools/world/alpha-mine-tests/quarry-walk.mjs';
 
 const ship = name=>JSON.parse(readFileSync(new URL('../../../public/world/alpha-mine/'+name,import.meta.url),'utf8'));
 const old=ship('colliders.json'), layout=ship('layout.json');
 const asset=await readMineStaticVisual();
-const result=installMineContacts(asset.root.clone(true),old);
-test.after(()=>{result.dispose();asset.dispose();});
+const result=installMineContacts(asset.root.clone(true),old), veinAsset=await readMineContactVisual('veins.glb');
+test.after(()=>{result.dispose();asset.dispose();veinAsset.dispose();});
 const part = id => result.colliders.find(part=>part.id==='alpha-mine-'+id);
 const cast = (collider,p,d,distance) => collider.castRay(new R.Ray(new Vector3(...p),new Vector3(...d)),distance,false);
 
@@ -26,35 +26,47 @@ function mount(world, kind, buffers, translation=[0,0,0]) {
   const vertices=Float32Array.from(buffers.vertices), indices=Uint32Array.from(buffers.indices);
   return world.createCollider(R.ColliderDesc.trimesh(vertices,indices).setFriction(.9).setRestitution(0),body);
 }
-function candidateWorld(translation=[0,0,0]) {
+function liveVein(vein,state) {
+  const contract=layout.dynamicAssets.veins.roots[vein.id];
+  return mineVeinStateContact(veinAsset.root.getObjectByName(vein.id),contract.states[state],vein.id);
+}
+function candidateWorld(translation=[0,0,0], state='intact') {
   const world=new R.World({x:0,y:-12.5,z:0});world.timestep=1/60;
   for(const [kind,buffers] of Object.entries(result.legacy)) mount(world,kind,buffers,translation);
   for(const {kind,buffers} of result.colliders) mount(world,kind,buffers,translation);
+  for (const vein of layout.veins) mount(world,'solid',liveVein(vein,state).buffers,vein.socket.map((n,i)=>n+translation[i]));
   world.step();
   return world;
 }
 
-test('the shipping visual is split exactly once and audited scopes require four distinct physical shapes',()=>{
+test('the shipped scopes own each physical shape once',()=>{
   const restored=installMineContacts(asset.root.clone(true),old);
   const scene=new Scene(), frame=[];
   try {
-    for(const [name,source,registrations] of [[MINE_RACK_ROOT,restored.rack,2],[MINE_WEST_RAMP_ROOT,restored.westRamp,2]]) {
+    const roots=[MINE_RACK_ROOT,...Object.values(MINE_ROUTE_ROOTS),...layout.veins.map(v=>mineVeinContactRoot(v.id))];
+    for(const [name,source] of restored.sections) {
       const scope=new Group(); scope.name=name; scene.add(scope);
       scope.add(source);
       source.traverse(node=>{if(node.isMesh)frame.push(node);});
-      assert.equal(restored.colliders.filter(part=>part.root===name).length,registrations);
     }
-    const handles=restored.colliders.map(part=>{
+    const activeVeins=layout.veins.map(vein=>{
+      const root=mineVeinContactRoot(vein.id), fitted=liveVein(vein,'intact');
+      scene.getObjectByName(root).add(fitted.visual);
+      return {root,id:fitted.id};
+    });
+    const counts=Object.fromEntries(roots.map(id=>[id,2]));
+    assert.equal(restored.colliders.length+activeVeins.length,roots.length*2);
+    const handles=[...restored.colliders,...activeVeins].map(part=>{
       const collider=new Object3D(); collider.name=part.id; scene.getObjectByName(part.root).add(collider);
       return collider;
     });
-    const report=collisionInventory(scene,frame,handles,[MINE_RACK_ROOT,MINE_WEST_RAMP_ROOT]);
+    const report=collisionInventory(scene,frame,handles,roots);
     assert.deepEqual(report.errors,[]);
-    assert.deepEqual(report.registrations,{[MINE_RACK_ROOT]:2,[MINE_WEST_RAMP_ROOT]:2});
-    assert.ok(collisionInventory(scene,frame,handles.slice(1),[MINE_RACK_ROOT,MINE_WEST_RAMP_ROOT]).errors.length>0);
-    assert.equal(old.surface.indices.length-restored.legacy.surface.indices.length,6,'remove the obsolete west deck support before mounting its real planks');
-    assert.equal(old.solid.indices.length-restored.legacy.solid.indices.length,1656,'remove 34 former ramp and 12 former rack boxes');
-    assert.deepEqual([...restored.rack.children,...restored.westRamp.children].map(m=>[m.name,m.geometry.index.count/3]).sort(),
+    assert.deepEqual(report.registrations,counts);
+    assert.ok(collisionInventory(scene,frame,handles.slice(1),roots).errors.length>0);
+    const removed=Object.fromEntries(Object.entries(restored.legacy).map(([kind,buffers])=>[kind,old[kind].indices.length-buffers.indices.length]));
+    assert.ok(removed.surface>=42 && removed.solid>=8650,'remove all former decks, trays and bound framing before adding the measured surfaces');
+    assert.deepEqual([...restored.sections.get(MINE_RACK_ROOT).children,...restored.sections.get(MINE_WEST_RAMP_ROOT).children].map(m=>[m.name,m.geometry.index.count/3]).sort(),
       [['alpha-mine-rack-frame-visible',528],['alpha-mine-rack-hooks-visible',88],['alpha-mine-west-deck-visible',2024],
        ['alpha-mine-west-fasteners-visible',672],['alpha-mine-west-structure-visible',1496]]);
   } finally {restored.dispose();}
@@ -89,8 +101,8 @@ test('placed west ramp triangles track the actual plank tops, reveals and rails'
   const former = mount(world,'surface',old.surface);
   let plankHits=0, reveals=0, structureHits=0, maxError=0;
   try {
-    fitted.westRamp.updateMatrixWorld(true);
-    const timber = fitted.westRamp.children.filter(m=>m.userData.worldCollision==='solid');
+    const west=fitted.sections.get(MINE_WEST_RAMP_ROOT);west.updateMatrixWorld(true);
+    const timber = west.children.filter(m=>m.userData.worldCollision==='solid');
     for(const mesh of timber) mesh.material.side=DoubleSide;
     const run=(mesh,shape,origin,dir,distance)=>{
       ray.set(new Vector3(...origin),new Vector3(...dir));ray.far=distance;
@@ -118,5 +130,95 @@ for(const name of ['core-west-ramp','crate-east-approach','west-support-to-entra
     const route=quarryWalkCases()[name], result=walkQuarry(route,{createWorld:candidateWorld});
     t.diagnostic(JSON.stringify(result));
     assert.ok(result.passed,JSON.stringify(result));
+  });
+}
+
+test('all seven planked routes retain their real reveals and both hand rails',t=>{
+  const routes=[...layout.ramps,layout.bridge,...layout.gallery.ramps,...layout.gallery.bridges];
+  const baseline=quarryWorld(),world=new R.World({x:0,y:0,z:0}), report={};
+  try {
+    for (const route of routes) {
+      const id=route.id==='ramp-west-0-3'?'west':route.id;
+      const deck=mount(world,'surface',part(id+'-deck').buffers), rails=mount(world,'solid',part(id+'-structure').buffers);
+      const a=new Vector3(...route.a),b=new Vector3(...route.b),delta=b.clone().sub(a);
+      const lateral=new Vector3(-delta.z,0,delta.x).normalize(), samples=Math.ceil(delta.length()/.27);
+      let oldFilled=0,newOpen=0,newSupport=0,railContacts=0;
+      for (let i=1;i<samples;i++) {
+        const seam=a.clone().addScaledVector(delta,i/samples), board=a.clone().addScaledVector(delta,(i+.5)/samples);
+        seam.y+=.12;board.y+=.12;
+        const down=new Vector3(0,-1,0);
+        if (baseline.castRay(new R.Ray(seam,down),.143,false)) oldFilled++;
+        if (cast(deck,seam.toArray(),down.toArray(),.143)<0) newOpen++;
+        if (cast(deck,board.toArray(),down.toArray(),.143)>=0) newSupport++;
+      }
+      for (const t of [.18,.30,.46,.60,.72,.82]) {
+        const p=a.clone().addScaledVector(delta,t); p.y+=1.02;
+        for (const side of [-1,1]) if(cast(rails,p.toArray(),lateral.toArray().map(v=>v*side),route.deckWidth)>=0) railContacts++;
+      }
+      assert.ok(oldFilled>=samples-2&&newOpen===samples-1&&newSupport===samples-1&&railContacts>=8,
+        JSON.stringify({id,samples,oldFilled,newOpen,newSupport,railContacts}));
+      report[id]={oldFilled,newOpen,newSupport,railContacts};
+    }
+    t.diagnostic(JSON.stringify(report));
+  } finally {world.free();baseline.free();}
+});
+
+test('the three mining faces match their selected mesh and reveal true recesses through the three states',t=>{
+  const rays={},oldWorld=quarryWorld(),world=new R.World({x:0,y:0,z:0}), raycaster=new Raycaster();
+  const direction=[0,0,-1];
+  try {
+    for(const vein of layout.veins) {
+      const start=new Vector3(...vein.socket).add(new Vector3(0,0,2));
+      const before=oldWorld.castRay(new R.Ray(start,new Vector3(...direction)),4,false)?.timeOfImpact;
+      rays[vein.id]=[];
+      for(const [stage,expected] of [['intact',1.745],['cracked',1.84],['open',1.95]]) {
+        const {visual,buffers}=liveVein(vein,stage);
+        visual.position.fromArray(vein.socket);
+        visual.traverse(n=>{if(n.isMesh)n.material.side=DoubleSide;});
+        visual.updateMatrixWorld(true);
+        const shape=mount(world,'solid',buffers,vein.socket);
+        raycaster.set(start,new Vector3(...direction));raycaster.far=4;
+        const meshHit=raycaster.intersectObject(visual)[0];
+        const distance=cast(shape,start.toArray(),direction,4);
+        assert.ok(meshHit && Math.abs(meshHit.distance-distance)<.000003);
+        assert.ok(Math.abs(distance-expected)<.0003 && before-distance>.16);
+        const inactive=Object.values(layout.dynamicAssets.veins.roots[vein.id].states).filter(name=>!name.endsWith('_'+stage));
+        assert.ok(inactive.every(name=>!visual.getObjectByName(name)));
+        rays[vein.id].push({stage,oldBackWall:before,newFace:distance});
+      }
+    }
+    t.diagnostic(JSON.stringify(rays));
+  }finally{world.free();oldWorld.free();}
+});
+
+test('each opened seam keeps a physical tray and clear hand pickup on its own level',t=>{
+  const world=candidateWorld(ALPHA_MINE_ORIGIN,'open');
+  try {
+    for(const [name,vein] of ['lower','middle','upper'].map((id,i)=>[id,layout.veins[i]])) {
+      const tray=part(name+'-tray');
+      assert.ok(tray.buffers.indices.length>=200);
+      const from=mineLocalToWorld([vein.oreRest[0],vein.level+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.002,vein.oreRest[2]+1.5]);
+      const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(...from).lockRotations());
+      world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body);world.step();
+      const target=mineLocalToWorld(vein.oreRest), pickup=minePickupApproach(()=>target);
+      const stand=findPickupStand(world,R,body,from,pickup);
+      assert.ok(stand && pickup.ready(stand),JSON.stringify({name,from,target,stand}));
+      for(const otherFloor of [-3,3]) assert.equal(pickup.ready([stand[0],stand[1]+otherFloor,stand[2]]),false);
+      t.diagnostic(JSON.stringify({name,stand,pickupTarget:target}));
+      world.removeRigidBody(body);
+    }
+  } finally {world.free();}
+});
+
+// The east cliff starts at x=17. Turning there lets the moving capsule
+// drift onto the descending rock, even with the unmodified shipping colliders.
+const galleryInsideTurn=layout.gallery.route.map(([x,y,z])=>[x===17?16:x,y,z]);
+for(const [name,tour] of [['main circuit',layout.route.points],['west gallery to ravine',galleryInsideTurn]]) {
+  test('continuous walk on '+name,t=>{
+    for(const points of [tour,[...tour].reverse()]) {
+      const result=walkQuarry(points,{createWorld:candidateWorld});
+      t.diagnostic(JSON.stringify(result));
+      assert.ok(result.passed,JSON.stringify(result));
+    }
   });
 }

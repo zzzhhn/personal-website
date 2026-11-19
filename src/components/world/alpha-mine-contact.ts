@@ -9,15 +9,35 @@ type Recipe = { indexCount: number; parts: Record<string, Range[]> };
 export type MineLegacyCollision = Record<Kind,{vertices: number[]; indices: number[]}>;
 export const MINE_RACK_ROOT = 'alpha-mine-entry-tool-rack';
 export const MINE_WEST_RAMP_ROOT = 'alpha-mine-west-ramp';
-type ContactRoot = typeof MINE_RACK_ROOT | typeof MINE_WEST_RAMP_ROOT;
+const veinRoots: Record<string,string> = {
+  'vein-lower':'alpha-mine-lower-vein-contact',
+  'vein-middle':'alpha-mine-middle-vein-contact',
+  'vein-upper':'alpha-mine-upper-vein-contact',
+};
+export const mineVeinContactRoot = (vein: string) => veinRoots[vein];
+export const MINE_ROUTE_ROOTS = {
+  west:MINE_WEST_RAMP_ROOT,
+  'ramp-east-3-6':'alpha-mine-east-ramp',
+  'bridge-middle':'alpha-mine-middle-bridge',
+  'gallery-west-entry':'alpha-mine-gallery-west-entry',
+  'gallery-west-rise':'alpha-mine-gallery-west-rise',
+  'gallery-west-link':'alpha-mine-gallery-west-link',
+  'bridge-north-ravine':'alpha-mine-north-ravine-bridge',
+} as const;
 
-const definitions: Record<string,{root: ContactRoot; kind?: Kind; reason?: string}> = {
+type ContactDefinition = { root: string; kind?: Kind; reason?: string };
+const definitions: Record<string,ContactDefinition> = {
   'rack-frame':{root:MINE_RACK_ROOT,kind:'solid'},
   'rack-hooks':{root:MINE_RACK_ROOT,kind:'solid'},
-  'west-deck':{root:MINE_WEST_RAMP_ROOT,kind:'surface'},
-  'west-structure':{root:MINE_WEST_RAMP_ROOT,kind:'solid'},
-  'west-fasteners':{root:MINE_WEST_RAMP_ROOT,reason:'Small fasteners attached to the solid timber structure'},
+  'lower-tray':{root:mineVeinContactRoot('vein-lower'),kind:'solid'},
+  'middle-tray':{root:mineVeinContactRoot('vein-middle'),kind:'solid'},
+  'upper-tray':{root:mineVeinContactRoot('vein-upper'),kind:'solid'},
 };
+for (const [route, root] of Object.entries(MINE_ROUTE_ROOTS)) {
+  definitions[route+'-deck'] = {root,kind:'surface'};
+  definitions[route+'-structure'] = {root,kind:'solid'};
+  definitions[route+'-fasteners'] = {root,reason:'Small fasteners seated on the fitted timber supports'};
+}
 
 function indexedView(source: BufferGeometry, indices: Uint32Array) {
   const geometry = new BufferGeometry();
@@ -74,9 +94,9 @@ function remainingCollision(old: MineLegacyCollision): Record<Kind,Buffers> {
  * draw attributes and the rest of the quarry keeps its existing physics. */
 export function installMineContacts(root: Object3D, old: MineLegacyCollision) {
   const legacy=remainingCollision(old);
-  const rack=new Group(), westRamp=new Group();
-  rack.name=MINE_RACK_ROOT+'-visual'; westRamp.name=MINE_WEST_RAMP_ROOT+'-visual';
-  const sections = {[MINE_RACK_ROOT]:rack,[MINE_WEST_RAMP_ROOT]:westRamp};
+  const sections = new Map<string,Group>([MINE_RACK_ROOT,...Object.values(MINE_ROUTE_ROOTS),...Object.values(veinRoots)].map(id=>{
+    const visual = new Group(); visual.name=id+'-visual'; return [id,visual];
+  }));
   const colliders: {root:string; id:string; kind:Kind; buffers:Buffers}[] = [];
   const geometry: BufferGeometry[] = [];
   const batches=Object.entries(receipt.batches) as [string, Recipe][];
@@ -100,13 +120,38 @@ export function installMineContacts(root: Object3D, old: MineLegacyCollision) {
       piece.matrix.copy(transform); piece.matrixAutoUpdate=false;
       piece.userData={...mesh.userData,worldCollision:definition.kind?'solid':'none',collisionReason:definition.reason,
         ...(definition.kind ? {surfaceId:id} : {})};
-      sections[definition.root].add(piece);
+      sections.get(definition.root)!.add(piece);
       if (definition.kind) colliders.push({root:definition.root,id,kind:definition.kind,buffers:placedCollider(piece,indices,transform)});
     }
     const untouched=Uint32Array.from(index.array.filter((_,i)=>!used[i]));
     mesh.geometry=indexedView(source,untouched); geometry.push(mesh.geometry);
   }
-  return {rack,westRamp,legacy,colliders,dispose:()=>geometry.forEach(item=>item.dispose())};
+  return {sections,legacy,colliders,dispose:()=>geometry.forEach(item=>item.dispose())};
+}
+
+/** The intact, chipped and open quarry faces are alternatives at one pivot.
+ * Only the live face owns the collider, including its exposed mineral facets. */
+export function mineVeinStateContact(root: Object3D, stateName: string, vein: string) {
+  const state = root.getObjectByName(stateName);
+  if (!state) throw new Error('Missing mine vein contact state: '+stateName);
+  root.updateWorldMatrix(true,true);
+  const visual = new Group(), branch = state.clone(true), id='alpha-mine-'+vein+'-face';
+  visual.name=root.name;
+  branch.matrix.copy(root.matrixWorld).invert().multiply(state.matrixWorld);
+  branch.matrixAutoUpdate=false;
+  visual.add(branch); visual.updateMatrixWorld(true);
+  const vertices: number[] = [], indices: number[] = [];
+  visual.traverse(mesh=>{
+    if (!(mesh instanceof Mesh)) return;
+    const position=mesh.geometry.getAttribute('position'), source=mesh.geometry.index;
+    const input=Uint32Array.from({length:source?.count ?? position.count},(_,i)=>source?.getX(i) ?? i);
+    const part=placedCollider(mesh,input,mesh.matrixWorld), offset=vertices.length/3;
+    for (const vertex of part.vertices) vertices.push(vertex);
+    for (const vertex of part.indices) indices.push(vertex+offset);
+    Object.assign(mesh.userData,{worldCollision:'solid',surfaceId:id,worldCollisionSharedSurface:true});
+  });
+  if (!indices.length) throw new Error('Empty mine vein contact state: '+stateName);
+  return {id,visual,buffers:{vertices:new Float32Array(vertices),indices:new Uint32Array(indices)}};
 }
 
 /** The tool mount and its E target share one actual rack socket transform. */

@@ -2,9 +2,9 @@
 import json
 import math
 
-from geometry import PROXIES, build_geometry, collision_data, deck_points
+from geometry import PROXIES, build_geometry, collision_data, deck_points, triangles
 from geometry import add, cross, mul, sub, unit
-from layout import OUT, RAMPS
+from layout import OUT, RAMPS, BRIDGE, GALLERY_RAMPS, GALLERY_BRIDGES
 
 
 def part_envelopes(mesh):
@@ -33,41 +33,80 @@ def build_receipt():
     meshes = build_geometry()
     actual = json.loads((OUT/'colliders.json').read_text())
     assert collision_data() == actual, 'Authoring geometry no longer matches the shipping legacy colliders'
-    west = 'AM02_ramp-west-0-3'
+    routes = RAMPS + [BRIDGE] + GALLERY_RAMPS + GALLERY_BRIDGES
+    names = {route['id']: ('west' if route['id']=='ramp-west-0-3' else route['id']) for route in routes}
     groups = {}
-    for name, kind in [('rack-frame','wood'),('rack-hooks','metal'),('west-deck','wood'),
-                       ('west-structure','wood'),('west-fasteners','metal')]:
-        groups[name] = {'batch': 'AM_batch_'+kind, 'volumes': [], 'old': []}
 
-    def length(p):
-        return len(p['indices']) if p['shape']=='trimesh' else 36
+    def define(name, material):
+        groups[name] = {'batch': 'AM_batch_'+material, 'volumes': [], 'old': []}
 
-    cursor = {key:len(actual[key]['indices']) - sum(length(p) for p in PROXIES if p['kind']==key) for key in actual}
+    define('rack-frame','wood')
+    define('rack-hooks','metal')
+    trays = {'AM01_ore_catch_vein-'+name: name+'-tray' for name in ['lower','middle','upper']}
+    for key in trays.values():
+        define(key,'stone')
+    structures = {}
+    for route in routes:
+        name = names[route['id']]
+        structures['AM02_'+route['id']] = name+'-structure'
+        for part, material in [('deck','wood'),('structure','wood'),('fasteners','metal')]:
+            define(name+'-'+part,material)
+
+    cursor = {key:0 for key in actual}
+    for mesh in meshes.values():
+        if mesh.material not in ['stone','ground']:
+            continue
+        for tri in triangles(mesh):
+            a,b,c = [mesh.vertices[i] for i in tri]
+            normal = unit(cross(sub(b,a),sub(c,a)))
+            kind = 'surface' if normal[1]>=math.cos(math.radians(25)) else 'solid'
+            tray = trays.get(mesh.name)
+            if tray:
+                groups[tray]['old'].append([kind,cursor[kind],3])
+            cursor[kind] += 3
+    for source, tray in trays.items():
+        groups[tray]['volumes'] = list(part_envelopes(meshes[source]))
+
     for proxy in PROXIES:
         name = proxy['id'].rsplit('-', 1)[0]
         kind = proxy['kind']
-        part = 'rack-frame' if name=='AM03_tool_rack' else 'west-structure' if name.startswith(west) else 'west-deck' if name=='ramp-west-0-3' else None
+        length = len(proxy['indices']) if proxy['shape']=='trimesh' else 36
+        part = 'rack-frame' if name=='AM03_tool_rack' else None
+        if name in names:
+            part = names[name]+'-deck'
+        for prefix, key in structures.items():
+            if name.startswith(prefix+'_'):
+                part = key
+                break
         if part:
             group = groups[part]
-            group['old'].append([kind,cursor[kind],length(proxy)])
+            group['old'].append([kind,cursor[kind],length])
             if proxy['shape']=='oriented-box':
                 group['volumes'].append({k:proxy[k] for k in ['center','size','axes']})
-        cursor[kind] += length(proxy)
+        cursor[kind] += length
+    for kind in actual:
+        assert cursor[kind] == len(actual[kind]['indices'])
 
-    route = next(route for route in RAMPS if route['id']=='ramp-west-0-3')
-    a,b,_,side,_ = deck_points(route)
-    along = unit(sub(b,a))
-    normal = unit(cross(side,along))
-    if normal[1] < 0:
-        normal = mul(normal,-1)
-    distance = math.dist(a,b)
-    board_count = math.ceil(distance/.27)
-    for i in range(board_count):
-        p = add(add(a,mul(sub(b,a),(i+.5)/board_count)),mul(normal,-.085))
-        groups['west-deck']['volumes'].append({'center':p, 'size':[route['deckWidth'],.17,distance/board_count-.012],
-                                              'axes':[side,normal,mul(along,-1)]})
+    for route in routes:
+        a,b,_,side,_ = deck_points(route)
+        along = unit(sub(b,a))
+        normal = unit(cross(side,along))
+        if normal[1] < 0:
+            normal = mul(normal,-1)
+        distance = math.dist(a,b)
+        board_count = math.ceil(distance/.27)
+        name = names[route['id']]
+        for i in range(board_count):
+            p = add(add(a,mul(sub(b,a),(i+.5)/board_count)),mul(normal,-.085))
+            groups[name+'-deck']['volumes'].append({'center':p, 'size':[route['deckWidth'],.17,distance/board_count-.012],
+                                                  'axes':[side,normal,mul(along,-1)]})
+        source = 'AM02_'+route['id']
+        groups[name+'-fasteners']['volumes'] = [
+            volume for suffix in ['_joint_straps','_joint_bolts'] if source+suffix in meshes
+            for volume in part_envelopes(meshes[source+suffix])]
+        if not groups[name+'-fasteners']['volumes']:
+            del groups[name+'-fasteners']
     groups['rack-hooks']['volumes'] = list(part_envelopes(meshes['AM03_tool_hooks']))
-    groups['west-fasteners']['volumes'] = list(part_envelopes(meshes[west+'_joint_straps'])) + list(part_envelopes(meshes[west+'_joint_bolts']))
     return {'parts':groups, 'legacyLengths':{key:len(p['indices']) for key,p in actual.items()}}
 
 

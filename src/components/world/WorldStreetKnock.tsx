@@ -32,6 +32,9 @@ import { createStreetDepthMaterial, createStreetMaterial, streetUniforms } from 
 import { chevronCell, directionCellFor, stopCell, streetAtlas } from './WorldStreetSigns';
 import type { Builder } from './WorldStreetGeometry';
 import { yearPillarSources } from './street-year-collision';
+import { roadblockContacts, roadblockSources } from './street-roadblock-contact';
+import { streetReachableContacts } from './street-reachable-contact';
+import type { BatchedCollisionSources } from './world-collision-inventory';
 import type { Vec3 } from './types';
 
 type KnockKind = LayoutKind | 'roadblock' | 'beam' | 'guard' | 'year' | 'billboard';
@@ -130,6 +133,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     // One batch kind per kind, except direction boards (one per instance: each has its own atlas cell).
     const kinds: BatchKind[] = [], kindOf = new Map<string, number>(), hulls = new Map<string, Float32Array[]>(), counts: number[] = [];
     const yearBuilders = new Map<string, [Builder, Builder]>();
+    const roadblocks = new Map<string, [Builder, Builder]>(), contactMembers = new Map<string, string[]>();
     let dirIndex = 0;
     const states: KState[] = [];
     const keyFor = (it: Item) => (it.kind === 'year' || it.kind === 'billboard' ? it.id : it.kind === 'direction' ? `direction-${dirIndex++}` : it.kind === 'beam' || it.kind === 'guard' ? `${it.kind}-${it.len!.toFixed(2)}` : it.kind);
@@ -142,7 +146,18 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
         kindOf.set(key, kinds.length); counts.push(0);
         kinds.push({ id: key, L0: b.L0.build(), L1: b.L1.build(), lodNear: SPEC[it.kind].lod, far: SPEC[it.kind].far });
         if (it.kind === 'year') yearBuilders.set(key, [b.L0, b.L1]);
-        hulls.set(key, b.L0.hulls().map((h, i) => (i === 0 && it.kind !== 'beam' && it.kind !== 'guard' && it.kind !== 'billboard' && it.kind !== 'year' ? verticalPrism(h) : h)));
+        if (it.kind === 'roadblock') {
+          const members = roadblockContacts(b.L0);
+          roadblocks.set(key, [b.L0, b.L1]);
+          contactMembers.set(key, members.map(member => member.id));
+          hulls.set(key, members.map(member => member.points));
+        } else if (it.kind === 'lamp' || it.kind === 'signal' || it.kind === 'bin') {
+          const members = streetReachableContacts(b.L0, it.kind);
+          contactMembers.set(key, members.map(member => member.id));
+          hulls.set(key, members.map(member => member.points));
+        } else {
+          hulls.set(key, b.L0.hulls().map((h, i) => (i === 0 && it.kind !== 'beam' && it.kind !== 'guard' && it.kind !== 'billboard' && it.kind !== 'year' ? verticalPrism(h) : h)));
+        }
       }
       counts[kindOf.get(key)!]++;
     });
@@ -152,7 +167,20 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
       const k = SPEC[it.kind];
       states.push({ item: it, batchId: id, body: null, phase: 'home', t: 0, locked: k.heavy, heavy: k.heavy, visual: it.kind === 'year' || it.kind === 'billboard' ? () => { const m = new Matrix4(); batch.mesh.getMatrixAt(id, m); return m.toArray(); } : undefined });
     });
-    const yearColliders = new Map<string, string[]>();
+    const colliderNames = new Map<string, string[]>();
+    items.forEach((item, i) => {
+      const members = contactMembers.get(keys[i]);
+      if (members) colliderNames.set(item.id, members.map(member => `street-collider-${item.id}/${member}`));
+    });
+    const roadblock = roadblocks.get('roadblock');
+    if (roadblock && kinds.length === 1) {
+      const geometries = ([0, 1] as const).map(level => ({ id: batch.geometryId(0, level), ranges: roadblockSources(roadblock[level], roadblock[0]) }));
+      const geometryIds = geometries.map(geometry => geometry.id);
+      const sources: BatchedCollisionSources = { geometries, placements: states.map(({ item, batchId }) => ({
+        id: item.id, slot: batchId, matrix: batch.sourceMatrix(batchId), geometryIds, colliderPrefix: `street-collider-${item.id}/`,
+      })) };
+      batch.mesh.userData.worldCollisionBatchedInstances = sources;
+    }
     if (yearBuilders.size) {
       const sources = [];
       for (const [key, lods] of yearBuilders) {
@@ -162,7 +190,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
           const range = batch.geometryRange(kind, level);
           if (!range) throw new Error(`Street year ${key} has no batch geometry range`);
           sources.push(...parts.map(part => ({ ...part, firstIndex: part.firstIndex + range.indexStart })));
-          if (level === 0) yearColliders.set(key, parts.flatMap(part => part.surfaceId ? [part.surfaceId] : []));
+          if (level === 0) colliderNames.set(key, parts.flatMap(part => part.surfaceId ? [part.surfaceId] : []));
         }
       }
       batch.mesh.userData.worldCollisionSources = sources;
@@ -174,7 +202,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     batch.mesh.userData.noOcclusionFade = true;
     batch.mesh.userData.streetKinds = kinds.map(k => k.id);
     batch.mesh.userData.streetStats = () => ({ tris: lastTris.l0 + lastTris.l1, ...lastTris, instances: batch.count });
-    return { batch, states, hulls: keys.map(k => hulls.get(k)!), yearColliders, material, depth };
+    return { batch, states, hulls: keys.map(k => hulls.get(k)!), colliderNames, material, depth };
   }, [items, set, lastTris, customAtlas]);
   useEffect(() => {
     streetKnockRegistry.push(...built.states);
@@ -298,7 +326,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
 
   return <group name={`street-${set}-group`}>
     <primitive object={built.batch.mesh} />
-    {built.states.map((s, i) => <KnockBody key={s.item.id} state={s} hulls={built.hulls[i]} kind={s.item.kind} sourceNames={built.yearColliders.get(s.item.id)} />)}
+    {built.states.map((s, i) => <KnockBody key={s.item.id} state={s} hulls={built.hulls[i]} kind={s.item.kind} sourceNames={built.colliderNames.get(s.item.id)} />)}
     {lamps.length > 0 && <instancedMesh ref={pools} name="street-lamp-pools" args={[poolGeo, poolMat, lamps.length]} frustumCulled renderOrder={2} userData={{ noOcclusionFade: true, surface: true }} />}
     {lamps.length > 0 && <pointLight ref={nearbyLamp} name="street-nearest-lamp-key" color="#ffd5a1" intensity={0} distance={14} decay={2} castShadow={false}/>}
     {claim && <StreetClaim keys={[claim]} />}

@@ -54,6 +54,7 @@ try {
     await page.keyboard.press('Escape');
     await page.getByRole('dialog').waitFor({timeout:10_000});
     assert.ok(intercepted>0);
+    assert.ok(errors.every(message=>message.includes('G28.glb') && /fetch|load/i.test(message)),JSON.stringify(errors));
     console.log(JSON.stringify({mode,intercepted,ordinaryMenu:true,errors}));
   } else {
     if(mode === 'delayed' || mode === 'before') {
@@ -74,8 +75,13 @@ try {
     await page.waitForFunction(()=>window.__worldEntry?.facts().sites.length===5,undefined,{timeout:60_000});
     const sites=await page.evaluate(()=>window.__worldEntry.facts().sites);
     if(mode!=='before') {
-      for(const site of mode==='trip'?sites:[camp]) {
+      for(const site of mode==='trip'?sites:sites.filter(site=>site.id==='camp')) {
         if (process.env.WORLD_PORTAL_SITE && site.id!==process.env.WORLD_PORTAL_SITE) continue;
+        if (site.id==='coaster') {
+          // Approach from the public road outside the streaming footprint, as a visitor would.
+          await bot.fixtureTeleport(at(site,0,13),'coaster approach road');
+          await page.waitForFunction(()=>window.__worldDebug.snapshot().grounded && window.__worldDebug.state().position[2]>-112 && window.__worldDebug.state().position[2]<-106,undefined,{timeout:15_000});
+        }
         await bot.fixtureTeleport(at(site,0,4.3),site.id+' outside gate to allow rearming');
         await page.waitForTimeout(2300);
         const approachPoint=site.entryApproachCandidates[0];

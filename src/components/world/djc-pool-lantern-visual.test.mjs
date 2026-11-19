@@ -6,11 +6,11 @@ import { CLUB_POOL } from './djc-club-layout.ts';
 import { DJC_POOL_LANTERN_ENABLED, DJC_POOL_LANTERN_POSITIONS, createDjcPoolLanternVisual, djcPoolLanternCandidate } from './djc-pool-lantern-visual.ts';
 
 const disposeGeometry=g=>{for(const geometry of [...Object.values(g.batches),...Object.values(g.daybeds),...Object.values(g.poolLanterns),g.pool])geometry.dispose();};
-test('candidate extracts exactly ten old lanterns while retaining every original collider and seat',()=>{
+test('candidate extracts the ten procedural lanterns and leaves their contact to their mounted assembly',()=>{
   const original=buildDjcClubGeometry({separateDaybeds:true}),candidate=buildDjcClubGeometry({separateDaybeds:true,separatePoolLanterns:true});
   try{
     assert.equal(DJC_POOL_LANTERN_POSITIONS.length,10);
-    assert.deepEqual(candidate.colliders,original.colliders);
+    assert.equal(original.colliders.solid.indices.length-candidate.colliders.solid.indices.length,10*12*3);
     assert.deepEqual(candidate.seats,original.seats);assert.deepEqual(candidate.daybedApproaches,original.daybedApproaches);
     let removedVertices=0;
     for(const key of Object.keys(original.batches)){
@@ -30,7 +30,7 @@ test('candidate extracts exactly ten old lanterns while retaining every original
         for(let k=0;k<9;k+=3)inside&&=Math.abs(vertices[j+k]-x)<=.15001&&vertices[j+k+1]>=1.39999&&vertices[j+k+1]<=1.80001&&Math.abs(vertices[j+k+2]-z)<=.15001;
         if(inside)baseFaces++;
       }
-      assert.equal(baseFaces,12,`original solid box at ${x},${z} must remain complete`);
+      assert.equal(baseFaces,0,`the promoted assembly owns the lantern at ${x},${z}`);
     }
     assert.deepEqual(DJC_POOL_LANTERN_POSITIONS,actualPositions);
   }finally{disposeGeometry(original);disposeGeometry(candidate);}

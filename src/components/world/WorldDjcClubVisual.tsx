@@ -74,12 +74,13 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
   const legacyFurniture=useMemo(()=>djcFurnitureLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const group=useRef<Group>(null),mirror=useRef<Mesh>(null),spots=useRef<Mesh>(null);
   const lights=useRef<(PointLight|null)[]>([]),beams=useRef<(Mesh|null)[]>([]);
-  const resources=useMemo(()=>{const geometry=buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:candidatePoolLanterns,separateUmbrellas:!legacyUmbrellas,separateFurniture:!legacyFurniture});
+  const resources=useMemo(()=>{const geometry=buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:true,separateUmbrellas:!legacyUmbrellas,separateFurniture:!legacyFurniture});
     const base = materials();
     const finishes = Object.fromEntries((['wood','fabric','stone'] as const).flatMap(key =>
       geometry.batches[key].hasAttribute('aDjcFinish') ? [[key, markClubWaterSurfaceOnly(applyDjcFacilityFinish(base[key].clone()))]] : []
     )) as Partial<Record<ClubBatch, MeshStandardMaterial>>;
-    return {geometry, finishes, mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:base,
+    return {geometry, finishes, lanternFallback:Object.values(geometry.poolLanterns).filter(g=>g.attributes.position.count>0),
+    mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:base,
     mirrorMaterial:createClubMirrorMaterial(),spot:spotMaterial(),spill:createClubLightSpill(),
     beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()};},[legacyNorthBar,legacyDaybeds,candidatePoolLanterns,legacyUmbrellas,legacyFurniture]);
   useEffect(()=>()=>{
@@ -137,9 +138,9 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
     {!legacyDaybeds&&<WorldDjcClubDaybeds fallback={<group name="djc-original-daybeds">
       {keys.filter(key=>resources.geometry.daybeds[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.daybeds[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
     </group>}/>}
-    {candidatePoolLanterns&&<WorldDjcClubLanterns fallback={<group name="djc-original-pool-lanterns">
+    <WorldDjcClubLanterns legacy={!candidatePoolLanterns} geometry={resources.lanternFallback} fallback={<group name="djc-original-pool-lanterns">
       {keys.filter(key=>resources.geometry.poolLanterns[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.poolLanterns[key]} material={resources.materials[key]} castShadow={key==='wood'} receiveShadow dispose={null}/>)}
-    </group>}/>}
+    </group>}/>
     <group ref={group} name="djc-beach-club-visual" dispose={null}>
       {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.finishes[key] ?? resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} userData={resources.geometry.sources[key]} />)}
       <group userData={{worldCollision:'soft',worldCollisionReason:'Traversable shallow water above the separate mineral floor'}}>

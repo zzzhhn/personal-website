@@ -1,10 +1,10 @@
-import type { InstancedMesh, Matrix4, Mesh, Object3D, Scene } from 'three';
+import { Matrix4, type BatchedMesh, type InstancedMesh, type Mesh, type Object3D, type Scene } from 'three';
 import type { CollisionClass } from './static-surface-asset';
 
 export const migratedCollisionRoots = [
   'alpha-dock-lodge', 'alpha-lantern-rack', 'alpha-path-fence', 'alpha-mainland-pier-r4-candidate',
   'north-attractions-road', 'alpha-echo-cave-station-6', 'alpha-station5-three-sluices-waterwheel', 'alpha-lodge-threshold', 'alpha-supported-boulder-field',
-  'alpha-crafted-alpine-forest', 'alpha-agent-exchange', 'alpha-terrain-patch', 'island-terrain-v4', 'street-year-group',
+  'alpha-crafted-alpine-forest', 'alpha-agent-exchange', 'alpha-terrain-patch', 'island-terrain-v4', 'street-year-group', 'street-roadblock-group',
   ...['cable', 'ferry', 'sled'].flatMap(kind => [
     `alpha-${kind}-vehicle-model`, `alpha-${kind}-gangway-0`, `alpha-${kind}-gangway-1`,
   ]),
@@ -16,8 +16,10 @@ export const migratedCollisionRoots = [
   ...['C03-large-tent','C04-small-tents','C05-fire-pit','C06-instances','C07-pad1','C09-pad2','C10-pad3',
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id => 'park-exhibit-set-'+id),
-  'djc-mirror-contact',
-  'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp',
+  'djc-mirror-contact', 'djc-pool-lantern-contact',
+  'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp', 'alpha-mine-east-ramp', 'alpha-mine-middle-bridge',
+  ...['west-entry', 'west-rise', 'west-link'].map(name => 'alpha-mine-gallery-'+name),
+  'alpha-mine-north-ravine-bridge', ...['lower','middle','upper'].map(level => 'alpha-mine-'+level+'-vein-contact'),
   'G28-entry', ...['mine','park','yard','coaster'].map(id => 'G28-entry-'+id),
   'world-camp-slice', 'street-trees-group', 'world-town-assets', 'factory-walk-support', 'factory-roof-support',
 ];
@@ -31,6 +33,12 @@ export interface InstanceCollisionSources {
   placements: readonly Placement[];
   /** Source index for each currently drawn GPU slot. Culling compacts those slots. */
   slots: number[];
+}
+
+export interface BatchedCollisionSources {
+  geometries: readonly { id: number; ranges: readonly { id: string; firstIndex: number; indexCount: number;
+    collision: CollisionClass; surfaceIds?: readonly string[] }[] }[];
+  placements: readonly { id: string; slot: number; matrix: Matrix4; geometryIds: readonly number[]; colliderPrefix: string }[];
 }
 
 export function collisionInstancePartId(instance: string, part: string) { return `${instance}:${part}`; }
@@ -75,6 +83,74 @@ function instanceDeclaration(mesh: InstancedMesh, sources: InstanceCollisionSour
   return { blocks, partial: ranges?.partial };
 }
 
+/** Each shared indexed geometry owns one exact range table. A placement claims
+ * the union of its LOD members and validates its currently occupied GPU slot. */
+function batchedDeclaration(mesh: BatchedMesh, sources: BatchedCollisionSources): Declaration {
+  const index = mesh.geometry.index;
+  if (!mesh.isBatchedMesh || !index || !Array.isArray(sources?.geometries) || !sources.geometries.length
+    || !Array.isArray(sources.placements) || sources.placements.length !== mesh.instanceCount) return 'invalid';
+  const geometry = new Map<number, { first: number; count: number; members: Set<string> }>();
+  const expected = new Matrix4();
+  try {
+    for (const entry of sources.geometries) {
+      if (!Number.isSafeInteger(entry?.id) || entry.id < 0 || geometry.has(entry.id) || !Array.isArray(entry.ranges) || !entry.ranges.length) return 'invalid';
+      const range = mesh.getGeometryRangeAt(entry.id);
+      if (!range) return 'invalid';
+      const { indexStart, indexCount, vertexStart, vertexCount } = range;
+      if (indexStart % 3 !== 0 || indexCount % 3 !== 0 || indexCount <= 0 || indexStart < 0 || indexStart + indexCount > index.count) return 'invalid';
+      for (let i = indexStart; i < indexStart + indexCount; i++) {
+        const vertex = index.getX(i);
+        if (vertex < vertexStart || vertex >= vertexStart + vertexCount) return 'invalid';
+      }
+      const ids = new Set<string>(), members = new Set<string>();
+      let end = 0;
+      for (const part of entry.ranges) {
+        if (!part || typeof part.id !== 'string' || !part.id || ids.has(part.id) || !classes.has(part.collision)
+          || part.firstIndex !== end || !Number.isSafeInteger(part.indexCount) || part.indexCount <= 0 || part.indexCount % 3 !== 0) return 'invalid';
+        const physical = part.collision === 'solid' || part.collision === 'pushable';
+        const supplies = part.surfaceIds;
+        if (physical) {
+          if (!Array.isArray(supplies) || !supplies.length || new Set(supplies).size !== supplies.length
+            || supplies.some(id => typeof id !== 'string' || !id)) return 'invalid';
+          supplies.forEach(id => members.add(id));
+        } else if (supplies !== undefined) return 'invalid';
+        ids.add(part.id); end += part.indexCount;
+      }
+      if (end !== indexCount) return 'invalid';
+      geometry.set(entry.id, { first: indexStart, count: indexCount, members });
+    }
+    let end = 0;
+    for (const entry of [...geometry.values()].sort((a, b) => a.first - b.first)) {
+      if (entry.first !== end) return 'invalid';
+      end += entry.count;
+    }
+    if (end !== index.count) return 'invalid';
+    const ids = new Set<string>(), prefixes = new Set<string>(), slots = new Set<number>(), used = new Set<number>();
+    const blocks: Claim[] = [];
+    for (const entry of sources.placements) {
+      if (typeof entry?.id !== 'string' || !entry.id || ids.has(entry.id) || typeof entry.colliderPrefix !== 'string'
+        || !entry.colliderPrefix || prefixes.has(entry.colliderPrefix) || !Number.isSafeInteger(entry.slot) || entry.slot < 0
+        || entry.slot >= mesh.maxInstanceCount || slots.has(entry.slot) || !Array.isArray(entry.geometryIds) || !entry.geometryIds.length
+        || new Set(entry.geometryIds).size !== entry.geometryIds.length || !entry.geometryIds.includes(mesh.getGeometryIdAt(entry.slot))) return 'invalid';
+      mesh.getMatrixAt(entry.slot, expected);
+      const matrix: Matrix4 = entry.matrix;
+      if (!matrix || typeof matrix !== 'object' || !('isMatrix4' in matrix) || matrix.isMatrix4 !== true || matrix.elements.length !== 16
+        || !matrix.elements.every((value, i) => Number.isFinite(value) && Math.fround(value) === expected.elements[i])) return 'invalid';
+      const members = new Set<string>();
+      for (const id of entry.geometryIds) {
+        const source = geometry.get(id);
+        if (!source) return 'invalid';
+        source.members.forEach(member => members.add(member));
+        used.add(id);
+      }
+      members.forEach(member => blocks.push({ id: entry.colliderPrefix + member, shared: false }));
+      ids.add(entry.id); prefixes.add(entry.colliderPrefix); slots.add(entry.slot);
+    }
+    if (used.size !== geometry.size) return 'invalid';
+    return { blocks };
+  } catch { return 'invalid'; }
+}
+
 function sourceRanges(mesh: Mesh): Declared | 'invalid' | undefined {
   const sources = mesh.userData.worldCollisionSources;
   if (sources !== undefined) {
@@ -106,6 +182,9 @@ function declaration(mesh: Mesh): Declaration {
   // Only the world's explicit runtime contract may classify meshes.
   if (Object.hasOwn(mesh.userData, 'worldCollisionInstances')) {
     return instanceDeclaration(mesh as InstancedMesh, mesh.userData.worldCollisionInstances);
+  }
+  if (Object.hasOwn(mesh.userData, 'worldCollisionBatchedInstances')) {
+    return batchedDeclaration(mesh as unknown as BatchedMesh, mesh.userData.worldCollisionBatchedInstances);
   }
   const ranges = sourceRanges(mesh);
   if (ranges) return ranges;

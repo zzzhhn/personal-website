@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { Scene, Group, Mesh, BoxGeometry, InstancedMesh,BatchedMesh,MeshBasicMaterial,Matrix4 } from 'three';
 import R from '@dimforge/rapier3d-compat';
 import { surveyCollisionSources } from '../../src/components/world/world-collision-survey.ts';
+import { collisionInventory } from '../../src/components/world/world-collision-inventory.ts';
 
 test('on-demand source ledger preserves actual local instances, world poses, geometry and off-camera colliders',async()=>{
   await R.init();
@@ -37,4 +38,40 @@ test('on-demand source ledger preserves actual local instances, world poses, geo
     assert.equal(c.path,'/wharf/real-post');assert.equal(c.shape.type,'Cuboid');
     assert.ok(Math.abs(c.shape.halfExtents.x-.35)<1e-6);assert.deepEqual([c.translation.x,c.translation.y,c.translation.z],[6,2,-4]);
   }finally{world.free();g.dispose();material.dispose();batch.dispose();instanced.dispose();}
+});
+
+test('strict batch ranges validate native index spans, active slots and moving GPU poses', t => {
+  const scene = new Scene(), root = new Group(), geometry = new BoxGeometry(), material = new MeshBasicMaterial();
+  const mesh = new BatchedMesh(3, 48, 72, material);
+  t.after(() => { mesh.dispose(); geometry.dispose(); material.dispose(); });
+  root.name = 'batch-fixture'; scene.add(root); root.add(mesh);
+  const near = mesh.addGeometry(geometry), far = mesh.addGeometry(geometry);
+  const empty = mesh.addInstance(near), slot = mesh.addInstance(far);
+  mesh.deleteInstance(empty);
+  const expected = new Matrix4().makeTranslation(1, 0, 4);
+  mesh.setMatrixAt(slot, expected);
+  const range = (id, surfaces) => ({ id, firstIndex: 0, indexCount: 36, collision: 'pushable', surfaceIds: surfaces });
+  const sources = { placements: [{ id: 'moving', slot, matrix: expected, geometryIds: [near, far], colliderPrefix: 'moving/' }],
+    geometries: [{ id: near, ranges: [range('pair', ['a', 'b'])] }, { id: far, ranges: [range('coarse', ['a'])] }] };
+  mesh.userData.worldCollisionBatchedInstances = sources;
+  const nodes = ['moving/a', 'moving/b'].map(name => { const node = new Group(); node.name = name; root.add(node); return node; });
+  const read = () => collisionInventory(scene, [mesh], nodes, [root.name]);
+  assert.deepEqual(read().errors, []);
+  assert.equal(read().registrations[root.name], 2);
+  mesh.setGeometryIdAt(slot, near);
+  mesh.setVisibleAt(slot, false);
+  assert.equal(read().registrations[root.name], 2);
+  expected.setPosition(2, 0, 4);
+  assert.equal(read().mounted.invalid, 1);
+  mesh.setMatrixAt(slot, expected);
+  assert.deepEqual(read().errors, []);
+  sources.geometries[0].ranges[0].firstIndex = 3;
+  assert.equal(read().mounted.invalid, 1);
+  sources.geometries[0].ranges[0].firstIndex = 0;
+  const initial = mesh.geometry.index.getX(0);
+  mesh.geometry.index.setX(0, mesh.getGeometryRangeAt(far).vertexStart);
+  assert.equal(read().mounted.invalid, 1);
+  mesh.geometry.index.setX(0, initial);
+  sources.placements[0].slot = empty;
+  assert.equal(read().mounted.invalid, 1);
 });

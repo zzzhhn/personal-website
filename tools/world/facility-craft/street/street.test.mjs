@@ -2,8 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { Color } from 'three';
+import R from '@dimforge/rapier3d-compat';
+import { Matrix4, Quaternion, Ray, Vector3 } from 'three';
 import { families, loadWorldModule, ROOT } from './runtime.mjs';
+import { compareContact, meshFromBatch, mountStreetContacts } from './contact-fixture.mjs';
 
 const A = loadWorldModule(), oldA = loadWorldModule('WorldStreetAssets.ts', '', true);
 const current = families(A), old = families(oldA), legacy = families(loadWorldModule('WorldStreetAssets.ts', '?facilityCraft=legacy'));
@@ -11,7 +13,7 @@ const digest = value => createHash('sha256').update(JSON.stringify(value)).diges
 const visual = b => [b.pos, b.nrm, b.col, b.mat, b.suv, b.idx, b.parts, b.cell];
 const proxies = b => b.hulls().map(a => Array.from(a));
 
-test('all eight facility families keep exact baseline hulls and legacy geometry', () => {
+test('all eight facility families keep their archived builder proxies and legacy geometry', () => {
   for (const id of Object.keys(current)) for (const level of [0, 1]) {
     assert.equal(digest(proxies(current[id][level])), digest(proxies(old[id][level])), `${id} L${level} collision`);
     assert.equal(digest(visual(legacy[id][level])), digest(visual(old[id][level])), `${id} L${level} legacy`);
@@ -55,7 +57,42 @@ test('seat datums, atlas faces, lighting codes and untouched lamp variants keep 
     const opts = { height, arm: 0, cyanRing: false };
     assert.equal(digest(visual(A.lampGeometry(opts))), digest(visual(oldA.lampGeometry(opts))), 'year/park shared post-top lamps untouched');
   }
-  assert.equal(digest(proxies(A.yearPillar(0, [0, 0, 1, 1]))), digest(proxies(oldA.yearPillar(0, [0, 0, 1, 1]))), 'year placard physics');
+});
+
+function checkContact(visual, colliders, origin, direction, length, tolerance, label) {
+  const contact = compareContact(visual, colliders, origin, direction, length);
+  assert.ok(contact.visual !== null && contact.physical !== null && Math.abs(contact.visual - contact.physical) < tolerance,
+    `${label} ${JSON.stringify(contact)}`);
+  return contact;
+}
+
+test('six G11 placements register separate footings and date frames against both drawn LODs', t => {
+  const { BUILDINGS_V4, ROAD_Y } = loadWorldModule('layout-v4-flag.ts');
+  const items = Array.from(BUILDINGS_V4, (building, i) => ({ id: `year-${building.id}`, kind: 'year', yaw: Math.PI / 2,
+    position: [building.position[0] + building.size[0] / 2 + 5, ROAD_Y + .01, building.position[2]], road: 'avenue', cell: [i / 8, 0, 1 / 8, .5] }));
+  const host = mountStreetContacts('year', items);
+  t.after(host.dispose);
+  assert.equal(host.bodies.length, 6);
+  let maxNeckGap = 0;
+  for (const [i, item] of items.entries()) {
+    const { body, colliders } = host.bodies[i];
+    assert.equal(body.mass(), 42);
+    assert.ok(body.isSleeping());
+    assert.deepEqual(colliders.map(({ name }) => name.slice(name.indexOf('/') + 1)), ['footing', 'base', 'shaft', 'cap', 'head', 'date-frame']);
+    for (const [level, distance] of [[0, 10], [1, 50]]) {
+      const [x, y, z] = item.position;
+      host.frame([x + distance, y, z]);
+      assert.equal(host.mesh.getGeometryIdAt(i), 2 * i + level);
+      const visual = meshFromBatch(host.mesh, i);
+      t.after(() => { visual.geometry.dispose(); visual.material.dispose(); });
+      const neck = checkContact(visual, colliders, [.75, .54, 0], [-1, 0, 0], 1, .003, `${item.id} neck L${level}`);
+      assert.ok(neck.physical > .63, 'the visible neck has open space beyond its silhouette');
+      maxNeckGap = Math.max(maxNeckGap, Math.abs(neck.visual - neck.physical));
+      checkContact(visual, colliders, [0, .03, .75], [0, 0, -1], 1, .02, `${item.id} footing L${level}`);
+      checkContact(visual, colliders, [0, 1.585, .75], [0, 0, -1], 1, .011, `${item.id} placard L${level}`);
+    }
+  }
+  t.diagnostic(`Largest physical-to-visual G11 neck difference ${maxNeckGap.toFixed(6)} m`);
 });
 
 test('varying rail lengths retain their roots and baseline physics; static trimeshes use the proxy', () => {
@@ -71,21 +108,157 @@ test('varying rail lengths retain their roots and baseline physics; static trime
   assert.equal(digest(C.streetFacilityCollision(crafted).pos), digest(original.pos));
 });
 
-test('all four roadblock steel legs meet their original rubber feet and upper hinge', () => {
-  const B = current.roadblock[0], steel = new Color('#3B4C5E');
-  const isSteel = i => Math.abs(B.col[i * 3] - steel.r) < 1e-10 && Math.abs(B.col[i * 3 + 1] - steel.g) < 1e-10 && Math.abs(B.col[i * 3 + 2] - steel.b) < 1e-10;
-  for (const x of [-.56, .56]) for (const side of [-1, 1]) {
-    const points = [];
-    for (let i = 0; i < B.pos.length / 3; i++) {
-      if (isSteel(i) && Math.abs(B.pos[i * 3] - x) < .03 && Math.sign(B.pos[i * 3 + 2]) === side) points.push(B.pos.slice(i * 3, i * 3 + 3));
+function insidePart(builder, name, point) {
+  const part = builder.parts.find(part => part.name === name);
+  assert.ok(part, name);
+  const end = part.end < 0 ? builder.pos.length / 3 : part.end;
+  const ray = new Ray(new Vector3(...point), new Vector3(1, .001, .002).normalize());
+  const a = new Vector3(), b = new Vector3(), c = new Vector3(), hit = new Vector3(), hits = [];
+  for (let i = 0; i < builder.idx.length; i += 3) {
+    const [j, k, l] = builder.idx.slice(i, i + 3);
+    if ([j, k, l].some(index => index < part.start || index >= end)) continue;
+    if (ray.intersectTriangle(a.fromArray(builder.pos, j * 3), b.fromArray(builder.pos, k * 3), c.fromArray(builder.pos, l * 3), false, hit)) {
+      const distance = hit.distanceTo(ray.origin);
+      if (!hits.some(previous => Math.abs(previous - distance) < 1e-6)) hits.push(distance);
     }
-    const bottom = points.filter(p => p[1] < .04);
-    assert.ok(bottom.length > 0, `leg ${x}/${side} penetrates the shoe height`);
-    assert.ok(bottom.every(p => p[1] >= 0 && Math.abs(p[2] - side * .3) <= .07 && Math.abs(p[0] - x) <= .065), `leg ${x}/${side} sits inside the unchanged rubber shoe footprint`);
-    const top = points.filter(p => p[1] > .94);
-    assert.ok(top.some(p => p[1] <= .99 && Math.abs(p[2]) < .065), `leg ${x}/${side} enters the hinge block`);
-    const bottomZ = bottom.reduce((sum, p) => sum + Math.abs(p[2]), 0) / bottom.length;
-    const topZ = top.reduce((sum, p) => sum + Math.abs(p[2]), 0) / top.length;
-    assert.ok(bottomZ > topZ + .20, 'the trestle opens toward the ground, not toward the hinge');
   }
+  return hits.length % 2 === 1;
+}
+
+test('all four G12 splayed legs overlap the real shoes and upper hinge in the built source', () => {
+  const source = current.roadblock[0];
+  for (const x of [-.56, .56]) for (const side of [-1, 1]) {
+    const leg = `frame.splayed-legs-${x}`;
+    for (const [joint, point] of [['shoes', [x, .031, side * .2943]], ['hinge', [x, .93, side * .042]]]) {
+      assert.ok(insidePart(source, leg, point) && insidePart(source, `frame.${joint}-${x}`, point), `leg at ${x}/${side} meets ${joint}`);
+    }
+  }
+});
+
+test('G12 scene mounts 28 kg roadblocks with independent feet, open air and true panel contact', t => {
+  const host = mountStreetContacts('roadblock');
+  t.after(host.dispose);
+  assert.equal(host.bodies.length, 4);
+  const verifyInventory = () => {
+    const traced = host.inventory();
+    assert.deepEqual(Array.from(traced.errors), []);
+    assert.equal(traced.registrations['street-roadblock-group'], 168);
+  };
+  verifyInventory();
+  const source = host.mesh.userData.worldCollisionBatchedInstances;
+  assert.deepEqual(Array.from(source.placements, placement => placement.id), ['roadblock-0', 'roadblock-1', 'roadblock-2', 'roadblock-3']);
+  assert.equal(source.geometries[0].ranges.reduce((sum, range) => sum + range.indexCount, 0), 5040);
+  assert.equal(source.geometries[1].ranges.reduce((sum, range) => sum + range.indexCount, 0), 576);
+  assert.equal(source.geometries[1].ranges.find(range => range.id === 'leg--0.56/-1').surfaceIds.length, 3);
+  const names = new Set();
+  let worstPanelGap = 0;
+  for (const [i, { id, body, colliders }] of host.bodies.entries()) {
+    assert.ok(Math.abs(body.mass() - 28) < .001 && Math.abs(body.localCom().y - .35) < .001 && body.isSleeping());
+    const visual = meshFromBatch(host.mesh, i);
+    t.after(() => { visual.geometry.dispose(); visual.material.dispose(); });
+    for (const { name } of colliders) {
+      assert.ok(name.startsWith(`street-collider-${id}/`) && !names.has(name));
+      names.add(name);
+    }
+    for (const x of [-.56, .56]) for (const side of [-1, 1]) {
+      checkContact(visual, colliders, [x, -.15, side * .3], [0, 1, 0], .3, .001, `${id} foot`);
+      checkContact(visual, colliders, [x + Math.sign(x) * .06, -.15, side * .355], [0, 1, 0], .3, .001, `${id} shoe toe`);
+    }
+    for (const [origin, direction, length] of [[[0, -.15, 0], [0, 1, 0], .3], [[.9, .025, 0], [-1, 0, 0], .4],
+      [[0, .615, 1], [0, 0, -1], 2]]) {
+      assert.deepEqual(compareContact(visual, colliders, origin, direction, length), { visual: null, physical: null }, `${id} open space`);
+    }
+    for (const side of [-1, 1]) {
+      const panel = checkContact(visual, colliders, [0, .77, side], [0, 0, -side], 1, .003, `${id} panel`);
+      worstPanelGap = Math.max(worstPanelGap, Math.abs(panel.visual - panel.physical));
+    }
+  }
+  t.diagnostic(`Largest physical-to-visual G12 panel difference ${worstPanelGap.toFixed(6)} m`);
+
+  const { body, colliders } = host.bodies[0], home = body.translation();
+  const probe = host.world.createRigidBody(R.RigidBodyDesc.dynamic().setCcdEnabled(true)
+    .setTranslation(home.x, home.y + .77, home.z + 1.3).setLinvel(0, 0, -4));
+  const bumper = host.world.createCollider(R.ColliderDesc.ball(.23).setMass(65), probe);
+  let touched = false;
+  for (let step = 0; step < 25; step++) {
+    host.world.step();
+    for (const { collider } of colliders) host.world.contactPair(bumper, collider, manifold => { touched ||= manifold.numSolverContacts() > 0; });
+  }
+  const moved = body.translation(), turn = body.rotation();
+  assert.ok(touched && !body.isSleeping() && Math.hypot(moved.x - home.x, moved.z - home.z) > .05);
+  const expected = new Matrix4().compose(new Vector3(moved.x, moved.y, moved.z), new Quaternion(turn.x, turn.y, turn.z, turn.w), new Vector3(1, 1, 1));
+  for (const [level, distance] of [[0, 5], [1, 40]]) {
+    host.frame([moved.x + distance, moved.y, moved.z]);
+    assert.equal(host.mesh.getGeometryIdAt(0), level);
+    verifyInventory();
+    const rendered = new Matrix4(); host.mesh.getMatrixAt(0, rendered);
+    assert.ok(rendered.elements.every((v, k) => Math.abs(v - expected.elements[k]) < .00001));
+  }
+  assert.equal(host.state()[0].phase, 'knocked');
+  host.world.removeRigidBody(probe);
+  const camera = [home.x + 6, home.y + 4, home.z];
+  for (let i = 0; i < 29 * 60; i++) host.frame(camera);
+  assert.equal(host.state()[0].phase, 'knocked');
+  for (let i = 0; i < 160; i++) host.frame(camera);
+  assert.equal(host.state()[0].phase, 'home');
+  assert.deepEqual({ ...body.translation() }, { ...home });
+  assert.ok(body.isSleeping());
+  host.frame([home.x + 150, home.y, home.z]);
+  assert.equal(host.mesh.getVisibleAt(0), false);
+  verifyInventory();
+});
+
+test('G12 comparison render modes also use their own open framework', t => {
+  for (const search of ['?streetRework=baseline', '?facilityCraft=legacy']) {
+    const host = mountStreetContacts('roadblock', undefined, search);
+    t.after(host.dispose);
+    const { colliders } = host.bodies[0], visual = meshFromBatch(host.mesh, 0);
+    t.after(() => { visual.geometry.dispose(); visual.material.dispose(); });
+    assert.ok(colliders.length > 4 && colliders.every(({ name }) => name.startsWith('street-collider-roadblock-0/')));
+    assert.deepEqual(Array.from(host.inventory().errors), []);
+    assert.equal(host.inventory().registrations['street-roadblock-group'], colliders.length * 4);
+    assert.deepEqual(compareContact(visual, colliders, [0, -.15, 0], [0, 1, 0], .3), { visual: null, physical: null }, search);
+    checkContact(visual, colliders, [.56, -.15, .3], [0, 1, 0], .3, .001, `${search} foot`);
+  }
+});
+
+test('main-street lamps, signal posts and bins preserve contact and clearance at their placed headings', t => {
+  const { knockablesV4 } = loadWorldModule('layout-v4.ts');
+  const { PLAYER_RADIUS, PLAYER_HALF_HEIGHT, PLAYER_CENTER_HEIGHT } = loadWorldModule('actor-physics.ts');
+  const cases = {
+    lamp: { mass: 140, com: .55, pass: .52, block: .36, heights: [.035, .48, .64, 1.5] },
+    signal: { mass: 180, com: .6, pass: .53, block: .37, heights: [.035, .5, 1.55] },
+    bin: { mass: 16, com: .3, pass: .66, block: .56, heights: [.015, .50, .81, .94] },
+  };
+  const items = Array.from(knockablesV4()).filter(item => Object.hasOwn(cases, item.kind));
+  const host = mountStreetContacts('knock', items);
+  t.after(host.dispose);
+  assert.equal(items.length, 36);
+  const capsule = new R.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS), cabin = new R.Cuboid(.90, 1.60, .45);
+  const worst = {};
+  for (const [i, item] of items.entries()) {
+    const { body, colliders } = host.bodies[i], config = cases[item.kind];
+    assert.ok(body.isSleeping() && Math.abs(body.mass() - config.mass) < .001 && Math.abs(body.localCom().y - config.com) < .001);
+    assert.equal(host.state()[i].lockedForPeople, item.kind !== 'bin');
+    const visual = meshFromBatch(host.mesh, i);
+    // Offset the rays from the lathe seam after applying the authored heading.
+    const probes = config.heights.map(y => checkContact(visual, colliders, [1, y, .002], [-1, 0, 0], 1.1, .012, `${item.id} y=${y}`));
+    if (item.kind === 'signal') probes.push(checkContact(visual, colliders, [-1, 2.15, .002], [1, 0, 0], 1.1, .016, `${item.id} low signal head`));
+    worst[item.kind] = Math.max(worst[item.kind] ?? 0, ...probes.map(contact => Math.abs(contact.physical - contact.visual)));
+
+    const handles = new Set(colliders.map(member => member.collider.handle));
+    const axis = new Vector3(0, 1, 0), rotation = new Quaternion().setFromAxisAngle(axis, item.yaw);
+    function sweep(origin, movement, shape) {
+      return host.world.castShape(new Vector3(...origin).applyMatrix4(visual.matrixWorld), rotation,
+        new Vector3(...movement).applyQuaternion(rotation), shape, .002, 1, true,
+        undefined, undefined, undefined, undefined, collider => handles.has(collider.handle));
+    }
+    assert.equal(sweep([config.pass, PLAYER_CENTER_HEIGHT, -1.4], [0, 0, 2.8], capsule), null, `${item.id} capsule side passage`);
+    assert.ok(sweep([config.block, PLAYER_CENTER_HEIGHT, -1.4], [0, 0, 2.8], capsule), `${item.id} capsule meets the visible body`);
+    if (item.kind === 'signal' || item.kind === 'lamp') {
+      assert.equal(sweep([0, 1.6, -3.8], [0, 0, 2.5], cabin), null, `${item.id} 3.2 m vehicle envelope under the arm`);
+    }
+    visual.geometry.dispose(); visual.material.dispose();
+  }
+  t.diagnostic(`Largest reachable physical/visual differences by asset ${JSON.stringify(worst)}`);
 });

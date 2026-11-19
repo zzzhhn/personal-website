@@ -26,7 +26,7 @@ import { windUniforms } from './WorldWind';
 import type { WorldContent } from './types';
 import { PICKUP_DISCOVERY_RADIUS } from './pickup-approach';
 import { minePickupApproach } from './mine-pickup-approach';
-import { installMineContacts, MINE_RACK_ROOT, MINE_WEST_RAMP_ROOT, mineRackToolPose, type MineLegacyCollision } from './alpha-mine-contact';
+import { installMineContacts, MINE_RACK_ROOT, mineRackToolPose, mineVeinContactRoot, mineVeinStateContact, type MineLegacyCollision } from './alpha-mine-contact';
 
 const jsonLoader = (loader: FileLoader<unknown>) => { loader.setResponseType('json'); };
 const oreFactor = (id: AlphaFactorId) => ALPHA_FACTORS.find(f => f.id === id)!;
@@ -79,6 +79,7 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
   const rock = useOre(ore,factor.id);
   const activeState=v.hits>=3?'open':v.hits>0?'cracked':'intact';
   const contract=manifest.dynamicAssets.veins.roots[m.id], stateNames=contract.states;
+  const face = useMemo(()=>mineVeinStateContact(root,stateNames[activeState],m.id),[root,stateNames,activeState,m.id]);
   const socket=useMemo(()=>{
     root.updateWorldMatrix(true,true);
     const node=root.getObjectByName(contract.stateImpactSockets[activeState]);
@@ -87,9 +88,6 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
     return mineLocalToWorld([m.socket[0]+local.x,m.socket[1]+local.y,m.socket[2]+local.z]);
   },[root,contract,m,activeState]);
   const oreRest=mineLocalToWorld(m.oreRest);
-  useEffect(() => {
-    for (const [name,node] of Object.entries(stateNames)) { const o=root.getObjectByName(node); if(o) o.visible=name===(v.hits>=3?'open':v.hits>0?'cracked':'intact'); }
-  }, [root,stateNames,v.hits]);
   const depleted = v.hits >= 3, target = depleted ? oreRest : socket;
   useInteractable({ id:`alpha-mine-${m.id}`, position:target, radius:depleted?PICKUP_DISCOVERY_RADIUS:v.revealed?1.3:2.1, kind:'exhibit',
     approach:depleted?minePickupApproach(()=>oreRest):undefined,
@@ -107,8 +105,15 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
     },
   });
   return <group name={`alpha-mine-${m.id}`}>
-    <group position={m.socket}><primitive object={root} /></group>
-    {depleted && !v.collected && <group position={m.oreRest}><primitive object={rock} /></group>}
+    <group position={m.socket}>
+      <primitive object={face.visual} dispose={null} />
+      <RigidBody key={activeState} type="fixed" colliders={false} userData={{solid:true,assetId:'alpha-mine'}}>
+        <TrimeshCollider name={face.id} args={[face.buffers.vertices,face.buffers.indices]} friction={.9} restitution={0}/>
+      </RigidBody>
+    </group>
+    {depleted && !v.collected && <group position={m.oreRest} userData={{worldCollision:'none', collisionReason:'Ore earned by mining uses the existing hand pickup'}}>
+      <primitive object={rock} />
+    </group>}
   </group>;
 }
 
@@ -291,13 +296,17 @@ function MineAssets({ content }: { content: WorldContent }) {
   return <group name="alpha-mine-attraction" position={ALPHA_MINE_ORIGIN}>
     <primitive object={scene.root}/>
     {(['surface','solid'] as const).map(kind=><RigidBody key={kind} name={`alpha-mine-${kind}`} type="fixed" colliders={false} userData={{[kind]:true,assetId:'alpha-mine'}}><TrimeshCollider args={[colliders[kind].vertices,colliders[kind].indices]} friction={.9} restitution={0}/></RigidBody>)}
-    {([[MINE_RACK_ROOT,scene.contacts.rack],[MINE_WEST_RAMP_ROOT,scene.contacts.westRamp]] as const).map(([section,visual])=><group key={section} name={section}>
-      <primitive object={visual} dispose={null}/>
-      {scene.contacts.colliders.filter(part=>part.root===section).map(part=><RigidBody key={part.id} type="fixed" colliders={false} userData={{[part.kind]:true,assetId:'alpha-mine'}}>
-        <TrimeshCollider name={part.id} args={[part.buffers.vertices,part.buffers.indices]} friction={.9} restitution={0}/>
-      </RigidBody>)}
-      {section===MINE_RACK_ROOT && <MineRack rackSource={scene.root} detector={detector} pickaxe={pickaxe}/>}</group>)}
-    {manifest.veins.map((v,i)=><MineVein key={v.id} manifest={manifest} index={i} source={gltfs[1].scene.getObjectByName(v.id)!} ore={ore}/>)}
+    {[...scene.contacts.sections].map(([section,visual])=>{
+      const veinIndex=manifest.veins.findIndex(vein=>mineVeinContactRoot(vein.id)===section), vein=manifest.veins[veinIndex];
+      return <group key={section} name={section}>
+          <primitive object={visual} dispose={null}/>
+          {scene.contacts.colliders.filter(part=>part.root===section).map(part=><RigidBody key={part.id} type="fixed" colliders={false} userData={{[part.kind]:true,assetId:'alpha-mine'}}>
+            <TrimeshCollider name={part.id} args={[part.buffers.vertices,part.buffers.indices]} friction={.9} restitution={0}/>
+          </RigidBody>)}
+          {section===MINE_RACK_ROOT && <MineRack rackSource={scene.root} detector={detector} pickaxe={pickaxe}/>}
+          {vein && <MineVein manifest={manifest} index={veinIndex} source={gltfs[1].scene.getObjectByName(vein.id)!} ore={ore}/>}
+        </group>;
+    })}
     <MineWater basin={manifest.basin}/>
     <PoolBay manifest={manifest} bay={0}/><PoolBay manifest={manifest} bay={1}/>{ALPHA_FACTORS.map((f,i)=><PoolShelf key={f.id} manifest={manifest} index={i} ore={ore}/>)}<WorldMinePool manifest={manifest}/>
     <MineLooseOre source={ore}/><MineEffects/><MineInformation experienceId={experience?.startDate}/>

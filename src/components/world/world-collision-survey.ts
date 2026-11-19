@@ -55,12 +55,13 @@ export async function surveyCollisionSources(scene: Scene, world: World, nodeFor
     }
     let owner: Object3D|null=mesh;
     while(owner && !Object.hasOwn(owner.userData,'worldCollision') && !owner.userData.worldCollisionSources
-          && !owner.userData.worldCollisionInstances)owner=owner.parent;
+          && !owner.userData.worldCollisionInstances && !owner.userData.worldCollisionBatchedInstances)owner=owner.parent;
     const data=owner?.userData;
+    const batchSources=data?.worldCollisionBatchedInstances;
     const row:Record<string,unknown>={path:path(mesh),geometry:id,matrixWorld:mesh.matrixWorld.toArray(),
       submitted:frame.has(mesh)&&(mesh as InstancedMesh).count!==0&&geom.drawRange.count!==0,
       declaration:data?{owner:path(owner!),policy:data.worldCollision,reason:data.worldCollisionReason ?? data.collisionReason,ranges:data.worldCollisionSources,
-        partial:data.worldCollisionPartial===true,surface:data.surfaceId,partitions:data.worldCollisionPartitions}:null};
+        partial:data.worldCollisionPartial===true,surface:data.surfaceId,partitions:data.worldCollisionPartitions,batchGeometries:batchSources?.geometries}:null};
     const instanced=mesh as InstancedMesh,batched=mesh as unknown as BatchedMesh;
     if(instanced.isInstancedMesh){
       const sources=data?.worldCollisionInstances;
@@ -77,7 +78,9 @@ export async function surveyCollisionSources(scene: Scene, world: World, nodeFor
         try{geometryId=batched.getGeometryIdAt(slot);}catch{continue;}
         const range=batched.getGeometryRangeAt(geometryId);
         batched.getMatrixAt(slot,matrix);
-        entries.push({slot,geometryId,start:range?.start,count:range?.count,visible:batched.getVisibleAt(slot),localMatrix:matrix.toArray()});
+        const source=Array.isArray(batchSources?.placements) ? batchSources.placements.find((row: { slot: number })=>row?.slot===slot) : undefined;
+        entries.push({slot,geometryId,start:range?.start,count:range?.count,visible:batched.getVisibleAt(slot),localMatrix:matrix.toArray(),
+          source:source?.id, geometryIds:source?.geometryIds, colliderPrefix:source?.colliderPrefix});
       }
       row.batches=entries;
     }

@@ -13,6 +13,7 @@ import {
   Builder, S, bar, bezier, box, cbox, cyl, lathe, plate, rectPoly, regularPoly, tube, type Surf, type V3,
 } from './WorldStreetGeometry.ts';
 import { finishStreetFacility } from './WorldStreetFacilityCraft.ts';
+import { roadblockMember, roadblockSurface } from './street-roadblock-contact';
 
 export type Lod = { L0: Builder; L1: Builder };
 type Cell = [number, number, number, number];
@@ -213,26 +214,31 @@ export function roadblockGeometry(lod: 0 | 1) {
   B.part('frame');
   for (const x of [-.56, .56]) {
     // Splayed legs (A-frame) joined by a top bracket and a low stretcher.
-    for (const z of [-1, 1]) bar(B, [x, .02, z * spread], [x, legH - .02, z * .05], .028, S.slateDark, hi ? 8 : 4);
-    box(B, [x - .04, legH - .06, -.08], [x + .04, legH, .08], S.slateDark, hi ? .01 : 0);
-    if (hi) bar(B, [x, .32, -spread * .7], [x, .32, spread * .7], .015, S.slateDark, 6);
-    for (const z of [-1, 1]) box(B, [x - .05, 0, z * spread - .06], [x + .05, .035, z * spread + .06], S.rubber, hi ? .008 : 0);
+    for (const z of [-1, 1]) roadblockMember(B, `leg-${x}/${z}`, () => bar(B, [x, .02, z * spread], [x, legH - .02, z * .05], .028, S.slateDark, hi ? 8 : 4));
+    roadblockMember(B, `hinge-${x}`, () => box(B, [x - .04, legH - .06, -.08], [x + .04, legH, .08], S.slateDark, hi ? .01 : 0));
+    if (hi) roadblockMember(B, `brace-${x}`, () => bar(B, [x, .32, -spread * .7], [x, .32, spread * .7], .015, S.slateDark, 6));
+    for (const z of [-1, 1]) roadblockMember(B, `shoe-${x}/${z}`, () => box(B, [x - .05, 0, z * spread - .06], [x + .05, .035, z * spread + .06], S.rubber, hi ? .008 : 0));
   }
   // Boards: front face (-Z) and back face (+Z) carry the stripes on the upper and middle boards.
   const board = (y: number, h: number, side: number) => {
     const z = side * (spread * (1 - (y + h / 2) / legH) + .045);
     const tilt = Math.atan2(spread, legH) * side;
     B.tr([0, y + h / 2, z], [tilt, 0, 0], () => {
-      box(B, [-W / 2, -h / 2, -.012], [W / 2, h / 2, .012], S.creamPaint, hi ? .006 : 0);
+      const id = `panel-${y}/${side}`;
+      roadblockMember(B, id, () => box(B, [-W / 2, -h / 2, -.012], [W / 2, h / 2, .012], S.creamPaint, hi ? .006 : 0));
       // Diagonal orange stripes as raised strips (parallelograms clipped to the board).
       const n = hi ? 5 : 3, step = W / n;
-      for (let i = 0; i < n; i++) {
-        const x0 = -W / 2 + i * step, sw = step * .5;
-        const pts: [number, number][] = [[x0, -h / 2], [x0 + sw, -h / 2], [Math.min(W / 2, x0 + sw + h * .6), h / 2], [Math.min(W / 2, x0 + h * .6), h / 2]];
-        const q = pts.map(p => [Math.max(-W / 2, Math.min(W / 2, p[0])), p[1]] as [number, number]);
-        B.face(q.map(p => [p[0], p[1], side * .0135] as V3), S.orange, [0, 0, side]);
-      }
-      if (hi) for (const x of [-W / 2 + .08, W / 2 - .08]) B.tr([x, 0, side * .016], [Math.PI / 2, 0, 0], () => cyl(B, .028, .028, -.004, .006, S.reflectOrange, 8));
+      roadblockSurface(B, `${id}/paint`, () => {
+        for (let i = 0; i < n; i++) {
+          const x0 = -W / 2 + i * step, sw = step * .5;
+          const pts: [number, number][] = [[x0, -h / 2], [x0 + sw, -h / 2], [Math.min(W / 2, x0 + sw + h * .6), h / 2], [Math.min(W / 2, x0 + h * .6), h / 2]];
+          const q = pts.map(p => [Math.max(-W / 2, Math.min(W / 2, p[0])), p[1]] as [number, number]);
+          B.face(q.map(p => [p[0], p[1], side * .0135] as V3), S.orange, [0, 0, side]);
+        }
+      });
+      if (hi) roadblockSurface(B, `${id}/reflectors`, () => {
+        for (const x of [-W / 2 + .08, W / 2 - .08]) B.tr([x, 0, side * .016], [Math.PI / 2, 0, 0], () => cyl(B, .028, .028, -.004, .006, S.reflectOrange, 8));
+      });
     });
   };
   B.part('boards', false);
