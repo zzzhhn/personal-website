@@ -6,7 +6,7 @@ import { MeshBasicMaterial, MeshStandardMaterial, NoColorSpace, RepeatWrapping, 
 import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import { night } from '../WorldNight';
 import { shadowOnlyRange } from './coaster-shadow-range';
-import { coasterRailFootingShapes, coasterRailFootingSources } from './coaster-rail-contact';
+import { coasterRailContactShapes, coasterRailFootingSources, coasterRailSteelSources, coasterRunningRailSources, mergeRailContactShapes } from './coaster-rail-contact';
 import metalMapUrl from '../../../../docs/world/phase-2-playground/coaster-gate-craft-20261105/directional-hardware-roughness-256.png?url';
 import mineralMapUrl from '../../../../docs/world/phase-2-playground/coaster-gate-craft-20261105/honed-mineral-roughness-256.png?url';
 
@@ -28,8 +28,16 @@ export default function WorldCoasterRailCraft({ geometry, shadow, contactActive 
   const [metalSource, mineralSource] = useTexture([metalMapUrl, mineralMapUrl]);
   const footing = geometry.concrete;
   const footingSources = useMemo(() => coasterRailFootingSources(footing), [footing]);
-  const footingShapes = useMemo(() => contactActive ? coasterRailFootingShapes(footing, footingSources.cells) : [],
+  const footingShapes = useMemo(() => contactActive ? coasterRailContactShapes(footing, footingSources.cells) : [],
     [contactActive, footing, footingSources]);
+  const steel = useMemo(() => Object.fromEntries(['coatedSteel','jointSteel'].map(key =>
+    [key, coasterRailSteelSources(geometry[key])])), [geometry]);
+  const steelShapes = useMemo(() => contactActive ? mergeRailContactShapes(Object.entries(steel).map(([key, source]) =>
+    [geometry[key], source.cells])) : [], [contactActive, geometry, steel]);
+  const running = geometry.runningSteel;
+  const runningSource = useMemo(() => coasterRunningRailSources(running), [running]);
+  const runningShapes = useMemo(() => contactActive ? coasterRailContactShapes(running,runningSource.cells) : [],
+    [contactActive, running, runningSource]);
   const pack = useMemo(() => {
     const maps = [metalSource, mineralSource].map(source => {
       const texture = source.clone();
@@ -80,8 +88,23 @@ export default function WorldCoasterRailCraft({ geometry, shadow, contactActive 
     for (const material of Object.values(pack.materials)) material.envMapIntensity = .85 - .35 * night.value;
   });
   return <group name="coaster-rail-craft" dispose={null}>
-    {Object.entries(geometry).map(([key, shape]) => key === 'concrete' ? null
-      : <mesh key={key} name={`rail-${key}`} geometry={shape} material={pack.materials[key]} receiveShadow />)}
+    <group name="coaster-rail-steel-contact">
+      {Object.entries(steel).map(([key, source]) => <mesh key={key} name={`rail-${key}`} geometry={geometry[key]}
+        material={pack.materials[key]} receiveShadow
+        userData={{ assetId: 'coaster-rail-steel', solid: true, worldCollisionSources: source.ranges }} />)}
+      {steelShapes.map(shape => <RigidBody key={footing.uuid + shape.id} type="fixed" colliders={false} position={shape.at}
+        userData={{ solid: true, assetId: 'coaster-rail-steel' }}>
+        <TrimeshCollider name={shape.id} args={[shape.vertices,shape.indices]} friction={.9} />
+      </RigidBody>)}
+    </group>
+    <group name="coaster-running-rails-contact">
+      <mesh name="rail-runningSteel" geometry={running} material={pack.materials.runningSteel} receiveShadow
+        userData={{ assetId: 'coaster-running-rail', solid: true, worldCollisionSources: runningSource.ranges }} />
+      {runningShapes.map(shape => <RigidBody key={running.uuid + shape.id} type="fixed" colliders={false} position={shape.at}
+        userData={{ solid: true, assetId: 'coaster-running-rail' }}>
+        <TrimeshCollider name={shape.id} args={[shape.vertices,shape.indices]} friction={.9} />
+      </RigidBody>)}
+    </group>
     <group name="coaster-rail-footings-contact">
       <mesh name="rail-concrete" geometry={footing} material={pack.materials.concrete} receiveShadow
         userData={{ assetId: 'coaster-rail-footing', solid: true, worldCollisionSources: footingSources.ranges }} />

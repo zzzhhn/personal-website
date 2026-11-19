@@ -32,10 +32,10 @@ export function packCoasterStructure(structure: CoasterStructure) {
     index: g.index ? attribute(g.index) : null,
     sphere: g.boundingSphere ? { center: g.boundingSphere.center.toArray(), radius: g.boundingSphere.radius } : null,
     box: g.boundingBox ? { min: g.boundingBox.min.toArray(), max: g.boundingBox.max.toArray() } : null,
-    ...(keepContactParts ? { contactParts: g.userData.parts as CoasterRailPart[] } : {}),
+    ...(keepContactParts ? { contactParts: (g.userData.contactParts ?? g.userData.parts) as CoasterRailPart[] } : {}),
   });
   const packet: CoasterStructurePacket = { ...structure, steel: geometry(structure.steel), glow: geometry(structure.glow),
-    railCraft: Object.fromEntries(Object.entries(structure.railCraft ?? {}).map(([role, g]) => [role, geometry(g, role === 'concrete')])),
+    railCraft: Object.fromEntries(Object.entries(structure.railCraft ?? {}).map(([role, g]) => [role, geometry(g, true)])),
     railShadow: structure.railShadow ? geometry(structure.railShadow) : null };
   for (const c of structure.colliders) if (c.hull) buffers.add(c.hull.buffer as ArrayBuffer);
   buffers.add(structure.relief.vertices.buffer as ArrayBuffer);
@@ -52,7 +52,7 @@ export function unpackCoasterStructure(packet: CoasterStructurePacket): CoasterS
     if (p.index) g.setIndex(new BufferAttribute(p.index.array, p.index.itemSize, p.index.normalized));
     if (p.sphere) g.boundingSphere = new Sphere(new Vector3().fromArray(p.sphere.center), p.sphere.radius);
     if (p.box) g.boundingBox = new Box3(new Vector3().fromArray(p.box.min), new Vector3().fromArray(p.box.max));
-    if (p.contactParts) g.userData.parts = p.contactParts;
+    if (p.contactParts) g.userData.contactParts = p.contactParts;
     return g;
   };
   return { ...packet, steel: geometry(packet.steel), glow: geometry(packet.glow),

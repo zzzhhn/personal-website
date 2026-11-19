@@ -38,6 +38,12 @@
 
 脚座材质批次划分为 32 m 接触格。每个格只复制真实脚座、帽和灌浆垫的可见三角形及其索引，格内坐标供 Rapier 使用，保持同一份 GPU 绘制。远档由 72 个旧盒变为 32 格，近档由 124 个旧盒变为 39 格。远档 6,048 个、近档 10,416 个真实三角形，Worker 往返保真。普通营地实测仍有远档网格，物理体为零。严格根为 `coaster-rail-footings-contact`，只在区域接触激活且实际材质组已挂载时要求。
 
-脚座后仍有四个未完整迁移的常驻网格。分别是混合建筑与陆形的钢网格，及运行钢、带涂层钢和接头钢批次。支持架和轨面继续按真实来源分段。
+### 运行轨、钢柱与接头
 
-复跑命令使用现有 Playwright。`WORLD_BROWSER_MODULES=<Playwright 所在目录> node tools/world/playtest/coaster-gate-contact.mjs http://127.0.0.1:<独立端口> after`。旧版用 `before`。Node 定向测试为 `node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/attractions/{coaster-gate-contact,actor-ride-adapter}.test.mjs`。
+候车厅下面原轨道样本漏掉两根运行轨。两档候选已用实际可见索引覆盖站台、出站段以及之后的弯道。站台下两根轨面的物理首击和可见网格相差 2 mm 内。包括其他实际钢构在内的同一 Rapier 站台试验覆盖走上台阶、真实外部障碍挡住回程、移除障碍后继续走。旧方盒在钢柱近、远档的斜角分别提前约 205 和 238 mm，实际圆柱接触释放了这个角。两档工字梁凹槽中间比翼板深入 87.5 mm，物理首击与可见面吻合。
+
+两档运行轨分别采用 43 和 44 个分区、33,504 和 76,160 个三角形。涂层及接头钢按真实索引共用 43 和 45 个分区，完整覆盖 63,320 和 125,052 个三角形。分别由 `coaster-running-rails-contact` 与 `coaster-rail-steel-contact` 检查。含脚座的实际近、远轨道分区各 128 和 118 个，旧方案为 514 和 181 个。离线单独创建这些 Rapier 形状近、远约 33 和 16 ms，旧方案约 5 和 4 ms。空场固定步长的稳定阶段约 0.009 ms。该测量只覆盖轨道物理，实际游玩帧率待浏览器复测。远处仍显示原四个颜色批次及同一个阴影代理，区域休眠时没有轨道物理接触。
+
+原远场 44 项还剩一个混合建筑与地貌网格需要迁移。
+
+复跑命令使用现有 Playwright。`WORLD_BROWSER_MODULES=<Playwright 所在目录> node tools/world/playtest/coaster-gate-contact.mjs http://127.0.0.1:<独立端口> after`。旧版用 `before`。Node 定向测试为 `node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/attractions/{coaster-gate-contact,actor-ride-adapter,coaster-station-contact,coaster-rail-contact,coaster-collision-review}.test.mjs`。

@@ -80,6 +80,7 @@ export interface CoasterCollider {
   gatePortalFallback?: true;
   stationCraftFallback?: true;
   railFootingFallback?: true;
+  railSupportFallback?: true;
 }
 export type CoasterStructureScope = 'legacy' | 'short' | 'full';
 export function createCoasterStructure(detailed: boolean, scope: CoasterStructureScope = 'full', craftedArchitecture = COASTER_ARCHITECTURE_CRAFT, craftedRail = COASTER_RAIL_CRAFT) {
@@ -117,7 +118,7 @@ export function createCoasterStructure(detailed: boolean, scope: CoasterStructur
       else if (detailed && radius >= .3) steel.parts.push(createSupportMemberDetail(segment));
       else steel.beam(tuple(from),tuple(to),radius,radius<.2?P.rail:P.steel,8);
       const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()),e=new Euler().setFromQuaternion(q);
-      colliders.push({position:tuple(from.clone().add(to).multiplyScalar(.5)),half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z]});
+      colliders.push({position:tuple(from.clone().add(to).multiplyScalar(.5)),half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z],railSupportFallback:true});
     }
     for (const p of [a,b]) {
       const base=coasterSupportBase(p.x,p.z);

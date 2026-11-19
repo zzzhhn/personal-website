@@ -3,6 +3,7 @@ import { coasterRailSpans, coasterSpineProfile, COASTER_STRUCTURE_SAMPLE, inCoas
 import { thrillFrame } from './coaster-thrill-frame.ts';
 import { THRILL_LENGTH } from './coaster-thrill-layout.ts';
 import { coasterSupportBase, thrillSupports, type ThrillBeam } from './coaster-thrill-supports.ts';
+import { coasterRailContactParts } from './coaster-rail-contact.ts';
 
 type Surface = 'runningSteel' | 'coatedSteel' | 'jointSteel' | 'concrete';
 type Point2 = readonly [number, number];
@@ -355,6 +356,7 @@ export function createCoasterRailVisualCraft(detailed: boolean): Record<string, 
   }
   return Object.fromEntries(surfaces.map(key => {
     const g = batches[key].finish(key); g.userData.sweepSimplification = simplified.report; g.userData.sweepRingCount = rings.length;
+    if (key !== 'concrete') g.userData.contactParts = coasterRailContactParts(g);
     g.userData.localSpineRecess = { bands: spliceCentres.length, sideInsetMetres: .008, coverOuterInsetMetres: .001, topBottomUnchanged: true };
     return [key, g];
   }));

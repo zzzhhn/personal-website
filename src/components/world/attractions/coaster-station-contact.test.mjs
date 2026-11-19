@@ -13,6 +13,7 @@ import { COASTER_BOARDING, COASTER_TREAD_COLLIDER, advanceCoasterTransition,
   captureCoasterStart, createCoasterTransition } from './coaster-transition.ts';
 import { coasterRidePose, coasterWorld } from './coaster-track.ts';
 import { rideFootRouteClear } from '../rides/ride-clearance.ts';
+import { coasterRailContactShapes, coasterRailSteelSources, coasterRunningRailSources, mergeRailContactShapes } from './coaster-rail-contact.ts';
 
 const { scene: source } = await readWorldCraftGltf(['docs/world/phase-2-playground/coaster-station-craft-20261105/station.glb']);
 const origin = coasterWorld([0,0,0]);
@@ -82,6 +83,15 @@ test('published station LODs retain their tread heights, contact footings, and d
 
 test('the real stair shape keeps the walking aisle and guards an actual blocker on egress', t => {
   const { world, nodes } = station(t);
+  const rail = createCoasterStructure(true);
+  const { runningSteel, coatedSteel, jointSteel } = rail.railCraft;
+  const running = coasterRailContactShapes(runningSteel,coasterRunningRailSources(runningSteel).cells);
+  const steel = mergeRailContactShapes([coatedSteel,jointSteel].map(g => [g,coasterRailSteelSources(g).cells]));
+  for (const cell of [...running,...steel]) {
+    world.createCollider(R.ColliderDesc.trimesh(cell.vertices,cell.indices).setTranslation(...cell.at));
+  }
+  world.step();
+  t.after(() => [rail.steel,rail.glow,rail.railShadow,...Object.values(rail.railCraft)].forEach(g => g?.dispose()));
   const from = [55.12766,1.078824,-152.43985];
   const pose = coasterRidePose(0), transition = createCoasterTransition(from,0,pose);
   captureCoasterStart(transition,from,0);

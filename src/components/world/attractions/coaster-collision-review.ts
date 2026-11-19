@@ -17,5 +17,7 @@ export function coasterCollisionReviewRoots(scene: Object3D): string[] {
   if (enabled && attraction.getObjectByName('coaster-gate-craft-leaf')) roots.push('coaster-gate-leaves');
   if (state.active && !state.occupied && attraction.getObjectByName('coaster-train-craft')) roots.push('coaster-train-craft');
   if (architecture && attraction.getObjectByName('coaster-rail-footings-contact')) roots.push('coaster-rail-footings-contact');
+  if (architecture && attraction.getObjectByName('coaster-running-rails-contact')) roots.push('coaster-running-rails-contact');
+  if (architecture && attraction.getObjectByName('coaster-rail-steel-contact')) roots.push('coaster-rail-steel-contact');
   return roots;
 }

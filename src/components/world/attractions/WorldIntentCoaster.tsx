@@ -77,8 +77,11 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
       userData={{ worldCollision: 'none', worldCollisionReason: 'Emissive trim and station light lenses supported by separate structures' }}>
       <meshBasicMaterial vertexColors toneMapped={false} />
     </mesh>
-    {structure.railShadow && <Suspense fallback={mountContacts ? <CoasterArchitectureFallback origin={[0,0,0]}
-      colliders={structure.colliders.filter(c => c.railFootingFallback)} assetId="coaster-rail-footing" /> : null}>
+    {structure.railShadow && <Suspense fallback={mountContacts ? <>
+      <CoasterArchitectureFallback origin={[0,0,0]} colliders={structure.colliders.filter(c => c.railFootingFallback || c.railSupportFallback)}
+        assetId="coaster-rail-support" />
+      <CoasterTrackFallback key={String(renderedNear)} track={structure.track} />
+    </> : null}>
       <WorldCoasterRailCraft geometry={structure.railCraft} shadow={structure.railShadow} contactActive={mountContacts} />
     </Suspense>}
     {COASTER_ARCHITECTURE_CRAFT && <WorldCoasterStationCraft detailed={renderedNear} contactActive={mountContacts}
@@ -91,10 +94,8 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
     {mountContacts && <>
       {/* LODs have different support counts. Never reuse an index-keyed collider
           for a different solid while its Rapier hook still owns the old shape. */}
-      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} railFootings={!!structure.railShadow} />
-      <RigidBody key={`track-${renderedNear}`} type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-track-sample' }}>
-        <TrimeshCollider args={[structure.track.vertices, structure.track.indices]} friction={.9} />
-      </RigidBody>
+      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} craftedRails={!!structure.railShadow} />
+      {!structure.railShadow && <CoasterTrackFallback key={String(renderedNear)} track={structure.track} />}
       <RigidBody type="fixed" colliders={false} userData={{ surface: true, solid: true, assetId: 'coaster-relief' }}>
         <TrimeshCollider name="coaster-relief-surface" args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
       </RigidBody>
@@ -102,6 +103,12 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
   </group><WorldCoasterVegetation active={enabled} /></>;
 }
 export default memo(WorldIntentCoaster);
+
+function CoasterTrackFallback({ track }: { track: ReturnType<typeof createCoasterStructure>['track'] }) {
+  return <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-track-sample' }}>
+    <TrimeshCollider name="coaster-track-sample" args={[track.vertices,track.indices]} friction={.9} />
+  </RigidBody>;
+}
 
 function CoasterGatePortal({ active, colliders }: { active: boolean; colliders: CoasterCollider[] }) {
   const origin = coasterWorld([0, 0, COASTER_GATE_Z]);
@@ -212,10 +219,10 @@ function CoasterTrain({ active }: { active: boolean }) {
   </group>;
 }
 
-function CoasterCollisions({ colliders, railFootings }: { colliders: CoasterCollider[]; railFootings: boolean }) {
+function CoasterCollisions({ colliders, craftedRails }: { colliders: CoasterCollider[]; craftedRails: boolean }) {
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} name={surface?'coaster-station-surfaces':'coaster-station-solids'} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
-      {colliders.filter(c => !!c.surface === surface && !(railFootings && c.railFootingFallback)
+      {colliders.filter(c => !!c.surface === surface && !(craftedRails && (c.railFootingFallback || c.railSupportFallback))
         && !(COASTER_ARCHITECTURE_CRAFT && (c.gatePortalFallback || c.stationCraftFallback))).map((c, i) => c.hull
         ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
         : <CuboidCollider key={i} name={c.boardingSupport ? COASTER_TREAD_COLLIDER : undefined} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
