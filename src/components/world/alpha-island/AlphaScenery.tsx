@@ -23,12 +23,6 @@ function Craft({build,name,position=[0,0,0]}:{build:()=>{finish:AlphaFinish;geom
 }
 export function AlphaLantern({position=[0,0,0],scale=1,rootRef}:{position?:Vec3;scale?:number;rootRef?:React.RefObject<Group|null>}){return <group ref={rootRef} position={position} scale={scale}><Craft build={alphaLanternGeometry} name="alpha-paper-lantern"/></group>;}
 function treeRope(){const b=new AlphaBuilder();b.beam('rope',[-.7,3.2,1.3],[-.7,1.2,1.3],.028);b.cyl('darkwood',[-.7,1.2,1.3],.075,.25);return b.finish();}
-function windGate(){const b=new AlphaBuilder();for(const x of [-1,1]){
- // Extend the same stone foot into the actual sloping triangles. Keep its top,
- // post and crossbar together, rather than lowering only an invisible target.
- let bottom=0;for(let iz=0;iz<=4;iz++)for(let ix=0;ix<=4;ix++)bottom=Math.min(bottom,alphaHeight(16+x-.3+ix*.15,-44-.325+iz*.1625)-ALPHA_WIND_GATE_Y-.08);
- b.box('stone',[x,(bottom+.32)/2,0],[.6,.32-bottom,.65],.07);b.beam('wood',[x,.2,0],[x,1.5,0],.16);
-}b.beam('metal',[-1.1,1.05,0],[1.1,1.05,0],.065);for(let i=0;i<6;i++)b.box('wood',[-.8+i*.32,1.2,0],[.2,.8,.12]);return b.finish();}
 function plateauRocks(){const b=new AlphaBuilder();for(let i=0;i<120;i++){const a=i*2.399,r=27+(i%17)*3.3,x=Math.cos(a)*r,z=Math.sin(a)*r*1.2,y=alphaHeight(x,z);if(y<-.8||alphaPathDistance(x,z)<4.5)continue;const g=new SphereGeometry(1,10,7);const at=g.getAttribute('position');for(let k=0;k<at.count;k++){const v=new Vector3().fromBufferAttribute(at,k);v.multiplyScalar(1+.12*Math.sin(v.y*9+v.x*7+i));at.setXYZ(k,v.x,v.y,v.z);}g.computeVertexNormals();b.add(g,'stone',[x,y-.28,z],new Quaternion().setFromAxisAngle(new Vector3(0,1,0),i*1.7),[1.3+(i%4)*.4,.9+(i%3)*.35,1.3]);}return b.finish();}
 export function AlphaSign({position,text,width=3.3,height=1.35,nightLegible=true}:{position:Vec3;text:string;width?:number;height?:number;nightLegible?:boolean}){
  const material=useRef<MeshStandardMaterial>(null),textures=useMemo(()=>{
@@ -45,7 +39,7 @@ export default function AlphaScenery(){return <group name="alpha-craft-assemblie
  <AlphaVisitorWayfinding/><LodgeRamp/><BellMechanism/><WindHandle/><SandMiniature/><TrailLamps/>
  <AlphaPathFence/><BoulderField/>
  <AlphaGrammarTree/><Craft name="alpha-grammar-tree-pull-rope" build={treeRope} position={ALPHA_STATIONS.tree}/>
- <Craft name="alpha-wind-gate" build={windGate} position={[16,ALPHA_WIND_GATE_Y,-44]}/>
+ <AlphaStationStructure station="wind"/>
  <CairnField/>
  <AlphaStationStructure station="rack"/>
  <AlphaSign position={alphaTrailSignPosition(-68.6,-36.6)} width={2.4} height={1.04} nightLegible text="一切，从一个想法开始。"/>

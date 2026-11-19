@@ -2,12 +2,13 @@ import { useMemo } from 'react';
 import { RigidBody, RoundCuboidCollider } from '@react-three/rapier';
 import { useOwnedWorldVisual } from '../useOwnedWorldVisual';
 import { alphaMaterial } from './alpha-materials';
-import { createAlphaLodge, createAlphaRack } from './alpha-station-structures';
-import { ALPHA_STATIONS } from './alpha-layout';
+import { createAlphaLodge, createAlphaRack, createAlphaWindGate } from './alpha-station-structures';
+import { ALPHA_STATIONS, ALPHA_WIND_GATE_Y } from './alpha-layout';
 import type { Vec3 } from '../types';
 
 const stations = {
   lodge: { name: 'alpha-dock-lodge', position: ALPHA_STATIONS.lodge, build: createAlphaLodge },
+  wind: { name: 'alpha-wind-gate', position: [16,ALPHA_WIND_GATE_Y,-44] as Vec3, build: createAlphaWindGate },
   rack: { name: 'alpha-lantern-rack', position: [-8,83,42] as Vec3, build: createAlphaRack },
 };
 

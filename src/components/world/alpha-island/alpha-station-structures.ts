@@ -1,7 +1,7 @@
 import { BufferGeometry, Float32BufferAttribute, Quaternion, Uint32BufferAttribute, Vector3 } from 'three';
 import type { Vec3 } from '../types';
 import { AlphaStructureBuilder } from './alpha-structure-builder';
-import { ALPHA_STATIONS } from './alpha-layout';
+import { ALPHA_STATIONS, ALPHA_WIND_GATE_Y } from './alpha-layout';
 import { alphaGroundHeight } from './alpha-terrain';
 import { lodgeFoundation, lodgeRamp } from './alpha-lodge-layout';
 
@@ -128,4 +128,26 @@ export function createLodgeRamp() {
   geometry.setAttribute('alphaEnd',new Float32BufferAttribute(new Float32Array(points.length/3),1));
   geometry.setIndex(new Uint32BufferAttribute(indices,1)); geometry.computeVertexNormals();
   return geometry;
+}
+
+/** Planted feet, two posts, one through-axle and six slats share the original
+ * authored rounded boxes. Gaps between the slats remain physically open. */
+export function createAlphaWindGate() {
+  const b = new AlphaStructureBuilder('alpha-wind-gate');
+  for (const x of [-1, 1]) {
+    let bottom = 0;
+    for (let iz = 0; iz <= 4; iz++) for (let ix = 0; ix <= 4; ix++) {
+      const y = alphaGroundHeight(16 + x - .3 + ix * .15, -44 - .325 + iz * .1625);
+      bottom = Math.min(bottom, y - ALPHA_WIND_GATE_Y - .08);
+    }
+    b.select('foot', 'enclosure');
+    b.box('stone', [x,(bottom+.32)/2,0], [.6,.32-bottom,.65], .07);
+    b.select('post', 'enclosure');
+    b.beam('wood', [x,.2,0], [x,1.5,0], .16);
+  }
+  b.select('axle', 'enclosure');
+  b.beam('metal', [-1.1,1.05,0], [1.1,1.05,0], .065);
+  b.select('slat', 'enclosure');
+  for (let i = 0; i < 6; i++) b.box('wood', [-.8+i*.32,1.2,0], [.2,.8,.12]);
+  return b.finish();
 }

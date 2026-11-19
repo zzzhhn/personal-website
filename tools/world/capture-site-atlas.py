@@ -22,7 +22,7 @@ VIEWPORT = {"width": 960, "height": 540}
 DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-craft",
              "camp-craft-C05", "camp-craft-C06", "camp-craft-C07", "camp-tree-craft-G17-L0_wood",
              "C02_stone_batch", "camp-workshop-C08", "camp-C14-contact", "camp-L01-contact",
-             "alpha-wind-flag-stands", "world-town-assets", "world-street", "street-trees-group", "street-construction-sign-family", "street-foundation-slabs-group", "world-districts-v4", "world-paving-v4",
+             "alpha-wind-flag-stands", "alpha-wind-gate", "world-town-assets", "world-street", "street-trees-group", "street-construction-sign-family", "street-foundation-slabs-group", "world-districts-v4", "world-paving-v4",
              "G28-entry", "coaster-vegetation", "brain-quarry-approach-contact", "alpha-mine-attraction", "alpha-mine-backtest-basin", "alpha-mine-entry-tool-rack", "alpha-mine-west-ramp",
              "alpha-mine-east-ramp", "alpha-mine-middle-bridge", "alpha-mine-north-ravine-bridge",
              *["alpha-mine-gallery-west-" + part for part in ("entry", "rise", "link")],
@@ -287,6 +287,24 @@ def assemble(root):
     return atlas, {**first, "dirty": any(m["dirty"] for m, _ in parts), "sites": records}
 
 
+def save_atlas(out, shards, atlas, manifest):
+    # Publish only a fully checked capture, before the browser's shutdown handshake.
+    manifest["capturedAt"] = datetime.now(timezone.utc).isoformat()
+    out.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=out) as tmp:
+        directory = Path(tmp)
+        name = "rows.png" if shards > 1 else "atlas.jpg"
+        if name.endswith(".png"):
+            atlas.save(directory / name)
+        else:
+            atlas.save(directory / name, quality=91, subsampling=0)
+        manifest["atlasSha256"] = hashlib.sha256((directory / name).read_bytes()).hexdigest()
+        (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        for file in (name, "manifest.json"):
+            os.replace(directory / file, out / file)
+    print(out / name, flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--build-dir", type=Path, default=ROOT / "dist",
@@ -303,31 +321,20 @@ def main():
     args = parser.parse_args()
     if args.assemble:
         atlas, manifest = assemble(args.assemble)
+        save_atlas(args.out, args.shards, atlas, manifest)
     else:
         with sync_playwright() as p:
             browser = (p.chromium.connect_over_cdp(args.cdp) if args.cdp
                        else p.chromium.launch(channel=args.channel, headless=True))
             try:
                 atlas, manifest = capture(browser, args.base, args.shard, args.shards, args.out / "diagnostics", args.survey_site, args.build_dir)
+                manifest["checkout"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+                manifest["dirty"] = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT))
+                save_atlas(args.out, args.shards, atlas, manifest)
             finally:
                 if not args.cdp:
                     browser.close()
-        manifest["checkout"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-        manifest["dirty"] = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT))
-    manifest["capturedAt"] = datetime.now(timezone.utc).isoformat()
-    args.out.mkdir(parents=True, exist_ok=True)
-    with TemporaryDirectory(dir=args.out) as tmp:
-        directory = Path(tmp)
-        name = "rows.png" if args.shards > 1 else "atlas.jpg"
-        if name.endswith(".png"):
-            atlas.save(directory / name)
-        else:
-            atlas.save(directory / name, quality=91, subsampling=0)
-        manifest["atlasSha256"] = hashlib.sha256((directory / name).read_bytes()).hexdigest()
-        (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-        for file in (name, "manifest.json"):
-            os.replace(directory / file, args.out / file)
-    print(args.out / name)
+
 
 
 if __name__ == "__main__":
