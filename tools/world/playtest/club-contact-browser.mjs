@@ -46,6 +46,10 @@ try{
   await place([31,2.2,41.5],'foot of club stage ramp');
   const rampStart=await actor(), rampTop=await walk(31,52.8,.72);
   assert.ok(rampTop.grounded&&rampTop.player[1]>rampStart.player[1]+.75);
+  stage='stage controller collision';
+  const controller=await page.evaluate(()=>window.__worldDebug.castPlayer([34.1,3.84,55.3],[32.9,3.84,55.3]));
+  assert.ok(controller.hit&&controller.other.name==='djc-solid-same-mesh',JSON.stringify(controller));
+  stage='stage descent';
   const rampDown=await walk(31,41.8,.72);
   assert.ok(rampDown.grounded&&rampDown.player[1]<rampTop.player[1]-.66);
 
@@ -68,7 +72,7 @@ try{
   } finally { await bot.release(); }
   const outside=await actor();
   assert.deepEqual(errors,[]);
-  console.log(JSON.stringify({browser:browser.version(),sha,rampStart,rampTop,rampDown,bed,seated,inside,outside,fixtures:bot.fixtureCalls,events:bot.events,analytics}));
+  console.log(JSON.stringify({browser:browser.version(),sha,rampStart,rampTop,controller,rampDown,bed,seated,inside,outside,fixtures:bot.fixtureCalls,events:bot.events,analytics}));
 }catch(error){
   const player=await qa?.evaluate(()=>window.__worldDebug?.snapshot()).then(s=>s?.player).catch(()=>null);
   console.error(JSON.stringify({stage,player,error:String(error),errors,analytics}));throw error;

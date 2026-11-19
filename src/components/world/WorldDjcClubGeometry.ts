@@ -145,10 +145,11 @@ export function buildDjcClubGeometry({
     if (source) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
     add(kind, g, color, 0, source?'solid':undefined);
   };
-  const cylinder = (kind: ClubBatch, p: V3, top: number, bottom: number, height: number, color: string, segments = 12, rotateZ = 0,collide=false) => {
+  const cylinder = (kind: ClubBatch, p: V3, top: number, bottom: number, height: number, color: string, segments = 12, rotateZ = 0,collide:boolean|'solid'=false) => {
     const g = new CylinderGeometry(top,bottom,height,segments); g.rotateZ(rotateZ); g.translate(p[0],p[1]+yOffset,p[2]);
-    if(collide&&!separateFixtureContact()){const raw=g.toNonIndexed(),v=raw.getAttribute('position'),n=raw.getAttribute('normal');for(let i=0;i<v.count;i+=3){const a:V3=[v.getX(i),v.getY(i),v.getZ(i)],b:V3=[v.getX(i+1),v.getY(i+1),v.getZ(i+1)],c:V3=[v.getX(i+2),v.getY(i+2),v.getZ(i+2)];(n.getY(i)>.7?surface:solid).triangle(a,b,c);}raw.dispose();}
-    add(kind,g,color);
+    const source=collide&&!separateFixtureContact();
+    if(source){const raw=g.toNonIndexed(),v=raw.getAttribute('position'),n=raw.getAttribute('normal');for(let i=0;i<v.count;i+=3){const a:V3=[v.getX(i),v.getY(i),v.getZ(i)],b:V3=[v.getX(i+1),v.getY(i+1),v.getZ(i+1)],c:V3=[v.getX(i+2),v.getY(i+2),v.getZ(i+2)];(collide!=='solid'&&n.getY(i)>.7?surface:solid).triangle(a,b,c);}raw.dispose();}
+    add(kind,g,color,0,source&&collide==='solid'?'solid':undefined);
   };
   const sphere = (kind: ClubBatch, p: V3, radius: number, color: string, scale: V3 = [1,1,1]) => {
     const g = new SphereGeometry(radius,12,8); g.scale(...scale); g.translate(p[0],p[1]+yOffset,p[2]); add(kind,g,color);
@@ -463,10 +464,10 @@ export function buildDjcClubGeometry({
   for(let z=52.58;z<57.48;z+=.16) box('wood',[33.47,2.26,z],[.08,.72,.105],C.wood);
   collectingFurniture = false;
   // The face points +X. Controller long axis is world Z, its operator stands to the west.
-  box('metal',[32.7,2.79,55],[1.04,.13,3.68],C.dark);
+  box('metal',[32.7,2.79,55],[1.04,.13,3.68],C.dark,0,true);
   for(const z of [53.85,56.15]) {
-    cylinder('metal',[32.72,2.88,z],.42,.43,.075,'#a3aaa4',32);
-    cylinder('metal',[32.72,2.924,z],.337,.337,.018,'#333936',32);
+    cylinder('metal',[32.72,2.88,z],.42,.43,.075,'#a3aaa4',32,0,'solid');
+    cylinder('metal',[32.72,2.924,z],.337,.337,.018,'#333936',32,0,'solid');
     cylinder('metal',[32.72,2.938,z],.09,.09,.012,C.bronze,20);
     const g=new TorusGeometry(.35,.012,4,40); g.rotateX(Math.PI/2); g.translate(32.72,2.94+yOffset,z); add('metal',g,'#bec3b3');
     box('cyan',[32.94,2.87,z+.46],[.25,.017,.24],C.cyan);

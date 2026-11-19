@@ -77,3 +77,5 @@ node tools/world/djc-quality-pilot/build-bar-contact.mjs
 node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/club-north-bar-contact.test.mjs
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/club-north-bar-browser.mjs http://127.0.0.1:4358
 ```
+
+DJ 控制台托架和两个转盘的可见面原先全部漏掉。结构形状现直接使用原绘制几何，四条侧面和上表面探针误差小于 1 mm，西侧操作通道保留。Chrome 运行时以角色胶囊从东侧命中托架，并复跑舞台上下坡、圆床 E 坐站和泳池离水。控制台新增 524 个同源三角形，结构原材质合批现共 27,846 个已核实有真实碰撞的三角形。本轮未重新采集正式设备的帧率。

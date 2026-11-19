@@ -93,6 +93,7 @@ const sceneDependencies = {
   './attraction-camera':await import('./attraction-camera.ts'),
   '../actor-physics':await import('../actor-physics.ts'),
   '../region-passage':await import('../region-passage.ts'),
+  '../region-load-failure':await import('../region-load-failure.ts'),
   '../rides/ride-clearance':await import('../rides/ride-clearance.ts'),
 };
 const loadScene = compileWorldComponent(new URL('./WorldIntentCoaster.tsx', import.meta.url));

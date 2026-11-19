@@ -50,6 +50,21 @@ test('provenance on the approved material batches maps physical source triangles
   t.diagnostic(`${verified} verified physical triangles across the original material draws`);
 });
 
+test('the separate DJ controller plate and platter tops own their visible contact, leaving the operator side open',t=>{
+  const w=worldWith(Object.values(scene.colliders)), material=new MeshBasicMaterial({side:DoubleSide}), draw=new Mesh(scene.batches.metal,material);
+  t.after(()=>{w.free();material.dispose();});
+  for(const [origin,direction,far] of [
+    [[34,2.99,55.3],[-1,0,0],1.5],
+    [[32.72,3.4,54.42],[0,-1,0],.5],
+    [[32.73,3.4,53.63],[0,-1,0],.5],
+    [[32.73,3.4,55.93],[0,-1,0],.5],
+  ]){
+    const seen=visible(draw,origin,direction,far),actual=physical(w,origin,direction,far);
+    assert.ok(seen!==undefined&&actual!==undefined&&Math.abs(actual-seen)<.001,`${origin}: seen ${seen}, hit ${actual}`);
+  }
+  assert.equal(physical(w,[31.05,2.85,54.9],[1,0,0],.65),undefined);
+});
+
 test('visible and physical mattress rims agree at all four beds while the timber entrance still reaches the rim',async t=>{
   const {scene:asset}=await readWorldCraftGltf(['public/assets/world/club/daybed/daybed-ao-v1.glb']);
   const material=new MeshBasicMaterial({side:DoubleSide}), mattress=asset.getObjectByName('Daybed_AO_working_geometry003');

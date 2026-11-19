@@ -18,8 +18,10 @@
 
 余下两种静态碰撞体共有 5,585 个承托面三角形和 29,783 个阻挡面三角形，分别替代旧静态代理余下的 4,663 和 12,725 个三角形。发布版仍显示原 76,856 个静态三角形，六个残余材质也保持原来的批次。旧 `colliders.json` 保留为对照测试输入，矿区运行时从同一份 GLB 获取画面和碰撞来源。
 
-公开矿区出生点用 WASD 步行，经工具架前、低层前场、西坡、中层木桥和东坡到上层。生产复核版的角色中心从约 1.96 米逐级升至 4.96 和 7.96 米，19 个记录点均落地。实键 E 完成取工具、探测、三次挥镐和拾矿。返回前场后用 F 暂放矿石、E 取回并在 A 位投矿，唯一回测请求由浏览器测试响应，现场正常显示结果。
+公开矿区出生点用 WASD 步行，经入口围栏的中央开口、工具架前、西坡、中层木桥和东坡到上层。生产复核版的角色中心从约 1.96 米逐级升至 4.96 和 7.96 米，19 个记录点均落地。围栏东翼从局部 X 4.1 米起挡住直接入场。两版均从开口入场后沿两块牌后方步行，按 E 打开同一张 WorldQuant BRAIN 经历卡。昼夜取证中的四个新旧牌体碰撞形状和倾角相等，立柱世界位置浮点偏差小于 1 微米。
+
+实键 E 完成取工具、探测、三次挥镐和拾矿。返回前场后用 F 暂放矿石、E 取回并在 A 位投矿，唯一回测请求由浏览器测试响应，现场正常显示结果。
 
 昼夜固定机位中，生产前版矿区各有 12 个上镜、16 个挂载未分类项，生产复核版均为零。主根 `alpha-mine-attraction` 核实 6 个有效碰撞注册，连同 12 个已验证子根共 38 个，矿区盘点零错误。两组相机完全一致，8 位图像各通道平均绝对差低于 0.06，逐帧复核保持两块标牌、木桥和岩体轮廓。新版覆盖范围以 `alpha-mine-attraction` 为界。外侧 `brain-quarry-approach` 属独立山地入口，和此前测过的岛地形接缝一起保留在原范围。
 
-18 项定向回归、原始作者来源提取复算、TypeScript 与独立生产构建通过。取证为 `mine-final-contact-tests.log`、`mine-final-contact-hike.json`、`mine-final-contact-play.json`、`mine-final-contact-frames.json` 及同机位昼夜 PNG。
+18 项接触回归与全部 103 项矿区相关回归、原始作者来源提取复算、TypeScript 与独立生产构建均通过。取证为 `mine-final-contact-tests.log`、`mine-final-contact-hike.json`、`mine-final-contact-signage.json`、`mine-final-contact-sign-dimensions.json`、`mine-final-contact-play.json`、`mine-final-contact-frames.json` 及同机位昼夜 PNG。

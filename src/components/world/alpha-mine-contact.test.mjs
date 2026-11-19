@@ -351,7 +351,7 @@ test('all six installed residual batches disclose exact supports, solids and aut
   }finally{cooked.dispose();}
 });
 
-test('different visible levels and the cart wheel use the measured rock, ground and iron',t=>{
+test('the occupied quarry levels, cart wheel and entrance fence match the visible profiles',t=>{
   const w=new R.World({x:0,y:0,z:0}), before=quarryWorld(), directed=new Raycaster(), rr=result.base;
   for(const [kind,buffers] of Object.entries(rr)) mount(w,kind,buffers);
   w.step();
@@ -384,7 +384,18 @@ test('different visible levels and the cart wheel use the measured rock, ground 
       assert.ok(Math.abs(height-sample.expected)<.45,JSON.stringify({sample,height}));
       moved.push({role:sample.name,height});
     }
-    t.diagnostic(JSON.stringify({wheelOld:oldHit?.timeOfImpact??null,wheelNew:newHit.timeOfImpact,moved,triangles:{
+    const entrance=[];
+    for(const [x,y,blocked] of [[5.45,.99,true],[5.45,.73,false],[0,.99,false]]) {
+      const from=new Vector3(x,y,.49),dir=new Vector3(0,0,-1);
+      directed.set(from,dir);directed.far=.9;
+      const visible=nextSolid(), ray=new R.Ray(from,dir);
+      const active=w.castRay(ray,.9,false),previous=before.castRay(ray,.9,false);
+      assert.equal(Boolean(active),blocked);
+      assert.equal(Boolean(visible),blocked);
+      if(active)assert.ok(Math.abs(visible.distance-active.timeOfImpact)<.00002);
+      entrance.push({x,y,old:previous?.timeOfImpact??null,new:active?.timeOfImpact??null});
+    }
+    t.diagnostic(JSON.stringify({wheelOld:oldHit?.timeOfImpact??null,wheelNew:newHit.timeOfImpact,moved,entrance,triangles:{
       support:rr.surface.indices.length/3,solid:rr.solid.indices.length/3}}));
   }finally{w.free();before.free();fitted.dispose();}
 });
