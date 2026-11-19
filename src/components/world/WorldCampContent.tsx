@@ -8,7 +8,7 @@ import { useWorldStore } from './store';
 import { night } from './WorldNight';
 import { useInteractable } from './WorldInteract';
 import { useGreyboxClaim } from './WorldVisualClaims';
-import { campColliderRecords } from './WorldCampPhysics';
+import { CampColliders, campColliderKey, campColliderRecords, type LocalShape } from './WorldCampPhysics';
 import { CAMP_CENTER } from './layout';
 import type { Vec3 } from './types';
 import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, placementMatrix, poolTexture, useContentGltfs, vertexColourMaterial, type NodePart } from './WorldCampContentAssets';
@@ -103,23 +103,22 @@ function CampContent() {
       return geometry;
     };
     const staticGeometry = merge([
-      ...(!CAMP_BATCH ? [...byName('C11', 'C11_body').map(p => bake(p, m11)), ...postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m)))] : []),
+      ...(!CAMP_BATCH ? byName('C11', 'C11_body').map(p => bake(p, m11)) : []),
       ...(legacy ? [...byName('C14', 'C14_stove').map(p => bake(p, m14)), ...byName('C16', 'C16_frame').map(p => bake(p, lanternM))] : []),
     ]);
     const glowGeometry = merge([
       ...(legacy ? byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)) : []),
-      ...(!CAMP_BATCH ? postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false))) : []),
     ]);
     // Separate visual fallbacks let each streamed family fail independently.
     const toolWall = CAMP_BATCH ? merge(byName('C11', 'C11_body').map(p => bake(p, new Matrix4()))) : null;
-    const postBody = CAMP_BATCH ? merge(postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m)))) : null;
-    const postGlow = CAMP_BATCH ? merge(postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false)))) : null;
+    const postBody = merge(byName('L01', 'L01_post').map(p => bake(p, new Matrix4())))!;
+    const postGlow = merge(byName('L01', 'L01_lens').map(p => glowBake(p, new Matrix4(), false)))!;
+    const postShapes: LocalShape[] = [{kind:'trimesh',part:'body',...localTrimesh(parts.L01)}];
     const stoveGeometry = mergeGeometries(byName('C14', 'C14_stove').map(p => bake(p, new Matrix4())))!;
     const lanternFrame = mergeGeometries(byName('C16', 'C16_frame').map(p => bake(p, new Matrix4())))!;
     const lanternGlass = mergeGeometries(byName('C16', 'C16_glass').map(p => glowBake(p, new Matrix4(), true)))!;
     const hard = [
       { id: 'C11', mesh: localTrimesh(parts.C11), matrix: m11 }, { id: 'C14', mesh: localTrimesh(parts.C14), matrix: m14 },
-      ...postM.map((m, i) => ({ id: `L01-${i}`, mesh: localTrimesh(byName('L01', 'L01_post')), matrix: m })),
     ].map(h => ({ id: h.id, indices: h.mesh.indices, vertices: transform(h.mesh.vertices, h.matrix) }));
     // Animated sub-parts: geometry in node-local frame, placed by asset matrix x node matrix.
     const sub = (id: keyof typeof g, name: string, assetM: Matrix4) => { const p = byName(id, name)[0]; return { geometry: bake({ ...p, matrix: new Matrix4() }, new Matrix4()), frame: new Matrix4().multiplyMatrices(assetM, p.matrix) }; };
@@ -127,7 +126,7 @@ function CampContent() {
     const local = (list: NodePart[]) => mergeGeometries(list.map(p => bake(p, new Matrix4())))!;
     const plates = JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[];
     return {
-      place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postM, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
+      place, lanternPos, staticGeometry, glowGeometry, toolWall, postBody, postGlow, postShapes, postM, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
       tools: sub('C11', 'C11_tools', m11), wok: sub('C14', 'C14_wok', m14),
       guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: campLegacyPushableHull(parts.C12, 'C12') },
       dumbbell: { geometry: local(parts.C13), hull: campLegacyPushableHull(parts.C13, 'C13', SCALE.C13) },
@@ -148,13 +147,19 @@ function CampContent() {
   });
   useQa(data);
 
+  const oldPosts = <>
+    {data.postM.map((matrix, index) => <group key={index} matrix={matrix} matrixAutoUpdate={false}
+      userData={{worldCollision:'solid',surfaceId:campColliderKey('L01','exit',index,'body'),worldCollisionSharedSurface:true}}>
+      <mesh geometry={data.postBody} material={vc} castShadow receiveShadow/>
+      <mesh geometry={data.postGlow} material={glow.material} userData={{noOcclusionFade:true}}/>
+    </group>)}
+    <CampColliders id="L01" label="exit" shapes={data.postShapes} matrices={data.postM}/>
+  </>;
   return <group name="world-camp-content">
     {data.staticGeometry && <mesh name="camp-content-static" geometry={data.staticGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'camp-content', solid: true }} />}
     {data.glowGeometry && <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material} userData={{ noOcclusionFade: true }} />}
-    {CAMP_BATCH && <>
-      <group matrix={data.m11} matrixAutoUpdate={false}><ToolWallVisual node="C11_body" fallback={<mesh geometry={data.toolWall!} material={vc} castShadow receiveShadow />} /></group>
-      <ExitPostVisual matrices={data.postM} fallback={<><mesh geometry={data.postBody!} material={vc} castShadow receiveShadow /><mesh geometry={data.postGlow!} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
-    </>}
+    {CAMP_BATCH && <group matrix={data.m11} matrixAutoUpdate={false}><ToolWallVisual node="C11_body" fallback={<mesh geometry={data.toolWall!} material={vc} castShadow receiveShadow />} /></group>}
+    <group name="camp-L01-contact">{CAMP_BATCH ? <ExitPostVisual matrices={data.postM} fallback={oldPosts}/> : oldPosts}</group>
     {!legacy && <group matrix={data.m14} matrixAutoUpdate={false}>
       <WorldCampFacilityCraft family="C14" node="C14_stove" fallback={<mesh geometry={data.stoveGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'C14', solid: true }} />} />
     </group>}
@@ -474,7 +479,7 @@ function useQa(data: { place: Record<string, Place>; dumbbells: Place[]; lantern
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
     const api = {
       placements: () => ({ ...data.place, C13: data.dumbbells, C16: data.lanternPos.toArray(), L01: EXIT_POSTS, benchTop: data.benchTop }),
-      hard: () => hardRecords,
+      hard: () => [...hardRecords, ...campColliderRecords().filter(r => r.id === 'L01').map(r => ({id:`L01-${r.instance}`,aabb:r.aabb}))],
       pushables: () => [...pushables].map(([id, p]) => {
         const body = p.body.current, position = body?.translation();
         const colliderCount = body?.numColliders() ?? 0, collider = colliderCount ? body?.collider(0) : undefined;

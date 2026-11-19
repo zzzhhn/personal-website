@@ -21,7 +21,7 @@ export const migratedCollisionRoots = [
   ...['west-entry', 'west-rise', 'west-link'].map(name => 'alpha-mine-gallery-'+name),
   'alpha-mine-north-ravine-bridge', ...['lower','middle','upper'].map(level => 'alpha-mine-'+level+'-vein-contact'),
   'G28-entry', ...['mine','park','yard','coaster'].map(id => 'G28-entry-'+id),
-  'world-camp-slice', 'street-trees-group', 'world-town-assets', 'factory-walk-support', 'factory-roof-support',
+  'camp-L01-contact', 'world-camp-slice', 'street-trees-group', 'world-town-assets', 'factory-walk-support', 'factory-roof-support',
 ];
 const classes = new Set<CollisionClass>(['solid', 'pushable', 'soft', 'none']);
 const counts = () => ({ meshes: 0, declared: 0, unclassified: 0, invalid: 0 });

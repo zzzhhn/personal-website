@@ -5,7 +5,8 @@ import { createRequire } from 'node:module';
 import { dirname } from 'node:path';
 import R from '@dimforge/rapier3d-compat';
 import { Box3, BoxGeometry, BufferGeometry, DoubleSide, Float32BufferAttribute, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, Raycaster, Scene, Vector3 } from 'three';
-import { campColliderKey, campGradedFlagstones, campPlacementMatrix, campShapes, campStoneInstances, campStoneShapes } from './WorldCampPhysics.tsx';
+import { campFixedBody, campColliderKey, campGradedFlagstones, campPlacementMatrix, campShapes, campStoneInstances, campStoneShapes } from './WorldCampPhysics.tsx';
+import { EXIT_POSTS } from './WorldCampContentLayout.ts';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { collisionInventory } from './world-collision-inventory.ts';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground.ts';
@@ -325,4 +326,50 @@ test('the visible C08 covers, ledger and edges own the book stack collision at t
     t.diagnostic(`C08 ${samples.length} contact rays, old >2cm ${before.filter(gap=>gap>.02).length}, max current ${Math.max(...after).toFixed(6)} m`);
     assert.ok(samples.length>50&&before.some(gap=>gap>.02));assert.ok(after.every(gap=>gap<.002));
   }finally{legacy.dispose();disposeWorldCraftGltf(gltf.scene);}
+});
+
+test('both gate posts match their visible footing, pole, brackets and diffuser while a walking or driving visitor clears the centre', async t => {
+  const pack = await readWorldCraftGltf(['public/assets/world/camp-site-craft/camp-site-v1.glb']);
+  const legacy = oldCampAsset('L01');
+  try {
+    const oldPole = campFixedBody(legacy.scene.getObjectByName('L01_post'));
+    for (const [model, fallback] of [[pack.scene.getObjectByName('L01'),false],[legacy.scene.getObjectByName('L01'),true]]) {
+      const resolved = campFixedBody(model);
+      const faces = resolved[0].indices.length/3;
+      assert.equal(faces, fallback ? 588 : 1732);
+      for (const at of EXIT_POSTS) {
+        const transform = new Matrix4().makeTranslation(...at), visible = model.clone(true);
+        visible.applyMatrix4(transform); visible.updateMatrixWorld(true);
+        const samples = [];
+        for (let angle=0; angle<8; angle++) for (let h=.03179; h<2.8; h+=.047) {
+          const dir=new Vector3(Math.cos((angle+.07)*Math.PI/4),0,Math.sin((angle+.07)*Math.PI/4));
+          const origin=new Vector3(...at).addScaledVector(dir,-1);origin.y+=h;
+          const distance=new Raycaster(origin,dir,0,2).intersectObject(visible)[0]?.distance;
+          samples.push({origin,dir,distance});
+        }
+        function compare(shapes) {
+          return fixedProbe(shapes,transform,world=>{
+            let maxGap=0,missing=0,extra=0,worst;
+            for(const {origin,dir,distance} of samples) {
+              const hit=world.castRay(new R.Ray(origin,dir),2,true);
+              if(distance===undefined){ if(hit)extra++; }
+              else if(!hit) missing++;
+              else if(Math.abs(hit.timeOfImpact-distance)>maxGap){maxGap=Math.abs(hit.timeOfImpact-distance);worst={origin:origin.toArray(),dir:dir.toArray(),visible:distance,physical:hit.timeOfImpact};}
+            }
+            const quaternion={x:0,y:0,z:0,w:1},direction={x:1,y:0,z:0};
+            for(const body of [new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),new R.Cuboid(1.85,.6,.92)]) {
+              const cast=z=>world.castShape({x:at[0]-4,y:at[1]+.83,z},quaternion,direction,body,0,8,true);
+              assert.ok(cast(at[2]),'direct contact with the post');
+              assert.equal(cast((EXIT_POSTS[0][2]+EXIT_POSTS[1][2])/2),null,'open central lane');
+            }
+            return {maxGap,missing,extra,worst};
+          });
+        }
+        const previous=compare(oldPole), current=compare(resolved);
+        assert.ok(current.maxGap<.00002 && current.missing===0 && current.extra===0, JSON.stringify(current));
+        assert.ok(previous.maxGap>.01 || previous.missing>0, JSON.stringify(previous));
+        t.diagnostic(JSON.stringify({at,fallback,rays:samples.length,previous,current}));
+      }
+    }
+  } finally {legacy.dispose();disposeWorldCraftGltf(pack.scene);}
 });

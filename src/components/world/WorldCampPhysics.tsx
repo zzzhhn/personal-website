@@ -172,9 +172,10 @@ export function campStoneShapes(geometry: BufferGeometry) {
   return stoneSurfaces(new Float32Array(p.array),Uint32Array.from({length:index?.count??p.count},(_,i)=>index?.getX(i)??i));
 }
 
-export function campBookShapes(root: Object3D) {
+export function campFixedBody(root: Object3D) {
   return staticMesh(root,'body',all);
 }
+export const campBookShapes = campFixedBody;
 
 export function campTentSurface(id: string, label: string, solid: boolean) {
   return solid ? { worldCollision: 'solid', surfaceId: campColliderKey(id, label, 0, 'shell'), worldCollisionSharedSurface: true }

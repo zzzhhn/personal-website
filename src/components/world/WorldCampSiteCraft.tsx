@@ -8,7 +8,7 @@ import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
 import { applyCampSurfaceBalance } from './camp-surface-balance';
 import type { Vec3 } from './types';
-import { CampStoneColliders, campGradedFlagstones, campStoneShapes, campStoneInstances } from './WorldCampPhysics';
+import { CampColliders, CampStoneColliders, campFixedBody, campSolidInstances, campGradedFlagstones, campStoneShapes, campStoneInstances } from './WorldCampPhysics';
 
 export const CAMP_SITE_CRAFT_URL = '/assets/world/camp-site-craft/camp-site-v1.glb';
 export const campSiteLegacy = (search: string) => new URLSearchParams(search).get('campSiteCraft') === 'legacy';
@@ -45,7 +45,7 @@ function SiteVisual({ family, matrices }: VisualProps) {
       mesh.castShadow = family === 'L01' && !isLens;
       const displayed = paving ? matrices : matrices.map(matrix => new Matrix4().multiplyMatrices(matrix,part.matrixWorld));
       mesh.userData = { assetId: family, noOcclusionFade: isLens || family === 'C02', solid: mesh.castShadow,
-        ...(family === 'C02' ? campStoneInstances('laid',displayed) : {}) };
+        ...(family === 'C02' ? campStoneInstances('laid',displayed) : campSolidInstances('L01','exit','body',displayed)) };
       displayed.forEach((matrix,index) => mesh.setMatrixAt(index,matrix));
       mesh.instanceMatrix.needsUpdate = true;
       mesh.computeBoundingSphere();
@@ -55,7 +55,7 @@ function SiteVisual({ family, matrices }: VisualProps) {
     });
     if (!meshes.length || (family === 'L01' && !lens)) throw new Error(`Incomplete camp site family: ${family}`);
     if (family === 'C02' && ownedGeometry.length !== 1) throw new Error('Expected one laid flagstone batch');
-    const shapes = ownedGeometry.length ? campStoneShapes(ownedGeometry[0]) : null;
+    const shapes = family === 'L01' ? campFixedBody(source) : campStoneShapes(ownedGeometry[0]);
     return { root, meshes, materials, lens, ownedGeometry, shapes, users: 0, nightAmount: NaN };
   }, [environment, family, matrices, scene]);
 
@@ -81,9 +81,10 @@ function SiteVisual({ family, matrices }: VisualProps) {
     if (visual.lens) visual.lens.emissiveIntensity = 0.18 + amount * 1.25;
   });
 
-  if (family === 'C02' && !visual.shapes) throw new Error('Camp site pack is missing flagstone support');
+  if (!visual.shapes) throw new Error(`Camp site pack is missing ${family} contact`);
   return <><primitive object={visual.root} dispose={null} />
-    {visual.shapes && <CampStoneColliders label="laid" shapes={visual.shapes} matrices={matrices}/>}</>;
+    {family === 'C02' ? <CampStoneColliders label="laid" shapes={visual.shapes} matrices={matrices}/>
+      : <CampColliders id="L01" label="exit" shapes={visual.shapes} matrices={matrices}/>}</>;
 }
 
 class SiteBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
