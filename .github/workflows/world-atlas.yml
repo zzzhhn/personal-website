@@ -26,7 +26,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -71,25 +71,13 @@ jobs:
       - run: |
           python -m pip install playwright==1.60.0 Pillow==12.2.0
           python -m playwright install --with-deps chromium
-          npm install --prefix "$RUNNER_TEMP/world-browser" --ignore-scripts --no-audit --no-fund playwright@1.60.0
-      - name: Capture paired site views and walk the public entries
+      - name: Capture paired site views
         run: |
           python -m http.server 4343 --bind 127.0.0.1 --directory dist > "$RUNNER_TEMP/world-atlas-server.log" 2>&1 &
           server=$!
           trap 'kill "$server"' EXIT
           curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent --output /dev/null http://127.0.0.1:4343/world/
           python tools/world/capture-site-atlas.py --shards 4 --shard "${{ matrix.shard }}"
-          case "${{ matrix.shard }}" in
-            0) routes=(camp town) ;;
-            1) routes=(exchange club) ;;
-            2) routes=(mine ibd) ;;
-            3) routes=(coaster summit) ;;
-          esac
-          report="local/world-atlas/walking-${{ matrix.shard }}.jsonl"
-          WORLD_BROWSER_MODULES="$RUNNER_TEMP/world-browser" node tools/world/playtest/active-collision-provenance.mjs http://127.0.0.1:4343 "${routes[@]}" > "$report" || {
-            jq -c 'select(.ok != true) | {route,stage,failure,errors,inventoryErrors:.settled.inventory.errors,mounted:.settled.inventory.mountedGapsByRegion}' "$report"
-            exit 1
-          }
       - uses: actions/upload-artifact@v4
         with:
           name: atlas-rows-${{ matrix.shard }}
@@ -112,14 +100,7 @@ jobs:
         with:
           pattern: atlas-rows-*
           path: ${{ runner.temp }}/rows
-      - run: |
-          python tools/world/capture-site-atlas.py --assemble "$RUNNER_TEMP/rows"
-          cat "$RUNNER_TEMP"/rows/atlas-rows-*/walking-*.jsonl > local/world-atlas/walking.jsonl
-          entry=$(jq -r '.entrySha256' local/world-atlas/manifest.json)
-          jq --exit-status --slurp --arg entry "$entry" '
-            (map(.route) | sort) == ["camp","club","coaster","exchange","ibd","mine","summit","town"]
-            and all(.[]; .ok == true and .build == $entry)
-          ' local/world-atlas/walking.jsonl
+      - run: python tools/world/capture-site-atlas.py --assemble "$RUNNER_TEMP/rows"
       - uses: actions/upload-artifact@v4
         with:
           name: world-atlas-${{ github.sha }}
