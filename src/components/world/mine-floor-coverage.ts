@@ -77,8 +77,8 @@ function subtract(polygon:Point[],triangle:MineFloorTriangle):Point[][] {
   return out;
 }
 
-/** Subtract actual flat visual triangles in bounded 2 m cells. The original collider arrays and
- * skirt faces remain untouched; the extra tessellation belongs only to the exposed fallback cap. */
+/** Subtract actual flat visual triangles in bounded 2 m cells. Preserve skirt faces and the source arrays.
+ * The foundation displays and supports exactly the remaining exposed cap. */
 export function mineFoundationVisibleSurface(mesh:MineFoundationMesh,coverage:readonly MineFloorTriangle[]) {
   const positions:number[]=[],indices:number[]=[],cell=2;
   const emit=(points:number[])=>{const offset=positions.length/3;positions.push(...points);for(let i=0;i<points.length/3;i++)indices.push(offset+i);};
