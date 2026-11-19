@@ -100,6 +100,39 @@ def shoot(page, select, shot, diagnostics):
     return capture["camera"], image, coverage
 
 
+def wait_for_districts(page, errors, diagnostics):
+    # A GPU runner can take seconds per frame; preserve a useful trace in the
+    # job log even when an unsuccessful shard never reaches artifact upload.
+    observe = """names => {
+        const debug = window.__worldDebug;
+        const mounted = new Set(debug?.sceneObjects() ?? []);
+        const requests = performance.getEntriesByType('resource')
+          .filter(r => /cave|waterwheel/i.test(r.name))
+          .map(r => ({path: new URL(r.name).pathname, received: r.encodedBodySize,
+                      endedMs: Math.round(r.responseEnd)}));
+        return {missing: names.filter(name => !mounted.has(name)),
+                frame: debug?.renderLoop()?.frame, requests};
+    }"""
+    ready = """names => {
+        const objects = new Set(window.__worldDebug?.sceneObjects() ?? []);
+        return names.every(n => objects.has(n));
+    }"""
+    for attempt in range(8):
+        if not errors:
+            try:
+                page.wait_for_function(ready, arg=DISTRICTS, polling=750, timeout=30000)
+                if not errors:
+                    return
+            except PlaywrightTimeout:
+                pass
+        snapshot = page.evaluate(observe, DISTRICTS)
+        print(f"District check {attempt + 1}: {snapshot}", flush=True)
+        if errors or attempt == 7:
+            diagnostics.mkdir(parents=True, exist_ok=True)
+            (diagnostics / "district-load.json").write_text(json.dumps(snapshot, indent=2) + "\n")
+            raise RuntimeError(f"Scene missing {snapshot['missing']}. Browser errors: {errors[:4]}")
+
+
 def capture(browser, base, shard, shards, diagnostics):
     errors = []
     context = browser.new_context(viewport=VIEWPORT, device_scale_factor=1)
@@ -111,6 +144,12 @@ def capture(browser, base, shard, shards, diagnostics):
             (diagnostics / "browser-errors.json").write_text(json.dumps(errors, indent=2) + "\n")
             print(f"Browser error: {message}", flush=True)
 
+        def console_message(message):
+            if message.type == "error" and "Failed to load resource" not in message.text:
+                # React error boundaries can absorb an exception before pageerror.
+                record_error(message.text[:1200])
+
+        page.on("console", console_message)
         page.on("pageerror", lambda error: record_error(str(error)))
         page.on("crash", lambda _: record_error("Renderer process crashed"))
 
@@ -135,23 +174,21 @@ def capture(browser, base, shard, shards, diagnostics):
         if html != (ROOT / "dist/world/index.html").read_bytes():
             raise RuntimeError("The preview is serving a different build from dist/world/index.html")
         page.wait_for_function("window.__worldDebug?.state().ready", polling=350, timeout=150000)
-        print("World ready; waiting for district meshes", flush=True)
-        try:
-            page.wait_for_function("""names => {
-                const objects = new Set(window.__worldDebug.sceneObjects());
-                return names.every(n => objects.has(n));
-            }""", arg=DISTRICTS, polling=500, timeout=90000)
-        except Exception as error:
-            present = set(page.evaluate("window.__worldDebug.sceneObjects()"))
-            raise RuntimeError(f"Scene missing {set(DISTRICTS) - present}. Browser errors: {errors[:4]}") from error
-        if page.evaluate("window.__worldDebug.sceneObjects().includes('alpha-shallows-eight-rune-crossing')"):
-            raise RuntimeError("Retired rune bridge mounted on the ordinary Alpha coastal path")
-        print("District meshes mounted", flush=True)
-        # The software GPU can spend seconds on one frame. This control only
-        # needs to exist and be enabled; its bounds and paint timing are immaterial.
         select = page.wait_for_function(
             """document.querySelector('select[aria-label="现场接缝复核机位"]:enabled')""",
             polling=350, timeout=150000).as_element()
+        # Freeze the review world before waiting. Otherwise each software-rendered
+        # gameplay frame competes with independently suspended React districts.
+        # All captured pairs begin with noon, so this also works for the camp shard.
+        select.evaluate("""el => {
+            el.value = 'site-camp-night';
+            el.dispatchEvent(new Event('change', {bubbles: true}));
+        }""")
+        print("World ready; waiting for district meshes", flush=True)
+        wait_for_districts(page, errors, diagnostics)
+        if page.evaluate("window.__worldDebug.sceneObjects().includes('alpha-shallows-eight-rune-crossing')"):
+            raise RuntimeError("Retired rune bridge mounted on the ordinary Alpha coastal path")
+        print("District meshes mounted", flush=True)
         sites = pairs(select.evaluate("el => Array.from(el.options, o => o.value).filter(Boolean)"))
         order = list(sites)
         rows = (len(order) + 1) // 2
