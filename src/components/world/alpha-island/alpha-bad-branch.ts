@@ -14,10 +14,10 @@ type Bound={boundCenter:Vec3;boundRadius:number;travel:number};
 export class AlphaBadBranchController{
  phase:BranchPhase='attached';lastTreeAt=-100;due=Infinity;droppedAt=-100;deadline=Infinity;
  readonly home:Vec3;readonly homeRotation:Quaternion;lastClear:{position:Vec3;rotation:Quaternion}|null=null;
- constructor(readonly body:RigidBody,readonly world:World,readonly engine:Engine,readonly bound:Bound){const p=body.translation(),q=body.rotation();this.home=[p.x,p.y,p.z];this.homeRotation=new Quaternion(q.x,q.y,q.z,q.w);alphaBadBranchProbe.home=[...this.home];}
+ constructor(readonly body:RigidBody,readonly world:World,readonly engine:Engine,readonly bound:Bound,readonly attachment:()=>number|undefined){const p=body.translation(),q=body.rotation();this.home=[p.x,p.y,p.z];this.homeRotation=new Quaternion(q.x,q.y,q.z,q.w);alphaBadBranchProbe.home=[...this.home];}
  center(){const p=this.body.translation(),q=this.body.rotation();return new Vector3(...this.bound.boundCenter).applyQuaternion(new Quaternion(q.x,q.y,q.z,q.w)).add(new Vector3(p.x,p.y,p.z)).toArray() as Vec3;}
  canRestore(){let blocked=false;const q=this.homeRotation;
-  for(let i=0;i<this.body.numColliders()&&!blocked;i++){const c=this.body.collider(i),p=c.translationWrtParent(),r=c.rotationWrtParent();if(!p||!r)continue;const at=new Vector3(p.x,p.y,p.z).applyQuaternion(q).add(new Vector3(...this.home)),rot=q.clone().multiply(new Quaternion(r.x,r.y,r.z,r.w));this.world.intersectionsWithShape(at,rot,c.shape,()=>{blocked=true;return false;},undefined,undefined,c,this.body,other=>other.isEnabled()&&!other.isSensor());}
+  for(let i=0;i<this.body.numColliders()&&!blocked;i++){const c=this.body.collider(i),p=c.translationWrtParent(),r=c.rotationWrtParent();if(!p||!r)continue;const at=new Vector3(p.x,p.y,p.z).applyQuaternion(q).add(new Vector3(...this.home)),rot=q.clone().multiply(new Quaternion(r.x,r.y,r.z,r.w));this.world.intersectionsWithShape(at,rot,c.shape,()=>{blocked=true;return false;},undefined,undefined,c,this.body,other=>other.handle!==this.attachment()&&other.isEnabled()&&!other.isSensor());}
   alphaBadBranchProbe.restoreBlocked=blocked;return !blocked;
  }
  canDrop(){const c=this.center(),p=alphaLocal(c),floor=alphaHeight(p[0],p[2]),r=this.bound.boundRadius+.3,half=Math.max(.2,(c[1]-floor)/2+r),at={x:c[0],y:(c[1]+floor)/2,z:c[2]};let blocked=false;
@@ -28,7 +28,10 @@ export class AlphaBadBranchController{
   const b=this.body;if(paused)return;
   if(treeAt!==this.lastTreeAt){this.lastTreeAt=treeAt;if(treeAt>=0&&this.phase==='attached'){this.phase='waiting';this.due=treeAt+Math.max(.7,this.bound.travel/3.4);}}
   if(!active&&this.phase!=='attached'){if(!this.restore())this.phase='reset-wait';}
-  else if(this.phase==='waiting'&&time>=this.due&&this.canDrop()){b.setBodyType(this.engine.RigidBodyType.Dynamic,true);b.setLinvel({x:0,y:0,z:0},true);b.setAngvel({x:0,y:0,z:0},true);this.phase='fallen';this.droppedAt=time;this.deadline=time+18;alphaBadBranchProbe.drops++;}
+  else if(this.phase==='waiting'&&time>=this.due&&this.canDrop()){b.setBodyType(this.engine.RigidBodyType.Dynamic,true);
+   // The twig separates along its own outward direction so it falls clear of the walking path.
+   const release=new Vector3(this.bound.boundCenter[0],0,this.bound.boundCenter[2]).normalize().multiplyScalar(.25);
+   b.setLinvel(release,true);b.setAngvel({x:0,y:0,z:0},true);this.phase='fallen';this.droppedAt=time;this.deadline=time+18;alphaBadBranchProbe.drops++;}
   const center=this.center(),margin=alphaBranchPathMargin(center,this.bound.boundRadius),p=b.translation(),q=b.rotation(),v=b.linvel();
   if(this.phase==='fallen'){
    alphaBadBranchProbe.minPathMargin=Math.min(alphaBadBranchProbe.minPathMargin,margin);const local=alphaLocal([p.x,p.y,p.z]);

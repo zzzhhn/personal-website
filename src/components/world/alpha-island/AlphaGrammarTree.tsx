@@ -1,17 +1,32 @@
-import {useEffect,useMemo} from 'react';
+import {useEffect,useMemo,useRef} from 'react';
 import {useFrame} from '@react-three/fiber';
-import {CapsuleCollider,RigidBody} from '@react-three/rapier';
-import {MeshStandardMaterial,Quaternion,Vector3} from 'three';
+import {ConvexHullCollider,TrimeshCollider,RigidBody,type RapierCollider} from '@react-three/rapier';
+import {MeshStandardMaterial} from 'three';
 import AlphaBadBranch from './AlphaBadBranch';
-import {createAlphaGrammarTree} from './alpha-grammar-tree';
+import {createAlphaGrammarTree,treePullParts} from './alpha-grammar-tree';
 import {alphaMaterial} from './alpha-materials';
 import {alphaMotion} from './alpha-state';
 import {ALPHA_STATIONS} from './alpha-layout';
-import type {Vec3} from '../types';
+import {useOwnedWorldVisual} from '../useOwnedWorldVisual';
 
-/** One authored skeleton supplies visible wood, attached leaf plaques, sap traces and
- * low hard-wood proxies. No independent spiral coordinates or floating pulse nodes. */
+
+function PullRope() {
+ const model=useMemo(()=>{
+   const parts=treePullParts().map(p=>({...p,material:alphaMaterial(p.finish)}));
+   return {parts,dispose(){for(const p of parts){p.geometry.dispose();p.material.dispose();}}};
+ },[]);
+ useOwnedWorldVisual(model);
+ return <RigidBody type="fixed" name="alpha-grammar-tree-pull-rope" colliders={false} userData={{solid:true}}>
+   {model.parts.map(p=><group key={p.id}>
+     <mesh name={p.id} geometry={p.geometry} material={p.material} castShadow receiveShadow dispose={null}
+       userData={p.finish==='darkwood'?{worldCollision:'solid',surfaceId:p.id}:{worldCollision:'none',collisionReason:'Hanging cord gives when the player brushes past'}}/>
+     {p.finish==='darkwood'&&<ConvexHullCollider name={p.id} args={[p.geometry.getAttribute('position').array as Float32Array]}/>}
+   </group>)}
+ </RigidBody>;
+}
+
 export default function AlphaGrammarTree(){
+ const barkBody=useRef<RapierCollider>(null);
  const built=useMemo(createAlphaGrammarTree,[]),age=useMemo(()=>({value:-100}),[]);
  const materials=useMemo(()=>built.parts.map(part=>{
   const m=alphaMaterial(part.finish==='bark'?'grammarBark':part.finish);
@@ -37,12 +52,14 @@ export default function AlphaGrammarTree(){
  useFrame(()=>{age.value=alphaMotion.time-alphaMotion.treeAt;});
  useEffect(()=>()=>{built.parts.forEach(p=>p.geometry.dispose());built.pulse.dispose();built.breakaway.parts.forEach(p=>p.geometry.dispose());materials.forEach(m=>m.dispose());pulse.dispose();},[built,materials,pulse]);
  return <group name="alpha-connected-grammar-tree" position={ALPHA_STATIONS.tree}>
-  {built.parts.map((part,i)=><mesh key={part.finish} name={'alpha-grammar-'+part.finish} geometry={part.geometry} material={materials[i]} castShadow receiveShadow/>)}
-  <mesh name="alpha-grammar-surface-propagation" geometry={built.pulse} material={pulse} receiveShadow/>
-  <AlphaBadBranch source={built.breakaway}/>
-  <RigidBody type="fixed" colliders={false} userData={{solid:true}}>{built.colliders.map((segment,i)=>{
-   const a=new Vector3(...segment.a),b=new Vector3(...segment.b),d=b.clone().sub(a),q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()),p=a.add(b).multiplyScalar(.5).toArray() as Vec3;
-   return <CapsuleCollider key={i} position={p} quaternion={q.toArray()} args={[d.length()/2,segment.radius]}/>;
-  })}</RigidBody>
+  {built.parts.map((part,i)=><mesh key={part.finish} name={'alpha-grammar-'+part.finish} geometry={part.geometry} material={materials[i]} castShadow receiveShadow
+    userData={part.finish==='bark'?{worldCollisionSources:built.barkRanges}:{worldCollision:'none',collisionReason:'Attached foliage yields beside the rigid branches'}}/>)}
+  <mesh name="alpha-grammar-surface-propagation" geometry={built.pulse} material={pulse} receiveShadow
+    userData={{worldCollision:'none',collisionReason:'Illuminated sap follows the bark surface'}}/>
+  <RigidBody type="fixed" colliders={false} userData={{solid:true,assetId:'alpha-station-tree'}}>
+    {built.barkContacts.map(c=><TrimeshCollider key={c.id} ref={c.id==='alpha-twig-parent-bough'?barkBody:undefined} name={c.id} collisionGroups={c.groups} args={[c.vertices,c.indices]}/>)}
+  </RigidBody>
+  <PullRope/>
+  <AlphaBadBranch source={built.breakaway} attachment={barkBody}/>
  </group>;
 }

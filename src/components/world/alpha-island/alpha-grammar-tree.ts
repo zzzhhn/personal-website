@@ -3,6 +3,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { ALPHA_MAIN_PATH,ALPHA_STATIONS } from './alpha-layout';
 import { alphaGroundHeight as alphaHeight } from './alpha-terrain';
 import type { Vec3 } from '../types';
+import { AlphaBuilder } from './alpha-art';
 
 type Kind = 'trunk' | 'root' | 'bough' | 'twig' | 'arm';
 type Bone = {
@@ -10,7 +11,11 @@ type Bone = {
   length: number; travel: number; points: Vector3[]; side: Vector3[]; up: Vector3[];
   radii: number[]; sides: number;
 };
-type Collider = { a: Vec3; b: Vec3; radius: number };
+
+// Reserve two memberships for the joint where this twig grows inside its parent bough.
+const parentGroup=1<<4, twigGroup=1<<5;
+export const twigContactGroups=(twigGroup<<16)|(0xffff & ~parentGroup);
+const parentContactGroups=(parentGroup<<16)|(0xffff & ~twigGroup);
 const TAU = Math.PI * 2;
 const ORIGIN: Vec3 = ALPHA_STATIONS.tree;
 const PULL: Vec3 = [-.7, 1.2, 1.3];
@@ -19,6 +24,13 @@ const APPROACH: Vec3 = [-1.15, .88, 1.15];
 const v = (x: number, y: number, z: number) => new Vector3(x, y, z);
 const tuple = (p: Vector3) => p.toArray() as Vec3;
 const ground = (x: number, z: number) => alphaHeight(ORIGIN[0] + x, ORIGIN[2] + z) - ORIGIN[1];
+
+export function treePullParts() {
+  const b=new AlphaBuilder();
+  b.beam('rope',ANCHOR,PULL,.028);
+  b.cyl('darkwood',PULL,.075,.25);
+  return b.finish().map(part=>({...part,id:'alpha-tree-pull-'+part.finish}));
+}
 
 function geometry(positions: number[], uv: number[], indices: number[], travel: number[], normals?: number[]) {
   const g = new BufferGeometry();
@@ -299,7 +311,7 @@ function segmentDistance2D(a: Vec3, b: Vec3, c: Vec3, d: Vec3) {
 export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
   const verify = options.verify === true;
   const bones: Bone[] = [], bark: BufferGeometry[] = [], leaves: BufferGeometry[] = [], pulses: BufferGeometry[] = [];
-  const colliders: Collider[] = [], colliderBones: string[] = [];let badBone:Bone|null=null,badLeaf:BufferGeometry|null=null;
+  let badBone:Bone|null=null,badLeaf:BufferGeometry|null=null;
   const leafAttachments: { branch: string; position: Vec3; alphaTravel: number; error: number | null; thickness: number | null; sag: number | null }[] = [];
   const footSupports: { position: Vec3; terrainY: number; tipY: number; burial: number; terminalMaxGap: number }[] = [];
   const pulseSurface = verify ? { samples: 0, maxDistance: 0, maxOutside: 0 } : null;
@@ -357,9 +369,15 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
   bones.push(makeBone('rope-arm', 'arm', trunk, .265,
     [v(0, 0, 0), v(-.25, 3.15, .45), v(-.63, 3.35, 1), new Vector3(...ANCHOR)], .125, .072, 14, 12));
 
+  const barkRanges:{id:string;firstIndex:number;indexCount:number;collision:'solid';surfaceId:string}[]=[];
+  let emittedIndices=0;
   for (const bone of bones) {
     const barkGeometry = barkTube(bone);
     if(bone===badBone){barkGeometry.dispose();continue;}
+    const indexCount=barkGeometry.index!.count;
+    barkRanges.push({id:'alpha-wood-'+bone.id,firstIndex:emittedIndices,indexCount,collision:'solid',
+      surfaceId:bone===badBone?.parent?'alpha-twig-parent-bough':'alpha-station-tree-wood'});
+    emittedIndices+=indexCount;
     bark.push(barkGeometry);
     const edges = bone.kind === 'trunk' ? [2, 8, 14] : bone.kind === 'bough' ? [3, 9] : [Math.floor(bone.sides * .6)];
     edges.forEach(edge => {
@@ -372,39 +390,50 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
         pulseSurface.maxOutside = Math.max(pulseSurface.maxOutside, measured.maxOutside);
       }
     });
-    if (bone.kind !== 'trunk' && bone.kind !== 'root') continue;
-    for (let i = 1; i < bone.points.length; i++) {
-      const radius = Math.max(bone.radii[i - 1], bone.radii[i]) * 1.037;
-      const a = bone.points[i - 1].clone(), b = bone.points[i].clone(), limit = 2.2 - radius;
-      if (a.y > limit && b.y > limit) continue;
-      if (a.y > limit) a.lerp(b, (a.y - limit) / (a.y - b.y));
-      if (b.y > limit) b.lerp(a, (b.y - limit) / (b.y - a.y));
-      if (a.distanceToSquared(b) < 1e-8) continue;
-      // Inner root joints are already inside the trunk proxy; omit any root
-      // capsule whose bounds would intrude into the protected approach quadrant.
-      if (bone.kind === 'root' && Math.min(a.x, b.x) - radius < 0 && Math.max(a.z, b.z) + radius > 0) continue;
-      colliders.push({ a: tuple(a), b: tuple(b), radius });
-      colliderBones.push(bone.id);
-    }
   }
   if(!badBone||!badLeaf)throw new Error('One attached bad twig is required');
   const bad:Bone=badBone,anchor=bad.points[0].clone(),badBark=barkTube(bad);badBark.translate(-anchor.x,-anchor.y,-anchor.z);badLeaf.translate(-anchor.x,-anchor.y,-anchor.z);
-  const badColliders:Collider[]=[];for(let i=2;i<bad.points.length;i+=2){badColliders.push({a:tuple(bad.points[i-2].clone().sub(anchor)),b:tuple(bad.points[i].clone().sub(anchor)),radius:Math.max(bad.radii[i-2],bad.radii[i])*1.02});}
-  badLeaf.computeBoundingBox();const leafBox=badLeaf.boundingBox!,leafHalf=leafBox.getSize(new Vector3()).multiplyScalar(.5),leafCenter=leafBox.getCenter(new Vector3());
+  // Dynamic CCD uses short convex sections of the curved twig. Include the emitted
+  // end caps in their adjacent section; keep the original visible index order.
+  const twigContacts=[], twigRanges=[];
+  const sides=bad.sides, rings=bad.points.length-1, step=2, ringIndices=sides*6;
+  const barkPositions=badBark.getAttribute('position').array as Float32Array;
+  for(let start=0;start<rings;start+=step){
+    const end=Math.min(rings,start+step),id='alpha-fallen-wood-'+start;
+    const first=start*(sides+1)*3,last=(end+1)*(sides+1)*3;
+    twigContacts.push({id,vertices:barkPositions.subarray(first,last),mass:.12*Math.min(step,rings-start)/rings});
+    twigRanges.push({id,firstIndex:start*ringIndices,indexCount:(end-start)*ringIndices,collision:'pushable' as const,surfaceId:id});
+  }
+  for(const [i,contact] of [twigContacts[0],twigContacts.at(-1)!].entries()){
+    twigRanges.push({id:'alpha-twig-cap-'+i,firstIndex:rings*ringIndices+i*sides*3,indexCount:sides*3,collision:'pushable' as const,surfaceId:contact.id});
+  }
+  const leafContact={id:'alpha-fallen-leaf',vertices:badLeaf.getAttribute('position').array as Float32Array,mass:.18};
+  badLeaf.computeBoundingBox();const leafBox=badLeaf.boundingBox!;
   let projectionDistance=Infinity,radiusBound=0;for(const g of [badBark,badLeaf]){const p=g.getAttribute('position');for(let i=0;i<p.count;i++){const q=new Vector3().fromBufferAttribute(p,i);radiusBound=Math.max(radiusBound,q.length());const projected:Vec3=[ORIGIN[0]+anchor.x+q.x,0,ORIGIN[2]+anchor.z+q.z];for(let j=1;j<ALPHA_MAIN_PATH.length;j++)projectionDistance=Math.min(projectionDistance,segmentDistance2D(projected,projected,ALPHA_MAIN_PATH[j-1],ALPHA_MAIN_PATH[j]));}}
   const union=badBark.boundingBox??(badBark.computeBoundingBox(),badBark.boundingBox!);const center=union.clone().union(leafBox).getCenter(new Vector3());let centeredRadius=0;for(const g of [badBark,badLeaf]){const p=g.getAttribute('position');for(let i=0;i<p.count;i++)centeredRadius=Math.max(centeredRadius,new Vector3().fromBufferAttribute(p,i).distanceTo(center));}
-  for(const c of badColliders)for(const point of [c.a,c.b])centeredRadius=Math.max(centeredRadius,new Vector3(...point).distanceTo(center)+c.radius);for(const x of [-1,1])for(const y of [-1,1])for(const z of [-1,1])centeredRadius=Math.max(centeredRadius,leafCenter.clone().add(new Vector3(leafHalf.x*x,leafHalf.y*y,leafHalf.z*z)).distanceTo(center));
-  const breakaway={id:bad.id,anchor:tuple(anchor),parts:[{finish:'bark' as const,geometry:badBark},{finish:'leafplate' as const,geometry:badLeaf}],colliders:badColliders,leafCollider:{position:tuple(leafCenter),halfExtents:tuple(leafHalf)},travel:bad.travel,radiusBound,boundCenter:tuple(center),boundRadius:centeredRadius};
+  const breakaway={id:bad.id,anchor:tuple(anchor),parts:[
+    {finish:'bark' as const,geometry:badBark,policy:{worldCollisionSources:twigRanges}},
+    {finish:'leafplate' as const,geometry:badLeaf,policy:{worldCollision:'pushable',surfaceId:leafContact.id}}],
+    contacts:[...twigContacts,leafContact],leafCenter:tuple(leafBox.getCenter(new Vector3())),
+    travel:bad.travel,radiusBound,boundCenter:tuple(center),boundRadius:centeredRadius};
   const barkGeometry = merge(bark), leafGeometry = merge(leaves), pulse = merge(pulses);
   const min = barkGeometry.boundingBox!.min.clone().min(leafGeometry.boundingBox!.min);
   const max = barkGeometry.boundingBox!.max.clone().max(leafGeometry.boundingBox!.max);
   const triangles = (g: BufferGeometry) => (g.index?.count ?? g.getAttribute('position').count) / 3;
   const maxAttachmentError = verify ? Math.max(...bones.filter(b => b.parent).map(b => b.points[0]
     .distanceTo(b.parent!.curve.getPointAt(b.attach))), ...leafAttachments.map(l => l.error!)) : null;
-  const corridorClearance = verify ? Math.min(...colliders.map(c => segmentDistance2D(c.a, c.b, APPROACH, PULL) - c.radius)) : null;
+  const barkContacts=['alpha-station-tree-wood','alpha-twig-parent-bough'].map(id=>{
+    const ranges=barkRanges.filter(r=>r.surfaceId===id);
+    const indices=new Uint32Array(ranges.reduce((sum,r)=>sum+r.indexCount,0));
+    let cursor=0;
+    for(const r of ranges){indices.set(barkGeometry.index!.array.subarray(r.firstIndex,r.firstIndex+r.indexCount),cursor);cursor+=r.indexCount;}
+    return {id,vertices:barkGeometry.getAttribute('position').array as Float32Array,indices,
+      groups:id==='alpha-twig-parent-bough'?parentContactGroups:0xffffffff};
+  });
   return {
     parts: [{ finish: 'bark' as const, geometry: barkGeometry }, { finish: 'leafplate' as const, geometry: leafGeometry }],
-    pulse, colliders,breakaway,
+    barkContacts,barkRanges,
+    pulse,breakaway,
     report: {
       measured: verify, supportAdjustmentMeasured: true,
       origin: [...ORIGIN] as Vec3, ropePull: [...PULL] as Vec3, ropeAnchor: [...ANCHOR] as Vec3, approach: [...APPROACH] as Vec3,
@@ -414,7 +443,7 @@ export function createAlphaGrammarTree(options: { verify?: boolean } = {}) {
         start: tuple(b.points[0]), end: tuple(b.points.at(-1)!), distanceFromRoot: b.travel, length: b.length })),
       leafAttachments, footSupports, maxAttachmentError, maxPulseSurfaceGap: pulseSurface?.maxOutside ?? null,
       pulseSurface: pulseSurface ? { measured: true, ...pulseSurface } : { measured: false, samples: null, maxDistance: null, maxOutside: null },
-      colliderCount: colliders.length, colliderBones, corridorClearance, colliderTopLimit: 2.2,
+      fixedWoodTriangles:triangles(barkGeometry), looseConvexPieces:breakaway.contacts.length,
       leafPlateThickness: verify ? Math.max(...leafAttachments.map(p => p.thickness!)) : null, leafPlateDesignThickness: .07,
       leafPlateThicknessRange: verify ? [Math.min(...leafAttachments.map(p => p.thickness!)), Math.max(...leafAttachments.map(p => p.thickness!))] : null,
       leafPlateMaxSag: verify ? Math.max(...leafAttachments.map(p => p.sag!)) : null,

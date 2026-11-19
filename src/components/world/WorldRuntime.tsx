@@ -295,7 +295,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           if (isHeldPlayerContact(c,body) || isRegionColliderHeld(c,body) || isHeldCampDumbbellCollider(c,body)) held.push(node);
           else if (c.isEnabled() && body?.isEnabled() !== false && !c.isSensor() && c.collisionGroups() !== 0) active.push(node);
         });
-        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['world-paving-v4','coaster-vegetation','street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group','street-year-group','street-roadblock-group','street-trees-group','north-attractions-road','factory-walk-support','factory-roof-support'].includes(name));
+        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['world-paving-v4','coaster-vegetation','street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group','street-year-group','street-roadblock-group','street-trees-group','north-attractions-road','factory-structure-contact','factory-worklife-contact','factory-walk-support','factory-roof-support'].includes(name));
         return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, [...roots,...coasterCollisionReviewRoots(scene)], held);
       },
       reviewCamera: () => {
