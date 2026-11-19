@@ -85,9 +85,7 @@ WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foun
 
 回音洞矿灯使用真实 E 启动靠近、D 改向取消，再在同一洞口用模拟 Y 重试取灯。E 归还后恢复取灯提示。园区 P14 用模拟 Y 得到 Club 的地图标记 `[24, 40]`，P16 用 E 坐下听到第一句，用模拟 Y 起身并恢复落地。新版 Chrome 路线先检查普通入口，再用同一入口的 QA 定位准备场地。页面和游戏错误为 0，本地分析接口的 404 单列。交互定向回归 20 项通过。
 
-[冻结的注册样本](interaction-census.json)保留 138 个实际观察到的 ID。[覆盖清单生成器](../../../tools/world/playtest/foundation-interaction-coverage.mjs)按场馆和 ID 输出键盘、模拟标准手柄和面板的具体已验操作，也能读取新的成功运行记录。当前引用的浏览器证据覆盖其中 17 个 ID，121 个已观察 ID 尚无本清单引用的行为证据。键盘、模拟手柄和面板分别涉及 14、7、9 个 ID。同一 ID 可以有多类证据。额外 13 个精确 ID 来自条件注册调用，交易厅档案票的动态 ID 仍需读入档案数据后重算。
-
-货场还有 12 个已观察 ID 未在台账逐项操作，另有后库和车载条件分支。工厂其余 11 道工序、矿场 10 项和交易厅 8 项也尚无这里引用的逐 ID 浏览器证据。渡船反向登船和缆车上站登乘仍需要单独输入验证。实物手柄与目标机 Safari 仍待验证。
+[冻结的注册样本](interaction-census.json)保留 138 个实际观察到的 ID。[覆盖清单生成器](../../../tools/world/playtest/foundation-interaction-coverage.mjs)按场馆和 ID 输出键盘、模拟标准手柄和面板的具体已验操作，也可以读取新的成功运行记录。这一批共享入口验证完成时，原样本有 17 个 ID 取得行为凭证，键盘、模拟手柄和面板分别涉及 14、7、9 个 ID。同一 ID 可以有多类证据。
 
 ```sh
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-recovery.mjs http://127.0.0.1:4365
@@ -115,10 +113,32 @@ node tools/world/playtest/foundation-interaction-coverage.mjs --json /path/to/ne
 
 原 138 个 ID 中，已有至少一项浏览器行为凭证的从 17 增至 89。条件动作中的放飞纸灯和拾回矿石也已实际挂载并操作，合计观察到 140 个，91 个有行为凭证。键盘覆盖 73 个 ID，模拟标准手柄 46 个，面板 30 个。重复输入同一份原始日志时，生成报告逐字节一致。
 
-目前尚无逐 ID 行为凭证的 49 项分布在货场 12、工厂 11、Club 10、交易厅 8、矿场 6、过山车 2。另有 12 个已知条件 ID 和随目录数据注册的档案票需进入对应玩法阶段。浏览器批次没有页面错误。实物手柄与目标机 Safari 仍待实测。
-
 ```sh
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4394 town park camp journal seats alpha-stations alpha-exhibits alpha-return
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4394 alpha-calls
+node tools/world/playtest/foundation-interaction-coverage.mjs --json
+```
+
+## 交易厅、Club、工厂、矿场和过山车箱门
+
+在同版 Chrome 中先用无参数入口打开游戏和暂停菜单。随后在 QA 页放置角色，等角色与实际表面接触且正式提示出现，再发键盘、模拟标准手柄或面板输入。每项的站位和状态变化已加入[机器证据](interaction-action-evidence.json)。
+
+| 场馆 | 实测行为 |
+| --- | --- |
+| 交易厅 8 项 | 打开和关闭 Alpha Agent 项目卡。用 E 加载回放曲线，用 Y 取票，再用真实键盘持票连走七段到中央台插票。两个档位各改变 10 份，封单、拉铃推进三段，压印得到含三次选择的回执，用 Y 在楼上拨到第一段复盘。持票步行段之外用了站位夹具。历史回放的网络响应使用固定的 20 日样本。 |
+| Club 10 项 | 舞池实际切换舞步并可用 W 离开。DJ 台接管时 W 不移动身体，退出后恢复场景提示。DJC 项目卡正确打开和关闭。其余 7 个圆床座位逐一使用 E 和 Y 入座、起身。 |
+| 工厂 11 项 | 打开各自工位，读回工位 ID、面板标题及当时可用选项，点击离开后恢复工位提示。空白工序选项保留在证据中，尚未从原料走完全套生产循环。 |
+| 矿场 6 项 | 中层、高层各辨认矿线、敲三次、拾起露出的矿石。B 位实投三种矿石并逐一出现对应曲线。三个回收台各取回对应矿石。连续持矿段用夹具定位，网络响应为固定样本。 |
+| 过山车 2 项 | 用存档夹具只恢复六件任务的成绩。E 打开箱盖，随后点按钮拿到钥匙，用 Y 开门。机器证据保留三个保存状态及解锁后的登车指引。 |
+| 货场闸门 1 项 | 货场独立场景夹具提供已检、已装的货单。用真实 E 升闸，角色进入扫掠区后闸门停住，退开后升齐，再用真实键盘通过闸口。 |
+
+原圆床退出在 `djc-daybed-1-0`、`djc-daybed-1-1`、`djc-daybed-2-0` 起身后掉到约 1.37 m 的低层。共用座椅退出修复后，三处从相同圆床坡顶入座再用实际键盘或模拟 Y 起身，生产记录落在约 2.58 m，同一层且在各自座位旁。台账同时保存首次失败和修后成功记录。
+
+生产入口 HTML SHA-256 为 `0af3bb234fd035f670bc748c3a47d21cee8d4eef559a2dae000992f57c990a0c`。同一包中，Club、工厂、矿场与箱门通过。交易厅曾在持票步行贴到中央台边时接键后停在距站位约 9 cm 处，未完成插票。随后同包改从南侧约半米处停稳再按 E，完成整轮；两条记录均已归档。以上生产浏览器批次的页面和游戏控制台错误为零。
+
+原 138 个注册中的 127 个有直接浏览器行为凭证。加入两个曾实测挂载的条件动作，总计 129／140。键盘覆盖 103 个 ID，模拟标准手柄 70 个，面板 44 个。剩下 11 个已观察 ID 均在货场，包括前后卷材、翻转、展廊，A／B 称重和装货，以及吊机。另有 12 个条件 ID 及按交易厅目录生成的年份票尚需验证。实物手柄与目标机 Safari 仍待实测。
+
+```sh
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4389 club club-seats factory exchange-project exchange-round mine-round coaster-locks
 node tools/world/playtest/foundation-interaction-coverage.mjs --json
 ```

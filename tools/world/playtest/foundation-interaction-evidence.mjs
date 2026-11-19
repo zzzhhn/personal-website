@@ -2,11 +2,12 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 
 const [archive,...logs]=process.argv.slice(2);
-assert.ok(archive,'Usage: node foundation-interaction-evidence.mjs <evidence folder> [family JSONL ...]');
-const runs=[];
+assert.ok(archive,'Usage: node foundation-interaction-evidence.mjs <evidence folder> [family JSONL ...], or --append <existing archive.json> <family JSONL ...>');
+const appending=archive==='--append';
+const runs=appending?JSON.parse(await readFile(logs.shift(),'utf8')).runs:[];
 async function previous(file,fixture,extract){
   const raw=await readFile(join(archive,file));
   const cases=extract(JSON.parse(raw));
@@ -15,6 +16,7 @@ async function previous(file,fixture,extract){
 function scenario(id,operation,before,after,control='E',input='keyboard'){
   return {id,events:[{input,control,operation,before,after}]};
 }
+if(!appending){
 await previous('mine-final-contact-play.json','Published mine entry and real keyboard routes. Backtest response stubbed.',d=>{
   assert.equal(d.equipped.prompt,'alpha-mine-tools');
   assert.match(d.equipped.label.en,/fresh exploration/);
@@ -84,8 +86,28 @@ runs.push({name:'ibd-workstation-fixtures-benches.log',entrySha256:benchEntry.en
       i===0?'呈样、合拢按钮':'打开、合拢按钮','panel');
   }),
 });
+}
 for(const file of logs){
-  const raw=await readFile(file,'utf8'), rows=raw.trim().split('\n').map(line=>JSON.parse(line));
+  const raw=await readFile(file,'utf8');
+  const sha256=createHash('sha256').update(raw).digest('hex');
+  if(runs.some(run=>run.sha256===sha256))continue;
+  if(basename(file)==='ibd-dispatch-shutter-play.json'){
+    const d=JSON.parse(raw);
+    assert.deepEqual(d.pageErrors,[]);
+    assert.deepEqual(d.observed.inventoryErrors,[]);
+    assert.equal(d.nearGate.prompt,'ibd-dispatch');
+    assert.ok(d.nearGate.grounded&&!d.prepared.released);
+    assert.equal(d.waiting.action.motionWait,'path-occupied');
+    assert.equal(d.opened.action.notice,'released');
+    assert.ok(d.opened.action.released&&d.end.grounded);
+    assert.ok(d.end.actor[2]>d.nearGate.actor[2]+2);
+    runs.push({name:basename(file),sha256,
+      fixture:'QA sets up an inspected, loaded batch and a position beside the dispatch cabinet. Dispatch, blocking, retreat and crossing use real keys.',
+      cases:[scenario('ibd-dispatch','升闸时遇到角色停住，角色退开后升齐并穿闸',
+        {actor:d.nearGate,game:d.prepared},{blocked:d.waiting.action,released:d.opened.action,exit:d.end},'E, S, W, S')]});
+    continue;
+  }
+  const rows=raw.trim().split('\n').map(line=>JSON.parse(line));
   if(rows[0]?.mode==='preferred'){
     const summary=rows.find(row=>Array.isArray(row.teleports));
     assert.deepEqual(summary.errors,[]);assert.deepEqual(summary.teleports,[]);
@@ -103,7 +125,7 @@ for(const file of logs){
         {held:held.activity.state,palm:held.activity.hand.palm,parkedDuringHold:disabled[0],returned:returned.parts.find(part=>part.id===disabled[0].id),
           grounded:returned.activity.actor.grounded,position:returned.player},'E, E');
     });
-    runs.push({name:'C11 五件工具逐件实测',sha256:createHash('sha256').update(raw).digest('hex'),
+    runs.push({name:'C11 五件工具逐件实测',sha256,
       fixture:'QA readback only. Walked from camp with no position fixtures.',cases});
     continue;
   }
@@ -111,12 +133,22 @@ for(const file of logs){
   assert.equal(entry?.entrySha256,summary?.entrySha256,`${file}: inconsistent build`);
   assert.ok(entry?.entrySha256&&summary,`${file}: incomplete capture`);
   assert.deepEqual(summary.errors,[],`${file}: browser errors`);
-  const rejected=rows.filter(row=>row.route==='interaction-case'&&!row.ok).map(row=>row.id);
-  assert.deepEqual(summary.failures,rejected,`${file}: inconsistent individual failures`);
+  const rejected=rows.filter(row=>row.route==='interaction-case'&&!row.ok);
+  const failedFlow=rows.filter(row=>row.route==='flow-error');
+  // The first grouped venue run reported a family name where later versions report each ID.
+  const namedFailures=summary.failures.flatMap(id=>failedFlow.some(row=>row.family===id)
+    ?rejected.filter(row=>row.family===id).map(row=>row.id):[id]);
+  assert.deepEqual(namedFailures,rejected.map(row=>row.id),`${file}: inconsistent individual failures`);
   const cases=rows.filter(row=>row.route==='interaction-case'&&row.ok===true)
     .map(({id,fixture,events})=>({id,fixture,events}));
-  runs.push({name:'操作族浏览器采集 · '+(logs.indexOf(file)+1),entrySha256:entry.entrySha256,browser:entry.browser,
-    sha256:createHash('sha256').update(raw).digest('hex'),fixture:'Ordinary entry checked. QA locations followed by production controls.',cases,
-    ids:summary.ids,omittedFailures:summary.failures});
+  const families=new Set(rows.filter(row=>row.route==='interaction-case').map(row=>row.family));
+  const fixture=['Ordinary entry checked. QA locations followed by production controls.',
+    ...([...families].some(id=>id==='mine-round'||id==='exchange-round')?['Historical network response fixture.']:[]),
+    ...(families.has('coaster-locks')?['Valid progress fixture grants six workshop credits only.']:[]),
+  ].join(' ');
+  runs.push({name:appending?basename(file):'操作族浏览器采集 · '+(logs.indexOf(file)+1),
+    entrySha256:entry.entrySha256,browser:entry.browser,sha256,fixture,cases,
+    ids:summary.ids,omittedFailures:namedFailures,
+    ...(rejected.length&&{failedCases:rejected}),...(failedFlow.length&&{failedFlows:failedFlow})});
 }
 console.log(JSON.stringify({runs},null,2));

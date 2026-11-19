@@ -5,7 +5,7 @@ import { Object3D } from 'three';
 import { holdWorldArrival, worldArrivalBlocked, worldArrivalFailed, activatePlayerArrival } from './world-arrival-readiness.ts';
 import { namedAlphaArrival } from './alpha-island/alpha-arrival.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
-import { updateHeadSubmersion } from './safe-landing.ts';
+import { findSafeSeatExit, updateHeadSubmersion } from './safe-landing.ts';
 import { worldActorArrival, arrivalColliderRequirements, worldActorSites } from './world-actor-sites.ts';
 import { reportRegionLoadFailure } from './region-load-failure.ts';
 await R.init();
@@ -131,4 +131,51 @@ test('only a failed active arrival is diagnosed; a stale failure is dropped on r
     ready.cave = ready.camp = true;
     assert.equal(worldArrivalBlocked(), false);
   } finally { first(); second(); other(); holdCamp(); holdCave(); }
+});
+
+test('a seated capsule only exits onto clear dry support in an admitted region', () => {
+  const { world, body } = scene();
+  const seat = [206, 24.46, 206], approach = [205.25, 24 + PLAYER_CENTER_HEIGHT, 206];
+  const position = { ...body.translation() };
+  const exit = (ready = () => true) => findSafeSeatExit(world, R, body, seat, 0, approach, -.7, ready);
+  try {
+    let floor = terrain(world);
+    world.step();
+    const first = exit();
+    assert.ok(first.landing[0] > 206.6 && first.waiting === null);
+    const alternate = exit(p => p[0] < 206.4);
+    assert.ok(alternate.landing[0] < 206.4 && alternate.waiting === null);
+    const obstacle = world.createCollider(R.ColliderDesc.cuboid(2, 1.5, 2).setTranslation(206, 25, 206));
+    world.step();
+    assert.deepEqual(exit(), { landing: null, waiting: null });
+    world.removeCollider(obstacle, true);
+    world.removeRigidBody(floor.parent);
+    world.step();
+    const unloaded = exit(() => floor.collider.isValid());
+    assert.equal(unloaded.landing, null);
+    assert.ok(unloaded.waiting);
+    assert.deepEqual(exit(), { landing: null, waiting: null }, 'an empty old approach position is not support');
+    floor = terrain(world);
+    world.step();
+    assert.deepEqual(exit(() => floor.collider.isValid()), first);
+    assert.deepEqual({ ...body.translation() }, position);
+    assert.equal(body.isEnabled(), false);
+  } finally { world.free(); }
+});
+
+test('a raised seat prefers the walk-in level over a lower floor below its front', () => {
+  const world = new R.World({ x: 0, y: -12.5, z: 0 });
+  const body = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, 2, 0));
+  world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS), body);
+  body.setEnabled(false);
+  try {
+    world.createCollider(R.ColliderDesc.cuboid(3, .1, 3).setTranslation(0, -.1, 0));
+    world.createCollider(R.ColliderDesc.cuboid(.8, .06, .8).setTranslation(-.9, .44, 0));
+    world.step();
+    const standing = findSafeSeatExit(world, R, body, [0, .75, 0], 0,
+      [-.9, .5 + PLAYER_HALF_HEIGHT + PLAYER_RADIUS, 0], -.7, () => true);
+    assert.ok(standing.landing && standing.landing[0] < 0);
+    assert.ok(Math.abs(standing.landing[1] - (.5 + PLAYER_HALF_HEIGHT + PLAYER_RADIUS + .01)) < 1e-6);
+    assert.equal(body.isEnabled(), false);
+  } finally { world.free(); }
 });

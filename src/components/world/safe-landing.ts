@@ -88,6 +88,42 @@ export function findSafePlayerLanding(world: World, rapier: QueryApi, body: Rigi
   return null;
 }
 
+/** A nearby stand uses the same dry support and actor clearance queries as arrivals.
+ * The seat keeps ownership of the capsule until a real standing point is available. */
+export function findSafeSeatExit(world: World, rapier: QueryApi, body: RigidBody, seat: Vec3,
+  yaw: number, approach: Vec3, waterY: number, ready: (point: Vec3) => boolean) {
+  let waiting: Vec3 | null = null;
+  const shape = new rapier.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS);
+  const expectedFloor = approach[1] - PLAYER_HALF_HEIGHT - PLAYER_RADIUS;
+  const at = (x: number, z: number): Vec3 | null => {
+    const hint: Vec3 = [x, expectedFloor, z];
+    if (!ready(hint)) { waiting ??= hint; return null; }
+    const floor = playerFooting(world, rapier, body, hint, waterY);
+    // Preserve the level the player walked in on. An unobstructed ray can
+    // still hit the floor below a raised seat or the side of its access ramp.
+    if (floor === null || Math.abs(floor - expectedFloor) > .30) return null;
+    const y = floor + PLAYER_HALF_HEIGHT + PLAYER_RADIUS + .01;
+    const position: Vec3 = [x, y, z];
+    if (!ready(position)) { waiting ??= position; return null; }
+    return blocked(world, rapier, body, { x, y, z }, shape) ? null : position;
+  };
+  for (const turn of [0, Math.PI/2, -Math.PI/2, Math.PI/4, -Math.PI/4, Math.PI*.75, -Math.PI*.75, Math.PI]) {
+    const angle = yaw + turn;
+    for (const metres of [.65, .70, .80, .90]) {
+      const landing = at(seat[0] + Math.cos(angle) * metres, seat[2] - Math.sin(angle) * metres);
+      if (landing) return { landing, waiting: null };
+    }
+  }
+  const previous = at(approach[0], approach[2]);
+  if (previous) return { landing: previous, waiting: null };
+  for (let k = 0; k < 8; k++) {
+    const angle = k * Math.PI / 4;
+    const landing = at(approach[0] + Math.cos(angle) * .9, approach[2] + Math.sin(angle) * .9);
+    if (landing) return { landing, waiting: null };
+  }
+  return { landing: null, waiting };
+}
+
 function vehicleSpot(world: World, rapier: QueryApi, body: RigidBody, size: Vec3, p: Vec3, yaw: number, waterY: number) {
   const c = Math.cos(yaw), s = Math.sin(yaw), heights: number[] = [];
   const halfLength = size[0] / 2 + .65, halfWidth = size[2] / 2 + .65;

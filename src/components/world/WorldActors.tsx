@@ -28,7 +28,7 @@ import WorldVehicleVisual from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, resetPlayerBody } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
-import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
+import { findSafePlayerLanding, findSafeSeatExit, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
 import { portalRearmed } from './world-travel';
 import { portalCrossing } from './portal-crossing';
 import { advancePortalAttempt, beginPortalAttempt, retreatingFromPortal, type PortalAttempt } from './portal-transfer';
@@ -44,6 +44,9 @@ import WorldDrivingFeedback from './WorldDrivingFeedback';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, needsVehicleRighting, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = VehiclePlacement;
+type ActorState = ReturnType<typeof useWorldStore.getState>;
+type SeatedActor = { seat: NonNullable<ActorState['seat']>; approach: Vec3; releaseRequested: boolean;
+  retryAt: number; noticeAt: number; notice?: ActorState['toast'] };
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
@@ -328,10 +331,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   const nearbyItem = useRef<Interactable|null>(null);
   const interactionOffers = useMemo(createInteractionOfferResolver, []);
   const pickupApproach = useMemo(createInteractionApproach, []);
-  /** Seat id the body was last snapped to (store.seat), where it sat down from, and the seated body point. */
-  const seatHeld = useRef<string|null>(null);
-  const seatFrom = useRef<Vec3|null>(null);
-  const seatBody = useRef<Vec3|null>(null);
+  const seatedActor = useRef<SeatedActor | null>(null);
+  const seatExitRequested = useRef(false);
   const keys = useRef(new Set<string>());
   const releasedKeys = useRef(new Set<string>());
   const resetPad = useRef(false);
@@ -420,10 +421,21 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
   function clearInput() {
     actorActivities.clearInput();
     pickupApproach.cancel();
+    seatExitRequested.current=false;
     keys.current.forEach(key=>releasedKeys.current.add(key));keys.current.clear();resetPad.current=true;
     pad.current.move=[0,0];pad.current.look=[0,0];pad.current.throttle=0;pad.current.brake=0;pad.current.sprint=false;
     actions.current={interact:null,jump:false,recover:false};debugDrive.current=null;moveIntent.current='idle';guideTargetSpeed.current=0;moveInput.current=[0,0];
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
+  }
+  function pollPadInput() {
+    const before = pad.current.buttons, gp = readPad(pad.current);
+    if (resetPad.current) {
+      const held = Math.hypot(...gp.move) + Math.hypot(...gp.look) + gp.throttle + gp.brake + Number(gp.buttons.some(Boolean));
+      if (held < .01) resetPad.current = false;
+      else { gp.move=[0,0];gp.look=[0,0];gp.throttle=0;gp.brake=0;gp.sprint=false;gp.buttons=[]; }
+    }
+    pad.current = gp;
+    return { gp, edge: (button: number) => !!gp.buttons[button] && !before[button] };
   }
   function clearPlayerMotion(hardCut=false) {
     pickupApproach.cancel();
@@ -433,11 +445,68 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     if(!hardCut)return;
     guideTransition.current=null;pendingVehicleExit.current=false;holdDoorForQA.current=false;
     cars.current.forEach(car=>{car.doors.openness=0;});
-    seatHeld.current=null;seatFrom.current=null;seatBody.current=null;
+    seatedActor.current=null;seatExitRequested.current=false;
     useWorldStore.setState({seat:null});
     // Recovery is a cut: rebuild only the guide state from the cached GLTF, so old Sit/Air
     // phases, root offsets and IK anchors cannot re-arm the movement lock at the new position.
     setGuideResetId(id=>id+1);
+  }
+  /** A disabled seated capsule and the seated camera keep the same owner until
+      the standing point has physical support, headroom and region admission. */
+  function stepSeat(body: RapierRigidBody, moving: boolean) {
+    const seat = useWorldStore.getState().seat;
+    if (seat && seatedActor.current?.seat.id !== seat.id) {
+      const at: Vec3 = [seat.position[0], seat.position[1] + PLAYER_CENTER_HEIGHT, seat.position[2]];
+      if (!passage.at(at, PLAYER_RADIUS)) {
+        useWorldStore.setState({ seat: seatedActor.current?.seat ?? null });
+        noticeRegionWaiting(at);
+        return !!seatedActor.current;
+      }
+      seatedActor.current = { seat, approach: asTuple(body.translation()), releaseRequested: false, retryAt: -Infinity, noticeAt: -Infinity };
+      guideYaw.current = seat.yaw;
+      moveInput.current = [0, 0];
+      body.setEnabled(false);
+      resetBody(body, at);
+      nearbyItem.current = null;
+      useWorldStore.setState({ position: at, nearbyInteract: null, interactPick: null, nearbyVehicle: null, canVault: false });
+    }
+    const held = seatedActor.current;
+    if (!held) return false;
+    if (!seat) held.releaseRequested = true;
+    const pressed = seatExitRequested.current || actions.current.jump;
+    seatExitRequested.current = false;
+    actions.current.jump = false;
+    grounded.current = false;
+    guideTargetSpeed.current = 0;
+    moveIntent.current = 'idle';
+    actorActivities.sync({ available: false, grounded: false });
+    if (!pressed && !moving && !held.releaseRequested) return true;
+    const now = performance.now();
+    if (!pressed && now < held.retryAt) return true;
+    held.retryAt = now + 250;
+    const result = findSafeSeatExit(world, rapier, body, held.seat.position, held.seat.yaw, held.approach, waterY,
+      point => passage.at(point, PLAYER_RADIUS));
+    const landing = result.landing;
+    if (!landing) {
+      if (!seat) useWorldStore.setState({ seat: held.seat });
+      if (now >= held.noticeAt) {
+        held.noticeAt = now + 1600;
+        const previousNotice = useWorldStore.getState().toast;
+        if (result.waiting) noticeRegionWaiting(result.waiting);
+        else actorNotice('起身通路被挡住了。请先坐着，等通路畅通后再试。', 'The way out is blocked. Stay seated and try again when clear.');
+        const latestNotice = useWorldStore.getState().toast;
+        if (latestNotice !== previousNotice) held.notice = latestNotice;
+      }
+      return true;
+    }
+    seatedActor.current = null;
+    regionBodies.forget(body);
+    resetBody(body, landing);
+    body.setEnabled(true);
+    portalTravel.current.previous = landing;
+    useWorldStore.setState(state => ({ seat: null, position: landing, zone: sites.zone(landing),
+      toast: state.toast === held.notice ? null : state.toast }));
+    return true;
   }
   function relocatePlayer(position:Vec3) {
     if(!player.current)return;
@@ -513,7 +582,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       return false;
     }
     const car = cars.current.get(id);
-    if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || actorActivities.inputOwner() || guideTransition.current) return false;
+    if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || seatedActor.current || actorActivities.inputOwner() || guideTransition.current) return false;
     if(!passage.at(asTuple(car.body.translation()),car.passageRadius)){noticeRegionWaiting();return false;}
     if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('等车停稳再上车。','Wait for the vehicle to stop.');return false;}
     if(!vehicleDoorUpright(car.body.rotation())){actorNotice('车辆倾覆，先扶正再上车。','Right the tipped vehicle before entering.');return false;}
@@ -1063,9 +1132,9 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
       }
-      const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
-      if(gp.connected&&gp.buttons[9]&&!before[9]){useWorldStore.setState({paused:true});return;}
-      if(gp.connected&&gp.buttons[1]&&!before[1])ride.requestExit();
+      const { gp, edge } = pollPadInput();
+      if(gp.connected&&edge(9)){useWorldStore.setState({paused:true});return;}
+      if(gp.connected&&edge(1))ride.requestExit();
       stepWorldVehicles(dt);
       const egress=ride.egressPath,check=rideExitCheck.current;
       if(egress){check.next-=dt;if(check.revision!==ride.revision||check.next<=0){const clear=passageRoute(passage,egress,PLAYER_RADIUS)&&rideFootRouteClear(world,rapier,player.current,egress);ride.setExitBlocked(!clear);if(!clear&&check.revision!==ride.revision)actorNotice('下车通道尚未就绪或被挡住了，留在车内等候，或返回营地。','The exit is not ready or blocked. Wait inside, or return to camp.');check.revision=ride.revision;check.next=.5;}}
@@ -1142,7 +1211,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     // Evaluate proximity at physics frequency; UI publication is throttled separately.
     let nearby:VehicleId|null=null,nearest=3.8;
     const playerPosition=player.current.translation();
-    const activityAvailable = !active && !state.seat && !state.card && !railVault.current
+    const seated = !!state.seat || !!seatedActor.current, carded = !!state.card;
+    const activityAvailable = !active && !seated && !carded && !railVault.current
       &&passage.at(asTuple(playerPosition),PLAYER_RADIUS);
     actorActivities.sync({position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
       grounded:grounded.current,available:activityAvailable&&!guideTransition.current,
@@ -1153,7 +1223,6 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
     // Anchor distances are compared on the same horizontal metric as the car's (vehicle wins only when
     // its anchor is closer). While seated, a card is open or driving, E belongs to that state.
-    const seated=!!state.seat,carded=!!state.card;
     const sight=(item:Interactable)=>interactionVisible(world,rapier,player.current??undefined,playerPosition,item.position);
     const offerContext = (): InteractionOfferContext => ({
       position: [playerPosition.x, playerPosition.y, playerPosition.z], now: performance.now() / 1000,
@@ -1184,7 +1253,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(!shown.panel){
         if(actorActivities.interact())return;
         if(actorActivities.inputOwner())return;
-        if(now.seat){useWorldStore.setState({seat:null});return;}
+        if(now.seat || seatedActor.current){seatExitRequested.current=true;return;}
         if(now.card){useWorldStore.setState({card:null});return;}
       }
       if (actorActivities.busy() || railVault.current) return;
@@ -1209,15 +1278,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
     if(useWorldStore.getState().paused||useWorldStore.getState().poolInspect)return;
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
-    const before=pad.current.buttons,gp=readPad(pad.current);
-    if(resetPad.current){
-      const held=Math.hypot(...gp.move)+Math.hypot(...gp.look)+gp.throttle+gp.brake+Number(gp.buttons.some(Boolean));
-      if(held<.01)resetPad.current=false;
-      else{gp.move=[0,0];gp.look=[0,0];gp.throttle=0;gp.brake=0;gp.sprint=false;gp.buttons=[];}
-    }
-    pad.current=gp;
+    const { gp, edge } = pollPadInput();
     if(actorActivities.inputOwner()){gp.move=[0,0];gp.look=[0,0];actions.current.jump=false;}
-    const edge=(i:number)=>!!gp.buttons[i]&&!before[i];
     if(gp.connected){
       if(edge(12))cycleInteractPick(-1);
       if(edge(13))cycleInteractPick(1);
@@ -1252,6 +1314,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       debug?.input.boost??(keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||!!gp.buttons[0]));
     publishDrivingTelemetry(active?.spec.id==='coupe'?active.driving:null);
     if(!active){
+      if (stepSeat(player.current, !actorActivities.inputOwner() && Math.hypot(...walkAxes(keys.current, gp)) > .05)) return;
       const p=player.current.translation(),velocity=player.current.linvel();
       const ground=playerSupport(world,rapier,player.current);
       grounded.current=ground?.grounded??false;
@@ -1282,46 +1345,6 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         }
       }
       const magnitude=Math.min(1,Math.hypot(mv[0],mv[1])),running=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||gp.sprint;
-      // Seated (store.seat, spec §15.3): the capsule is disabled while seated so the seat keeps its own
-      // collider (benches stay solid); the visual sits at the seat point. Any movement input, a jump or E
-      // stands up: prefer the nearest clear point in front of the seat. The original approach point
-      // remains a fallback; returning there first could force a needless metre-long visual retreat.
-      const seat=useWorldStore.getState().seat;
-      if(seat&&(magnitude>.05||actions.current.jump)){useWorldStore.setState({seat:null});actions.current.jump=false;}
-      else if(seat&&seatHeld.current!==seat.id){
-        seatFrom.current=[p.x,p.y,p.z];seatHeld.current=seat.id;guideYaw.current=seat.yaw;
-        seatBody.current=[seat.position[0],seat.position[1]+PLAYER_CENTER_HEIGHT,seat.position[2]];
-        // A disabled body takes no part in collision, so it can rest at the seat point (inside the
-        // bench's collider) without being pushed out; the visual follows the body as usual.
-        player.current.setEnabled(false);resetBody(player.current,seatBody.current);
-      }
-      if(seat){moveIntent.current='idle';guideTargetSpeed.current=0;actions.current.jump=false;}
-      if(!seat&&seatHeld.current){
-        const seatedAt=seatBody.current,seatFacing=guideYaw.current;
-        seatHeld.current=null;seatBody.current=null;
-        const from=seatFrom.current;seatFrom.current=null;
-        const free=(q:Vec3)=>{let blocked=false;world.intersectionsWithShape({x:q[0],y:q[1],z:q[2]},{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
-          ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current??undefined,c=>!c.isSensor());return !blocked;};
-        let spot:Vec3|null=null;
-        if(seatedAt&&from)for(const offset of [0,Math.PI/2,-Math.PI/2,Math.PI/4,-Math.PI/4,Math.PI*.75,-Math.PI*.75,Math.PI]){
-          for(const d of [.65,.70,.80,.90]){
-            const a=seatFacing+offset,q:Vec3=[seatedAt[0]+Math.cos(a)*d,from[1]+.025,seatedAt[2]-Math.sin(a)*d];
-            // The approach may have been on the bench or on a higher step. Sample the exit floor
-            // instead of reusing that old height and dropping the capsule into the bench's edge.
-            const floor=world.castRayAndGetNormal(new rapier.Ray({x:q[0],y:q[1]+.5,z:q[2]},{x:0,y:-1,z:0}),3,true,
-              undefined,undefined,undefined,player.current,c=>!c.isSensor()&&(!c.parent()||c.parent()!.isFixed()));
-            if(!floor||floor.normal.y<.91)continue;
-            const floorY=q[1]+.5-floor.timeOfImpact;if(floorY<waterY+.15)continue;
-            q[1]=floorY+PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.01;
-            if(free(q)){spot=q;break;}
-          }
-          if(spot)break;
-        }
-        if(!spot&&from&&free(from))spot=from;
-        if(!spot&&from)for(let k=0;k<8&&!spot;k++){const a=k*Math.PI/4,q:Vec3=[from[0]+Math.cos(a)*.9,from[1]+.05,from[2]+Math.sin(a)*.9];if(free(q))spot=q;}
-        if(spot)resetBody(player.current,spot);
-        player.current.setEnabled(true);
-      }
       const locomotion=actorActivities.locomotion(),sprinting=running&&locomotion.sprintAllowed;
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
@@ -1330,12 +1353,12 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       else if (pending && !unoccupied) finishPortalAttempt();
       const portalWaiting = !!portalTravel.current.attempt;
       if (portalWaiting) actions.current.jump = false;
-      const speed=(seat||portalWaiting?0:Math.min(locomotion.speedLimit,sprinting?6.2:3.6))*magnitude;
+      const speed=(portalWaiting?0:Math.min(locomotion.speedLimit,sprinting?6.2:3.6))*magnitude;
       moveIntent.current=!portalWaiting&&magnitude>.05?(sprinting?'run':'walk'):'idle';
       actorActivities.input(!portalWaiting && magnitude > .05, actions.current.jump);
       const stance=actorActivities.approach();
       const locked=guideMovementLock.current || !!guideTransition.current || actorActivities.movementLocked() || !!operating;
-      if(pickupApproach.active&&(actions.current.jump||actions.current.recover||locked||seat||!unoccupied||ride.active))pickupApproach.cancel();
+      if(pickupApproach.active&&(actions.current.jump||actions.current.recover||locked||!unoccupied||ride.active))pickupApproach.cancel();
       const handFacing=guideActionHand.facing??actorActivities.idleFacing();
       if (handFacing && unoccupied && !operating && magnitude <= .05) {
         const focus=handFacing;
@@ -1401,7 +1424,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       actorActivities.advance(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
-      const eligible=!seat&&!locked&&!pickupApproach.active&&grounded.current&&!actorActivities.carrying()&&!railVault.current;
+      const eligible=!locked&&!pickupApproach.active&&grounded.current&&!actorActivities.carrying()&&!railVault.current;
       vaultPreview.current.elapsed+=dt;
       if(!eligible){vaultPreview.current.plan=null;vaultPreview.current.x=Infinity;}
       else if(vaultPreview.current.elapsed>=.18){
@@ -1437,14 +1460,14 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         else {vx=vault.current.vx;vz=vault.current.vz;guideYaw.current=Math.atan2(-vz,vx);}
       }
       const mass=player.current.mass(),change=playerVelocityChange(velocity,{x:vx,y:0,z:vz},dt,grounded.current);
-      const slopeGravity=seat?null:compensatePlayerSlopeGravity(world,player.current,ground,dt,actions.current.jump&&grounded.current);
+      const slopeGravity=compensatePlayerSlopeGravity(world,player.current,ground,dt,actions.current.jump&&grounded.current);
       if(supportDecision.current)supportDecision.current.slopeGravity=slopeGravity;
       const dx=change.x,dz=change.z;
       player.current.applyImpulse({x:dx*mass,y:0,z:dz*mass},true);
       const currentVelocity=player.current.linvel();
       const safeVelocity=clearance.current?sweptPlayerVelocity(clearance.current,player.current,currentVelocity,dt,rapier.QueryFilterFlags.EXCLUDE_SENSORS):currentVelocity;
       if(safeVelocity!==currentVelocity)player.current.setLinvel(safeVelocity,true);
-      const follow=seat?null:followPlayerGround(world,rapier,player.current,player.current.linvel(),dt,actions.current.jump&&grounded.current);
+      const follow=followPlayerGround(world,rapier,player.current,player.current.linvel(),dt,actions.current.jump&&grounded.current);
       if(supportDecision.current)supportDecision.current.follow=follow;
       // Local 12.5 m/s² gravity and 5 m/s launch give an approximately 1 m,
       // 0.8 s hop. Horizontal momentum is retained at the input edge.
@@ -1473,7 +1496,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       }
       const travel=portalTravel.current,now=asTuple(player.current.translation());
       if(!travel.armed&&!travel.attempt&&portalRearmed(travel.cooldown,now,portals))travel.armed=true;
-      if(travel.armed&&travel.previous&&!seat&&!locked&&!state.card&&!railVault.current){
+      if(travel.armed&&travel.previous&&!locked&&!state.card&&!railVault.current){
         const source=portals.find(g=>portalCrossing(g,travel.previous!,now,PLAYER_RADIUS,PLAYER_HALF_HEIGHT));
         if(source){
           travel.attempt=beginPortalAttempt(source,travel.previous,portals);
@@ -1481,7 +1504,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         }
       }
       const attempt = travel.attempt;
-      if (attempt && (seat || locked || state.card || railVault.current)) finishPortalAttempt();
+      if (attempt && (locked || state.card || railVault.current)) finishPortalAttempt();
       else if (attempt) {
         const body = player.current;
         const result = advancePortalAttempt(attempt, dt, destination => {

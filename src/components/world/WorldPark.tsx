@@ -1,8 +1,6 @@
-import { memo, Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
+import { memo, Component, lazy, Suspense, useEffect, useMemo, type ReactNode } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
-import WorldAlphaExchange from './WorldAlphaExchange';
 import RegionSceneBoundary from './RegionSceneBoundary';
-import WorldDjcClub from './WorldDjcClub';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { BufferGeometry } from 'three';
@@ -22,6 +20,11 @@ import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './
 import { facilityCraftEnabled, registerFacilitySurfaceWakeup, setFacilityEnvironment } from './WorldFacilitySurface';
 import WorldFacilityCraftQA from './WorldFacilityCraftQA';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
+
+// Both sites remain mounted for the park skyline. Their code loads inside each
+// region boundary so a failed request can block only its own physical arrival.
+const WorldAlphaExchange = lazy(() => import('./WorldAlphaExchange'));
+const WorldDjcClub = lazy(() => import('./WorldDjcClub'));
 
 /**
  * Park district (owner: park session). Every static park part is batched into two draws per group:
