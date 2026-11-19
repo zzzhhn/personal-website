@@ -15,6 +15,8 @@ import { PLAYER_HALF_HEIGHT,PLAYER_RADIUS } from '../actor-physics.ts';
 import { CRANE_PIVOTS,CRANE_STAND } from './ibd-crane-control.ts';
 import { buildIbdCraneLever } from './ibd-craft-geometry.ts';
 
+import {createPlayerClearance,playerVelocityChange,sweptPlayerVelocity} from '../player-motion.ts';
+
 await R.init();
 const zero={x:0,y:0,z:0}, fit=g=>ibdGeometryContact(g,'test',0,g.index.count);
 const desc=c=>R.ColliderDesc.trimesh(c.vertices,c.indices);
@@ -163,4 +165,41 @@ test('shipping crate and its fallback keep the open work cavity and follow the s
       world.free();
     }
   }finally{legacyShell.dispose();legacyLid.dispose();disposeWorldCraftGltf(asset.scene);}
+});
+
+test('a grounded operator can step away from both lever caps, while a wall behind still stops the same step', () => {
+  const world = new R.World({x:0,y:-12.5,z:0});
+  const geometry = buildIbdCraneLever();
+  const part = fit(geometry);
+  const dt = 1/60;
+  try {
+    for (const pivot of CRANE_PIVOTS) {
+      const at = ibdWorld(pivot);
+      const body = world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...at));
+      world.createCollider(desc(part),body);
+    }
+    world.createCollider(R.ColliderDesc.cuboid(3,.1,3).setTranslation(-94,.985,-176));
+    const initial = {x:-93.999794,y:1.9038348,z:-176.136795};
+    const player = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(initial.x,initial.y,initial.z).lockRotations().setCcdEnabled(true));
+    world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72)
+      .setFriction(0).setFrictionCombineRule(R.CoefficientCombineRule.Min),player);
+    const controller = createPlayerClearance(world);
+    world.step();
+    const sweep = z => sweptPlayerVelocity(controller,player,{x:0,y:0,z},dt,R.QueryFilterFlags.EXCLUDE_SENSORS).z;
+    assert.ok(sweep(-.078) > -.01,'cannot step deeper into the lever caps');
+    assert.ok(sweep(.078) > .07,'a resting contact must release outward motion');
+    const wall = world.createCollider(R.ColliderDesc.cuboid(1,1,.015)
+      .setTranslation(initial.x,initial.y,initial.z+PLAYER_RADIUS+.0155));
+    world.step();
+    assert.ok(sweep(.35) < .15,'a second wall in the outward path must still block');
+    world.removeCollider(wall,true);
+    const stand = ibdWorld(CRANE_STAND);
+    for(let frame=0;frame<100;frame++){
+      const p = player.translation(), v = player.linvel();
+      const change = playerVelocityChange(v,{x:(stand[0]-p.x)*4,y:0,z:(stand[2]-p.z)*4},dt,true);
+      player.setLinvel(sweptPlayerVelocity(controller,player,{x:v.x+change.x,y:v.y,z:v.z+change.z},dt,R.QueryFilterFlags.EXCLUDE_SENSORS),true);
+      world.step();
+    }
+    assert.ok(Math.abs(player.translation().z-stand[2])<.02,'within the original operation tolerance');
+  } finally { world.free(); geometry.dispose(); }
 });

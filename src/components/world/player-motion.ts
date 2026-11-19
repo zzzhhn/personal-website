@@ -40,7 +40,7 @@ export function sweptPlayerVelocity(controller: ReturnType<typeof createPlayerCl
   }
   controller.computeColliderMovement(body.collider(0), { x: velocity.x * dt, y: velocity.y * dt, z: velocity.z * dt },
     excludeSensors, undefined, c => !blocked.has(c.handle));
-  let wall = false;
+  let wall = false, separating = true;
   const allowed = controller.computedMovement();
   let x = allowed.x / dt, z = allowed.z / dt;
   for (let i = 0; i < controller.numComputedCollisions(); i++) {
@@ -66,6 +66,7 @@ export function sweptPlayerVelocity(controller: ReturnType<typeof createPlayerCl
       if (top && top.normal.y >= WALKABLE_NORMAL_Y) continue;
     }
     wall = true;
+    if (velocity.x * raw.x + velocity.z * raw.z <= 0 || velocity.x * n.x + velocity.z * n.z <= 0) separating = false;
     const horizontal = n.x * n.x + n.z * n.z;
     const into = x * n.x + z * n.z;
     // A dynamic capsule can turn inward input into upward solver impulses even
@@ -76,6 +77,18 @@ export function sweptPlayerVelocity(controller: ReturnType<typeof createPlayerCl
   // Ground-only results are deliberately ignored: preserve the existing slope/support servo and
   // physical launch/landing behavior rather than turning the player into a kinematic controller.
   if (!wall) return velocity;
+  // The slide solver can return zero repeatedly at the edge of a resting trimesh,
+  // even for motion directed out of that contact. Sweep the complete capsule over
+  // this step to check for a second obstruction, including another face of the same mesh.
+  if (separating && Math.hypot(x,z) < .001 && Math.hypot(velocity.x,velocity.z)*dt <= .012) {
+    const capsule = body.collider(0), start = capsule.translation();
+    // Match the standing-route query's 12 mm floor skin allowance. The dynamic
+    // capsule still solves its normal contacts at its true height on this step.
+    const hit = world.castShape({x:start.x,y:start.y+.012,z:start.z}, capsule.rotation(),
+      {x:velocity.x*dt,y:0,z:velocity.z*dt},capsule.shape,0,1,false,
+      excludeSensors,undefined,undefined,body,c=>!blocked.has(c.handle));
+    if (!hit) return velocity;
+  }
   return { x, y: velocity.y, z };
 }
 

@@ -130,7 +130,7 @@ try{
       const crane=hud.getByRole('region',{name:'Manual crane controls'});
       await crane.waitFor();
       const controls=crane.locator('.ibd-crane-directions button');
-      await wait(()=>!document.querySelector('.ibd-crane-directions button')?.disabled);
+      await wait(()=>!!document.querySelector('.ibd-crane-directions button:enabled'));
       events.push(inputStep(input,'握住吊架手柄，方向操作启用',before,{...await read(),stage:0}));
       for(const [stage,key,label] of [[0,'ArrowUp','吊起'],[1,'ArrowLeft','横移'],[2,'ArrowDown','落稳']]){
         const start=await read();
