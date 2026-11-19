@@ -24,7 +24,7 @@ import { createInteractionApproach, createInteractionOfferResolver, interactionV
 import type { Vec3, VehicleId, VehiclePlacement } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import type { GuidePresentationFactory } from './guide-presentation';
-import WorldVehicleVisual from './WorldVehicleVisual';
+import WorldVehicleVisual, { type VehicleWalkContacts } from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, resetPlayerBody } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
@@ -33,6 +33,8 @@ import { portalRearmed } from './world-travel';
 import { portalCrossing } from './portal-crossing';
 import { advancePortalAttempt, beginPortalAttempt, retreatingFromPortal, type PortalAttempt } from './portal-transfer';
 import { vehicleHulls } from './WorldVehicleAssets';
+import { VEHICLE_HULL_FRICTION, VEHICLE_HULL_RESTITUTION, vehicleContactRoot, vehicleHullId, vehicleLeafPose, vehicleTyrePose } from './world-vehicle-contact';
+import { isPlayerContact, playerContactId, playerContactRoot, playerContactSource, registerPlayerContact } from './world-player-contact';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
@@ -50,6 +52,7 @@ type SeatedActor = { seat: NonNullable<ActorState['seat']>; approach: Vec3; rele
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
+  walkContacts: VehicleWalkContacts;
   /** L1 hull colliders active: suspension rays only rest on fixed bodies (DESIGN 6). */
   hulls: boolean; passageRadius:number;
   lights: { brake: boolean; reverse: boolean };
@@ -170,6 +173,31 @@ function readPad(previous: PadState): PadState {
 
 /** L1 COM drop per car in metres (docs/world/vehicles/DESIGN.md 6; gated by the handling A/B). */
 const COM_DROP: Record<VehicleId, number> = { offroad: .5, coupe: .2, van: .5 };
+const contactPosition=new Vector3(), contactRotation=new Quaternion();
+const previousWheelPose=new WeakMap<RapierCollider,{position:Vector3;rotation:Quaternion}>();
+const previousLeafOpen=new WeakMap<RapierCollider,number>();
+function stepVehicleWalkContacts(car:Car,geometry:ReturnType<typeof wheelGeometry>) {
+  car.walkContacts.tyres.forEach((collider,i)=>{
+    if(!collider)return;
+    vehicleTyrePose(geometry.points[i],car.controller.wheelSuspensionLength(i)??geometry.rest,
+      car.controller.wheelSteering(i)??0,car.controller.wheelRotation(i)??0,contactPosition,contactRotation);
+    const previous=previousWheelPose.get(collider);
+    if(!previous){previousWheelPose.set(collider,{position:contactPosition.clone(),rotation:contactRotation.clone()});}
+    if(!previous||!previous.position.equals(contactPosition)){
+      collider.setTranslationWrtParent(contactPosition);previous?.position.copy(contactPosition);
+    }
+    if(!previous||!previous.rotation.equals(contactRotation)){
+      collider.setRotationWrtParent(contactRotation);previous?.rotation.copy(contactRotation);
+    }
+  });
+  car.walkContacts.leaves.forEach((collider,i)=>{
+    if(!collider)return;
+    const side=i===0?-1:1, openness=car.doors.side===side?car.doors.openness:0;
+    if(previousLeafOpen.get(collider)===openness)return;
+    collider.setRotationWrtParent(vehicleLeafPose(car.spec.id,side,car.doors,contactRotation));
+    previousLeafOpen.set(collider,openness);
+  });
+}
 function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Map<VehicleId,Car>>; impact: RefObject<number> }) {
   const body = useRef<RapierRigidBody>(null);
   const wheels = useRef<(Group | null)[]>([]);
@@ -177,6 +205,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const lights = useRef({ brake: false, reverse: false });
   const doors = useRef<VehicleDoorState>({ side: 1, openness: 0 });
   const guards = useRef<(RapierCollider|null)[]>([]);
+  const walkContacts = useRef<VehicleWalkContacts>({tyres:[],leaves:[],beacon:null});
   const { world,rapier,colliderStates } = useRapier();
   // Isolated architecture candidate until reviewer decision; normal entry stays unchanged.
   const guardMode = typeof window!=='undefined' ? new URLSearchParams(window.location.search).get('qaWheelGuards') : null;
@@ -192,9 +221,18 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const hullComDrop = Number(qaParams?.get('qaComDrop') ?? COM_DROP[spec.id]);
   // Low friction / restitution (Min combine) on the body hulls: a grazed post or trunk slides along the flank
   // instead of gripping it and climbing the car up (measured: 0.65 friction lifted the 4x4 33 cm at 10 m/s).
-  const hullFriction = .1, hullRestitution = .1;
-  const hullShapes = useMemo(() => hullEntry?.hulls.map(h => ({ part: h.part, points: new Float32Array(h.points) })) ?? null, [hullEntry]);
+  const hullShapes = useMemo(() => hullEntry?.hulls.filter(h=>h.part!=='rack').map(h => ({ part: h.part, points: new Float32Array(h.points) })) ?? null, [hullEntry]);
+  const isWalkContact=(collider:RapierCollider)=>walkContacts.current.beacon===collider
+    ||walkContacts.current.tyres.includes(collider)||walkContacts.current.leaves.includes(collider);
   useFilterContactPair((a,b)=>{
+    const aCollider=colliderStates.get(a)?.collider,bCollider=colliderStates.get(b)?.collider;
+    const ownWalk=aCollider&&isWalkContact(aCollider)?a:bCollider&&isWalkContact(bCollider)?b:null;
+    if(ownWalk!==null){
+      // Only the actual walking capsule takes impulses from the extra surfaces. The old body
+      // hulls and suspension still own all vehicle, road, and prop contacts and the mass properties.
+      const target=ownWalk===a?bCollider:aCollider;
+      return isPlayerContact(target)?rapier.SolverFlags.COMPUTE_IMPULSE:rapier.SolverFlags.EMPTY;
+    }
     const own=guards.current.some(c=>c?.handle===a)?a:guards.current.some(c=>c?.handle===b)?b:null;
     if(own===null)return null;
     // Read cached JS metadata only during Rapier's solver callback (no nested WASM query).
@@ -212,7 +250,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     const controller = world.createVehicleController(body.current);
     configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension / spec.mass);
     if(spec.id==='coupe')configureCoupeSuspension(controller);
-    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,passageRadius:vehiclePassageRadius(spec.size,hullEntry),steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
+    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,walkContacts:walkContacts.current,lowCom,hulls:!!hullShapes,passageRadius:vehiclePassageRadius(spec.size,hullEntry),steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
     cars.current.set(spec.id,car);
     return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); if(spec.id==='coupe')publishDrivingTelemetry(null); };
   },[world,spec,cars,lowCom,hullShapes]);
@@ -231,9 +269,10 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const [length,height,width] = spec.size;
   const comDrop=lowCom?(spec.id==='coupe'?.3:.5):hullShapes?hullComDrop:0;
   const massProps=(mass:number,x:number,y:number,z:number)=>comDrop>0?{massProperties:{mass,centerOfMass:{x:0,y:-comDrop,z:0},principalAngularInertia:{x:mass*(y*y+z*z)/12,y:mass*(x*x+z*z)/12,z:mass*(x*x+y*y)/12},angularInertiaLocalFrame:{x:0,y:0,z:0,w:1}}}:{mass};
-  return <RigidBody ref={body} position={[spec.position[0],spec.position[1]+geometry.height,spec.position[2]]}
+  return <RigidBody ref={body} name={vehicleContactRoot(spec.id)} position={[spec.position[0],spec.position[1]+geometry.height,spec.position[2]]}
     rotation={[0,spec.yaw,0]} colliders={false} linearDamping={spec.id==='coupe'?.025:.12} angularDamping={0.65}
-    canSleep={false} ccd softCcdPrediction={wheelGuards?.25:0} additionalSolverIterations={wheelGuards?4:0} userData={bodyData} onCollisionEnter={({ other }) => {
+    canSleep={false} ccd softCcdPrediction={wheelGuards?.25:0} additionalSolverIterations={wheelGuards?4:0} userData={bodyData} onCollisionEnter={({ target,other }) => {
+      if(isWalkContact(target.collider))return;
       if (useWorldStore.getState().activeVehicle === spec.id && other.rigidBodyObject?.userData.solid && body.current) {
         const v = body.current.linvel(); impact.current = Math.min(.35, Math.hypot(v.x, v.z) * .025);
       }
@@ -242,7 +281,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
         so total mass, centre of mass and inertia are exactly the tuned values; the zero-mass hulls collide. */}
     <CuboidCollider name={`vehicle-${spec.id}-chassis`} args={[length/2,height*.29,width/2]} {...massProps(spec.mass*.78,length,height*.58,width)} friction={0.65} restitution={0.18} {...(hullShapes?{sensor:true,collisionGroups:0}:{})} />
     <CuboidCollider name={`vehicle-${spec.id}-cabin`} args={[length*.25,height*.2,width*.43]} position={[-length*.08,height*.42,0]} {...massProps(spec.mass*.22,length*.5,height*.4,width*.86)} friction={0.6} restitution={0.12} {...(hullShapes?{sensor:true,collisionGroups:0}:{})}/>
-    {hullShapes?.map(h=><ConvexHullCollider key={h.part} name={`vehicle-${spec.id}-hull-${h.part}`} args={[h.points]} position={[0,hullEntry!.bodyY,0]} mass={0} friction={hullFriction} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={hullRestitution} restitutionCombineRule={rapier.CoefficientCombineRule.Min}/>)}
+    {hullShapes?.map(h=><ConvexHullCollider key={h.part} name={vehicleHullId(spec.id,h.part)} args={[h.points]} position={[0,hullEntry!.bodyY,0]} mass={0} friction={VEHICLE_HULL_FRICTION} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={VEHICLE_HULL_RESTITUTION} restitutionCombineRule={rapier.CoefficientCombineRule.Min}/>)}
     {wheelGuards && geometry.points.map((p,i)=>guardMode==='box'?<CuboidCollider key={i} name={`vehicle-${spec.id}-tyre-guard-${i}`}
       ref={c=>{guards.current[i]=c;if(c)c.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}
       args={[geometry.radius,.15,geometry.radius]} position={[p[0],p[1]-geometry.rest,p[2]]} rotation={[Math.PI/2,0,0]}
@@ -250,7 +289,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
       ref={c=>{guards.current[i]=c;if(c)c.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}
       args={[.15,geometry.radius]} position={[p[0],p[1]-geometry.rest,p[2]]} rotation={[Math.PI/2,0,0]}
       mass={0} friction={0} restitution={0} contactSkin={.015} />)}
-    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} doors={doors} />
+    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} doors={doors} authoredHull={!!hullShapes} walkContacts={hullShapes?walkContacts:null}/>
   </RigidBody>;
 }
 
@@ -259,6 +298,13 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
 type GuideVehicleTransition = { id: VehicleId; side: DoorSide; phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number; exitPosition?:Vec3 } | null;
+function GuideContactFallback({body,visible}:{body:RefObject<RapierRigidBody|null>;visible:boolean}) {
+  const mesh=useRef<Mesh>(null);
+  useFrame(()=>{if(mesh.current)mesh.current.visible=visible&&body.current?.isEnabled()===true;});
+  return <mesh ref={mesh} name="world-guide-capsule-fallback" visible={false} position={[0,PLAYER_RADIUS+PLAYER_HALF_HEIGHT,0]} userData={playerContactSource} castShadow>
+    <capsuleGeometry args={[PLAYER_RADIUS,PLAYER_HALF_HEIGHT*2,6,12]}/><meshStandardMaterial color="#4e5f67" roughness={.9}/>
+  </mesh>;
+}
 function GuideVisual({ presentation, ride, cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { presentation: GuidePresentationFactory; ride: ActorRide; cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
@@ -307,7 +353,8 @@ function GuideVisual({ presentation, ride, cars, body, grounded, yaw, targetSpee
     return {attraction:ridePose?ride.actor:null,seat:ridePose&&ride.seatOnly?{position:ridePose.seat,yaw:ridePose.yaw,orientation:ridePose.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
       frozen:st.paused||st.poolInspect||!!st.shot,...actorActivities.animation()};
   };
-  return <WorldGuide key={resetId} presentation={presentation} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
+  const fallback=<GuideContactFallback body={body} visible={visible}/>;
+  return <WorldGuide key={resetId} presentation={presentation} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} fallback={fallback}/>;
 }
 
 export default function WorldActors({sites,ride,presentation}: {sites: ActorSites;ride: ActorRide;presentation: GuidePresentationFactory}) {
@@ -764,6 +811,7 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
         if(driven){car.lights.brake=true;if(Math.abs(throttle)>.01||Math.abs(speed)>.01)noticeRegionWaiting([x+currentVelocity.x*dt,y+currentVelocity.y*dt,z+currentVelocity.z*dt],car.passageRadius+.125);}
       }
       const wheelShape=wheelGeometry(car.spec.size);
+      stepVehicleWalkContacts(car,wheelShape);
       car.guards.forEach((guard,i)=>{
         if(!guard)return;const p=wheelShape.points[i];
         guard.setTranslationWrtParent({x:p[0],y:p[1]-(car.controller.wheelSuspensionLength(i)??wheelShape.rest),z:p[2]});
@@ -1760,10 +1808,14 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       </RigidBody>}
     </>}
     {vehicles.map(spec=><Vehicle key={spec.id} spec={spec} cars={cars} impact={impact}/>)}
-    <RigidBody ref={bindPlayer} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
+    <RigidBody ref={bindPlayer} name={playerContactRoot} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
       {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
-      <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
+      <CapsuleCollider name={playerContactId} args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}
+        ref={collider=>{if(collider)registerPlayerContact(collider,()=>{
+          const state=useWorldStore.getState();
+          return arrivalPending.current||rideHeld.current||!!guideTransition.current||!!state.activeVehicle||!!seatedActor.current;
+        });}}/>
       <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
         <GuideVisual presentation={presentation} ride={ride} cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson||rideHeld.current} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
       </group>

@@ -1,6 +1,8 @@
 import { Component, memo, Suspense, useEffect, useMemo, useRef, type ReactNode, type RefObject } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
+import { ConvexHullCollider, TrimeshCollider, useRapier, type RapierCollider } from '@react-three/rapier';
 import { AdditiveBlending, DoubleSide, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, PlaneGeometry, Sphere, Vector3 } from 'three';
+import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import type { VehicleId } from './types';
@@ -9,12 +11,21 @@ import { night } from './WorldNight';
 import { VEHICLE_ASSETS, adaptVehicleSeats, bakeNode, headlightTexture, vehicleHulls, vehicleMaterial } from './WorldVehicleAssets';
 import { createVehicleBoostExhaust, createVehicleDoorControls, refineCoupeWheel, refineVehicleBody, updateVehicleBoostExhaust } from './WorldVehicleDetail';
 import { readDrivingTelemetry } from './vehicle-telemetry';
-import { vehicleDoorQuaternion, type VehicleDoorState, type DoorSide } from './WorldVehicleDoors';
+import type { VehicleDoorState, DoorSide } from './WorldVehicleDoors';
+import { vanBeaconId, VEHICLE_HULL_FRICTION, VEHICLE_HULL_RESTITUTION, vehicleBodySources, vehicleDoorContactMesh, vehicleDoorId, vehicleHullId, vehicleLeafPose, vehicleRoofContactMesh, vehicleTyreContactHull, vehicleTyreId, vehicleWheelSource } from './world-vehicle-contact';
+
+export interface VehicleWalkContacts {
+  tyres: (RapierCollider|null)[];
+  leaves: (RapierCollider|null)[];
+  beacon: RapierCollider|null;
+}
+const surface=(surfaceId:string)=>({worldCollision:'solid',surfaceId});
+const detail=(worldCollisionReason:string)=>({worldCollision:'none',worldCollisionReason});
 
 /**
  * Vehicle visuals (owner: vehicles session). Rendered inside the vehicle rigid body, in body space:
- * +X forward, +Y up, origin at the chassis collider centre. Physics, colliders and the raycast
- * suspension stay in WorldActors; this component only draws. `wheels` receives one group per wheel
+ * +X forward, +Y up, origin at the chassis collider centre. Driving and the raycast suspension
+ * stay in WorldActors; contacts depending on visible asset details mount here. `wheels` receives one group per wheel
  * (front-right, front-left, rear-right, rear-left as wheelGeometry().points); WorldActors positions
  * each group at the suspended wheel centre and steers it about +Y every frame, and rotates the
  * group's first child about local Z for rolling. `lights` exposes brake / reverse state for tail lamps.
@@ -22,8 +33,8 @@ import { vehicleDoorQuaternion, type VehicleDoorState, type DoorSide } from './W
  * L1 cars (VEHICLE_ASSETS): the fixed GLB body and two hinged doors are baked separately (vertex colour + role attributes, one
  * shared shader) placed with its ground-plane origin at the measured rest ground height (bodyY), and
  * the four wheels are one InstancedMesh that copies the wheel groups' transforms each frame.
- * Lamps glow from per-car uniforms; no light sources are added. Loading or a failed load shows the
- * greybox car (colliders are independent of this component).
+ * Lamps glow from per-car uniforms. Loading or a failed load shows the greybox car with the
+ * corresponding chassis and tyre shape fitted to the currently displayed model.
  */
 export interface VehicleVisualProps {
   id: VehicleId;
@@ -35,6 +46,8 @@ export interface VehicleVisualProps {
   wheels: RefObject<(Group | null)[]>;
   lights: RefObject<{ brake: boolean; reverse: boolean }>;
   doors: RefObject<VehicleDoorState>;
+  authoredHull: boolean;
+  walkContacts: RefObject<VehicleWalkContacts> | null;
 }
 
 let draco: DRACOLoader | null = null;
@@ -47,15 +60,39 @@ function WheelAnchors({ wheelPoints, wheelRest, wheels }: Pick<VehicleVisualProp
   return <>{wheelPoints.map((point, i) => <group key={i} ref={node => { if (wheels.current) wheels.current[i] = node; }} position={[point[0], point[1] - wheelRest, point[2]]}><group /></group>)}</>;
 }
 
-function Greybox({ id, size: [length, height, width], color, wheelRadius, wheelPoints, wheelRest, wheels }: VehicleVisualProps) {
+function TyreContacts({id,points,rest,hull,contacts}:{id:VehicleId;points:VehicleVisualProps['wheelPoints'];rest:number;hull:Float32Array;contacts:VehicleWalkContacts}){
+  const {rapier}=useRapier();
+  return <>{points.map(([x,y,z],i)=><ConvexHullCollider key={i} name={vehicleTyreId(id,i)} args={[hull]} position={[x,y-rest,z]}
+    mass={0} friction={0} restitution={0} ref={collider=>{contacts.tyres[i]=collider;collider?.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}/>)}</>;
+}
+
+function Greybox({ id, size: [length, height, width], color, wheelRadius, wheelPoints, wheelRest, wheels, authoredHull, walkContacts }: VehicleVisualProps) {
+  const {rapier}=useRapier();
+  const hull=authoredHull?vehicleHulls(id):null;
+  const rack=useMemo(()=>hull?.hulls.find(part=>part.part==='rack'),[hull]);
+  const rackPoints=useMemo(()=>rack?Float32Array.from(rack.points):null,[rack]);
+  const parts=useMemo(()=>hull?.hulls.map(({part,points})=>({id:vehicleHullId(id,part),geometry:new ConvexGeometry(
+    Array.from({length:points.length/3},(_,i)=>new Vector3().fromArray(points,i*3)))})),[hull,id]);
+  const tyre=useMemo(()=>new Float32Array(Array.from({length:20},(_,i)=>{
+    const a=(i%10)*Math.PI/5;return [wheelRadius*Math.sin(a),wheelRadius*Math.cos(a),i<10?-.15:.15];
+  }).flat()),[wheelRadius]);
+  useEffect(()=>()=>parts?.forEach(({geometry})=>geometry.dispose()),[parts]);
   return <group name={`vehicle-greybox-${id}`}>
-    <mesh castShadow receiveShadow><boxGeometry args={[length, height * .58, width]} /><meshStandardMaterial color={color} roughness={0.92} /></mesh>
-    <mesh position={[-length * .08, height * .42, 0]} castShadow><boxGeometry args={[length * .5, height * .4, width * .86]} /><meshStandardMaterial color={id === 'offroad' ? '#E8803A' : '#4E647D'} roughness={0.96} /></mesh>
-    <mesh position={[length / 2 + .015, 0, 0]}><boxGeometry args={[.05, .17, width * .7]} /><meshStandardMaterial color="#E6DCCB" /></mesh>
-    <mesh position={[-length / 2 - .015, .05, 0]}><boxGeometry args={[.04, .12, width * .75]} /><meshStandardMaterial color="#63BEB3" emissive="#63BEB3" emissiveIntensity={0.4} /></mesh>
+    {hull&&rackPoints&&<ConvexHullCollider name={vehicleHullId(id,'rack')} args={[rackPoints]} position={[0,hull.bodyY,0]}
+      mass={0} friction={VEHICLE_HULL_FRICTION} restitution={VEHICLE_HULL_RESTITUTION}
+      frictionCombineRule={rapier.CoefficientCombineRule.Min} restitutionCombineRule={rapier.CoefficientCombineRule.Min}/>}
+    {hull&&parts?<group position={[0,hull.bodyY,0]}>{parts.map(part=><mesh key={part.id} name={`${part.id}-fallback`} geometry={part.geometry} userData={surface(part.id)} castShadow receiveShadow>
+      <meshStandardMaterial color={part.id.endsWith('cabin')||part.id.endsWith('cab')?(id==='offroad'?'#E8803A':'#4E647D'):color} roughness={.92}/>
+    </mesh>)}</group>:<>
+      <mesh userData={surface(`vehicle-${id}-chassis`)} castShadow receiveShadow><boxGeometry args={[length,height*.58,width]}/><meshStandardMaterial color={color} roughness={.92}/></mesh>
+      <mesh userData={surface(`vehicle-${id}-cabin`)} position={[-length*.08,height*.42,0]} castShadow><boxGeometry args={[length*.5,height*.4,width*.86]}/><meshStandardMaterial color={id==='offroad'?'#E8803A':'#4E647D'} roughness={.92}/></mesh>
+    </>}
+    <mesh position={[length / 2 + .015, 0, 0]} userData={detail('Headlight lens trim on the fallback model')}><boxGeometry args={[.05, .17, width * .7]} /><meshStandardMaterial color="#E6DCCB" /></mesh>
+    <mesh position={[-length / 2 - .015, .05, 0]} userData={detail('Tail light lens trim on the fallback model')}><boxGeometry args={[.04, .12, width * .75]} /><meshStandardMaterial color="#63BEB3" emissive="#63BEB3" emissiveIntensity={0.4} /></mesh>
+    {walkContacts&&<TyreContacts id={id} points={wheelPoints} rest={wheelRest} hull={tyre} contacts={walkContacts.current}/>}
     {wheelPoints.map((point, i) => <group key={i} ref={node => { if (wheels.current) wheels.current[i] = node; }} position={[point[0], point[1] - wheelRest, point[2]]}>
-      <group><mesh rotation={[Math.PI / 2, 0, 0]} castShadow><cylinderGeometry args={[wheelRadius, wheelRadius, .3, 10]} /><meshStandardMaterial color="#33383C" roughness={1} /></mesh>
-        <mesh position={[0, 0, i % 2 === 0 ? .17 : -.17]} rotation={[Math.PI / 2, 0, 0]}><cylinderGeometry args={[wheelRadius * .46, wheelRadius * .46, .025, 6]} /><meshStandardMaterial color="#E6DCCB" roughness={.9} /></mesh></group>
+      <group><mesh rotation={[Math.PI / 2, 0, 0]} userData={walkContacts?surface(vehicleTyreId(id,i)):detail('Wheel visual follows the suspension ray on the comparison setup')} castShadow><cylinderGeometry args={[wheelRadius, wheelRadius, .3, 10]} /><meshStandardMaterial color="#33383C" roughness={1} /></mesh>
+        <mesh position={[0, 0, i % 2 === 0 ? .17 : -.17]} rotation={[Math.PI / 2, 0, 0]} userData={detail('Small cosmetic fallback hub cap')}><cylinderGeometry args={[wheelRadius * .46, wheelRadius * .46, .025, 6]} /><meshStandardMaterial color="#E6DCCB" roughness={.9} /></mesh></group>
     </group>)}
   </group>;
 }
@@ -67,7 +104,7 @@ class VisualGuard extends Component<{ id: string; fallback: ReactNode; children:
   render() { return this.state.failed ? this.props.fallback : <Suspense fallback={this.props.fallback}>{this.props.children}</Suspense>; }
 }
 
-const _m = new Matrix4(), _w = new Matrix4(), _flip = new Matrix4().makeRotationY(Math.PI);
+const _w = new Matrix4(), _flip = new Matrix4().makeRotationY(Math.PI);
 const _vehiclePosition = new Vector3();
 const lodReaders = new Map<VehicleId, () => Record<string, unknown>>();
 /** Read-only tooling view of the actual meshes; importing it does not force a LOD or move a camera. */
@@ -80,9 +117,10 @@ const LAMPS: Record<VehicleId, { tailParked: number; beacon: boolean }> = {
 };
 
 function L1Visual(props: VehicleVisualProps & { asset: string }) {
-  const { id, asset, wheels, lights, wheelPoints, wheelRest } = props;
+  const { id, asset, wheels, lights, wheelPoints, wheelRest, authoredHull, walkContacts } = props;
   const gltfs = useLoader(GLTFLoader, [`/assets/world/vehicles/${asset}.glb`, `/assets/world/vehicles/${asset}-lod1.glb`], withDraco) as GLTF[];
   const hull = vehicleHulls(id)!;
+  const {rapier}=useRapier();
   const visual = useRef<Group>(null), bodyMesh = useRef<Mesh>(null);
   const built = useMemo(() => {
     const geometries = gltfs.map((gltf, level) => {
@@ -100,18 +138,28 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
         if (!node) throw new Error(`[world-vehicles] ${asset} lacks ${name}`);
         return { geometry: bakeNode(node), position: node.position.clone(), side: (name === 'door-left' ? -1 : 1) as DoorSide };
       });
-      return { body: bodyGeometry, wheel: wheelGeometry, doors };
+      const bodySources=authoredHull?vehicleBodySources(id,bodyGeometry,hull):[{id:`${id}-legacy-body`,firstVertex:0,
+        vertexCount:bodyGeometry.attributes.position.count,collision:'solid' as const,surfaceId:`vehicle-${id}-chassis`}];
+      return { body: bodyGeometry, bodySources, wheel: wheelGeometry, doors };
     });
     const material = vehicleMaterial();
     const instanced = new InstancedMesh(geometries[0].wheel, material, 4);
     instanced.userData.shadowLodGeometry = geometries[1].wheel;
     instanced.castShadow = true; instanced.receiveShadow = true; instanced.name = `vehicle-${id}-wheels`;
-    for (let i = 0; i < 4; i++) { const p = wheelPoints[i]; _m.makeTranslation(p[0], p[1] - wheelRest, p[2]); if (p[2] > 0) _m.multiply(_flip); instanced.setMatrixAt(i, _m); }
+    const wheelMatrices=wheelPoints.map(([x,y,z])=>{
+      const matrix=new Matrix4().makeTranslation(x,y-wheelRest,z);
+      return z>0?matrix.multiply(_flip):matrix;
+    });
+    wheelMatrices.forEach((matrix,i)=>instanced.setMatrixAt(i,matrix));
+    Object.assign(instanced.userData,walkContacts?{worldCollision:'solid',worldCollisionInstances:vehicleWheelSource(id,wheelMatrices,true)}
+      :detail('Wheel visual follows the suspension ray on the comparison setup'));
     instanced.boundingSphere = new Sphere(new Vector3(), Math.hypot(wheelPoints[0][0], wheelPoints[0][2]) + hull.wheelRadius + .4);
     const pool = new Mesh(new PlaneGeometry(9, 4.5), new MeshBasicMaterial({ map: headlightTexture(), transparent: true, depthWrite: false, blending: AdditiveBlending, side: DoubleSide, opacity: 0, toneMapped: false }));
     pool.rotation.x = -Math.PI / 2; pool.visible = false; pool.renderOrder = 2; pool.name = `vehicle-${id}-headlight-pool`;
     pool.userData.noOcclusionFade = true;
+    Object.assign(pool.userData,detail('Headlight illumination on the road'));
     const exhaust = id === 'coupe' ? createVehicleBoostExhaust(hull.bodyY) : null;
+    if(exhaust)Object.assign(exhaust.userData,detail('Boost exhaust light and heat plume'));
     const doors = geometries[0].doors.map((door, i) => {
       const mesh = new Mesh(door.geometry, material);
       mesh.position.copy(door.position); mesh.position.y += hull.bodyY;
@@ -120,10 +168,17 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       mesh.userData.shadowLodGeometry = geometries[1].doors[i].geometry;
       // A moving part must keep its own transform, including in the shadow budget pass.
       mesh.userData.vehicle = id;
+      Object.assign(mesh.userData,walkContacts?surface(vehicleDoorId(id,door.side)):detail('Animated door with its transfer clearance sweep'));
       return mesh;
     });
-    return { geometries, material, instanced, pool, exhaust, doors, doorControls:createVehicleDoorControls(id,hull.bodyY), level: 0, distance: 0 };
-  }, [gltfs, asset, id, wheelPoints, wheelRest, hull.wheelRadius]);
+    const doorControls=createVehicleDoorControls(id,hull.bodyY);
+    if(doorControls)Object.assign(doorControls.userData,detail('Recessed cabin switches with hand contact targets'));
+    const leafShapes=walkContacts&&geometries[0].doors.map(({geometry})=>vehicleDoorContactMesh(geometry));
+    const tyreShape=walkContacts&&vehicleTyreContactHull(geometries[0].wheel);
+    const rack=authoredHull&&vehicleRoofContactMesh(geometries[0].body,geometries[0].bodySources,vehicleHullId(id,'rack'));
+    const beacon=walkContacts&&id==='van'&&vehicleRoofContactMesh(geometries[0].body,geometries[0].bodySources,vanBeaconId);
+    return { geometries, material, instanced, wheelMatrices, pool, exhaust, doors, doorControls, leafShapes, tyreShape, rack, beacon, level: 0, distance: 0 };
+  }, [gltfs, asset, id, wheelPoints, wheelRest, hull, authoredHull, walkContacts]);
   useEffect(() => {
     const triangles = (g: typeof built.geometries[number]) => (g.body.attributes.position.count + 4 * g.wheel.attributes.position.count + g.doors.reduce((n,d) => n + d.geometry.attributes.position.count, 0)) / 3;
     const proxies = () => {
@@ -168,12 +223,13 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       const level = built.distance >= 60 ? 1 : built.distance < 58 ? 0 : built.level;
       if (level !== built.level) {
         bodyMesh.current.geometry = built.geometries[level].body;
+        bodyMesh.current.userData.worldCollisionSources=built.geometries[level].bodySources;
         built.instanced.geometry = built.geometries[level].wheel;
         built.doors.forEach((door,i) => { door.geometry = built.geometries[level].doors[i].geometry; });
         built.level = level;
       }
     }
-    built.doors.forEach((door,i) => { const side = built.geometries[0].doors[i].side; vehicleDoorQuaternion(id, side, props.doors.current.side === side ? props.doors.current.openness : 0, door.quaternion); });
+    built.doors.forEach((door,i) => { vehicleLeafPose(id,built.geometries[0].doors[i].side,props.doors.current,door.quaternion); });
     if(built.doorControls)built.doorControls.visible=built.distance<35;
     const groups = wheels.current;
     for (let i = 0; i < 4; i++) {
@@ -182,6 +238,7 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       g.updateMatrix(); roll.updateMatrix();
       _w.multiplyMatrices(g.matrix, roll.matrix);
       if (wheelPoints[i][2] > 0) _w.multiply(_flip);
+      built.wheelMatrices[i].copy(_w);
       built.instanced.setMatrixAt(i, _w);
     }
     built.instanced.instanceMatrix.needsUpdate = true;
@@ -199,7 +256,18 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
   });
   return <group ref={visual} name={`vehicle-${id}-visual`} userData={{ vehicle: id, assetId: asset }}>
     <WheelAnchors wheelPoints={wheelPoints} wheelRest={wheelRest} wheels={wheels} />
-    <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]} userData={{ shadowLodGeometry: built.geometries[1].body }} castShadow receiveShadow />
+    <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]}
+      userData={{shadowLodGeometry:built.geometries[1].body,worldCollisionSources:built.geometries[0].bodySources}} castShadow receiveShadow />
+    {built.rack&&<TrimeshCollider name={vehicleHullId(id,'rack')} args={[built.rack.vertices,built.rack.indices]} position={[0,hull.bodyY,0]}
+      mass={0} friction={VEHICLE_HULL_FRICTION} restitution={VEHICLE_HULL_RESTITUTION}
+      frictionCombineRule={rapier.CoefficientCombineRule.Min} restitutionCombineRule={rapier.CoefficientCombineRule.Min}/>}
+    {built.beacon&&walkContacts&&<TrimeshCollider name={vanBeaconId} args={[built.beacon.vertices,built.beacon.indices]} position={[0,hull.bodyY,0]}
+      mass={0} friction={0} restitution={0} ref={collider=>{walkContacts.current.beacon=collider;collider?.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}/>}
+    {walkContacts&&built.tyreShape&&<TyreContacts id={id} points={wheelPoints} rest={wheelRest} hull={built.tyreShape} contacts={walkContacts.current}/>}
+    {walkContacts&&built.leafShapes&&built.leafShapes.map(({vertices,indices},i)=>
+      <TrimeshCollider key={i} name={vehicleDoorId(id,built.geometries[0].doors[i].side)} args={[vertices,indices]}
+        position={built.doors[i].position.toArray()} mass={0} friction={0} restitution={0}
+        ref={collider=>{walkContacts.current.leaves[i]=collider;collider?.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}/>)}
     {built.doors.map(door => <primitive key={door.name} object={door} />)}
     <primitive object={built.instanced} />
     {built.exhaust && <primitive object={built.exhaust} />}

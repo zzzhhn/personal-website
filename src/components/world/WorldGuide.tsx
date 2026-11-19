@@ -8,6 +8,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { GuideSlopeFit, GuideStopStep, skinnedWorldPoint, type SlopeProbe } from './WorldGuideStop';
 import { GuideInertializer, GuidePhaseModel, PhaseGate, type InertialHalflives } from './WorldGuidePhase';
 import { guideSkinEvidence } from './WorldGuideEvidence';
+import { playerContactSource } from './world-player-contact';
 import type { GuidePresentationFactory } from './guide-presentation';
 import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
@@ -171,7 +172,10 @@ function GuideModel({ presentation, frozen: initialFrozen = false, speedMps: ini
     const animations = [...calibrateGuideBootClips(scene, gltf.animations), ...createClubDanceClips(scene)];
     const disposeMerged = mergeGuideMaterials(scene);
     const visualGLTF = { ...gltf, scene, animations };
-    scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
+    scene.traverse(o => { if (o instanceof Mesh) {
+      o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false;
+      Object.assign(o.userData,playerContactSource);
+    } });
     const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
       if (!(o instanceof SkinnedMesh)) return;

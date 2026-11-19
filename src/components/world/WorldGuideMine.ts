@@ -123,6 +123,7 @@ export class GuideMineLayer {
     this.clearAssets();
     const install = (key: string, object: Object3D, tint?: string) => {
       const root = object.clone(true); root.name = `mine-${key}`; root.visible = false; root.updateWorldMatrix(true, true);
+      Object.assign(root.userData,{worldCollision:'none',worldCollisionReason:'Held mine tool or ore follows its staged grip and action targets'});
       const inverseRoot = root.matrixWorld.clone().invert();
       const socket = (name: string, required = false) => {
         const node = root.getObjectByName(name) ?? root.getObjectByName(`${object.name}_${name}`);

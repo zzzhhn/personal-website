@@ -42,6 +42,7 @@ export class GuideExchangeLayer {
     this.spine = ['spine', 'chest'].map(name => bone(name)).filter((value): value is Bone => !!value);
     for (const item of [...this.spine, ...[right, left].flatMap(a => a ? [a.upper, a.lower, a.hand] : [])]) this.saved.set(item, item.quaternion.clone());
     this.paper.name = 'exchange-carried-paper'; this.paper.visible = false; this.paper.position.set(0, .012, 0);
+    Object.assign(this.paper.userData,{worldCollision:'none',worldCollisionReason:'Hand-carried ticket or receipt follows the exchange action'});
     const sheet = new Mesh(this.paperGeometry, this.paperMaterial); sheet.castShadow = true; this.paper.add(sheet);
     for (let i = 0; i < 4; i++) {
       const stripe = new Mesh(this.stripeGeometry, this.stripeMaterial); stripe.position.set(-.009, .004, -.048 + i * .024); this.paper.add(stripe);
