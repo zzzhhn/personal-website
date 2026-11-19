@@ -1,41 +1,36 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { createRequire } from 'node:module';
-import { dirname, join } from 'node:path';
-import ts from 'typescript';
-import { MathUtils } from 'three';
-import { addEffect, advance, flushGlobalEffects } from '@react-three/fiber';
+import 'three';
+import React from 'react';
+import { act, addEffect, advance, flushGlobalEffects } from '@react-three/fiber';
+import { Physics, useRapier, useBeforePhysicsStep, useAfterPhysicsStep } from '@react-three/rapier';
+import { mountFrameScene } from '../../../tools/world/alpha-mine-tests/frame-host.mjs';
 import { createResumeTimeBoundary } from './world-resume-time.ts';
 import { worldRenderMode } from './performance-render-policy.ts';
 
-// Execute the installed React-Rapier step closure, not a rewritten accumulator.
-// Empty scene/event maps and a counting world isolate timestep delivery; this
-// does not validate collision behavior, a browser, or WebGL performance.
-const require = createRequire(import.meta.url);
-const source = ts.createSourceFile('rapier.js', readFileSync(join(dirname(require.resolve('@react-three/rapier')), 'react-three-rapier.esm.js'), 'utf8'), ts.ScriptTarget.Latest, true);
-const candidates = [];
-function visit(node) {
-  if (ts.isVariableDeclaration(node) && node.name.getText(source) === 'step' &&
-      node.initializer && ts.isCallExpression(node.initializer) && node.initializer.expression.getText(source) === 'useCallback') candidates.push(node.initializer.arguments[0]);
-  ts.forEachChild(node, visit);
-}
-visit(source);
-assert.equal(candidates.length, 1, 'installed Rapier step closure is unambiguous');
-const stepSource = candidates[0].getText(source);
-
-function fixture(t, enabled = true) {
-  let now = 0, last = 0, calls = 0, resets = 0, registrations = 0, maxRegistrations = 0;
-  let visible = true, paused = false, shot = null, position = 0, gameplayTime = 0, before = 0, after = 0;
-  const deltas = [], timesteps = [], steppingState = { previousState: {}, accumulator: 0 };
+// Deliver the test clock's deltas through Fiber into the public step method of
+// a mounted Physics provider. The fixed-step counts and distance come from WASM.
+async function fixture(t, enabled = true) {
+  let now = 0, last = 0, resets = 0, registrations = 0, maxRegistrations = 0;
+  let visible = true, paused = false, shot = null, gameplayTime = 0, before = 0, after = 0;
+  const deltas = [], timesteps = [];
   const clock = { getDelta() { const dt = (now - last) / 1000; last = now; return dt; } };
-  const world = { timestep: 1 / 60, step() { calls++; timesteps.push(this.timestep); position += 3 * this.timestep; }, forEachRigidBody() {}, forEachActiveRigidBody() {} };
-  const env = { worldProxy: world, MathUtils, timeStep: 1 / 60, interpolate: true, paused: false, steppingState,
-    beforeStepCallbacks: new Set([{ current() { before++; } }]), afterStepCallbacks: new Set([{ current() { after++; } }]),
-    filterContactPairHooks: new Set(), filterIntersectionPairHooks: new Set(), hooks: {},
-    rigidBodyStates: new Map(), rigidBodyEvents: new Map(),
-    eventQueue: { drainCollisionEvents() {}, drainContactForceEvents() {} }, invalidate() {} };
-  const step = new Function(...Object.keys(env), `return (${stepSource});`)(...Object.values(env));
+  let physics;
+  function Probe() {
+    physics = useRapier();
+    useBeforePhysicsStep(() => {before++;});
+    useAfterPhysicsStep(world => {after++;timesteps.push(world.timestep);});
+    return null;
+  }
+  function Root() {
+    return React.createElement(React.Suspense,{fallback:null},
+      React.createElement(Physics,{gravity:[0,0,0],timeStep:1/60},React.createElement(Probe)));
+  }
+  await mountFrameScene(t,Root,{});
+  const deadline=Date.now()+5000;
+  while(!physics && Date.now()<deadline) await act(()=>new Promise(resolve=>setTimeout(resolve,10)));
+  assert.ok(physics,'the installed WASM provider mounted');
+  const body=physics.world.createRigidBody(physics.rapier.RigidBodyDesc.dynamic().setLinvel(3,0,0));
   const running = () => worldRenderMode(visible, paused, shot) === 'always';
   const state = { clock, frameloop: 'always', scene: {}, camera: {},
     gl: { render() {}, xr: { isPresenting: false } },
@@ -43,7 +38,7 @@ function fixture(t, enabled = true) {
   const store = { getState: () => state };
   state.internal.subscribers = [
     { store, ref: { current(_, delta) { deltas.push(delta); } } },
-    { store, ref: { current(_, delta) { if (running()) step(delta); } } },
+    { store, ref: { current(_, delta) { if (running()) physics.step(delta); } } },
     { store, ref: { current(_, delta) { if (running()) gameplayTime += delta; } } },
   ];
   const boundary = createResumeTimeBoundary(clock,
@@ -60,18 +55,18 @@ function fixture(t, enabled = true) {
     },
     layoutReset() { clock.getDelta(); },
     elapse(ms) { now += ms; },
-    frame(ms) { now += ms; const previous = calls; advance(undefined, true, state); return { delta: deltas.at(-1), steps: calls - previous }; },
+    frame(ms) { now += ms; const previous = after; advance(undefined, true, state); return { delta: deltas.at(-1), steps: after - previous }; },
     otherRootFrame(ms) { now += ms; flushGlobalEffects('before', now); },
-    read: () => ({ calls, resets, registrations, maxRegistrations, position, gameplayTime, before, after, remainder: steppingState.accumulator, deltas: [...deltas], timesteps: [...timesteps] }),
+    read: () => ({ calls:timesteps.length, resets, registrations, maxRegistrations, position:body.translation().x, gameplayTime, before, after, deltas: [...deltas], timesteps: [...timesteps] }),
     dispose: () => boundary.dispose(),
   };
 }
 
-test('installed R3F + Rapier reproduce cold/warm catch-up; boundary excludes pre-first-frame delay only', t => {
+test('installed R3F + Rapier reproduce cold/warm catch-up; boundary excludes pre-first-frame delay only', async t => {
   // Warm evidence's 14 ticks includes an unmeasured pre-pause remainder.
   // 10 ms is an explicit fixture value, not a claim about the measured run.
   for (const [delay, remainderMs, secondSteps] of [[243.8, 0, 6], [223.9, 10, 7]]) {
-    const legacy = fixture(t, false), fixed = fixture(t);
+    const legacy = await fixture(t, false), fixed = await fixture(t);
     legacy.frame(remainderMs); fixed.frame(remainderMs);
     legacy.set({ paused: true }); legacy.elapse(30_000); legacy.set({}); legacy.layoutReset();
     assert.equal(legacy.frame(delay).steps, 14);
@@ -84,31 +79,32 @@ test('installed R3F + Rapier reproduce cold/warm catch-up; boundary excludes pre
   }
 });
 
-test('continuous 60/30/10 Hz, uneven frames and stalls preserve deltas, fixed ticks and callback/motion speed', t => {
-  const baseline = fixture(t, false), fixed = fixture(t);
+test('continuous 60/30/10 Hz, uneven frames and stalls preserve deltas, fixed ticks and callback/motion speed', async t => {
+  const baseline = await fixture(t, false), fixed = await fixture(t);
   const intervals = [...Array(120).fill(1000 / 60), ...Array(60).fill(1000 / 30), ...Array(20).fill(100), 8, 41, 111.5, 243.8, 800];
   for (const dt of intervals) assert.deepEqual(fixed.frame(dt), baseline.frame(dt));
   assert.deepEqual(fixed.read(), baseline.read());
   assert.equal(fixed.read().resets, 0);
-  assert.ok(fixed.read().timesteps.every(dt => dt === 1 / 60));
+  assert.ok(fixed.read().timesteps.every(dt => dt === Math.fround(1 / 60)));
   assert.equal(fixed.read().before, fixed.read().calls); assert.equal(fixed.read().after, fixed.read().calls);
   assert.ok(Math.abs(fixed.read().deltas.at(-1) - .8) < 1e-10, 'R3F still delivers the full stall; Rapier retains its existing 0.5 s cap');
 });
 
-test('fractional accumulator survives pause; repeated resume never accumulates discarded sleep', t => {
-  const f = fixture(t);
+test('fractional accumulator survives pause; repeated resume never accumulates discarded sleep', async t => {
+  const f = await fixture(t);
   assert.equal(f.frame(10).steps, 0);
-  const remainder = f.read().remainder;
+  const position = f.read().position;
   for (let i = 0; i < 6; i++) {
     f.set({ paused: true }); f.elapse(60_000); f.set({}); f.layoutReset();
-    assert.equal(f.frame(240).steps, 0); assert.equal(f.read().remainder, remainder);
+    assert.equal(f.frame(240).steps, 0); assert.equal(f.read().position, position);
   }
   assert.equal(f.frame(10).steps, 1);
+  assert.ok(Math.abs(f.read().position-.05)<.00001);
   assert.equal(f.read().resets, 6); assert.equal(f.read().maxRegistrations, 1);
 });
 
-test('paused menu/shot edits keep finite frame deltas without consuming the pending active reset', t => {
-  const f = fixture(t);
+test('paused menu/shot edits keep finite frame deltas without consuming the pending active reset', async t => {
+  const f = await fixture(t);
   for (const mode of [{ paused: true }, { shot: 'coaster-overview' }]) {
     f.set(mode);
     for (const edit of ['day/night', 'quality', 'resize']) {
@@ -121,8 +117,8 @@ test('paused menu/shot edits keep finite frame deltas without consuming the pend
   assert.deepEqual(f.frame(20), { delta: .02, steps: 1 });
 });
 
-test('hidden/paused demand frames and stale Canvas mode cannot consume a resume boundary', t => {
-  const f = fixture(t);
+test('hidden/paused demand frames and stale Canvas mode cannot consume a resume boundary', async t => {
+  const f = await fixture(t);
   f.set({ visible: false }); f.otherRootFrame(120_000);
   assert.equal(f.read().resets, 0);
   f.set({ paused: true }); f.frame(20); assert.equal(f.read().resets, 0);
@@ -134,8 +130,8 @@ test('hidden/paused demand frames and stale Canvas mode cannot consume a resume 
   assert.equal(f.read().resets, 2);
 });
 
-test('inactive/XR roots wait, and cleanup cancels pending work without waking or modifying the clock', t => {
-  const f = fixture(t);
+test('inactive/XR roots wait, and cleanup cancels pending work without waking or modifying the clock', async t => {
+  const f = await fixture(t);
   f.set({ paused: true }); f.set({}); f.state.internal.active = false;
   f.otherRootFrame(200); assert.equal(f.read().resets, 0);
   f.state.internal.active = true; f.state.gl.xr.isPresenting = true;

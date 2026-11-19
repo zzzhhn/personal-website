@@ -1,68 +1,69 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import ts from 'typescript';
-import { Group, Matrix4, Mesh, Vector3 } from 'three';
-import { IBD_PACK_INSPECTION, IBD_PACK_SLOTS, ibdPackInspectAnchors, ibdPackTransferPose } from './attractions/ibd-pack-layout.ts';
+import React from 'react';
+import * as THREE from 'three';
+import { Group, Matrix4 } from 'three';
+import { compileWorldComponent } from '../../../tools/world/alpha-mine-tests/component-host.mjs';
+import { mountFrameScene } from '../../../tools/world/alpha-mine-tests/frame-host.mjs';
+import * as packLayout from './attractions/ibd-pack-layout.ts';
+import * as packGeometry from './attractions/ibd-pack-geometry.ts';
 import { EXCHANGE_PLAY_PROPS as P, EXCHANGE_PLAY_STATIONS as S } from './alpha-exchange-play-layout.ts';
 import { exchangeWorld } from './alpha-exchange-layout.ts';
+import { exchangeChamferBox } from './alpha-exchange-craft.ts';
 
-// Execute the actual production frame callbacks and cache initializers against
-// real Three objects. No React/GL/browser mount, geometry build or fake timings.
-function sourceParts(path) {
-  const js = ts.transpileModule(readFileSync(new URL(path, import.meta.url), 'utf8'), {
-    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX },
-  }).outputText;
-  const file = ts.createSourceFile(path, js, ts.ScriptTarget.Latest, true), variables = new Map(), frames = [];
-  const visit = node => {
-    if (ts.isVariableDeclaration(node) && node.initializer) variables.set(node.name.getText(file), node.initializer.getText(file));
-    if (ts.isCallExpression(node) && node.expression.getText(file) === 'useFrame') frames.push(node.arguments[0].getText(file));
-    ts.forEachChild(node, visit);
-  };
-  visit(file); assert.equal(frames.length, 1);
-  const bind = (expression, env) => new Function(...Object.keys(env), `return (${expression});`)(...Object.values(env));
-  return { variable: (name, env) => bind(variables.get(name), env), frame: env => bind(frames[0], env) };
+const ibdComponent=compileWorldComponent(new URL('./attractions/WorldIbdPackInspection.tsx',import.meta.url));
+const alphaComponent=compileWorldComponent(new URL('./WorldAlphaExchangePlay.tsx',import.meta.url));
+const ref=current=>({current});
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-9,`${a} != ${b}`);
+function countPositionWrites(node) {
+  let writes=0;
+  const set=node.position.set;
+  node.position.set=function(...args){writes++;return set.apply(this,args);};
+  return ()=>writes;
 }
-const ibdSource = sourceParts('./attractions/WorldIbdPackInspection.tsx');
-const alphaSource = sourceParts('./WorldAlphaExchangePlay.tsx');
-const ref = current => ({ current });
-const near = (a,b) => assert.ok(Math.abs(a-b)<1e-9, `${a} != ${b}`);
 
-function ibdRig(slot, shared) {
-  const parent = new Group(), root = ref(new Group()), mechanism = ref(new Group()), carrier = ref(new Group()), carried = ref(new Mesh());
-  parent.add(root.current); root.current.add(mechanism.current); mechanism.current.add(carrier.current); carrier.current.add(carried.current);
-  const pockets = ref(IBD_PACK_SLOTS.map(() => new Mesh())); pockets.current.forEach(m=>root.current.add(m));
-  const fixed=ref(new Mesh()), jaw=ref(new Mesh()), mast=ref(new Mesh()), boom=ref(new Mesh()), tether=ref(new Mesh());
-  mechanism.current.add(fixed.current,jaw.current,mast.current,boom.current,tether.current);
-  let parts = { slots: IBD_PACK_SLOTS.map(s=>({...s,occupied:true})) }, poseCalls=0, anchorCalls=0, writes=0;
-  const set = carrier.current.position.set;
-  carrier.current.position.set = function(...args) { writes++; return set.apply(this,args); };
-  const previous = ibdSource.variable('previous', { useRef:ref, Matrix4, parts });
-  const scratch = { a:new Vector3(),b:new Vector3(),up:new Vector3(0,1,0) };
-  const rod = ibdSource.variable('rod', {scratch});
-  const item={id:slot,specId:'M8'};
-  const env=()=>({root,mechanism,carrier,carried,pockets,fixed,jaw,mast,boom,tether,previous,scratch,rod,parts,item,slot,
-    IBD_PACK_INSPECTION, Matrix4, ibdPackVisual:shared.visual,ibdInspectionBody:shared.body,ibdInspectionHands:shared.hands,
-    useIbdYardStore:{getState:()=>({game:shared.game})},
-    ibdPackTransferPose(...args){poseCalls++;return ibdPackTransferPose(...args);},
-    ibdPackInspectAnchors(...args){anchorCalls++;return ibdPackInspectAnchors(...args);}});
-  let callback=ibdSource.frame(env());
-  return {root,parent,mechanism,carrier,carried,pockets,previous,
-    frame(){ callback(); parent.updateMatrixWorld(true); shared.hands.left.updateMatrixWorld(true); },
-    replaceParts(){parts={slots:parts.slots.map(s=>({...s,occupied:s.index!==3}))};callback=ibdSource.frame(env());},
-    counts:()=>({poseCalls,anchorCalls,writes})};
+async function ibdRig(t,slot,shared) {
+  let previous,poseCalls=0,anchorCalls=0;
+  const components=ibdComponent({
+    react:{...React,useRef:value=>{
+      const actual=React.useRef(value);
+      if(value?.world?.isMatrix4)previous=actual;
+      return actual;
+    }},
+    three:THREE, './ibd-pack-geometry':packGeometry,
+    './ibd-pack-layout':{...packLayout,
+      ibdPackTransferPose(...args){poseCalls++;return packLayout.ibdPackTransferPose(...args);},
+      ibdPackInspectAnchors(...args){anchorCalls++;return packLayout.ibdPackInspectAnchors(...args);}},
+    './ibd-pack-play':{ibdPackVisual:shared.visual}, './ibd-inspection-hands':{ibdInspectionHands:shared.hands},
+    './ibd-inspection-motion':{ibdInspectionBody:shared.body}, './ibd-yard-store':{useIbdYardStore:{getState:()=>({game:shared.game})}},
+  });
+  const props={slot,item:{id:slot,specId:'M8',quantity:4},material:new THREE.MeshStandardMaterial()};
+  t.after(()=>props.material.dispose());
+  const host=await mountFrameScene(t,components.default,props);
+  const root=host.scene.getObjectByName('ibd-inspection-'+slot);
+  const mechanism=root.children.find(node=>node.isGroup);
+  const carrier=mechanism.children.find(node=>node.isGroup);
+  const carried=carrier.children.find(node=>!node.visible);
+  assert.ok(carried);
+  const writes=countPositionWrites(carrier);
+  return {root:ref(root),parent:host.scene,mechanism:ref(mechanism),carrier:ref(carrier),carried:ref(carried),
+    pockets:ref(root.children.filter(node=>node.isMesh)),previous,
+    frame(){host.frame();shared.hands.left.updateMatrixWorld(true);},
+    replaceParts(){return host.render({...props,item:{...props.item,quantity:3}});},
+    counts:()=>({poseCalls,anchorCalls,writes:writes()})};
 }
 function ibdState() { return {visual:{pack:'parts-a',index:0,progress:1,jaw:.54},body:{carried:null},hands:{left:new Group()},
   game:{core:{opened:['parts-a','parts-b','stock-a','stock-b'],loaded:[]},pending:null,packInspections:{}}}; }
 
-test('an existing dev rig upgrades its retained pre-cache ref on the first frame',()=>{
-  const rig=ibdRig('parts-a',ibdState());delete rig.previous.current.world;
+test('an existing dev rig upgrades its retained pre-cache ref on the first frame',async t=>{
+  const rig=await ibdRig(t,'parts-a',ibdState());delete rig.previous.current.world;
   rig.frame();assert.ok(rig.previous.current.world instanceof Matrix4);
   assert.equal(rig.counts().writes,1);rig.frame();assert.equal(rig.counts().writes,1);
 });
 
-test('120 changing jaw frames update only the owning rig, with actual pose/anchor/setter counts',()=>{
-  const s=ibdState(), rigs=['parts-a','parts-b','stock-a','stock-b'].map(slot=>ibdRig(slot,s));
+test('120 changing jaw frames update only the owning rig, with actual pose/anchor/setter counts',async t=>{
+  const s=ibdState(), rigs=[];
+  for(const slot of ['parts-a','parts-b','stock-a','stock-b'])rigs.push(await ibdRig(t,slot,s));
   rigs.forEach(r=>r.frame());
   for(let i=1;i<=120;i++){s.visual.jaw=.54-.08*i/120;rigs.forEach(r=>r.frame());}
   assert.deepEqual(rigs[0].counts(),{poseCalls:121,anchorCalls:121,writes:121});
@@ -72,8 +73,8 @@ test('120 changing jaw frames update only the owning rig, with actual pose/ancho
   for(const r of rigs.slice(1))assert.equal(r.counts().writes,1);
 });
 
-test('ownership exit returns a palm-held sample once and restores all occupied pockets',()=>{
-  const s=ibdState(),r=ibdRig('parts-a',s);s.body.carried='sample';s.game.packInspections['parts-a']={held:0};
+test('ownership exit returns a palm-held sample once and restores all occupied pockets',async t=>{
+  const s=ibdState(),r=await ibdRig(t,'parts-a',s);s.body.carried='sample';s.game.packInspections['parts-a']={held:0};
   r.frame();assert.equal(r.carried.current.parent,s.hands.left);assert.equal(r.pockets.current[0].visible,false);
   s.visual.pack='parts-b';r.frame();
   assert.equal(r.carried.current.parent,r.carrier.current);assert.equal(r.carried.current.visible,false);
@@ -81,8 +82,8 @@ test('ownership exit returns a palm-held sample once and restores all occupied p
   const count=r.counts();for(let i=0;i<60;i++){s.visual.jaw=.3+i*.001;r.frame();}assert.deepEqual(r.counts(),count);
 });
 
-test('idle crate flushes opening/loading, parent identity/transform, reparenting and resource replacement once',()=>{
-  const s=ibdState(),r=ibdRig('stock-a',s);r.frame();
+test('idle crate flushes opening/loading, parent identity/transform, reparenting and resource replacement once',async t=>{
+  const s=ibdState(),r=await ibdRig(t,'stock-a',s);r.frame();
   const once=change=>{const n=r.counts().writes;change();r.frame();assert.equal(r.counts().writes,n+1);r.frame();assert.equal(r.counts().writes,n+1);};
   once(()=>{s.game.core.opened=[];});
   once(()=>{s.game.core.opened=['stock-a'];});
@@ -93,27 +94,39 @@ test('idle crate flushes opening/loading, parent identity/transform, reparenting
   once(()=>{r.parent.position.set(7,2,1);r.parent.rotation.y=.4;r.parent.updateMatrixWorld(true);});
   once(()=>{s.hands.left.add(r.carried.current);});
   assert.equal(r.carried.current.parent,r.carrier.current);
-  once(()=>r.replaceParts());assert.equal(r.pockets.current[3].visible,false);
+  const count=r.counts().writes;await r.replaceParts();r.frame();assert.equal(r.counts().writes,count+1);r.frame();assert.equal(r.counts().writes,count+1);
+  assert.equal(r.pockets.current[3].visible,false);
   once(()=>{s.visual.pack='stock-a';s.visual.progress=1;s.visual.index=1;});
   assert.equal(r.pockets.current[1].visible,false);
 });
 
-function alphaRig() {
-  const world={paused:false,card:null,shot:null,poolInspect:false},document={hidden:false};
-  const live={round:null,ticketReturned:false},exchangeBody={action:null,carried:null};
-  const nodes=Object.fromEntries(['stamp','slider','ticket','receipt','bell','pull','rope'].map(k=>[k,ref(new Mesh())]));
-  let writes=0;const set=nodes.slider.current.position.set;
-  nodes.slider.current.position.set=function(...args){writes++;return set.apply(this,args);};
-  const previous=alphaSource.variable('previous',{useRef:ref});
-  const sliderStart=alphaSource.variable('sliderStart',{useRef:ref});
-  const detent=alphaSource.variable('detent',{S});
-  const callback=alphaSource.frame({...nodes,previous,sliderStart,detent,P,exchangeWorld,exchangeBody,document,
-    useWorldStore:{getState:()=>world},useExchangePlay:{getState:()=>live}});
-  return {world,document,live,body:exchangeBody,nodes,frame:callback,count:()=>writes};
+async function alphaRig(t) {
+  const world={paused:false,card:null,shot:null,poolInspect:false}, document={hidden:false};
+  const live={round:null,ticketReturned:false},body={action:null,carried:null},refs=new Set();
+  const useExchangePlay=Object.assign(()=>live,{getState:()=>live});
+  const {default:Component}=alphaComponent({
+    react:{...React,useRef:value=>{const result=React.useRef(value);refs.add(result);return result;}},
+    three:THREE,'./WorldInteract':{useInteractable(){}},'./store':{useWorldStore:{getState:()=>world}},
+    './WorldAlphaArchiveTickets':()=>null,'./alpha-exchange-audio':{exchangeActionAudio:{mount(){return ()=>{};}}},
+    './alpha-exchange-craft':{exchangeChamferBox},'./alpha-exchange-layout':{exchangeWorld},
+    './alpha-exchange-play-layout':{EXCHANGE_PLAY_PROPS:P,EXCHANGE_PLAY_STATIONS:S},
+    './alpha-exchange-motion':{exchangeBody:body},'./alpha-exchange-play':{useExchangePlay},
+  },document);
+  const material=new THREE.MeshStandardMaterial();
+  t.after(()=>material.dispose());
+  const host=await mountFrameScene(t,Component,{brass:material,paperFace:material});
+  const names={stamp:'clearing-stamp',slider:'position-grip',ticket:'archive-ticket',receipt:'clearing-receipt',
+    bell:'opening-bell',pull:'bell-pull',rope:'bell-cord'};
+  const nodes=Object.fromEntries(Object.entries(names).map(([id,name])=>{
+    const object=host.scene.getObjectByName('exchange-'+name);
+    const owned=[...refs].find(r=>r.current===object);
+    assert.ok(object&&owned,id);return [id,owned];
+  }));
+  return {world,document,live,body,nodes,frame:host.frame,count:countPositionWrites(nodes.slider.current)};
 }
 
-test('Alpha idle/away frames perform one initial update; ticket and receipt state changes flush exactly once',()=>{
-  const f=alphaRig();for(let i=0;i<600;i++)f.frame();assert.equal(f.count(),1);
+test('Alpha idle/away frames perform one initial update; ticket and receipt state changes flush exactly once',async t=>{
+  const f=await alphaRig(t);for(let i=0;i<600;i++)f.frame();assert.equal(f.count(),1);
   assert.equal(f.nodes.ticket.current.visible,true);assert.equal(!!f.nodes.receipt.current.visible,false);
   const once=change=>{const n=f.count();change();f.frame();assert.equal(f.count(),n+1);f.frame();assert.equal(f.count(),n+1);};
   once(()=>{f.live.round={phase:'ticket',targetUnits:0};f.body.carried='ticket';});assert.equal(f.nodes.ticket.current.visible,false);
@@ -126,8 +139,8 @@ test('Alpha idle/away frames perform one initial update; ticket and receipt stat
   once(()=>{f.live.round=null;});assert.equal(!!f.nodes.receipt.current.visible,false);
 });
 
-test('Alpha adjust/ring/collect retain interpolation and completion/cancel applies the resting pose once',()=>{
-  const f=alphaRig();f.live.round={phase:'selecting',targetUnits:0};f.frame();
+test('Alpha adjust/ring/collect retain interpolation and completion/cancel applies the resting pose once',async t=>{
+  const f=await alphaRig(t);f.live.round={phase:'selecting',targetUnits:0};f.frame();
   for(const kind of ['adjust','ring','collect']){
     const a={id:1,kind,phase:'perform',elapsed:0,contactAt:1,duration:2,committed:true,anchor:{target:exchangeWorld(S.desk.slideEnd)}};
     f.body.action=a;const count=f.count();
@@ -142,8 +155,8 @@ test('Alpha adjust/ring/collect retain interpolation and completion/cancel appli
   }
 });
 
-test('Alpha pause/hidden/card/shot/pool and missing refs preserve one final sync on return',()=>{
-  const f=alphaRig();f.frame();
+test('Alpha pause/hidden/card/shot/pool and missing refs preserve one final sync on return',async t=>{
+  const f=await alphaRig(t);f.frame();
   for(const [state,key,value]of [[f.world,'paused',true],[f.document,'hidden',true],[f.world,'card',{}],[f.world,'shot','view'],[f.world,'poolInspect',true]]){
     const before=f.count(),old=state[key];state[key]=value;for(let i=0;i<20;i++)f.frame();assert.equal(f.count(),before);
     f.live.round={phase:'complete',targetUnits:40};f.body.carried='receipt';
