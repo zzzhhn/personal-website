@@ -107,9 +107,6 @@ function WorldIntentCoaster({ active, preparing = false }: { active: boolean; pr
           for a different solid while its Rapier hook still owns the old shape. */}
       <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} craftedRails={!!structure.railShadow} />
       {!structure.railShadow && <CoasterTrackFallback key={String(renderedNear)} track={structure.track} />}
-      <RigidBody type="fixed" colliders={false} userData={{ solid: true, interactable: 'intent-chest' }}>
-        <CuboidCollider position={coasterWorld([-8, .65, 59.5])} args={[1.9, .65, 1.05]} />
-      </RigidBody>
     </>}
   </group><WorldCoasterVegetation active={enabled} /></>;
 }

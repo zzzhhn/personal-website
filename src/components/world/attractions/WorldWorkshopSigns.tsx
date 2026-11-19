@@ -49,5 +49,5 @@ export default function WorldWorkshopSigns() {
     const g = mergeGeometries(parts, false)!; parts.forEach(p => p.dispose()); return g;
   }, []);
   useEffect(() => () => atlas.dispose(), [atlas]); useEffect(() => () => geometry.dispose(), [geometry]);
-  return <mesh geometry={geometry}><meshBasicMaterial map={atlas} toneMapped={false} /></mesh>;
+  return <mesh name="coaster-workshop-sign-print" geometry={geometry} userData={{worldCollision:'none',worldCollisionReason:'Bilingual message planes on the existing machine housings'}}><meshBasicMaterial map={atlas} toneMapped={false} /></mesh>;
 }

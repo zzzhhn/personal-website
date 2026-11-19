@@ -5,6 +5,13 @@ import {
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { coasterWorld } from './coaster-track';
 import type { IntentClass } from './intent-tasks';
+import { coasterModelContact } from './coaster-model-contact';
+import { WORKSHOP_INTAKE, WORKSHOP_TOOLS } from './intent-workshop-layout';
+
+export const WORKSHOP_CONTACT_ID = 'coaster-workshop-installed-machines';
+export const WORKSHOP_LEVERS = [WORKSHOP_INTAKE, ...WORKSHOP_TOOLS.map(tool=>tool.at)].map(([x,,z],i)=>({
+  id:`coaster-workshop-lever-${i+1}`, position:coasterWorld([x+.96,1.3,z+.75]),
+}));
 
 const TOOLS: IntentClass[] = ['lookup', 'plan', 'debug', 'rewrite', 'extract', 'act'];
 
@@ -50,6 +57,7 @@ export function createWorkshopCraftRuntime(source: Object3D) {
     return output;
   }
   const body = part('StaticWorkshop');
+  const contact = coasterModelContact(body, WORKSHOP_CONTACT_ID);
   // Author the shadow silhouette separately. Do not resubmit the detailed
   // near geometry as a second main-pass carrier. The shared GLB still owns
   // this derivative's source buffers; only its joined position copy is ours.
@@ -71,36 +79,48 @@ export function createWorkshopCraftRuntime(source: Object3D) {
   ownedGeometry.add(shadowGeometry);
   const opaqueShadow = new Mesh(shadowGeometry, shadowMaterial);
   opaqueShadow.name = 'WorkshopIndependentOpaqueShadow'; opaqueShadow.castShadow = true;
+  opaqueShadow.userData = { worldCollision: 'none', worldCollisionReason: 'Independent shadow silhouette with color and depth writes disabled' };
   body.add(opaqueShadow);
   body.position.set(...coasterWorld([0, 0, 0])); root.add(body);
   const capsule = part('RequestCarrier');
+  capsule.userData = { worldCollision: 'none', worldCollisionReason: 'Animated request cassette runs over the physical rollers, cabinets and carrier rails' };
   const saddles = part('RequestSaddles'); capsule.add(saddles);
   capsule.visible = false; root.add(capsule);
   const motion = Object.fromEntries(TOOLS.map(tool => {
     const group = part(`Motion_${tool}`);
+    group.userData = { worldCollision: 'none', worldCollisionReason: 'Animated readout or machine output on the fixed work surface' };
     group.visible = false; root.add(group); return [tool, group];
   })) as Record<IntentClass, Group>;
 
   // Seven identical handles share the exact full authored geometry. Different
   // material primitives are instanced with the same seven x-axis pivot matrices.
   const lever = part('ControlLever');
+  const leverContact = coasterModelContact(lever, 'workshop-lever-template').vertices;
   const leverLocal: Matrix4[] = [];
   for (const object of lever.children) {
     if (!(object instanceof Mesh)) continue;
     if (!(object.material instanceof MeshStandardMaterial)) throw Error('Workshop handle primitive requires one PBR material');
     const mesh = new InstancedMesh(object.geometry, object.material, 7);
     mesh.name = `WorkshopControl-${object.material.name}`;
+    mesh.userData = { worldCollision: 'solid', worldCollisionInstances: { slots:WORKSHOP_LEVERS.map((_,i)=>i),
+      placements:WORKSHOP_LEVERS.map(({id})=>({id,matrix:new Matrix4()})) } };
     mesh.instanceMatrix.setUsage(DynamicDrawUsage);
     mesh.frustumCulled = false;
     leverBatches.push(mesh); leverLocal.push(object.matrix.clone()); root.add(mesh);
   }
   const transform = new Matrix4();
   function setLeverAt(index: number, matrix: Matrix4) {
-    leverBatches.forEach((mesh, i) => mesh.setMatrixAt(index, transform.multiplyMatrices(matrix, leverLocal[i])));
+    leverBatches.forEach((mesh, i) => {
+      transform.multiplyMatrices(matrix, leverLocal[i]);
+      mesh.setMatrixAt(index, transform);
+      mesh.userData.worldCollisionInstances.placements[index].matrix.copy(transform);
+    });
   }
   function updateLevers() {
     leverBatches.forEach(mesh => { mesh.instanceMatrix.needsUpdate = true; });
   }
+  const leverRest = new Matrix4();
+  WORKSHOP_LEVERS.forEach(({position:[x,y,z]},i)=>setLeverAt(i,leverRest.makeTranslation(x,y,z)));
   let users = 0, disposed = false;
   function dispose() {
     if (disposed) return;
@@ -118,6 +138,6 @@ export function createWorkshopCraftRuntime(source: Object3D) {
       queueMicrotask(() => { if (!users) dispose(); });
     };
   }
-  return { root, capsule, saddles, motion, materials: [...materials.values()], setLeverAt, updateLevers, retain, dispose,
+  return { root, contact, leverContact, capsule, saddles, motion, materials: [...materials.values()], setLeverAt, updateLevers, retain, dispose,
     resources: { ownedGeometry, ownedMaterials, leverBatches } };
 }

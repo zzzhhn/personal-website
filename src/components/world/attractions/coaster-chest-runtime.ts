@@ -3,8 +3,11 @@ import {
   Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, type Material, type Object3D,
 } from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { coasterModelContact } from './coaster-model-contact';
 
 export const CHEST_OPEN_LID = -1.3;
+export const CHEST_BODY_CONTACT = 'coaster-chest-shell';
+export const CHEST_LID_CONTACT = 'coaster-chest-hinged-lid';
 const OPEN_SHACKLE = -1.12;
 const SHACKLE_LIFT = .058;
 const number = (i: number) => String(i + 1).padStart(2, '0');
@@ -84,7 +87,7 @@ export function createCoasterChestRuntime(source: Object3D) {
   shadowMaterial.shadowSide = DoubleSide;
   ownedMaterials.add(shadowMaterial);
   const shadowMeshes: Mesh[] = [];
-  function shell(name: string, dynamic: boolean) {
+  function shell(name: string, dynamic: boolean, surfaceId: string) {
     const input = node(reference, name);
     const output = new Group(); output.name = name;
     input.matrixWorld.decompose(output.position, output.quaternion, output.scale);
@@ -109,13 +112,15 @@ export function createCoasterChestRuntime(source: Object3D) {
       shadowParts.push(geometry);
     }
     const geometry = joined(shadowParts); ownedGeometry.add(geometry);
+    const contact = coasterModelContact(output, surfaceId);
     const shadow = new Mesh(geometry, shadowMaterial);
     shadow.name = `${name}Shadow`; shadow.castShadow = true;
+    shadow.userData = {worldCollision:'none',worldCollisionReason:'Independent opaque shadow silhouette'};
     output.add(shadow); shadowMeshes.push(shadow);
-    return output;
+    return { output, contact };
   }
-  shell('ChestBody', false);
-  const lid = shell('ChestLid', true);
+  const body = shell('ChestBody', false, CHEST_BODY_CONTACT);
+  const {output:lid,contact:lidContact} = shell('ChestLid', true, CHEST_LID_CONTACT);
 
   // Every repeated shackle must match byte-for-byte before instancing. The
   // original mesh-local transform still participates in each instance matrix.
@@ -132,6 +137,7 @@ export function createCoasterChestRuntime(source: Object3D) {
   const lockBatches = [brass, steel].map(material => {
     const mesh = new InstancedMesh(shackles[0].mesh.geometry, material, 6);
     mesh.name = `ChestShackles-${material.name}`; mesh.count = 0;
+    mesh.userData = {worldCollision:'none',worldCollisionReason:'Small unlocking hardware inset into the fixed chest face'};
     mesh.instanceMatrix.setUsage(DynamicDrawUsage);
     root.add(mesh); instances.push(mesh);
     return mesh;
@@ -159,6 +165,7 @@ export function createCoasterChestRuntime(source: Object3D) {
     geometry.index!.setUsage(DynamicDrawUsage);
     const mesh = new Mesh(geometry, material);
     mesh.name = `ChestLamps-${material.name}`;
+    mesh.userData = {worldCollision:'none',worldCollisionReason:'Task status lenses over the fixed chest shell'};
     root.add(mesh); return mesh;
   });
 
@@ -216,7 +223,7 @@ export function createCoasterChestRuntime(source: Object3D) {
   root.userData.chestRuntime = {
     sourcePrimitives: originalMeshes.length, maxVisualBatches: 13, shadowBatches: shadowMeshes.length,
   };
-  return { root, lid, materials, setPassed, retain, dispose,
+  return { root, body, lid, lidContact, materials, setPassed, retain, dispose,
     resources: { geometry: ownedGeometry, materials: ownedMaterials, instances },
   };
 }

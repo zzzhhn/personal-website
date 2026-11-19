@@ -26,5 +26,5 @@ export default function WorldIntentSigns() {
   }, [lang, passed]);
   const geometry = useMemo(createIntentSignGeometry, []);
   useEffect(() => () => atlas.dispose(), [atlas]); useEffect(() => () => geometry.dispose(), [geometry]);
-  return <mesh geometry={geometry}><meshBasicMaterial map={atlas} toneMapped={false} /></mesh>;
+  return <mesh name="coaster-sign-print" geometry={geometry} userData={{worldCollision:'none',worldCollisionReason:'Printed faces mounted on the existing gate, chest and station'}}><meshBasicMaterial map={atlas} toneMapped={false} /></mesh>;
 }

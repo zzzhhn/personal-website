@@ -16,6 +16,9 @@ export function coasterCollisionReviewRoots(scene: Object3D): string[] {
   if (architecture && attraction.getObjectByName('coaster-station-craft')) roots.push('coaster-station-architecture-contact');
   // Both leaves use the same GLB lease. Once it resolves the scope expects both.
   if (enabled && attraction.getObjectByName('coaster-gate-craft-leaf')) roots.push('coaster-gate-leaves');
+  for (const name of ['coaster-workshop-installed-contact','coaster-chest-installed-contact']) {
+    if (enabled && attraction.getObjectByName(name)) roots.push(name);
+  }
   if (state.active && !state.occupied && attraction.getObjectByName('coaster-train-craft')) roots.push('coaster-train-craft');
   if (architecture && attraction.getObjectByName('coaster-rail-footings-contact')) roots.push('coaster-rail-footings-contact');
   if (architecture && attraction.getObjectByName('coaster-running-rails-contact')) roots.push('coaster-running-rails-contact');

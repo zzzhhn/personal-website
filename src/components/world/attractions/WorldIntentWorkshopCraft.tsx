@@ -1,20 +1,20 @@
 import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
+import { ConvexHullCollider, RigidBody, TrimeshCollider, useBeforePhysicsStep, type RapierRigidBody } from '@react-three/rapier';
 import { Matrix4, Quaternion, Vector3 } from 'three';
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import { night } from '../WorldNight';
-import { WORKSHOP_CARRIER_Y, WORKSHOP_INTAKE, WORKSHOP_TARGETS, WORKSHOP_TOOLS, workshopTarget, workshopColliders, type WorkshopTarget } from './intent-workshop-layout';
+import { WORKSHOP_CARRIER_Y, WORKSHOP_TARGETS, WORKSHOP_TOOLS, workshopTarget, type WorkshopTarget } from './intent-workshop-layout';
 import { advanceWorkshop, operateWorkshop, resetWorkshop, useWorkshopStore, workshopAvailable, workshopClock, workshopCarrierProgress, workshopOutputComplete, WORKSHOP_LEVER_SECONDS } from './intent-workshop-runtime';
 import { useIntentStore } from './intent-state';
 import { createWorkshopGeometry } from './intent-workshop-geometry';
 import { coasterWorld } from './coaster-track';
 import WorldWorkshopSigns from './WorldWorkshopSigns';
 import type { IntentClass } from './intent-tasks';
-import { createWorkshopCraftRuntime } from './coaster-workshop-craft-runtime';
+import { createWorkshopCraftRuntime, WORKSHOP_CONTACT_ID, WORKSHOP_LEVERS } from './coaster-workshop-craft-runtime';
 import assetUrl from '../../../../docs/world/phase-2-playground/coaster-workshop-craft-20261105/coaster-workshop.glb?url';
 
 function WorkshopInteraction({ id }: { id: WorkshopTarget }) {
@@ -63,11 +63,16 @@ function WorkshopCraftInner() {
     }
     previousNight.current = night.value;
   }, [model, environment]);
-  // The frozen geometry factory is intentionally retained as contact / glow
-  // authority. Its old body is never submitted by this candidate renderer.
+  // Retain the original emissive overlay on the authored machine faces.
   const geometry = useMemo(createWorkshopGeometry, []);
-  const solids = useMemo(workshopColliders, []);
-  const leverFrame = useMemo(() => ({ matrix: new Matrix4(), rotation: new Quaternion(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, intakeValue: NaN, tool: '' }), []);
+  const leverFrame = useMemo(() => ({ matrix: new Matrix4(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, intakeValue: NaN, tool: '' }), []);
+  const leverBodies = useRef<(RapierRigidBody|null)[]>([]);
+  const leverRotations = useMemo(()=>WORKSHOP_LEVERS.map(()=>new Quaternion()),[]);
+  useBeforePhysicsStep(()=>leverBodies.current.forEach((body,i)=>{
+    if(!body)return;
+    const target=leverRotations[i], current=body.rotation();
+    if(Math.abs(target.x-current.x)>1e-6||Math.abs(target.w-current.w)>1e-6)body.setNextKinematicRotation(target);
+  }));
   const positions = useMemo(() => ({ a: new Vector3(...coasterWorld([-16, 1.66, 73])), b: new Vector3(), p: new Vector3() }), []);
   const paths = useMemo(() => Object.fromEntries(WORKSHOP_TOOLS.map(({ id, at }) => [id,
     [coasterWorld([-16, 1.66, 73]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 72.15]), coasterWorld([-16, WORKSHOP_CARRIER_Y, 67]),
@@ -85,11 +90,11 @@ function WorkshopCraftInner() {
     const lever = s.phase === 'processing' ? Math.sin(Math.min(1, workshopClock.elapsed / WORKSHOP_LEVER_SECONDS) * Math.PI) * .85 : 0;
     const intakeLever = Math.sin(workshopClock.intakeElapsed / WORKSHOP_LEVER_SECONDS * Math.PI) * .85;
     if (leverFrame.value !== lever || leverFrame.intakeValue !== intakeLever || leverFrame.tool !== (s.tool ?? '')) {
-      [WORKSHOP_INTAKE, ...WORKSHOP_TOOLS.map(tool => tool.at)].forEach((at, i) => {
+      WORKSHOP_LEVERS.forEach(({position}, i) => {
         const id = i ? WORKSHOP_TOOLS[i - 1].id : null;
-        leverFrame.at.set(...coasterWorld([at[0] + .96, 1.3, at[2] + .75]));
-        leverFrame.rotation.setFromAxisAngle(leverFrame.axis, i === 0 ? intakeLever : id === s.tool ? lever : 0);
-        model.setLeverAt(i, leverFrame.matrix.compose(leverFrame.at, leverFrame.rotation, leverFrame.scale));
+        leverFrame.at.set(...position);
+        const rotation=leverRotations[i].setFromAxisAngle(leverFrame.axis, i === 0 ? intakeLever : id === s.tool ? lever : 0);
+        model.setLeverAt(i, leverFrame.matrix.compose(leverFrame.at, rotation, leverFrame.scale));
       });
       model.updateLevers(); leverFrame.value = lever; leverFrame.intakeValue = intakeLever; leverFrame.tool = s.tool ?? '';
     }
@@ -104,17 +109,20 @@ function WorkshopCraftInner() {
       model.saddles.position.y = .295 * Math.min(1, f * 16);
     } else { capsule.position.copy(positions.a); capsule.rotation.y = 0; model.saddles.position.y = 0; }
   });
-  return <group name="intent-workshop">
+  return <group name="intent-workshop"><group name="coaster-workshop-installed-contact">
     <primitive object={model.root} dispose={null} />
-    <mesh geometry={geometry.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
+    <mesh name="coaster-workshop-glow" geometry={geometry.glow} userData={{worldCollision:'none',worldCollisionReason:'Emissive inlay on the named machinery'}}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     {WORKSHOP_TOOLS.map(tool => <WorkshopMotion key={tool.id} tool={tool.id} model={model} />)}
     {WORKSHOP_TARGETS.map(id => <WorkshopInteraction key={id} id={id} />)}
     <WorldWorkshopSigns />
-    <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-workshop' }}>
-      <TrimeshCollider args={[geometry.contactSurface.vertices, geometry.contactSurface.indices]} />
-      {solids.map((solid, i) => <CuboidCollider key={i} position={solid.position} args={solid.half} rotation={solid.rotation} />)}
+    <RigidBody type="fixed" colliders={false} position={coasterWorld([0,0,0])} userData={{ solid: true, assetId: 'intent-workshop' }}>
+      <TrimeshCollider name={WORKSHOP_CONTACT_ID} args={[model.contact.vertices, model.contact.indices]} />
     </RigidBody>
-  </group>;
+    {WORKSHOP_LEVERS.map(({id,position},i)=><RigidBody key={id} ref={body=>{leverBodies.current[i]=body;}} position={position}
+      type="kinematicPosition" colliders={false} userData={{solid:true,assetId:'intent-workshop'}}>
+      <ConvexHullCollider name={id} args={[model.leverContact]}/>
+    </RigidBody>)}
+  </group></group>;
 }
 
 /** Alternative renderer. The coordinator owns choosing the production/review entry. */
