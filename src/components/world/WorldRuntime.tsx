@@ -290,7 +290,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           if (c.isEnabled() && !c.isSensor()) active.push(node);
           else if (isHeldCampDumbbellCollider(c,c.parent())) held.push(node);
         });
-        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['street-year-group','street-roadblock-group','street-trees-group','north-attractions-road','factory-walk-support','factory-roof-support'].includes(name));
+        const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['world-paving-v4','street-year-group','street-roadblock-group','street-trees-group','north-attractions-road','factory-walk-support','factory-roof-support'].includes(name));
         return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, roots, held);
       },
       reviewCamera: () => {

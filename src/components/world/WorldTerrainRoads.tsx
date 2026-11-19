@@ -4,13 +4,12 @@
  * frozen ramp / bridge decks; boardwalk; windmill pad; the v4 building forecourt surfaces).
  * One draw per spatial chunk (paving and paint merged); nothing casts shadows. The
  * original triangles feed Rapier: walkable tops (incl. the rolled kerb face) are `surface`, the outer
- * skirts and prism walls are `solid`. Formal park handover clips only the old spur VISUAL; its
- * original collision arrays remain throughout. Claims `paved` once mounted (visual and colliders ready).
+ * skirts and prism walls are `solid`. The road and formal park meet along the same cut in their visible and physical surfaces. Claims `paved` once mounted (visual and colliders ready).
  */
 import { memo, useEffect, useMemo } from 'react';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferGeometry, Float32BufferAttribute, MeshStandardMaterial } from 'three';
-import { PAVE_STRIDE, pavingMesh, parkPlazaPavingVisual, type PaveChunk } from './WorldTerrainPaving';
+import { PAVE_STRIDE, pavingMesh, pavingAtParkHandover, pavingContactRanges, type PaveChunk } from './WorldTerrainPaving';
 import { useGreyboxClaim, useIsClaimed } from './WorldVisualClaims';
 
 const NOISE = /* glsl */`
@@ -192,14 +191,18 @@ function ChunkColliders({ name, pos, top, walls }: { name: string; pos: Float32A
 
 function Chunk({ c, material }: { c: PaveChunk; material: MeshStandardMaterial }) {
   // Town replaces pillars and boards; v4 paving owns their walkable forecourt throughout handover.
-  const main = useMemo(() => geometryOf([...c.v, ...c.fv]), [c]);
-  const fore = useMemo(() => c.fv.length ? geometryOf(c.fv) : null, [c]);
-  const parkReady = useMemo(() => c.parkSpurTriangles.length ? geometryOf([...parkPlazaPavingVisual(c), ...c.fv]) : null, [c]);
   const plazaClaimed = useIsClaimed('park-plaza');
-  useEffect(() => () => { main.g.dispose(); fore?.g.dispose(); parkReady?.g.dispose(); }, [main, fore, parkReady]);
+  const handover = plazaClaimed && c.parkSpurTriangles.length > 0;
+  const active = useMemo(() => handover ? pavingAtParkHandover(c) : c, [handover, c]);
+  const main = useMemo(() => geometryOf([...active.v, ...active.fv]), [active]);
+  const fore = useMemo(() => c.fv.length ? geometryOf(c.fv) : null, [c]);
+  const sources = useMemo(() => pavingContactRanges(active), [active]);
+  useEffect(() => () => main.g.dispose(), [main]);
+  useEffect(() => () => fore?.g.dispose(), [fore]);
   return <group name={`paving-v4-${c.key}`}>
-    <mesh name={`paving-v4-chunk-${c.key}`} geometry={plazaClaimed && parkReady ? parkReady.g : main.g} material={material} receiveShadow userData={{ surface: true }} />
-    <ChunkColliders name={`paving-v4-${c.key}`} pos={main.pos} top={c.top} walls={c.walls} />
+    <mesh name={`paving-v4-chunk-${c.key}`} geometry={main.g} material={material} receiveShadow
+      userData={{ surface: true, worldCollisionSources: sources }} />
+    <ChunkColliders name={`paving-v4-${c.key}`} pos={main.pos} top={active.top} walls={active.walls} />
     {fore && <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />}
   </group>;
 }

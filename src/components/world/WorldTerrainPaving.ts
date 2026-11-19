@@ -375,7 +375,7 @@ export interface PaveChunk {
   v: number[]; top: number[]; walls: number[];
   /** Forecourt prisms (shown / collided while `building-forecourt` is unclaimed). */
   fv: number[]; ftop: number[]; fwalls: number[];
-  /** Visual handover only. Original vertices / collider indices remain intact. */
+  /** Source triangles replaced by the formal plaza after its support is mounted. */
   parkSpurTriangles: number[];
 }
 const newChunk = (key: number): PaveChunk => ({ key, v: [], top: [], walls: [], fv: [], ftop: [], fwalls: [], parkSpurTriangles: [] });
@@ -392,17 +392,55 @@ function clipPolygon(poly: number[][], keep: (p: number[]) => number) {
 }
 const keepClip = (p: number[]) => { const c = clipDist(p[0], p[2]); return c === Infinity ? 1 : c; };
 
-/** The formal park plaza starts at WorldParkWalk's existing BRIDGE_X=43.6. Clip only the
- * old park-spur visual there after the plaza claims readiness; never alter its collision soup. */
-export function parkPlazaPavingVisual(c: PaveChunk) {
-  const handover = new Set(c.parkSpurTriangles), out: number[] = [];
-  for (let i = 0; i < c.v.length; i += PAVE_STRIDE * 3) {
-    if (!handover.has(i / PAVE_STRIDE)) { out.push(...c.v.slice(i, i + PAVE_STRIDE * 3)); continue; }
-    const tri = [0, 1, 2].map(k => c.v.slice(i + k * PAVE_STRIDE, i + (k + 1) * PAVE_STRIDE));
-    const poly = clipPolygon(tri, p => 43.6 - p[0]);
-    for (let k = 1; k < poly.length - 1; k++) out.push(...poly[0], ...poly[k], ...poly[k + 1]);
+/** The road and the park share an edge at x = 43.6. Clip the actual drawn and
+ * physical triangles together when the plaza takes over, retaining all vertex attributes. */
+export function pavingAtParkHandover(chunk: PaveChunk): PaveChunk {
+  if (!chunk.parkSpurTriangles.length) return chunk;
+  const handover = new Set(chunk.parkSpurTriangles);
+  const v: number[] = [], top: number[] = [], walls: number[] = [];
+  let topIndex = 0, wallIndex = 0;
+  for (let first = 0; first < chunk.v.length / PAVE_STRIDE; first += 3) {
+    let indices: number[] | undefined;
+    if (chunk.top[topIndex] === first) { indices = top; topIndex += 3; }
+    if (chunk.walls[wallIndex] === first) { indices = walls; wallIndex += 3; }
+    const start = v.length / PAVE_STRIDE;
+    const offset = first * PAVE_STRIDE;
+    if (handover.has(first)) {
+      const triangle = [0, 1, 2].map(i => chunk.v.slice(offset + i * PAVE_STRIDE, offset + (i + 1) * PAVE_STRIDE));
+      const polygon = clipPolygon(triangle, p => 43.6 - p[0]);
+      for (let i = 1; i < polygon.length - 1; i++) v.push(...polygon[0], ...polygon[i], ...polygon[i + 1]);
+    } else {
+      for (let i = offset; i < offset + 3 * PAVE_STRIDE; i++) v.push(chunk.v[i]);
+    }
+    if (indices) for (let i = start; i < v.length / PAVE_STRIDE; i++) indices.push(i);
   }
-  return out;
+  return { ...chunk, v, top, walls, parkSpurTriangles: [] };
+}
+
+/** Associate each consecutive run of drawn triangles with its actual top, side or
+ * forecourt collider. Road paint is raised pigment, with the deck underneath providing support. */
+export function pavingContactRanges(chunk: PaveChunk) {
+  type Range = {id: string; firstVertex: number; vertexCount: number; collision: 'none' | 'solid'; surfaceId?: string};
+  const ranges: Range[] = [];
+  function append(vertices: number[], top: number[], walls: number[], offset: number, name: string) {
+    let ti = 0, wi = 0;
+    for (let first = 0; first < vertices.length / PAVE_STRIDE; first += 3) {
+      let surfaceId: string | undefined;
+      if (top[ti] === first) { surfaceId = name + '-top'; ti += 3; }
+      else if (walls[wi] === first) { surfaceId = name + '-walls'; wi += 3; }
+      else if (vertices[first * PAVE_STRIDE + 6] !== PAVE_MODE.paint) {
+        throw new Error('Unclassified paving triangle at ' + name + '/' + first);
+      }
+      const previous = ranges[ranges.length - 1];
+      if (previous && previous.surfaceId === surfaceId) previous.vertexCount += 3;
+      else ranges.push({ id: name + '/' + first, firstVertex: offset + first, vertexCount: 3,
+        collision: surfaceId ? 'solid' : 'none', surfaceId });
+    }
+    if (ti !== top.length || wi !== walls.length) throw new Error('Unmatched paving collider indices in ' + name);
+  }
+  append(chunk.v, chunk.top, chunk.walls, 0, 'paving-v4-' + chunk.key);
+  append(chunk.fv, chunk.ftop, chunk.fwalls, chunk.v.length / PAVE_STRIDE, 'paving-v4-forecourts-' + chunk.key);
+  return ranges;
 }
 
 /** A straight gutter can have a widening sidewalk or dropped kerb. Keep
@@ -624,13 +662,13 @@ export const pavingMesh = lazy(() => {
     }
     if (p.road === 'park-spur') for (let i = startVertex; i < c.v.length / PAVE_STRIDE; i += 3) c.parkSpurTriangles.push(i);
   }
-  // 4) Boardwalk stilts (visual only, as the greybox decor): 8-sided posts.
+  // 4) Boardwalk stilts: the eight visible sides also stop a body approaching under the deck.
   for (const d of decorV4().filter(q => q.color === '#6E5642')) {
     const c = chunk(d.position[0], d.position[2]), r = d.size[0] / 2, y0 = d.position[1] - d.size[1] / 2, y1 = d.position[1] + d.size[1] / 2;
     for (let k = 0; k < 8; k++) {
       const a0 = k / 8 * Math.PI * 2, a1 = (k + 1) / 8 * Math.PI * 2, am = (a0 + a1) / 2, nrm = [Math.cos(am), 0, Math.sin(am)];
       const P = (a: number, y: number): V => [d.position[0] + Math.cos(a) * r, y, d.position[2] + Math.sin(a) * r, ...nrm, a * r, y, 0];
-      pushTri(c, P(a0, y1), P(a1, y1), P(a1, y0), M.wood, null); pushTri(c, P(a0, y1), P(a1, y0), P(a0, y0), M.wood, null);
+      pushTri(c, P(a0, y1), P(a1, y1), P(a1, y0), M.wood, 'walls'); pushTri(c, P(a0, y1), P(a1, y0), P(a0, y0), M.wood, 'walls');
     }
   }
   // 5) Road paint (visual only, 12 mm proud of the deck so it never depth-fights at any distance).
