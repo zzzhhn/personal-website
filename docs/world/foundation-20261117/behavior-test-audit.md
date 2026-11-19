@@ -13,3 +13,5 @@
 | 资源变坏、音频误入启动包、核心反向依赖场馆 | 地形与洞体解码、真实音频文件校验及 bundle 依赖检查涵盖独立故障。 | 保留。行为与依赖方向各自报告。 |
 
 行为测试覆盖已进入 `npm run check:grounding`。固定机位运行使用相同的画质、视角和曝光。键盘路线、合成故障、同机性能以及目标机的待验项分别记在[区域实测](readiness-audit.md)、[交互记录](interaction-audit.md)和[工作机台账](workstation-20261119.zh.md)。
+
+GitHub 的 Node 22.16 在北路树测试先启动渲染器时触发 Three 初始化循环，采集因此未启动。本地用同版本复现，显式先初始化 Three 后，两种发布 GLB、27 个位置的测试通过。街道静态组件也改为直接检查实际安装到 JSX/Rapier 的顶点与索引。它以仓库里的原始模型快照、锚点和碰撞指纹核验旧版形状，可在只有当前提交的检出上运行。[首次失败的构建](https://github.com/zzzhhn/personal-website/actions/runs/44558745282)

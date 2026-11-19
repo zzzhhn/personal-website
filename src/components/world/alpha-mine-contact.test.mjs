@@ -1,13 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { DoubleSide, Group, Object3D, Raycaster, Scene, Vector3 } from 'three';
+import { DoubleSide, Euler, Group, Object3D, Quaternion, Raycaster, Scene, Vector3 } from 'three';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 import { mineLocalToWorld, ALPHA_MINE_ORIGIN } from './alpha-mine-layout.ts';
-import { installMineContacts, mineRackToolPose, mineVeinStateContact, mineVeinContactRoot, MINE_RACK_ROOT, MINE_WEST_RAMP_ROOT, MINE_ROUTE_ROOTS } from './alpha-mine-contact.ts';
+import { installMineContacts, mineRackToolPose, mineVeinStateContact, mineVeinContactRoot, MINE_RACK_ROOT, MINE_POOL_ROOT, MINE_WEST_RAMP_ROOT, MINE_ROUTE_ROOTS } from './alpha-mine-contact.ts';
 import { collisionInventory } from './world-collision-inventory.ts';
 import { minePickupApproach } from './mine-pickup-approach.ts';
 import { findPickupStand } from './pickup-approach.ts';
+import { canBeginMineAction, mineActor, useAlphaMineStore } from './alpha-mine-state.ts';
+import { minePoolBayAnchor, minePoolBayFixtures, minePoolBayOffset, minePoolShelfAnchor, minePoolShelfBox, minePoolFixtureHalf } from './mine-pool-contact.ts';
+import { waterSurfaceAt } from './WorldWaterSurfaces.ts';
 import { disposeWorldCraftGltf, readWorldCraftGltf } from './world-craft-gltf-test.mjs';
 import { readMineStaticVisual, readMineContactVisual } from '../../../tools/world/alpha-mine-tests/static-visual.mjs';
 import { RAPIER as R, quarryWalkCases, quarryWorld, walkQuarry } from '../../../tools/world/alpha-mine-tests/quarry-walk.mjs';
@@ -55,8 +58,8 @@ test('the shipped scopes own each physical shape once',()=>{
       return {root,id:fitted.id};
     });
     const counts=Object.fromEntries(roots.map(id=>[id,2]));
-    assert.equal(restored.colliders.length+activeVeins.length,roots.length*2);
-    const handles=[...restored.colliders,...activeVeins].map(part=>{
+    assert.equal(restored.colliders.filter(part=>part.root!==MINE_POOL_ROOT).length+activeVeins.length,roots.length*2);
+    const handles=[...restored.colliders,...activeVeins].filter(part=>part.root!==MINE_POOL_ROOT).map(part=>{
       const collider=new Object3D(); collider.name=part.id; scene.getObjectByName(part.root).add(collider);
       return collider;
     });
@@ -222,3 +225,99 @@ for(const [name,tour] of [['main circuit',layout.route.points],['west gallery to
     }
   });
 }
+
+const poolLegacy = JSON.parse(readFileSync(new URL('./alpha-mine-contact.generated.json',import.meta.url),'utf8')).old;
+const poolCenter = layout.basin.center;
+const recoveryFixture = index=>minePoolShelfBox(minePoolShelfAnchor(poolCenter,index),index);
+const bayFixtures = bay=>minePoolBayFixtures(bay).map(p=>({...p,center:p.center.map((x,i)=>x+minePoolBayAnchor(poolCenter,bay)[i])}));
+function mountPoolFixture(world,fixture,origin=[0,0,0]) {
+  const position=fixture.center.map((x,i)=>x+origin[i]);
+  const rotation=new Quaternion().setFromEuler(new Euler(...(fixture.rotation??[0,0,0])));
+  const body=world.createRigidBody(R.RigidBodyDesc.fixed().setTranslation(...position).setRotation(rotation));
+  return world.createCollider(R.ColliderDesc.cuboid(...minePoolFixtureHalf(fixture)),body);
+}
+
+test('the stone rim follows the real chamfer and masonry joints around the whole pool',t=>{
+  const scene=result.sections.get(MINE_POOL_ROOT), display=scene.getObjectByName('alpha-mine-pool-rim-visible');
+  scene.updateMatrixWorld(true);display.material.side=DoubleSide;
+  const world=new R.World({x:0,y:0,z:0}), baseline=new R.World({x:0,y:0,z:0}), raycaster=new Raycaster();
+  const rim=mount(world,'solid',part('pool-rim').buffers);
+  const oldRim=poolLegacy['pool-rim'].map(([kind,start,count])=>mount(baseline,kind,
+    {vertices:old[kind].vertices,indices:old[kind].indices.slice(start,start+count)}));
+  let matches=0,clear=0,oldGhosts=0,maxOldGap=0,maxCurrentGap=0;
+  try {
+    for(let arm=0;arm<260;arm++)for(let y of [.015,.025,.04,.09,.23,.32,.55,.58,.60,.61,.62,.63,.64]) {
+      const a=2*Math.PI*(arm+.37)/260,dx=Math.cos(a),dz=Math.sin(a);
+      const from=[poolCenter[0]+3.65*dx,y,poolCenter[2]+3.65*dz],d=[-dx,0,-dz];
+      raycaster.set(new Vector3(...from),new Vector3(...d));raycaster.far=.92;
+      const visible=raycaster.intersectObject(display)[0];
+      const now=cast(rim,from,d,.92),before=Math.min(...oldRim.map(c=>cast(c,from,d,.92)).filter(v=>v>=0));
+      assert.equal(now>=0,Boolean(visible));
+      if (visible) {
+        matches++; maxCurrentGap=Math.max(maxCurrentGap,Math.abs(visible.distance-now));
+        if(Number.isFinite(before)) maxOldGap=Math.max(maxOldGap,Math.abs(visible.distance-before));
+      } else {
+        clear++;
+        if(Number.isFinite(before)) oldGhosts++;
+      }
+    }
+    t.diagnostic(JSON.stringify({matches,clear,oldGhosts,maxOldGap,maxCurrentGap}));
+    assert.ok(matches>=2400&&clear>=800&&oldGhosts>=250&&maxCurrentGap<.000005);
+  }finally{world.free();baseline.free();}
+});
+
+test('both pool boards really block at shoulder height while throwing and recovering remain reachable',t=>{
+  const world=candidateWorld(ALPHA_MINE_ORIGIN), prior=quarryWorld();
+  const oldState=useAlphaMineStore.getState(), oldActor={...mineActor};
+  const bays=[...bayFixtures(0),...bayFixtures(1)], shelves=[0,1,2].map(recoveryFixture);
+  const installed=new Map([...bays,...shelves].map(fixture=>[fixture.id,mountPoolFixture(world,fixture,ALPHA_MINE_ORIGIN)]));
+  world.step();
+  const report={bays:[],shelves:[]};
+  try {
+    useAlphaMineStore.setState({equipped:true,carried:'REVERSAL_5',action:null});
+    for(const bay of [0,1]) {
+      const anchor=minePoolBayAnchor(poolCenter,bay),from=[anchor[0],anchor[1],anchor[2]+.55];
+      const dir=[0,0,-1], distance=cast(installed.get('alpha-mine-pool-plaque-'+bay),mineLocalToWorld(from),dir,.8);
+      assert.equal(prior.castRay(new R.Ray({x:from[0],y:from[1],z:from[2]},{x:0,y:0,z:-1}),.8,false)?.timeOfImpact??null,null);
+      assert.ok(Math.abs(distance-(.55-.035/Math.cos(.25)))<.00001,distance);
+      const stand=mineLocalToWorld([anchor[0],PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.003,anchor[2]+.55]);
+      const clear=world.intersectionWithShape(new Vector3(...stand),{x:0,y:0,z:0,w:1},new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS));
+      assert.equal(clear?.handle??null,null,'standing in front of the actual plaque stays clear');
+      Object.assign(mineActor,{available:true,grounded:true,moving:false,position:stand});
+      const [x,,z]=layout.basin.impact;
+      assert.ok(canBeginMineAction('deposit',mineLocalToWorld([x+minePoolBayOffset(bay)*.45,layout.basin.waterY,z]),'REVERSAL_5'));
+      report.bays.push({bay,distance,stand});
+    }
+    for(const index of [0,1,2]) {
+      const anchor=minePoolShelfAnchor(poolCenter,index),target=mineLocalToWorld(anchor);
+      const from=mineLocalToWorld([anchor[0],PLAYER_HALF_HEIGHT+PLAYER_RADIUS+.003,anchor[2]+1.45]);
+      const body=world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(...from).lockRotations());
+      world.createCollider(R.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),body); world.step();
+      const pickup=minePickupApproach(()=>target), stand=findPickupStand(world,R,body,from,pickup);
+      assert.ok(stand&&pickup.ready(stand),JSON.stringify({index,from,target,stand}));
+      report.shelves.push({index,stand});
+      world.removeRigidBody(body);
+    }
+    t.diagnostic(JSON.stringify(report));
+  }finally {
+    Object.assign(mineActor,oldActor);useAlphaMineStore.setState(oldState);
+    world.free();prior.free();
+  }
+});
+
+test('fitted rim blocks level walking and the basin floor still supports a wading player',t=>{
+  const world=candidateWorld(),cap=new R.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),q={x:0,y:0,z:0,w:1};
+  const from={x:poolCenter[0]+3.92,y:.86,z:poolCenter[2]};
+  try {
+    const delta={x:-4,y:0,z:0};
+    const baseline=world.castShape(from,q,delta,cap,.004,1,false);
+    assert.ok(baseline?.time_of_impact<.15);
+    const above=world.castShape({...from,y:1.63},q,delta,cap,.004,1,false);
+    assert.equal(above?.time_of_impact??null,null,'body clears over the visible rim while jumping');
+    const support=world.castRay(new R.Ray({x:poolCenter[0]+.23,y:.43,z:poolCenter[2]+.37},{x:0,y:-1,z:0}),.6,false);
+    assert.ok(support && Math.abs(.43-support.timeOfImpact-.08)<.00015,support?.timeOfImpact);
+    const [x,,z]=mineLocalToWorld(poolCenter);
+    assert.equal(waterSurfaceAt(x,z,layout.basin),ALPHA_MINE_ORIGIN[1]+layout.basin.waterY);
+    t.diagnostic(JSON.stringify({walkingRimHit:baseline.time_of_impact,bottom:.43-support.timeOfImpact,waterDepth:layout.basin.waterY-.08}));
+  }finally {world.free();}
+});

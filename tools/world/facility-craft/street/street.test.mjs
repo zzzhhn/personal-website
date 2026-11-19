@@ -3,22 +3,35 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import R from '@dimforge/rapier3d-compat';
+import * as React from 'react';
 import { Matrix4, Quaternion, Ray, Vector3 } from 'three';
-import { families, loadWorldModule, ROOT } from './runtime.mjs';
+import { families, loadWorldModule } from './runtime.mjs';
 import { compareContact, meshFromBatch, mountStreetContacts } from './contact-fixture.mjs';
 
-const A = loadWorldModule(), oldA = loadWorldModule('WorldStreetAssets.ts', '', true);
-const current = families(A), old = families(oldA), legacy = families(loadWorldModule('WorldStreetAssets.ts', '?facilityCraft=legacy'));
+const A = loadWorldModule(), legacyAssets = loadWorldModule('WorldStreetAssets.ts', '?facilityCraft=legacy');
+const current = families(A), legacy = families(legacyAssets);
+const source = id => JSON.parse(readFileSync(new URL('./source/'+id+'.json',import.meta.url),'utf8'));
+const contracts=source('placement-contracts');
+const archived=Object.fromEntries(Object.keys(current).map(id=>{
+  const timber=id==='timberPost'||id==='timberBeam';
+  const family=source((timber?'timberRail':id)+'.source');
+  assert.equal(family.base,contracts.base);
+  return [id,['L0','L1'].map(level=>family.baseline[level].find(node=>node.name===(id==='timberPost'?'timberPost.start':id)))];
+}));
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
-const visual = b => [b.pos, b.nrm, b.col, b.mat, b.suv, b.idx, b.parts, b.cell];
+const visual = b => [...[b.pos,b.nrm,b.col,b.mat,b.suv].map(values=>Array.from(values,Math.fround)),b.idx,b.parts,b.cell];
 const proxies = b => b.hulls().map(a => Array.from(a));
 
 test('all eight facility families keep their archived builder proxies and legacy geometry', () => {
   for (const id of Object.keys(current)) for (const level of [0, 1]) {
-    assert.equal(digest(proxies(current[id][level])), digest(proxies(old[id][level])), `${id} L${level} collision`);
-    assert.equal(digest(visual(legacy[id][level])), digest(visual(old[id][level])), `${id} L${level} legacy`);
-    if (level === 1) assert.equal(digest(visual(current[id][level])), digest(visual(old[id][level])), `${id} distant source`);
-    else assert.notEqual(digest(visual(current[id][level])), digest(visual(old[id][level])), `${id} has a real construction change`);
+    const reference=archived[id][level];
+    const channels=(...arrays)=>arrays.map(values=>Array.from(values,Math.fround));
+    const expected=digest([...channels(reference.position,reference.normal,reference.color,reference.aMat,reference.aSuv),reference.index,reference.parts]);
+    const comparable=b=>digest([...channels(b.pos,b.nrm,b.col,b.mat,b.suv),b.idx,b.parts.map(p=>({...p,end:p.end<0?b.pos.length/3:p.end}))]);
+    assert.equal(digest(proxies(current[id][level])),reference.baselineHullSHA256,id+' collider');
+    assert.equal(comparable(legacy[id][level]),expected,id+' legacy visual');
+    if(level===1) assert.equal(comparable(current[id][level]),expected,id+' distant visual');
+    else assert.notEqual(comparable(current[id][level]),expected,id+' close craft');
   }
 });
 
@@ -42,20 +55,20 @@ test('candidate attributes, triangle winding and geometric normals are valid', (
 });
 
 test('seat datums, atlas faces, lighting codes and untouched lamp variants keep their interfaces', () => {
-  for (const key of ['BENCH_SEAT_LOCAL', 'SHELTER_SEAT_LOCAL', 'LAMP_HEAD_LOCAL']) assert.equal(digest(A[key]), digest(oldA[key]), key);
+  for (const key of ['BENCH_SEAT_LOCAL', 'SHELTER_SEAT_LOCAL', 'LAMP_HEAD_LOCAL']) assert.equal(digest(A[key]), digest(contracts.anchors[key]), key);
   const poster = b => {
     const data = [];
     for (let i = 0; i < b.pos.length / 3; i++) if (b.mat[i * 4 + 3] === 1) data.push(...b.pos.slice(i * 3, i * 3 + 3), ...b.mat.slice(i * 4, i * 4 + 4), ...b.suv.slice(i * 2, i * 2 + 2));
     return data;
   };
-  assert.equal(digest(poster(current.shelter[0])), digest(poster(old.shelter[0])));
+  assert.equal(digest(poster(current.shelter[0])), digest(poster({pos:archived.shelter[0].position,mat:archived.shelter[0].aMat,suv:archived.shelter[0].aSuv})));
   for (const [id, expected] of [['lamp', [1, 2]], ['signal', [3, 4, 5]], ['shelter', [2, 7]], ['roadblock', [6]]]) {
     const codes = new Set(current[id][0].mat.filter((_, i) => i % 4 === 2));
     expected.forEach(code => assert.ok(codes.has(code), `${id} glow ${code}`));
   }
   for (const height of [2.3, 2.6]) {
     const opts = { height, arm: 0, cyanRing: false };
-    assert.equal(digest(visual(A.lampGeometry(opts))), digest(visual(oldA.lampGeometry(opts))), 'year/park shared post-top lamps untouched');
+    assert.equal(digest(visual(A.lampGeometry(opts))), contracts.postLamps[height], 'year/park shared post-top lamps untouched');
   }
 });
 
@@ -97,15 +110,28 @@ test('six G11 placements register separate footings and date frames against both
 
 test('varying rail lengths retain their roots and baseline physics; static trimeshes use the proxy', () => {
   for (const len of [.8, 2, 4.2, 7.35]) for (const name of ['timberBeam', 'seawallBay']) {
-    assert.equal(digest(proxies(A[name](0, len))), digest(proxies(oldA[name](0, len))), `${name} ${len} m`);
+    assert.equal(digest(proxies(A[name](0, len))), contracts.railHulls[name][len], `${name} ${len} m`);
   }
-  const fixed = readFileSync(`${ROOT}/src/components/world/WorldStreetStatic.tsx`, 'utf8');
-  assert.ok(fixed.includes('const proxy = streetFacilityCollision(k.L0);'));
-  assert.ok(fixed.includes("k.collide === 'trimesh' && proxy !== k.L0 ? proxy.build()"));
-  const C = loadWorldModule('WorldStreetFacilityCraft.ts');
-  const original = oldA.benchGeometry(0), crafted = C.finishStreetFacility(original, 'bench', 0);
-  assert.equal(C.streetFacilityCollision(crafted), original);
-  assert.equal(digest(C.streetFacilityCollision(crafted).pos), digest(original.pos));
+  const releases=[];
+  const [staticComponent,C] = loadWorldModule(['WorldStreetStatic.tsx','WorldStreetFacilityCraft.ts'],'',false,{
+    react:{...React,useMemo:f=>f(),useEffect:f=>releases.push(f())},
+    '@react-three/fiber':{useFrame(){}},
+  });
+  const original = legacyAssets.benchGeometry(0), crafted = C.finishStreetFacility(original,'bench',0);
+  const matrix=new Matrix4().makeRotationY(.71).setPosition(4,2,-6);
+  try {
+    const mounted=staticComponent.default({name:'bench-proof',claims:[],assetId:'bench',
+      kinds:[{id:'bench',L0:crafted,L1:legacyAssets.benchGeometry(1),lodNear:10,far:30,collide:'trimesh'}],
+      placements:[{kind:'bench',matrix}]});
+    const body=mounted.props.children.find(child=>child?.props?.name==='bench-proof-solid');
+    const [points,indices]=body.props.children[0].props.args;
+    assert.deepEqual(Array.from(indices),Array.from(original.idx));
+    const local=Float32Array.from(original.pos),p=new Vector3();
+    for(let i=0;i<points.length;i+=3){
+      p.fromArray(local,i).applyMatrix4(matrix);
+      for(let axis=0;axis<3;axis++)assert.equal(points[i+axis],Math.fround(p.getComponent(axis)));
+    }
+  } finally {releases.forEach(dispose=>dispose?.());}
 });
 
 function insidePart(builder, name, point) {

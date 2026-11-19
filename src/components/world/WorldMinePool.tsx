@@ -45,14 +45,16 @@ function PoolResult({id,bay,bounds,offset}:{id:AlphaFactorId;bay:number;bounds:[
   useEffect(()=>{void requestMineBacktest(id);},[id]);
   const material=useMemo(()=>makePlot(id,bay,entry,bounds,zh),[id,bay,entry,bounds,zh]);
   useEffect(()=>()=>{material.map?.dispose();material.dispose();},[material]);
-  return <mesh name={`brain-online-result-${bay}-${id}`} position={[offset,1.8,0]} material={material}><planeGeometry args={[4.9,3.51]}/></mesh>;
+  return <mesh name={`brain-online-result-${bay}-${id}`} position={[offset,1.8,0]} material={material}
+    userData={{worldCollision:'none',collisionReason:'Results are displayed on a camera-facing water projection'}}><planeGeometry args={[4.9,3.51]}/></mesh>;
 }
 export default function WorldMinePool({manifest}:{manifest:MineManifest}){
   const bays=useAlphaMineStore(s=>s.bays),rings=useRef<Group>(null),plots=useRef<Group>(null),results=useMineOnline(s=>s.factors);
   const bounds=useMemo(()=>poolDomain(bays.flatMap(id=>id&&results[id].result?[results[id].result!.factor.curve]:[])),[bays,results]);
   useFrame(({camera})=>{const t=windUniforms.uWindTime.value;if(rings.current)rings.current.rotation.z=t*.025;if(plots.current){plots.current.quaternion.copy(camera.quaternion);plots.current.position.y=manifest.basin.waterY+.55+Math.sin(t*.8)*.045;}});
   return <>
-    <group ref={rings} position={[manifest.basin.center[0],manifest.basin.waterY+.018,manifest.basin.center[2]]} rotation={[-Math.PI/2,0,0]}>
+    <group ref={rings} position={[manifest.basin.center[0],manifest.basin.waterY+.018,manifest.basin.center[2]]} rotation={[-Math.PI/2,0,0]}
+      userData={{worldCollision:'none',collisionReason:'Animated ink rings float on the shallow water surface'}}>
       {[.7,1.35,2.05,2.7].map((r,i)=><mesh key={r} rotation={[0,0,i*.8]}><ringGeometry args={[r,r+.012,64,1,.2,4.6]}/><meshBasicMaterial color="#a8d4bc" transparent opacity={.24} depthWrite={false}/></mesh>)}
     </group>
     <group ref={plots} position={[manifest.basin.center[0],manifest.basin.waterY+.55,manifest.basin.center[2]]}>

@@ -43,8 +43,10 @@ def build_receipt():
     define('rack-frame','wood')
     define('rack-hooks','metal')
     trays = {'AM01_ore_catch_vein-'+name: name+'-tray' for name in ['lower','middle','upper']}
-    for key in trays.values():
+    stone_sections = {**trays, 'AM04_basin_masonry':'pool-rim', 'AM04_basin_floor':'pool-floor'}
+    for key in stone_sections.values():
         define(key,'stone')
+    define('pool-drop-studs','metal')
     structures = {}
     for route in routes:
         name = names[route['id']]
@@ -60,18 +62,18 @@ def build_receipt():
             a,b,c = [mesh.vertices[i] for i in tri]
             normal = unit(cross(sub(b,a),sub(c,a)))
             kind = 'surface' if normal[1]>=math.cos(math.radians(25)) else 'solid'
-            tray = trays.get(mesh.name)
-            if tray:
-                groups[tray]['old'].append([kind,cursor[kind],3])
+            section = stone_sections.get(mesh.name)
+            if section:
+                groups[section]['old'].append([kind,cursor[kind],3])
             cursor[kind] += 3
-    for source, tray in trays.items():
-        groups[tray]['volumes'] = list(part_envelopes(meshes[source]))
+    for source, section in stone_sections.items():
+        groups[section]['volumes'] = list(part_envelopes(meshes[source]))
 
     for proxy in PROXIES:
         name = proxy['id'].rsplit('-', 1)[0]
         kind = proxy['kind']
         length = len(proxy['indices']) if proxy['shape']=='trimesh' else 36
-        part = 'rack-frame' if name=='AM03_tool_rack' else None
+        part = {'AM03_tool_rack':'rack-frame','AM04_drop_studs':'pool-drop-studs'}.get(name)
         if name in names:
             part = names[name]+'-deck'
         for prefix, key in structures.items():
@@ -107,6 +109,14 @@ def build_receipt():
         if not groups[name+'-fasteners']['volumes']:
             del groups[name+'-fasteners']
     groups['rack-hooks']['volumes'] = list(part_envelopes(meshes['AM03_tool_hooks']))
+    for group in groups.values():
+        compact = []
+        for kind, start, length in sorted(group['old']):
+            if compact and compact[-1][0] == kind and compact[-1][1] + compact[-1][2] == start:
+                compact[-1][2] += length
+            else:
+                compact.append([kind, start, length])
+        group['old'] = compact
     return {'parts':groups, 'legacyLengths':{key:len(p['indices']) for key,p in actual.items()}}
 
 

@@ -23,7 +23,7 @@ DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-
              "camp-craft-C05", "camp-craft-C06", "camp-craft-C07", "camp-tree-craft-G17-L0_wood",
              "C02_stone_batch", "camp-workshop-C08", "camp-L01-contact",
              "world-town-assets", "world-street", "street-trees-group", "world-districts-v4",
-             "G28-entry", "alpha-mine-entry-tool-rack", "alpha-mine-west-ramp",
+             "G28-entry", "alpha-mine-backtest-basin", "alpha-mine-entry-tool-rack", "alpha-mine-west-ramp",
              "alpha-mine-east-ramp", "alpha-mine-middle-bridge", "alpha-mine-north-ravine-bridge",
              *["alpha-mine-gallery-west-" + part for part in ("entry", "rise", "link")],
              *["alpha-mine-" + level + "-vein-contact" for level in ("lower", "middle", "upper")],

@@ -8,6 +8,7 @@ type Range = readonly number[];
 type Recipe = { indexCount: number; parts: Record<string, Range[]> };
 export type MineLegacyCollision = Record<Kind,{vertices: number[]; indices: number[]}>;
 export const MINE_RACK_ROOT = 'alpha-mine-entry-tool-rack';
+export const MINE_POOL_ROOT = 'alpha-mine-backtest-basin';
 export const MINE_WEST_RAMP_ROOT = 'alpha-mine-west-ramp';
 const veinRoots: Record<string,string> = {
   'vein-lower':'alpha-mine-lower-vein-contact',
@@ -32,6 +33,9 @@ const definitions: Record<string,ContactDefinition> = {
   'lower-tray':{root:mineVeinContactRoot('vein-lower'),kind:'solid'},
   'middle-tray':{root:mineVeinContactRoot('vein-middle'),kind:'solid'},
   'upper-tray':{root:mineVeinContactRoot('vein-upper'),kind:'solid'},
+  'pool-rim':{root:MINE_POOL_ROOT,kind:'solid'},
+  'pool-floor':{root:MINE_POOL_ROOT,kind:'surface'},
+  'pool-drop-studs':{root:MINE_POOL_ROOT,kind:'solid'},
 };
 for (const [route, root] of Object.entries(MINE_ROUTE_ROOTS)) {
   definitions[route+'-deck'] = {root,kind:'surface'};
@@ -94,7 +98,7 @@ function remainingCollision(old: MineLegacyCollision): Record<Kind,Buffers> {
  * draw attributes and the rest of the quarry keeps its existing physics. */
 export function installMineContacts(root: Object3D, old: MineLegacyCollision) {
   const legacy=remainingCollision(old);
-  const sections = new Map<string,Group>([MINE_RACK_ROOT,...Object.values(MINE_ROUTE_ROOTS),...Object.values(veinRoots)].map(id=>{
+  const sections = new Map<string,Group>([MINE_RACK_ROOT,MINE_POOL_ROOT,...Object.values(MINE_ROUTE_ROOTS),...Object.values(veinRoots)].map(id=>{
     const visual = new Group(); visual.name=id+'-visual'; return [id,visual];
   }));
   const colliders: {root:string; id:string; kind:Kind; buffers:Buffers}[] = [];

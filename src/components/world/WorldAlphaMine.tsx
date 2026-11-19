@@ -26,7 +26,8 @@ import { windUniforms } from './WorldWind';
 import type { WorldContent } from './types';
 import { PICKUP_DISCOVERY_RADIUS } from './pickup-approach';
 import { minePickupApproach } from './mine-pickup-approach';
-import { installMineContacts, MINE_RACK_ROOT, mineRackToolPose, mineVeinContactRoot, mineVeinStateContact, type MineLegacyCollision } from './alpha-mine-contact';
+import { installMineContacts, MINE_RACK_ROOT, MINE_POOL_ROOT, mineRackToolPose, mineVeinContactRoot, mineVeinStateContact, type MineLegacyCollision } from './alpha-mine-contact';
+import { minePoolShelfAnchor, minePoolShelfBox, minePoolBayOffset, minePoolBayAnchor, minePoolBayFixtures, minePoolFixtureHalf, MINE_POOL_MARKER_TILT, type MinePoolFixture } from './mine-pool-contact';
 
 const jsonLoader = (loader: FileLoader<unknown>) => { loader.setResponseType('json'); };
 const oreFactor = (id: AlphaFactorId) => ALPHA_FACTORS.find(f => f.id === id)!;
@@ -135,7 +136,17 @@ function MineRack({ rackSource, detector, pickaxe }: { rackSource: Object3D; det
 }
 
 function poolShelf(manifest: MineManifest, index: number): MinePoint {
-  return [manifest.basin.center[0]+(index-1)*.85,.77,manifest.basin.center[2]+4.6];
+  return minePoolShelfAnchor(manifest.basin.center,index);
+}
+function MinePoolFixtureBox({fixture,color,roughness,metalness,receiveShadow,interactable}:{
+  fixture:MinePoolFixture;color:string;roughness:number;metalness?:number;receiveShadow?:boolean;interactable:string;
+}) {
+  return <RigidBody type="fixed" colliders={false} position={fixture.center} rotation={fixture.rotation} userData={{solid:true,interactable}}>
+    <mesh name={fixture.id+'-visible'} castShadow receiveShadow={receiveShadow} userData={{worldCollision:'solid',surfaceId:fixture.id}}>
+      <boxGeometry args={fixture.size}/><meshStandardMaterial color={color} roughness={roughness} metalness={metalness}/>
+    </mesh>
+    <CuboidCollider name={fixture.id} args={minePoolFixtureHalf(fixture)}/>
+  </RigidBody>;
 }
 function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: number; ore: Object3D }) {
   const factor=ALPHA_FACTORS[index], recovered=useAlphaMineStore(s=>s.recovered.includes(factor.id));
@@ -146,16 +157,15 @@ function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: nu
     onInteract:()=>beginMineAction('pickup',mineLocalToWorld(anchor),factor.id,'recovery'),
   });
   return <group>
-    <mesh position={[anchor[0],.3,anchor[2]]} castShadow receiveShadow><boxGeometry args={[.7,.6,.55]}/><meshStandardMaterial color="#70634d" roughness={.9}/></mesh>
-    <RigidBody type="fixed" colliders={false} userData={{solid:true,interactable:`alpha-mine-recovery-${index}`}}><CuboidCollider args={[.35,.3,.275]} position={[anchor[0],.3,anchor[2]]}/></RigidBody>
-    {recovered&&<group position={anchor}><primitive object={rock}/></group>}
+    <MinePoolFixtureBox fixture={minePoolShelfBox(anchor,index)} color="#70634d" roughness={.9} receiveShadow interactable={'alpha-mine-recovery-'+index}/>
+    {recovered&&<group position={anchor} userData={{worldCollision:'none',collisionReason:'Recovered ore is a hand-pickup target on the solid shelf'}}><primitive object={rock}/></group>}
   </group>;
 }
 function PoolBay({ manifest, bay }: { manifest: MineManifest; bay: 0|1 }) {
-  const carried=useAlphaMineStore(s=>s.carried), basin=manifest.basin, offset=bay===0?-1.15:1.15;
+  const carried=useAlphaMineStore(s=>s.carried), basin=manifest.basin, offset=minePoolBayOffset(bay);
   const factorId=useAlphaMineStore(s=>s.bays[bay]);
   const status=useMineOnline(s=>factorId?s.factors[factorId].status:'idle');
-  const anchor: MinePoint=[basin.center[0]+offset,.83,basin.center[2]+3.35];
+  const anchor=minePoolBayAnchor(basin.center,bay), [post,plaque]=minePoolBayFixtures(bay);
   const target=mineLocalToWorld([basin.impact[0]+offset*.45,basin.waterY,basin.impact[2]]);
   useInteractable({id:`alpha-mine-pool-${bay}`,position:mineLocalToWorld(anchor),radius:1.2,kind:'exhibit',
     enabled:()=>{const s=useAlphaMineStore.getState();return s.carried
@@ -171,8 +181,8 @@ function PoolBay({ manifest, bay }: { manifest: MineManifest; bay: 0|1 }) {
       else mineNotice('先采出矿石，或从池边回收台取一块。','Mine an ore, or retrieve one from a pool shelf.');},
   });
   return <group name={`alpha-mine-pool-marker-${bay}`} position={anchor}>
-    <mesh position={[0,-.46,0]} castShadow><boxGeometry args={[.08,.74,.08]}/><meshStandardMaterial color="#75664d" roughness={.8}/></mesh>
-    <mesh rotation={[-.25,0,0]} castShadow><boxGeometry args={[.48,.36,.07]}/><meshStandardMaterial color="#9c855c" metalness={.45} roughness={.48}/></mesh>
+    <MinePoolFixtureBox fixture={post} color="#75664d" roughness={.8} interactable={'alpha-mine-pool-'+bay}/>
+    <MinePoolFixtureBox fixture={plaque} color="#9c855c" metalness={.45} roughness={.48} interactable={'alpha-mine-pool-'+bay}/>
     <PoolLetter letter={bay?'B':'A'}/>
   </group>;
 }
@@ -181,7 +191,9 @@ function PoolLetter({letter}:{letter:string}) {
     const ctx=canvas.getContext('2d')!;ctx.fillStyle='#c5b48b';ctx.fillRect(0,0,128,128);ctx.fillStyle='#253e39';ctx.textAlign='center';ctx.font='600 85px Georgia';ctx.fillText(letter,64,94);
     const t=new CanvasTexture(canvas);t.colorSpace=SRGBColorSpace;return t;},[letter]);
   useEffect(()=>()=>texture.dispose(),[texture]);
-  return <mesh position={[0,0,.041]} rotation={[-.25,0,0]}><planeGeometry args={[.4,.3]}/><meshStandardMaterial map={texture} roughness={.82}/></mesh>;
+  return <mesh position={[0,0,.041]} rotation={MINE_POOL_MARKER_TILT} userData={{worldCollision:'none',collisionReason:'Lettering on the solid pool plaque'}}>
+    <planeGeometry args={[.4,.3]}/><meshStandardMaterial map={texture} roughness={.82}/>
+  </mesh>;
 }
 
 function MineLooseOre({ source }: { source: Object3D }) {
@@ -255,7 +267,8 @@ function MineWater({basin}:{basin:MineManifest['basin']}) {
   const material=useMemo(()=>createPoolWaterMaterial(ALPHA_MINE_ORIGIN[1]+basin.waterY),[basin.waterY]);
   useEffect(()=>()=>material.dispose(),[material]);
   useFrame(()=>{material.uniforms.uNight.value=night.value;});
-  return <mesh position={[basin.center[0],basin.waterY,basin.center[2]]} rotation={[-Math.PI/2,0,0]}>
+  return <mesh name="alpha-mine-pool-water" position={[basin.center[0],basin.waterY,basin.center[2]]} rotation={[-Math.PI/2,0,0]}
+    userData={{worldCollision:'none',collisionReason:'Shallow splash surface above the separately fitted solid basin floor'}}>
     <circleGeometry args={[basin.innerRadius,64]}/><primitive object={material} attach="material"/>
   </mesh>;
 }
@@ -305,10 +318,14 @@ function MineAssets({ content }: { content: WorldContent }) {
           </RigidBody>)}
           {section===MINE_RACK_ROOT && <MineRack rackSource={scene.root} detector={detector} pickaxe={pickaxe}/>}
           {vein && <MineVein manifest={manifest} index={veinIndex} source={gltfs[1].scene.getObjectByName(vein.id)!} ore={ore}/>}
+          {section===MINE_POOL_ROOT && <>
+            <MineWater basin={manifest.basin}/>
+            <PoolBay manifest={manifest} bay={0}/><PoolBay manifest={manifest} bay={1}/>
+            {ALPHA_FACTORS.map((f,i)=><PoolShelf key={f.id} manifest={manifest} index={i} ore={ore}/>)}
+            <WorldMinePool manifest={manifest}/>
+          </>}
         </group>;
     })}
-    <MineWater basin={manifest.basin}/>
-    <PoolBay manifest={manifest} bay={0}/><PoolBay manifest={manifest} bay={1}/>{ALPHA_FACTORS.map((f,i)=><PoolShelf key={f.id} manifest={manifest} index={i} ore={ore}/>)}<WorldMinePool manifest={manifest}/>
     <MineLooseOre source={ore}/><MineEffects/><MineInformation experienceId={experience?.startDate}/>
     <MineSign position={[3.8,0,-.6]} title="THE FACTOR QUARRY" detail="WORLDQUANT BRAIN"/>
   </group>;

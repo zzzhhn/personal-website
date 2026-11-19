@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import '../../../tools/world/alpha-mine-tests/register.mjs';
+// Evaluate Three before its renderer's CommonJS bridge on the pinned Node 22.16 runner.
+await import('three');
 const {northTrees:points} = await import('./WorldStreetTrees.tsx');
 import { attractionRoadDistance, attractionCapeDistance, ibdFootprintDistance } from './attractions/attraction-layout.ts';
 

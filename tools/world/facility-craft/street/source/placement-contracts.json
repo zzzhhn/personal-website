@@ -1,0 +1,38 @@
+{
+  "base": "2f22560fff2174195d8ce70b855ae4b871a388a7",
+  "anchors": {
+    "BENCH_SEAT_LOCAL": [
+      0,
+      0.47,
+      -0.06
+    ],
+    "SHELTER_SEAT_LOCAL": [
+      -0.05,
+      0.5,
+      -0.4
+    ],
+    "LAMP_HEAD_LOCAL": [
+      0,
+      4.7,
+      -1.35
+    ]
+  },
+  "postLamps": {
+    "2.3": "1fdef7d75febfbdb1acfc9a7caa0eabaa47049704f7d399ef4ab13a6c8f88dcd",
+    "2.6": "2450778e6089e69b69a97a2d53d28b2f454e98fd71d2432208bd036bbfe549db"
+  },
+  "railHulls": {
+    "timberBeam": {
+      "2": "8fd66e73ad66dcb37d986e0a7c49f135200d6cbfb2caeba872ff0c215f650118",
+      "0.8": "5ae3de6251d9b510d97e27e451bee9c895ccacfecbb6856ad6f4a0e15b66e0f9",
+      "4.2": "667afd88992db7fcbbc1cbd981181328ba88dc0ce5e1fe7337b2b7cbf2fbc02a",
+      "7.35": "eb6c02b0b76092021e6c65783323955bd51e77f18a1dc641b6b24690b187a6fe"
+    },
+    "seawallBay": {
+      "2": "3a998edae030de2894a401700bc47433b7dd0c82e68d35228c2219401b1afc23",
+      "0.8": "2b7a5bb5e11c8d2ce39d227ffbde02cd659fa10741ea73da2289b95d3ae619dc",
+      "4.2": "e4655373b020b073da3b58ad5e4ee577d14567b9934b613458acbddebea91cbb",
+      "7.35": "7aa6649f6019ad540f971902c40d9552b012e32f2cfc8a204252bcdae5c042b0"
+    }
+  }
+}
