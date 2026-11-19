@@ -377,3 +377,12 @@ test('unchanged carried-lantern palm target remains reachable while the release 
   assert.ok(error<.06,`carrying grip cannot settle: ${error}`);
   assert.equal(alphaMeasuredHandError(palm,target,'alpha-echo-cave'),Infinity);
 });
+
+test('old summit saves restore a whole playable prefix and preserve visited stations', async()=>{
+  const {restoreAlphaProgress} = await import('./alpha-state.ts');
+  for(const [stored,expected] of [[2,2],['12',12],['2.75',2],[-3,0],[300,32],['Infinity',0],['?',0]]) {
+    assert.deepEqual(restoreAlphaProgress({stones:stored,visits:['3',3,11,888],card:true}),
+      {stones:expected,visits:[3,11],card:true});
+  }
+  assert.deepEqual(restoreAlphaProgress(null),{stones:0,visits:[],card:false});
+});

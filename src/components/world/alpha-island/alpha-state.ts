@@ -6,7 +6,24 @@ export type AlphaAction = 'bell'|'sand'|'tree'|'wind'|'stone'|'lantern';
 export const ALPHA_LANTERN_CAP = 12;
 export const ALPHA_LANTERN_LIFETIME = 34;
 interface AlphaProgress { visits:number[]; card:boolean; stones:number; wind:0|1|2; carried:boolean; action:AlphaAction|null; revision:number }
-const initial=()=>{try{const v=JSON.parse(localStorage.getItem('alpha-island-progress-v1')||'{}');return {visits:Array.isArray(v.visits)?v.visits.filter((n:unknown)=>[1,2,3,5,6,7,8,11,12].includes(Number(n))):[],card:v.card===true,stones:Math.max(0,Math.min(32,Number(v.stones)||0))};}catch{return {visits:[],card:false,stones:0};}};
+function initial() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('alpha-island-progress-v1') || '{}');
+    return restoreAlphaProgress(saved);
+  } catch {
+    return restoreAlphaProgress(null);
+  }
+}
+
+export function restoreAlphaProgress(saved: {visits?: unknown; card?: unknown; stones?: unknown} | null) {
+  const visits = Array.isArray(saved?.visits) ? saved.visits.map(Number) : [];
+  const stones = Number(saved?.stones);
+  return {
+    visits: [...new Set(visits.filter(n => [1,2,3,5,6,7,8,11,12].includes(n)))],
+    card: saved?.card === true,
+    stones: Number.isFinite(stones) ? Math.min(32, Math.max(0, Math.floor(stones))) : 0,
+  };
+}
 export const useAlphaStore=create<AlphaProgress>(()=>({...initial(),wind:0,carried:false,action:null,revision:0}));
 export const alphaMotion={time:0,bellAt:-100,treeAt:-100,sandAt:-100,windAt:-100,looseAt:-100,handTarget:null as Vec3|null,handError:Infinity,
  actionClock:null as AcceptedAction|null,acceptedAt:null as Vec3|null,
