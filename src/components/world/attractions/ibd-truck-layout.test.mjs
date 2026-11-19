@@ -1,42 +1,46 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import RAPIER from '@dimforge/rapier3d-compat';
-import { Color, DoubleSide, Euler, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
-import { Builder, cbox } from '../WorldStreetGeometry.ts';
+import { DoubleSide, Euler, Group, Mesh, MeshBasicMaterial, Object3D, Quaternion, Raycaster, Scene, Vector3 } from 'three';
 import { buildIbdPack, buildIbdStatic } from './ibd-yard-geometry.ts';
-import { buildIbdTruck } from './ibd-truck-geometry.ts';
-import { IBD_MATERIALS } from './ibd-yard-palette.ts';
+import { IBD_PARKED_TRUCK_ROOT } from './ibd-truck-geometry.ts';
 import { createIbdYardGame } from './ibd-yard-game.ts';
 import { ibdCargoRoutes, ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
+import { collisionInventory } from '../world-collision-inventory.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics.ts';
 import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../player-motion.ts';
 import { clearPlayerSlopeGravity, compensatePlayerSlopeGravity, followPlayerGround, playerSupport } from '../player-ground.ts';
 
 await RAPIER.init();
-const data = buildIbdStatic(), pack = buildIbdPack(4, 'M8');
+const data = buildIbdStatic({separateTruck:true}), legacy = buildIbdStatic(), pack = buildIbdPack(4, 'M8');
 const identity = { x: 0, y: 0, z: 0, w: 1 }, dt = 1 / 60;
-const material = new MeshBasicMaterial({ side: DoubleSide }), visible = new Mesh(data.geometry, material);
+const material = new MeshBasicMaterial({ side: DoubleSide }), visible = new Mesh(data.truckGeometry, material);
 pack.computeBoundingBox();
-after(() => { data.geometry.dispose(); pack.dispose(); material.dispose(); });
+after(() => { data.geometry.dispose(); data.truckGeometry.dispose(); legacy.geometry.dispose(); pack.dispose(); material.dispose(); });
 
 function operation(kind, slot) {
   const game = createIbdYardGame();
   game.pending = { token: 1, seconds: 3, action: { kind, slot, station: slot === 'parts-a' ? 'load-a' : 'load-b' } };
   return game;
 }
-function fixture() {
+function fixture(old = false) {
   const world = new RAPIER.World({ x: 0, y: -9.81, z: 0 });
   world.timestep = dt;
-  const truck = new Set(), source = new Map();
-  for (const s of data.solids) {
+  const truck = new Set(), source = new Map(), layout=old?legacy:data;
+  for (const s of layout.solids) {
     const c = world.createCollider(RAPIER.ColliderDesc.cuboid(...s.size.map(n => n / 2)).setTranslation(...s.at)
       .setRotation(new Quaternion().setFromEuler(new Euler(...(s.rotation ?? [0, 0, 0])))));
     source.set(c.handle, s);
     // Select production solids in the truck body/cab footprint, excluding the approach ramps.
     // Do not substitute a hand-authored truck collider for the production geometry.
-    if (s.at[0] >= 13.8 && s.at[0] <= 18.2 && s.at[2] >= 7.9 && s.at[2] <= 21.5 && s.at[1] > .3) truck.add(c.handle);
+    if (old && s.at[0] >= 13.8 && s.at[0] <= 18.2 && s.at[2] >= 7.9 && s.at[2] <= 21.5 && s.at[1] > .3) truck.add(c.handle);
   }
-  world.createCollider(RAPIER.ColliderDesc.trimesh(data.walkSurface.vertices, data.walkSurface.indices).setFriction(.85));
+  for (const s of layout.truckContacts) {
+    const c=world.createCollider(RAPIER.ColliderDesc.trimesh(s.vertices,s.indices,RAPIER.TriMeshFlags.FIX_INTERNAL_EDGES).setFriction(.85));
+    if(!s.id.includes('-ramp-'))truck.add(c.handle);
+    source.set(c.handle,s.id);
+  }
+  world.createCollider(RAPIER.ColliderDesc.trimesh(layout.walkSurface.vertices, layout.walkSurface.indices).setFriction(.85));
   world.step();
   return { world, truck, source };
 }
@@ -46,13 +50,51 @@ function floorAt(f, x, z, fromY) {
   const hit = f.world.castRayAndGetNormal(new RAPIER.Ray({ x, y: fromY, z }, { x: 0, y: -1, z: 0 }),
     3, true, undefined, undefined, undefined, undefined, c => f.truck.has(c.handle));
   assert.ok(hit && hit.normal.y > .99, `no truck support surface below ${x},${fromY},${z}`);
-  return { y: fromY - hit.timeOfImpact, solid: f.source.get(hit.collider.handle), handle: hit.collider.handle };
+  return { y: fromY - hit.timeOfImpact, handle: hit.collider.handle };
 }
+
+test('the parked truck owns all ten real draw ranges and drops its eight original box proxies', t => {
+  const scene=new Scene(),root=new Group();root.name=IBD_PARKED_TRUCK_ROOT;scene.add(root);root.add(visible);
+  const handles=[];
+  visible.userData.worldCollisionSources=data.truckContacts.map(({id,firstIndex,indexCount})=>({id,firstIndex,indexCount,collision:'solid'}));
+  for(const s of data.truckContacts){const node=new Object3D();node.name=s.id;root.add(node);handles.push(node);}
+  assert.equal(legacy.solids.length-data.solids.length,8);
+  assert.equal(data.geometry.index.count+visible.geometry.index.count,legacy.geometry.index.count);
+  assert.equal(data.truckContacts.reduce((n,s)=>n+s.indexCount,0),visible.geometry.index.count);
+  const audit=collisionInventory(scene,[visible],handles,[root.name]);
+  assert.equal(audit.registrations[root.name],10);assert.deepEqual(audit.errors,[]);
+  assert.ok(collisionInventory(scene,[visible],handles.slice(1),[root.name]).errors.length);
+  t.diagnostic(`${visible.geometry.index.count/3} source triangles`);
+});
+
+test('cab recesses, footsteps and tyre dish exhibit the physical profile seen by the player',t=>{
+  const before=fixture(true),after=fixture(),raycaster=new Raycaster(), report=[];
+  try {
+    for(const [p,difference,axis] of [
+      [[13,2.31,19.60],.07,[1,0,0]],
+      [[13,.465,18.21],-.10,[1,0,0]],
+      [[13,.665,19.5],-.05,[1,0,0]],
+      [[16,2.20,22],.12,[0,0,-1]],
+    ]){
+      const from=new Vector3(...p), direction=new Vector3(...axis), ray=new RAPIER.Ray(from,direction);
+      raycaster.set(from,direction);raycaster.far=2;
+      const seen=raycaster.intersectObject(visible)[0];
+      const trace=f=>f.world.castRay(ray,2,false,undefined,undefined,undefined,undefined,c=>f.truck.has(c.handle));
+      const old=trace(before), active=trace(after);
+      assert.ok(seen&&old&&active,JSON.stringify({p,drawing:seen?.distance,old:old?.timeOfImpact,new:active?.timeOfImpact}));
+      const measured=active.timeOfImpact-old.timeOfImpact;
+      assert.ok(Math.abs(seen.distance-active.timeOfImpact)<.00002,`${p}: ${seen.distance} vs ${active.timeOfImpact}`);
+      assert.ok(Math.sign(measured)===Math.sign(difference)&&Math.abs(measured)>Math.abs(difference),`${p}: ${measured}`);
+      report.push({p,old:old.timeOfImpact,new:active.timeOfImpact,part:after.source.get(active.collider.handle)});
+    }
+    t.diagnostic(JSON.stringify(report));
+  }finally{before.world.free();after.world.free();}
+});
 
 test('unchanged load and unload routes sweep the full runtime pallet collider clear of the production truck', () => {
   const f = fixture(), shape = new RAPIER.Cuboid(1.4, .55, 1.3);
   try {
-    assert.ok(f.truck.size >= 5, 'truck floor, walls and cab must be present in production solids');
+    assert.equal(f.truck.size,8,'cargo deck, cab and six separate wheel contacts');
     for (const slot of ['parts-a', 'parts-b']) for (const kind of ['load', 'unload']) {
       const game = operation(kind, slot), routes = ibdCargoRoutes(game, slot);
       // The real route is piecewise linear with eased timing. Sweeping every leg covers its
@@ -161,32 +203,19 @@ test('ordinary player capsules climb and leave both real loading ramps without a
   } finally { f.world.free(); }
 });
 
-test('actual rear wheel vertices remain below the visible carrying surface and its collision floor', () => {
-  const f = fixture(), ray = new Raycaster(), builder = new Builder();
-  // Reuse the actual truck model before baked lighting alters material colors.
-  // The adapter draws its cubes; no wheel position, profile or radius is reproduced here.
-  buildIbdTruck(builder, (at, size, surf, _solid = false, bevel = .03, rotation) => {
-    if (rotation) builder.tr(at, rotation, () => cbox(builder, [0, 0, 0], size, surf, bevel));
-    else cbox(builder, at, size, surf, bevel);
-  }, []);
-  const truckGeometry = builder.build(), p = truckGeometry.attributes.position, colors = truckGeometry.attributes.color;
-  const rubber = new Color(IBD_MATERIALS.rubber.color);
+test('each rear wheel stays below the local carrying surface and the real board groove remains open', t => {
+  const f = fixture(), ray = new Raycaster();
   try {
     const at = ibdPhysicalCargoPose(operation('load', 'parts-a'), 'parts-a', 1).at;
-    const floor = floorAt(f, at[0], at[2], at[1]), { solid } = floor;
+    const groove = floorAt(f, at[0], at[2], at[1]), board = floorAt(f, at[0]+.1, at[2], at[1]);
+    assert.ok(Math.abs(board.y-groove.y-.025)<.00002,'the deck retains its 25 mm deep central groove');
     const wheels = [];
-    for (let i = 0; i < p.count; i++) {
-      if (Math.abs(colors.getX(i) - rubber.r) > 1e-6 || Math.abs(colors.getY(i) - rubber.g) > 1e-6
-        || Math.abs(colors.getZ(i) - rubber.b) > 1e-6) continue;
-      const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
-      // Derive the rear-wheel subset from the actual carrying floor footprint, so
-      // cab wheels and any outboard faces cannot stand in for the affected rear tyres.
-      if (Math.abs(x - solid.at[0]) <= solid.size[0] / 2 && Math.abs(z - solid.at[2]) < solid.size[2] / 2) wheels.push({ x, y, z });
-    }
+    for (const {vertices} of data.truckContacts.filter(c=>/wheel-[12]-/.test(c.id)))
+      for(let i=0;i<vertices.length;i+=3)wheels.push({x:vertices[i],y:vertices[i+1],z:vertices[i+2]});
     assert.ok(wheels.length > 0, 'no actual wheel geometry lies below the carrying floor footprint');
     const highest = Math.max(...wheels.map(v => v.y)), tops = wheels.filter(v => v.y > highest - .001);
-    assert.ok(floor.y - highest > .005, `rear tyres reach ${highest} through collision floor at ${floor.y}`);
     const checked = new Set();
+    let tightest=Infinity;
     for (const top of tops) {
       const key = `${top.x},${top.z}`;
       if (checked.has(key)) continue;
@@ -195,10 +224,13 @@ test('actual rear wheel vertices remain below the visible carrying surface and i
       const surface = ray.intersectObject(visible, false)[0];
       assert.ok(surface && surface.point.y - top.y > .005,
         `rear tyre at ${top.x},${top.z},${top.y} breaks through the visible carrying surface`);
-      assert.ok(Math.abs(surface.point.y - floor.y) < .03, 'visible carrying surface disagrees with the collision floor');
+      const floor=floorAt(f,top.x,top.z,highest+.5);
+      assert.ok(Math.abs(surface.point.y - floor.y) < .00002, 'visible carrying surface disagrees with the collision floor');
+      tightest=Math.min(tightest,floor.y-top.y);
     }
     assert.ok(checked.size >= 4, 'check wheel tops on both sides at both rear axles');
-  } finally { truckGeometry.dispose(); f.world.free(); }
+    t.diagnostic(JSON.stringify({checked:checked.size,minWheelClearance:tightest,deckBoard:board.y,centerGroove:groove.y}));
+  } finally { f.world.free(); }
 });
 
 test('cab faces the exit direction while a full standing player can pass its west side to the yard exit', () => {

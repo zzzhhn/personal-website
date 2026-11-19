@@ -183,10 +183,14 @@ export function buildIbdCab(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   cube([16, .65, 21.376], [.6, .16, .018], P.pale, false, .008);
 }
 
+export const IBD_PARKED_TRUCK_ROOT='ibd-parked-truck';
+type TruckSurface = (part:string, firstIndex:number, endIndex:number) => void;
+
 /** Side-loading rigid truck. Its long axis follows the two real pallet bays (+Z).
  * West remains open all the way to the floor: no decorative sill crosses a ramp. */
-export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
+export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[], contact?: TruckSurface) {
   const firstPosition=b.pos.length,firstSolid=solids.length;
+  const firstIndex=b.idx.length;
   // Preserve the original model frame; one final placement moves body and solids together.
   // The visible deck uses a steel carrier and actual hardwood wear boards with
   // flush model-space 1.2 m tops; the shared placement then grounds the complete body.
@@ -271,12 +275,23 @@ export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   }
   for (const z of wheels.axles) cube([wheels.centerX, .47, z], [3.5, .18, .22], P.steel);
 
+  const cabStart=b.idx.length;
   buildIbdCab(b, cube, solids);
-
-  for (const z of wheels.axles) for (const side of [-1, 1]) truckWheel(b, side, z);
+  const cabEnd=b.idx.length;
+  const wheelSurfaces:{part:string;first:number;end:number}[]=[];
+  for (const [axle,z] of wheels.axles.entries()) for (const side of [-1, 1]) {
+    const first=b.idx.length;
+    truckWheel(b, side, z);
+    wheelSurfaces.push({part:`wheel-${axle+1}-${side<0?'west':'east'}`,first,end:b.idx.length});
+  }
   groundIbdTruckBody(b.pos,firstPosition,solids,firstSolid);
-  for (const z of [10.5, 14.5]) {
+  contact?.('cargo-deck',firstIndex,cabStart);
+  contact?.('cab',cabStart,cabEnd);
+  for(const {part,first,end} of wheelSurfaces) contact?.(part,first,end);
+  for (const [bay,z] of [['a',10.5],['b',14.5]] as const) {
+    const first=b.idx.length;
     const ramp=ibdTruckLoadingRamp(z);
     finish(b, -4, 0, () => cube(ramp.at,ramp.size,P.steel,true,0,ramp.rotation));
+    contact?.('ramp-'+bay,first,b.idx.length);
   }
 }

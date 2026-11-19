@@ -41,14 +41,17 @@ function buildIbdWalkSurface(b: Builder) {
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) };
 }
-export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBaySample?: boolean; shedExpansion?: boolean; rackMode?: 'sample' | 'family'; bridgeSample?: boolean; crateSample?: 'reference' | 'grain' } = {}) {
+export function buildIbdStatic(options: { separateCraftShells?: boolean; separateTruck?: boolean; coilBaySample?: boolean; shedExpansion?: boolean; rackMode?: 'sample' | 'family'; bridgeSample?: boolean; crateSample?: 'reference' | 'grain' } = {}) {
   const b = new Builder(), craftShells = new Builder(), solids: IbdSolid[] = [];
   const buildingContacts: IbdContactSurface[] = [], rollerContacts: IbdContactSurface[] = [], workstationContacts: IbdContactSurface[] = [];
   const buildingContact = (id: string, start: number) => { buildingContacts.push(ibdTriangleContact(b, id, start)); };
   let shell = false;
+  const drawCube = (target: Builder, at: V3, size: V3, s: Surf, bevel = .03, rotation?: V3) => {
+    if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
+  };
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
     const target = shell && options.separateCraftShells ? craftShells : b;
-    if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
+    drawCube(target,at,size,s,bevel,rotation);
     if (solid && target !== craftShells) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
   const workstationContact = (id: string, start: number) => {
@@ -143,7 +146,11 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
     }, x, z, kind);
     workstationContact(id, first);
   }
-  buildIbdTruck(b, cube, solids);
+  const truck = options.separateTruck ? new Builder() : null;
+  const truckContacts: IbdContactSurface[] = [];
+  if (truck) buildIbdTruck(truck, (at,size,surface,_solid,bevel,rotation) => drawCube(truck,at,size,surface,bevel,rotation), [],
+    (part,first,end) => truckContacts.push(ibdTriangleContact(truck,'parked-truck-'+part,first,end)));
+  else buildIbdTruck(b, cube, solids);
   // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
   for (const z of [-18.5, -14.5]) cube([15.5, .11, z], [15, .015, .14], P.rust, false, 0);
   for (const x of [8, 23]) cube([x, .11, -16.5], [.14, .015, 4], P.rust, false, 0);
@@ -167,9 +174,10 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
   let merged: ReturnType<typeof mergeIbdTriangleContacts> | undefined;
   const geometry = bakeIbdLight(b.build());
   coilFinish?.bind(geometry);
-  return { geometry, solids, contactSurfaces, groundSurface, workstationContacts,
+  return { geometry, solids, contactSurfaces, groundSurface, workstationContacts, truckContacts,
     get walkSurface() { return merged ??= mergeIbdTriangleContacts(contactSurfaces); },
-    craftShellGeometry: options.separateCraftShells ? bakeIbdLight(craftShells.build()) : null };
+    craftShellGeometry: options.separateCraftShells ? bakeIbdLight(craftShells.build()) : null,
+    truckGeometry: truck ? bakeIbdLight(truck.build()) : null };
 }
 
 export function buildIbdCoil(damaged: boolean, number = 1) {
