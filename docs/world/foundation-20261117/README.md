@@ -527,3 +527,7 @@ The first entrance camera pair revealed leaves above the floor under the sand ta
 Each day and night entry in the atlas manifest records all mounted meshes and the subset in that frame's colour-pass render list. Material groups count once per mesh. The camera count excludes zero-instance and empty draw ranges and may include occluded meshes. Counts are per frame. The report groups submitted meshes lacking a valid declaration by scene names so the next migration can target a playable area.
 
 Every mounted mesh under the lodge, summit lantern rack, trail fence and mainland pier must carry a declaration, directly, through an explicit ancestor or through vertex ranges covering the whole merged mesh. The atlas checks each blocking source against one enabled, non-sensor Rapier collider of the same name inside the same structure, including when the structure is outside the camera. Geometry accuracy still comes from the separate contact and shape regressions. Elsewhere, missing declarations remain visible in the counts. Alpine needles, shrubs and grass are explicitly walk-through. Pine trunk collision remains a separate migration.
+
+## 工作电脑首批迁移与验收
+
+2026-11-19 应用交易所机位暴露的缺口，完成地形分区、松林、山石、园区栈道及小屋、交易所、部分主街与营地物件的迁移。到站与靠近交互的实测、剩余覆盖和目标机路线见[中文工作台账](workstation-20261119.zh.md)。地形三角覆盖、固定机位画面及普通入口可操作时间各有独立证据。
