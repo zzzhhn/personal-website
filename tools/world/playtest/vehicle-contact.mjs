@@ -11,7 +11,7 @@ const vehicles=['offroad','coupe','van'];
 const drivenVehicles=process.env.WORLD_TEST_VEHICLES?.split(',')??vehicles;
 const root=id=>`world-vehicle-${id}-contact`;
 const player='world-player-contact';
-const contactCounts={offroad:17,coupe:16,van:19},fallbackCounts={offroad:15,coupe:14,van:16};
+const contactCounts={offroad:39,coupe:16,van:33},fallbackCounts={offroad:15,coupe:14,van:16};
 const fixtureHeight={offroad:1.176,coupe:1.054,van:1.452};
 const standX={offroad:.05,coupe:-.56,van:1.33};
 const report={origin,mode,errors:[],assetFailures:[],requests404:[],legs:[]};

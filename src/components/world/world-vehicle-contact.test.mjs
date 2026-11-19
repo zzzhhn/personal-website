@@ -10,7 +10,7 @@ import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, wheelGeometry } from './actor-physic
 import { adaptVehicleSeats, vehicleHulls } from './WorldVehicleAssets.ts';
 import { refineCoupeWheel, refineVehicleBody } from './WorldVehicleDetail.ts';
 import { isHeldPlayerContact, isPlayerContact, registerPlayerContact } from './world-player-contact.ts';
-import { vanBeaconId, vehicleBodySources, vehicleDoorContactMesh, vehicleHullId, vehicleLeafPose, vehicleRoofContactMesh, vehicleTyreContactHull, vehicleTyrePose } from './world-vehicle-contact.ts';
+import { retainedVehicleRoofSource, vanBeaconId, vehicleBodySources, vehicleContactHull, vehicleDoorContactMesh, vehicleHullId, vehicleLeafPose, vehicleRoofContactBlocks, vehicleRoofContactMesh, vehicleTyreContactHull, vehicleTyrePose } from './world-vehicle-contact.ts';
 import { glb } from '../../../tools/world/guide/boot-analysis.mjs';
 
 const assets={offroad:'G25',coupe:'G26',van:'G27'};
@@ -67,7 +67,7 @@ const sourceData=await decoderModule();
 await R.init();
 
 test('all production vehicle body LODs retain triangle ownership for the authored compound, fittings, and seat adaptations',t=>{
-  const rows=[],material=new MeshBasicMaterial({side:DoubleSide});
+  const rows=[],material=new MeshBasicMaterial({side:DoubleSide}),canonical=new Map();
   for(const [id,asset] of Object.entries(assets))for(const lod of ['', '-lod1']){
     const data=glb(new URL(`../../../public/assets/world/vehicles/${asset}${lod}.glb`,import.meta.url));
     const {geometry}=geometryFromNode(sourceData,data,`${asset}_body`),seated=adaptVehicleSeats(id,geometry);
@@ -76,9 +76,17 @@ test('all production vehicle body LODs retain triangle ownership for the authore
     for(const range of ranges){assert.equal(range.firstVertex,total);total+=range.vertexCount;}
     assert.equal(total,visual.attributes.position.count);
     const used=new Set(ranges.map(r=>r.surfaceId).filter(Boolean));
-    const expected=entry.hulls.map(h=>vehicleHullId(id,h.part));
+    const rack=vehicleRoofContactBlocks(visual,ranges,vehicleHullId(id,'rack'));
+    const expected=[...entry.hulls.filter(h=>h.part!=='rack').map(h=>vehicleHullId(id,h.part)),...rack.map(part=>part.id)];
     if(id==='van')expected.push(vanBeaconId);
     assert.deepEqual([...used].sort(),expected.sort(),`${id}${lod}`);
+    if(!lod)canonical.set(id,{geometry:visual.clone(),ranges,used:[...used].sort()});
+    else{
+      const near=canonical.get(id),retained=retainedVehicleRoofSource(id,near.geometry,near.ranges,ranges);
+      for(const part of retained?.ranges??[])used.add(part.surfaceId);
+      assert.deepEqual([...used].sort(),near.used,`${id}: far and retained near sources account for the same parts`);
+      retained?.geometry.dispose();near.geometry.dispose();
+    }
     const world=new R.World({x:0,y:0,z:0});
     const colliders=entry.hulls.map(({part,points})=>({part,collider:world.createCollider(R.ColliderDesc.convexHull(Float32Array.from(points)))}));
     const mesh=new Mesh(visual,material);
@@ -100,7 +108,7 @@ test('all production vehicle body LODs retain triangle ownership for the authore
   t.diagnostic(JSON.stringify(rows));
 });
 
-test('roof rack openings and the van beacon agree with the loaded geometry without filling air above the roof',t=>{
+test('convex roof assemblies keep the installed ladder and lip openings and use the actual beacon',t=>{
   const material=new MeshBasicMaterial({side:DoubleSide}),results=[];
   for(const id of ['offroad','van']){
     const asset=assets[id],entry=vehicleHulls(id),world=new R.World({x:0,y:0,z:0});
@@ -108,11 +116,10 @@ test('roof rack openings and the van beacon agree with the loaded geometry witho
     const oldRack=world.createCollider(R.ColliderDesc.convexHull(Float32Array.from(entry.hulls.find(({part})=>part==='rack').points)));
     const data=glb(new URL(`../../../public/assets/world/vehicles/${asset}.glb`,import.meta.url));
     const {geometry}=geometryFromNode(sourceData,data,`${asset}_body`),mesh=new Mesh(geometry,material),ranges=vehicleBodySources(id,geometry,entry);
-    const shapes=[vehicleHullId(id,'rack'),...(id==='van'?[vanBeaconId]:[])].map(surface=>{
-      const co=vehicleRoofContactMesh(geometry,ranges,surface);
-      assert.ok(co.indices.length>=24);
-      return world.createCollider(R.ColliderDesc.trimesh(co.vertices,co.indices));
-    });
+    const rack=vehicleRoofContactBlocks(geometry,ranges,vehicleHullId(id,'rack')).map(({points})=>world.createCollider(R.ColliderDesc.convexHull(points)));
+    const shapes=[...rack];
+    if(id==='van')for(const {points} of vehicleRoofContactBlocks(geometry,ranges,vanBeaconId))shapes.push(world.createCollider(R.ColliderDesc.convexHull(points)));
+    assert.ok(rack.length>=8);
     const points=id==='offroad'?[['air',-.8,-.45],['rail',-.8,-.80]]:[['air',-1.6,-.45],['rail',-1.2,-.86],['beacon',1.2,0]];
     for(const [name,x,z] of points){
       const origin=new Vector3(x,3,z),down=new Vector3(0,-1,0),ray=localRay(origin,down);
@@ -122,9 +129,9 @@ test('roof rack openings and the van beacon agree with the loaded geometry witho
       const previous=nearest([...shell,oldRack]),after=nearest([...shell,...shapes]);
       if(name==='air'){
         assert.ok(previous+.12<rendered,`${id}: old rack filled an opening`);
-        assert.equal(shapes[0].castRay(ray,4,true),-1,`${id}: no rack contact through its opening`);
+        assert.ok(rack.every(shape=>shape.castRay(ray,4,true)===-1),`${id}: no rack contact through its opening`);
       }
-      if(name==='rail')assert.ok(shapes[0].castRay(ray,4,true)>0,`${id}: real tube is still solid`);
+      if(name==='rail')assert.ok(rack.some(shape=>shape.castRay(ray,4,true)>0),`${id}: real tube is still solid`);
       if(name==='beacon')assert.ok(previous>rendered+.12,`${id}: old cab missed the beacon`);
       assert.ok(Math.abs(after-rendered)<.035,`${id} ${name}: visual-to-physics roof fit ${after-rendered}`);
       results.push({id,name,point:[x,z],previousDifference:previous-rendered,afterDifference:after-rendered});
@@ -161,8 +168,8 @@ test('actual panels and tyres block a walking probe that the previous static cha
     const doors=[];
     for(const side of [-1,1]){
       const {node,geometry}=geometryFromNode(sourceData,data,side<0?'door-left':'door-right');
-      const cooked=vehicleDoorContactMesh(geometry),hinge=new Vector3().fromArray(node.translation);hinge.y+=entry.bodyY;
-      const leaf=world.createCollider(R.ColliderDesc.trimesh(cooked.vertices,cooked.indices).setTranslation(...hinge.toArray()).setMass(0),body);
+      const hinge=new Vector3().fromArray(node.translation);hinge.y+=entry.bodyY;
+      const leaf=world.createCollider(R.ColliderDesc.convexHull(vehicleContactHull(geometry)).setTranslation(...hinge.toArray()).setMass(0),body);
       const mesh=new Mesh(geometry,material);
       for(const openness of [0,.5,1]){
         vehicleLeafPose(id,side,{side,openness},rotation);leaf.setRotationWrtParent(rotation);
@@ -173,7 +180,7 @@ test('actual panels and tyres block a walking probe that the previous static cha
         const visible=new Raycaster(probe,direction,0,2.3).intersectObject(mesh)[0];
         const distance=leaf.castRay(localRay(probe,direction),2.3,true);
         assert.ok(visible&&distance>0,`${id} ${side} door leaf at ${openness}`);
-        assert.ok(Math.abs(distance-visible.distance)<.00008,`${id} ${side} ${openness}: animated leaf fit ${distance-visible.distance}`);
+        assert.ok(Math.abs(distance-visible.distance)<.035,`${id} ${side} ${openness}: animated leaf fit ${distance-visible.distance}`);
         let previousLeafGap;
         if(openness===1){
           const samples=[-.19,-.4,-.6,-.8].flatMap(x=>[-.25,0,.2,.38].map(y=>new Vector3(x,y,side*.045).applyMatrix4(mesh.matrixWorld)));
