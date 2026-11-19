@@ -15,6 +15,8 @@ export default function WorldIbdCoilInspection({material}:{material:MeshStandard
     const glow=new MeshBasicMaterial({color:0xffe6b1,transparent:true,opacity:.045,depthWrite:false,
       blending:AdditiveBlending,side:DoubleSide,toneMapped:false});
     const beam=new Mesh(shaft,glow);beam.position.z=-.123;
+    beam.userData={worldCollision:'none',collisionReason:'Inspection torch light shaft'};
+    torch.userData={worldCollision:'none',collisionReason:'Torch attached to the inspecting hand through its grip'};
     const grip=new Group();grip.name='ibd-held-inspection-torch';grip.add(torch,beam);grip.visible=false;
     return {grip,beam,geometry,shaft,glow,position:new Vector3(),target:new Vector3(),up:new Vector3(0,1,0),matrix:new Matrix4(),q:new Quaternion(),parentQ:new Quaternion()};
   },[material]);

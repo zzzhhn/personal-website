@@ -9,6 +9,7 @@ import { bakeIbdLight } from './ibd-yard-lighting.ts';
 import { addInspectionTools, addInspectionTorch, addWoundCoil, addYardControl, addIbdRollerFrame, applyIbdMachinedFinish } from './ibd-craft-geometry.ts';
 import { buildIbdTruck } from './ibd-truck-geometry.ts';
 import { IBD_CONTROL_PEDESTALS, IBD_INSPECTION_BENCHES, IBD_UTILITY_BENCHES } from './ibd-workstation-fixtures.ts';
+import { IBD_COIL_WHEEL_CENTER_Y, IBD_COIL_WHEEL_RADIUS } from './ibd-hoist-contact.ts';
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
 export { buildIbdPack } from './ibd-pack-geometry.ts';
@@ -248,8 +249,8 @@ export function buildIbdCoil(damaged: boolean, number = 1) {
   }
   for (const z of [-1.05,1.05]) cbox(b,[0,-2.13,z],[3.65,.12,.16],P.dark,.014);
   for (const x of [-1.7, 1.7]) for (const z of [-1.05, 1.05]) {
-    b.tr([x, -2.12, z], [0, 0, Math.PI / 2], () => {
-      lathe(b, [[0,-.09],[.11,-.09],[.13,-.065],[.13,.065],[.11,.09],[0,.09]], P.cutSteel, { sides: 12 });
+    b.tr([x, IBD_COIL_WHEEL_CENTER_Y, z], [0, 0, Math.PI / 2], () => {
+      lathe(b, [[0,-.09],[.11,-.09],[IBD_COIL_WHEEL_RADIUS,-.065],[IBD_COIL_WHEEL_RADIUS,.065],[.11,.09],[0,.09]], P.cutSteel, { sides: 12 });
       lathe(b, [[.038,-.11],[.038,.11]], P.dark, { sides: 8 });
     });
   }

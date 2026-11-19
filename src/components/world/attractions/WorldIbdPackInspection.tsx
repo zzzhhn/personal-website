@@ -11,6 +11,9 @@ import type { IbdItem } from './ibd-model';
 import type { IbdPackStation } from './ibd-yard-layout';
 import type { Vec3 } from '../types';
 
+const pocketPart={worldCollision:'none',collisionReason:'Inspection sample indexed in its pocket, measured through the hand inspection action'};
+const sampleCarrier={worldCollision:'none',collisionReason:'Hand inspection carrier and gauge follow the inspection pose in the contained work area'};
+
 /** Scene-local props follow the existing cargo body, except a grasped sample parented to the real palm. */
 export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdPackStation;item:IbdItem;material:MeshStandardMaterial}) {
   const parts=useMemo(()=>buildIbdPackParts(item.quantity,item.specId),[item.id,item.quantity,item.specId]);
@@ -69,12 +72,13 @@ export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdPac
   });
   return <group ref={root} name={`ibd-inspection-${slot}`}>
     {parts.slots.map(s=><mesh key={s.index} ref={m=>{pockets.current[s.index]=m;}} geometry={parts.sample}
-      material={material} position={s.at} visible={s.occupied} castShadow receiveShadow/>) }
-    <group ref={mechanism} visible={false}>
+      material={material} position={s.at} visible={s.occupied} castShadow receiveShadow userData={pocketPart}/>) }
+    <group ref={mechanism} visible={false} userData={sampleCarrier}>
       <mesh ref={mast} geometry={parts.rigMast} material={material}/><mesh ref={boom} geometry={parts.rigBoom} material={material}/>
       <mesh ref={tether} geometry={parts.rigTether} material={material}/>
       <group ref={carrier}><mesh geometry={parts.tray} material={material} castShadow/>
-        <mesh ref={carried} geometry={parts.sample} material={material} visible={false} castShadow/>
+        <mesh ref={carried} geometry={parts.sample} material={material} visible={false} castShadow
+          userData={{worldCollision:'none',collisionReason:'Selected sample attached to the real palm until returned to the pocket'}}/>
       </group>
       <mesh ref={fixed} geometry={parts.caliperFixed} material={material} castShadow/>
       <mesh ref={jaw} geometry={parts.caliperJaw} material={material} castShadow/>

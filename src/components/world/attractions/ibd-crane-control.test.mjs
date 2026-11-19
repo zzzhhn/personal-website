@@ -5,6 +5,7 @@ import { useWorldStore } from '../store.ts';
 import { createIbdYardGame } from './ibd-yard-game.ts';
 import { ibdWorld } from './ibd-yard-layout.ts';
 import { ibdCargoPose } from './ibd-yard-motion.ts';
+import { IBD_HOIST_CARRY_Y } from './ibd-hoist-contact.ts';
 import { createIbdMotionClock,stepIbdSafeMotion } from './ibd-yard-safety.ts';
 import { ibdInspectionActor,ibdInspectionBody,ibdInspectionVisualSockets } from './ibd-inspection-motion.ts';
 import { dispatchIbdAction,finishIbdAction,cancelIbdAction,tickIbdCoilInspection,useIbdYardStore } from './ibd-yard-store.ts';
@@ -42,7 +43,7 @@ test('elapsed time, wrong direction and timer completion cannot move or finish t
   setCraneInput(null);ticks(120);assert.equal(clock.elapsed,partial);
   setCraneInput('raise');ticks(180);assert.ok(Math.abs(clock.elapsed-2.2)<1e-8);assert.equal(useIbdCraneControl.getState().stage,1);
   assert.equal(useIbdCraneControl.getState().held,null);
-  const pose=ibdCargoPose(useIbdYardStore.getState().game,'coil-front',1/3);assert.deepEqual(pose.at,[-12,3.9,-4]);
+  const pose=ibdCargoPose(useIbdYardStore.getState().game,'coil-front',1/3);assert.deepEqual(pose.at,[-12,IBD_HOIST_CARRY_Y,-4]);
 });
 test('three held legs land cargo before releasing hands and granting the move once',()=>{
   setup();ready();

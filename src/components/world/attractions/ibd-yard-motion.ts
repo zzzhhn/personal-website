@@ -1,6 +1,7 @@
 import { IBD_CARGO_HOME, IBD_MOVED_COIL, IBD_TRUCK, ibdStockRoute, isIbdStockKey, type IbdSlot } from './ibd-yard-layout.ts';
 import { yardItemId, type IbdYardGame } from './ibd-yard-game.ts';
 import { ibdStockItem } from './ibd-stock.ts';
+import { IBD_HOIST_CARRY_Y } from './ibd-hoist-contact.ts';
 import type { Vec3 } from '../types';
 const smooth = (t: number) => { const v = Math.max(0, Math.min(1, t)); return v * v * (3 - 2 * v); };
 const mix = (a: Vec3, b: Vec3, t: number): Vec3 => a.map((n, i) => n + (b[i] - n) * smooth(t)) as Vec3;
@@ -14,7 +15,7 @@ export function ibdCargoRoutes(game: IbdYardGame, slot: IbdSlot): IbdCargoRoute[
   const action = game.pending?.action, id = yardItemId(game, slot);
   const home = slot === 'coil-front' && game.core.moved.includes(id) ? IBD_MOVED_COIL : IBD_CARGO_HOME[slot];
   if (action?.kind === 'crane' && slot === 'coil-front') return [{ start: 0, end: 1,
-    points: [IBD_CARGO_HOME[slot], [-12, 3.9, -4], [-20, 3.9, -4], IBD_MOVED_COIL] }];
+    points: [IBD_CARGO_HOME[slot], [-12, IBD_HOIST_CARRY_Y, -4], [-20, IBD_HOIST_CARRY_Y, -4], IBD_MOVED_COIL] }];
   if (action?.slot !== slot) return [];
   if(slot==='parts-b'&&action.kind==='select-stock'&&isIbdStockKey(action.station))
     return [{start:.16,end:1,points:ibdStockRoute(action.station)}];

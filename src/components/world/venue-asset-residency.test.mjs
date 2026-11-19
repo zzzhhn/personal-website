@@ -15,7 +15,9 @@ import * as furniture from './djc-furniture-visual.ts';
 import * as crates from './attractions/ibd-crate-visual.ts';
 import * as equipment from './attractions/ibd-static-craft-visual.ts';
 import * as ibdFixtures from './attractions/ibd-workstation-fixtures.ts';
-import { buildIbdStatic } from './attractions/ibd-yard-geometry.ts';
+import { buildIbdLid,buildIbdStatic } from './attractions/ibd-yard-geometry.ts';
+import { buildIbdPackShell } from './attractions/ibd-pack-geometry.ts';
+import * as ibdStaticContact from './attractions/ibd-static-contact.ts';
 
 import * as bar from './djc-bar-layout.ts';
 import * as fixedContacts from './club-fixed-contact.ts';
@@ -90,14 +92,19 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     const local = entry.startsWith('attractions/') ? '../' : './';
     const contact = contactRoots[entry];
     const ibdEquipment = entry.endsWith('WorldIbdStaticCraft');
-    const host = (contact || ibdEquipment) && mountedPhysics();
+    const host = (contact || ibdEquipment || part) && mountedPhysics();
     let ready = false, release, requests = 0, failure;
     const pending = new Promise(resolve => { release = resolve; });
     const compiled = compileWorldComponent(new URL('./' + entry + '.tsx', import.meta.url))({
-      [visualImport]: visualModule,
+      [visualImport]: part?{...visualModule,createIbdCrateVisual(...args){
+        const prepared=crates.createIbdCrateVisual(...args);
+        prepared.materials.forEach(observe);
+        return prepared;
+      }}:visualModule,
       './useOwnedWorldVisual': { useOwnedWorldVisual },
       './ibd-static-craft-visual': equipment,
       './ibd-workstation-fixtures': ibdFixtures,
+      './ibd-static-contact': ibdStaticContact,
       './attraction-layout': { IBD_YARD },
       './djc-club-layout': { CLUB, CLUB_DAYBEDS },
       './club-fixed-contact': fixedContacts,
@@ -117,14 +124,17 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     const Component = compiled.default;
     const ibdFallback = ibdEquipment ? buildIbdStatic({ separateCraftShells: true }) : null;
     ibdFallback?.geometry.dispose();
-    const geometry = ibdFallback?.craftShellGeometry ?? (contact ? new BoxGeometry(1, .5, .75) : null);
+    const crateGeometry=part?(part==='Lid'?buildIbdLid():buildIbdPackShell()):null;
+    const geometry = ibdFallback?.craftShellGeometry ?? crateGeometry ?? (contact ? new BoxGeometry(1, .5, .75) : null);
     const originalModel = geometry ? h('mesh', { name:'original-geometry', geometry, dispose:null }) : h('group', { name: 'original-geometry' });
     const fallback = ibdFallback ? h('group', null, originalModel,
       h(compiled.IbdWorkstationColliders, { contacts: ibdFallback.workstationContacts })) : originalModel;
     const uniform = { value: 0 };
     let store, elapsed = 0;
     const render = (props = {}) => act(async () => {
-      const child = h(Component, { fallback, uniform, part, geometry:geometry ? [geometry] : undefined, active: false, legacy: false, ...props });
+      let child = h(Component, { fallback, uniform, part, geometry:geometry ? [geometry] : undefined,
+        contact:crateGeometry?{id:'ibd-residency-crate-face',geometry:crateGeometry}:undefined, active: false, legacy: false, ...props });
+      if(crateGeometry)child=h(physics.RigidBody,{name:'ibd-residency-crate-body',type:'fixed',colliders:false},child);
       store = root.render(h(StrictMode, null, host ? host.wrap(child) : child));
     });
     const move = distance => act(async () => {
@@ -146,13 +156,17 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       assert.ok(original());
       assert.equal(requests, 0);
       // Observe attachment before passive effects run, including their StrictMode replay.
-      const physicalRoot = ibdEquipment ? ibdFixtures.IBD_WORKSTATION_FIXTURES_ROOT : contact?.[0];
+      const physicalRoot = ibdEquipment ? ibdFixtures.IBD_WORKSTATION_FIXTURES_ROOT : part?'ibd-residency-crate-body':contact?.[0];
       const parent = physicalRoot ? scene.getObjectByName(physicalRoot) : original().parent;
       parent.addEventListener('childadded', ({ child }) => materialsOf(child).forEach(observe));
       const checkContacts = (fallback) => {
         if (!host) return;
         const installed = host.installed(), names = [...installed.keys()];
-        if (ibdFallback) assert.deepEqual(names.sort(),ibdFallback.workstationContacts.map(c=>c.id).sort());
+        if (crateGeometry) {
+          assert.deepEqual(names,['ibd-residency-crate-face']);
+          const shipping=installed.get(names[0]).shape.indices.length;
+          assert.equal(shipping,fallback?crateGeometry.index.count:crates.ibdCrateAssetContact(gltf.scene,part).indices.length);
+        } else if (ibdFallback) assert.deepEqual(names.sort(),ibdFallback.workstationContacts.map(c=>c.id).sort());
         else if (fallback) assert.deepEqual(names,[`${contact[0]}-fallback`]);
         else {
           assert.equal(names.length, contact[1]);
@@ -209,6 +223,7 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
         await render({ active: true });
         assert.ok(original(), 'an unreadable crate restores its original shell');
         assert.equal(scene.getObjectByName(model), undefined);
+        checkContacts(true);
         assert.ok(warn.mock.calls.some(call => call.arguments.includes(failure)));
         warn.mock.restore();
         error.mock.restore();

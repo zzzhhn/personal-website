@@ -5,7 +5,7 @@ import { ibdInspectionActor, IBD_INSPECTION_STAND_TOLERANCE } from './ibd-inspec
 import { IBD_PACK_INSPECTION } from './ibd-pack-layout';
 import { ibdLocal, ibdPackHome, ibdReach, ibdStation, ibdWorld, type IbdPackStation } from './ibd-yard-layout';
 
-export const CRANE_STAND: Vec3 = [-6,.1,.84];
+export const CRANE_STAND: Vec3 = [-6,.1,.97];
 type Workstation = IbdPackStation | 'crane';
 
 function localStance(id: Workstation): Vec3 {

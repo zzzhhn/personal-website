@@ -1,9 +1,11 @@
 import { Group, MeshStandardMaterial, Quaternion, Vector3, type Mesh } from 'three';
 import { cloneIbdCraftMaterial } from './ibd-static-craft-visual.ts';
+import { ibdGeometryContact, mergeIbdTriangleContacts } from './ibd-static-contact.ts';
 
 export const IBD_CRATE_ASSET='/assets/world/ibd/crate/crate-v1.glb';
 export const IBD_CRATE_LID_PIVOT:[number,number,number]=[0,1.08,-1.25];
 export type IbdCratePart='Shell'|'Lid';
+const physicalParts=new WeakMap<Group,Partial<Record<IbdCratePart,ReturnType<typeof mergeIbdTriangleContacts>>>>();
 export function ibdCrateLegacy(search:string){
   const params=new URLSearchParams(search);
   return params.get('qa')==='1'&&params.get('ibdCrates')==='legacy';
@@ -46,4 +48,25 @@ export function createIbdCrateVisual(source:Group,part:IbdCratePart,nightUniform
     });
   }catch(error){for(const material of copies.values())material.dispose();throw error;}
   return {root,materials:[...copies.values()],users:0,dispose(){if(disposed)return;disposed=true;for(const material of copies.values())material.dispose();}};
+}
+
+/** This collider follows the same mechanism-local transforms as the borrowed
+ * primitives. Each asset/part is fitted once, regardless of placement count. */
+export function ibdCrateAssetContact(source:Group,part:IbdCratePart) {
+  const existing=physicalParts.get(source)??{};
+  const cached=existing[part];
+  if(cached)return cached;
+  const root=createIbdCratePart(source,part);
+  root.updateMatrixWorld(true);
+  const pieces:ReturnType<typeof ibdGeometryContact>[]=[];
+  root.traverse(o=>{
+    const mesh=o as Mesh;
+    if(!mesh.isMesh)return;
+    const placed=mesh.geometry.clone().applyMatrix4(mesh.matrixWorld);
+    try{pieces.push(ibdGeometryContact(placed,part,0,placed.index?.count??placed.getAttribute('position').count));}
+    finally{placed.dispose();}
+  });
+  const contact=mergeIbdTriangleContacts(pieces);
+  existing[part]=contact;physicalParts.set(source,existing);
+  return contact;
 }
