@@ -58,3 +58,20 @@ test('only the physical node owned by the approach can supply the site walkway b
   state.occupied = false;
   assert.deepEqual(coasterSharedSupplies(scene),[]);
 });
+
+test('complete atlas audits the permanent approach even with the coaster far away', async()=>{
+  const {coasterDistantCollisionRoots} = await import('./coaster-collision-review.ts');
+  const scene = new Scene(), venue = new Group(), site = new Group(), train = new Group(), road = new Group();
+  venue.name = 'intent-coaster'; site.name = 'coaster-site-contact'; train.name = 'coaster-train-craft';
+  const view = new Group(); view.name = 'coaster-site-structure';
+  site.add(view); venue.add(site,train); scene.add(venue,road); road.name = 'north-attractions-approach';
+  const phase = {active:false,occupied:false,preparing:false,renderedNear:false};
+  venue.userData.coasterCollisionReview = phase;
+  assert.deepEqual(coasterDistantCollisionRoots(scene), [site,train]);
+  assert.equal(coasterSharedSupplies(scene,true)[0].missingId,'coaster-arrival-walk');
+  const deck = new Group(); deck.name = 'coaster-arrival-walk'; road.add(deck);
+  assert.deepEqual(coasterSharedSupplies(scene,true),[{root:site.name,collider:deck}]);
+  road.add(deck.clone()); assert.equal(coasterSharedSupplies(scene,true)[0].collider,null);
+  phase.active=true; assert.deepEqual(coasterDistantCollisionRoots(scene),[]);
+  phase.occupied=true; assert.deepEqual(coasterDistantCollisionRoots(scene),[train]);
+});

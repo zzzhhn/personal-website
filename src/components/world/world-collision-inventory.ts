@@ -222,9 +222,14 @@ function sortedCounts(values: Map<string, number>) {
  * checked separately from the physical shape and contact tests. */
 export function collisionInventory(scene: Scene, submittedObjects: Iterable<Object3D>,
   activeColliderNodes: Iterable<Object3D>, requiredRoots = migratedCollisionRoots, heldObjects: Iterable<Object3D> = [],
-  sharedSupplies: readonly {root:string;collider:Object3D}[] = []) {
+  sharedSupplies: readonly {root:string;collider:Object3D|null;missingId?:string}[] = [], distantRoots?: readonly Object3D[]) {
   const mounted = counts(), submitted = counts(), errors: string[] = [];
   const roots = new Set(requiredRoots);
+  // Passing even an empty list requests a complete scene audit. Ordinary partial
+  // surveys may inspect a single asset while unrelated districts are still loading.
+  const distant = new Set(distantRoots);
+  const distantMeshes = new Map<string, number>();
+  const distantClaims = new Map<Object3D, Set<string>>();
   const scoped = new Map<Object3D, { names: Map<string, number>; claims: Map<string, boolean>; held: Set<string> }>();
   const mountedGaps = new Map<string, number>(), submittedGaps = new Map<string, number>();
   const frame = new Set(submittedObjects);
@@ -239,12 +244,17 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   // An approach can load earlier than its venue. Only the actual registered node may
   // supply a second strict root; matching text elsewhere never creates a registration.
   const consumers = new Map<Object3D, Set<Object3D>>();
-  for (const {root,collider} of sharedSupplies) {
+  for (const {root,collider,missingId} of sharedSupplies) {
+    if (!collider) {
+      errors.push(root + ': missing or ambiguous shared collider: ' + missingId);
+      continue;
+    }
     for (const scope of scoped.keys()) if (scope.name === root && scope !== owner(collider)) {
       const extra=consumers.get(collider) ?? new Set<Object3D>();
       extra.add(scope); consumers.set(collider,extra);
     }
   }
+  const looseSupplies = new Map<Object3D, number>();
   const heldColliderIds = new Set<string>();
   function supply(node:Object3D, held:boolean) {
     const id=collisionSupplyId(node);
@@ -255,6 +265,7 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
     };
     const root=owner(node);
     if(root)record(root);
+    else if (distantRoots) looseSupplies.set(node, (looseSupplies.get(node) ?? 0) + 1);
     consumers.get(node)?.forEach(record);
   }
   for (const node of activeColliderNodes) supply(node,false);
@@ -280,6 +291,20 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
       if (inFrame) submittedGaps.set(region, (submittedGaps.get(region) ?? 0) + 1);
       if (state === 'invalid' || scope) errors.push([root?.name, mesh.name || mesh.type, state].filter(Boolean).join(': '));
     }
+    if (distantRoots && !scope && typeof decl !== 'string' && decl.blocks.length) {
+      let source: Object3D | null = mesh;
+      while (source && !distant.has(source)) source = source.parent;
+      if (!source) errors.push(regionOf(mesh, scene) + ': physical mesh outside a reviewed contact root: ' + (mesh.name || mesh.type));
+      else {
+        distantMeshes.set(source.name, (distantMeshes.get(source.name) ?? 0) + 1);
+        const claims = distantClaims.get(source) ?? new Set<string>();
+        for (const {id} of decl.blocks) {
+          if (id) claims.add(id);
+          else errors.push(source.name + ': unnamed physical source in distant model');
+        }
+        distantClaims.set(source, claims);
+      }
+    }
     if (!scope || typeof decl === 'string') return;
     for (const { id, shared } of decl.blocks) {
       const previous = id && scope.claims.get(id);
@@ -298,6 +323,20 @@ export function collisionInventory(scene: Scene, submittedObjects: Iterable<Obje
   for (const [root, scope] of scoped) for (const name of scope.names.keys()) {
     if (!scope.claims.has(name)) errors.push(root.name + ': collider without a visible source: ' + name);
   }
-  return { mounted, submitted, depthOnlyCopies, mountedGapsByRegion: sortedCounts(mountedGaps),
+  if (distantRoots) {
+    // A road segment may supply the coaster's visible approach even when the
+    // rest of the venue is distant. Its real node and named visual must both exist.
+    for (const [node, count] of looseSupplies) {
+      const paired = consumers.has(node) || sharedSupplies.some(({root, collider}) =>
+        collider === node && [...distantClaims].some(([owner, ids]) =>
+          owner.name === root && ids.has(collisionSupplyId(node))));
+      if (count !== 1 || !paired) errors.push(regionOf(node, scene) + ': collider outside a reviewed contact root: ' + (node.name || node.type));
+    }
+    for (const {root, collider} of sharedSupplies) {
+      if (collider && [...distantClaims].some(([owner, ids]) => owner.name === root && ids.has(collisionSupplyId(collider))) &&
+        looseSupplies.get(collider) !== 1) errors.push(root + ': missing shared collider for distant approach: ' + collider.name);
+    }
+  }
+  return { mounted, submitted, depthOnlyCopies, ...(distantRoots && {distantPhysicalMeshesByRoot: sortedCounts(distantMeshes)}), mountedGapsByRegion: sortedCounts(mountedGaps),
     submittedGapsByRegion: sortedCounts(submittedGaps), registrations, heldColliderIds: [...heldColliderIds].sort(), errors };
 }

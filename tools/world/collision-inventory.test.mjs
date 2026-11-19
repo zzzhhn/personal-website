@@ -113,3 +113,27 @@ test('a venue can share an earlier approach collider only while its exact regist
   assert.ok(read([supply],[],[]).errors.some(s=>s.startsWith('venue: expected one unique collider')));
   assert.ok(read([supply,impostor],[],[...bindings,{root:'venue',collider:impostor}]).errors.some(s=>s.startsWith('venue: expected one unique collider')));
 });
+
+test('a complete scene requires active contact owners and audits the dormant visual roots separately', () => {
+  const scene = new Scene(), ride = new Group(), rail = new Mesh(), road = new Group(), walk = new Group();
+  ride.name = 'remote-ride';
+  walk.name = 'approach-walk';
+  rail.userData = {worldCollision:'solid',surfaceId:walk.name};
+  scene.add(ride, road);
+  ride.add(rail);
+  road.add(walk);
+  const shared = [{root:ride.name,collider:walk}];
+  const run = (bodies, distant, supplies=shared) => collisionInventory(scene, [rail], bodies, [], [], supplies, distant);
+  const remote = run([walk], [ride]);
+  assert.deepEqual(remote.errors, []);
+  assert.deepEqual(remote.distantPhysicalMeshesByRoot, {'remote-ride':1});
+  assert.ok(run([walk], []).errors.some(text=>text.includes('physical mesh outside')));
+  assert.ok(run([], [ride]).errors.some(text=>text.includes('missing shared collider')));
+  assert.ok(run([], [ride], [{root:ride.name,collider:null,missingId:walk.name}]).errors.length);
+  const stray = new Group();
+  stray.name = walk.name;
+  road.add(stray);
+  assert.ok(run([walk,stray], [ride]).errors.some(text=>text.includes('collider outside')));
+  delete rail.userData.surfaceId;
+  assert.ok(run([walk], [ride]).errors.some(text=>text.includes('unnamed physical source')));
+});

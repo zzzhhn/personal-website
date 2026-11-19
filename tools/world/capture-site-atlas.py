@@ -87,7 +87,7 @@ def shoot(page, select, shot, diagnostics):
           && s.weather === 'clear' && s.light === (dark ? 'night' : 'noon')
           && Math.abs(loop.night - Number(dark)) < .001 && loop.frame > frame + 2
           && camera?.settled && camera.onMark && d.stats().triangles > 0
-          && {camera, png: d.captureReviewFrame(), coverage: d.reviewCollisionInventory()};
+          && {camera, png: d.captureReviewFrame(), coverage: d.reviewCollisionInventory(true)};
     }"""
     for attempt in range(6):
         try:

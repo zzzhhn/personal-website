@@ -17,7 +17,7 @@ import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
 import { collisionInventory, migratedCollisionRoots } from './world-collision-inventory';
-import { coasterCollisionReviewRoots, coasterSharedSupplies } from './attractions/coaster-collision-review';
+import { coasterCollisionReviewRoots, coasterDistantCollisionRoots, coasterSharedSupplies } from './attractions/coaster-collision-review';
 import { isRegionColliderHeld } from './region-body-guard';
 import { playerContactId, isPlayerContact, isHeldPlayerContact } from './world-player-contact';
 import { isHeldCampDumbbellCollider } from './camp-prop-interactions';
@@ -284,7 +284,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
         return surveyCollisionSources(scene,world,c=>colliderStates.get(c.handle)?.object,
           [...list.opaque,...list.transmissive,...list.transparent].map(item=>item.object),rootName);
       },
-      reviewCollisionInventory: () => {
+      reviewCollisionInventory: (complete = false) => {
         const list = gl.renderLists.get(scene, 0);
         const active: Object3D[] = [], held: Object3D[] = [];
         world.forEachCollider(c => {
@@ -296,7 +296,8 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           else if (c.isEnabled() && body?.isEnabled() !== false && !c.isSensor() && c.collisionGroups() !== 0) active.push(node);
         });
         const roots = LAYOUT_V4 ? migratedCollisionRoots : migratedCollisionRoots.filter(name => !['world-paving-v4','coaster-vegetation','street-windmill-group','street-fixed-group','street-knock-group','street-rails-group','street-construction-sign-family', 'street-foundation-slabs-group', 'street-billboard-group','street-year-group','street-roadblock-group','street-trees-group','north-attractions-road','factory-structure-contact','factory-worklife-contact','factory-walk-support','factory-roof-support'].includes(name));
-        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, [...roots,...coasterCollisionReviewRoots(scene)], held, coasterSharedSupplies(scene));
+        return collisionInventory(scene, [...list.opaque, ...list.transmissive, ...list.transparent].map(item => item.object), active, [...roots,...coasterCollisionReviewRoots(scene)], held, coasterSharedSupplies(scene, complete),
+          complete ? coasterDistantCollisionRoots(scene) : undefined);
       },
       reviewCamera: () => {
         const view = WORLD_SHOTS.find(v => v.id === useWorldStore.getState().shot);
