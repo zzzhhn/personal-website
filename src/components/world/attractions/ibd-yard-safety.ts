@@ -3,6 +3,7 @@ import { IBD_YARD } from './attraction-layout.ts';
 import { ibdMotionStops, ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
 import type { IbdYardGame } from './ibd-yard-game.ts';
 import type { Vec3 } from '../types';
+import { ibdDispatchShutterAt, ibdDispatchShutterEnvelope, IBD_DISPATCH_SHUTTER_YAW } from './ibd-dispatch-shutter.ts';
 
 export type IbdMotionWait = 'path-occupied' | 'player-unavailable' | null;
 export const IBD_SAFETY_GAP = .18;
@@ -16,11 +17,12 @@ export function createIbdSafety(rapier: Pick<typeof Rapier, 'Cuboid'>, game: Ibd
   const protectedMotion = !!action && protectedKinds.has(action.kind);
   const slot = action?.kind === 'crane' ? 'coil-front' : action?.slot;
   const coil = slot?.startsWith('coil'), gate = action?.kind === 'release';
-  const half: Vec3 = gate ? [.065, 1.5, 4.4] : coil ? [2, 2, 1.4] : [1.4, .55, 1.3];
+  const shutter = gate ? ibdDispatchShutterEnvelope() : null;
+  const half: Vec3 = shutter?.half ?? (coil ? [2, 2, 1.4] : [1.4, .55, 1.3]);
   const shape = new rapier.Cuboid(...half), radius = Math.hypot(half[0], half[2]);
   const from = { x: 0, y: 0, z: 0 }, to = { x: 0, y: 0, z: 0 }, velocity = { ...zero }, playerAt = { ...zero }, playerVelocity = { ...zero };
   const rotation = { x: 0, y: 0, z: 0, w: 1 };
-  const pose = (progress: number, incoming: boolean) => gate ? { at: [7, 1.65 + 3.7 * progress, 19.3] as Vec3, yaw: Math.PI / 2 }
+  const pose = (progress: number, incoming: boolean) => shutter ? { at: ibdDispatchShutterAt(progress,shutter.center), yaw: IBD_DISPATCH_SHUTTER_YAW }
     : ibdPhysicalCargoPose(game, slot!, progress, incoming);
   function segmentBlocked(a: number, b: number, player: IbdSafetyPlayer, predictSeconds: number, incoming: boolean) {
     const p = pose(a, incoming), q = pose(b, incoming), offset = gate || coil ? 0 : .45;

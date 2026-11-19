@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { CuboidCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useRapier, type RapierRigidBody, type RapierCollider } from '@react-three/rapier';
+import { CuboidCollider, RigidBody, TrimeshCollider, useBeforePhysicsStep, useAfterPhysicsStep, useRapier, type RapierRigidBody, type RapierCollider } from '@react-three/rapier';
 import { BufferGeometry, Group, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 import { IBD_ALL_CLEAR, IBD_CASES } from './ibd-cases.ts';
 import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, IBD_STOCK_KEYS, IBD_STOCK_HOME, isIbdStockKey, ibdWorld, type IbdStockKey, type IbdSlot } from './ibd-yard-layout.ts';
@@ -7,7 +7,7 @@ import { yardCase, yardItemId } from './ibd-yard-game.ts';
 import { ibdCargoPose, ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
 import { createIbdMotionClock, createIbdSafety, stepIbdSafeMotion } from './ibd-yard-safety.ts';
 import { finishIbdAction, ibdActor, setIbdMotionWait, useIbdYardStore } from './ibd-yard-store.ts';
-import { buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter } from './ibd-yard-geometry.ts';
+import { buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables } from './ibd-yard-geometry.ts';
 import type { IbdItem } from './ibd-model.ts';
 import { buildIbdPackShell } from './ibd-pack-geometry';
 import WorldIbdPackInspection from './WorldIbdPackInspection';
@@ -18,6 +18,7 @@ import WorldIbdCraneLevers from './WorldIbdCraneLevers';
 import { ibdStockItem } from './ibd-stock';
 import WorldIbdCratePart from './WorldIbdCratePart';
 import { IBD_CRATE_LID_PIVOT, ibdCrateLegacy } from './ibd-crate-visual';
+import { createIbdDispatchShutter, ibdDispatchShutterAt, IBD_DISPATCH_SHUTTER_FACE, IBD_DISPATCH_SHUTTER_ROOT, IBD_DISPATCH_SHUTTER_YAW } from './ibd-dispatch-shutter';
 
 const cargoGeometry = (item: IbdItem,includeShell=true) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId,{includeShell});
 const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
@@ -54,9 +55,9 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     if(game.stock.originalReturned)returned.push({slot:'parts-b',geometry:cargoGeometry(IBD_CASES[game.caseIndex].items.find(i=>i.id==='parts-b')!,false)});
     return { goods, fresh, returned };
   }, [game.caseIndex, game.exchanges, game.stock.originalReturned]);
-  const fixed = useMemo(() => ({ lid: buildIbdLid(), crane: buildIbdCrane(), hook: buildIbdHook(), cables: buildIbdCables(), shutter: buildIbdShutter(), rotation: new Quaternion(), up: new Vector3(0, 1, 0) }), []);
+  const fixed = useMemo(() => ({ lid: buildIbdLid(), crane: buildIbdCrane(), hook: buildIbdHook(), cables: buildIbdCables(), shutter: createIbdDispatchShutter(), rotation: new Quaternion(), up: new Vector3(0, 1, 0) }), []);
   useEffect(() => () => { Object.values(resources.goods).forEach(g => g.dispose()); Object.values(resources.fresh).forEach(g => g.dispose()); resources.returned.forEach(r => r.geometry.dispose()); }, [resources]);
-  useEffect(() => () => { fixed.lid.dispose(); fixed.crane.dispose(); fixed.hook.dispose(); fixed.cables.dispose(); fixed.shutter.dispose(); }, [fixed]);
+  useEffect(() => () => { fixed.lid.dispose(); fixed.crane.dispose(); fixed.hook.dispose(); fixed.cables.dispose(); fixed.shutter.geometry.dispose(); }, [fixed]);
   const apply = (progress: number, snap = false) => {
     if (exchanging && spareBody.current) {
       const pose = ibdPhysicalCargoPose(game, exchanging, progress, true), [x,y,z] = ibdWorld(pose.at);
@@ -88,7 +89,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     if (cables.current) { cables.current.position.set(coil.at[0], IBD_CRANE_Y + .35, -4); cables.current.scale.y = Math.max(.05, IBD_CRANE_Y + .35 - hookY); }
     const releasing = game.pending?.action.kind === 'release' ? progress : game.released ? 1 : 0;
     if (shutterBody.current) {
-      const [x, y, z] = ibdWorld([7, 1.65 + releasing * 3.7, 19.3]);
+      const [x, y, z] = ibdWorld(ibdDispatchShutterAt(releasing));
       if (snap) shutterBody.current.setTranslation({ x, y, z }, true);
       else shutterBody.current.setNextKinematicTranslation({ x, y, z });
     }
@@ -159,10 +160,14 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     <mesh ref={crane} geometry={fixed.crane} material={material} position={[-12, IBD_CRANE_Y + .7, -4]} castShadow userData={movable} />
     <mesh ref={hook} geometry={fixed.hook} material={material} position={[-12, 5, -4]} castShadow userData={movable} />
     <mesh ref={cables} geometry={fixed.cables} material={material} position={[-12, IBD_CRANE_Y + .35, -4]} userData={movable} />
-    <RigidBody ref={shutterBody} type="kinematicPosition" colliders={false} position={[7, 1.65, 19.3]} rotation={[0, Math.PI / 2, 0]} userData={movable}>
-      <CuboidCollider args={[.065, 1.5, 4.4]} />
-      <mesh geometry={fixed.shutter} material={material} castShadow userData={movable} />
-    </RigidBody>
+    <group name={IBD_DISPATCH_SHUTTER_ROOT}>
+      <RigidBody ref={shutterBody} type="kinematicPosition" colliders={false} name="ibd-dispatch-shutter-body"
+        position={ibdDispatchShutterAt(0)} rotation={[0, IBD_DISPATCH_SHUTTER_YAW, 0]} userData={{...movable,assetId:IBD_DISPATCH_SHUTTER_ROOT}}>
+        <TrimeshCollider name={IBD_DISPATCH_SHUTTER_FACE} args={[fixed.shutter.contact.vertices,fixed.shutter.contact.indices]} />
+        <mesh name="ibd-dispatch-shutter-visible" geometry={fixed.shutter.geometry} material={material} castShadow
+          userData={{...movable,worldCollision:'solid',surfaceId:IBD_DISPATCH_SHUTTER_FACE}} />
+      </RigidBody>
+    </group>
     <WorldIbdCoilInspection material={material}/>
     {exchanging && <RigidBody ref={mountSpare} type="kinematicPosition" colliders={false}
       position={ibdPhysicalCargoPose(game, exchanging, 0, true).at} userData={movable}>

@@ -29,7 +29,7 @@ DISTRICTS = ["world-camp-content", "camp-C03-scenario-pilot", "camp-C04-shelter-
              *["alpha-mine-" + level + "-vein-contact" for level in ("lower", "middle", "upper")],
              "street-roadblock-group", "djc-mirror-contact", "djc-north-bar-contact", "djc-pool-lantern-contact",
              "djc-umbrella-contact", "djc-furniture-contact", "djc-daybed-contact", "djc-beach-club", "alpha-island-batch2", "alpha-echo-cave-station-6",
-             "alpha-station5-three-sluices-waterwheel", "world-ibd-yard", "ibd-workstation-fixtures", "ibd-parked-truck", "ibd-static-yard-contact", "factory-structure",
+             "alpha-station5-three-sluices-waterwheel", "world-ibd-yard", "ibd-workstation-fixtures", "ibd-parked-truck", "ibd-static-yard-contact", "ibd-dispatch-shutter", "factory-structure",
              "alpha-mainland-pier-r4-candidate", "alpha-cable-vehicle-model", "alpha-ferry-vehicle-model",
              "alpha-sled-vehicle-model", "cable-lower-canopy-structure", "cable-upper-canopy-structure",
              *[f"alpha-{kind}-gangway-{end}" for kind in ("cable", "ferry", "sled") for end in (0, 1)]]
