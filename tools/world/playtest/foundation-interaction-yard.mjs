@@ -20,10 +20,14 @@ const plans=[
   ['scale-b','gamepad','称 B 箱并读取公斤数',/kg/],
   ['load-a','keyboard','启动 A 托运输并确认首托实际进车厢',/pallet is (now )?in the truck/],
   ['load-b','gamepad','启动 B 托运输并确认两托实际进车厢',/pallet is (now )?in the truck/],
+  ['truck-a','keyboard','卸回 A 托，货单减少一托',/Cargo returned/],
+  ['truck-b','gamepad','卸回 B 托，货单减少一托',/Cargo returned/],
 ];
 const selection=selectors.map(id=>id.replace(/^ibd-/,''));
-assert.ok(selection.every(id=>plans.some(([station])=>id===station)),'unknown yard station');
-const prerequisites={'turn-front':['coil-front'],'coil-rear':['crane'],'turn-rear':['crane','coil-rear'],'load-b':['load-a']};
+const stockIds=['stock-a','stock-b'];
+assert.ok(selection.every(id=>plans.some(([station])=>id===station)||stockIds.includes(id)||id==='reserve'),'unknown yard station');
+const prerequisites={'turn-front':['coil-front'],'coil-rear':['crane'],'turn-rear':['crane','coil-rear'],
+  'load-b':['load-a'],'truck-a':['load-a','load-b'],'truck-b':['load-a','load-b']};
 
 async function open(page,url){
   page.on('pageerror',error=>errors.push(error.message));
@@ -66,6 +70,7 @@ try{
     return {position:a.player,grounded:a.grounded,step:a.physicsStep,near:s.nearbyInteract?.id,label:s.nearbyInteract?.label.en,
       choices:s.nearbyInteract?.choices.map(row=>row.id)??[],
       title:hud?.querySelector('h2')?.textContent,status:hud?.querySelector('.ibd-feedback')?.textContent,
+      round:hud?.querySelector('.ibd-ticket-head b')?.textContent,
       working:hud?.querySelector('.ibd-working')?.textContent,
       details:hud?.querySelector('.ibd-details')?.textContent,
       loaded:hud?.querySelector('.ibd-milestones span:last-child b')?.textContent};
@@ -88,15 +93,16 @@ try{
     }
     assert.equal((await read()).near,id);
   }
-  async function stand(id){
+  async function stand(id,preferredPosition){
     const row=await wait(id=>window.__worldInteract?.list().find(row=>row.id===id),id,22000);
     ids.push(id);
     const station=id.slice(4),[x,y,z]=row.position;
     const gallery=station.startsWith('gallery'),load=station.startsWith('load');
     const fixtureY=gallery?6.05:2.1, preferred=gallery?-1.15:load?.3:station==='crane'?-.16:0;
     const offsets=[[0,preferred],[0,0],[0,.55],[-.58,0],[.58,0],[0,-.56],[0,1.08],[1.05,0],[-1.05,0],[-.78,.78],[.78,.78]];
-    for(const [dx,dz] of offsets){
-      const position=[x+dx,fixtureY,z+dz];
+    const positions=offsets.map(([dx,dz])=>[x+dx,fixtureY,z+dz]);
+    if(preferredPosition)positions.unshift(preferredPosition);
+    for(const position of positions){
       const relocated=await page.evaluate(position=>{
         const d=window.__worldDebug,ok=d.teleportPlayer(position);d.set({position});return ok;
       },position);
@@ -147,9 +153,86 @@ try{
     assert.ok(!after.working);
     if(station.startsWith('scale'))assert.match(after.status,/\d+\.\d{2} kg/);
     if(station.startsWith('load'))assert.equal(after.loaded,station.endsWith('-a')?'1/2':'2/2');
+    if(station.startsWith('truck'))assert.equal(after.loaded,(Number(before.loaded[0])-1)+'/2');
     if(station.startsWith('gallery'))assert.ok(after.position[1]>5.5);
     events.push(inputStep(input,operation,before,after,station==='crane'?'E, ArrowUp, ArrowLeft, ArrowDown':undefined));
     return {fixture,events};
+  }
+
+  async function runReserve(){
+    const pack='ibd-parts-b', fixture=[-67.93,2.15,-186.5];
+    const bench=hud.getByRole('region',{name:'Pocket inspection bench',exact:true});
+    const pockets=bench.getByRole('group',{name:'Choose a pocket'}).getByRole('button');
+    const present=bench.getByRole('button',{name:'Present selected pocket',exact:true});
+    const close=bench.getByRole('button',{name:'Close and read',exact:true});
+    const returnPart=bench.getByRole('button',{name:'Return to pocket',exact:true});
+    const measured=bench.locator('.ibd-pack-reading strong');
+    async function presentPocket(index){
+      const selected=pockets.nth(index);
+      if(await selected.getAttribute('aria-pressed')!=='true')await selected.click();
+      await present.click();
+      if(index===3){
+        await bench.waitFor({state:'hidden',timeout:21000});
+        return 'empty';
+      }
+      await close.click({timeout:18000});
+      await measured.waitFor({timeout:17000});
+      const reading=(await measured.innerText()).trim();
+      await returnPart.click({timeout:19000});
+      await wait(index=>document.querySelectorAll('.ibd-pack-slots button')[index]?.textContent?.startsWith('✓'),index,16000);
+      return reading;
+    }
+    await stand('ibd-manifest');
+    await hud.getByRole('button',{name:'Receive the next fictional batch',exact:true}).click();
+    await hud.locator('.ibd-ticket-head b').filter({hasText:'02'}).waitFor();
+    assert.equal((await read()).loaded,'0/2');
+    const opened=await operate(pack,'keyboard','打开本批 B 箱',/Lid open|Carton opened/,await stand(pack,fixture));
+    await stand(pack,fixture);
+    assert.match((await read()).label,/Count, gauge/);
+    await press('keyboard');
+    await bench.waitFor();
+    const slots=[];
+    for(let i=0;i<4;i++)slots.push(await presentPocket(i));
+    assert.deepEqual(slots,['M8','M8','M8','empty']);
+
+    await wait(id=>window.__worldDebug.state().nearbyInteract?.choices.some(row=>row.id===id),pack);
+    await choose(pack);
+    const verdict=hud.locator('.ibd-verdict');
+    const comparisons=await verdict.locator('.ibd-verdict-evidence p').allTextContents();
+    assert.ok(comparisons.some(line=>line.includes('Counted: 3')));
+    await verdict.getByRole('button',{name:'Short count',exact:true}).click();
+    await wait(()=>/exchange controls are unlocked/i.test(document.querySelector('.ibd-feedback')?.textContent??''));
+    await stand(pack,fixture);
+    const quarantine=await operate(pack,'keyboard','将短少的原 B 箱送到隔离位',/Original quarantined/,fixture);
+    assert.match(quarantine.events.at(-1).after.details,/Bench B empty/);
+    emit({route:'yard-reserve-prerequisite',round:'02',slots,comparisons,opened,quarantine});
+
+    for(const [index,station] of stockIds.entries()){
+      if(!selection.includes('reserve')&&!selection.includes(station))continue;
+      const id='ibd-'+station, input=index===0?'keyboard':'gamepad';
+      try{
+        const result=await operate(id,input,'打开此后库候选箱并露出实体槽位',/Lid open|Carton opened/);
+        const sampleAt=await stand(id);
+        const before=await read();
+        assert.match(before.label,/Count, gauge/);
+        await press(input);
+        await bench.waitFor();
+        const reading=await presentPocket(0);
+        assert.match(reading,/^M[68]$/);
+        await bench.getByRole('button',{name:'Put back and choose a carton',exact:true}).click();
+        await bench.waitFor({state:'hidden',timeout:18000});
+        const after=await read();
+        assert.ok(after.grounded);
+        assert.match(after.details,/Bench B empty/);
+        result.events.push(inputStep(input,'进入此箱逐槽验样',{...before,sampleAt},{reading,pocket:1}));
+        result.events.push(inputStep('panel','实体卡规呈样、合拢、归位并退出',{reading},{...after,reading},'Present selected pocket, Close and read, Return to pocket, Put back and choose a carton'));
+        emit({route:'interaction-case',family:'yard-reserve',id,ok:true,...result});
+      }catch(error){
+        failures.push(id);
+        emit({route:'interaction-case',family:'yard-reserve',id,ok:false,error:String(error),actor:await read().catch(()=>null)});
+        if(await bench.count())await bench.getByRole('button',{name:'Put back and choose a carton',exact:true}).click().catch(()=>{});
+      }
+    }
   }
 
   // Use the public E at the original entrance and kit. Later positions are explicitly placed for each test.
@@ -183,7 +266,7 @@ try{
   assert.equal((await read()).loaded,'0/2');
   for(const [station,input,operation,expected] of plans){
     const id='ibd-'+station, family='yard';
-    const selected=!selection.length||selection.includes(station);
+    const selected=selection.includes(station)||(!selection.length&&!station.startsWith('truck'));
     // Front scanning and crane movement chronologically unlock the rear route; execute them for targeted repros.
     const prerequisite=selection.some(target=>prerequisites[target]?.includes(station));
     if(!selected&&!prerequisite)continue;
@@ -199,6 +282,17 @@ try{
         const cancel=hud.getByRole('button',{name:'Cancel this operation',exact:true});
         if(await cancel.count())await cancel.click();
         else await working.waitFor({state:'hidden',timeout:16000}).catch(()=>{});
+      }
+    }
+  }
+  if(selection.some(station=>station==='reserve'||stockIds.includes(station))){
+    try{await runReserve();}
+    catch(error){
+      for(const station of stockIds.filter(station=>selection.includes('reserve')||selection.includes(station))){
+        const id='ibd-'+station;
+        if(failures.includes(id))continue;
+        failures.push(id);
+        emit({route:'interaction-case',family:'yard-reserve',id,ok:false,error:String(error),actor:await read().catch(()=>null)});
       }
     }
   }

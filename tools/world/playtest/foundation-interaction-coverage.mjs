@@ -16,7 +16,7 @@ const conditional=[
   'alpha-lantern-release','ibd-stock-a','ibd-stock-b','ibd-truck-a','ibd-truck-b',
   ...['intake','bell','lookup','plan','debug','rewrite','extract','act'].map(id=>`intent-workshop-${id}`),
 ];
-const noteUnknown=['交易厅档案票以下载后的 catalog 注册，ID 为 alpha-archive-<entry.id>。'];
+const noteUnknown=['交易厅年份票随实际下载目录更新。测试响应生成的年份保留为验证样本，计数采用实时响应中实际注册的年份。'];
 // A successful route records only operations it actually completed. For example
 // a far station reached by disembarking does not cover boarding from that station.
 const original={
@@ -69,9 +69,10 @@ function recordCapture({ids,cases,sha256,...source}){
   if(seenCaptures.has(sha256))return;
   seenCaptures.add(sha256);
   sources.push({...source,sha256});
-  for(const id of ids??[])if(!id.startsWith('qa-'))current.add(id);
+  const accepted=id=>!id.startsWith('qa-')&&!(source.fixtureOnly&&id.startsWith('alpha-archive-'));
+  for(const id of ids??[])if(accepted(id))current.add(id);
   for(const {id,events} of cases){
-    if(id.startsWith('qa-'))continue;
+    if(!accepted(id))continue;
     current.add(id);
     assert.ok(events.length>0,`${source.name}: missing result for ${id}`);
     for(const event of events){
@@ -94,8 +95,10 @@ for(const path of paths){
   assert.deepEqual(end.errors??[],[],`${path}: a run with browser errors is not evidence`);
   if(end.route==='family-summary'){
     assert.equal(entry.entrySha256,end.entrySha256);
+    const catalog=rows.find(row=>row.route==='exchange-year-catalog');
     recordCapture({name:path,entrySha256:entry.entrySha256,browser:entry.browser,sha256:createHash('sha256').update(raw).digest('hex'),
-      ids:end.ids,omittedFailures:end.failures,cases:rows.filter(row=>row.route==='interaction-case'&&row.ok)});
+      ids:end.ids,omittedFailures:end.failures,cases:rows.filter(row=>row.route==='interaction-case'&&row.ok),
+      ...(catalog&&{catalog,fixtureOnly:catalog.source==='four-year history fixture'})});
     continue;
   }
   assert.deepEqual(end.failures??[],[],`${path}: a run with failed routes is not evidence`);

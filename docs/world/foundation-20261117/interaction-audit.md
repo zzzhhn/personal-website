@@ -160,9 +160,43 @@ Chrome 先打开普通入口，再用公开的货场起点进入新货批。接�
 
 生产入口 HTML SHA-256 为 `cf005320a9b74cc15d1e7d4949d6523b6ce6b27f55b1ea8c7a8f13432b0027d3`。11 项均通过，页面和游戏控制台错误为零。静态服务上的统计请求返回 501。
 
-冻结的 138 个注册全部取得浏览器行为凭证。连同两项后来实测挂载的条件动作，共 140／140。键盘 109 个 ID、模拟标准手柄 75 个、面板 44 个。另有 12 个已知条件 ID 和交易厅目录生成的年份票尚需实测。原始记录中的站位、测试响应、工位只开关面板等范围仍适用。实物手柄与目标机 Safari 仍待实测。
+这一批完成后，冻结的 138 个注册全部取得浏览器行为凭证。连同两项后来实测挂载的条件动作，共 140／140，键盘 109 个 ID、模拟标准手柄 75 个、面板 44 个。
 
 ```sh
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-yard.mjs http://127.0.0.1:4390
+node tools/world/playtest/foundation-interaction-coverage.mjs --json
+```
+
+## 条件动作和实时年份票
+
+先用无参数入口验证生产游戏和暂停菜单，再用同一生产包的 QA 页定位角色、确认地面支撑、读取实际注册及提示。工坊从空存档完成请求，货场从新货批真实接单、取工具和推进状态。交易厅通过浏览器 E 触发实时请求，按实际目录逐一到抽屉取票。复测的生产入口 SHA-256 为 `18026c457ce467b61fb81b33e670a6c5b2b5b75c5dc102363341fc9e25cfa542`。
+
+| ID | 开放条件及实测 |
+| --- | --- |
+| `intent-workshop-intake` | 空闲时拉杆收件，上一件正确完成后可领下一件。E 和模拟 Y 共收到 T1 至 T7。 |
+| `intent-workshop-lookup` | 有待处理请求时用 E 查询 T1，工坊保存第一笔完成记录。 |
+| `intent-workshop-plan` | 待处理的 T2 用模拟 Y 送到路线台，增加第二项。 |
+| `intent-workshop-rewrite` | 用 E 处理 T3。T7 在访客澄清后再次用 E 送入改写机，分别增加第三和第七项。 |
+| `intent-workshop-extract` | 用模拟 Y 提取 T4 的已有字段，增加第四项。 |
+| `intent-workshop-debug` | 用 E 处理 T5 的循环问题，增加第五项。 |
+| `intent-workshop-act` | 用模拟 Y 错送 T1，原请求退回且通过数仍为零。之后用同一入口正确执行 T6，增加第六项。 |
+| `intent-workshop-bell` | 前六件结束后领取含澄清要求的 T7，铃才可操作。模拟 Y 得到新请求，保留六笔结果。 |
+| `ibd-truck-a` | A 托实际装入后才有卸载注册。按 E 卸回原台，装载 2／2 降到 1／2。 |
+| `ibd-truck-b` | B 托实际装入后才有卸载注册。按模拟 Y 卸回原台，装载 1／2 降到 0／2。 |
+| `ibd-stock-a` | 第二批 B 箱逐槽检出三件 M8 和一个空槽，点选少件并按 E 隔离原箱后，后库 A 开放。用 E 开盖、进逐槽台，卡规读到 M6，随后归位。 |
+| `ibd-stock-b` | 同一短少批次、同一隔离条件。用模拟 Y 开盖、进逐槽台，卡规读到 M8，随后归位。 |
+
+生产工坊替代了旧的 `intent-route`、`intent-press` 和 `intent-visitor` 操作点。三个旧 ID 保留在设施定义中。本轮浏览器在同一场景实际读到接件台、澄清铃和六台分流工作站，旧三处均未挂载。货场 `stock-room` 提供路线引导，两个实体验样台才注册交互。验样台记录了开盖、逐槽实测和归位，选箱运回 B 台与更换后的整箱复验仍属后续工序。
+
+按 E 前，现场年份票注册数为零。Alpha API 回放请求返回 HTTP 200，覆盖 **2023-10-30 至 2026-10-30** 的 754 日。四柜实际注册 `alpha-archive-year-2023`、`alpha-archive-year-2024`、`alpha-archive-year-2025` 和 `alpha-archive-year-2026`，分别用 E、模拟 Y、E、模拟 Y 拿取，读回 43、252、250、209 日及准确首日。目录最多上架最近四个有至少 20 个有效交易日的年份。另用四年测试响应复跑四柜动作。样本才生成的 `alpha-archive-year-2022` 保留在证据中，实时覆盖采用本次实际生成的四个年份。
+
+覆盖清单由 140 增至 156 个实测 ID，原样本的 138 个和 12 个另列条件 ID 均取得行为凭证。实时年份票增加 4 个当前 ID。键盘覆盖 117 个 ID，模拟标准手柄 84 个，面板 46 个。对应状态机定向套件 53 项通过。实物手柄与目标机 Safari 仍待验证。[机器证据](interaction-action-evidence.json)
+
+第一轮四年测试响应采集时，本地静态服务有几张城镇贴图发生连接重置。随后同包串行重跑四柜与普通入口，页面和游戏控制台错误均为零。覆盖采用完成且零错误的运行。
+
+```sh
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4392 coaster-workshop exchange-years-live
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-families.mjs http://127.0.0.1:4392 exchange-years
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-yard.mjs http://127.0.0.1:4392 truck-a truck-b reserve
 node tools/world/playtest/foundation-interaction-coverage.mjs --json
 ```

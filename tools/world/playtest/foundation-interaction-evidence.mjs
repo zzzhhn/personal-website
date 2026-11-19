@@ -142,14 +142,25 @@ for(const file of logs){
   const cases=rows.filter(row=>row.route==='interaction-case'&&row.ok===true)
     .map(({id,fixture,events})=>({id,fixture,events}));
   const families=new Set(rows.filter(row=>row.route==='interaction-case').map(row=>row.family));
+  const catalog=rows.find(row=>row.route==='exchange-year-catalog');
+  const reserve=rows.find(row=>row.route==='yard-reserve-prerequisite');
+  const workshop=rows.find(row=>row.route==='workshop-registry');
+  const fixtureOnly=catalog?.source==='four-year history fixture';
   const fixture=['Ordinary entry checked. QA locations followed by production controls.',
     ...([...families].some(id=>id==='mine-round'||id==='exchange-round')?['Historical network response fixture.']:[]),
     ...(families.has('coaster-locks')?['Valid progress fixture grants six workshop credits only.']:[]),
     ...(families.has('yard')?['Fresh batch, reached the manifest and tools on foot. QA placement only for later stations.']:[]),
+    ...(families.has('coaster-workshop')?['New visit with no saved workshop progress.']:[]),
+    ...(families.has('yard-reserve')?['Opened and inspected the second batch through player input.']:[]),
+    ...(catalog?[fixtureOnly?'Archive dates came from a four-year reply fixture.':'Archive catalog came from the live Alpha API.']:[]),
   ].join(' ');
   runs.push({name:appending?basename(file):'操作族浏览器采集 · '+(logs.indexOf(file)+1),
     entrySha256:entry.entrySha256,browser:entry.browser,sha256,fixture,cases,
     ids:summary.ids,omittedFailures:namedFailures,
+    ...(catalog&&{catalog}),...(fixtureOnly&&{fixtureOnly:true}),
+    ...(workshop&&{workshopRegistry:{registered:workshop.registered,retiredRegistered:workshop.retiredRegistered}}),
+    ...(reserve&&{reservePrerequisite:{round:reserve.round,slots:reserve.slots,comparisons:reserve.comparisons,
+      quarantine:reserve.quarantine.events.at(-1).after.status}}),
     ...(rejected.length&&{failedCases:rejected}),...(failedFlow.length&&{failedFlows:failedFlow})});
 }
 console.log(JSON.stringify({runs},null,2));

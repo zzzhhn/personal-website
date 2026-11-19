@@ -19392,6 +19392,2121 @@
         "alpha-exchange-review"
       ],
       "omittedFailures": []
+    },
+    {
+      "name": "foundation-interaction-conditional-workshop-live-4392.jsonl",
+      "entrySha256": "18026c457ce467b61fb81b33e670a6c5b2b5b75c5dc102363341fc9e25cfa542",
+      "browser": "157.0.8103.79",
+      "sha256": "a7e67e39a4dd6c696b9a153085c6a3e54d572266d762fe8ceba5425026c154a4",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls. New visit with no saved workshop progress. Archive catalog came from the live Alpha API.",
+      "cases": [
+        {
+          "id": "intent-workshop-intake",
+          "fixture": [
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              34,
+              2.3499999999999996,
+              -120.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "接收请求 T1",
+              "before": {
+                "request": null,
+                "guidance": "Find the intake on the left. Walk to the front of its sign and pull the lever.",
+                "notice": null,
+                "progress": null,
+                "grounded": true
+              },
+              "after": {
+                "request": "Check whether the 20:00 ride has a free seat. Do not book it.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": null,
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "接收请求 T2",
+              "before": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "Plan a route: lighthouse, then the ride, back at the gate before ten.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "接收请求 T3",
+              "before": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "Make “Do not climb” more polite without changing the restriction.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "接收请求 T4",
+              "before": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "Extract the date, session and party size from this ticket. Add no new plans.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "接收请求 T5",
+              "before": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "This cart program keeps returning to the station. Find and fix the logic error.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "接收请求 T6",
+              "before": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "Book one seat on the 20:00 ride for me.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "接收请求 T7",
+              "before": {
+                "request": null,
+                "guidance": "Six locks open. Take the key, or keep experimenting.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "Can you sort this out for me?",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-act",
+          "fixture": [
+            [
+              41,
+              2.3499999999999996,
+              -120.3
+            ],
+            [
+              41,
+              2.3499999999999996,
+              -120.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "错误分流后退回原请求，锁数保持为零",
+              "before": {
+                "request": "Check whether the 20:00 ride has a free seat. Do not book it.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": null,
+                "grounded": true
+              },
+              "after": {
+                "request": "Check whether the 20:00 ride has a free seat. Do not book it.",
+                "guidance": "The original is returning without making changes. Then try another machine.",
+                "notice": "They only wanted availability. Booking changes the seat state.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "处理请求 T6 并增加一份已通过记录",
+              "before": {
+                "request": "Book one seat on the 20:00 ride for me.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Six locks open. Take the key, or keep experimenting.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-lookup",
+          "fixture": [
+            [
+              26,
+              2.3499999999999996,
+              -128.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "处理请求 T1 并增加一份已通过记录",
+              "before": {
+                "request": "Check whether the 20:00 ride has a free seat. Do not book it.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": "They only wanted availability. Booking changes the seat state.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-plan",
+          "fixture": [
+            [
+              30,
+              2.3499999999999996,
+              -133.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "处理请求 T2 并增加一份已通过记录",
+              "before": {
+                "request": "Plan a route: lighthouse, then the ride, back at the gate before ten.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-rewrite",
+          "fixture": [
+            [
+              40,
+              2.3499999999999996,
+              -131.3
+            ],
+            [
+              40,
+              2.3499999999999996,
+              -131.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "处理请求 T3 并增加一份已通过记录",
+              "before": {
+                "request": "Make “Do not climb” more polite without changing the restriction.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            },
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "处理请求 T7 并增加一份已通过记录",
+              "before": {
+                "request": "Just make the notice more polite. Do not send it.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": "Just make the notice more polite. Do not send it.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6"
+                  ],
+                  "clarified": [
+                    "T7"
+                  ],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Six locks open. Take the key, or keep experimenting.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6",
+                    "T7"
+                  ],
+                  "clarified": [
+                    "T7"
+                  ],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-extract",
+          "fixture": [
+            [
+              42,
+              2.3499999999999996,
+              -126.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "处理请求 T4 并增加一份已通过记录",
+              "before": {
+                "request": "Extract the date, session and party size from this ticket. Add no new plans.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-debug",
+          "fixture": [
+            [
+              35,
+              2.3499999999999996,
+              -134.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "处理请求 T5 并增加一份已通过记录",
+              "before": {
+                "request": "This cart program keeps returning to the station. Find and fix the logic error.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": null,
+                "guidance": "Return to the intake lever for the next request.",
+                "notice": "Understood. One lock credit earned.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "intent-workshop-bell",
+          "fixture": [
+            [
+              31.5,
+              2.3499999999999996,
+              -120.3
+            ]
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "摇铃获得访客澄清，保留六件已完成请求",
+              "before": {
+                "request": "Can you sort this out for me?",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": null,
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6"
+                  ],
+                  "clarified": [],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              },
+              "after": {
+                "request": "Just make the notice more polite. Do not send it.",
+                "guidance": "Read the goal. Walk to a machine and pull its lever.",
+                "notice": "Just make the notice more polite. Do not send it.",
+                "progress": {
+                  "version": 1,
+                  "bankRevision": "original-20261027-v1",
+                  "passed": [
+                    "T1",
+                    "T2",
+                    "T3",
+                    "T4",
+                    "T5",
+                    "T6"
+                  ],
+                  "clarified": [
+                    "T7"
+                  ],
+                  "chestOpen": false,
+                  "keyTaken": false,
+                  "gateOpen": false
+                },
+                "grounded": true
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2023",
+          "fixture": [
+            {
+              "position": [
+                46.44,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "live Alpha API"
+            }
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2023",
+                  "label": "2023",
+                  "start": "2023-10-30",
+                  "end": "2023-12-29",
+                  "days": 43
+                },
+                "before": {
+                  "phase": "cancelled",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 0,
+                  "date": null,
+                  "nav": null,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 0,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": null,
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2023-10-30",
+                      "end": "2026-10-30",
+                      "days": 754
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-10-30",
+                      "end": "2023-12-29",
+                      "days": 43
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-02",
+                      "end": "2024-12-31",
+                      "days": 252
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-02",
+                      "end": "2025-12-31",
+                      "days": 250
+                    },
+                    {
+                      "id": "year-2026",
+                      "label": "2026",
+                      "start": "2026-01-02",
+                      "end": "2026-10-30",
+                      "days": 209
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 0,
+                  "ticketReturned": false,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2023",
+                "phase": "ticket",
+                "firstDate": "2023-10-30",
+                "days": 43,
+                "contact": 1,
+                "grounded": true,
+                "dataSource": "live Alpha API"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2024",
+          "fixture": [
+            {
+              "position": [
+                47.36,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "live Alpha API"
+            }
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2024",
+                  "label": "2024",
+                  "start": "2024-01-02",
+                  "end": "2024-12-31",
+                  "days": 252
+                },
+                "before": {
+                  "phase": "ticket",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 43,
+                  "date": "2023-10-30",
+                  "nav": 100,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 1,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": "year-2023",
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2023-10-30",
+                      "end": "2026-10-30",
+                      "days": 754
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-10-30",
+                      "end": "2023-12-29",
+                      "days": 43
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-02",
+                      "end": "2024-12-31",
+                      "days": 252
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-02",
+                      "end": "2025-12-31",
+                      "days": 250
+                    },
+                    {
+                      "id": "year-2026",
+                      "label": "2026",
+                      "start": "2026-01-02",
+                      "end": "2026-10-30",
+                      "days": 209
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 1,
+                  "ticketReturned": true,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2024",
+                "phase": "ticket",
+                "firstDate": "2024-01-02",
+                "days": 252,
+                "contact": 2,
+                "grounded": true,
+                "dataSource": "live Alpha API"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2025",
+          "fixture": [
+            {
+              "position": [
+                48.54,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "live Alpha API"
+            }
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2025",
+                  "label": "2025",
+                  "start": "2025-01-02",
+                  "end": "2025-12-31",
+                  "days": 250
+                },
+                "before": {
+                  "phase": "ticket",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 252,
+                  "date": "2024-01-02",
+                  "nav": 100,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 1,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": "year-2024",
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2023-10-30",
+                      "end": "2026-10-30",
+                      "days": 754
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-10-30",
+                      "end": "2023-12-29",
+                      "days": 43
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-02",
+                      "end": "2024-12-31",
+                      "days": 252
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-02",
+                      "end": "2025-12-31",
+                      "days": 250
+                    },
+                    {
+                      "id": "year-2026",
+                      "label": "2026",
+                      "start": "2026-01-02",
+                      "end": "2026-10-30",
+                      "days": 209
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 2,
+                  "ticketReturned": true,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2025",
+                "phase": "ticket",
+                "firstDate": "2025-01-02",
+                "days": 250,
+                "contact": 3,
+                "grounded": true,
+                "dataSource": "live Alpha API"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2026",
+          "fixture": [
+            {
+              "position": [
+                49.46,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "live Alpha API"
+            }
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2026",
+                  "label": "2026",
+                  "start": "2026-01-02",
+                  "end": "2026-10-30",
+                  "days": 209
+                },
+                "before": {
+                  "phase": "ticket",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 250,
+                  "date": "2025-01-02",
+                  "nav": 100,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 1,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": "year-2025",
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2023-10-30",
+                      "end": "2026-10-30",
+                      "days": 754
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-10-30",
+                      "end": "2023-12-29",
+                      "days": 43
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-02",
+                      "end": "2024-12-31",
+                      "days": 252
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-02",
+                      "end": "2025-12-31",
+                      "days": 250
+                    },
+                    {
+                      "id": "year-2026",
+                      "label": "2026",
+                      "start": "2026-01-02",
+                      "end": "2026-10-30",
+                      "days": 209
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 3,
+                  "ticketReturned": true,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2026",
+                "phase": "ticket",
+                "firstDate": "2026-01-02",
+                "days": 209,
+                "contact": 4,
+                "grounded": true,
+                "dataSource": "live Alpha API"
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "intent-workshop-intake",
+        "intent-workshop-lookup",
+        "intent-workshop-plan",
+        "intent-workshop-rewrite",
+        "intent-workshop-extract",
+        "intent-workshop-debug",
+        "intent-workshop-act",
+        "intent-workshop-bell",
+        "alpha-exchange-archive",
+        "alpha-archive-year-2023",
+        "alpha-archive-year-2024",
+        "alpha-archive-year-2025",
+        "alpha-archive-year-2026"
+      ],
+      "omittedFailures": [],
+      "catalog": {
+        "route": "exchange-year-catalog",
+        "source": "live Alpha API",
+        "fixture": [
+          48.3,
+          2.48,
+          -73.12
+        ],
+        "activation": "E",
+        "notice": "history-ready",
+        "error": null,
+        "network": [
+          {
+            "method": "POST",
+            "status": 200
+          }
+        ],
+        "catalog": [
+          {
+            "id": "full",
+            "label": "SPY",
+            "start": "2023-10-30",
+            "end": "2026-10-30",
+            "days": 754
+          },
+          {
+            "id": "year-2023",
+            "label": "2023",
+            "start": "2023-10-30",
+            "end": "2023-12-29",
+            "days": 43
+          },
+          {
+            "id": "year-2024",
+            "label": "2024",
+            "start": "2024-01-02",
+            "end": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "label": "2025",
+            "start": "2025-01-02",
+            "end": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "label": "2026",
+            "start": "2026-01-02",
+            "end": "2026-10-30",
+            "days": 209
+          }
+        ],
+        "before": [],
+        "registered": [
+          "alpha-archive-year-2023",
+          "alpha-archive-year-2024",
+          "alpha-archive-year-2025",
+          "alpha-archive-year-2026"
+        ]
+      },
+      "workshopRegistry": {
+        "registered": [
+          "intent-workshop-intake",
+          "intent-workshop-lookup",
+          "intent-workshop-plan",
+          "intent-workshop-rewrite",
+          "intent-workshop-extract",
+          "intent-workshop-debug",
+          "intent-workshop-act",
+          "intent-workshop-bell"
+        ],
+        "retiredRegistered": []
+      }
+    },
+    {
+      "name": "foundation-interaction-yard-conditional-4392.jsonl",
+      "entrySha256": "18026c457ce467b61fb81b33e670a6c5b2b5b75c5dc102363341fc9e25cfa542",
+      "browser": "157.0.8103.79",
+      "sha256": "89d3a5d3f011074579ee1080915d9e09121ed738bdfae53789626f68a02cca26",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls. Fresh batch, reached the manifest and tools on foot. QA placement only for later stations. Opened and inspected the second batch through player input.",
+      "cases": [
+        {
+          "id": "ibd-truck-a",
+          "fixture": [
+            -80,
+            2.1,
+            -168.5
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "卸回 A 托，货单减少一托",
+              "control": "E",
+              "before": {
+                "position": [
+                  -80,
+                  1.90445077419281,
+                  -168.5
+                ],
+                "grounded": true,
+                "step": 1042,
+                "near": "ibd-truck-a",
+                "label": "Return the pallet to inspection",
+                "choices": [
+                  "ibd-truck-a"
+                ],
+                "title": "Unload pallet A",
+                "status": "One pallet is in the truck.",
+                "round": "01",
+                "details": "Coils0/2Packs0/2Loaded2/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pending · LoadedPack BCount unchecked · Spec uncheckedInspection or verdict pending · LoadedAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "2/2"
+              },
+              "after": {
+                "position": [
+                  -80,
+                  1.9039127826690674,
+                  -168.5
+                ],
+                "grounded": true,
+                "step": 1229,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Cargo returned to the bench.",
+                "round": "01",
+                "details": "Coils0/2Packs0/2Loaded1/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pending · LoadedAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "1/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-truck-b",
+          "fixture": [
+            -80,
+            2.1,
+            -160.5
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "卸回 B 托，货单减少一托",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -80,
+                  1.9043515920639038,
+                  -160.5
+                ],
+                "grounded": true,
+                "step": 1265,
+                "near": "ibd-truck-b",
+                "label": "Return the pallet to inspection",
+                "choices": [
+                  "ibd-truck-b",
+                  "ibd-dispatch"
+                ],
+                "title": "Unload pallet B",
+                "status": "Cargo returned to the bench.",
+                "round": "01",
+                "details": "Coils0/2Packs0/2Loaded1/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pending · LoadedAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "1/2"
+              },
+              "after": {
+                "position": [
+                  -80,
+                  1.9039127826690674,
+                  -160.5
+                ],
+                "grounded": true,
+                "step": 1455,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Cargo returned to the bench.",
+                "round": "01",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingPack BCount unchecked · Spec uncheckedInspection or verdict pendingAn original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-stock-a",
+          "fixture": [
+            -83,
+            2.1,
+            -193.32
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "operation": "打开此后库候选箱并露出实体槽位",
+              "control": "E",
+              "before": {
+                "position": [
+                  -83,
+                  1.9038381576538086,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 3692,
+                "near": "ibd-stock-a",
+                "label": "Open the carton and tray",
+                "choices": [
+                  "ibd-stock-a"
+                ],
+                "title": "Left reserve bench",
+                "status": "Original quarantined. Open and sample either reserve carton, then choose.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -83,
+                  1.9038249254226685,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 3749,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Lid open. Check the contents now.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            },
+            {
+              "input": "keyboard",
+              "operation": "进入此箱逐槽验样",
+              "control": "E",
+              "before": {
+                "position": [
+                  -83,
+                  1.9038804769515991,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 3780,
+                "near": "ibd-stock-a",
+                "label": "Count, gauge and inspect contents",
+                "choices": [
+                  "ibd-stock-a"
+                ],
+                "title": "Left reserve bench",
+                "status": "Lid open. Check the contents now.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "sampleAt": [
+                  -83,
+                  2.1,
+                  -193.32
+                ]
+              },
+              "after": {
+                "reading": "M6",
+                "pocket": 1
+              }
+            },
+            {
+              "input": "panel",
+              "operation": "实体卡规呈样、合拢、归位并退出",
+              "control": "Present selected pocket, Close and read, Return to pocket, Put back and choose a carton",
+              "before": {
+                "reading": "M6"
+              },
+              "after": {
+                "position": [
+                  -83,
+                  1.9038249254226685,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 4256,
+                "near": "ibd-stock-a",
+                "label": "Count, gauge and inspect contents",
+                "choices": [
+                  "ibd-stock-a"
+                ],
+                "title": "Left reserve bench",
+                "status": "Follow the current device prompt to continue.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "reading": "M6"
+              }
+            }
+          ]
+        },
+        {
+          "id": "ibd-stock-b",
+          "fixture": [
+            -62,
+            2.1,
+            -193.32
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "operation": "打开此后库候选箱并露出实体槽位",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -62,
+                  1.90445077419281,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 4288,
+                "near": "ibd-stock-b",
+                "label": "Open the carton and tray",
+                "choices": [
+                  "ibd-stock-b"
+                ],
+                "title": "Right reserve bench",
+                "status": "Follow the current device prompt to continue.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              },
+              "after": {
+                "position": [
+                  -62,
+                  1.9039127826690674,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 4348,
+                "choices": [],
+                "title": "Explore the yard",
+                "status": "Lid open. Check the contents now.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2"
+              }
+            },
+            {
+              "input": "gamepad",
+              "operation": "进入此箱逐槽验样",
+              "control": "Y",
+              "before": {
+                "position": [
+                  -62,
+                  1.9044755697250366,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 4379,
+                "near": "ibd-stock-b",
+                "label": "Count, gauge and inspect contents",
+                "choices": [
+                  "ibd-stock-b"
+                ],
+                "title": "Right reserve bench",
+                "status": "Lid open. Check the contents now.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "sampleAt": [
+                  -62,
+                  2.1,
+                  -193.32
+                ]
+              },
+              "after": {
+                "reading": "M8",
+                "pocket": 1
+              }
+            },
+            {
+              "input": "panel",
+              "operation": "实体卡规呈样、合拢、归位并退出",
+              "control": "Present selected pocket, Close and read, Return to pocket, Put back and choose a carton",
+              "before": {
+                "reading": "M8"
+              },
+              "after": {
+                "position": [
+                  -62,
+                  1.9039127826690674,
+                  -193.32000732421875
+                ],
+                "grounded": true,
+                "step": 4869,
+                "near": "ibd-stock-b",
+                "label": "Count, gauge and inspect contents",
+                "choices": [
+                  "ibd-stock-b"
+                ],
+                "title": "Right reserve bench",
+                "status": "Follow the current device prompt to continue.",
+                "round": "02",
+                "details": "Coils0/2Packs0/2Loaded0/2Stock：2 coils; 8 M8 pieces.Ship：Only 8 M8 pieces. Two cartons are not two pieces.Front coilCount unchecked · Spec uncheckedInspection or verdict pendingRear coilCount unchecked · Spec uncheckedInspection or verdict pendingPack ACount unchecked · Spec uncheckedInspection or verdict pendingBench B emptyOriginal quarantined. Choose a carton from reserve.The original B carton and its findings remain in quarantine. Reserve cartons do not count toward this shipment.An original playable interpretation of a personal experience. Tool readings are game rules, not industrial certification. Progress lasts for this visit; refresh starts again.",
+                "loaded": "0/2",
+                "reading": "M8"
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "ibd-load-a",
+        "ibd-load-b",
+        "ibd-truck-a",
+        "ibd-truck-b",
+        "ibd-manifest",
+        "ibd-parts-b",
+        "ibd-stock-a",
+        "ibd-stock-b"
+      ],
+      "omittedFailures": [],
+      "reservePrerequisite": {
+        "round": "02",
+        "slots": [
+          "M8",
+          "M8",
+          "M8",
+          "empty"
+        ],
+        "comparisons": [
+          "Manifest: 4 pieces, M8",
+          "Counted: 3 pieces",
+          "Gauge: M8"
+        ],
+        "quarantine": "Original quarantined. Open and sample either reserve carton, then choose."
+      }
+    },
+    {
+      "name": "foundation-interaction-archive-fixture-4392.jsonl",
+      "entrySha256": "18026c457ce467b61fb81b33e670a6c5b2b5b75c5dc102363341fc9e25cfa542",
+      "browser": "157.0.8103.79",
+      "sha256": "ad9606919c61abe621ba1e3c4f923e5c7d0bf545806db68ab9930ba02685a060",
+      "fixture": "Ordinary entry checked. QA locations followed by production controls. Archive dates came from a four-year reply fixture.",
+      "cases": [
+        {
+          "id": "alpha-archive-year-2022",
+          "fixture": [
+            {
+              "position": [
+                46.44,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "four-year history fixture"
+            }
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2022",
+                  "label": "2022",
+                  "start": "2022-01-01",
+                  "end": "2022-01-20",
+                  "days": 20
+                },
+                "before": {
+                  "phase": "cancelled",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 0,
+                  "date": null,
+                  "nav": null,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 0,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": null,
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2022-01-01",
+                      "end": "2025-01-20",
+                      "days": 80
+                    },
+                    {
+                      "id": "year-2022",
+                      "label": "2022",
+                      "start": "2022-01-01",
+                      "end": "2022-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-01-01",
+                      "end": "2023-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-01",
+                      "end": "2024-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-01",
+                      "end": "2025-01-20",
+                      "days": 20
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 0,
+                  "ticketReturned": false,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2022",
+                "phase": "ticket",
+                "firstDate": "2022-01-01",
+                "days": 20,
+                "contact": 1,
+                "grounded": true,
+                "dataSource": "four-year history fixture"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2023",
+          "fixture": [
+            {
+              "position": [
+                47.36,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "four-year history fixture"
+            }
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2023",
+                  "label": "2023",
+                  "start": "2023-01-01",
+                  "end": "2023-01-20",
+                  "days": 20
+                },
+                "before": {
+                  "phase": "ticket",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 20,
+                  "date": "2022-01-01",
+                  "nav": 100,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 1,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": "year-2022",
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2022-01-01",
+                      "end": "2025-01-20",
+                      "days": 80
+                    },
+                    {
+                      "id": "year-2022",
+                      "label": "2022",
+                      "start": "2022-01-01",
+                      "end": "2022-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-01-01",
+                      "end": "2023-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-01",
+                      "end": "2024-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-01",
+                      "end": "2025-01-20",
+                      "days": 20
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 1,
+                  "ticketReturned": true,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2023",
+                "phase": "ticket",
+                "firstDate": "2023-01-01",
+                "days": 20,
+                "contact": 2,
+                "grounded": true,
+                "dataSource": "four-year history fixture"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2024",
+          "fixture": [
+            {
+              "position": [
+                48.54,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "four-year history fixture"
+            }
+          ],
+          "events": [
+            {
+              "input": "keyboard",
+              "control": "E",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2024",
+                  "label": "2024",
+                  "start": "2024-01-01",
+                  "end": "2024-01-20",
+                  "days": 20
+                },
+                "before": {
+                  "phase": "ticket",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 20,
+                  "date": "2023-01-01",
+                  "nav": 100,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 1,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": "year-2023",
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2022-01-01",
+                      "end": "2025-01-20",
+                      "days": 80
+                    },
+                    {
+                      "id": "year-2022",
+                      "label": "2022",
+                      "start": "2022-01-01",
+                      "end": "2022-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-01-01",
+                      "end": "2023-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-01",
+                      "end": "2024-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-01",
+                      "end": "2025-01-20",
+                      "days": 20
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 2,
+                  "ticketReturned": true,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2024",
+                "phase": "ticket",
+                "firstDate": "2024-01-01",
+                "days": 20,
+                "contact": 3,
+                "grounded": true,
+                "dataSource": "four-year history fixture"
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-archive-year-2025",
+          "fixture": [
+            {
+              "position": [
+                49.46,
+                2.48,
+                -77.17999999999999
+              ],
+              "dataSource": "four-year history fixture"
+            }
+          ],
+          "events": [
+            {
+              "input": "gamepad",
+              "control": "Y",
+              "operation": "取得此抽屉的年份票并核对日期范围",
+              "before": {
+                "catalog": {
+                  "id": "year-2025",
+                  "label": "2025",
+                  "start": "2025-01-01",
+                  "end": "2025-01-20",
+                  "days": 20
+                },
+                "before": {
+                  "phase": "ticket",
+                  "notice": "cancelled",
+                  "day": 0,
+                  "days": 20,
+                  "date": "2024-01-01",
+                  "nav": 100,
+                  "cash": 10000,
+                  "units": 0,
+                  "targetUnits": 0,
+                  "checkpoint": 0,
+                  "equity": 10000,
+                  "choices": [],
+                  "traceLength": 1,
+                  "receipt": null,
+                  "previousRun": null,
+                  "ticketId": "year-2024",
+                  "archive": [
+                    {
+                      "id": "full",
+                      "label": "SPY",
+                      "start": "2022-01-01",
+                      "end": "2025-01-20",
+                      "days": 80
+                    },
+                    {
+                      "id": "year-2022",
+                      "label": "2022",
+                      "start": "2022-01-01",
+                      "end": "2022-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2023",
+                      "label": "2023",
+                      "start": "2023-01-01",
+                      "end": "2023-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2024",
+                      "label": "2024",
+                      "start": "2024-01-01",
+                      "end": "2024-01-20",
+                      "days": 20
+                    },
+                    {
+                      "id": "year-2025",
+                      "label": "2025",
+                      "start": "2025-01-01",
+                      "end": "2025-01-20",
+                      "days": 20
+                    }
+                  ],
+                  "reviewIndex": null,
+                  "contacts": 3,
+                  "ticketReturned": true,
+                  "error": null
+                }
+              },
+              "after": {
+                "ticket": "year-2025",
+                "phase": "ticket",
+                "firstDate": "2025-01-01",
+                "days": 20,
+                "contact": 4,
+                "grounded": true,
+                "dataSource": "four-year history fixture"
+              }
+            }
+          ]
+        }
+      ],
+      "ids": [
+        "alpha-exchange-archive",
+        "alpha-archive-year-2022",
+        "alpha-archive-year-2023",
+        "alpha-archive-year-2024",
+        "alpha-archive-year-2025"
+      ],
+      "omittedFailures": [],
+      "catalog": {
+        "route": "exchange-year-catalog",
+        "source": "four-year history fixture",
+        "fixture": [
+          48.3,
+          2.48,
+          -73.12
+        ],
+        "activation": "E",
+        "notice": "history-ready",
+        "error": null,
+        "network": [
+          "REVERSAL_5"
+        ],
+        "catalog": [
+          {
+            "id": "full",
+            "label": "SPY",
+            "start": "2022-01-01",
+            "end": "2025-01-20",
+            "days": 80
+          },
+          {
+            "id": "year-2022",
+            "label": "2022",
+            "start": "2022-01-01",
+            "end": "2022-01-20",
+            "days": 20
+          },
+          {
+            "id": "year-2023",
+            "label": "2023",
+            "start": "2023-01-01",
+            "end": "2023-01-20",
+            "days": 20
+          },
+          {
+            "id": "year-2024",
+            "label": "2024",
+            "start": "2024-01-01",
+            "end": "2024-01-20",
+            "days": 20
+          },
+          {
+            "id": "year-2025",
+            "label": "2025",
+            "start": "2025-01-01",
+            "end": "2025-01-20",
+            "days": 20
+          }
+        ],
+        "before": [],
+        "registered": [
+          "alpha-archive-year-2022",
+          "alpha-archive-year-2023",
+          "alpha-archive-year-2024",
+          "alpha-archive-year-2025"
+        ]
+      },
+      "fixtureOnly": true
     }
   ]
 }

@@ -16,17 +16,20 @@ const minePrefix='alpha-mine-';
 const exchangeIds=['archive','desk','nudge-1','nudge--1','bell','clearing','review'].map(key=>exchangePrefix+key);
 const mineIds=['vein-middle','vein-upper','pool-1','recovery-0','recovery-1','recovery-2'].map(key=>minePrefix+key);
 const coasterIds=['intent-chest','intent-gate'];
-async function fixtureHistory(route,requests){
+const workshopPrefix='intent-workshop-';
+const workshopIds=['intake','lookup','plan','rewrite','extract','debug','act','bell'].map(id=>workshopPrefix+id);
+const historyUrl='https://alpha-api.bobbyzhong.com/api/v1/factor/backtest';
+async function fixtureHistory(route,requests,years=[2026]){
   const cors={'access-control-allow-origin':'*','access-control-allow-headers':'content-type','access-control-allow-methods':'POST,OPTIONS'};
   if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:cors});
   assert.equal(route.request().method(),'POST');
   const {spec,direction,neutralize}=route.request().postDataJSON();
   requests.push(spec.name);
   const metrics={ic_spearman:.1,max_drawdown:-.2,turnover:.8,total_return:-.1,sharpe:-.4};
-  const dates=Array.from({length:20},(_,i)=>'2026-01-'+String(i+1).padStart(2,'0'));
+  const dates=years.flatMap(year=>Array.from({length:20},(_,i)=>year+'-01-'+String(i+1).padStart(2,'0')));
   await route.fulfill({status:200,headers:cors,json:{
     factor_name:spec.name,direction,benchmark_ticker:'SPY',neutralize,currency:'USD',
-    survivorship_corrected:true,membership_as_of:'2026-01-14',train_end_index:16,
+    survivorship_corrected:true,membership_as_of:'2026-01-14',train_end_index:Math.floor(dates.length*.8),
     equity_curve:dates.map((date,i)=>({date,value:100000-i*1000})),
     benchmark_curve:dates.map((date,i)=>({date,value:200000+i*1000})),
     train_metrics:{...metrics,n_days:14},test_metrics:{...metrics,ic_spearman:-.07,n_days:3},
@@ -55,8 +58,14 @@ try{
   emit({route:'ordinary entry',entrySha256,browser:browser.version()});
 
   const page=await browser.newPage({viewport}), bot=new Bot(page);
-  const historyRequests=[];
-  await page.route('https://alpha-api.bobbyzhong.com/api/v1/factor/backtest',route=>fixtureHistory(route,historyRequests));
+  const historyRequests=[],historyNetwork=[];
+  if(!selectors.includes('exchange-years-live')){
+    const years=selectors.includes('exchange-years')?[2022,2023,2024,2025]:[2026];
+    await page.route(historyUrl,route=>fixtureHistory(route,historyRequests,years));
+  }else{
+    page.on('response',r=>{if(r.url()===historyUrl)historyNetwork.push({method:r.request().method(),status:r.status()});});
+    page.on('requestfailed',r=>{if(r.url()===historyUrl)historyNetwork.push({method:r.method(),error:r.failure()?.errorText});});
+  }
   await page.addInitScript(prepareCoaster=>{
     const buttons=Array.from({length:18},()=>({pressed:false,touched:false,value:0}));
     const pad={id:'Foundation families standard pad',mapping:'standard',connected:true,index:0,axes:[0,0,0,0],buttons,timestamp:0};
@@ -303,6 +312,52 @@ try{
     await action('clearing','keyboard','压印并领取三段回放的回执',s=>s.phase==='complete'&&s.receipt?.choices===3&&Number.isFinite(s.receipt.finalEquity));
     await action('review','gamepad','在楼上拨动复盘台并显示第一段',s=>s.reviewIndex===0&&s.phase==='complete');
   }
+  async function exchangeYears(record,live=false){
+    await relocate([59,2,-62]);
+    const at=await stand(exchangePrefix+'archive',{rise:.89});
+    const read=()=>page.evaluate(()=>window.__worldExchange.read());
+    const readDrawers=()=>page.evaluate(()=>window.__worldInteract.list().filter(row=>row.id.startsWith('alpha-archive-')));
+    const source=live?'live Alpha API':'four-year history fixture';
+    const before=(await readDrawers()).map(row=>row.id);
+    assert.deepEqual(before,[]);
+    await key('keyboard');
+    await wait(()=>['history-ready','error'].includes(window.__worldExchange.read().notice),undefined,42000);
+    const state=await read(), years=state.archive.filter(row=>/^year-/.test(row.id));
+    const expected=years.map(row=>'alpha-archive-'+row.id).sort();
+    const mounted=await wait(expected=>{
+      const ids=window.__worldInteract.list().map(row=>row.id).filter(id=>id.startsWith('alpha-archive-')).sort();
+      return ids.length===expected.length&&expected.every((id,index)=>ids[index]===id);
+    },expected);
+    await mounted.dispose();
+    const available=(await readDrawers()).map(row=>row.id);
+    ids.push(...available);
+    emit({route:'exchange-year-catalog',source,fixture:at.fixture,activation:'E',notice:state.notice,error:state.error,
+      network:live?historyNetwork:historyRequests,catalog:state.archive,before,registered:available});
+    if(state.notice==='error'){
+      assert.ok(live,state.error);
+      assert.equal(available.length,0);
+      return;
+    }
+    assert.deepEqual([...available].sort(),expected);
+    if(!live)assert.equal(years.length,4);
+    for(const [index,year] of years.entries()){
+      const id='alpha-archive-'+year.id, row=await registerRow(id);
+      // Independent drawer starts also return any ticket held by the previous drawer's case.
+      const [x,y,z]=row.position, at=await stand(id,{position:[x,y,z+.2],rise:.89});
+      const before=await read(), input=index%2?'gamepad':'keyboard';
+      await key(input);
+      await wait(({ticket,contacts})=>{
+        const s=window.__worldExchange.read();
+        return s.phase==='ticket'&&s.ticketId===ticket&&s.contacts===contacts+1&&!s.ticketReturned;
+      },{ticket:year.id,contacts:before.contacts},15000);
+      await frames(46);
+      const after=await read();
+      assert.equal(after.days,year.days);assert.equal(after.date,year.start);
+      assert.ok((await actor()).grounded);
+      record(id,{position:at.fixture,dataSource:source},[inputStep(input,'取得此抽屉的年份票并核对日期范围',
+        {catalog:year,before},{ticket:after.ticketId,phase:after.phase,firstDate:after.date,days:after.days,contact:after.contacts,grounded:true,dataSource:source})]);
+    }
+  }
   async function mineRound(record){
     const source=await page.request.get(new URL('/world/alpha-mine/layout.json',world).href);
     assert.ok(source.ok());
@@ -430,6 +485,71 @@ try{
     const hud=await page.locator('.intent-workshop-summary > p').first().innerText();
     assert.match(hud,/Gate open.*Board via the boarding steps/);
     record(gate,atGate.fixture,[inputStep('gamepad','将钥匙插入大门，解锁后续登车',taken,{...enabled,hud,grounded:true})]);
+  }
+  async function workshopRound(record){
+    const read=()=>page.evaluate(()=>{
+      const hud=document.querySelector('.intent-workshop-summary');
+      return {request:hud?.querySelector('blockquote')?.textContent??null,
+        guidance:hud?.querySelector(':scope > p')?.textContent??null,
+        notice:hud?.querySelector('[role=status]')?.textContent??null,
+        progress:JSON.parse(localStorage.getItem('bobby-world.intent-coaster.progress.v1')??'null'),
+        grounded:window.__worldDebug.snapshot().grounded};
+    });
+    const intake=workshopPrefix+'intake',bell=workshopPrefix+'bell',reports=[
+      ['lookup','Check whether the 20:00 ride has a free seat. Do not book it.'],
+      ['plan','Plan a route: lighthouse, then the ride, back at the gate before ten.'],
+      ['rewrite','Make “Do not climb” more polite without changing the restriction.'],
+      ['extract','Extract the date, session and party size from this ticket. Add no new plans.'],
+      ['debug','This cart program keeps returning to the station. Find and fix the logic error.'],
+      ['act','Book one seat on the 20:00 ride for me.'],
+      ['rewrite','Can you sort this out for me?'],
+    ];
+    await relocate([34,2.1,-119.5]);
+    const registry=await wait(ids=>ids.every(id=>window.__worldInteract?.list().some(row=>row.id===id)),workshopIds,45000);
+    await registry.dispose();
+    ids.push(...workshopIds);
+    const legacy=await page.evaluate(()=>window.__worldInteract.list().map(row=>row.id).filter(id=>
+      ['intent-route','intent-press','intent-visitor'].includes(id)));
+    assert.deepEqual(legacy,[]);
+    emit({route:'workshop-registry',registered:workshopIds,retiredRegistered:legacy});
+    assert.equal((await read()).progress?.passed?.length??0,0,'start with a fresh work order');
+    const request=page.locator('.intent-workshop-summary blockquote');
+    const notice=page.locator('.intent-workshop-summary [role=status]');
+    for(const [index,[tool,card]] of reports.entries()){
+      const task='T'+(index+1), at=await stand(intake,{rise:.05});
+      const before=await read(),input=index%2?'gamepad':'keyboard';
+      await key(input);
+      await request.filter({hasText:card}).waitFor();
+      const ready=await read();
+      assert.equal(ready.request,card);
+      assert.equal(ready.progress?.passed?.length??0,index);
+      record(intake,at.fixture,[inputStep(input,'接收请求 '+task,before,ready)]);
+      if(index===0){
+        const wrong=workshopPrefix+'act',place=await stand(wrong,{rise:.05});
+        await key('gamepad');
+        await notice.filter({hasText:'They only wanted availability.'}).waitFor({timeout:15000});
+        await request.filter({hasText:card}).waitFor();
+        const returned=await read();
+        assert.equal(returned.progress?.passed?.length??0,0);
+        record(wrong,place.fixture,[inputStep('gamepad','错误分流后退回原请求，锁数保持为零',ready,returned)]);
+      }
+      if(index===6){
+        const place=await stand(bell,{rise:.05}), previous=await read();
+        await key('gamepad');
+        await request.filter({hasText:'Just make the notice more polite. Do not send it.'}).waitFor();
+        const clarified=await read();
+        assert.ok(clarified.progress.clarified.includes(task));
+        assert.equal(clarified.progress.passed.length,index);
+        record(bell,place.fixture,[inputStep('gamepad','摇铃获得访客澄清，保留六件已完成请求',previous,clarified)]);
+      }
+      const id=workshopPrefix+tool, place=await stand(id,{rise:.05}),previous=await read();
+      await key(input);
+      await wait(task=>JSON.parse(localStorage.getItem('bobby-world.intent-coaster.progress.v1')??'null')?.passed.includes(task),task,20000);
+      const after=await read();
+      assert.ok(after.grounded&&!after.progress.gateOpen);
+      assert.equal(after.progress.passed.length,index+1);
+      record(id,place.fixture,[inputStep(input,'处理请求 '+task+' 并增加一份已通过记录',previous,after)]);
+    }
   }
   async function journal(id,input){
     const at=await stand(id,{rise:.45});
@@ -579,7 +699,9 @@ try{
     ['factory',census.ids.filter(i=>/^factory-(assembly|batch|compare|finish|frame|release|rework|routing|shell|test|wheels)$/.test(i)),factory],
     ['exchange-project',['alpha-exchange-project'],card],
   ];
-  const flows=[['exchange-round',exchangeIds,exchangeRound],['coaster-locks',coasterIds,coasterLocks],['mine-round',mineIds,mineRound]];
+  const flows=[['exchange-round',exchangeIds,exchangeRound],['coaster-locks',coasterIds,coasterLocks],['mine-round',mineIds,mineRound],
+    ['coaster-workshop',workshopIds,workshopRound],['exchange-years',[],exchangeYears],
+    ['exchange-years-live',[],record=>exchangeYears(record,true)]];
   assert.ok(selectors.every(sel=>[...cases,...flows].some(([family,ids])=>sel===family||ids.includes(sel))),'unknown interaction family or ID');
   for(const [family,targets,test] of cases)for(const [i,id] of targets.entries()){
     // Empty repositioning runs in real time for up to 64 seconds, so keep it opt-in.
@@ -598,6 +720,7 @@ try{
   }
   const flowErrors=[];
   for(const [family,targets,test] of flows){
+    if(!selectors.length&&(family==='coaster-workshop'||targets.length===0))continue;
     if(selectors.length&&!selectors.includes(family)&&!targets.some(id=>selectors.includes(id)))continue;
     const completed=new Map();
     try{
