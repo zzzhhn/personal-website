@@ -32,7 +32,7 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
   steel.add(new ExtrudeGeometry(apron,{depth:.12,bevelEnabled:false}), craftApron ? '#b6b3a7' : '#aca48e', new Matrix4().makeTranslation(...coasterWorld([0,0,0])).multiply(new Matrix4().makeRotationX(-Math.PI/2)));
   const apronSource = steel.bindContact('coaster-workshop-apron');
   if (craftApron) markIntentCraft(apronSource, INTENT_CRAFT.courtyardPaving);
-  if (craftApron) addCoasterPavingEdges(steel);
+  if (craftApron) addCoasterPavingEdges(steel,colliders);
   // Match the full convex apron, including the west pedestrian threshold.
   // The former central box left visible corners and the new entry unsupported.
   colliders.push({position:coasterWorld([-16,.06,67.5]),half:[18,.06,12.5],surface:true,sourceId:'coaster-workshop-apron',
@@ -57,10 +57,12 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
       if(i<COASTER_CLIFF_WALK.length-1){
         const edge=mid.clone().addScaledVector(side,sign*2.55);
         addBox(`coaster-cliff-walk-${i}-guard-${sign}`,edge.clone().addScaledVector(up,.55),[length,1.1,.12],q,'#50666d');
+        const first = steel.parts.length;
         for(let at=1;at<length;at+=4){
           const point=a.clone().lerp(b,at/length).addScaledVector(side,sign*2.5);
           steel.beam(point.toArray() as Vec3,point.clone().addScaledVector(up,1.15).toArray() as Vec3,.075,'#a8895d');
         }
+        colliders.push(steel.bindMeshGroup(`coaster-cliff-walk-${i}-guard-posts-${sign}`,first));
       }
     }
     // Piers anchor the slope slabs instead of presenting a floating path.

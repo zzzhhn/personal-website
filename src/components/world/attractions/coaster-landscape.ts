@@ -4,6 +4,7 @@ import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
 import { coasterInfieldHeight, COASTER_INFIELD_LAMPS } from './coaster-terrain-relief.ts';
 import { addLandscapeRocks } from './coaster-landscape-rocks.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
+import type { BufferGeometry } from 'three';
 import type { Vec3 } from '../types';
 
 export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean) {
@@ -26,7 +27,8 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
   const islandCount = addLandscapeRocks(steel, colliders);
   // Trees, their matching trunk colliders and planter foliage are owned by WorldCoasterVegetation.
   // Flush cut-stone borders frame the paved tread within the existing slab.
-  for (const [x,z,w,d] of [[-24,53,31,3],[31,53,34,3],[16,43,3,20],[-18,42,3,18]]) {
+  for (const [i,[x,z,w,d]] of [[-24,53,31,3],[31,53,34,3],[16,43,3,20],[-18,42,3,18]].entries()) {
+    const first = steel.parts.length;
     const across = w >= d ? 2 : 0;
     const width = Math.min(w,d);
     const border = .17;
@@ -40,6 +42,7 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     };
     strip(0, width - 2 * border, '#b8ab92', INTENT_CRAFT.courtyardPaving);
     for (const side of [-1,1]) strip(side * (width - border) / 2, border, '#979786', INTENT_CRAFT.coping);
+    colliders.push(steel.bindMeshGroup(`coaster-promenade-inset-${i}`,first,true));
     for (const side of [-1,1]) light([x,.13,z+side*(d/2-.2)],[w,.04,.09]);
   }
   for (const x of [-48,-38,-18,17,29,45]) {
@@ -57,14 +60,24 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     light([x,y+2.8,z],[.37,.43,.63]);light([x,y+2.8,z],[.63,.43,.37]);
     colliders.push(post);
   }
-  addEquipment(steel, glow, box, light, beam, housing, detailed);
+  addEquipment(steel, colliders, box, light, beam, housing, detailed);
   return { islands: islandCount, trees: 0, shrubs: 0 };
 }
 
 type Box = (p: Vec3, size: Vec3, color: string, solid?: boolean) => void;
 type Light = (p: Vec3, size: Vec3, color?: string) => void;
 type Beam = (a: Vec3, b: Vec3, radius: number, color?: string) => void;
-function addEquipment(steel: CoasterBatch, glow: CoasterBatch, box: Box, light: Light, beam: Beam, housing: Box, detailed: boolean) {
+function addEquipment(steel: CoasterBatch, colliders: CoasterCollider[], emitBox: Box, light: Light, emitBeam: Beam, housing: Box, detailed: boolean) {
+  const parts: BufferGeometry[] = [];
+  const flush = (sourceId: string) => colliders.push(steel.bindMeshParts(sourceId,parts.splice(0)));
+  const box: Box = (p,size,color,solid) => {
+    emitBox(p,size,color,solid);
+    if (!solid) parts.push(steel.parts[steel.parts.length - 1]);
+  };
+  const beam: Beam = (a,b,r,color) => {
+    emitBeam(a,b,r,color);
+    parts.push(steel.parts[steel.parts.length - 1]);
+  };
   {
     const p = ([x,y,z]: Vec3): Vec3 => [x,y*54/44,z-48];
     const size = ([x,y,z]: Vec3): Vec3 => [x,y*54/44,z];
@@ -92,6 +105,7 @@ function addEquipment(steel: CoasterBatch, glow: CoasterBatch, box: Box, light: 
     towerBeam([x,3,-26.6],[x,38,-26.6],.24,'#bd925e');
     towerBeam([x,38,-26.6],[x,38,-30],.24,'#bd925e');
   }
+  flush('coaster-service-tower-fittings');
   }
   // Heavy octagonal service collars and multiple roof levels make the helix house read from afar.
   housing([-36,3,13],[10.3,1.2,10.3],'#6e8187');
@@ -112,6 +126,7 @@ function addEquipment(steel: CoasterBatch, glow: CoasterBatch, box: Box, light: 
     beam([x,13.8,12],[x,15.2,12],.35,'#b18b5b');
     box([x,15.2,12],[1.3,.35,1.3],'#566970');
   }
+  flush('coaster-helix-house-equipment');
   {
     const move=([x,y,z]:Vec3):Vec3=>[x+21,y+5,z-49];
     const powerHousing: Box=(p,s,c)=>housing(move(p),s,c);
@@ -131,6 +146,7 @@ function addEquipment(steel: CoasterBatch, glow: CoasterBatch, box: Box, light: 
     powerBeam([x,2.1,-49.5],[x,3.3,-49.5],.08,'#bd9865');
     powerBeam([x,3.3,-49.5],[x,3.3,-36.5],.08,'#bd9865');
   }
+  flush('coaster-power-house-equipment');
   }
   // Deep station fascias and canopy lighting stay above the verified guest route.
   for (const x of [-10.8,6.8]) {
@@ -139,11 +155,13 @@ function addEquipment(steel: CoasterBatch, glow: CoasterBatch, box: Box, light: 
   }
   light([-2,6.25,53.1],[16,.22,.16]);
   for (const z of [35,41,47]) box([-2,7.65,z],[15,.32,.38],'#829196');
+  flush('coaster-station-fascia');
   if (detailed) {
     for (const z of [39,44,48]) {
       beam([12.85,1.1,z],[12.85,5.9,z],.15,'#b18b5b');
       box([12.9,3.5,z],[.3,1.3,.7],'#3f5a67');
     }
+    flush('coaster-station-conduits');
     for (const x of [-47,-40,-33,-26,-19,17,24,31,38,45]) {
       if(onCoasterCliffWalk(x,52,1)) continue;
       beam([x,.25,52],[x,2.8,52],.13,'#4f6267');
@@ -151,8 +169,11 @@ function addEquipment(steel: CoasterBatch, glow: CoasterBatch, box: Box, light: 
       light([x,2.45,52],[.4,.65,.74]);
       light([x,2.45,52],[.74,.65,.4]);
     }
+    flush('coaster-promenade-lamps');
     // Bundled cable runs are attached to existing staff catwalks, not strung across the ride.
     for (const x of [-51.7,-51.4,-51.1]) beam([x,15.05,-23],[x,15.05,12],.075,'#b38551');
+    flush('coaster-staff-deck-cables');
     for (const y of [5,6.1]) beam([-44.8,y,-73],[-44.8,y,-84],.18,'#c09461');
+    flush('coaster-service-cables');
   }
 }

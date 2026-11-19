@@ -69,8 +69,7 @@ export class CoasterBatch {
     this.contact.set(part, { id, collision: 'solid', surfaceId });
     return part;
   }
-  bindMeshContact(contact: CoasterCollider & { sourceId: string }, first = this.parts.length - 1): CoasterCollider {
-    const parts = this.parts.slice(first);
+  bindMeshContact(contact: CoasterCollider & { sourceId: string }, parts = [this.parts[this.parts.length - 1]]): CoasterCollider {
     const sources = parts.map((part,i) =>
       this.bindContact(contact.sourceId, parts.length === 1 ? contact.sourceId : `${contact.sourceId}-${i}`,part).getAttribute('position'));
     const centre = new Vector3(...contact.position), point = new Vector3();
@@ -83,6 +82,18 @@ export class CoasterBatch {
       indices[vertex] = vertex;
     }
     return { ...contact, mesh: { vertices, indices } };
+  }
+  bindMeshGroup(sourceId: string, first: number, surface = false) {
+    return this.bindMeshParts(sourceId,this.parts.slice(first),surface);
+  }
+  bindMeshParts(sourceId: string, parts: BufferGeometry[], surface = false) {
+    const bounds = new Box3();
+    for (const part of parts) {
+      part.computeBoundingBox();
+      bounds.union(part.boundingBox!);
+    }
+    return this.bindMeshContact({ position: tuple(bounds.getCenter(new Vector3())),
+      half: tuple(bounds.getSize(new Vector3()).multiplyScalar(.5)), surface, sourceId },parts);
   }
   finish() {
     attachIntentCraftBatch(this.parts);
@@ -229,15 +240,7 @@ export function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boo
       }
     }
   }
-  if (colliders) {
-    const bounds = new Box3();
-    for (const part of steel.parts.slice(first)) {
-      part.computeBoundingBox();
-      bounds.union(part.boundingBox!);
-    }
-    colliders.push(steel.bindMeshContact({ position: tuple(bounds.getCenter(new Vector3())),
-      half: tuple(bounds.getSize(new Vector3()).multiplyScalar(.5)), sourceId: 'coaster-return-tunnel' },first));
-  }
+  if (colliders) colliders.push(steel.bindMeshGroup('coaster-return-tunnel',first));
 }
 
 export const addCoasterTower = addThrillTower;
@@ -252,7 +255,7 @@ export function addCoasterStationRoof(steel: CoasterBatch) {
 }
 
 /** Static architecture only: existing solids and all luminous geometry retain their owners. */
-export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, craftedArchitecture = false) {
+export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, craftedArchitecture = false, colliders?: CoasterCollider[]) {
   const stationArtStart = steel.parts.length;
   const box=(p:Vec3,size:Vec3,color:string)=>steel.box(coasterWorld(p),size,color);
   const shell=(p:Vec3,size:Vec3,color:string)=>steel.housing(coasterWorld(p),size,color);
@@ -320,6 +323,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, cr
   if (craftedArchitecture) discardCoasterVisuals(steel, stationArtStart);
   // Equipment buildings use corner posts and broad service bays within their retained shells.
   const equipment=(cx:number,base:number,cz:number,w:number,h:number,d:number)=>{
+    const first = steel.parts.length;
     for(const sx of [-1,1])for(const sz of [-1,1]){
       const x=cx+sx*(w/2-.32),z=cz+sz*(d/2-.32);
       shell([x,base+h/2,z],[.64,h,.64],P.white);
@@ -348,6 +352,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, cr
     box([cx,base+h-.75,front],[w*.5,.38,.18],P.copper);
     if(detailed)for(const x of [cx-w*.32,cx+w*.32])for(const y of [base+h*.12,base+h*.43,base+h*.6,base+h*.9])
       beam([x,y,front+.06],[x,y,front+.16],.085,P.rail);
+    if (colliders) colliders.push(steel.bindMeshGroup(`coaster-equipment-wall-${cx}`,first));
   };
   // Maintenance elevations have a plinth and deep louvre recesses across the
   // full service bays, visible both from the platform and along the return.
@@ -355,6 +360,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, cr
     { x: -36, y: 0, width: 9, front: 17.5 },
     { x: 24, y: 5, width: 10, front: -88 },
   ]) {
+    const first = steel.parts.length;
     box([x, y + .36, front + .055], [width - .6, .72, .18], '#818680');
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
     for (const side of [-1,1]) {
@@ -366,6 +372,7 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean, cr
         markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.matteSoffit);
       }
     }
+    if (colliders) colliders.push(steel.bindMeshGroup(`coaster-equipment-front-${x}`,first));
   }
   equipment(-36,0,13,9,10.8,9);
   equipment(24,5,-92,10,7.6,8);
@@ -445,21 +452,30 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   // A tangible equipment house inside the descending helix, plus a separate rear power block.
   fittedHousing('coaster-helix-house',[-36, 5.4, 13], [9, 10.8, 9], P.steel, .06);
   fittedHousing('coaster-helix-house-roof',[-36, 11.3, 13], [10.2, 1, 10.2], P.dark);
-  housing([-35, 12.6, 13], [3.5, 1.6, 3.5], P.steel, false);
+  fittedHousing('coaster-helix-house-plant',[-35, 12.6, 13], [3.5, 1.6, 3.5], P.steel);
   fittedHousing('coaster-power-house',[24, 8.8, -92], [10, 7.6, 8], P.steel, .06);
   fittedHousing('coaster-power-house-roof',[24, 13.1, -92], [10.8, 1, 8.8], P.dark);
   for (const x of [-39.5, -32.5]) light([x, 8.7, 17.58], [.3, 2.8, .1], P.cyan);
+  const leftVents: BufferGeometry[] = [], rightVents: BufferGeometry[] = [];
   for (let i = 0; i < 5; i++) {
     box([-36, 4.2 + i * .48, 17.58], [4.5, .18, .14], P.dark);
+    leftVents.push(steel.parts[steel.parts.length - 1]);
     box([24, 8 + i * .45, -87.94], [5, .16, .12], P.dark);
+    rightVents.push(steel.parts[steel.parts.length - 1]);
   }
+  colliders.push(steel.bindMeshParts('coaster-helix-house-louvres',leftVents),
+    steel.bindMeshParts('coaster-power-house-louvres',rightVents));
+  const ductsStart = steel.parts.length;
   beam([-30.8, 1.2, 10], [-30.8, 8.7, 10], .42, P.copper);
   beam([-30.8, 8.7, 10], [-33, 8.7, 10], .42, P.copper);
-  addCoasterBuildingArt(steel, detailed, craftedArchitecture);
+  colliders.push(steel.bindMeshGroup('coaster-helix-house-duct',ductsStart));
+  addCoasterBuildingArt(steel, detailed, craftedArchitecture, colliders);
   // Layered service structure is staff-only; closed stair access distinguishes it from the route to the ride.
-  const deck = (p: Vec3, size: Vec3) => {
+  const deck = (sourceId: string, p: Vec3, size: Vec3) => {
     box(p, size, '#9b9c92', true, true);
-    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.mineralCladding);
+    colliders[colliders.length - 1].sourceId = sourceId;
+    markIntentCraft(steel.bindContact(sourceId), INTENT_CRAFT.mineralCladding);
+    const first = steel.parts.length;
     const [x, y, z] = p, [w, h, d] = size;
     if (detailed) for (const sx of [-1,1]) {
       box([x + sx * (w / 2 - .055), y - h * .15, z], [.11, h * .66, d], P.steel);
@@ -470,12 +486,15 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
       markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
     }
     for (let at = -d / 2; at <= d / 2; at += 3) for (const sx of [-1, 1]) beam([x + sx * w / 2, y, z + at], [x + sx * w / 2, y + 1.2, z + at], .055, P.copper);
+    colliders.push(steel.bindMeshGroup(`${sourceId}-guards`,first));
   };
-  deck([-51, 15.5, -5], [2.4, .45, 38]);
-  deck([-47.7, 15.5, -24], [9, .45, 2.4]);
-  deck([-44.5, 15.5, 14], [15.4, .45, 2.4]);
-  for (const z of [-23, -8, 7]) housing([-51, 7.75, z], [.7, 15.5, .7], P.steel);
+  deck('coaster-staff-deck-main', [-51, 15.5, -5], [2.4, .45, 38]);
+  deck('coaster-staff-deck-north', [-47.7, 15.5, -24], [9, .45, 2.4]);
+  deck('coaster-staff-deck-south', [-44.5, 15.5, 14], [15.4, .45, 2.4]);
+  for (const z of [-23, -8, 7]) fittedHousing(`coaster-staff-deck-pier-${z}`, [-51, 7.75, z], [.7, 15.5, .7], P.steel);
+  const staffStairStart = steel.parts.length;
   for (let i = 0; i < 16; i++) box([-38.5 + i * .24, 15.3 - i * .23, 14], [.35, .2, 2], P.steel);
+  colliders.push(steel.bindMeshGroup('coaster-staff-deck-stairs',staffStairStart,true));
   // The irregular fence follows the surveyed coast, keeping the established central gate.
   const boundary = [[-54,56],[54,56], ...INTENT_COASTER_FOOTPRINT.slice(5).map(([x,z]) => [x-50,z+195])];
   for (let i=0;i<boundary.length;i++) {
@@ -493,7 +512,9 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
         const position = coasterWorld([(from[0]+to[0])/2,y,(from[1]+to[1])/2]);
         colliders.push(steel.bindMeshContact({position,half:[length/2,.08,.08],rotation:[0,yaw,0],sourceId}));
       }
-      for(let d=0;d<length;d+=5) housing([from[0]+dx*d/length,1.6,from[1]+dz*d/length],[.32,3.2,.32],P.concrete);
+      const first = steel.parts.length;
+      for(let d=0;d<length;d+=5) housing([from[0]+dx*d/length,1.6,from[1]+dz*d/length],[.32,3.2,.32],P.concrete,false);
+      colliders.push(steel.bindMeshGroup(`coaster-perimeter-posts-${i}-${j}`,first));
     }
   }
   const finishBox = (p: Vec3, size: Vec3, color: string, role: number) => {
@@ -532,12 +553,16 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   if (craftedArchitecture) discardCoasterVisuals(steel, gateVisualStart);
   if (detailed) {
     if (!craftedArchitecture) for (let i = 0; i < 6; i++) box([8.5 + i * .6, 6.9, 43], [.25, .35, 5.5], P.rail);
+    const roofEdge = steel.parts.length;
     for (const x of [-41, -31]) beam([x, 12, 8], [x, 12, 18], .07, P.copper);
     for (const z of [8, 18]) beam([-41, 12, z], [-31, 12, z], .07, P.copper);
+    colliders.push(steel.bindMeshGroup('coaster-helix-house-roof-rails',roofEdge));
     // Ladder is fenced staff access, not an implied guest route.
+    const ladderStart = steel.parts.length;
     for (const x of [-52, -51]) beam([x, .2, -23], [x, 15.7, -23], .08);
     for (let y = .4; y < 15.6; y += .5) beam([-52, y, -23], [-51, y, -23], .06);
-    housing([-51.5, 1.8, -22.6], [1.5, 3.6, .2], P.dark);
+    colliders.push(steel.bindMeshGroup('coaster-staff-deck-ladder',ladderStart));
+    fittedHousing('coaster-staff-deck-ladder-guard',[-51.5, 1.8, -22.6], [1.5, 3.6, .2], P.dark);
   }
   for (const p of INTENT_LAMP_POINTS.filter(([x]) => x < -27 || x > -5)) {
     const [x, y, z] = p, sourceId = `coaster-forecourt-lamp-${x}`;

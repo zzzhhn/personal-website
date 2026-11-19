@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Group, Scene } from 'three';
-import { coasterCollisionReviewRoots } from './coaster-collision-review.ts';
+import { coasterCollisionReviewRoots, coasterSharedSupplies } from './coaster-collision-review.ts';
 
 const roots = ['coaster-gate-portal-contact','coaster-station-architecture-contact','coaster-gate-leaves','coaster-train-craft',
-  'coaster-rail-footings-contact','coaster-running-rails-contact','coaster-rail-steel-contact'];
+  'coaster-rail-footings-contact','coaster-running-rails-contact','coaster-rail-steel-contact','coaster-site-contact'];
 const visualAssets = ['coaster-gate-craft-static','coaster-station-craft','coaster-gate-craft-leaf','coaster-train-craft',
-  'coaster-rail-footings-contact','coaster-running-rails-contact','coaster-rail-steel-contact'];
+  'coaster-rail-footings-contact','coaster-running-rails-contact','coaster-rail-steel-contact','coaster-site-structure'];
 
 test('overlook visuals, portal preparation, local rest and a ride have different strict contact roots', () => {
   const scene = new Scene(), world = new Group(); world.name = 'intent-coaster'; scene.add(world);
@@ -35,4 +35,26 @@ test('each asset enters review only after the corresponding visual pack has moun
     const model = new Group(); model.name = name; world.add(model);
     assert.deepEqual(coasterCollisionReviewRoots(scene), roots.slice(0,i + 1));
   }
+});
+
+test('only the physical node owned by the approach can supply the site walkway before a coaster round trip', () => {
+  const scene = new Scene();
+  const coaster = new Group(); coaster.name = 'intent-coaster'; scene.add(coaster);
+  const site = new Group(); site.name = 'coaster-site-structure'; coaster.add(site);
+  const approach = new Group(); approach.name = 'north-attractions-approach'; scene.add(approach);
+  const body = new Group(); approach.add(body);
+  const collider = new Group(); collider.name = 'coaster-arrival-walk'; body.add(collider);
+  const unrelated = new Group(); unrelated.name = collider.name; scene.add(unrelated);
+  const state = { active: false, occupied: false, preparing: true, renderedNear: false };
+  coaster.userData.coasterCollisionReview = state;
+  assert.deepEqual(coasterSharedSupplies(scene),[]);
+  state.renderedNear = true;
+  assert.deepEqual(coasterSharedSupplies(scene),[{root:'coaster-site-contact',collider}]);
+  body.remove(collider);
+  assert.deepEqual(coasterSharedSupplies(scene),[]);
+  body.add(collider);
+  state.preparing = false; state.occupied = true;
+  assert.deepEqual(coasterSharedSupplies(scene),[{root:'coaster-site-contact',collider}]);
+  state.occupied = false;
+  assert.deepEqual(coasterSharedSupplies(scene),[]);
 });

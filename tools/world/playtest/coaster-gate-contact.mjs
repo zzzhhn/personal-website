@@ -2,8 +2,9 @@ import assert from 'node:assert/strict';
 import { Bot, CHROME, comboFor, loadPlaywright } from './lib.mjs';
 
 const [base = 'http://127.0.0.1:4343', mode = 'after'] = process.argv.slice(2);
-assert.ok(['before', 'after', 'rails'].includes(mode));
+assert.ok(['before', 'after', 'rails', 'site'].includes(mode));
 const authored = mode !== 'before';
+const authoredRails = mode === 'rails' || mode === 'site';
 const railRoots = ['coaster-rail-footings-contact','coaster-running-rails-contact','coaster-rail-steel-contact'];
 const url = new URL('/world/?start=coaster', base);
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
@@ -132,7 +133,7 @@ try {
     }
     console.log(JSON.stringify({ phase: 'train-source', cars, pathCount: train.meshes.length }));
   }
-  if (mode === 'rails') {
+  if (authoredRails) {
     const active = await page.evaluate(async roots => {
       const d = window.__worldDebug;
       return { sources: await Promise.all(roots.map(root => d.reviewCollisionSources(root))),
@@ -152,6 +153,27 @@ try {
     }
     assert.deepEqual(active.inventory.errors.filter(error => railRoots.some(root => error.includes(root))),[]);
     console.log(JSON.stringify({ phase: 'rails-source', shapes, frames: active.frames }));
+  }
+  if (mode === 'site') {
+    const current = await page.evaluate(async () => {
+      const d = window.__worldDebug, inventory = d.reviewCollisionInventory();
+      const site = await d.reviewCollisionSources('coaster-site-contact');
+      const approach = await d.reviewCollisionSources('north-attractions-approach');
+      return { site, walk: approach.colliders.filter(c=>c.name==='coaster-arrival-walk'),
+        registrations: inventory.registrations['coaster-site-contact'],
+        errors: inventory.errors.filter(error=>error.includes('coaster-site-contact')) };
+    });
+    assert.equal(current.site.meshes.length,1);
+    const [mesh] = current.site.meshes;
+    assert.ok(!mesh.declaration.partial);
+    assert.equal(mesh.declaration.ranges.reduce((n,r)=>n+r.vertexCount/3,0),62032);
+    assert.ok(current.walk.length===1 && current.walk[0].shape.type==='TriMesh');
+    assert.equal(current.registrations,420);
+    assert.equal(current.site.colliders.length,419);
+    assert.deepEqual(new Set([...current.site.colliders,...current.walk].map(c=>c.name)),
+      new Set(mesh.declaration.ranges.map(range=>range.surfaceId)));
+    assert.deepEqual(current.errors,[]);
+    console.log(JSON.stringify({ phase:'site-source',registrations:current.registrations,triangles:62032 }));
   }
   await bot.press('KeyE');
   const skip = page.getByRole('button', { name: 'Skip travel and return to station', exact: true });
@@ -189,13 +211,22 @@ try {
     const station = await page.evaluate(() => window.__worldDebug.reviewCollisionSources('coaster-station-architecture-contact'));
     assert.equal(station.meshes.length, 15);
     assert.equal(station.colliders.length, 0);
-    if (mode === 'rails') {
+    if (authoredRails) {
       const distant = await page.evaluate(async roots => {
         const d = window.__worldDebug, inventory = d.reviewCollisionInventory();
         const surveys = await Promise.all(roots.map(root => d.reviewCollisionSources(root)));
         return surveys.map(({meshes,colliders},i) => [meshes.length,colliders.length,inventory.registrations[roots[i]] ?? 0]);
       },railRoots);
       assert.deepEqual(distant,[[1,0,0],[1,0,0],[2,0,0]],'rail finishes stay mounted at camp with separate sleeping contact');
+    }
+    if (mode === 'site') {
+      await wait(async () => {
+        const d = window.__worldDebug, site = await d.reviewCollisionSources('coaster-site-contact');
+        const farTriangles = site.meshes[0]?.declaration?.ranges?.reduce((n,r)=>n+r.vertexCount/3,0);
+        return farTriangles===55312 && !site.colliders.length && d.reviewCollisionInventory().registrations['coaster-site-contact']===undefined;
+      });
+      const walk = await page.evaluate(() => window.__worldDebug.physicsInventory().filter(c=>c.name==='coaster-arrival-walk'));
+      assert.equal(walk.length,1,'the original approach support keeps its independent lifecycle');
     }
     const coverage = await page.evaluate(async () => {
       const drawn = await window.__worldDebug.reviewCollisionSources('intent-coaster');

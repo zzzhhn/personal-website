@@ -58,6 +58,8 @@
 
 此前归程隧道的左右墙与顶盖只有渲染几何。现在两档各一个固定接触，远档 1,368、近档 3,432 个三角形来自原绘制区间，近档保留一处渲染接缝实测开口。整圈 1 m 乘员包络改用实际 Rapier 形状复核。
 
-原远场 44 项还剩这一张混合网格为部分迁移。它已覆盖远档 40,972 / 55,312 和近档 43,036 / 62,032 个可见三角形，356 个接触名。仍需核对围栏竖柱、设备房饰面、附属步道和铺地边饰，台账继续显示该网格有缺口。
+围栏的 183 根竖柱沿 16 个原分段共用真实形状，保留柱间可见开口。原盒在一处柱角上方提前超过 30 mm。工坊六段铺地边饰实际顶面为 1.136 m，西侧接驳口保持无挡。设备房饰面、员工步道及外露钢件补齐原有可见三角。员工平台台面实际高度 16.725 m，护栏横杆能挡住侧向探针，横杆下方仍留空。
 
-复跑命令使用现有 Playwright。`WORLD_BROWSER_MODULES=<Playwright 所在目录> node tools/world/playtest/coaster-gate-contact.mjs http://127.0.0.1:<独立端口> rails`。未迁移轨道的候选用 `after`，旧版用 `before`。Node 定向测试为 `node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/attractions/{coaster-gate-contact,actor-ride-adapter,coaster-station-contact,coaster-rail-contact,coaster-collision-review,coaster-site-contact,attraction-camera-cabin}.test.mjs`。
+混合网格两档保留同一个颜色绘制。远档的 55,312 个三角形和近档的 62,032 个三角形已全部迁移，分别提供 413、420 个唯一接触名。严格根 `coaster-site-contact` 只在场馆活跃、乘坐占用或近景预热就绪时要求本地接触。西侧短步道继续共用北侧道路先加载的 `coaster-arrival-walk`；两档逐顶点对应同一来源。两档 Rapier 实测的注册在缺少该实际节点时都失败，场景中的同名普通物件不能补位。
+
+复跑命令使用现有 Playwright。`WORLD_BROWSER_MODULES=<Playwright 所在目录> node tools/world/playtest/coaster-gate-contact.mjs http://127.0.0.1:<独立端口> site`。只核对已迁移轨道的候选用 `rails`，未迁移轨道的候选用 `after`，旧版用 `before`。Node 定向测试为 `node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/attractions/{coaster-gate-contact,actor-ride-adapter,coaster-station-contact,coaster-rail-contact,coaster-collision-review,coaster-site-contact,attraction-camera-cabin}.test.mjs`。

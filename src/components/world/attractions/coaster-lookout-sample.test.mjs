@@ -131,7 +131,7 @@ test('local rendering emits the same hulls and retains all architecture and the 
 test('integrated local counts fit the unchanged whole-scene geometry and collider ceilings',()=>{
   const counter=()=>{
     const c=new CoasterBatch();c.triangles=0;
-    c.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts[0]=g;g.dispose();};return c;
+    c.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts.push(g);g.dispose();};return c;
   };
   const steel=counter(),glow=counter(),colliders=[];addCoasterCliffs(steel,glow,colliders);
   const total=steel.triangles+glow.triangles;

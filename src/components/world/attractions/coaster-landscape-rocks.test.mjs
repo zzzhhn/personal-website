@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { Box3, Vector3 } from 'three';
 import { landscapeRocks, landscapeRockCollider, landscapeRockSurfaceParts, LANDSCAPE_ROCK_SITES } from './coaster-landscape-rocks.ts';
 import { addCoasterLandscape } from './coaster-landscape.ts';
-import { CoasterBatch } from './coaster-geometry.ts';
+import { CoasterBatch, createCoasterStructure } from './coaster-geometry.ts';
+import { coasterRailFootingSources, coasterRunningRailSources, coasterRailSteelSources } from './coaster-rail-contact.ts';
 import { coasterFrame, coasterWorld } from './coaster-track.ts';
 import { COASTER_CLIFF_WALK } from './coaster-landscape-cliffs.ts';
 import { COASTER_INFIELD_WALK } from './coaster-terrain-relief.ts';
@@ -114,10 +115,10 @@ test('frozen guest routes and denser independent rail/head samples clear every r
   console.log(JSON.stringify({pathSamples,railSamples:2400,minRailHeadDistance}));
 });
 
-test('local emitter preserves near/far contacts and fits unchanged global ceilings',()=>{
+test('local emitter preserves near/far contacts and fits the coaster geometry and registration ceilings',()=>{
   const counter=()=>{
     const batch=new CoasterBatch();batch.triangles=0;
-    batch.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts[0]=g;g.dispose();};return batch;
+    batch.add=function(g){this.triangles+=(g.index?.count??g.attributes.position.count)/3;this.parts.push(g);g.dispose();};return batch;
   };
   const results=[];
   for(const detailed of [true,false]) {
@@ -127,10 +128,16 @@ test('local emitter preserves near/far contacts and fits unchanged global ceilin
     assert.deepEqual(colliders.slice(0,32),rocks.map(landscapeRockCollider));
     results.push({triangles:steel.triangles+glow.triangles,colliders});
   }
-  assert.deepEqual(results[0].colliders,results[1].colliders);
+  assert.deepEqual(results[0].colliders.slice(0,32),results[1].colliders.slice(0,32));
   // Independently counted pre-edit landscape at 30ba96f: 5656/4828 triangles and 41 colliders.
   const near=108736+results[0].triangles-5656,far=61412+results[1].triangles-4828;
-  const sceneColliders=617+results[0].colliders.length-41;
+  const active=createCoasterStructure(true), rails=active.railCraft;
+  const sources=new Set(active.steel.userData.siteContactRanges.map(range=>range.surfaceId));
+  const steel=new Set([rails.coatedSteel,rails.jointSteel].flatMap(g=>[...coasterRailSteelSources(g).cells.keys()]));
+  const railCells=coasterRailFootingSources(rails.concrete).cells.size+coasterRunningRailSources(rails.runningSteel).cells.size+steel.size;
+  // The two leaves, gate portal, station's two contacts, three parked cars and chest.
+  const sceneColliders=sources.size+railCells+9;
+  [active.steel,active.glow,active.railShadow,...Object.values(rails)].forEach(g=>g?.dispose());
   assert.ok(near<=114352);assert.ok(far<=67296);assert.ok(sceneColliders<650);
   console.log(JSON.stringify({nearLocal:results[0].triangles,farLocal:results[1].triangles,localColliders:results[0].colliders.length,
     derivedNear:near,derivedFar:far,derivedSceneColliders:sceneColliders,hullBytes:rocks.reduce((n,r)=>n+r.hull.byteLength,0)}));

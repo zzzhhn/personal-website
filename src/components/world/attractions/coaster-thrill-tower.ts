@@ -1,4 +1,4 @@
-import { Euler, Quaternion, Vector3 } from 'three';
+import { Euler, Quaternion, Vector3, type BufferGeometry } from 'three';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
@@ -9,6 +9,7 @@ const world=([x,y,z]:Vec3):Vec3=>[x+50,y+1,z-195];
 export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:CoasterCollider[],detailed:boolean) {
   const color={steel:'#496777',dark:'#253c4c',edge:'#aebdc1',concrete:'#b3b4a8',copper:'#bd925e'};
   let member = 0, block = 0;
+  const fittings: BufferGeometry[] = [];
   const mark = (tint: string) => {
     const role = tint === color.edge ? INTENT_CRAFT.galvanized
       : tint === color.concrete ? INTENT_CRAFT.mineralCladding : INTENT_CRAFT.structuralCoat;
@@ -22,7 +23,7 @@ export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:Co
       const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()), e=new Euler().setFromQuaternion(q);
       colliders.push(steel.bindMeshContact({position:from.add(to).multiplyScalar(.5).toArray() as Vec3,
         half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z],sourceId:`coaster-lift-tower-member-${member++}`}));
-    }
+    } else fittings.push(steel.parts[steel.parts.length - 1]);
   };
   const box=(p:Vec3,size:Vec3,tint:string,solid=true)=>{
     steel.box(world(p),size,tint);
@@ -31,7 +32,7 @@ export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:Co
       const sourceId = `coaster-lift-tower-block-${block++}`;
       steel.bindContact(sourceId);
       colliders.push({position:world(p),half:size.map(v=>v/2) as Vec3,sourceId});
-    }
+    } else fittings.push(steel.parts[steel.parts.length - 1]);
   };
   const leg=(side:number,end:number,y:number):Vec3=>[-44+side*(8-5*y/84),y,-150+end*(6-2*y/84)];
   for(const side of [-1,1])for(const end of [-1,1]){
@@ -85,4 +86,5 @@ export function addThrillTower(steel:CoasterBatch,glow:CoasterBatch,colliders:Co
     box([x,2,-139.8],[2.8,2.9,.16],color.dark,false);
     for(let i=0;i<6;i++)box([x,1+i*.35,-139.69],[2.4,.12,.12],color.steel,false);
   }
+  colliders.push(steel.bindMeshParts('coaster-lift-tower-fittings',fittings));
 }

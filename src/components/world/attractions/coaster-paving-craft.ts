@@ -1,5 +1,5 @@
 import { BufferGeometry, ExtrudeGeometry, Float32BufferAttribute, Matrix4, Quaternion, Shape, Vector3 } from 'three';
-import type { CoasterBatch } from './coaster-geometry.ts';
+import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import { coasterWorld } from './coaster-track.ts';
 import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { Vec3 } from '../types';
@@ -8,12 +8,13 @@ import { COASTER_WALK_Z, coasterWalkHeight } from './coaster-arrival-site.ts';
 
 // Retained apron survey; only the west path opening interrupts its edge blocks.
 export const COASTER_PAVING_EDGE: readonly [number,number][] = [[-34,55],[-34,67],[-29,77],[-13,80],[-1,78],[2,65],[-3,55]];
-export function addCoasterPavingEdges(batch: CoasterBatch) {
+export function addCoasterPavingEdges(batch: CoasterBatch, colliders?: CoasterCollider[]) {
   const tag = (role:number) => markIntentCraft(batch.parts[batch.parts.length-1],role);
   const box = (position:Vec3,size:Vec3,color:string,yaw:number,role:number) => {
     batch.box(coasterWorld(position),size,color,new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw)); tag(role);
   };
   for(let segment=1;segment<COASTER_PAVING_EDGE.length;segment++) {
+    const first = batch.parts.length;
     const a=COASTER_PAVING_EDGE[segment-1],b=COASTER_PAVING_EDGE[segment];
     const dx=b[0]-a[0],dz=b[1]-a[1],length=Math.hypot(dx,dz);
     const ux=dx/length,uz=dz/length,ix=uz,iz=-ux;
@@ -43,6 +44,7 @@ export function addCoasterPavingEdges(batch: CoasterBatch) {
       for(const offset of [-.113,.113])box(at(length/2,.46+offset,.137),[.018,.018,run],'#6a7978',yaw,INTENT_CRAFT.structuralCoat);
       for(let t=start+.05;t<start+run;t+=.14)box(at(t,.46,.139),[.205,.014,.036],'#82918c',yaw,INTENT_CRAFT.galvanized);
     }
+    if (colliders) colliders.push(batch.bindMeshGroup(`coaster-workshop-paving-inlay-${segment}`,first,true));
   }
   // Same concrete finish and static night treatment as the accepted apron.
   // Only the collision copy lives in WorldAttractionApproach.
@@ -50,6 +52,7 @@ export function addCoasterPavingEdges(batch: CoasterBatch) {
   walk.setAttribute('position',new Float32BufferAttribute(COASTER_ARRIVAL.walk.positions,3));
   walk.setIndex(COASTER_ARRIVAL.walk.indices);walk.computeVertexNormals();
   batch.add(walk,'#b6b3a7');tag(INTENT_CRAFT.courtyardPaving);
+  if (colliders) batch.bindContact('coaster-arrival-walk');
   // Close the two exposed slab sides down to the retained ground. The road
   // arc and apron threshold are flush joins and need no vertical face.
   const sides:number[]=[],outline=COASTER_ARRIVAL.walkOutline;
@@ -59,4 +62,5 @@ export function addCoasterPavingEdges(batch: CoasterBatch) {
   }
   const skirt=new BufferGeometry();skirt.setAttribute('position',new Float32BufferAttribute(sides,3));skirt.computeVertexNormals();
   batch.add(skirt,'#a9aaa1');tag(INTENT_CRAFT.concreteBase);
+  if (colliders) colliders.push(batch.bindMeshGroup('coaster-arrival-walk-skirt',batch.parts.length-1));
 }
