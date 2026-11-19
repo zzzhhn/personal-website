@@ -6,6 +6,8 @@
 
 [本地 4343](http://127.0.0.1:4343/world/) 对应游戏提交 [`501acce`](https://github.com/zzzhhn/personal-website/commit/501acce88eab0187af30e27fa4370bf875f3510b)，入口 HTML SHA-256 为 `1cde5afcf50450e9b44e90c7fa41b7b9a3b9d7fd710893e2faae16d6bd177cda`。默认 Balanced。源代码、同机位照片、实际输入路线和原始帧间隔均可从本分支复查。
 
+GitHub 在提交 `137ffd1` 上完成生产构建、四组机位采集与拼图，六个任务全部通过。下载的最终图集在 42 帧上均无未分类与无效声明，照片哈希 `fcecab5edae4f37d634067f310fb95896d34e83dfee13bdf180cc27b70cb3bb5`。云端的 21 组相机与本地的视角、投影、曝光和画布相同。另将工作机实际走过的八条路线随分支归档。[GitHub 验收运行](https://github.com/zzzhhn/personal-website/actions/runs/44605986442) · [云端照片](atlas/20261120/137ffd1-github.jpg) · [云端清单](atlas/20261120/137ffd1-github.json)
+
 | 交付项 | 验证结果 |
 | --- | --- |
 | 接地 | 2,230,380 个靠角物理样本覆盖大陆 V3、V4 和 Alpha 的 743,460 个地形三角形，最大误差 0.564 毫米。营地出口新增 0.75 米接坡，将约 4 厘米高的拼接边接到平台。三个位置的胶囊原先都卡住，新版双向六次通过。普通营地出发实际走完 21 个路点，穿过灯柱、绕车、到大陆渡口，坐船往返后继续步行 1.01 米（另一份隔离包为 1.24 米），全程没有跳跃或传送。[码头与乘具](transport-collision-audit.md) |
