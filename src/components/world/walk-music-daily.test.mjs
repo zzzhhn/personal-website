@@ -1,6 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { build } from 'esbuild';
 import { walkLoopScore } from './walk-music-loop.ts';
 import { walkDailyScore, renderDailyVoice, renderWalkDaily, WALK_DAILY_SECONDS, WALK_DAILY_RATE, WALK_DAILY_BPM, WALK_DAILY_FORM } from './walk-music-daily.ts';
 
@@ -38,11 +44,32 @@ test('small individual picked/wood voices are deterministic, finite and release 
   assert.throws(() => renderDailyVoice({ ...score[0], duration: Infinity }), RangeError);
 });
 
-test('the historical daily synthesis stays offline and separate from roaming playback', () => {
-  const source = readFileSync(new URL('./park-roaming-music.ts', import.meta.url), 'utf8');
-  assert.ok(!source.includes('walk-music-daily'));
-  const script = readFileSync(new URL('../../../tools/world/render-walk-music-daily.mjs', import.meta.url), 'utf8');
-  assert.ok(script.includes('walk-daily-candidate-v24/')); assert.ok(!script.includes('public/'));
+test('roaming playback excludes offline synthesis and the real exporter protects the previous audition', async t => {
+  const root = fileURLToPath(new URL('../../../', import.meta.url));
+  const graph = await build({absWorkingDir:root, entryPoints:['src/components/world/park-roaming-music.ts'],
+    platform:'browser',bundle:true,write:false,metafile:true});
+  assert.ok(!Object.keys(graph.metafile.inputs).some(file=>file.endsWith('/walk-music-daily.ts')));
+
+  const scratch = await mkdtemp(path.join(tmpdir(),'world-audition-'));
+  t.after(()=>rm(scratch,{recursive:true,force:true}));
+  const output = path.join(scratch,'docs/world/phase-2-playground/qa-20261029/walk-daily-candidate-v24');
+  const exporter = path.join(scratch,'tools/world/render-walk-music-daily.mjs');
+  await mkdir(output,{recursive:true});
+  await writeFile(path.join(output,'score.json'),'earlier audition');
+  await build({absWorkingDir:root,entryPoints:['tools/world/render-walk-music-daily.mjs'],
+    outfile:exporter,bundle:true,platform:'node',format:'esm'});
+  // The isolated exporter gets its own valid lock. Every other filesystem
+  // operation is real, including candidate discovery relative to the exporter's URL.
+  const lock = path.join(scratch,'lock.mjs');
+  await writeFile(lock,`import fs from 'node:fs'; import {syncBuiltinESMExports} from 'node:module';
+    const read=fs.readFileSync;
+    fs.readFileSync=(p,...args)=>p==='/tmp/bobby-world-phase2-heavy.lock/owner.json'?'{"owner":"test"}':read(p,...args);
+    syncBuiltinESMExports();`);
+  await assert.rejects(promisify(execFile)(process.execPath,['--import',lock,exporter,'--lock-owner','test'],
+    {cwd:scratch}), /Candidate already exists/);
+  assert.deepEqual(await readdir(output),['score.json']);
+  assert.equal(await readFile(path.join(output,'score.json'),'utf8'),'earlier audition');
+  assert.ok(!(await readdir(scratch)).includes('public'));
 });
 
 test('finite boundary voices join smoothly without allocating or rendering the full 40-second mix', () => {
