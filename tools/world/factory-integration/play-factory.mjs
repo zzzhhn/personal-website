@@ -7,8 +7,16 @@ const qaStations=process.env.FACTORY_QA_STATIONS==='1';
 const base=process.env.FACTORY_BASE_URL??'http://127.0.0.1:4361';
 const out=path.resolve(process.env.FACTORY_OUT??'docs/world/factory-integration-20261114/evidence/factory-play');
 fs.mkdirSync(out,{recursive:true});
-const hashes=()=>Object.fromEntries(execFileSync('git',['ls-files','--cached','--others','--exclude-standard','src','public'],{encoding:'utf8'}).trim().split('\n').map(p=>[p,createHash('sha256').update(fs.readFileSync(p)).digest('hex')]));
-const result={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),input:'keyboard/mouse/visible console buttons; module imports only observe live state',hashes:hashes(),errors:[],steps:[],actions:[],samples:[]};
+const sourceRoot=path.resolve(process.env.FACTORY_SOURCE_ROOT??'.');
+function hashes(){
+  const files=process.env.FACTORY_SOURCE_ROOT
+    ? ['src','public'].flatMap(dir=>fs.readdirSync(path.join(sourceRoot,dir),{recursive:true,withFileTypes:true})
+        .filter(entry=>entry.isFile()).map(entry=>path.relative(sourceRoot,path.join(entry.parentPath,entry.name)))).sort()
+    : execFileSync('git',['ls-files','--cached','--others','--exclude-standard','src','public'],{encoding:'utf8'}).trim().split('\n');
+  return Object.fromEntries(files.map(file=>[file,createHash('sha256').update(fs.readFileSync(path.join(sourceRoot,file))).digest('hex')]));
+}
+const result={head:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceRoot,
+  input:'keyboard/mouse/visible console buttons; module imports only observe live state',hashes:hashes(),errors:[],steps:[],actions:[],samples:[]};
 const browser=await chromium.launch({headless:true,executablePath:CHROME}),ctx=await browser.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:1}),page=await ctx.newPage();let phase='startup',station='entrance';
 const held=new Set(), traces=new Set();
 if(contactTrace)result.contacts=[];

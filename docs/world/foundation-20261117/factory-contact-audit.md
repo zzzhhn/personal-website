@@ -43,3 +43,7 @@
 分流→底盘连续走路复查沿现有玩家指引：从公开工厂落点以 W 和鼠标走到分流（历史进度 7），E 进工位，退出后沿同一已发布线路通过旧卡点，抵达底盘 `[-229.486,1.939,1.514]`，再用真实 E 打开并退出。中途零传送或跳跃，零页面错误。带生产打包地形的 Rapier 回归从已发布起点、旧卡点和其周围三个起点全部走通。旧的一次停顿仍无可重现起因，原日志保留。
 
 复跑通过隔离 Astro 开发入口，脚本为 `tools/world/factory-integration/play-factory.mjs`。生产循环用 `FACTORY_CONTACT_TRACE=1 FACTORY_QA_ENTRY=1 FACTORY_QA_STATIONS=1` 从新存档真实按键和点击，QA 只负责每次来到工位前的站位。分流步行用 `FACTORY_ROUTE_ONLY=1 FACTORY_QA_ENTRY=1` 和此前实际进度，场内所有移动使用连续玩家输入。完整场景盘点等待正常资源挂载后启动。
+
+最终一趟完成 22 个生产动作及 4 次真实试车。全部 107 个稳定采样中，全图已挂载和已提交网格的例外、无效声明和严格错误均为零，动态接触 13–16 个、试车底盘依次为 1 / 2 / 1 / 2 个、归档后 2 个。毛坯、压头、护条、磁头、夹爪和载盘的已提交姿态与同名物理位置最大相差 0.0071 mm。产品卡打印和下一批均经过真实按钮，退出后继续走到 `[-154.5,1.939,40.399]`，全程零页面错误。相关 204 项离线测试 203 通过，跳过一项默认关闭的整岛重建测试。
+
+工作区证据为 `factory-live-fixed-step-contact-trace.json.gz`、`factory-live-fixed-step-result.json.gz`、`factory-live-fixed-step-input.log`、`factory-live-fixed-step-sources.json`、`factory-live-geometry-tests.log` 和 `factory-routing-frame-continuous.json`。证据指纹采用实际服务的隔离目录；旧脚本同时保留的共享工作树指纹期间随其它任务发生变化。新脚本可用 `FACTORY_SOURCE_ROOT` 直接追踪隔离目录。
