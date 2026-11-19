@@ -1,6 +1,21 @@
-import type { RigidBody } from '@dimforge/rapier3d-compat';
+import type { Collider, RigidBody } from '@dimforge/rapier3d-compat';
 import type { RegionPassage } from './region-passage';
 import type { Vec3 } from './types';
+
+const heldBodies = new WeakMap<RigidBody, { owner: symbol; contacts: Set<Collider> }>();
+export const isRegionBodyHeld = (body: RigidBody) => heldBodies.has(body);
+export const isRegionColliderHeld = (collider: Collider, body: RigidBody | null) =>
+  body !== null && heldBodies.get(body)?.contacts.has(collider) === true;
+
+function activeContacts(body: RigidBody) {
+  const contacts = new Set<Collider>();
+  for (let i = 0; i < body.numColliders(); i++) {
+    const collider = body.collider(i);
+    const groups = collider.collisionGroups();
+    if (collider.isEnabled() && !collider.isSensor() && (groups >>> 16) !== 0 && (groups & 0xffff) !== 0) contacts.add(collider);
+  }
+  return contacts;
+}
 
 const stopped = { x: 0, y: 0, z: 0 };
 const position = (body: RigidBody): Vec3 => {
@@ -11,24 +26,25 @@ const position = (body: RigidBody): Vec3 => {
 /** Region admission applies to contact impulses as well as commanded motion. Keep
  * bodies already in an unloaded region out of the solver until it mounts again. */
 export function createRegionBodyGuard(passage: RegionPassage) {
-  const held = new WeakSet<RigidBody>();
+  const owner = Symbol();
   const snapshots = new WeakMap<RigidBody, { position: Vec3; rotation: ReturnType<RigidBody['rotation']> }>();
   return {
     admit(body: RigidBody, radius: number) {
-      const waiting = held.has(body);
+      const waiting = heldBodies.get(body)?.owner === owner;
       // Seats, vehicles, rides and initial arrival own their own disabled bodies.
       if (!waiting && !body.isEnabled()) return true;
       if (!passage.at(position(body), radius)) {
         if (!waiting) {
           body.setLinvel(stopped, false);
           body.setAngvel(stopped, false);
+          const contacts = activeContacts(body);
           body.setEnabled(false);
-          held.add(body);
+          heldBodies.set(body, { owner, contacts });
         }
         return false;
       }
       if (waiting) {
-        held.delete(body);
+        heldBodies.delete(body);
         body.setEnabled(true);
         body.wakeUp();
       }
@@ -52,7 +68,7 @@ export function createRegionBodyGuard(passage: RegionPassage) {
       return next;
     },
     forget(body: RigidBody) {
-      held.delete(body);
+      if (heldBodies.get(body)?.owner === owner) heldBodies.delete(body);
       snapshots.delete(body);
     },
   };

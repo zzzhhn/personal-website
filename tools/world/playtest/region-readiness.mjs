@@ -9,6 +9,7 @@ const recovered = 'Back on safe ground. Shallow water is still walkable.';
 const vehicleRecovered = 'Recovered to a clear road. Ready to drive.';
 const coasterModule = /\/(?:WorldIntentCoaster\.[^/]+\.js|WorldIntentCoaster\.tsx)(?:\?|$)/;
 const ibdModule = /\/(?:WorldIbdYard\.[^/]+\.js|WorldIbdYard\.tsx)(?:\?|$)/;
+const factoryModule = /\/(?:WorldFactory\.[^/]+\.js|WorldFactory\.tsx)(?:\?|$)/;
 const dot = 'aside.world-location svg circle[r="2.6"]';
 const horizontal = (a, b) => Math.hypot(a[0] - b[0], a[2] - b[2]);
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
@@ -156,6 +157,30 @@ try {
   });
 
   await scenario('rescue', coasterModule, rescue);
+  await scenario('factory-coast-rescue',factoryModule,async({page,bot})=>{
+    const input=['KeyW','KeyD'],returnInput=['KeyS','KeyA'];
+    const placement=[-205,1.22,-51];
+    assert.ok(await bot.fixtureTeleport(placement,'Factory headland north shore outside the factory footprint, above the water'));
+    await page.waitForFunction(()=>window.__worldDebug.snapshot().grounded,undefined,{timeout});
+    const start=await observe(page);
+    await bot.hold(input);
+    await page.waitForFunction(()=>window.__worldDebug.snapshot().player[1]<-1.6,undefined,{timeout});
+    const wet=await observe(page);
+    assert.ok(wet.position[2]<start.position[2]-5,JSON.stringify(wet));
+    await bot.release();
+    await page.getByText(recovered,{exact:true}).waitFor({timeout});
+    await page.waitForFunction(()=>window.__worldDebug.snapshot().grounded,undefined,{timeout});
+    const landing=await observe(page);
+    assert.ok(landing.position[1]>0&&horizontal(wet.position,landing.position)>1,JSON.stringify(landing));
+    await bot.hold(returnInput);
+    await page.waitForFunction(at=>{
+      const s=window.__worldDebug.snapshot();
+      return s.grounded&&Math.hypot(s.player[0]-at[0],s.player[2]-at[2])>.6;
+    },landing.position,{timeout:10000});
+    const resumed=await observe(page);
+    await bot.release();
+    return {start,wet,landing,resumed,factoryStayedDelayedUntilAfterRecovery:true};
+  });
   await scenario('vehicle-rescue', coasterModule, async ({ page, bot }) => {
     const carPlacement = [244, 2.1, -289];
     const start = await boardSuv(page, bot, carPlacement, [244, 2.045, -287.15], 0,

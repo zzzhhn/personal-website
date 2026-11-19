@@ -58,16 +58,51 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 | --- | --- | --- |
 | `/world/`、`?start=town` | 普通出生、城镇回营。C06 正常坐起，阻挡等待，移除障碍后安全起身，保留镜头与物理胶囊状态。 | 城镇各房间、街道的独立接触卸载／重挂。 |
 | `?start=tent` | 普通冷开在帐前 `[-41.993,19.994]` 出生，按键走约 1.38 m，再用顶部按钮返回营地。 | 帐篷资源异常、从帐内步行退出。 |
-| `?start=brain`、`?start=alpha` | 矿场有真实布局延迟／失败与回营。`alpha` 使用同一出生和门禁。 | 别名独立冷开，矿场加载后再卸载的浏览器路线。 |
-| `?start=exchange`、`?start=club` | 两区普通入口独立模块失败、回营、进入另一场馆和重试恢复步行均已通过。Club 三个高位躺椅同层起身。 | 进入后整站卸载／重挂与救援。 |
-| `?start=factory` | 生产入口失败可返营，故障持续时营地可进入。工厂入口普通出生已复核。 | 单独重试闭环、脚下区域重挂、落水救援。 |
-| `?start=ibd`、`?start=coaster` | 独立失败、同故障下可去另一场馆、恢复后重试并可走。IBD 延迟驾驶跨界；过山车延迟徒步、G28 安全等候与失败回退。 | 各场馆已进入后再卸载／重挂的普通浏览器实测。 |
-| `?start=alpha-shallows`、`?start=alpha-wind`、`?start=alpha-summit` | 浅滩有两件实际地形的禁用、删除回归；风口和山顶的真实支撑已测试。水车故障不影响山顶普通入口。 | 浅滩和风口冷开、逐段走出和故障恢复。 |
-| `?start=alpha-cave`、`?start=alpha-waterwheel` | 洞口新落点、普通出生与回营；水车独立失败、回营和真实请求放通后重试。 | 洞口独立失败／重试，两个场馆浏览器中实时卸载／重挂。 |
+| `?start=brain`、`?start=alpha` | 矿场有真实布局延迟／失败与回营。另以 `alpha` 独立冷开，拒收、返营、放行同一布局文件并重试后从洞口步行。两个入口都通过运行中移除与重挂。`alpha` 在碰撞仍缺失时可回营并走动。 | `brain` 别名单独重跑移除后的回营。 |
+| `?start=exchange`、`?start=club` | 两区普通入口独立模块失败、回营、进入另一场馆和重试恢复步行均已通过。Club 三个高位躺椅同层起身。两个场馆都通过步行中的移除与重挂。 | 保持移除时使用顶部按钮回营。 |
+| `?start=factory` | 生产入口拒收实际工厂模块后可返营，保持故障也可进货场。放行并重试后完成工厂出生和步行。工厂北岸落水救援、运行中移除及重挂通过。保持卸载时点顶部按钮也能回营并行走。 | 等待中的实体手柄操作。 |
+| `?start=ibd`、`?start=coaster` | 独立失败、同故障下可去另一场馆、恢复后重试并可走。IBD 延迟驾驶跨界；过山车延迟徒步、G28 安全等候与失败回退。货场步行、SUV 及过山车站外步行均通过运行中卸载及恢复。 | 两个场馆保持移除时主动回营。 |
+| `?start=alpha-shallows`、`?start=alpha-wind`、`?start=alpha-summit` | 浅滩与风口独立冷开，分别由普通入口按小地图连续走过三个路点、回营。共享山岛地形请求失败时，两处都有恢复入口，重试后回原场馆。 | 山顶的独立故障样本、Alpha 各站长路线。 |
+| `?start=alpha-cave`、`?start=alpha-waterwheel` | 洞口新落点、普通出生与回营。分别拒收两个独立产物并重试，故障持续时另一场馆仍可进入。洞口与水车都通过运行中移除与重挂。 | 保持移除时从两个站位回营。 |
 | 大陆渡口、开车出入、四类乘具 | 真实胶囊、车辆与乘具就绪单测，渡口已覆盖拆除和重挂。浏览器代表路线使用实际 E、行驶及到站。 | 所有运输方向的逐站故障、硬件手柄与工位完整长路线。 |
 | 过山车东海岸救援 | 保持真实场馆模块延迟，步行和 SUV 仍能回到有接触的干路并恢复输入。 | 其余岸段的独立救援，未用一段岸线代表全岛。 |
 
 浏览器脚本的第一参数为隔离预览地址。`tools/world/playtest/seat-egress-readiness.mjs` 的 `before` 和 `fixed` 用开发服务器复跑实际障碍。无 QA 的 `ordinary` 可用生产包。`foundation-interaction-families.mjs` 可选上述三个躺椅 ID。`ride-input-resume.mjs` 的 `before` 和 `fixed` 通过浏览器模拟标准游戏手柄接口。若仅复跑这批普通入口，在 `arrival-readiness.mjs` 地址后加 `tent exchange club`。实际 M3 Air／Safari 和实体手柄待验收。
+
+## 逐入口拒载、重试与运行中移除
+
+生产入口 SHA-256 `18026c457ce467b61fb81b33e670a6c5b2b5b75c5dc102363341fc9e25cfa542` 的公开入口复跑使用真实键盘、返回营地和重试按钮。以下五组只在浏览器拦截生产脚本原本会发出的资源请求。返营及另一入口正常出生时，拦截一直开启。
+
+| 公开入口 | 拒收的实际资源 | 故障仍在时可进 | 原入口的重试结果 |
+| --- | --- | --- | --- |
+| `?start=factory` | 工厂 JavaScript 模块 | 营地与货场 | 出生在 `[-149,-17]`，步行约 1.01 m。 |
+| `?start=alpha` | 矿场 `layout.json` | 营地与交易厅 | 别名回到 `[-84,-54.5]`，步行约 0.65 m。 |
+| `?start=alpha-cave` | `cave.bin.gz` | 营地与水车 | 回到 `[219,156]`，步行约 0.79 m。 |
+| `?start=alpha-shallows` | `alpha.bin.gz` | 营地与城镇 | 回浅滩落点，继续向北走约 1.64 m。 |
+| `?start=alpha-wind` | `alpha.bin.gz` | 营地与城镇 | 回风口落点，继续向东走约 1.65 m。 |
+
+无 QA 的浅滩入口沿小地图三段走到 `[188.380,141.104]`，水平距出生点约 7.34 m。风口以同一方式三段走到 `[247.595,158.220]`，水平距出生点约 12.05 m。两个入口均用顶部按钮返回营地。
+
+工厂北岸自动救援从普通营地检查开始。QA 只在起步前将角色放在实际北岸 `[-205,1.22,-51]`，同时保持工厂模块延迟。角色用 W+D 走下海坡，胶囊中心到达 `[-202.695,-1.608,-68.924]`。松开后，自动回落在工厂外的道路 `[-147.122,1.957,-18.315]`，提示已回安全陆地。S+A 再次推动角色在地面水平移动约 0.64 m，工厂模块此时仍未放行。
+
+运行中移除使用 `?qa=1&qaRegionFault=1`。夹具按区域从 React 场景树移除实际子树，Rapier 正常注销碰撞体。脚下场馆移除后继续按键并检查守卫持有的真刚体。恢复场景后，核对场馆换用新碰撞句柄，人物或车辆沿原输入重新行走。各步行测试先核对没有 QA 参数的同一公开入口，再从原出生点走入测试位置。
+
+生产入口 SHA-256 `448cf20c1718f3e485913151e870853c40e2e67e401c707e7949770fff98de54` 实测如下。每个通过项在移除阶段记录了 180 个物理步，同一人物胶囊位置不变且速度为零。
+
+| 普通出生入口 | 运行中移除与重挂 | 场景仍移除时主动救援 |
+| --- | --- | --- |
+| `factory` | 先用 A 走进有效工厂范围，移除一组工厂走面，重挂后继续 A 移动约 4.18 m。 | 工厂保持卸载，顶部按钮回营后以同一胶囊按 W 移动约 2.69 m。 |
+| `alpha`、`brain` | 两个入口独立复跑。按 W 时矿区走面和实体碰撞都消失，恢复后继续前行约 4.50 m。 | `alpha` 用顶部按钮回到营地，确认矿区碰撞仍然缺失，并用 W 继续走。`brain` 未单独跑救援。 |
+| `alpha-shallows`、`alpha-wind` | 从各自出生点用 W+D／S+D，移除同一山岛地形的两个碰撞体。重挂后沿原按键移动约 4.45 m／4.47 m。 | 未跑。 |
+| `alpha-cave`、`alpha-waterwheel` | 两个独立产物各移除并重挂一组主走面。保持 W 恢复行走。洞口路线随后下到坡面。 | 未跑。 |
+| `exchange`、`club` | 两个场馆独立移除各自走面和实体碰撞，保持 W 可在重挂后继续移动。 | 未跑。 |
+| `ibd` | 移除货场主铺地和夹层走面，保持 W 在重挂后恢复步行。 | 未跑。 |
+
+生产入口 SHA-256 `fb9b2ec7f13b79300bcb9b8282dadebb776fa74ffa72b98c21077cf2c3dae1a7` 进一步查询 `createRegionBodyGuard` 实际持有的 Rapier 父体。工厂人物胶囊与货场 SUV 各从启用进入停用和区域持有状态，继续按键达 210 个物理步，位置及速度保持。人物和车身各自使用同一个父体和同一批子碰撞句柄，在场馆恢复后释放持有并原地恢复移动。工厂保持 A 前行约 0.96 m。车辆路线从普通营地开始，QA 仅把 SUV 和人物放在真实车门两侧。实际 E 上车后按 W 驶入，移除场地时同一个车身进入区域持有状态，19 个子碰撞句柄均保留。随车胶囊依然停用，由车辆交互持有。场地重挂后保持 W 继续前进约 7.03 m，四轮重新接触地面。在工厂继续移除的情况下点击顶部按钮，页面先后显示等待与已回营地。原胶囊在 `[-42,5.619,35.005]` 恢复启用，区域所有权清除，按 W 可继续走约 2.69 m。
+
+生产入口 SHA-256 `07e204608ab36db1d3f8ec774560820df663f55e3443e7910e55b3c191cd5f38` 的过山车站外用 D 验证运行中移除。角色胶囊和实际接触句柄持续 180 个物理步由区域守卫持有。重挂时 13 条已核的站台及地形供应记录全部更换为新句柄，同一胶囊解除持有，继续用 D 向东移动约 4.47 m。首测用 W 在脚下恢复后靠到实体边缘，改从外侧走廊用 D 复核实际输入恢复。同一生产包复跑 SUV，车身 19 条子句柄中 17 条实际接触进入区域持有，两个质量载体和随车胶囊均留在区域持有记录之外。重挂后同一车身的持有记录清空，四个轮胎接地，继续用 W 走约 7.03 m。工厂保持卸载时主动回营也通过，原胶囊唯一接触由持有恢复为启用，等待和回营提示均显示，按 W 又移动约 4.41 m。该包另一次工厂重挂通过刚体及行走断言，独立 Town 材质的两条本地静态请求出现连接重置，未通过最终零页错断言；前一生产包同路线零页错。
+
+原始记录位于工作区根目录的 `evidence/city-foundation/`，包括 `arrival-public-faults-factory-mine-alpha.jsonl`、`arrival-alpha-shallows-wind-public-routes.jsonl`、`region-factory-coast-water-rescue.jsonl`、`region-remount-browser-first-pass.jsonl`、`region-remount-factory-approach-retry.jsonl`、`region-remount-factory-rapier-ownership.jsonl`、`region-remount-factory-rescue-and-initial-coaster.jsonl`、`region-remount-alpha-rapier-ownership.jsonl`、`region-remount-suv-rapier-ownership.jsonl`、`region-remount-suv-contact-ownership.jsonl`、`region-remount-contact-ownership-final.jsonl` 及 `region-remount-coaster-rapier-ownership.jsonl`。
 
 ## 验证
 
@@ -75,8 +110,10 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 - 角色边界、出生、物理门禁、车和乘具重点套件 28 项通过。套件直接执行 `world-arrival-readiness`、`region-body-guard`、`actor-world-boundary`、`vehicle-passage`、`ride-passage`。
 - 修复座椅和输入后，4389 独立生产构建生成 8 页，TypeScript 通过。单独执行 `world-arrival-readiness`、`region-body-guard`、`region-passage`、`actor-world-boundary` 共 23 项通过。这个生产包已复跑普通 C06、三个 Club 躺椅、渡船输入和上表三个普通入口。
 - 修复等待提示后，4355 的独立生产构建生成了 8 页。区域重点套件 33 项通过，覆盖区域表、实际 collider 注册、出生、步行、驾驶与乘具门禁。
+- 4398 独立生产构建生成 8 页，TypeScript 检查通过。35 项区域和角色定向测试通过，含从 Rapier world 枚举实际持有的运动体，以及车门停用人物胶囊时的所有权区分。守卫记录停用刚体之前实际启用的非传感接触，先前单独停用的形状、传感器及无碰撞分组或过滤组的形状留在记录之外。
 - 浏览器的故障、延迟、重试和普通入口回归可用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/arrival-readiness.mjs http://127.0.0.1:<隔离预览端口>` 复跑。矿场延迟、放行和暂停菜单回营地合计 9.8 秒。水车故障、回营地、同一故障时进入山顶及恢复请求后重试合计 42.6 秒。洞口普通出生并通过顶部按钮返回营地合计 9.8 秒。可在命令尾部加 `ibd coaster`，仅复跑两组独立模块故障用例。4354 两组各耗时 43.1 秒、42.6 秒。4355 复跑耗时 46.5 秒、41.7 秒，恢复后前进 1.37 m、1.41 m。开发运行曾出现 Vite 504 `Outdated Optimize Dep`。
-- 浏览器的四条路线可用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/region-readiness.mjs http://127.0.0.1:<隔离预览端口>` 复跑。命令尾部可附 `walk`、`drive`、`rescue`、`vehicle-rescue` 选择路线。
+- 运行中移除、重挂或回营用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/region-remount.mjs http://127.0.0.1:<隔离预览端口> factory alpha alpha-rescue alpha-shallows alpha-wind`。测试地点可按上表入口名选择，`-rescue` 执行保持卸载时的顶部回营操作。车辆用例 `ibd-suv` 只将 SUV 和角色置于实际车门旁，后续 E 上车和 W 驶入货场使用真实键盘。
+- 浏览器的跨界及海岸救援可用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/region-readiness.mjs http://127.0.0.1:<隔离预览端口>` 复跑。命令尾部可附 `walk`、`drive`、`rescue`、`factory-coast-rescue`、`vehicle-rescue` 选择路线。
 
 ## 尚待验收
 

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import { CHROME, loadPlaywright } from './lib.mjs';
+import { createHash } from 'node:crypto';
+import { Bot, CHROME, comboFor, loadPlaywright } from './lib.mjs';
 
 const base = process.argv[2] ?? 'http://127.0.0.1:4343';
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
@@ -11,14 +12,17 @@ const timeout = 60_000;
 const mapDot = 'aside.world-location svg circle[r="2.6"]';
 const position = page => page.locator(mapDot).evaluate(el => [el.cx.baseVal.value, el.cy.baseVal.value]);
 const caseFilter = new Set(process.argv.slice(3));
+const failures = [];
+const mainlandCamp = [-42, 35];
+const isAt = (point, expected) => Math.hypot(point[0] - expected[0], point[1] - expected[1]) < .5;
 
-async function walk(page, start, keys = ['KeyW']) {
+async function walk(page, start, keys = ['KeyW'], distance = .5) {
   for (const key of keys) await page.keyboard.down(key);
   try {
-    await page.waitForFunction(([selector, at]) => {
+    await page.waitForFunction(([selector, at, distance]) => {
       const dot = document.querySelector(selector);
-      return dot && Math.hypot(dot.cx.baseVal.value - at[0], dot.cy.baseVal.value - at[1]) > .5;
-    }, [mapDot, start], { timeout: 10_000 });
+      return dot && Math.hypot(dot.cx.baseVal.value - at[0], dot.cy.baseVal.value - at[1]) > distance;
+    }, [mapDot, start, distance], { timeout: 14_000 });
   } finally { for (const key of keys) await page.keyboard.up(key); }
   return position(page);
 }
@@ -27,16 +31,86 @@ async function withPage(name, test) {
   if (caseFilter.size && !caseFilter.has(name)) return;
   const client = await context();
   const page = await client.newPage();
+  const entries = [];
   // Allow ongoing work to use this dev server without replacing the loaded modules.
   await page.routeWebSocket('**/*', ws => ws.close());
   try {
     const button = page.locator('button.world-camp-return');
     const ready = () => button.and(page.locator(':enabled')).waitFor({ timeout });
-    const open = start => page.goto(ordinary(start ? '?start=' + start : ''), { waitUntil: 'domcontentloaded' });
+    const open = async start => {
+      const response = await page.goto(ordinary(start ? '?start=' + start : ''), { waitUntil: 'domcontentloaded' });
+      assert.ok(response?.ok());
+      entries.push({ start: start ?? null, sha256: createHash('sha256').update(await response.body()).digest('hex') });
+    };
     const began = performance.now();
     const details = await test({ page, open, button, ready });
-    console.log(JSON.stringify({ ...details, elapsedMs: Math.round(performance.now() - began) }));
+    console.log(JSON.stringify({ ...details, ok: true, entries, elapsedMs: Math.round(performance.now() - began) }));
+  } catch (error) {
+    failures.push(name);
+    console.log(JSON.stringify({ route: name, ok: false, message: String(error), url: page.url(), entries,
+      at: await position(page).catch(() => null) }));
   } finally { await client.close(); }
+}
+
+async function playerEntry({ page, open, button, ready },site) {
+  await open(site.start);
+  await ready();
+  assert.equal(await page.evaluate(() => Boolean(window.__worldDebug)), false);
+  const start=await position(page);
+  assert.ok(isAt(start,site.at),JSON.stringify(start));
+  const legs=[],bot=new Bot(page);
+  for(const target of site.walkOut??[]){
+    const before=await position(page), deadline=performance.now()+18000;
+    let end=before;
+    try{
+      while(!isAt(end,target)){
+        assert.ok(performance.now()<deadline,JSON.stringify({target,before,end}));
+        await bot.hold(comboFor(target[0]-end[0],target[1]-end[1]).keys);
+        await page.waitForTimeout(110);
+        end=await position(page);
+      }
+    }finally{await bot.release();}
+    legs.push({target,before,end});
+  }
+  const afterWalk=legs.at(-1)?.end??await walk(page,start,site.keys,site.distance);
+  await button.click();
+  await page.getByText(campNotice).waitFor({timeout});
+  const camp=await position(page);
+  assert.ok(isAt(camp,mainlandCamp),JSON.stringify(camp));
+  return {route:site.start,start,afterWalk,legs,camp,qa:false};
+}
+
+async function recoverEntry({page,open,button,ready},venue){
+  const faults=[];
+  const fail=route=>{faults.push(new URL(route.request().url()).pathname);return route.abort();};
+  await page.route(venue.module,fail);
+  const error=page.getByRole('alert').filter({hasText:errorMessage});
+  await open(venue.start);
+  await error.waitFor({timeout});
+  assert.equal(await button.isDisabled(),true);
+  assert.equal(await page.evaluate(()=>Boolean(window.__worldDebug)),false);
+  await error.getByRole('link',{name:'Return to camp'}).click();
+  await ready();
+  assert.equal(new URL(page.url()).search,'');
+  const camp=await position(page);
+  assert.ok(isAt(camp,mainlandCamp),JSON.stringify(camp));
+
+  await open(venue.other);
+  await ready();
+  const other=await position(page);
+  assert.ok(isAt(other,venue.otherAt),JSON.stringify(other));
+  await open(venue.start);
+  await error.waitFor({timeout});
+  const retryLoad=page.waitForRequest(venue.module,{timeout});
+  await page.unroute(venue.module,fail);
+  await error.getByRole('button',{name:'Try again'}).click();
+  const retryAsset=new URL((await retryLoad).url()).pathname;
+  await ready();
+  const restored=await position(page);
+  assert.ok(isAt(restored,venue.at),JSON.stringify(restored));
+  assert.ok(faults.length>=2,JSON.stringify(faults));
+  return {route:venue.start,faults,camp,otherStart:venue.other,other,retryAsset,restored,
+    afterWalk:await walk(page,restored,venue.keys,venue.distance),qa:false};
 }
 
 try {
@@ -108,39 +182,24 @@ try {
   });
 
   const venues = [
-    { start: 'ibd', other: 'coaster', module: /\/(?:WorldIbdYard\.[^/]+\.js|WorldIbdYard\.tsx)(?:\?|$)/, at: [-88, -143] },
-    { start: 'coaster', other: 'ibd', module: /\/(?:WorldIntentCoaster\.[^/]+\.js|WorldIntentCoaster\.tsx)(?:\?|$)/, at: [50, -125] },
-    { start: 'exchange', other: 'club', module: /\/(?:WorldAlphaExchange\.[^/]+\.js|WorldAlphaExchange\.tsx)(?:\?|$)/, at: [60, -52.6] },
-    { start: 'club', other: 'exchange', module: /\/(?:WorldDjcClub\.[^/]+\.js|WorldDjcClub\.tsx)(?:\?|$)/, at: [30, 39] },
+    { start: 'ibd', other: 'coaster', otherAt: [50,-125], module: /\/(?:WorldIbdYard\.[^/]+\.js|WorldIbdYard\.tsx)(?:\?|$)/, at: [-88, -143] },
+    { start: 'coaster', other: 'ibd', otherAt: [-88,-143], module: /\/(?:WorldIntentCoaster\.[^/]+\.js|WorldIntentCoaster\.tsx)(?:\?|$)/, at: [50, -125] },
+    { start: 'exchange', other: 'club', otherAt: [30,39], module: /\/(?:WorldAlphaExchange\.[^/]+\.js|WorldAlphaExchange\.tsx)(?:\?|$)/, at: [60, -52.6] },
+    { start: 'club', other: 'exchange', otherAt: [60,-52.6], module: /\/(?:WorldDjcClub\.[^/]+\.js|WorldDjcClub\.tsx)(?:\?|$)/, at: [30, 39] },
+    { start: 'factory', other: 'ibd', otherAt: [-88,-143], module: /\/(?:WorldFactory\.[^/]+\.js|WorldFactory\.tsx)(?:\?|$)/, at: [-149,-17] },
+    { start: 'alpha', other: 'exchange', otherAt: [60,-52.6], module: '**/world/alpha-mine/layout.json', at: [-84,-54.5] },
+    { start: 'alpha-cave', other: 'alpha-waterwheel', otherAt: [206,206], module: '**/assets/world/terrain/cave.bin.gz*', at: [219,156] },
+    { start: 'alpha-shallows', module: '**/assets/world/terrain/alpha.bin.gz*', at: [190.25,134], keys: ['KeyW','KeyD'], distance: 1.5,
+      walkOut: [[190,136],[189.4,139],[188.1,141.5]] },
+    { start: 'alpha-wind', module: '**/assets/world/terrain/alpha.bin.gz*', at: [254,148], keys: ['KeyS','KeyD'], distance: 1.5,
+      walkOut: [[252.5,150.7],[250.5,154],[247.5,158]] },
   ];
-  for (const venue of venues) await withPage(venue.start, async ({ page, open, button, ready }) => {
-    const faults = [];
-    const fail = route => { faults.push(new URL(route.request().url()).pathname); return route.abort(); };
-    await page.route(venue.module, fail);
-    await open(venue.start);
-    const error = page.getByRole('alert').filter({ hasText: errorMessage });
-    await error.waitFor({ timeout });
-    assert.equal(await button.isDisabled(), true);
-    assert.equal(await page.evaluate(() => Boolean(window.__worldDebug)), false);
-    await error.getByRole('link', { name: 'Return to camp' }).click();
-    await ready();
-    assert.equal(new URL(page.url()).search, '');
-    const camp = await position(page);
-    assert.ok(Math.hypot(camp[0] + 42, camp[1] - 35) < .5, JSON.stringify(camp));
-
-    await open(venue.other);
-    await ready();
-    const other = await position(page);
-    const otherAt = venues.find(row => row.start === venue.other).at;
-    assert.ok(Math.hypot(other[0] - otherAt[0], other[1] - otherAt[1]) < .5, JSON.stringify(other));
-    await open(venue.start);
-    await error.waitFor({ timeout });
-    await page.unroute(venue.module, fail);
-    await error.getByRole('button', { name: 'Try again' }).click();
-    await ready();
-    const restored = await position(page);
-    assert.ok(Math.hypot(restored[0] - venue.at[0], restored[1] - venue.at[1]) < .5, JSON.stringify(restored));
-    assert.ok(faults.length >= 2, JSON.stringify(faults));
-    return { route: venue.start, faults, camp, other, restored, afterWalk: await walk(page, restored), qa: false };
+  for(const venue of venues)await withPage(venue.start,async env=>{
+    if(venue.other)return recoverEntry(env,venue);
+    const cold=await playerEntry(env,venue);
+    // The shared Alpha terrain request can fail independently of the mainland.
+    const retry=await recoverEntry(env,{...venue,other:'town',otherAt:[14,-2.5]});
+    return {...retry,cold};
   });
+  assert.deepEqual(failures,[]);
 } finally { await browser.close(); }

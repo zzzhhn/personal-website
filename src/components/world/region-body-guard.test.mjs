@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { Object3D } from 'three';
-import { createRegionBodyGuard } from './region-body-guard.ts';
+import { createRegionBodyGuard, isRegionBodyHeld, isRegionColliderHeld } from './region-body-guard.ts';
 import { createColliderReadinessProbe } from './collider-readiness.ts';
 import { createRegionPassage, passageVelocity } from './region-passage.ts';
 
@@ -37,6 +37,9 @@ for (const [label, radius, car] of [['guide', .25, false], ['vehicle', 1.25, tru
       const unmount = floor(), body = actor(2, radius, car);
       for (let i = 0; i < 60; i++) world.step();
       assert.equal(guard.admit(body, radius), true);
+      const collider = body.collider(0);
+      assert.equal(isRegionBodyHeld(body), false);
+      assert.equal(isRegionColliderHeld(collider, body), false);
       const pose = { ...body.translation() };
       body.setLinvel({ x: 0, y: 0, z: 3 }, true);
       unmount();
@@ -48,9 +51,16 @@ for (const [label, radius, car] of [['guide', .25, false], ['vehicle', 1.25, tru
       }
       assert.deepEqual({ ...body.translation() }, pose);
       assert.equal(body.isEnabled(), false);
+      assert.equal(isRegionBodyHeld(body), true);
+      assert.equal(isRegionColliderHeld(collider, body), true);
+      const observed = [];
+      world.forEachRigidBody(candidate => { if (isRegionBodyHeld(candidate)) observed.push(candidate); });
+      assert.deepEqual(observed, [body]);
       floor();
       assert.equal(guard.admit(body, radius), true);
       assert.equal(body.isEnabled(), true);
+      assert.equal(isRegionBodyHeld(body), false);
+      assert.equal(isRegionColliderHeld(collider, body), false);
       assert.deepEqual({ ...body.translation() }, pose);
       world.step();
       assert.ok(Math.abs(body.translation().y - pose.y) < .01);
@@ -83,9 +93,36 @@ test('a body disabled by its ride is not enabled by the region guard', () => {
   try {
     const body = actor(2, .25, false);
     body.setEnabled(false);
+    assert.equal(isRegionBodyHeld(body), false);
     assert.equal(guard.admit(body, .25), true);
     floor();
     assert.equal(guard.admit(body, .25), true);
+    assert.equal(body.isEnabled(), false);
+  } finally { world.free(); }
+});
+
+test('holding a body only records its enabled, contact-capable colliders', () => {
+  const { world, guard, actor } = fixture();
+  try {
+    const body = actor(2, .25, false), active = body.collider(0);
+    const disabled = world.createCollider(R.ColliderDesc.ball(.2), body);
+    disabled.setEnabled(false);
+    const sensor = world.createCollider(R.ColliderDesc.ball(.2).setSensor(true), body);
+    const withoutGroup = world.createCollider(R.ColliderDesc.ball(.2).setCollisionGroups(0), body);
+    const withoutFilter = world.createCollider(R.ColliderDesc.ball(.2).setCollisionGroups(0x00010000), body);
+    assert.equal(guard.admit(body, .25), false);
+    assert.equal(isRegionBodyHeld(body), true);
+    assert.equal(isRegionColliderHeld(active, body), true);
+    assert.equal(isRegionColliderHeld(active, null), false);
+    for (const collider of [disabled, sensor, withoutGroup, withoutFilter]) {
+      assert.equal(isRegionColliderHeld(collider, body), false);
+    }
+    const observed = [];
+    world.forEachCollider(collider => { if (isRegionColliderHeld(collider, collider.parent())) observed.push(collider); });
+    assert.deepEqual(observed, [active]);
+    guard.forget(body);
+    assert.equal(isRegionBodyHeld(body), false);
+    assert.equal(isRegionColliderHeld(active, body), false);
     assert.equal(body.isEnabled(), false);
   } finally { world.free(); }
 });
