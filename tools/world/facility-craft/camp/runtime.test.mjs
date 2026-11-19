@@ -1,30 +1,11 @@
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import vm from 'node:vm';
 import test from 'node:test';
-import { execFileSync } from 'node:child_process';
-import ts from 'typescript';
 import { BoxGeometry, DoubleSide, FrontSide, Group, Mesh, MeshStandardMaterial, Texture } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import '../../alpha-mine-tests/register.mjs';
+import { pack, streamedFamily } from './contact-fixture.mjs';
 
-const root = new URL('../../../../', import.meta.url);
-const adapter = fs.readFileSync(new URL('src/components/world/WorldCampFacilityCraft.tsx', root), 'utf8');
 const { createCampFacilityVisual, updateCampFacilityNight, campFacilityLegacy } = await import('../../../../src/components/world/WorldCampFacilityCraft.tsx');
 const { bindCampPushableVisual } = await import('../../../../src/components/world/WorldCampPushableVisual.ts');
 const context = { create: createCampFacilityVisual, bind: bindCampPushableVisual, updateNight: updateCampFacilityNight };
-
-let packPromise;
-function loadPack() {
-  if (!packPromise) {
-    const path = 'public/assets/world/facility-craft/camp/camp-facilities-v1.glb';
-    // The release checkout may keep binary assets sparse. Read the exact current tracked pack.
-    const bytes = fs.existsSync(new URL(path, root)) ? fs.readFileSync(new URL(path, root)) :
-      execFileSync('git', ['show', `HEAD:${path}`], { cwd: root, maxBuffer: 4 * 1024 * 1024 });
-    packPromise = new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
-  }
-  return packPromise;
-}
 
 function countWrites(object, key) {
   let value = object[key], writes = 0;
@@ -76,28 +57,29 @@ test('steady pushables do no tree search or opacity writes; effect replay releas
   assert.equal(disposed, 0);
 });
 
-test('craft effect replay defers owned-material disposal and never releases loader geometry', () => {
-  const source = new Group(), family = new Group(), geometry = new BoxGeometry(), original = new MeshStandardMaterial();
-  family.name = 'C12'; family.add(new Mesh(geometry, original)); source.add(family);
-  const effects = [], microtasks = []; let primitive;
-  const hooks = vm.createContext({
-    GLTFLoader: null, CAMP_FACILITY_URL: '', night: { value: 0 },
-    useLoader: () => ({ scene: source }), useDjcFurnitureEnvironment: () => null,
-    useMemo: create => create(), useEffect: effect => effects.push(effect), useFrame: () => {},
-    useContext: () => null, useLayoutEffect: () => {}, CampSuitcaseContactContext: null,
-    createCampFacilityVisual: context.create, updateCampFacilityNight: context.updateNight,
-    queueMicrotask: callback => microtasks.push(callback), React: { createElement: (_tag, props) => { primitive = props.object; } },
+test('craft effect replay defers owned-material disposal and never releases loader geometry', async () => {
+  const mounted = streamedFamily('C12', {});
+  const owned = new Set(), borrowed = new Set(), disposed = new Map();
+  mounted.root.traverse(node => { if (node.isMesh) owned.add(node.material); });
+  pack.scene.getObjectByName('C12').traverse(node => {
+    if (node.isMesh) { borrowed.add(node.material); borrowed.add(node.geometry); }
   });
-  const component = adapter.slice(adapter.indexOf('function CraftVisual'), adapter.indexOf('\nclass CraftBoundary'));
-  vm.runInContext(ts.transpileModule(`${component}\nCraftVisual({ family: 'C12' });`, { compilerOptions: { target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.React } }).outputText, hooks);
-  let ownedDisposals = 0, borrowedDisposals = 0;
-  primitive.children[0].material.addEventListener('dispose', () => ownedDisposals++);
-  original.addEventListener('dispose', () => borrowedDisposals++); geometry.addEventListener('dispose', () => borrowedDisposals++);
-  const firstCleanup = effects[0](); firstCleanup();
-  const finalCleanup = effects[0](); microtasks.splice(0).forEach(callback => callback());
-  assert.equal(ownedDisposals, 0, 'StrictMode replay keeps mounted copies alive');
-  finalCleanup(); microtasks.splice(0).forEach(callback => callback());
-  assert.equal(ownedDisposals, 1); assert.equal(borrowedDisposals, 0);
+  const onDispose = event => disposed.set(event.target, (disposed.get(event.target) ?? 0) + 1);
+  const resources = [...owned, ...borrowed];
+  resources.forEach(resource => resource.addEventListener('dispose', onDispose));
+  try {
+    assert.ok(owned.size && borrowed.size);
+    mounted.dispose();
+    const finalRelease = mounted.mountMaterials();
+    await Promise.resolve();
+    assert.equal(disposed.size, 0, 'replayed effects keep the mounted copies alive');
+    finalRelease();
+    await Promise.resolve();
+    for (const material of owned) assert.equal(disposed.get(material), 1);
+    for (const resource of borrowed) assert.equal(disposed.has(resource), false);
+  } finally {
+    resources.forEach(resource => resource.removeEventListener('dispose', onDispose));
+  }
 });
 
 test('night lighting only writes when the clamped amount changes', () => {
@@ -112,7 +94,7 @@ test('night lighting only writes when the clamped amount changes', () => {
 });
 
 test('actual pack keeps main surfaces double-sided and casting while strings, glass and wick stop casting', async () => {
-  const { scene } = await loadPack();
+  const { scene } = pack;
   const sourceStates = new Map();
   scene.traverse(object => { if (object.isMesh) sourceStates.set(object, { material: object.material, side: object.material.side, castShadow: object.castShadow, opacity: object.material.opacity }); });
   let nonCasters = 0, frontSurfaces = 0, mainSurfaces = 0;
@@ -136,7 +118,7 @@ test('actual pack keeps main surfaces double-sided and casting while strings, gl
 });
 
 test('every paper/brass shell selected for FrontSide is closed, consistently wound and outward in the actual GLB', async () => {
-  const { scene } = await loadPack();
+  const { scene } = pack;
   let primitives = 0, shells = 0;
   scene.traverse(mesh => {
     if (!mesh.isMesh || !['camp_craft_paper', 'camp_craft_brass'].includes(mesh.material.name)) return;
@@ -214,7 +196,7 @@ test('legacy query bypasses candidate independent of qa flag', () => {
 });
 
 test('real craft pack exposes independent stove, wok and lantern material ownership', async () => {
-  const { scene } = await loadPack();
+  const { scene } = pack;
   const stove = createCampFacilityVisual(scene,'C14','C14_stove',null);
   const wok = createCampFacilityVisual(scene,'C14','C14_wok',null);
   const lantern = createCampFacilityVisual(scene,'C16',undefined,null);

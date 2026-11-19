@@ -1,4 +1,5 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import * as React from 'react';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { compileWorldComponent } from '../../alpha-mine-tests/component-host.mjs';
@@ -9,7 +10,9 @@ export const contact = await import('../../../../src/components/world/camp-suitc
 const balance = await import('../../../../src/components/world/camp-surface-balance.ts');
 const patchComponent = compileWorldComponent(new URL('src/components/world/WorldCampSuitcaseContact.tsx', root));
 const familyComponent = compileWorldComponent(new URL('src/components/world/WorldCampFacilityCraft.tsx', root));
-const bytes = readFileSync(new URL('public/assets/world/facility-craft/camp/camp-facilities-v1.glb',root));
+const path = 'public/assets/world/facility-craft/camp/camp-facilities-v1.glb';
+const bytes = existsSync(new URL(path,root)) ? readFileSync(new URL(path,root))
+  : execFileSync('git',['show','HEAD:'+path],{cwd:root,maxBuffer:4*1024*1024});
 export const pack = await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'');
 export function contactPatch(scene, slot) {
   const effects = [];
@@ -35,6 +38,9 @@ export function streamedFamily(family, slot) {
       ? element.type(element.props) : element.props.children;
   }
   if (!element?.props.object) throw new Error('Facility export did not produce a mounted visual');
-  const releaseVisual=cleanups.map(effect=>effect());
-  return {root:element.props.object,effects,dispose:()=>releaseVisual.forEach(fn=>fn?.())};
+  function mountMaterials() {
+    const releases = cleanups.map(effect => effect());
+    return () => releases.forEach(release => release?.());
+  }
+  return {root:element.props.object,effects,mountMaterials,dispose:mountMaterials()};
 }

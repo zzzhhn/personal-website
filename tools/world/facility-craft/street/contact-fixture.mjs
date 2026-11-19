@@ -44,7 +44,7 @@ export function mountStreetContacts(set, customItems, search = '') {
   const cleanups = effects.map(run => run());
   beforePhysics(); world.step();
   const camera = new PerspectiveCamera();
-  return { mesh, bodies, world, state: adapter.knockQa, frame: (at, delta = 1 / 60) => { camera.position.set(...at); onFrame({ camera }, delta); },
+  return { mesh, bodies, world, beforePhysics, state: adapter.knockQa, frame: (at, delta = 1 / 60) => { camera.position.set(...at); onFrame({ camera }, delta); },
     inventory: () => inventory.collisionInventory(scene, [mesh], colliderNodes, [group.name]),
     dispose: () => { cleanups.forEach(release => release?.()); atlas.dispose(); world.free(); } };
 }

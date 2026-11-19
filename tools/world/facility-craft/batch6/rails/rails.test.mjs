@@ -1,15 +1,22 @@
 import test from'node:test';import assert from'node:assert/strict';
-import{readFileSync}from'node:fs';import{createHash}from'node:crypto';import{execFileSync}from'node:child_process';
-import{Matrix4,Vector3}from'three';import{loadWorldModule,ROOT,families}from'../../street/runtime.mjs';
+import{readFileSync}from'node:fs';import{createHash}from'node:crypto';
+import{Matrix4,Vector3}from'three';import{loadWorldModule,families}from'../../street/runtime.mjs';
 import{fixture}from'./fixture.mjs';
+import Rapier from '@dimforge/rapier3d-compat';
+import {mountStreetContacts} from '../../street/contact-fixture.mjs';
 const[A,R,C,G]=loadWorldModule(['WorldStreetAssets.ts','WorldRailCraft.ts','WorldStreetFacilityCraft.ts','WorldStreetGeometry.ts']);
 const base=JSON.parse(readFileSync(new URL('./baseline/manifest.json',import.meta.url))),span=base.actual.seaStep;
 const hash=x=>createHash('sha256').update(JSON.stringify(x)).digest('hex'),proxy=b=>[b.pos,b.idx,b.hulls().map(h=>[...h])];
 const variants=lod=>[['sea',A.seawallBay(lod,2),b=>R.craftSeawallBay(b,span,lod)],['end',A.railEndPost(lod,'seawall'),b=>R.craftSeawallEnd(b,lod)],
  ['post',A.timberPost(lod),b=>R.craftTimberPost(b,lod)],['beam',A.timberBeam(lod,4.26),b=>R.craftTimberBeam(b,4.26,lod)]];
 
-test('all preexisting factory outputs/proxies survive the binding refactor',()=>{
- for(const[name,pair]of Object.entries(families(A)))pair.forEach((b,lod)=>assert.equal(hash([b.pos,b.nrm,b.col,b.mat,b.suv,b.idx,b.parts,b.cell,b.hulls().map(h=>[...h])]),base.contracts[name][lod],name));
+test('binding an installed factory preserves its complete rendering and selects its existing physics source',()=>{
+ for (const pair of Object.values(families(A))) for (const source of pair) {
+   const fingerprint = b => hash([b.pos,b.nrm,b.col,b.mat,b.suv,b.idx,b.parts,b.cell,b.hulls().map(h=>[...h])]);
+   const before = fingerprint(source), bound = C.bindStreetFacilityCollision(new G.Builder(),source);
+   assert.deepEqual(bound.hulls(),source.hulls());
+   assert.equal(fingerprint(source),before);
+ }
  const original=A.seawallBay(0),root=C.streetFacilityCollision(original),one=C.bindStreetFacilityCollision(new G.Builder(),original),two=C.bindStreetFacilityCollision(new G.Builder(),one);
  assert.equal(C.streetFacilityCollision(two),root);assert.equal(C.streetFacilityCollision(one),root);assert.deepEqual(two.hulls(),root.hulls());
  assert.throws(()=>C.bindStreetFacilityCollision(root,root),/cannot bind itself/);
@@ -54,12 +61,36 @@ test('wood anchor actually crosses the cheeks below the seat and remains perpend
  const direction=new Vector3(0,0,1).transformDirection(new Matrix4().fromArray(base.actual.selectedTimberPosts[0]));
  const beamAxis=new Vector3(1,0,0).transformDirection(new Matrix4().fromArray(base.actual.beamMatrix));assert.ok(Math.abs(direction.dot(beamAxis))<1e-9);
 });
-test('only the timber visual factory line changes in the real dynamic adapter; mass/COM/reset/interaction code is exact',()=>{
- const file='src/components/world/WorldStreetKnock.tsx',old=execFileSync('git',['show','97c9546:'+file],{cwd:ROOT,encoding:'utf8'});
- const current=readFileSync(ROOT+'/'+file,'utf8').replace("import {craftTimberBeam} from './WorldRailCraft';\n",'')
-  .replace('craftTimberBeam(A.timberBeam(0, it.len!), it.len!, 0)','A.timberBeam(0, it.len!)').replace('craftTimberBeam(A.timberBeam(1, it.len!), it.len!, 1)','A.timberBeam(1, it.len!)');assert.equal(current,old);
+test('actual sloped timber is locked to a pedestrian, yields to a vehicle and returns to its installed pose', t => {
+ const {item,L0,L1}=fixture().timber.find(({item})=>Math.abs(item.pitch)>.02);
+ const host=mountStreetContacts('rail',[item]);t.after(host.dispose);
+ const {body}=host.bodies[0],[x,y,z]=item.position;
+ const camera=[x+5,y+2,z], home=body.translation(), firstRotation=body.rotation();
+ assert.ok(body.isSleeping()&&host.state()[0].lockedForPeople);
+ assert.ok(Math.abs(body.mass()-45)<.001&&Math.abs(body.localCom().y-.085)<.001);
+ for(const [distance,builder] of [[5,L0],[45,L1]]) {
+   host.frame([x+distance,y+2,z]);
+   const {indexCount,vertexStart,vertexCount}=host.mesh.getGeometryRangeAt(host.mesh.getGeometryIdAt(0));
+   assert.equal(indexCount,builder.idx.length);assert.equal(vertexCount,builder.pos.length/3);
+   const positions=host.mesh.geometry.getAttribute('position');
+   for(let i=0;i<vertexCount;i++) for(let axis=0;axis<3;axis++){
+     assert.equal(positions.getComponent(vertexStart+i,axis),Math.fround(builder.pos[3*i+axis]));
+   }
+ }
+ const vehicle=host.world.createRigidBody(Rapier.RigidBodyDesc.dynamic().setTranslation(x,y,z+4));
+ vehicle.userData={vehicle:'offroad'};host.beforePhysics();
+ assert.equal(host.state()[0].lockedForPeople,false);
+ body.applyImpulse({x:0,y:0,z:90},true);
+ for(let i=0;i<24;i++){host.beforePhysics();host.world.step();host.frame(camera);}
+ assert.ok(body.translation().z>home.z+.35);
+ assert.equal(host.state()[0].phase,'knocked');
+ vehicle.setTranslation({x:x+15,y,z},true);
+ for(let i=0;i<32*60;i++)host.frame(camera);
+ assert.deepEqual({...body.translation()},{...home});
+ assert.deepEqual({...body.rotation()},{...firstRotation});
+ assert.ok(body.isSleeping()&&host.state()[0].lockedForPeople);
 });
-test('actual static/dynamic factory slices preserve placements and repair first/middle/last seams in both LODs',()=>{
+test('installed rail factories preserve placements and repair first/middle/last seams in both LODs',()=>{
  const f=fixture(),sea=f.actual.placements.filter(p=>p.kind==='seawallBay'),terminal=f.actual.placements.find(p=>p.kind==='seawallEnd'),kind=f.actual.kinds.find(k=>k.id==='seawallBay');
  assert.equal(hash(f.actual.placements.map(p=>[p.kind,p.matrix.toArray()])),base.actual.placementSHA256);assert.equal(hash(f.actual.beams),base.actual.beamLayoutSHA256);
  for(const lod of[0,1])for(const at of[0,Math.floor(sea.length/2),sea.length-1]){
