@@ -18,35 +18,50 @@ function ProjectSignInput({ sign }: { sign: Sign }) {
     onInteract: () => { if (sign.project) useWorldStore.setState({ card: { kind: 'project', id: sign.project.slug } }); } });
   return null;
 }
+const signSurfaceId = (id:string) => id+'-wood-frame';
+export function buildParkSigns(gltf: GLTF, projects: WorldProject[]) {
+  const signs: Sign[] = [{ id: 'park-directory', matrix: yawMatrix([51.7, 1.15, -50.4], 0), position: [51.7, 2.6, -50.4], width: 2.4, height: 1.3, bottom: 1 }];
+  HUTS.forEach(h => {
+    const p = h.local(h.width / 2 - 0.72, 0, HUT_FRONT_Z - 0.85);
+    signs.push({ id: `park-project-${h.id}`, project: projects.find(v => v.slug === h.slug), matrix: yawMatrix(p, h.yaw),
+      position: h.local(h.width / 2 - 0.72, 1.0, HUT_FRONT_Z - 0.35), width: 1.1, height: .72, bottom: .7 });
+  });
+  const pieces: BufferGeometry[] = [], faces: BufferGeometry[] = [];
+  const frameSources: {id:string;firstVertex:number;vertexCount:number;collision:string;surfaceId:string}[] = [];
+  const printSources: {id:string;firstIndex:number;indexCount:number;collision:string;surfaceId:string}[] = [];
+  let vertex = 0, index = 0;
+  const colliders = signs.map((s, i) => {
+    const root = gltf.scene.getObjectByName(i ? 'P19' : 'P05');
+    if (!root) throw new Error('signs.glb is missing its sign variant');
+    const part = gltfPieces(root, s.matrix, () => true);
+    part.forEach(g => { (g.getAttribute('aEmit').array as Float32Array).fill(0); });
+    const vertexCount = part.reduce((n,g)=>n+g.getAttribute('position').count,0);
+    const surfaceId = signSurfaceId(s.id);
+    frameSources.push({id:s.id+'-frame', firstVertex:vertex, vertexCount, collision:'solid',surfaceId});
+    vertex += vertexCount;
+    pieces.push(...part);
+    const face = new PlaneGeometry(s.width - .03, s.height - .03);
+    const uv = face.getAttribute('uv') as BufferAttribute;
+    for (let v = 0; v < uv.count; v++) uv.setY(v, 1 - (i + 1 - uv.getY(v)) / 8);
+    face.applyMatrix4(s.matrix.clone().multiply(new Matrix4().makeTranslation(0, s.bottom + s.height / 2, .034)));
+    const indexCount = face.index!.count;
+    printSources.push({id:s.id+'-print', firstIndex:index, indexCount, collision:'solid',surfaceId});
+    index += indexCount;
+    faces.push(face);
+    return gltfTrimesh(root, s.matrix, () => true);
+  });
+  const prints = mergeGeometries(faces);
+  faces.forEach(face=>face.dispose());
+  return {signs,colliders,frameSources,printSources,body:mergeBatch(pieces),faces:prints};
+}
+
 /** P05/P19: shallow wooden signs. Shared GLB frame batch + one non-emissive bilingual canvas atlas.
  * Physical board/post geometry is imported once and supplies the fixed collision in the same matrix.
  */
 export default function WorldParkSigns({ projects }: { projects: WorldProject[] }) {
   const lang = useWorldStore(s => s.lang);
   const gltf = useLoader(GLTFLoader, parkUrl('signs'), withDraco) as GLTF;
-  const built = useMemo(() => {
-    const signs: Sign[] = [{ id: 'park-directory', matrix: yawMatrix([51.7, 1.15, -50.4], 0), position: [51.7, 2.6, -50.4], width: 2.4, height: 1.3, bottom: 1 }];
-    HUTS.forEach(h => {
-      const p = h.local(h.width / 2 - 0.72, 0, HUT_FRONT_Z - 0.85);
-      signs.push({ id: `park-project-${h.id}`, project: projects.find(v => v.slug === h.slug), matrix: yawMatrix(p, h.yaw),
-        position: h.local(h.width / 2 - 0.72, 1.0, HUT_FRONT_Z - 0.35), width: 1.1, height: .72, bottom: .7 });
-    });
-    const pieces: BufferGeometry[] = [], faces: BufferGeometry[] = [];
-    const colliders = signs.map((s, i) => {
-      const root = gltf.scene.getObjectByName(i ? 'P19' : 'P05');
-      if (!root) throw new Error('signs.glb is missing its sign variant');
-      const part = gltfPieces(root, s.matrix, () => true);
-      part.forEach(g => { (g.getAttribute('aEmit').array as Float32Array).fill(0); });
-      pieces.push(...part);
-      const face = new PlaneGeometry(s.width - .03, s.height - .03);
-      const uv = face.getAttribute('uv') as BufferAttribute;
-      for (let v = 0; v < uv.count; v++) uv.setY(v, 1 - (i + 1 - uv.getY(v)) / 8);
-      face.applyMatrix4(s.matrix.clone().multiply(new Matrix4().makeTranslation(0, s.bottom + s.height / 2, .034)));
-      faces.push(face);
-      return gltfTrimesh(root, s.matrix, () => true);
-    });
-    return { signs, colliders, body: mergeBatch(pieces), faces: mergeGeometries(faces) };
-  }, [gltf, projects]);
+  const built = useMemo(() => buildParkSigns(gltf, projects), [gltf, projects]);
   const atlas = useMemo(() => {
     const c = document.createElement('canvas'); c.width = 1024; c.height = 4096;
     const ctx = c.getContext('2d')!;
@@ -95,11 +110,11 @@ export default function WorldParkSigns({ projects }: { projects: WorldProject[] 
   useEffect(() => () => { built.body.dispose(); built.faces?.dispose(); }, [built]);
   useEffect(() => () => { atlas.tex.dispose(); atlas.mat.dispose(); }, [atlas]);
   return <group name="park-signs">
-    <ParkLOD id="signs" center={[64, 1.14, -28]} nearTriangles={built.signs.length * 722} near={<><mesh name="park-sign-frames" geometry={built.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true }} />
-    <mesh name="park-sign-text" geometry={built.faces!} material={atlas.mat} receiveShadow />
+    <ParkLOD id="signs" center={[64, 1.14, -28]} nearTriangles={built.signs.length * 722} near={<><mesh name="park-sign-frames" geometry={built.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true, worldCollisionSources: built.frameSources }} />
+    <mesh name="park-sign-text" geometry={built.faces!} material={atlas.mat} userData={{worldCollisionSources:built.printSources}} receiveShadow />
     </>} />
     {built.colliders.map((c, i) => <RigidBody key={built.signs[i].id} name={built.signs[i].id} type="fixed" colliders={false} userData={{ solid: true, interactable: built.signs[i].id }}>
-      <TrimeshCollider args={[c.vertices, c.indices]} friction={.65} restitution={.03} />
+      <TrimeshCollider name={signSurfaceId(built.signs[i].id)} args={[c.vertices, c.indices]} friction={.65} restitution={.03} />
     </RigidBody>)}
     {built.signs.filter(s => s.project).map(s => <ProjectSignInput key={s.id} sign={s} />)}
   </group>;
