@@ -1,9 +1,10 @@
 import { useEffect,useMemo,useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody,TrimeshCollider,ConvexHullCollider } from '@react-three/rapier';
-import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,Vector3,LatheGeometry,Vector2 } from 'three';
+import { BufferGeometry,CanvasTexture,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,MeshStandardMaterial,InstancedMesh,Object3D,Quaternion,SRGBColorSpace,SphereGeometry,Vector3 } from 'three';
 import { AlphaBuilder,alphaLanternGeometry,type AlphaFinish } from './alpha-art';
 import {createSandRouteModel,SAND_MODEL_ID} from './alpha-sand-route';
+import AlphaStationControl from './AlphaStationControl';
 import AlphaStationStructure from './AlphaStationStructure';
 import { createLodgeRamp } from './alpha-station-structures';
 import { surfaceColliderBuffers } from '../static-surface-asset';
@@ -37,7 +38,7 @@ export function AlphaSign({position,text,width=3.3,height=1.35,nightLegible=true
 }
 export default function AlphaScenery(){return <group name="alpha-craft-assemblies">
  <AlphaStationStructure station="lodge"/>
- <AlphaVisitorWayfinding/><LodgeRamp/><BellMechanism/><WindHandle/><SandMiniature/><TrailLamps/>
+ <AlphaVisitorWayfinding/><LodgeRamp/><AlphaStationControl kind="bell"/><AlphaStationControl kind="wind"/><SandMiniature/><TrailLamps/>
  <AlphaPathFence/><BoulderField/>
  <AlphaGrammarTree/><Craft name="alpha-grammar-tree-pull-rope" build={treeRope} position={ALPHA_STATIONS.tree}/>
  <AlphaStationStructure station="wind"/>
@@ -61,8 +62,6 @@ function LodgeRamp() {
   <mesh name={ramp.surface.id} geometry={ramp.geometry} material={ramp.material} dispose={null} userData={{worldCollision:'solid',surfaceId:ramp.surface.id+'/floor',surfaceRole:'floor'}} receiveShadow/>
  </RigidBody>;
 }
-function bellParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[0,.35,0],.04);b.add(new LatheGeometry([[.04,0],[.11,-.06],[.15,-.32],[.28,-.49],[.27,-.53],[.23,-.5],[.12,-.3],[.08,-.07]].map(p=>new Vector2(p[0],p[1])),20),'metal');b.beam('rope',[0,-.35,0],[0,-1.3,0],.022);b.cyl('wood',[0,-1.3,0],.075,.2);b.cyl('metal',[0,-.43,0],.055,.19);const parts=b.finish();parts.forEach(p=>p.geometry.translate(0,-.35,0));return parts;}
-function BellMechanism(){const ref=useRef<Group>(null);useFrame(()=>{if(!ref.current)return;const age=alphaMotion.time-alphaMotion.bellAt;ref.current.rotation.z=age<4?Math.sin(age*14)*Math.exp(-age)*.28:0;});return <group ref={ref} name="alpha-copper-bell-pivot" position={[-61.3,6.6,-36.35]}><Craft build={bellParts} name="alpha-hollow-copper-bell"/></group>;}
 function SandMiniature() {
  const model=useMemo(()=>{
    const surfaces=createSandRouteModel().map(part=>{
@@ -98,8 +97,5 @@ function CairnField() {
  useOwnedWorldVisual(visual);
  return <primitive object={visual.mesh} dispose={null}/>;
 }
-
-function handleParts(){const b=new AlphaBuilder();b.beam('metal',[0,0,0],[.6,0,0],.06);b.beam('wood',[.6,0,0],[.6,0,.4],.08);b.cyl('metal',[0,0,0],.1,.12);return b.finish();}
-function WindHandle(){const ref=useRef<Group>(null);useFrame((_,dt)=>{if(ref.current)ref.current.rotation.y+=(useAlphaStore.getState().wind*.7-ref.current.rotation.y)*Math.min(1,dt*8);});return <group ref={ref} position={[16.8,ALPHA_WIND_GATE_Y+1.05,-44]}><Craft build={handleParts} name="alpha-working-wind-crank"/></group>;}
 
 function BoulderField(){const field=useMemo(createAlphaBoulderField,[]),m=useMemo(()=>alphaMaterial('stone'),[]);useEffect(()=>()=>{field.parts.forEach(p=>p.geometry.dispose());m.dispose();},[field,m]);return <group name="alpha-supported-boulder-field">{field.parts.map((p,i)=><mesh key={i} name="alpha-supported-rock-batch" userData={{worldCollisionSources:field.sources}} geometry={p.geometry} material={m} castShadow receiveShadow/>)}<RigidBody type="fixed" colliders={false} userData={{solid:true}}>{field.colliders.map(c=><ConvexHullCollider key={c.id} name={c.id} args={[c.points]}/>)}</RigidBody></group>;}
