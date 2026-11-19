@@ -6,6 +6,8 @@
 
 相邻阶段有 14 次可直接走到下一块的操作位置，其余 17 次可经外围到达。同一发布地形中，满堆东侧路段的动态胶囊走完 4.22 米并贴地，横向走向石堆则会在实物上停下。生产组件装配验证了 0、1、2、16、32 块、卸载和读回 26 块。追加时原有碰撞句柄保留，32 块各有一个来源。中途走开和 Escape 的取消测试均保持已保存数量，重新操作只增加一块。
 
+Chrome 从普通山顶入口进入同一生产构建。角色从出生点以真实键盘走了约 4.15 米到石堆旁，连按两次 E 后从 0 块增加到 2 块，各有相应的碰撞体。另用已有 31 块的存档，从已验证的平地设置起点。按 E 开始，再按 Escape，石数保持 31。重新按 E 放满，刷新后仍读回全部 32 个具名凸体。两条路线均无页面错误。生产 HTML 的 SHA-256 为 `c3e5528bebfba3fd0b153c34ec264fa4a4a9833de03ae2984f4f1847782f432f`。
+
 ```sh
 node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/alpha-island/alpha-action-reach.test.mjs src/components/world/pickup-approach.test.mjs src/components/world/accepted-action.test.mjs
 ```
