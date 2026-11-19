@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { Bot, CHROME, comboFor, loadPlaywright } from './lib.mjs';
 
 const [base='http://127.0.0.1:4429',...selected] = process.argv.slice(2);
-const starts = {'street-park':'town','alpha-lodge':'alpha-shallows','park-fallback':'town'};
+const starts = {'street-park':'town','alpha-lodge':'alpha-shallows','park-fallback':'town','plaza-van':'town'};
 assert.ok(selected.length && selected.every(route=>Object.hasOwn(starts,route)));
 const browser=await loadPlaywright().chromium.launch({executablePath:CHROME,headless:true,args:['--use-angle=metal']});
 const failed = [];
@@ -113,6 +113,52 @@ for (const route of selected) {
    await walk([171,155.45],.34,'lodge exit apron');
    assert.ok((await actor()).grounded);
    result={outside,threshold,inside,paused};
+  } else if(route==='plaza-van'){
+   // Approach the actual parked van from the south side of the road.
+   await walkAll([[14,-4.8],[18,-4.8],...heads.slice(1,8)]);
+   stage='van boarding';
+   const parked=()=>page.evaluate(()=>window.__worldDebug.snapshot().vehicles.find(v=>v.id==='van'));
+   await wait(()=>window.__worldDebug.state().nearbyVehicle==='van');
+   await bot.press('KeyE');
+   await wait(()=>window.__worldDebug.snapshot().activeVehicle==='van'
+     && !window.__worldDebug.snapshot().vehicles.find(v=>v.id==='van').entering);
+   const board=await parked();
+   const seam=43.10;
+   const wheelPositions=()=>page.evaluate(()=>window.__worldDebug.motionProbe()
+    .vehicles.find(v=>v.id==='van').wheels.map(wheel=>wheel.position));
+   const driveAcross=async(key,direction)=>{
+    const brakes=[];
+    for(let i=0;i<12;i++) {
+     const startStep=(await actor()).step;
+     // Advance at parking speed. Long throttle holds need more room to brake
+     // than the distance between the road seam and the pedestrian boardwalk.
+     await bot.hold([key]);
+     try {
+      await page.waitForFunction(step=>window.__worldDebug.snapshot().physicsStep>=step,startStep+24,{timeout:9000,polling:25});
+     } finally {await bot.release();}
+     await bot.hold(['Space']);
+     try {
+      await wait(()=>{const row=window.__worldDebug.snapshot().vehicles.find(v=>v.id==='van');
+       return Math.hypot(...row.velocity)<.2&&row.wheelContacts.every(Boolean);
+      },undefined,9000);
+     } finally {await bot.release();}
+     const stopped=await parked(),wheels=await wheelPositions();
+     brakes.push({position:stopped.position,velocity:stopped.velocity,wheelContacts:stopped.wheelContacts,wheels});
+     if(wheels.every(([x])=>(x-seam)*direction>.1))return {stopped,brakes};
+    }
+    assert.fail(JSON.stringify({seam,direction,brakes}));
+   };
+   stage='reverse across plaza threshold';
+   const reverse=await driveAcross('KeyS',-1),reversed=reverse.stopped;
+   stage='drive back to the parking side';
+   const forward=await driveAcross('KeyW',1),returned=forward.stopped;
+   assert.ok(returned.position[0]<48.5);
+   assert.ok(Math.abs(returned.position[2]-board.position[2])<.30);
+   assert.ok(Math.abs(returned.position[1]-board.position[1])<.12);
+   stage='van exit';
+   await bot.press('KeyE');
+   await wait(()=>!window.__worldDebug.snapshot().activeVehicle&&window.__worldDebug.snapshot().grounded);
+   result={board,reversed,returned,brakes:[...reverse.brakes,...forward.brakes],exit:await actor(),support:await support()};
   } else {
    await walkAll(heads);
    const plaza=await support();

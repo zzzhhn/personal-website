@@ -150,7 +150,11 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 
 上下缆车站用已发布车厢 GLB、实际摆臂和可见棚柱替换旧测试中的盒体。两站各验证 6 个登乘接点和完整离站胶囊。下站车厢地板及棚顶分别 y = 38.000、44.325，上站 y = 73.000、79.325。走出时加入可撞障碍会阻断，移除后复通。小屋整组由 Alpha 场景维护，室内的固定碰撞与可见结构一并挂载；原地接地不需要另建室内加载门。
 
-复跑使用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/district-readiness.mjs http://127.0.0.1:<预览端口> street-park park-fallback alpha-lodge`。脚本先访问公开入口，再在单独的 QA 页面只读取身体、碰撞和暂停状态。所有步行使用真实键盘，未重定位角色。4432 是 `ecd741a` 加本次三份生产源的隔离构建，HTML SHA-256 为 `f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1`。原始坐标、碰撞来源、暂停和放行结果保存于工作区根目录 `evidence/city-foundation/district-readiness-4429-baseline.jsonl`、`district-readiness-4432.jsonl`、`district-readiness-plaza-before.tap`、`district-readiness-contact.tap` 及 `district-readiness-terminal.tap`。接地门禁 59 项通过。旧设施套件 12 项继续逐顶点核对原有石板，只单列本轮新加的 10 个三角。
+从同一普通城镇入口走到原停靠小货车，按 E 登车，沿 z ≈ −45 的原铺装低速倒过交接线再驶回。按 S 和 Space 后，车心停在 x = 41.129，四个实际轮心 x = 39.609–42.669，均在线西。按 W 和 Space 回驶后，车心 x = 45.696，四个轮心 x = 44.157–47.221，均在线东。11 次停车验收都读到四轮接触。最后在铺装段停稳并按 E 下车，脚下为广场实际石板 `[47.029, 1.972, -42.660]`。整段无定位。
+
+高处用普通 `?start=alpha-cave` 起步后实走，到约 y = 24.534 处再用 QA 卸下山岛父场景。物理清单确认外部山体地板、山壁和洞内石地板同时消失。按住 W 时，原胶囊在 `[218.251, 24.534, 155.059]` 连续 69 个物理步保持原位、速度为零，并显示区域准备提示。三处实物碰撞重挂后，原胶囊仍持有同一形状，保持按键的情况下接地前进约 1.327 m 至 `[217.454, 24.466, 153.998]`。这里验证整棵场景卸载和恢复，三个碰撞都在同一棵场景的生命周期内。
+
+复跑使用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/district-readiness.mjs http://127.0.0.1:<预览端口> street-park park-fallback alpha-lodge`。脚本先访问公开入口，再在单独的 QA 页面只读取身体、碰撞和暂停状态。所有步行使用真实键盘，未重定位角色。4432 是 `ecd741a` 加本次三份生产源的隔离构建，HTML SHA-256 为 `f9b3c47ebdabf18b1c8d96130ec12599322c44909c767682679201c37d4208d1`。原始坐标、碰撞来源、暂停和放行结果保存于工作区根目录 `evidence/city-foundation/district-readiness-4429-baseline.jsonl`、`district-readiness-4432.jsonl`、`district-readiness-plaza-before.tap`、`district-readiness-contact.tap` 及 `district-readiness-terminal.tap`。驾驶路线在同一命令尾部改用 `plaza-van`。回音洞样本用 `WORLD_BROWSER_MODULES=<Playwright 所在项目目录> node tools/world/playtest/region-remount.mjs http://127.0.0.1:<预览端口> alpha-cave-multiple`。两份浏览器原始记录为 `district-readiness-plaza-van.jsonl` 和 `district-readiness-alpha-cave-multiple.jsonl`。接地门禁 59 项通过。基础门禁 409 项通过，另 1 项保留原有跳过。旧设施套件 12 项继续逐顶点核对原有石板，只单列本轮新加的 10 个三角。
 
 ## 验证
 
@@ -165,7 +169,7 @@ Club 的 `djc-daybed-1-0`、`djc-daybed-1-1` 和 `djc-daybed-2-0` 旧版起身�
 
 ## 尚待验收
 
-- 城镇灰盒、项目广场、五间可进入的小屋与 Alpha 渡口小屋已逐段核对。大陆主要地形、各独立设施及三类交通的固定登乘板已登记。还需验证山岛高处与非典型落脚同车或行人跨区时同时失去多项供给，以及驾驶跨新广场交界的实车路线。出生点持续缺少注册时，`43d49ed` 已为等待补上重试与回营操作。
+- 城镇灰盒、项目广场、五间可进入的小屋与 Alpha 渡口小屋已逐段核对。大陆主要地形、各独立设施及三类交通的固定登乘板已登记。山岛高处已补充一次同时卸载山体和洞内石地板的实测。矿场普通入口的真实布局请求挂起时，旧版 40 秒内未出现退出选项。`3dfeec5` 的普通入口在约 25 秒后显示继续等候提示、重试和回营。保持原页并放行后可走约 0.50 m。保持请求挂起并回营的独立测试可走约 1.99 m。样本页面 SHA-256 为 `5f9c8d0d51b1336c1f405f6cc3074ffefcab327815ebd95323ac8fd63aeac857`，记录为工作区 `evidence/city-foundation/3dfeec5-slow-arrival.log`。
 - 响应按站点处理失败，重试重新加载页面。可恢复的 collider 卸载/重挂不需要刷新。同一视图中独立失败场景的热重试尚未实现。
 - 核心 actor bundle 的依赖边界继续通过。世界装配持有地区表，仍有场馆字段留在共享 store 和各自 HUD。空载乘具的调位动画尚未纳入本轮行为验证。
-- 四类乘具已有真实登乘和跳过回归。仍需连续走完整岛回程，并实测渡船反向、缆车下行和雪橇调位的普通入口。固定机位须按最终提交复核，M3 Air/Safari 目标机的拾取、长帧与门槛手感仍待体验。
+- 四类乘具已有真实登乘和跳过回归。全岛连续回程留作自由试玩。渡船反向、缆车下行和雪橇调位已补验，渡船大陆接近与空车雪橇候乘使用 QA 定位，见[交通实物对照](transport-collision-audit.md)。固定机位须按最终提交复核，M3 Air/Safari 目标机的拾取、长帧与门槛手感仍待体验。

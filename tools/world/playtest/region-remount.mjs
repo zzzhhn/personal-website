@@ -19,6 +19,9 @@ const sites=[
 ];
 const options=new Map(sites.flatMap(site=>[[site.start,site],[site.start+'-rescue',site]]));
 options.set('ibd-suv',{...options.get('ibd'),start:'camp',at:[-42,35],vehicle:'offroad'});
+const cave=options.get('alpha-cave'),island=options.get('alpha-shallows');
+// The island owns two terrain shapes and the cave has its own independently loaded surface.
+options.set('alpha-cave-multiple',{...cave,region:island.region,colliders:[...cave.colliders,...island.colliders]});
 assert.ok(selected.every(id=>options.has(id)),'unknown region remount route');
 const targets=selected.length?selected:sites.map(site=>site.start);
 const browser=await loadPlaywright().chromium.launch({executablePath:CHROME,headless:true,args:['--use-angle=metal']});
