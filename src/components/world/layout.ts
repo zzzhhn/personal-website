@@ -1,6 +1,6 @@
 import type { Vec3, VehiclePlacement } from './types';
 export type { VehiclePlacement } from './types';
-import { LAYOUT_V4, BUILDINGS_V4, FOUNDATIONS_V4, OUTLINE_V4, TREES_V4, VEHICLE_POSITIONS_V4, WORLD_SHOTS_V4 } from './layout-v4-flag.ts';
+import { CAMP_PLATEAU_Y, CAMP_XZ, LAYOUT_V4, BUILDINGS_V4, FOUNDATIONS_V4, OUTLINE_V4, TREES_V4, VEHICLE_POSITIONS_V4, WORLD_SHOTS_V4 } from './layout-v4-flag.ts';
 import { NETWORK_WALK_V4 } from './layout-v4.ts';
 
 /** Layout v4 (spec §12) is opt-in via `?layout=v4`; every v4 branch below is a data swap only. */
@@ -14,7 +14,7 @@ export const PALETTE = {
 };
 export const WATER_Y = -0.7;
 export const GROUND_Y = 1;
-export const CAMP_CENTER: Vec3 = [-42, 4.8, 30];
+export const CAMP_CENTER: Vec3 = [CAMP_XZ[0], CAMP_PLATEAU_Y, CAMP_XZ[1]];
 /** Capsule spawn centre; camp surface is y=4.8. */
 export const CAMP_SPAWN: Vec3 = [-42, 5.85, 35];
 

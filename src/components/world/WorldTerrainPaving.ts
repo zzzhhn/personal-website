@@ -656,6 +656,8 @@ export const pavingMesh = lazy(() => {
     for (let i = 1; i < T.length - 1; i++) pushTri(c, tv(T[0], UP), tv(T[i + 1], UP), tv(T[i], UP), mode, 'top', fore);
     for (let i = 0; i < T.length; i++) {
       const j = (i + 1) % T.length;
+      if (p.openEdges?.some(edge => (order[i] === edge && order[j] === (edge + 1) % T.length)
+        || (order[j] === edge && order[i] === (edge + 1) % T.length))) continue;
       const onClip = PAVE_CLIPS.some(cl => [T[i], T[j]].every(v => Math.abs((v[0] - cl.p[0]) * cl.n[0] + (v[2] - cl.p[1]) * cl.n[1]) < .2));
       if (onClip) continue;
       const ex = T[j][0] - T[i][0], ez = T[j][2] - T[i][2], el = Math.hypot(ex, ez) || 1, wn = [ez / el, 0, -ex / el];

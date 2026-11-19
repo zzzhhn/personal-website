@@ -12,7 +12,7 @@ import type { Vec3 } from './types';
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH } from './alpha-mine-layout.ts';
 import { FACTORY_APPROACH } from './factory/factory-layout';
 import {
-  BUILDINGS_V4, CAMP_FOOT_RADIUS, CAMP_XZ, FOUNDATIONS_V4, insidePolygon, LAYOUT_V4, OBSTACLES_V4, OUTLINE_V4, RIDGE_CENTER, RIDGE_FOOT_R,
+  BUILDINGS_V4, CAMP_FOOT_RADIUS, CAMP_PLATEAU_Y, CAMP_XZ, FOUNDATIONS_V4, insidePolygon, LAYOUT_V4, OBSTACLES_V4, OUTLINE_V4, RIDGE_CENTER, RIDGE_FOOT_R,
   ROAD_Y, TREES_V4, VEHICLE_POSITIONS_V4, WORLD_SHOTS_V4, zoneAtV4, type P2, type ZoneV4,
 } from './layout-v4-flag.ts';
 
@@ -366,11 +366,22 @@ function strips(road: RoadV4, out: PavedPoly[]) {
       const normal = rightOf(d), edge = rightOf(i === pts.length - 1 ? before : after);
       return add(p, mul(normal, offset / Math.max(.5, dot(normal, edge))));
     };
+    const entryRun = mul(unit(sub(xz(pts[1]), xz(pts[0]))), .75);
+    const entryY = CAMP_PLATEAU_Y - .005;
     for (let i = 1; i < pts.length; i++) {
       for (const [lo, hi, kind, shade] of [[-w, w, 'road', c.color], [-w - c.side, -w, 'side', c.sideColor], [w, w + c.side, 'side', c.sideColor]] as const) {
-        out.push({ kind, pts: [section(i - 1, lo), section(i, lo), section(i, hi), section(i - 1, hi)],
+        let a = section(i - 1, lo), b = section(i - 1, hi);
+        if (i === 1) {
+          // The exit starts on a grass plateau 4 cm below the frozen deck. Bury the leading
+          // edge by 5 mm and recover the deck height before the first road marking.
+          const low = add(a, entryRun), high = add(b, entryRun);
+          out.push({ kind, pts: [a, low, high, b], ys: [entryY, pts[0][1], pts[0][1], entryY],
+            color: shade, thickness: .18, road: road.id, openEdges: [1] });
+          a = low; b = high;
+        }
+        out.push({ kind, pts: [a, section(i, lo), section(i, hi), b],
           ys: [pts[i - 1][1], pts[i][1], pts[i][1], pts[i - 1][1]], color: shade, thickness: .18, road: road.id,
-          openEdges: [...(i < pts.length - 1 ? [1] : []), ...(i > 1 ? [3] : [])] });
+          openEdges: i < pts.length - 1 ? [1, 3] : [3] });
       }
     }
     return;

@@ -139,6 +139,7 @@ export const WORLD_SHOTS_V4 = [
 /* ------------------------------------------------------------------ zones (cheap; used every 90 ms) */
 
 export const CAMP_XZ: P2 = [-42, 30];
+export const CAMP_PLATEAU_Y = 4.8;
 /** WorldLandform: plateau rim <= 26.4 m plus the 19 deg grass flank down to y = 1 (11 m). */
 export const CAMP_FOOT_RADIUS = 37.4;
 export const RIDGE_CENTER: P2 = [-30, -84];
