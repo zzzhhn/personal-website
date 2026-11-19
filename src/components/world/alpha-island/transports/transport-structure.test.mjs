@@ -1,12 +1,66 @@
 import dimensions from './transport-dimensions.json' with {type:'json'};
-import test from 'node:test';import assert from 'node:assert/strict';import R from '@dimforge/rapier3d-compat';import{Quaternion,Vector3}from'three';
-import{ALPHA_TRANSPORT_ROUTES}from'./alpha-routes.ts';import{transportInfrastructure,transportBeamGeometry,SLED_RAIL_RADIUS}from'./transport-infrastructure.ts';import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';import{rideFootRouteClear}from'../../rides/ride-clearance.ts';import{TransportDriver}from'../../rides/transport-driver.ts';import{transportWorld}from'../../rides/transport-route.ts';
+import test from 'node:test';import assert from 'node:assert/strict';import R from '@dimforge/rapier3d-compat';import{DoubleSide,Mesh,MeshBasicMaterial,Raycaster,Quaternion,Vector3}from'three';
+import{ALPHA_TRANSPORT_ROUTES}from'./alpha-routes.ts';import{transportInfrastructure,transportBeamBatch,cableWireSegments,transportBeamGeometry,SLED_RAIL_RADIUS}from'./transport-infrastructure.ts';import{transportBoardingGeometry}from'../../rides/transport-boarding.ts';import{rideFootRouteClear}from'../../rides/ride-clearance.ts';import{TransportDriver}from'../../rides/transport-driver.ts';import{transportWorld}from'../../rides/transport-route.ts';
 import{findSafePlayerLanding}from'../../safe-landing.ts';
 import{verifyPhysicalBoardingJoins}from'../../rides/transport-joining-fixture.mjs';
-import{alphaTerrainData}from'../alpha-terrain.ts';
+import{alphaTerrainData,alphaGroundHeight}from'../alpha-terrain.ts';
 import{readWorldCraftGltf,disposeWorldCraftGltf}from'../../world-craft-gltf-test.mjs';
 await R.init();
-test('visible sled deck has upward front faces and exactly matching Rapier support',()=>{const r=ALPHA_TRANSPORT_ROUTES[1],d=transportInfrastructure(r),world=new R.World({x:0,y:0,z:0});world.createCollider(R.ColliderDesc.trimesh(d.vertices,d.indices));world.step();let checked=0;for(let i=0;i<d.indices.length;i+=6){const a=new Vector3().fromArray(d.vertices,d.indices[i]*3),b=new Vector3().fromArray(d.vertices,d.indices[i+1]*3),c=new Vector3().fromArray(d.vertices,d.indices[i+2]*3),n=b.clone().sub(a).cross(c.clone().sub(a)).normalize();assert.ok(n.y>.6);const center=a.add(b).add(c).divideScalar(3);const hit=world.castRay(new R.Ray(center.clone().add(new Vector3(0,.2,0)),{x:0,y:-1,z:0}),.4,true);assert.ok(hit);assert.ok(Math.abs(hit.timeOfImpact-.2)<.0001);checked++;}assert.ok(checked>100);world.free();});
+test('sled shell supports the top, two sides and the actual underside along the full route',t=>{
+ const d=transportInfrastructure(ALPHA_TRANSPORT_ROUTES[1]),world=new R.World({x:0,y:0,z:0});
+ t.after(()=>world.free());
+ const old=world.createCollider(R.ColliderDesc.trimesh(d.vertices,d.indices));
+ const shell=world.createCollider(R.ColliderDesc.trimesh(d.renderVertices,d.renderIndices));
+ let checked=0,oldBaseError=0,newBaseError=0,sideHits=0;
+ for(let i=0;i<d.indices.length;i+=6){
+  const [a,b,c]=[0,1,2].map(k=>new Vector3().fromArray(d.vertices,d.indices[i+k]*3));
+  assert.ok(b.clone().sub(a).cross(c.clone().sub(a)).normalize().y>.6);
+  const center=a.clone().add(b).add(c).divideScalar(3);
+  const top=new R.Ray(center.clone().add(new Vector3(0,.2,0)),{x:0,y:-1,z:0});
+  const bottom=new R.Ray(center.clone().add(new Vector3(0,-.3,0)),{x:0,y:1,z:0});
+  assert.ok(Math.abs(shell.castRay(top,.4,true)-.2)<.0001);
+  oldBaseError=Math.max(oldBaseError,Math.abs(old.castRay(bottom,.4,true)-.18));
+  newBaseError=Math.max(newBaseError,Math.abs(shell.castRay(bottom,.4,true)-.18));
+  const side=c.clone().lerp(a,.5),out=a.clone().sub(b).normalize();
+  side.y-=.06;const ray=new R.Ray(side.clone().addScaledVector(out,.1),out.negate());
+  assert.ok(Math.abs(shell.castRay(ray,.15,true)-.1)<.0002);
+  assert.equal(old.castRay(ray,.15,true),-1);checked++;sideHits++;
+ }
+ assert.ok(checked>100&&oldBaseError>.119&&newBaseError<.0001);
+ t.diagnostic(JSON.stringify({sections:checked,sideHits,oldBaseError,newBaseError}));
+});
+test('cable and sled trestles meet the installed terrain on their full rims; wires, rails and braces keep their gaps',t=>{
+ const material=new MeshBasicMaterial({side:DoubleSide});t.after(()=>material.dispose());
+ const world=new R.World({x:0,y:0,z:0});t.after(()=>world.free());
+ for(const route of ALPHA_TRANSPORT_ROUTES.filter(r=>r.kind!=='ferry')){
+  const d=transportInfrastructure(route,alphaGroundHeight),cable=route.kind==='cable',r=cable?.09:.12;
+  const poles=d.supports.filter(s=>Math.hypot(s.a[0]-s.b[0],s.a[2]-s.b[2])<1e-8
+    && s.b[1]>s.a[1]+.1 && Math.abs(s.a[1]-alphaGroundHeight(s.a[0]-route.transform.origin[0],s.a[2]-route.transform.origin[2]))<.45);
+  let maxOldGap=0,maxNewGap=-Infinity,feet=0,hits=0,gaps=0,maxFit=0;
+  for(const {a} of poles){
+   const x=a[0]-route.transform.origin[0],z=a[2]-route.transform.origin[2];
+   for(let j=0;j<8;j++){const angle=j*Math.PI/4,ground=alphaGroundHeight(x+Math.cos(angle)*r,z+Math.sin(angle)*r);
+    maxOldGap=Math.max(maxOldGap,alphaGroundHeight(x,z)-ground);maxNewGap=Math.max(maxNewGap,a[1]-ground);feet++;}
+  }
+  for(const [segments,radius,wood] of [[d.supports,r,!cable],cable?[cableWireSegments(route),.035,false]:[d.sledRails,SLED_RAIL_RADIUS,true]]){
+   const data=transportBeamBatch(segments,radius,wood),mesh=new Mesh(data.geometry,material);
+   const surface=world.createCollider(R.ColliderDesc.trimesh(data.vertices,data.indices));t.after(()=>data.geometry.dispose());
+   for(let k=0;k<segments.length;k+=Math.max(1,Math.floor(segments.length/32))){
+    const {a,b}=segments[k],mid=new Vector3(...a).lerp(new Vector3(...b),.5),axis=new Vector3(...b).sub(new Vector3(...a)).normalize();
+    const radial=axis.clone().cross(Math.abs(axis.y)>.92?new Vector3(1,0,0):new Vector3(0,1,0)).normalize();
+    for(const angle of [0,.37,1.3]){
+     const dir=radial.clone().applyAxisAngle(axis,angle),from=mid.clone().addScaledVector(dir,radius+.35),towards=dir.clone().negate();
+     const hit=surface.castRay(new R.Ray(from,towards),.55,true);
+     const visible=new Raycaster(from,towards,0,.55).intersectObject(mesh)[0];assert.ok(hit>=0&&visible);hits++;
+     maxFit=Math.max(maxFit,Math.abs(hit-visible.distance));
+     if(surface.castRay(new R.Ray(from,dir),.15,true)<0)gaps++;
+    }
+   }
+  }
+  assert.ok(feet>=32&&maxNewGap<=.0001&&maxFit<.0001&&gaps>40,JSON.stringify({route:route.id,feet,maxNewGap,maxFit,gaps}));
+  t.diagnostic(JSON.stringify({route:route.id,feet,maxOldGap,maxNewGap,maxFit,hits,gaps}));
+ }
+});
 test('cable entry and short independent exit clear their canopy posts and closed panels',()=>{
  const route=ALPHA_TRANSPORT_ROUTES[0];for(const index of[0,1]){const t=route.terminals[index],q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),t.yaw),world=new R.World({x:0,y:0,z:0}),root=transportWorld(t.vehicle,route.transform),point=p=>new Vector3(...p).applyQuaternion(q).add(new Vector3(...root));
  const addBox=(p,s)=>world.createCollider(R.ColliderDesc.cuboid(...s).setTranslation(...point(p).toArray()).setRotation(q));addBox([0,-.1,0],[1.6,.1,1.2]);addBox([1.5,1.1,0],[.06,1.1,1.1]);addBox([-1.5,1.1,0],[.06,1.1,1.1]);addBox([0,1.1,-1.12],[1.5,1.1,.05]);addBox([0,2.25,0],[1.725,.1,1.325]);addBox([0,dimensions.cable.canopyHeight,0],[2.5,.125,2.5]);
@@ -33,7 +87,7 @@ test('sled walking paths clear the actual runtime footrest, runners, seat and ba
  for(const index of [0,1]){const terminal=route.terminals[index],world=new R.World({x:0,y:0,z:0}),q=new Quaternion().setFromAxisAngle(new Vector3(0,1,0),terminal.yaw+route.transform.yaw),root=new Vector3(...transportWorld(terminal.vehicle,route.transform)),labels=new Map();
  asset.scene.traverse(o=>{if(!o.isMesh)return;const g=o.geometry.clone().applyMatrix4(o.matrixWorld),position=g.getAttribute('position'),vertices=new Float32Array(position.count*3);for(let i=0;i<position.count;i++){const v=new Vector3().fromBufferAttribute(position,i).applyQuaternion(q).add(root);vertices.set(v.toArray(),i*3);}const indices=g.index?new Uint32Array(g.index.array):Uint32Array.from({length:position.count},(_,i)=>i);const collider=world.createCollider(R.ColliderDesc.trimesh(vertices,indices));labels.set(collider.handle,o.name);g.dispose();});
  const track=transportInfrastructure(route);
- world.createCollider(R.ColliderDesc.trimesh(track.vertices,track.indices));
+ world.createCollider(R.ColliderDesc.trimesh(track.renderVertices,track.renderIndices));
  for(const segment of track.sledRails){
   const guide=transportBeamGeometry(segment,SLED_RAIL_RADIUS);
   const physicalGuide=world.createCollider(R.ColliderDesc.trimesh(guide.attributes.position.array,Uint32Array.from(guide.index.array)));

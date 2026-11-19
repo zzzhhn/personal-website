@@ -1,5 +1,7 @@
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+import {FACILITY_WOOD_TILE} from '../../WorldFacilitySurface';
 import dimensions from './transport-dimensions.json' with {type:'json'};
-import { Color,CylinderGeometry,Matrix4,Quaternion,Vector3 } from 'three';
+import { Color,CylinderGeometry,Float32BufferAttribute,Matrix4,Quaternion,Vector3 } from 'three';
 import type { TransportRoute } from '../../rides/ride-contract';
 import type { Vec3 } from '../../types';
 import { transportCurve,transportWorld,tuple } from '../../rides/transport-route.ts';
@@ -11,12 +13,48 @@ export function transportBeamGeometry({a,b}: SupportBeam, radius: number) {
  return new CylinderGeometry(radius,radius,delta.length(),8).applyMatrix4(
   new Matrix4().compose(start.add(end).multiplyScalar(.5),orientation,new Vector3(1,1,1)));
 }
+export function transportBeamBatch(segments:readonly SupportBeam[],radius:number,wood:boolean){
+ if(!segments.length)return null;
+ const parts=segments.map(segment=>{
+   const cylinder=transportBeamGeometry(segment,radius);
+   if(wood){
+     const uv=cylinder.getAttribute('uv');
+     for(let i=0;i<uv.count;i++){
+       const u=uv.getX(i),v=uv.getY(i);
+       uv.setXY(i,v*cylinder.parameters.height/FACILITY_WOOD_TILE[0],u*2*Math.PI*radius/FACILITY_WOOD_TILE[1]);
+     }
+     const color=new Float32Array(cylinder.getAttribute('position').count*3).fill(.82);
+     cylinder.setAttribute('color',new Float32BufferAttribute(color,3));
+   }
+   return cylinder;
+ });
+ const geometry=mergeGeometries(parts,false);parts.forEach(p=>p.dispose());
+ return {geometry,vertices:geometry.getAttribute('position').array as Float32Array,indices:Uint32Array.from(geometry.index!.array)};
+}
+export function cableWireSegments(route:TransportRoute){
+ const curve=transportCurve(route),count=Math.ceil(curve.getLength()/2),points:Vec3[]=[];
+ for(let i=0;i<=count;i++){
+   const v=curve.getPointAt(i/count);v.y+=dimensions.cable.cableHeight;
+   points.push(transportWorld(tuple(v),route.transform));
+ }
+ return points.slice(1).map((b,i)=>({a:points[i],b}));
+}
 export interface GuideRoller {center:Vec3;axis:Vec3;radius:number;halfWidth:number}
 /** Engineering data shared by rendered deck/structure and clearance fixtures. */
 export function transportInfrastructure(route:TransportRoute,groundHeight?:(x:number,z:number)=>number|null){
  const curve=transportCurve(route),count=Math.ceil(curve.getLength()/1.4),p:number[]=[],ix:number[]=[],colors:number[]=[],supports:SupportBeam[]=[],rollers:GuideRoller[]=[];
  const length=curve.getLength(),wood=new Color('#ad8050'),snow=new Color('#d7e2dc');let previousBent:Vec3[]|null=null;
  const sledRails:SupportBeam[]=[], previousRailEnds:Vec3[]=[];
+ // Preserve the top datum and bury each downhill rim just beneath its actual terrain triangle.
+ const footing=(x:number,z:number,r:number,fallback:number)=>{
+   if(!groundHeight)return fallback;
+   let y=groundHeight(x,z)??fallback;
+   for(let i=0;i<8;i++){
+     const a=i*Math.PI/4;
+     y=Math.min(y,groundHeight(x+r*Math.cos(a),z+r*Math.sin(a))??y);
+   }
+   return y-.002;
+ };
  const world=(v:Vector3)=>transportWorld(tuple(v),route.transform);
  for(let i=0;i<=count;i++){
   const t=i/count,v=curve.getPointAt(t),forward=curve.getTangentAt(t),side=new Vector3(-forward.z,0,forward.x).normalize(),up=new Vector3().crossVectors(side,forward).normalize();
@@ -45,7 +83,7 @@ export function transportInfrastructure(route:TransportRoute,groundHeight?:(x:nu
   if(route.kind==='ferry'||i===0||i===count||i%(route.kind==='cable'?Math.max(1,Math.round(count/4)):7)!==0)continue;
   if(route.kind==='cable'){
    const tops:Vec3[]=[];
-   for(const sign of [-1,1]){const x=v.clone().addScaledVector(side,sign*2.8),ground=groundHeight?.(x.x,x.z)??Math.min(...route.path.map(p=>p[1]))-.3;const a=[x.x,ground,x.z] as Vec3,b=[x.x,v.y+dimensions.cable.crossarmHeight,x.z] as Vec3;supports.push({a:transportWorld(a,route.transform),b:transportWorld(b,route.transform)});tops.push(transportWorld(b,route.transform));}
+   for(const sign of [-1,1]){const x=v.clone().addScaledVector(side,sign*2.8),ground=footing(x.x,x.z,.09,Math.min(...route.path.map(p=>p[1]))-.3);const a=[x.x,ground,x.z] as Vec3,b=[x.x,v.y+dimensions.cable.crossarmHeight,x.z] as Vec3;supports.push({a:transportWorld(a,route.transform),b:transportWorld(b,route.transform)});tops.push(transportWorld(b,route.transform));}
    supports.push({a:tops[0],b:tops[1]});
    const wire=v.clone().add(new Vector3(0,dimensions.cable.cableHeight,0)),center=wire.clone().addScaledVector(up,-.235),arm=center.clone().addScaledVector(side,-.4),top=v.clone().addScaledVector(side,-.4).add(new Vector3(0,dimensions.cable.crossarmHeight,0));
    supports.push({a:world(top),b:world(arm)},{a:world(arm),b:world(center)});
@@ -53,7 +91,7 @@ export function transportInfrastructure(route:TransportRoute,groundHeight?:(x:nu
    rollers.push({center:world(center),axis:tuple(axis),radius:.2,halfWidth:.02});
   }else{
    const bases:Vec3[]=[],tops:Vec3[]=[];
-   for(const sign of [-1,1]){const x=v.clone().addScaledVector(side,sign*(width+.17)),ground=groundHeight?.(x.x,x.z)??-4;const a=transportWorld([x.x,ground,x.z],route.transform),b=transportWorld([x.x,v.y-.4,x.z],route.transform);supports.push({a,b});bases.push(a);tops.push(b);}
+   for(const sign of [-1,1]){const x=v.clone().addScaledVector(side,sign*(width+.17)),ground=footing(x.x,x.z,.12,-4);const a=transportWorld([x.x,ground,x.z],route.transform),b=transportWorld([x.x,v.y-.4,x.z],route.transform);supports.push({a,b});bases.push(a);tops.push(b);}
    supports.push({a:tops[0],b:tops[1]});
    if(previousBent)for(let k=0;k<2;k++){const bottom=[...bases[k]] as Vec3;bottom[1]=Math.max(bottom[1],tops[k][1]-4);supports.push({a:previousBent[k],b:bottom});}
    previousBent=tops;
