@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { act, createElement as h, StrictMode } from 'react';
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PerspectiveCamera } from 'three';
+import { act, createElement as h, StrictMode, Suspense } from 'react';
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, Object3D, PerspectiveCamera } from 'three';
 import { compileWorldComponent } from '../../../tools/world/alpha-mine-tests/component-host.mjs';
 import { readWorldCraftGltf, disposeWorldCraftGltf } from './world-craft-gltf-test.mjs';
 import { useOwnedWorldVisual } from './useOwnedWorldVisual.ts';
-import { CLUB } from './djc-club-layout.ts';
+import { CLUB, CLUB_DAYBEDS } from './djc-club-layout.ts';
 import { IBD_YARD } from './attractions/attraction-layout.ts';
 import * as lamps from './djc-pool-lantern-visual.ts';
 import * as beds from './djc-daybed-visual.ts';
@@ -14,11 +14,20 @@ import * as umbrellas from './djc-umbrella-visual.ts';
 import * as furniture from './djc-furniture-visual.ts';
 import * as crates from './attractions/ibd-crate-visual.ts';
 import * as equipment from './attractions/ibd-static-craft-visual.ts';
+import * as ibdFixtures from './attractions/ibd-workstation-fixtures.ts';
 
 import * as bar from './djc-bar-layout.ts';
+import * as fixedContacts from './club-fixed-contact.ts';
+import * as daybedContacts from './club-daybed-contact.ts';
+import * as barStools from './club-north-bar-contact.ts';
+import * as barStructure from './club-north-bar-structure.ts';
 
-const fiber = createRequire(import.meta.url)('@react-three/fiber');
-fiber.extend({ BoxGeometry, Group, Mesh, MeshStandardMaterial });
+const require = createRequire(import.meta.url);
+const fiber = require('@react-three/fiber');
+const physics = require('@react-three/rapier');
+const rapier = createRequire(require.resolve('@react-three/rapier'))('@dimforge/rapier3d-compat');
+await rapier.init();
+fiber.extend({ BoxGeometry, Group, Mesh, MeshStandardMaterial, Object3D });
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
 const cases = [
@@ -30,6 +39,30 @@ const cases = [
   ...['Shell', 'Lid'].map(part => ['attractions/WorldIbdCratePart', './ibd-crate-visual', crates, crates.IBD_CRATE_ASSET,
     IBD_YARD.center, 'ibd-crafted-crate-' + part.toLowerCase(), part]),
 ];
+const contactRoots = {
+  WorldDjcClubLanterns: ['djc-pool-lantern-contact', lamps.DJC_POOL_LANTERN_POSITIONS.length],
+  WorldDjcClubDaybeds: ['djc-daybed-contact', CLUB_DAYBEDS.length],
+  WorldDjcClubUmbrellas: ['djc-umbrella-contact', umbrellas.DJC_UMBRELLA_PLACEMENTS.length],
+  WorldDjcClubFurniture: ['djc-furniture-contact', 5],
+};
+
+function mountedPhysics() {
+  let current;
+  function ReadWorld() { current = physics.useRapier(); return null; }
+  return {
+    wrap: child => h(Suspense, {fallback:null}, h(physics.Physics, {paused:true, colliders:false}, h(ReadWorld), child)),
+    installed() {
+      assert.ok(current, 'Rapier Physics provider mounted');
+      const rows=[...current.colliderStates].flatMap(([handle, state]) => {
+        const collider = current.world.getCollider(handle);
+        return collider?.isValid() ? [[state.object.name, collider]] : [];
+      });
+      const installed=new Map(rows);
+      assert.equal(installed.size,rows.length,'each live fixture collider has a unique name');
+      return installed;
+    },
+  };
+}
 
 async function createScene(camera) {
   const root = fiber.createRoot({});
@@ -54,14 +87,20 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
     camera.position.set(center[0] + 200, 2, center[2]);
     const root = await createScene(camera);
     const local = entry.startsWith('attractions/') ? '../' : './';
+    const contact = contactRoots[entry];
+    const host = (contact || entry.endsWith('WorldIbdStaticCraft')) && mountedPhysics();
     let ready = false, release, requests = 0, failure;
     const pending = new Promise(resolve => { release = resolve; });
     const Component = compileWorldComponent(new URL('./' + entry + '.tsx', import.meta.url))({
       [visualImport]: visualModule,
       './useOwnedWorldVisual': { useOwnedWorldVisual },
       './ibd-static-craft-visual': equipment,
+      './ibd-workstation-fixtures': ibdFixtures,
       './attraction-layout': { IBD_YARD },
-      './djc-club-layout': { CLUB },
+      './djc-club-layout': { CLUB, CLUB_DAYBEDS },
+      './club-fixed-contact': fixedContacts,
+      './club-daybed-contact': daybedContacts,
+      '@react-three/rapier': physics,
       [local + 'WorldAssetDecoder']: { withWorldAssetDecoder() {} },
       [local + 'WorldNight']: { night: { value: 0 } },
       [local + 'WorldDjcFurnitureEnvironment']: { useDjcFurnitureEnvironment: () => null },
@@ -73,11 +112,13 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
         return gltf;
       } },
     }).default;
-    const fallback = h('group', { name: 'original-geometry' });
+    const geometry = contact && new BoxGeometry(1, .5, .75);
+    const fallback = geometry ? h('mesh', { name:'original-geometry', geometry, dispose:null }) : h('group', { name: 'original-geometry' });
     const uniform = { value: 0 };
     let store, elapsed = 0;
     const render = (props = {}) => act(async () => {
-      store = root.render(h(StrictMode, null, h(Component, { fallback, uniform, part, active: false, legacy: false, ...props })));
+      const child = h(Component, { fallback, uniform, part, geometry:geometry ? [geometry] : undefined, active: false, legacy: false, ...props });
+      store = root.render(h(StrictMode, null, host ? host.wrap(child) : child));
     });
     const move = distance => act(async () => {
       camera.position.x = center[0] + distance;
@@ -98,8 +139,21 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       assert.ok(original());
       assert.equal(requests, 0);
       // Observe attachment before passive effects run, including their StrictMode replay.
-      const parent = original().parent;
+      const parent = contact ? scene.getObjectByName(contact[0]) : original().parent;
       parent.addEventListener('childadded', ({ child }) => materialsOf(child).forEach(observe));
+      const checkContacts = (fallback) => {
+        if (!contact) {
+          if (host) assert.equal(host.installed().size > 0,!fallback);
+          return;
+        }
+        const installed = host.installed(), names = [...installed.keys()];
+        if (fallback) assert.deepEqual(names,[`${contact[0]}-fallback`]);
+        else {
+          assert.equal(names.length, contact[1]);
+          assert.ok(names.every(name => name.startsWith(contact[0]+'-')&&!name.endsWith('-fallback')));
+        }
+        assert.ok([...installed.values()].every(collider => collider.shapeType() === rapier.ShapeType.TriMesh && collider.parent()?.isFixed()));
+      };
       if (part) {
         await render({ active: true, legacy: true });
         assert.ok(original());
@@ -108,10 +162,12 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       } else await move(89);
       assert.ok(requests > 0);
       assert.ok(original(), 'keep the original model while the GLB is pending');
+      checkContacts(true);
       await act(async () => { ready = true; release(); });
       const mounted = scene.getObjectByName(model);
       assert.ok(mounted);
       assert.equal(original(), undefined);
+      checkContacts(false);
       const materials = materialsOf(mounted);
       assert.ok(materials.size > 0);
       for (const material of materials) {
@@ -127,9 +183,11 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
         await move(117);
         assert.ok(original());
         assert.equal(scene.getObjectByName(model), undefined);
+        checkContacts(true);
       } else {
         await move(182);
         assert.equal(mounted.parent.visible, false);
+        checkContacts(false);
         await move(85);
         assert.equal(scene.getObjectByName(model), mounted);
         assert.equal(mounted.parent.visible, true);
@@ -150,6 +208,7 @@ for (const [entry, visualImport, visualModule, asset, center, model, part] of ca
       }
     } finally {
       await act(async () => { root.unmount(); });
+      geometry?.dispose();
       disposeWorldCraftGltf(gltf.scene);
     }
   });
@@ -167,6 +226,7 @@ test('the Club bar keeps the far model and both fixed bodies during a suspended 
   camera.position.set(origin[0] + 220, origin[1], origin[2]);
   camera.lookAt(...origin);
   const root = await createScene(camera);
+  const host = mountedPhysics();
   let elapsed = 0, store, release, nearReady = false, environments = 0;
   const pending = new Promise(resolve => { release = resolve; });
   const requests = new Set();
@@ -176,9 +236,9 @@ test('the Club bar keeps the far model and both fixed bodies during a suspended 
     disposed.set(resource, 0);
     resource.addEventListener('dispose', () => disposed.set(resource, disposed.get(resource) + 1));
   }
-  const Bar = compileWorldComponent(new URL('./WorldDjcClubBar.tsx', import.meta.url))({
-    './djc-bar-layout': { ...bar, buildDjcBarProxy() {
-      const proxy = bar.buildDjcBarProxy();
+  const Bar = compileWorldComponent(new URL('./WorldDjcClubBar.tsx', import.meta.url), {lowerDynamicImports:true})({
+    './djc-bar-layout': { ...bar, buildDjcBarProxy(omitStools) {
+      const proxy = bar.buildDjcBarProxy(omitStools);
       observe(proxy.roof);
       return proxy;
     } },
@@ -186,7 +246,9 @@ test('the Club bar keeps the far model and both fixed bodies during a suspended 
     './WorldAssetDecoder': { withWorldAssetDecoder() {} },
     './WorldNight': { night: { value: 0 } },
     './WorldDjcFurnitureEnvironment': { useDjcFurnitureEnvironment() { environments++; return null; } },
-    '@react-three/rapier': { RigidBody: ({ name, children }) => h('group', { name }, children), TrimeshCollider: () => null },
+    './club-north-bar-contact': barStools,
+    './club-north-bar-structure': barStructure,
+    '@react-three/rapier': physics,
     '@react-three/fiber': { ...fiber, useLoader(_loader, url) {
       requests.add(url);
       if (url === urls.near && !nearReady) throw pending;
@@ -197,13 +259,21 @@ test('the Club bar keeps the far model and both fixed bodies during a suspended 
     camera.position.set(origin[0] + distance, origin[1], origin[2]);
     store.getState().advance(++elapsed, false);
   });
+  const contacts = fallback => {
+    const installed=host.installed();
+    const expected=['surface','solid'].map(kind=>barStools.djcBarStructureSupply(kind,fallback))
+      .concat(bar.DJC_BAR_STOOLS.map((_,i)=>barStools.djcBarStoolSupply(i)));
+    assert.deepEqual([...installed.keys()].sort(),expected.sort());
+    assert.ok([...installed.values()].every(collider=>collider.shapeType()===rapier.ShapeType.TriMesh&&collider.parent()?.isFixed()));
+    return Object.fromEntries([...installed].map(([name,collider])=>[name,collider.handle]));
+  };
+  const stools = contacts => Object.entries(contacts).filter(([name])=>name.startsWith('djc-bar-stool'));
   try {
     await act(async () => { store = root.render(null); });
-    await act(async () => { root.render(h(StrictMode, null, h(Bar))); });
+    await act(async () => { root.render(h(StrictMode, null, host.wrap(h(Bar)))); });
     const scene = store.getState().scene;
     const visual = scene.getObjectByName('djc-north-bar-visual');
-    const bodies = ['surface', 'solid'].map(kind => scene.getObjectByName('djc-bar-' + kind));
-    assert.ok(bodies.every(Boolean));
+    const fallbackContacts = contacts(true);
     const fallback = visual.getObjectByName('djc-north-bar-fallback');
     assert.ok(fallback);
     const roof = fallback.children.find(mesh => disposed.has(mesh.geometry)).geometry;
@@ -212,30 +282,36 @@ test('the Club bar keeps the far model and both fixed bodies during a suspended 
     await move(91);
     assert.equal(requests.size, 0);
     visual.addEventListener('childadded', ({ child }) => materialsOf(child).forEach(observe));
+    const art = () => visual.children.filter(child=>child.name===packs.get(urls.far).scene.name);
     await move(90);
-    const far = visual.children[0];
-    assert.ok(far && far !== fallback);
+    const [far] = art();
+    assert.ok(far);
+    assert.equal(visual.getObjectByName(fallback.name),undefined);
+    const farContacts=contacts(false);
+    assert.deepEqual(stools(farContacts),stools(fallbackContacts));
     assert.deepEqual([...requests], [urls.far]);
     for (const m of materialsOf(far)) assert.equal(disposed.get(m), 0);
     await move(25);
     assert.deepEqual([...requests], [urls.far, urls.near]);
-    assert.equal(visual.children[0], far);
+    assert.deepEqual(art(),[far]);
     assert.equal(far.visible, true);
-    assert.equal(visual.children.length, 1);
+    assert.deepEqual(contacts(false),farContacts);
     await act(async () => { nearReady = true; release(); });
-    const near = visual.children[0];
+    const [near] = art();
     assert.notEqual(near, far);
-    assert.equal(visual.children.length, 1);
+    assert.deepEqual(art(),[near]);
+    assert.deepEqual(contacts(false),farContacts);
     for (const m of materialsOf(far)) assert.equal(disposed.get(m), 1);
     for (const m of materialsOf(near)) assert.equal(disposed.get(m), 0);
     await move(29);
-    assert.equal(visual.children[0], near);
+    assert.deepEqual(art(),[near]);
     await move(31);
-    assert.notEqual(visual.children[0], near);
+    assert.notEqual(art()[0], near);
+    assert.deepEqual(contacts(false),farContacts);
     for (const m of materialsOf(near)) assert.equal(disposed.get(m), 1);
     await move(200);
     assert.equal(visual.visible, false);
-    for (const body of bodies) assert.equal(scene.getObjectByName(body.name), body);
+    assert.deepEqual(contacts(false),farContacts);
     await act(async () => { root.render(null); });
     assert.equal(disposed.get(roof), 1);
   } finally {
