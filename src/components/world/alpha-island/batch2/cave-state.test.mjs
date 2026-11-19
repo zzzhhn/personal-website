@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
 import { existsSync } from 'node:fs';
-import { createCaveState, startCaveLamp, cancelCaveState, tickCaveState, startCaveEcho, caveEchoSequence, caveRingPulse, caveNear, CAVE_ECHO_SECONDS } from './cave-state.ts';
+import { createCaveState, startCaveLamp, cancelCaveState, tickCaveState, canStartCaveEcho, startCaveEcho, caveEchoSequence, caveRingPulse, caveNear, CAVE_ECHO_SECONDS } from './cave-state.ts';
 
 test('an accepted lamp pickup completes after its short animation; a lost safe stance cancels',()=>{
   const s=createCaveState(),p=[1,2,3];assert.equal(startCaveLamp(s,p),true);assert.equal(startCaveLamp(s,p),false);
@@ -16,8 +16,12 @@ test('an accepted lamp pickup completes after its short animation; a lost safe s
   assert.equal(s.lamp,'rack','walking out cancels even when the actor reuses its position array');
 });
 test('echo directions differ, delayed rings agree with audio events and hit rate is bounded',()=>{
-  const s=createCaveState();assert.equal(startCaveEcho(s,0),true);assert.equal(startCaveEcho(s,1),false);
-  for(let i=0;i<10;i++)tickCaveState(s,.08);assert.equal(startCaveEcho(s,2),true);
+  const s=createCaveState();
+  assert.equal(canStartCaveEcho(s),true);assert.equal(startCaveEcho(s,0),true);
+  assert.equal(canStartCaveEcho(s),false);assert.equal(startCaveEcho(s,1),false);assert.equal(s.chime,0);
+  for(let i=0;i<8;i++)tickCaveState(s,.08);
+  assert.equal(canStartCaveEcho(s),false);tickCaveState(s,.02);
+  assert.equal(canStartCaveEcho(s),true);assert.equal(startCaveEcho(s,2),true);
   const through=caveEchoSequence(0),dull=caveEchoSequence(2);assert.equal(through.length,4);assert.equal(dull.length,4);
   assert.deepEqual(through.at(-1).position,[10,33.7,-56]);assert.deepEqual(dull.at(-1).position,[-19,29.2,-49]);
   for(const echo of [...through,...dull]){assert.equal(caveRingPulse(echo.delay-.01,echo.delay),null);assert.ok(caveRingPulse(echo.delay,echo.delay));assert.equal(caveRingPulse(echo.delay+1.11,echo.delay),null);}

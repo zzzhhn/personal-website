@@ -48,8 +48,9 @@ export function cancelCaveState(s: CaveState) {
   s.lamp = 'rack'; s.echoAge = CAVE_ECHO_SECONDS; s.revision++;
   cancelCaveExploration(s.exploration);
 }
+export const canStartCaveEcho = (s: CaveState) => s.echoAge >= .65;
 export function startCaveEcho(s: CaveState, chime: CaveChime) {
-  if (s.echoAge < .65) return false;
+  if (!canStartCaveEcho(s)) return false;
   s.chime = chime; s.echoAge = 0; s.revision++; startCaveExploration(s.exploration, chime); return true;
 }
 export function tickCaveState(s: CaveState, dt: number, groundedPosition: Vec3 | null = null) {

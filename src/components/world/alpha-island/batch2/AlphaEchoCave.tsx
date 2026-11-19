@@ -13,7 +13,7 @@ import { alphaMaterial } from '../alpha-materials';
 import type { Vec3 } from '../../types';
 import { caveChimeTarget, createCaveArt } from './cave-art';
 import { createCaveAudio } from './cave-audio';
-import { CAVE_ECHO_SECONDS, alphaCaveLight, registerCaveCancellation, cancelCaveState, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
+import { CAVE_ECHO_SECONDS, alphaCaveLight, registerCaveCancellation, cancelCaveState, canStartCaveEcho, caveEchoSequence, caveNear, caveRingPulse, createCaveState, startCaveEcho, tickCaveState, type CaveChime } from './cave-state';
 import { caveLampPickupNotice } from './batch2-station-feedback';
 import { caveLampStation, CAVE_HAND_OWNER as OWNER } from './cave-lamp-station';
 import { heldPropPoint } from '../../accepted-action';
@@ -155,7 +155,8 @@ export default function AlphaEchoCave({onVisit,onComplete}:{onVisit?:()=>void;on
       {chimes.map((parts,i)=><group key={i} ref={g=>{chimeRefs.current[i]=g;}} position={[(i-1)*.65,3.05,.05]}><Craft parts={parts} name={`alpha-cave-bronze-chime-${i}`}/></group>)}
     </group>
     <group position={built.muralPosition} rotation={[0,built.muralYaw,0]}><Craft parts={mural} name="alpha-cave-carved-mountain-water-sun-mural" glow/></group>
-    {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring} enabled={alphaActorCanAct}/>)}
+    {([0,1,2] as CaveChime[]).map(index=><ChimeInteraction key={index} index={index} onRing={ring}
+      enabled={()=>alphaActorCanAct()&&canStartCaveEcho(state.current)}/>)}
     {[0,1,2,3].map(i=><mesh key={i} ref={m=>{rings.current[i]=m;}} material={ringMaterials[i]} visible={false} name={`alpha-cave-echo-ring-${i}`} userData={{surfaceId:`alpha-cave/echo-ring/${i}`,surfaceSpace:'alpha-cave/echo-ring',worldCollision:'none',surfaceRole:'decoration',collisionReason:'Transient camera-facing echo guide; no physical obstruction'}}><torusGeometry args={[.55,.023,5,36]}/></mesh>)}
   </group>;
 }
