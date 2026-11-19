@@ -189,3 +189,19 @@ test('an accepted approach stops if its anchor or grip moves, then allows a fres
     assert.equal(commits, 1);
   }
 });
+
+test('a newer rejected request releases the old approach and permits a clean retry',()=>{
+  const calls=[],driver=createInteractionApproach();
+  const original={...item,onInteract:()=>calls.push('original')};
+  const replacement={...item,id:'replacement',onInteract:()=>calls.push('replacement')};
+  const arrive=()=>driver.step(1/60,[.5,H,0],Math.PI,0,true,()=>true)?.arrived?.onInteract();
+  assert.ok(driver.request(original,()=>({item:original,stand:[.5,H,0]}),undefined,[0,1]));
+  assert.equal(driver.request(replacement,()=>null),false);
+  arrive();
+  assert.deepEqual(calls,[],'the failed second choice must not submit the previously accepted target');
+  assert.equal(driver.active,false);
+  assert.equal(driver.consumeHeldMovement(0,1),false);
+  assert.ok(driver.request(replacement,()=>({item:replacement,stand:[.5,H,0]})));
+  arrive();arrive();
+  assert.deepEqual(calls,['replacement']);
+});

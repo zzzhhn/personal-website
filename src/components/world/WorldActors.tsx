@@ -1197,12 +1197,15 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(active&&!shown.panel)exit();else if(prompt){
         const item = resolvePromptTarget(prompt);
         if(!item || !pickupApproach.request(item,()=>interactionOffers.resolve(item,offerContext(),true),()=>resolvePromptTarget(prompt)===item,movement)){
+          if(!item)pickupApproach.cancel();
           actorNotice('通路或物件状态发生变化，请重新靠近。','The route or object changed. Approach again.');return;
         }
       }else if(nearby && shown.nearbyVehicle===nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
-    if(actions.current.interact){interactNow(actions.current.interact,actions.current.interact.movement);actions.current.interact=null;}
+    const queuedInteraction=actions.current.interact;
+    actions.current.interact=null;
+    if(queuedInteraction)interactNow(queuedInteraction,queuedInteraction.movement);
     if(useWorldStore.getState().paused||useWorldStore.getState().poolInspect)return;
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
@@ -1219,7 +1222,8 @@ export default function WorldActors({sites,ride,presentation}: {sites: ActorSite
       if(edge(12))cycleInteractPick(-1);
       if(edge(13))cycleInteractPick(1);
       if(edge(0)&&!actorActivities.inputOwner())actions.current.jump=true;
-      if(edge(3))interactNow(useWorldStore.getState(),walkAxes(keys.current,gp));
+      // A simultaneous Y edge must not act on the state just produced by E or the panel.
+      if(edge(3)&&!queuedInteraction)interactNow(useWorldStore.getState(),walkAxes(keys.current,gp));
       if(edge(1))actions.current.recover=true;
       if(edge(8))cycleCamera();
       if(edge(9)){useWorldStore.setState({paused:true});return;}

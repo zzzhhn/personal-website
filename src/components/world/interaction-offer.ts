@@ -103,6 +103,7 @@ export function createInteractionApproach() {
     },
     request(item: Interactable, resolve: () => InteractionOffer | null, stillSelected?: () => boolean, movement?: [number, number]) {
       if (pending?.item === item && pending.stillSelected?.() !== false) return true;
+      cancel();
       const offer = resolve();
       if (!offer) return false;
       const target = item.approach?.target();

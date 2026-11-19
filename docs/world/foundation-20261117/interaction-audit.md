@@ -76,3 +76,21 @@ Chrome `157.0.8103.79` 用普通入口打开世界，另开 QA 会话定位到�
 ```sh
 WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interactions.mjs http://127.0.0.1:4358 coaster-obstacle
 ```
+
+## 共享输入冲突、取消与覆盖余量
+
+在营地帐篷前，真实 E 与同一物理步的模拟标准手柄 Y 会先开卡又关卡。隔离生产预览上的失败记录在动作后十个物理步读到空卡片。角色现在每步只处理一个共享交互请求。同一步的 E 或面板请求已经入队时，只处理该请求。修复后，帐篷卡在组合输入后保持打开。点击关闭、单独用 Y 重开、再用 E 关闭和重开均通过。
+
+新选择的站位突然无效时，原控制器会给出失败提示，但仍可能提交上一次已接受的动作。定向回归原本提交旧动作一次，修复后提交零次。重新选择可达的新目标则提交一次。另用 Chrome 的 QA 注册夹具移动目标 30 cm，真实角色走近途中收到目标变化提示，旧请求提交零次，Y 重试提交一次。这个夹具属于共享控制器检查，未加入场馆注册清点。
+
+回音洞矿灯使用真实 E 启动靠近、D 改向取消，再在同一洞口用模拟 Y 重试取灯。E 归还后恢复取灯提示。园区 P14 用模拟 Y 得到 Club 的地图标记 `[24, 40]`，P16 用 E 坐下听到第一句，用模拟 Y 起身并恢复落地。新版 Chrome 路线先检查普通入口，再用同一入口的 QA 定位准备场地。页面和游戏错误为 0，本地分析接口的 404 单列。交互定向回归 20 项通过。
+
+[冻结的注册样本](interaction-census.json)保留 138 个实际观察到的 ID。[覆盖清单生成器](../../../tools/world/playtest/foundation-interaction-coverage.mjs)按场馆和 ID 输出键盘、模拟标准手柄和面板的具体已验操作，也能读取新的成功运行记录。当前引用的浏览器证据覆盖其中 17 个 ID，121 个已观察 ID 尚无本清单引用的行为证据。键盘、模拟手柄和面板分别涉及 14、7、9 个 ID。同一 ID 可以有多类证据。额外 13 个精确 ID 来自条件注册调用，交易厅档案票的动态 ID 仍需读入档案数据后重算。
+
+货场还有 12 个已观察 ID 未在台账逐项操作，另有后库和车载条件分支。工厂其余 11 道工序、矿场 10 项和交易厅 8 项也尚无这里引用的逐 ID 浏览器证据。渡船反向登船和缆车上站登乘仍需要单独输入验证。实物手柄与目标机 Safari 仍待验证。
+
+```sh
+WORLD_BROWSER_MODULES=/path/to/playwright/project node tools/world/playtest/foundation-interaction-recovery.mjs http://127.0.0.1:4365
+node tools/world/playtest/foundation-interaction-coverage.mjs
+node tools/world/playtest/foundation-interaction-coverage.mjs --json /path/to/new-successful-run.jsonl
+```
