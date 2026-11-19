@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { registerIbdActivity } from './ibd-actor-activity';
-import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
+import { CuboidCollider, RigidBody, TrimeshCollider, useRapier } from '@react-three/rapier';
 import { useInteractable } from '../WorldInteract';
 import { IBD_YARD } from './attraction-layout.ts';
 import { IBD_STATIONS, ibdStation, ibdWorld, isIbdStockKey, isIbdPackStation, type IbdStationId } from './ibd-yard-layout.ts';
@@ -51,6 +51,7 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
 /** Mount inside the existing Canvas/Physics. Origin and ground contract come only from IBD_YARD. */
 export default memo(function WorldIbdYard({ active = true }: { active?: boolean }) {
   useEffect(() => registerIbdActivity(), []);
+  const { rapier } = useRapier();
   const environment = useDjcFurnitureEnvironment();
   const previousNight = useRef(-1);
   const data = useMemo(() => {
@@ -81,10 +82,13 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
   return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>
     <WorldIbdAudio />
     <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.coilMaterial ?? data.material} castShadow receiveShadow
-      userData={{ solid: true, assetId: 'ibd-yard-architecture' }} />
+      userData={{ solid: true, assetId: 'ibd-yard-architecture', worldCollisionPartial: true,
+        worldCollisionSources: data.contactSurfaces.map(({ id, firstIndex, indexCount }) => ({ id, firstIndex, indexCount, collision: 'solid' }))
+          .sort((a, b) => a.firstIndex - b.firstIndex) }} />
     <WorldIbdStaticCraft uniform={data.uniform} fallback={<mesh name="ibd-static-equipment-legacy" geometry={data.craftShellGeometry!} material={data.material} castShadow receiveShadow/>}/>
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>
-      <TrimeshCollider args={[data.walkSurface.vertices, data.walkSurface.indices]} friction={.85} />
+      {data.contactSurfaces.map(s => <TrimeshCollider key={s.id} name={s.id}
+        args={[s.vertices, s.indices, rapier.TriMeshFlags.FIX_INTERNAL_EDGES] as unknown as [Float32Array, Uint32Array]} friction={.85} />)}
       {data.solids.map((s, i) => <CuboidCollider key={i} position={s.at} rotation={s.rotation} friction={.85}
         args={[s.size[0] / 2, s.size[1] / 2, s.size[2] / 2]} />)}
     </RigidBody>

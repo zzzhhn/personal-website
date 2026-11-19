@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BoxGeometry, BufferGeometry, Group, Mesh, MeshStandardMaterial, Vector3 } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { night } from './WorldNight';
@@ -17,6 +17,47 @@ const withDraco = (loader: GLTFLoader) => {
   draco ??= new DRACOLoader().setDecoderPath('/assets/world/draco/');
   loader.setDRACOLoader(draco);
 };
+export function buildPortalFrame(gltf: GLTF) {
+  gltf.scene.updateMatrixWorld(true);
+  const groups = new Map<string, { material: MeshStandardMaterial; high: BufferGeometry[]; low: BufferGeometry[]; sources: string[] }>();
+  gltf.scene.traverse(o => {
+    if (!(o instanceof Mesh)) return;
+    const material = o.material as MeshStandardMaterial;
+    if (!groups.has(material.name)) {
+      const copy = material.name.startsWith('G28_stone') ? craftMaterial(material, 'stone') : material.clone();
+      if (material.name === 'G28_light_cyan') { copy.emissive.set('#4FD1C5'); copy.emissiveIntensity = .12; }
+      groups.set(material.name, { material: copy, high: [], low: [], sources: [] });
+    }
+    const batch = groups.get(material.name)!;
+    // Author GLB and its original nodes stay untouched. Batch complete transformed geometries.
+    const high = o.geometry.clone().applyMatrix4(o.matrixWorld);
+    batch.high.push(high);
+    batch.sources.push(o.name);
+    // >60 m only: per-stone envelopes retain the segmented arch/open centre, 360 triangles.
+    // No low-detail collision is created and near detail is never replaced inside 60 m.
+    o.geometry.computeBoundingBox();
+    const box = o.geometry.boundingBox!, size = box.getSize(new Vector3()), center = box.getCenter(new Vector3());
+    const low = new BoxGeometry(size.x, size.y, size.z).translate(center.x, center.y, center.z).applyMatrix4(o.matrixWorld);
+    batch.low.push(low);
+  });
+  return [...groups].map(([name, batch]) => {
+    const high = mergeGeometries(batch.high)!, low = mergeGeometries(batch.low)!;
+    const ranges = (pieces: BufferGeometry[]) => {
+      let firstIndex = 0;
+      return pieces.map((piece, i) => {
+        const indexCount = piece.index!.count;
+        const row = { id: batch.sources[i], collision: 'solid' as const, firstIndex, indexCount };
+        firstIndex += indexCount;
+        return row;
+      });
+    };
+    const sources = { high: ranges(batch.high), low: ranges(batch.low) };
+    [...batch.high, ...batch.low].forEach(g => g.dispose());
+    return { name, material: batch.material, high, low, sources,
+      positions: high.getAttribute('position').array as Float32Array, indices: new Uint32Array(high.index!.array) };
+  });
+}
+
 /** The unscaled circular G28 at each walking portal. WorldActors owns crossing. */
 export default function WorldEntry() {
   const gltf = useLoader(GLTFLoader, '/assets/world/entry/G28.glb', withDraco);
@@ -24,34 +65,7 @@ export default function WorldEntry() {
   const far = useRef<(Group | null)[]>([]), effects = useRef<(Group | null)[]>([]);
   const surface = useMemo(createPortalSurface, []), threshold = useMemo(createPortalThreshold, []);
   useEffect(() => () => { surface.dispose(); threshold.dispose(); }, [surface, threshold]);
-  const built = useMemo(() => {
-    gltf.scene.updateMatrixWorld(true);
-    const groups = new Map<string, { material: MeshStandardMaterial; high: BufferGeometry[]; low: BufferGeometry[] }>();
-    gltf.scene.traverse(o => {
-      if (!(o instanceof Mesh)) return;
-      const material = o.material as MeshStandardMaterial;
-      if (!groups.has(material.name)) {
-        const copy = material.name.startsWith('G28_stone') ? craftMaterial(material, 'stone') : material.clone();
-        if (material.name === 'G28_light_cyan') { copy.emissive.set('#4FD1C5'); copy.emissiveIntensity = .12; }
-        groups.set(material.name, { material: copy, high: [], low: [] });
-      }
-      const batch = groups.get(material.name)!;
-      // Author GLB and its original nodes stay untouched. Batch complete transformed geometries.
-      const high = o.geometry.clone().applyMatrix4(o.matrixWorld);
-      batch.high.push(high);
-      // >60 m only: per-stone envelopes retain the segmented arch/open centre, 360 triangles.
-      // No low-detail collision is created and near detail is never replaced inside 60 m.
-      o.geometry.computeBoundingBox();
-      const box = o.geometry.boundingBox!, size = box.getSize(new Vector3()), center = box.getCenter(new Vector3());
-      const low = new BoxGeometry(size.x, size.y, size.z).translate(center.x, center.y, center.z).applyMatrix4(o.matrixWorld);
-      batch.low.push(low);
-    });
-    return [...groups].map(([name, batch]) => {
-      const high = mergeGeometries(batch.high)!, low = mergeGeometries(batch.low)!;
-      [...batch.high, ...batch.low].forEach(g => g.dispose());
-      return { name, material: batch.material, high, low };
-    });
-  }, [gltf]);
+  const built = useMemo(() => buildPortalFrame(gltf), [gltf]);
   useEffect(() => () => built.forEach(b => { b.high.dispose(); b.low.dispose(); b.material.dispose(); }), [built]);
   useFrame(({ camera }) => {
     const player = useWorldStore.getState().position;
@@ -73,7 +87,7 @@ export default function WorldEntry() {
         lowTriangles: built.reduce((n, b) => n + (b.low.index?.count ?? b.low.attributes.position.count) / 3, 0), materials: built.length,
         sourceArcRadiiM: [gltf.scene.getObjectByName('G28')?.userData.arcOuterRadiusM, gltf.scene.getObjectByName('G28')?.userData.arcInnerRadiusM], instanceScale: roots.current[0]?.scale.toArray(),
         sourceFrontAxis: gltf.scene.getObjectByName('G28')?.userData.frontAxis, frameYaw: PORTAL_FRAME_YAW, localOpeningNormal: [0, 0, 1],
-        nearVisible: near.current[0]?.visible, farVisible: far.current[0]?.visible, colliderCount: WORLD_PORTALS.length, shadowCasters: 3,
+        nearVisible: near.current[0]?.visible, farVisible: far.current[0]?.visible, colliderCount: WORLD_PORTALS.length * (1 + built.length), shadowCasters: 3,
         sites: WORLD_PORTALS, particlesPerSite: PORTAL_PARTICLE_COUNT, thresholdTriangles: threshold.indices.length / 3,
         sharedMembraneTriangles: surface.curtainGeometry.index!.count / 3,
         threshold: PORTAL_THRESHOLD,
@@ -82,23 +96,28 @@ export default function WorldEntry() {
     } });
     return () => { delete (window as Window & { __worldEntry?: unknown }).__worldEntry; };
   }, [built, surface, threshold]);
-  const meshes = (level: 'high' | 'low') => built.map(b => <mesh key={b.name} name={`G28-${level}-${b.name}`} geometry={b[level]} material={b.material}
+  const meshes = (level: 'high' | 'low', id: string) => built.map(b => <mesh key={b.name} name={`G28-${level}-${b.name}`} geometry={b[level]} material={b.material}
     rotation={[0, PORTAL_FRAME_YAW, 0]}
-    castShadow={level === 'high' && b.name !== 'G28_light_cyan'} receiveShadow userData={{ assetId: 'G28', kind: 'entrance-trigger', occluder: true }} />);
+    castShadow={level === 'high' && b.name !== 'G28_light_cyan'} receiveShadow userData={{ assetId: 'G28', kind: 'entrance-trigger', occluder: true,
+      worldCollisionSources: b.sources[level].map(range => ({ ...range, surfaceId: 'G28-' + id + '-' + b.name })) }} />);
   return <>{WORLD_PORTALS.map((site, i) => <group key={site.id} name={i === 0 ? 'G28-entry' : `G28-entry-${site.id}`}
     ref={g => { roots.current[i] = g; }} position={site.position} rotation={[0, site.yaw, 0]} userData={{ budgetZone: site.id }}>
-    <group ref={g => { near.current[i] = g; }}>{meshes('high')}
-      <mesh name={`G28-${site.id}-threshold`} geometry={threshold.geometry} material={threshold.material} castShadow receiveShadow userData={{ surface: true }} />
+    <group ref={g => { near.current[i] = g; }}>{meshes('high', site.id)}
+      <mesh name={`G28-${site.id}-threshold`} geometry={threshold.geometry} material={threshold.material} castShadow receiveShadow userData={{ surface: true, worldCollision: 'solid', worldCollisionSharedSurface: true, surfaceId: 'G28-' + site.id + '-threshold' }} />
     </group>
-    <group ref={g => { far.current[i] = g; }} visible={false}>{meshes('low')}
-      <mesh geometry={threshold.geometry} material={threshold.material} receiveShadow userData={{ surface: true }} />
+    <group ref={g => { far.current[i] = g; }} visible={false}>{meshes('low', site.id)}
+      <mesh geometry={threshold.geometry} material={threshold.material} receiveShadow userData={{ surface: true, worldCollision: 'solid', worldCollisionSharedSurface: true, surfaceId: 'G28-' + site.id + '-threshold' }} />
     </group>
     <group ref={g => { effects.current[i] = g; }} userData={{ noOcclusionFade: true }}>
-      <mesh name={`G28-${site.id}-membrane`} geometry={surface.curtainGeometry} material={surface.curtainMaterial} renderOrder={2} userData={{ noOcclusionFade: true }} />
-      <points name={`G28-${site.id}-motes`} geometry={surface.particleGeometry} material={surface.particleMaterial} renderOrder={3} userData={{ noOcclusionFade: true }} />
+      <mesh name={`G28-${site.id}-membrane`} geometry={surface.curtainGeometry} material={surface.curtainMaterial} renderOrder={2} userData={{ noOcclusionFade: true, worldCollision: 'none', worldCollisionReason: 'pass-through travel membrane' }} />
+      <points name={`G28-${site.id}-motes`} geometry={surface.particleGeometry} material={surface.particleMaterial} renderOrder={3} userData={{ noOcclusionFade: true, worldCollision: 'none', worldCollisionReason: 'floating light particles' }} />
     </group>
+    <RigidBody name={`G28-${site.id}-stone-frame`} type="fixed" colliders={false} userData={{ solid: true, assetId: 'G28-frame' }}>
+      {built.map(b => <TrimeshCollider key={b.name} name={`G28-${site.id}-${b.name}`} rotation={[0, PORTAL_FRAME_YAW, 0]}
+        args={[b.positions, b.indices]} friction={.8} restitution={0} />)}
+    </RigidBody>
     <RigidBody name={`G28-${site.id}-threshold-body`} type="fixed" colliders={false} userData={{ surface: true, assetId: 'G28-threshold' }}>
-      <TrimeshCollider args={[threshold.vertices, threshold.indices]} friction={.95} restitution={0} />
+      <TrimeshCollider name={`G28-${site.id}-threshold`} args={[threshold.vertices, threshold.indices]} friction={.95} restitution={0} />
     </RigidBody>
   </group>)}</>;
 }

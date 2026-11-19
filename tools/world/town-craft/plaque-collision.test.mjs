@@ -1,9 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
-import { BufferGeometry, Float32BufferAttribute, Matrix4, Quaternion, Raycaster, Vector3, DoubleSide } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { loadShippedDraco } from '../alpha-mine-tests/shipped-draco.mjs';
+import { Matrix4, Quaternion, Raycaster, Vector3, DoubleSide } from 'three';
 import R from '@dimforge/rapier3d-compat';
 import { buildTownAssets } from '../../../src/components/world/WorldTownAssets.tsx';
 import { BUILDINGS } from '../../../src/components/world/layout.ts';
@@ -12,37 +10,8 @@ import { townThresholdCollision } from '../../../src/components/world/town-thres
 import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../../../src/components/world/actor-physics.ts';
 import { playerSupport } from '../../../src/components/world/player-ground.ts';
 
-const dracoURL = new URL('../../../public/assets/world/draco/', import.meta.url);
-const factory = runInNewContext(readFileSync(new URL('draco_wasm_wrapper.js', dracoURL), 'utf8') + ';DracoDecoderModule;',
-  { console, TextDecoder, WebAssembly, Buffer, Uint8Array, ArrayBuffer, setTimeout, clearTimeout });
-const draco = await factory({ wasmBinary: readFileSync(new URL('draco_decoder.wasm', dracoURL)) });
-const loader = new GLTFLoader().setDRACOLoader({
-  preload() {},
-  decodeDracoFile(data, callback, ids) {
-    // Collision and raycast use positions and indices. Keep the shipped GLB node transforms.
-    const buffer = new draco.DecoderBuffer(), decoder = new draco.Decoder(), mesh = new draco.Mesh();
-    const values = new draco.DracoFloat32Array(), face = new draco.DracoInt32Array();
-    try {
-      buffer.Init(new Int8Array(data), data.byteLength);
-      const status = decoder.DecodeBufferToMesh(buffer, mesh);
-      assert.ok(status.ok(), status.error_msg());
-      const attribute = decoder.GetAttributeByUniqueId(mesh, ids.position);
-      assert.ok(decoder.GetAttributeFloatForAllPoints(mesh, attribute, values));
-      const points = Float32Array.from({ length: values.size() }, (_, i) => values.GetValue(i));
-      const indices = [];
-      for (let i = 0; i < mesh.num_faces(); i++) {
-        decoder.GetFaceFromMesh(mesh, i, face);
-        indices.push(face.GetValue(0), face.GetValue(1), face.GetValue(2));
-      }
-      const geometry = new BufferGeometry().setAttribute('position', new Float32BufferAttribute(points, 3));
-      geometry.setIndex(indices);
-      callback(geometry);
-    } finally { [buffer, decoder, mesh, values, face].forEach(value => draco.destroy(value)); }
-  },
-});
 async function loadTownAsset(id) {
-  const glb = readFileSync(new URL(`../../../public/assets/world/town-craft/${id}.glb`, import.meta.url));
-  const { scene } = await loader.parseAsync(glb.buffer.slice(glb.byteOffset, glb.byteOffset + glb.byteLength), '');
+  const { scene } = await loadShippedDraco(new URL(`../../../public/assets/world/town-craft/${id}.glb`, import.meta.url));
   scene.updateMatrixWorld(true);
   return scene;
 }

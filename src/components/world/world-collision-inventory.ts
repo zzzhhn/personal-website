@@ -16,7 +16,9 @@ export const migratedCollisionRoots = [
   ...['C03-large-tent','C04-small-tents','C05-fire-pit','C06-instances','C07-pad1','C09-pad2','C10-pad3',
     'G16-instances','G17-instances','G18-instances','G21-instances','G22-instances','G23-instances'].map(id=>'camp-asset-'+id),
   ...['evalforge','djc','hepai','accompany','interactive-learning'].map(id => 'park-exhibit-set-'+id),
-  'world-camp-slice', 'world-town-assets', 'factory-walk-support', 'factory-roof-support',
+  'alpha-mine-entry-tool-rack', 'alpha-mine-west-ramp',
+  'G28-entry', ...['mine','park','yard','coaster'].map(id => 'G28-entry-'+id),
+  'world-camp-slice', 'street-trees-group', 'world-town-assets', 'factory-walk-support', 'factory-roof-support',
 ];
 const classes = new Set<CollisionClass>(['solid', 'pushable', 'soft', 'none']);
 const counts = () => ({ meshes: 0, declared: 0, unclassified: 0, invalid: 0 });

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { Euler,Quaternion,Matrix4,Vector3 } from 'three';
 import { buildIbdStatic,buildIbdLid } from './ibd-yard-geometry.ts';
+import { ibdCraftOptions } from './ibd-craft-options.ts';
 import { IBD_CARGO_HOME,IBD_STOCK_KEYS,IBD_STOCK_HOME,ibdPackHome,ibdStockRoute } from './ibd-yard-layout.ts';
 import { ibdPackInspectAnchors } from './ibd-pack-layout.ts';
 import { createIbdYardGame } from './ibd-yard-game.ts';
@@ -10,9 +11,10 @@ import { ibdCargoPose,ibdMotionStops } from './ibd-yard-motion.ts';
 await R.init();
 const identity={x:0,y:0,z:0,w:1};
 function fixture(moving){
-  const world=new R.World({x:0,y:-9.81,z:0}),data=buildIbdStatic();
+  const world=new R.World({x:0,y:-9.81,z:0}),data=buildIbdStatic(ibdCraftOptions(null));
   for(const s of data.solids)world.createCollider(R.ColliderDesc.cuboid(...s.size.map(n=>n/2))
     .setTranslation(...s.at).setRotation(new Quaternion().setFromEuler(new Euler(...(s.rotation??[0,0,0])))));
+  for(const s of data.contactSurfaces)world.createCollider(R.ColliderDesc.trimesh(s.vertices,s.indices,R.TriMeshFlags.FIX_INTERNAL_EDGES));
   for(const [id,p]of Object.entries({...IBD_CARGO_HOME,...IBD_STOCK_HOME,quarantine:[14,1.1,-16.3]})){
     if(id===moving||id==='parts-b'||id.startsWith('coil'))continue;
     world.createCollider(R.ColliderDesc.cuboid(1.4,.55,1.3).setTranslation(p[0],p[1]+.45,p[2]));

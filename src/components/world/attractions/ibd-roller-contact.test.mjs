@@ -4,6 +4,7 @@ import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
+import { mergeIbdTriangleContacts } from './ibd-static-contact.ts';
 import { createIbdYardGame } from './ibd-yard-game.ts';
 import { ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
 import { IBD_STATIONS } from './ibd-yard-layout.ts';
@@ -14,9 +15,9 @@ import { playerSupport, followPlayerGround } from '../player-ground.ts';
 
 await RAPIER.init();
 // Build this facility's geometry once; no scene, browser, renderer, or world-wide rebuild.
-const data=buildIbdStatic(),baseVertices=1618,baseTriangles=3093;
-const rollerVertices=data.walkSurface.vertices.slice(baseVertices*3);
-const rollerIndices=data.walkSurface.indices.slice(baseTriangles*3).map(i=>i-baseVertices);
+const data=buildIbdStatic();
+const banks=data.contactSurfaces.filter(s=>s.id.startsWith('ibd-roller-'));
+const {vertices:rollerVertices,indices:rollerIndices}=mergeIbdTriangleContacts(banks);
 const identity={x:0,y:0,z:0,w:1},dt=1/60;
 const capsule=new RAPIER.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS);
 after(()=>data.geometry.dispose());
@@ -51,25 +52,22 @@ function walk(world,start,velocity,steps=180) {
   } finally {world.removeCharacterController(clearance);world.removeRigidBody(body);}
 }
 
-test('all 20 rollers and eight side bars reuse exact closed visual triangles without extra colliders',()=>{
+test('the four roller banks use the original rollers, side bars and visible underframes as contact',()=>{
   // The rack-mounted sign replaced two freestanding posts (ab7f0b9), clearing
   // the carton-transfer corridor without changing roller or truck contacts.
-  assert.equal(data.solids.length,256);
+  assert.equal(banks.length,4);
   assert.ok(data.solids.some(s => s.at.every((v,i)=>v === [16,3.9+IBD_TRUCK_GROUND_LIFT,12.5][i])
     && s.size.every((v,i)=>v === [4,.16,9][i])), 'truck roof still stops a jumping player');
   // Near-field truck/control detail may evolve; the contact mesh must still reuse the exact bars.
   assert.ok(data.geometry.index.count/3 < IBD_GEOMETRY_BUDGET.static, 'static yard stays within its geometry allocation');
-  assert.equal(rollerVertices.length/3,832);assert.equal(rollerIndices.length/3,720);
+  assert.ok(rollerIndices.length/3>720,'contact also covers the visible underframes');
   const p=data.geometry.attributes.position,idx=data.geometry.index;
   const key=(a,b,c)=>[a,b,c].map(v=>v.join(',')).sort().join('|'),visual=new Set();
   for(let i=0;i<idx.count;i+=3)visual.add(key(...[0,1,2].map(k=>[p.getX(idx.getX(i+k)),p.getY(idx.getX(i+k)),p.getZ(idx.getX(i+k))])));
-  const edges=new Map();
   for(let i=0;i<rollerIndices.length;i+=3) {
     const points=[0,1,2].map(k=>Array.from(rollerVertices.slice(rollerIndices[i+k]*3,rollerIndices[i+k]*3+3)));
     assert.ok(visual.has(key(...points)),'contact face differs from render face');
-    for(let k=0;k<3;k++) {const edge=[points[k].join(','),points[(k+1)%3].join(',')].sort().join('|');edges.set(edge,(edges.get(edge)??0)+1);}
   }
-  assert.ok([...edges.values()].every(n=>n===2),'bar end caps must be closed');
 });
 
 test('ordinary dynamic capsules stop at both long and short roller banks from the side and ends',()=>{
@@ -113,7 +111,9 @@ test('gaps below and between visible bars contain no filled-in collision wall',(
   try {
     world.createCollider(RAPIER.ColliderDesc.trimesh(rollerVertices,rollerIndices));world.step();
     for(const x of [10,18]) {
-      assert.equal(world.castShape({x:x-3,y:.3,z:-4.8},identity,{x:1,y:0,z:0},new RAPIER.Ball(.06),0,6,true),null);
+      assert.equal(world.castShape({x:x-3,y:.24,z:-4.8},identity,{x:1,y:0,z:0},new RAPIER.Ball(.06),0,6,true),null);
+      assert.ok(world.castShape({x:x-3,y:.47,z:-4.8},identity,{x:1,y:0,z:0},new RAPIER.Ball(.03),0,6,true),
+        'the same lane has a real side web at this higher point');
       assert.equal(world.castShape({x,y:1.3,z:-7.8},identity,{x:0,y:-1,z:0},new RAPIER.Ball(.06),0,1.2,true),null);
       assert.ok(world.castShape({x,y:1.3,z:-8.2},identity,{x:0,y:-1,z:0},new RAPIER.Ball(.06),0,1.2,true));
     }

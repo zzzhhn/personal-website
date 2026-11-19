@@ -1,10 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
+import { loadShippedDraco } from '../alpha-mine-tests/shipped-draco.mjs';
 import R from '@dimforge/rapier3d-compat';
-import { BufferGeometry, DoubleSide, Float32BufferAttribute, Group, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DoubleSide, Group, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../../../src/components/world/actor-physics.ts';
 import { EXHIBITS, HUTS, exhibitMatrix } from '../../../src/components/world/WorldParkLayout.ts';
 import { gltfTrimesh } from '../../../src/components/world/WorldParkKit.ts';
@@ -12,38 +10,11 @@ import { boardFlipAngle, exhibitBoardRotation, exhibitBoardSweepClear, exhibitPa
   exhibitRecordPose, exhibitSweepClear } from '../../../src/components/world/park-exhibit-collision.ts';
 import { disposeWorldCraftGltf } from '../../../src/components/world/world-craft-gltf-test.mjs';
 
-const dracoURL = new URL('../../../public/assets/world/draco/', import.meta.url);
-const decoder = runInNewContext(readFileSync(new URL('draco_wasm_wrapper.js', dracoURL), 'utf8') + ';DracoDecoderModule;',
-  { console, TextDecoder, WebAssembly, Buffer, Uint8Array, ArrayBuffer, setTimeout, clearTimeout });
-const draco = await decoder({ wasmBinary: readFileSync(new URL('draco_decoder.wasm', dracoURL)) });
-const loader = new GLTFLoader().setDRACOLoader({
-  preload() {},
-  decodeDracoFile(data, callback, attributes) {
-    const buffer = new draco.DecoderBuffer(), decoder = new draco.Decoder(), mesh = new draco.Mesh();
-    const values = new draco.DracoFloat32Array(), face = new draco.DracoInt32Array();
-    try {
-      buffer.Init(new Int8Array(data), data.byteLength);
-      const status = decoder.DecodeBufferToMesh(buffer, mesh);
-      assert.ok(status.ok(), status.error_msg());
-      const position = decoder.GetAttributeByUniqueId(mesh, attributes.position);
-      assert.ok(decoder.GetAttributeFloatForAllPoints(mesh, position, values));
-      const points = Float32Array.from({ length: values.size() }, (_, i) => values.GetValue(i));
-      const indices = [];
-      for (let i = 0; i < mesh.num_faces(); i++) {
-        decoder.GetFaceFromMesh(mesh, i, face);
-        indices.push(face.GetValue(0), face.GetValue(1), face.GetValue(2));
-      }
-      callback(new BufferGeometry().setAttribute('position', new Float32BufferAttribute(points, 3)).setIndex(indices));
-    } finally { [buffer, decoder, mesh, values, face].forEach(value => draco.destroy(value)); }
-  },
-});
 await R.init();
-
 async function loadExhibit(id) {
   const hut = HUTS.find(h => EXHIBITS[h.id]?.some(ex => ex.id === id));
   const { at, yaw } = EXHIBITS[hut.id].find(ex => ex.id === id);
-  const bytes = readFileSync(new URL(`../../../public/assets/world/park/${id}.glb`, import.meta.url));
-  const { scene } = await loader.parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '');
+  const { scene } = await loadShippedDraco(new URL(`../../../public/assets/world/park/${id}.glb`, import.meta.url));
   scene.updateMatrixWorld(true);
   return { hut, root: scene.getObjectByName(id), scene, placement: exhibitMatrix(hut, at, yaw) };
 }

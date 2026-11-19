@@ -2,7 +2,8 @@ import { CoilBayFinish } from './ibd-coil-bay';
 import { Builder, cbox, bar, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_RAMP } from './ibd-yard-layout.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
-import { buildIbdArchitecture, buildIbdStores, type IbdSolid } from './ibd-yard-architecture.ts';
+import { buildIbdArchitecture, buildIbdStores, type IbdCube, type IbdSolid } from './ibd-yard-architecture.ts';
+import { ibdTriangleContact, mergeIbdTriangleContacts, type IbdContactSurface } from './ibd-static-contact.ts';
 import { buildIbdSite } from './ibd-yard-site.ts';
 import { bakeIbdLight } from './ibd-yard-lighting.ts';
 import { addInspectionTools, addInspectionTorch, addWoundCoil, addYardControl, addIbdRollerFrame, applyIbdMachinedFinish } from './ibd-craft-geometry.ts';
@@ -41,15 +42,20 @@ function buildIbdWalkSurface(b: Builder) {
 }
 export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBaySample?: boolean; shedExpansion?: boolean; rackMode?: 'sample' | 'family'; bridgeSample?: boolean; crateSample?: 'reference' | 'grain' } = {}) {
   const b = new Builder(), craftShells = new Builder(), solids: IbdSolid[] = [];
+  const buildingContacts: IbdContactSurface[] = [], rollerContacts: IbdContactSurface[] = [];
+  const buildingContact = (id: string, start: number) => { buildingContacts.push(ibdTriangleContact(b, id, start)); };
   let shell = false;
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
     const target = shell && options.separateCraftShells ? craftShells : b;
     if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
+  // These structures already have exact triangle contacts. Keep the render
+  // callbacks and material treatments, and suppress the former envelope boxes.
+  const structureCube: IbdCube = (at, size, surface, _solid, bevel, rotation) => cube(at, size, surface, false, bevel, rotation);
   const coilFinish = options.coilBaySample || options.shedExpansion || options.crateSample === 'grain' ? new CoilBayFinish(b) : undefined;
-  const groundSurface = buildIbdArchitecture(b, cube, solids, options.coilBaySample || options.shedExpansion ? coilFinish : undefined, options.shedExpansion, options.bridgeSample);
-  buildIbdStores(b, cube, solids, options.rackMode, options.crateSample, coilFinish);
+  const groundSurface = buildIbdArchitecture(b, structureCube, buildingContact, options.coilBaySample || options.shedExpansion ? coilFinish : undefined, options.shedExpansion, options.bridgeSample);
+  buildIbdStores(b, structureCube, buildingContact, options.rackMode, options.crateSample, coilFinish);
   buildIbdSite(b, cube);
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {
     cube([x, .095, z], [4.6, .02, 3.4], P.dark, false, 0);
@@ -62,23 +68,13 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
   }
   cube([-12, .75, -11.7], [5.1, 1.5, .12], P.dark, true);
   // One welded shell has no internal vertical box ends for the character's swept guard to hit.
+  const galleryFirst = b.idx.length;
   const gallerySurface = buildIbdWalkSurface(b);
-  // Reuse the existing static Trimesh collider for the exact clipped paving and the unchanged gallery.
-  const vertices = new Float32Array(groundSurface.vertices.length + gallerySurface.vertices.length);
-  vertices.set(groundSurface.vertices); vertices.set(gallerySurface.vertices, groundSurface.vertices.length);
-  const indices = new Uint32Array(groundSurface.indices.length + gallerySurface.indices.length);
-  indices.set(groundSurface.indices);
-  indices.set(gallerySurface.indices.map(i => i + groundSurface.vertices.length / 3), groundSurface.indices.length);
-  const rollerVertices: number[] = [], rollerIndices: number[] = [];
-  // Reuse each visible closed bar verbatim in the existing static trimesh. Preserve the
-  // spaces between rollers and the two walking gaps instead of filling the whole lane.
+  const galleryLast = b.idx.length;
   const rollerBar = (a: V3, end: V3, radius: number, surf: Surf, sides: number) => {
-    const firstVertex = b.pos.length / 3, firstIndex = b.idx.length;
+    const firstVertex = b.pos.length / 3;
     bar(b, a, end, radius, surf, sides);
     applyIbdMachinedFinish(b, firstVertex);
-    const offset = rollerVertices.length / 3 - firstVertex;
-    rollerVertices.push(...b.pos.slice(firstVertex * 3));
-    for (let i = firstIndex; i < b.idx.length; i++) rollerIndices.push(b.idx[i] + offset);
   };
   const rail = (a: V3, end: V3) => {
     bar(b, a, end, .06, P.amber, 6);
@@ -113,9 +109,11 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
     shell = false;
     // Leave a standing gap in front of each inspection bench; guide arrows must not enter a roller bed.
     for (const [start, end] of [[-8.2, -3], [5, 7]]) {
+      const firstIndex = b.idx.length;
       for (const xx of [-1.7, 1.7]) rollerBar([x + xx, .6, start], [x + xx, .6, end], .08, P.dark, 6);
       for (let z = start; z <= end; z += .8) rollerBar([x - 1.5, .65, z], [x + 1.5, .65, z], .13, {color:'#a5b1b6',rough:.4,metal:.82}, 8);
       addIbdRollerFrame(b,x,start,end);
+      rollerContacts.push(ibdTriangleContact(b, `roller-${x}-${start < 0 ? 'long' : 'short'}`, firstIndex));
     }
   }
   // Exact roller/side-frame contacts stop grounded players; z=0 and z=4 stay open.
@@ -151,13 +149,17 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
   }
   cube([-28.3, .8, 3.96], [.14, 1.6, .14], P.dark, true);
   cube([-28.3, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
-  const walkSurface = {
-    vertices: new Float32Array([...vertices, ...rollerVertices]),
-    indices: new Uint32Array([...indices, ...rollerIndices.map(i => i + vertices.length / 3)]),
-  };
+  const floorContacts = [
+    { id: 'ibd-paving', firstIndex: 0, indexCount: groundSurface.indices.length, ...groundSurface },
+    { id: 'ibd-gallery-walk', firstIndex: galleryFirst, indexCount: galleryLast - galleryFirst, ...gallerySurface },
+  ];
+  const contactSurfaces = [...floorContacts, ...buildingContacts, ...rollerContacts];
+  // The CPU walking fixtures can still mount a single copy of the same triangle contacts.
+  let merged: ReturnType<typeof mergeIbdTriangleContacts> | undefined;
   const geometry = bakeIbdLight(b.build());
   coilFinish?.bind(geometry);
-  return { geometry, solids, walkSurface, groundSurface,
+  return { geometry, solids, contactSurfaces, groundSurface,
+    get walkSurface() { return merged ??= mergeIbdTriangleContacts(contactSurfaces); },
     craftShellGeometry: options.separateCraftShells ? bakeIbdLight(craftShells.build()) : null };
 }
 

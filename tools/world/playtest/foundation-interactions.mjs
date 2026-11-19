@@ -249,7 +249,14 @@ async function yard() {
 async function park() {
   const exhibits = [];
   for (const [tag,id] of [['P13','park-P13-evalforge'],['P15','park-P15-hepai'],['P18','park-P18-interactive-learning']]) {
-    const [x,y,z] = await page.evaluate(id => window.__worldInteract.list().find(item => item.id === id).position, id);
+    const offer = await page.waitForFunction(({id,tag}) => {
+      if (!window.__parkExhibits?.()?.[tag]) return false;
+      return window.__worldInteract?.list().find(item => item.id === id)?.position;
+    }, {id,tag}, {timeout:45_000}).catch(error => {
+      throw new Error(`Park exhibit ${id} (${tag}) did not register after world startup`, {cause:error});
+    });
+    const [x,y,z] = await offer.jsonValue();
+    await offer.dispose();
     await place([x,y+.25,z], id);
     const before = await page.evaluate(tag => window.__parkExhibits()[tag].runs, tag);
     await bot.press('KeyE');

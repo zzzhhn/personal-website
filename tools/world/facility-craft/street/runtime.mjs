@@ -2,7 +2,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
 import ts from 'typescript';
@@ -10,8 +10,14 @@ import ts from 'typescript';
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../..');
 const require = createRequire(import.meta.url);
 const codeCache = new Map();
-export function loadWorldModule(entry = 'WorldStreetAssets.ts', search = '', baseline = false) {
+function importMetaForCommonJs(context) {
+  const visit = node => ts.isMetaProperty(node) && node.keywordToken === ts.SyntaxKind.ImportKeyword
+    ? context.factory.createIdentifier('importMeta') : ts.visitEachChild(node, visit, context);
+  return source => ts.visitNode(source, visit);
+}
+export function loadWorldModule(entry = 'WorldStreetAssets.ts', search = '', baseline = false, services = {}) {
   const modules = new Map(), world = path.join(ROOT, 'src/components/world');
+  const location = { search }, window = { location };
   const run = file => {
     if (modules.has(file)) return modules.get(file).exports;
     const module = { exports: {} }; modules.set(file, module);
@@ -19,9 +25,13 @@ export function loadWorldModule(entry = 'WorldStreetAssets.ts', search = '', bas
     const id = `${file}:${old}`;
     if (!codeCache.has(id)) {
       const source = old ? execFileSync('git', ['show', '2f22560:src/components/world/WorldStreetAssets.ts'], { cwd: ROOT, encoding: 'utf8' }) : readFileSync(file, 'utf8');
-      codeCache.set(id, ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText);
+      codeCache.set(id, ts.transpileModule(source, {
+        compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX },
+        transformers: { before: [importMetaForCommonJs] },
+      }).outputText);
     }
     const localRequire = specifier => {
+      if (Object.hasOwn(services, specifier)) return services[specifier];
       if (!specifier.startsWith('.')) return require(specifier);
       const absolute = path.resolve(path.dirname(file), specifier);
       const resolved = [absolute, `${absolute}.ts`, `${absolute}.tsx`, `${absolute}.js`].find(existsSync);
@@ -29,7 +39,8 @@ export function loadWorldModule(entry = 'WorldStreetAssets.ts', search = '', bas
       return run(resolved);
     };
     vm.runInNewContext(codeCache.get(id), { module, exports: module.exports, require: localRequire,
-      window: { location: { search } }, URLSearchParams, console, Float32Array, Float64Array, Uint32Array, Uint16Array, Uint8Array, Int32Array,
+      window, location, importMeta: { url: pathToFileURL(file).href, env: { SSR: false, DEV: false, PROD: true } },
+      URLSearchParams, console, Float32Array, Float64Array, Uint32Array, Uint16Array, Uint8Array, Int32Array,
     }, { filename: file, timeout: 2000 });
     return module.exports;
   };

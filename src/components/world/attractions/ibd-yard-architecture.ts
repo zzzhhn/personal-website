@@ -5,12 +5,13 @@ import { buildIbdPaving } from './ibd-yard-site.ts';
 import { COIL_ROLE, addCoilBayWall, addCoilBayEave, type CoilBayFinish } from './ibd-coil-bay';
 import { addIbdStockRack } from './ibd-stock-craft.ts';
 import { addIbdBridgeSample, addIbdStockCrateSample } from './ibd-beam-crate-craft';
+import type { IbdContactSource } from './ibd-static-contact.ts';
 
 export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
 export type IbdCube = (at: V3, size: V3, surface: Surf, solid?: boolean, bevel?: number, rotation?: V3) => void;
 
 /** Three distinct building sections, sharing only construction details and the physical roof contract. */
-export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[], coilFinish?: CoilBayFinish, expanded = false, bridgeSample = false) {
+export function buildIbdArchitecture(b: Builder, cube: IbdCube, contact: IbdContactSource, coilFinish?: CoilBayFinish, expanded = false, bridgeSample = false) {
   const groundSurface = buildIbdPaving(b);
   const rafter = (a: V3, end: V3) => {
     const angle = Math.atan2(end[1] - a[1], end[0] - a[0]), length = Math.hypot(end[0] - a[0], end[1] - a[1]);
@@ -20,6 +21,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
     });
   };
   for (const [building, shed] of IBD_SHEDS.entries()) {
+    const firstIndex = b.idx.length;
     const { x, z, width: w, depth: d, eave: h, rise } = shed;
     const left = x - w / 2, right = x + w / 2, back = z - d / 2, front = z + d / 2;
     const sample = expanded || shed.id === 'coil' ? coilFinish : undefined;
@@ -55,9 +57,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
     wall(shed.id === 'coil' ? left : right, z, d, true);
     for (const zz of [back, z, front]) {
       for (const xx of [left, right]) {
-        // Original full column envelope remains the collider. The visible
-        // section has a web and two flanges instead of a solid square post.
-        solids.push({ at: [xx, h / 2, zz], size: [.46, h, .55] });
+        // Three separate pieces leave the actual I-section's two recesses open.
         cube([xx, h / 2, zz], [.12, h, .4], P.dark, false, 0);
         const flanges = () => {
           for (const side of [-1, 1]) cube([xx, h / 2, zz + side * .235], [.46, h, .08], P.steel, false, 0);
@@ -109,9 +109,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
         sample.add(i => b.nrm[i+1] < -.55 ? COIL_ROLE.soffit : COIL_ROLE.roof,
           () => cube(at, size, roof, true, 0, rotation), building, building > 0 ? roof.color : undefined);
       } else if (sample) {
-        // Split the visible skin at the existing middle portal. The physical
-        // roof stays the same single box per slope.
-        solids.push({ at, size, rotation });
+        // Split the treated skin at the existing middle portal.
         const half = size[2] / 2;
         cube([at[0], at[1], z-half/2], [size[0],size[1],half], roof, false, 0, rotation);
         sample.add(i => b.nrm[i+1] < -.55 ? COIL_ROLE.soffit : COIL_ROLE.roof, () =>
@@ -150,7 +148,9 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
         cube([xx, yy + .08, zz], [span * .45 - .24, .05, 2.3], P.glass, false, 0, [0, 0, -side * angle]);
       }
     }
+    contact(`shed-${shed.id}`, firstIndex);
   }
+  const firstSupport = b.idx.length;
   // Heavy double bridge over the coil court. Trolley, sling and coil remain independently animated.
   for (const z of [-6, -2]) {
     if (bridgeSample) addIbdBridgeSample(b, z);
@@ -164,11 +164,12 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
   // Gallery columns support the existing continuous walking shell, outside its clear capsule corridor.
   for (const x of [-25.4, -18, -10, -4.9]) cube([x, 2, -15.7], [.22, 4, .22], P.dark, true);
   for (const z of [-11, -6, -2.7]) cube([-4.9, 2, z], [.22, 4, .22], P.dark, true);
+  contact('gantry-gallery-steel', firstSupport);
   return groundSurface;
 }
 
 /** Deep rear stores and maintenance alcove, kept outside inspection faces and every animated pallet lane. */
-export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], rackMode?: 'sample' | 'family', crateSample?: 'reference' | 'grain', woodFinish?: CoilBayFinish) {
+export function buildIbdStores(b: Builder, cube: IbdCube, contact: IbdContactSource, rackMode?: 'sample' | 'family', crateSample?: 'reference' | 'grain', woodFinish?: CoilBayFinish) {
   const crate = (x: number, y: number, z: number, w = 2.2) => {
     if (crateSample === 'grain' && woodFinish) {
       // Skid bottom is .93 m below centre; shelf tops are .49 and 2.59 m.
@@ -195,7 +196,7 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
     for (const dx of [-.13, -.05, .04, .12]) cube([x + dx, y + .05, z + .933], [.025, .18, .008], P.dark, false, 0);
   };
   for (const x of [5, 13, 23]) {
-    solids.push({ at: [x, 2.5, -23], size: [6.4, 5, 3.4] });
+    const firstIndex = b.idx.length;
     addIbdStockRack(b, cube, x, rackMode === 'family' || x === 13 ? rackMode : undefined);
     crate(x - 1.6, 1.3, -23);
     if (crateSample && x === 13) addIbdStockCrateSample(b, x + 1.5, crateSample === 'grain' ? 1.42 : 1.3, -23, crateSample === 'grain' ? woodFinish : undefined);
@@ -220,9 +221,11 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
       }
       for (const dx of [-2.7, 2.7]) cube([x + dx, 2.83, -23], [.12, .4, 2.7], P.amber, false, 0);
     }
+    contact(`reserve-rack-${x}`, firstIndex);
   }
   // Background coils on yellow cradles stay behind the gallery, distinct from the two numbered specimens.
   for (const x of [-26, -20, -14]) {
+    const firstIndex = b.idx.length;
     cube([x, .3, -21], [4.5, .45, 2.7], P.amber, true);
     const coilStart=b.pos.length/3;
     const steel: Surf={color:'#a1adb2',rough:.39,metal:.9};
@@ -237,8 +240,9 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
     b.tr([x, 2, -21], [Math.PI / 2, 0, 0], () => {
       for (const z of [-.7, .7]) lathe(b, [[1.8, z - .055], [1.82, z - .055], [1.82, z + .055], [1.8, z + .055]], P.blue, { sides: 32, caps: false });
     });
-    solids.push({ at: [x, 2, -21], size: [3.6, 3.6, 2.4] });
+    contact(`stored-coil-${-x}`, firstIndex);
   }
+  const firstService = b.idx.length;
   // Small service cabinet and louvred vent, not a fourth competing warehouse.
   cube([-28.5, 1.7, 12], [3, 3.4, 5.5], P.wall, true);
   cube([-28.5, 3.5, 12], [3.5, .22, 6], P.roof);
@@ -249,8 +253,7 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
     cube([x,y,14.884],[.13,.13,.028],P.cutSteel,false,.008);
   cube([-27.55,1.63,14.91],[.12,.34,.085],P.dark,false,.022);
   for (const x of [-29.68,-27.32]) cube([x,1.72,14.91],[.08,2.55,.06],P.steel,false,0);
-  // Keep the original protected volume; separate the chest body, lid and feet.
-  solids.push({at:[-27.1,.7,16],size:[2.2,1.4,1.5]});
+  // Leave the real spaces between the chest body and its four feet.
   cube([-27.1,.71,16],[2.2,1.2,1.5],P.green,false,.045);
   cube([-27.1,1.32,16],[2.2,.02,1.5],P.dark,false,.02);
   cube([-27.1,1.365,16],[2.14,.07,1.44],P.green,false,.025);
@@ -264,4 +267,5 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
     cube([x,.98,16],[.03,.08,.48],P.dark,false,.015);
     bar(b,[x,.98,15.82],[x,.98,16.18],.027,P.cutSteel,8);
   }
+  contact('service-cabinet-and-chest', firstService);
 }

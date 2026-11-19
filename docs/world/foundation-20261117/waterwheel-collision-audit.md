@@ -20,4 +20,4 @@
 - 实景石拱东西两段的胶囊探测在机关完成前后均无阻挡。实物与 Rapier 共比较 613 个固定表面命中及 923 个空点，拱下采样最小净高约 4.87 米。八处石础在实际 Alpha 地形的 200 个接触采样点未见底部悬空。
 - 固定机位正午和深夜的相机矩阵、曝光一致，四帧逐张检查，平均 RGB 单通道差都低于 0.009/255。新版 `alpha-station5-three-sluices-waterwheel` 的昼夜帧确认 9 个活动碰撞注册，水车根没有分类缺口或校验错误。目标机帧时间另行验收。
 
-测试使用生产烘焙产物、Three 几何和 Rapier。水车定向测试、独立生产构建及 TypeScript 检查通过。原始证据见 `waterwheel-contact-before.json`、`waterwheel-contact-after.json`、`waterwheel-contact-live-motion.json` 及同名昼夜帧。
+测试使用生产烘焙产物、Three 几何和 Rapier。20 项水车定向测试、`npm run check:grounding` 的 52 项接地及 140 项基础测试、独立生产构建和 TypeScript 检查均通过。原始证据见 `waterwheel-contact-before.json`、`waterwheel-contact-after.json`、`waterwheel-contact-live-motion.json` 及同名昼夜帧。
