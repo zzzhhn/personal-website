@@ -1,5 +1,8 @@
 # Existing-world foundation migration
 
+**2026-11-20 verification.** The current hardware playtest, collision inventory and route measurements are in the [workstation ledger](workstation-20261119.zh.md). Its release entries identify the tested revision and distinguish fixed-camera coverage from active gameplay. The milestones below record the state at the time of each migration.
+
+
 ## Decision and scope
 
 The user supplied an external architecture review and asked to improve the existing project before further development. Baseline: `4b92ddb72f90952cb4317e4f88fb619e41d6dc90` on GitHub main. Freeze new venues while repairing the foundations. Preserve approved models, materials, existing gameplay and Balanced startup. A 150 m replacement island, removal of whole experiences, or new Hunyuan/MoE exhibits are proposals, not this migration's accepted scope.
